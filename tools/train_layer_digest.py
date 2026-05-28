@@ -57,9 +57,7 @@ def main() -> None:
         target_grid, dmn_rect, patch_w=10, patch_h=10, count=args.damage_patches, seed=args.seed
     )
 
-    token_ids = sorted(tokens_for_bundle(bundle, concept_mode=CANONICAL_CONCEPT_MODE))
-    field_layout = LayeredChannelLayout(k_tokens=len(token_ids))
-    dmn_rule, _, dm_c = load_dmn_rule(args.dmn_model, field_layout, device)
+    dmn_rule, token_ids, dm_c, field_layout = load_dmn_rule(args.dmn_model, device)
 
     tgt_state = grid_to_layered_state(target_grid, token_ids, field_layout, device)
     x = grid_to_layered_state(damaged, token_ids, field_layout, device)

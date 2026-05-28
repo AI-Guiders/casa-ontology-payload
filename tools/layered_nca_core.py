@@ -118,7 +118,10 @@ def grid_to_layered_state(
     layout: LayeredChannelLayout,
     device: torch.device,
 ) -> torch.Tensor:
+    """Map grid cells into layered tensor using union token_ids (checkpoint vocab)."""
     w, h = int(grid["width"]), int(grid["height"])
+    if layout.k_tokens != len(token_ids):
+        raise ValueError("layout.k_tokens must match len(token_ids)")
     ch = layout.channel_n
     token_to_i = {t: i for i, t in enumerate(token_ids)}
     x = torch.zeros(1, ch, h, w, device=device)
@@ -177,17 +180,25 @@ class PhaseCheckpoints:
     digest: Path | None = None
 
 
-def load_dmn_rule(ckpt_path: Path, layout: LayeredChannelLayout, device: torch.device) -> tuple[UpdateRule, list[str], int]:
+def load_dmn_rule(ckpt_path: Path, device: torch.device) -> tuple[UpdateRule, list[str], int, LayeredChannelLayout]:
     ckpt = torch.load(ckpt_path, map_location="cpu")
     token_ids = list(ckpt["token_ids"])
     k = len(token_ids)
-    if k != layout.k_tokens:
-        raise ValueError(f"checkpoint tokens {k} != layout {layout.k_tokens}")
+    fl = ckpt.get("field_layout")
+    if isinstance(fl, dict):
+        layout = LayeredChannelLayout(
+            k_tokens=int(fl.get("k_tokens", k)),
+            n_digest=int(fl.get("n_digest", 8)),
+            n_gate=int(fl.get("n_gate", 4)),
+            n_hidden=int(fl.get("n_hidden", 8)),
+        )
+    else:
+        layout = LayeredChannelLayout(k_tokens=k)
     dm_c = int(ckpt["channel_n"])
     rule = UpdateRule(channel_n=dm_c, hidden=int(ckpt["hidden"])).to(device)
     rule.load_state_dict(ckpt["state_dict"])
     rule.eval()
-    return rule, token_ids, dm_c
+    return rule, token_ids, dm_c, layout
 
 
 def run_dmn_phase_on_layered(
@@ -227,8 +238,10 @@ def run_piston_pipeline(
     dmn_rule: UpdateRule,
     dm_channel_n: int,
     digest_rule: UpdateRule | None = None,
+    gate_rule: UpdateRule | None = None,
     dmn_steps: int = 48,
     digest_steps: int = 16,
+    gate_steps: int = 12,
     run_gate: bool = True,
 ) -> torch.Tensor:
     device = x.device
@@ -253,5 +266,16 @@ def run_piston_pipeline(
         )
 
     if run_gate:
-        x = gate_from_digest_step(x, layout=field_layout, sn_rect=sn_rect)
+        if gate_rule is not None:
+            m_sn = spatial_mask_tensor(sn_rect, h=h, w=w, device=device)
+            x = phase_rollout(
+                gate_rule,
+                x,
+                steps=gate_steps,
+                channel_mask=channel_mask_tensor(field_layout, "gate", device),
+                spatial_mask=m_sn,
+                fire_rate=1.0,
+            )
+        else:
+            x = gate_from_digest_step(x, layout=field_layout, sn_rect=sn_rect)
     return x

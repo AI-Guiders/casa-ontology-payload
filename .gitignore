@@ -10,5 +10,8 @@ examples/**/_tmp_*
 examples/nca_out_*/
 examples/exp_*/model.pt
 examples/layered_out/*.pt
+examples/exp_e_clusters_v1/**/model.pt
+examples/exp_e_clusters_v1/**/digest_model.pt
+examples/exp_e_clusters_v1/**/gate_model.pt
 examples/exp_*/report.json.tmp
 
