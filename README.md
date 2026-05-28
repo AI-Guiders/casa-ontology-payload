@@ -18,7 +18,9 @@
 - `tools/semantic_payload.py` — вытянуть claims и нормализовать `concept_id`.
 - `design/layout.v0.json` — региональная композиция одного CA‑поля (DMN/CEN/SN‑аналог) + порты.
 - `design/ontology-field-poc-findings-v1.md` — **выводы PoC** (locality, кодеки v0–v3, метрики, рекомендации для v1).
+- `design/layered-ca-pipeline-v0.md` — слоистый конвейер (поршень по **z** на одном поле).
 - `tools/codec_grid_v3.py` — placement concepts по provenance (`section` / `doc` / …).
+- `tools/layered_infer.py` — z=repair → digest → gate; `scripts/run_layered_v0.ps1`.
 - `examples/` — примеры на проект-карте `ca-substrate-agent` (CASA).
 
 ## Быстрый старт

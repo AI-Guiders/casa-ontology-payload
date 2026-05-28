@@ -9,5 +9,6 @@ examples/_tmp_*
 examples/**/_tmp_*
 examples/nca_out_*/
 examples/exp_*/model.pt
+examples/layered_out/*.pt
 examples/exp_*/report.json.tmp
 

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "analogy": "piston through cylinder sections; one field buffer S(x,y); z selects CA phase",
+  "phases": [
+    {
+      "id": "encode",
+      "z": 0,
+      "kind": "deterministic",
+      "description": "codec v3 writes token channels in DMN"
+    },
+    {
+      "id": "dmn_repair",
+      "z": 1,
+      "kind": "nca",
+      "region": "dmn_ontology",
+      "channel_group": "tok",
+      "default_steps": 48,
+      "checkpoint_role": "dmn"
+    },
+    {
+      "id": "digest",
+      "z": 2,
+      "kind": "nca",
+      "region": "p1_dmn_to_sn",
+      "channel_group": "digest",
+      "default_steps": 16,
+      "checkpoint_role": "digest"
+    },
+    {
+      "id": "gate",
+      "z": 3,
+      "kind": "deterministic",
+      "region": "sn_router",
+      "channel_group": "gate",
+      "description": "v0: gate from digest confidence"
+    }
+  ],
+  "channel_layout": {
+    "n_digest": 8,
+    "n_gate": 4,
+    "n_hidden": 8
+  }
+}
