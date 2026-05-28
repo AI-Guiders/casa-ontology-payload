@@ -88,6 +88,16 @@ Per-doc graphs **help per bundle** (6 wins vs 0), but union vocab + shared DMN s
 
 ---
 
+## F — Module parcels (fMRI-style)
+
+**Hypothesis:** within a cluster, train with **module-local** damage + spatial loss on `(doc_path, section)` parcels.
+
+**Run:** `python tools/build_kb_modules.py` → `manifests/kb-modules.v0.json` · `scripts/run_modules_v0.ps1`
+
+See `design/modules-fmri-analogy-v0.md` · output `examples/exp_f_modules_v1/report.json`
+
+---
+
 ## Repo
 
 https://github.com/AI-Guiders/casa-ontology-payload
