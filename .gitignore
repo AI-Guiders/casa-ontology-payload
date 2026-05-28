@@ -13,5 +13,6 @@ examples/layered_out/*.pt
 examples/exp_e_clusters_v1/**/model.pt
 examples/exp_e_clusters_v1/**/digest_model.pt
 examples/exp_e_clusters_v1/**/gate_model.pt
+examples/exp_f_modules_v1/**/model.pt
 examples/exp_*/report.json.tmp
 
