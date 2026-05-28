@@ -17,6 +17,7 @@ import torch
 
 from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
 from layout_apply import _get_region_rect, damage_region, damage_region_patches, mask_outside_region  # type: ignore
+from canonical import CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD  # type: ignore
 from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
 
 
@@ -106,8 +107,8 @@ def main() -> None:
     p.add_argument("--concept-radius", type=int, default=5)
     p.add_argument("--seeds", type=int, default=20)
     p.add_argument("--seed0", type=int, default=1)
-    p.add_argument("--min-votes", type=int, default=3)
-    p.add_argument("--threshold", type=float, default=0.5)
+    p.add_argument("--min-votes", type=int, default=CANONICAL_MIN_VOTES)
+    p.add_argument("--threshold", type=float, default=CANONICAL_THRESHOLD)
     p.add_argument("--steps", type=int, default=48)
     p.add_argument("--model", type=Path, required=True)
     p.add_argument("--out", type=Path, default=Path("examples/nca_bench_union.json"))

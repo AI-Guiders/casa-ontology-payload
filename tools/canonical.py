@@ -6,6 +6,9 @@ CANONICAL_CODEC = "v3"
 CANONICAL_CONCEPT_MODE = "section"
 CANONICAL_DAMAGE_MODE = "patches"
 CANONICAL_REGION = "dmn_ontology"
+# Exp B (2026-05-28): sweep on reference bundles @ damage 0.4
+CANONICAL_THRESHOLD = 0.35
+CANONICAL_MIN_VOTES = 2
 
 REPO_PUBLIC = "https://github.com/AI-Guiders/casa-ontology-payload"
 REPO_OPEN_PACK_REL = "Financial/software/open/casa-ontology-payload"
