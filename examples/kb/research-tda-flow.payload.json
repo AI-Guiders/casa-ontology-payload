@@ -1,0 +1,21 @@
+{
+  "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+  "schema_version": 1,
+  "claims": [
+    {
+      "concept_id": null,
+      "text": "[kb-tda-flow-machines-ca-ainet-fundamentals-v1.md](kb-tda-flow-machines-ca-ainet-fundamentals-v1.md)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+      "section": "TDA и Flow Machines (CASA × AINET) — stub v1",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "[playbook-casa-tda-flow-ainet-operational-v1.md](playbook-casa-tda-flow-ainet-operational-v1.md)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+      "section": "TDA и Flow Machines (CASA × AINET) — stub v1",
+      "claim_kind": "claim"
+    }
+  ],
+  "count": 2
+}

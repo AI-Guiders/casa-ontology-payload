@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+      "kind": "project_doc",
+      "title": "README"
+    },
+    "nodes": [
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "kind": "project_doc",
+        "title": "README"
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/agent-first-learn/README.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-levin-biology-bridge-operational-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/door-to-singularity/workspace-ideas-research.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "https://distill.pub/2020/growing-ca/",
+        "kind": "url",
+        "title": null
+      },
+      {
+        "id": "https://colab.research.google.com/github/google-research/self-organising-systems/blob/master/notebooks/growing_ca.ipynb",
+        "kind": "url",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/door-to-singularity/README.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/door-to-singularity/project-ids-quickref-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+        "kind": "project_doc",
+        "title": null
+      }
+    ],
+    "edges": [
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+        "label": "research-ml-ca-vs-matrix.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/agent-first-learn/README.md",
+        "label": "agent-first-learn"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+        "label": "research-training-developmental-pedagogy-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "label": "research-ml-ca-substrate-agent-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+        "label": "CASA-ADR-0001.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+        "label": "kb-distill-growing-neural-ca-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md",
+        "label": "kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-levin-biology-bridge-operational-v1.md",
+        "label": "playbook-casa-levin-biology-bridge-operational-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+        "label": "kb-tda-flow-machines-ca-ainet-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+        "label": "playbook-casa-tda-flow-ainet-operational-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+        "label": "research-tda-flow-machines-casa-ainet-note-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+        "label": "research-training-developmental-pedagogy-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+        "label": "`equation-to-ca-cuda`"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/door-to-singularity/workspace-ideas-research.md",
+        "label": "workspace-ideas-research.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "https://distill.pub/2020/growing-ca/",
+        "label": "Distill"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "https://colab.research.google.com/github/google-research/self-organising-systems/blob/master/notebooks/growing_ca.ipynb",
+        "label": "Colab notebook"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+        "label": "kb-distill-growing-neural-ca-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md",
+        "label": "kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-levin-biology-bridge-operational-v1.md",
+        "label": "playbook-casa-levin-biology-bridge-operational-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+        "label": "kb-tda-flow-machines-ca-ainet-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+        "label": "playbook-casa-tda-flow-ainet-operational-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+        "label": "research-tda-flow-machines-casa-ainet-note-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/door-to-singularity/README.md",
+        "label": "door-to-singularity/README.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/door-to-singularity/project-ids-quickref-v1.md",
+        "label": "project-ids-quickref-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "label": "casa-goals-and-roadmap-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "label": "casa-goals-and-roadmap-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+        "label": "ontology-in-field-poc-findings-v1.md"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "concept_id": null,
+      "text": "Зафиксировано по согласованию в диалоге workspace (PersonalCursorFolder): три проверяемые цели CASA, связь с IOP, AiNet, KB, имитационным обучением с правом на ошибку; уточнение «онтология в поле» vs классическая стеганография в LSB.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Реализация-лаборатория субстрата: Financial/software/open/nca-lab/ в репозитории DTS (Growing NCA, PyTorch train → C# inference).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "«Быстрее» — не аксиома: CA — O(HW) на шаг × много шагов; transformer — O(n²) по длине. Выигрыш измеряется на классе задач, не в вакууме.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Три цели (нормативно) / Цель 1 — CA как субстрат модели и вычислительная локальность",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Обучение через BPTT по времени может быть дороже, чем один forward матричной сети.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Три цели (нормативно) / Цель 1 — CA как субстрат модели и вычислительная локальность",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Внутри NCA всё равно есть плотные веса в локальном ядре (~8k параметров в Distill) — отличие в однородном геноме на всё поле, не в отсутствии матриц.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Три цели (нормативно) / Цель 1 — CA как субстрат модели и вычислительная локальность",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "LSB в PNG (стего «текст в картинке») для Growing NCA ненадёжен: loss по RGBA оптимизирует видимую форму, скрытые биты могут не пережить рост/регенерацию.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Три цели (нормативно) / Цель 2 — дорожка к AiNet: обмен знаниями (в т.ч. из KB)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Предпочтительно: онтология как структура поля — геометрия + loss на все 16 каналов (RGBA + hidden) + декодер «hidden → triples» после шага; обмен устойчивым дескриптором, а не бит-в-бит payload.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Три цели (нормативно) / Цель 2 — дорожка к AiNet: обмен знаниями (в т.ч. из KB)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "A: только end-to-end backprop на задаче.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Три цели (нормативно) / Цель 3 — имитационное обучение с правом на ошибку и исправлением",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "B: тот же субстрат + циклы исправления (запись в поле, откат части состояния, повтор эпизода с меткой ошибки).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Три цели (нормативно) / Цель 3 — имитационное обучение с правом на ошибку и исправлением",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Не замена LLM / чата / KB-router.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Что CASA не обещает",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Не доказательство «CA = общий ИИ» — вопрос какой конфигурации правил и обучения достаточно для полезного агента.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Что CASA не обещает",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Не von Neumann self-reproduction в строгом смысле на этапе Growing NCA — морфогенез и регенерация формы как инженерная аналогия.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Что CASA не обещает",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Задачи CASA: [PRIMARY:ca-substrate-agent] или алиас [PRIMARY:CASA].",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Для агента",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Цели и дорожная карта — этот файл; метрики и архитектура v0 — [research-ml-ca-substrate-agent-v1.md](research-ml-ca-substrate-agent-v1.md).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Для агента",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Код субстрата v0 — nca-lab в DTS; не путать с cascade-ide без явной зависимости.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Для агента",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Прогнать обучение nca-lab/train/growing_ca_train.py → инференс Sandbox.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Следующие шаги (инженерия)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Добавить режим damage + метрика восстановления hidden/RGBA.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Следующие шаги (инженерия)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Черновик ontology_grid из фрагмента KB → 16-канальный таргет.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Следующие шаги (инженерия)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Зафиксировать формат AiNet-пакета (черновик) совместно с карточкой ainet.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Следующие шаги (инженерия)",
+      "claim_kind": "claim"
+    }
+  ],
+  "concept_index": []
+}

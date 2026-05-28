@@ -1,0 +1,210 @@
+{
+  "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+  "schema_version": 1,
+  "claims": [
+    {
+      "concept_id": null,
+      "text": "The CASA track explores an agent substrate based on cellular automata (CA) instead of the dominant matrix-heavy stack.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Context",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "CA are Turing-complete, so feasibility in principle is not the blocker.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Context",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "The practical challenge is engineering: stability, controllability, robustness, observability, and cost.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Context",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "equation-to-ca-cuda (ETCC) exists as a separate engineering line for PDE/CA/CUDA validation and must not absorb CASA goals.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Context",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Core question: not \"can it work?\", but \"how to make it work reliably under real constraints?\"",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Success is multi-objective and must be tracked by explicit gates:",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "task success,",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "stability horizon,",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "adversarial resistance,",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "interpretability score,",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "compute cost.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "First implementation target is a minimal loop prototype:",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "CA-world with read/write interface,",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "internal memory field,",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "action head,",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "loop observe -> update -> act.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Use the v1 research spec as the operational contract for experiments and reporting.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Aligns discussions and implementation around measurable outcomes.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Consequences / Positive",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Prevents drift into abstract feasibility debates.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Consequences / Positive",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Creates a clean handoff from concept to prototype and benchmark pipeline.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Consequences / Positive",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Requires disciplined evaluation infrastructure early.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Consequences / Trade-offs",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "May show slower early progress than unconstrained exploratory coding.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Consequences / Trade-offs",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Robustness and interpretability claims remain unproven until benchmarked.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Consequences / Trade-offs",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "CASA: agent cognition/behavior substrate and evaluation.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Consequences / Scope boundary",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "ETCC: numerical methods + CUDA engineering path.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Consequences / Scope boundary",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Shared tooling is allowed, but decisions and gates are independent.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Consequences / Scope boundary",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Research spec v1: [research-ml-ca-substrate-agent-v1.md](research-ml-ca-substrate-agent-v1.md)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Links",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Legacy hypothesis draft: [research-ml-ca-vs-matrix.md](research-ml-ca-vs-matrix.md)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Links",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "ETCC card: [../equation-to-ca-cuda/README.md](../equation-to-ca-cuda/README.md)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Links",
+      "claim_kind": "claim"
+    }
+  ],
+  "count": 29
+}

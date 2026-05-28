@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "bundle": "examples\\ca-substrate-agent.bundle.v1.json",
+  "model": "examples\\nca_out_v3_section\\model.pt",
+  "codec": "v3",
+  "concept_mode": "section",
+  "damage": 0.4,
+  "damage_patches": 8,
+  "seed": 42,
+  "best": {
+    "threshold": 0.35,
+    "min_votes": 2,
+    "concepts_f1": 0.896551724137931,
+    "edges_f1": 0.5,
+    "mix_f1": 0.7379310344827585
+  },
+  "rows": [
+    {
+      "threshold": 0.35,
+      "min_votes": 2,
+      "concepts_f1": 0.896551724137931,
+      "edges_f1": 0.5,
+      "mix_f1": 0.7379310344827585
+    },
+    {
+      "threshold": 0.35,
+      "min_votes": 3,
+      "concepts_f1": 0.8148148148148148,
+      "edges_f1": 0.5,
+      "mix_f1": 0.6888888888888889
+    },
+    {
+      "threshold": 0.35,
+      "min_votes": 4,
+      "concepts_f1": 0.7692307692307693,
+      "edges_f1": 0.5,
+      "mix_f1": 0.6615384615384616
+    },
+    {
+      "threshold": 0.35,
+      "min_votes": 5,
+      "concepts_f1": 0.72,
+      "edges_f1": 0.5,
+      "mix_f1": 0.632
+    },
+    {
+      "threshold": 0.4,
+      "min_votes": 2,
+      "concepts_f1": 0.896551724137931,
+      "edges_f1": 0.5,
+      "mix_f1": 0.7379310344827585
+    },
+    {
+      "threshold": 0.4,
+      "min_votes": 3,
+      "concepts_f1": 0.8148148148148148,
+      "edges_f1": 0.5,
+      "mix_f1": 0.6888888888888889
+    },
+    {
+      "threshold": 0.4,
+      "min_votes": 4,
+      "concepts_f1": 0.7692307692307693,
+      "edges_f1": 0.5,
+      "mix_f1": 0.6615384615384616
+    },
+    {
+      "threshold": 0.4,
+      "min_votes": 5,
+      "concepts_f1": 0.72,
+      "edges_f1": 0.5,
+      "mix_f1": 0.632
+    },
+    {
+      "threshold": 0.45,
+      "min_votes": 2,
+      "concepts_f1": 0.896551724137931,
+      "edges_f1": 0.5,
+      "mix_f1": 0.7379310344827585
+    },
+    {
+      "threshold": 0.45,
+      "min_votes": 3,
+      "concepts_f1": 0.8148148148148148,
+      "edges_f1": 0.5,
+      "mix_f1": 0.6888888888888889
+    },
+    {
+      "threshold": 0.45,
+      "min_votes": 4,
+      "concepts_f1": 0.7692307692307693,
+      "edges_f1": 0.5,
+      "mix_f1": 0.6615384615384616
+    },
+    {
+      "threshold": 0.45,
+      "min_votes": 5,
+      "concepts_f1": 0.72,
+      "edges_f1": 0.5,
+      "mix_f1": 0.632
+    },
+    {
+      "threshold": 0.5,
+      "min_votes": 2,
+      "concepts_f1": 0.896551724137931,
+      "edges_f1": 0.5,
+      "mix_f1": 0.7379310344827585
+    },
+    {
+      "threshold": 0.5,
+      "min_votes": 3,
+      "concepts_f1": 0.8148148148148148,
+      "edges_f1": 0.5,
+      "mix_f1": 0.6888888888888889
+    },
+    {
+      "threshold": 0.5,
+      "min_votes": 4,
+      "concepts_f1": 0.7692307692307693,
+      "edges_f1": 0.5,
+      "mix_f1": 0.6615384615384616
+    },
+    {
+      "threshold": 0.5,
+      "min_votes": 5,
+      "concepts_f1": 0.72,
+      "edges_f1": 0.5,
+      "mix_f1": 0.632
+    },
+    {
+      "threshold": 0.55,
+      "min_votes": 2,
+      "concepts_f1": 0.896551724137931,
+      "edges_f1": 0.5,
+      "mix_f1": 0.7379310344827585
+    },
+    {
+      "threshold": 0.55,
+      "min_votes": 3,
+      "concepts_f1": 0.8148148148148148,
+      "edges_f1": 0.5,
+      "mix_f1": 0.6888888888888889
+    },
+    {
+      "threshold": 0.55,
+      "min_votes": 4,
+      "concepts_f1": 0.7692307692307693,
+      "edges_f1": 0.5,
+      "mix_f1": 0.6615384615384616
+    },
+    {
+      "threshold": 0.55,
+      "min_votes": 5,
+      "concepts_f1": 0.72,
+      "edges_f1": 0.5,
+      "mix_f1": 0.632
+    },
+    {
+      "threshold": 0.6,
+      "min_votes": 2,
+      "concepts_f1": 0.896551724137931,
+      "edges_f1": 0.5,
+      "mix_f1": 0.7379310344827585
+    },
+    {
+      "threshold": 0.6,
+      "min_votes": 3,
+      "concepts_f1": 0.8148148148148148,
+      "edges_f1": 0.5,
+      "mix_f1": 0.6888888888888889
+    },
+    {
+      "threshold": 0.6,
+      "min_votes": 4,
+      "concepts_f1": 0.7692307692307693,
+      "edges_f1": 0.5,
+      "mix_f1": 0.6615384615384616
+    },
+    {
+      "threshold": 0.6,
+      "min_votes": 5,
+      "concepts_f1": 0.72,
+      "edges_f1": 0.5,
+      "mix_f1": 0.632
+    }
+  ]
+}

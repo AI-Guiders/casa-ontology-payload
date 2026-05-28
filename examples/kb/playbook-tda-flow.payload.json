@@ -1,0 +1,84 @@
+{
+  "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+  "schema_version": 1,
+  "claims": [
+    {
+      "concept_id": null,
+      "text": "Нужно сравнивать паттерны CA на разных сетках, после шумов или усечения поля.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 1. Когда открывать этот playbook",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Спор: передаём ли мы между агентами сырое поле или сжатое инвариантное описание.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 1. Когда открывать этот playbook",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Проектирование продолжения симуляции другим агентом («подхватил поток») без bitwise копирования.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 1. Когда открывать этот playbook",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Связка с обучением NCA: дополнительные метрики к пиксельному loss — см. fundamentals и [kb-distill-growing-neural-ca-fundamentals-v1.md](kb-distill-growing-neural-ca-fundamentals-v1.md).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 1. Когда открывать этот playbook",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Зафиксирован размер/подвыборка (иначе профилирование бессмысленно).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 3. Мини-чеклист перед первым прототипом TDA на поле",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Один канал или смесь каналов для построения комплекса — документировано.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 3. Мини-чеклист перед первым прототипом TDA на поле",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Есть базовый sanity check: два явно разных паттерна дают различимые дескрипторы; два близких после мелкого шума — близко по выбранной метрике.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 3. Мини-чеклист перед первым прототипом TDA на поле",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Явно отмечено, что топопризнак не присвоен человекочитаемой семантике («это сортировка») без отдельной валидации на задаче.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 3. Мини-чеклист перед первым прототипом TDA на поле",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Определён интервал дискретизации времени: один шаг CA = один тик модели потока или пакет шагов.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 4. Мини-чеклист для «продолжения потока» (мотив FM)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Способ стыковки начального состояния второго агента задан (копия латента, затухание расхождения, проекция на аттрактор).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 4. Мини-чеклист для «продолжения потока» (мотив FM)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Критерий успеха количественный (напр. сохранение класса топопризнака на горизонте \\(T\\) шагов), а не только «визуально похоже».",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 4. Мини-чеклист для «продолжения потока» (мотив FM)",
+      "claim_kind": "claim"
+    }
+  ],
+  "count": 11
+}

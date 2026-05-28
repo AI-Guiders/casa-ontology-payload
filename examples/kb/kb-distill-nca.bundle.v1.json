@@ -1,0 +1,461 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+      "kind": "project_doc",
+      "title": "README"
+    },
+    "nodes": [
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "kind": "project_doc",
+        "title": "README"
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/agent-first-learn/README.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-levin-biology-bridge-operational-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/door-to-singularity/workspace-ideas-research.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "https://distill.pub/2020/growing-ca/",
+        "kind": "url",
+        "title": null
+      },
+      {
+        "id": "https://colab.research.google.com/github/google-research/self-organising-systems/blob/master/notebooks/growing_ca.ipynb",
+        "kind": "url",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/door-to-singularity/README.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/door-to-singularity/project-ids-quickref-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+        "kind": "project_doc",
+        "title": null
+      }
+    ],
+    "edges": [
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+        "label": "research-ml-ca-vs-matrix.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/agent-first-learn/README.md",
+        "label": "agent-first-learn"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+        "label": "research-training-developmental-pedagogy-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "label": "research-ml-ca-substrate-agent-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+        "label": "CASA-ADR-0001.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+        "label": "kb-distill-growing-neural-ca-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md",
+        "label": "kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-levin-biology-bridge-operational-v1.md",
+        "label": "playbook-casa-levin-biology-bridge-operational-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+        "label": "kb-tda-flow-machines-ca-ainet-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+        "label": "playbook-casa-tda-flow-ainet-operational-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+        "label": "research-tda-flow-machines-casa-ainet-note-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+        "label": "research-training-developmental-pedagogy-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+        "label": "`equation-to-ca-cuda`"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/door-to-singularity/workspace-ideas-research.md",
+        "label": "workspace-ideas-research.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "https://distill.pub/2020/growing-ca/",
+        "label": "Distill"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "https://colab.research.google.com/github/google-research/self-organising-systems/blob/master/notebooks/growing_ca.ipynb",
+        "label": "Colab notebook"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+        "label": "kb-distill-growing-neural-ca-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md",
+        "label": "kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-levin-biology-bridge-operational-v1.md",
+        "label": "playbook-casa-levin-biology-bridge-operational-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+        "label": "kb-tda-flow-machines-ca-ainet-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+        "label": "playbook-casa-tda-flow-ainet-operational-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+        "label": "research-tda-flow-machines-casa-ainet-note-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/door-to-singularity/README.md",
+        "label": "door-to-singularity/README.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/door-to-singularity/project-ids-quickref-v1.md",
+        "label": "project-ids-quickref-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "label": "casa-goals-and-roadmap-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "label": "casa-goals-and-roadmap-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+        "label": "ontology-in-field-poc-findings-v1.md"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "concept_id": null,
+      "text": "Источник: Mordvintsev, Randazzo & Niklasson — Growing Neural Cellular Automata — Distill, 2020. Доп. материал: поток [Differentiable Self-organizing Systems](https://distill.pub/2020/selforg/), Colab [growing_ca.ipynb](https://colab.research.google.com/github/google-research/self-organising-systems/blob/master/notebooks/growing_ca.ipynb), референсный код в репозитории google-research/self-organising-systems.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / Provenance",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Не путать с: общим обзором CA в NKS (Вольфрам) или полевыми моделями Levin — здесь узкий объект: нейросеть как локально применимое правило CA, обученное градиентами сквозь время.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / Provenance",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Биологический мотив: морфогенез — самоорганизация многих клеток в устойчивую анатомию; регенерация — восстановление формы после повреждений. В статье это не симуляция конкретного организма, а вычислительная аналогия: решётка клеток, общее правило, цель — заранее заданная 2D-форма (как «доросли до таргета»).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 1. Постановка: зачем CA и что такое «рост из семени»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Ключевая ставка метода: перейти от жёстких дискретных правил к дифференцируемому локальному обновлению, чтобы выразить желание («должно походить на картинку») через loss и обучить параметры через обратное распространение через время (BPTT), как для рекуррентной системы.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 1. Постановка: зачем CA и что такое «рост из семени»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Вектор 16 действительных каналов на клетку. Первые три — RGB (видимая окраска). Четвёртый трактуют как α: порог α > 0.1 отделяет «зрелую» активную область паттерна; соседи участвуют в динамике как зона роста; клетки без зрелого соседа в 3×3 — мертвы (состояние обнуляется каждый шаг).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 2. Архитектура Neural CA / 2.1. Состояние клетки",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Остальные каналы — скрытые: семантику не задают авторы; это резерв под «химические сигналы», потенциалы и пр. Единое геном-подобное правило для всех клеток; различие — только в локальном состоянии.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 2. Архитектура Neural CA / 2.1. Состояние клетки",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Perception (фиксированное «зрение»): свёртка состояния с Sobel по осям x и y на каждый канал — оценка градиентов поля соседей. К восприятию конкатенируют собственное состояние → вектор размерности 16 + 16·2 = 48 на клетку. Мотивация: реальные клетки ориентируются на градиенты сигналов, а не на произвольные веса на всём окне (частичная универсальность до обучиваемого ядра).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 2. Архитектура Neural CA / 2.2. Этапы одного шага обновления",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Update rule (обучаемое): мелкая сеть (в оригинале порядка ~8000 параметров) на этом векторе: типичный стек Dense → ReLU → Dense с последним слоем, инициализированным в ноль, чтобы изначально обновление было «ничего не делай» (резидуальный смысл инкремента Δstate).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 2. Архитектура Neural CA / 2.2. Этапы одного шага обновления",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Stochastic masking: каждому клеточному инкременту с вероятностью (в статье 0.5) обнуляют обновление — имитация асинхронных апдейтов без глобальных часов; одновременно работает как dropout по клеткам на апдейте.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 2. Архитектура Neural CA / 2.2. Этапы одного шага обновления",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Alive masking: клетки вне локальной окрестности зрелых по α сбрасываются — нет скрытого состояния «в пустоте», рост идёт от семени и распространяется локально.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 2. Архитектура Neural CA / 2.2. Этапы одного шага обновления",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Инициализация: почти нулевая решётка, одно семя в центре.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 1 — Learning to Grow",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Прогон на случайное число шагов из диапазона (в тексте порядка 64–96 для сетки 64×64 и таргета ~40×40).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 1 — Learning to Grow",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "На последнем шаге — L2 по RGBA к таргет-изображению (эмодзи и т.д.).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 1 — Learning to Grow",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Обучение: BPTT через цепочку шагов. Наблюдение: многие правила после обучения нестабильны при бóльшем числе шагов — взрыв, затухание, редкая почтиустойчивость.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 1 — Learning to Grow",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Идея динамических систем: сделать таргет-форму аттрактором, а не только концом короткой траектории.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 2 — What Persists Exists (пул состояний)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Sample pool: пул начальных состояний (изначально копии семени); на шаг обучения сэмплируют батч, один элемент подменяют исходным семенем; после шага заменяют выбранные элементы пула выходами симулятора. Высоколоссные состояния чаще «учат» восстановление; со временем пул заполняется почти готовыми паттернами → правило учится поддерживать форму.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 2 — What Persists Exists (пул состояний)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Комбинация с пулом плюс повреждения случайными круговыми сбросами в областях с низким loss — расширяет бассейн притяжения к таргету.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 3 — Learning to Regenerate",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Эффект: сильнее выраженная регенерация после вырезаний и половин паттернов, в т.ч. на типах урона, которых не было в обучении (обобщение).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 3 — Learning to Regenerate",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Sobel-пары вращают как базис градиентов; тот же обученный апдейтер может порождать повёрнутую версию паттерна без переобучения — намёк на устойчивость к смене «осей чувства» на дискретной сетке.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 4 — Поворот чувственного поля",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Начать с Colab (growing_ca.ipynb), затем упростить: фиксированная сетка, меньший таргет, меньший горизонт шагов, при отладке — отключить стохастический маскинг апдейтов.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 5. Практические якоря для воспроизведения",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Перенос инференса в контур с фиксированной арифметикой (C#, ONNX, compute shaders) естественен: на шаг нужны только свёртка Sobel и две небольшие линейные карты/ReLU при том же интерфейсе тензоров.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 5. Практические якоря для воспроизведения",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Стабильность поздней стадии обучения в оригинале улучшают в т.ч. нормировка градиентов по переменным (детали в коде коллаба и статьи).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 5. Практические якоря для воспроизведения",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Топология формы поля и мотив потока между агентами (TDA, Flow Machines — CASA × AINET): [kb-tda-flow-machines-ca-ainet-fundamentals-v1.md](kb-tda-flow-machines-ca-ainet-fundamentals-v1.md) + [playbook-casa-tda-flow-ainet-operational-v1.md](playbook-casa-tda-flow-ainet-operational-v1.md).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / Связные материалы в каноне",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Биологический мотив коллективного интеллекта клеток и биоэлектричества (аналогии для CASA): [kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md](kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md) + [playbook-casa-levin-biology-bridge-operational-v1.md](playbook-casa-levin-biology-bridge-operational-v1.md).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / Связные материалы в каноне",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Карточка трека: [README.md](README.md).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / Связные материалы в каноне",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Связанный численный трек (не эквивалент, но смежность GPU/поля): [../../../../worlds/math-numerics-pde/kb-equation-ca-cuda-validation-evidence-v1.md](../../../../worlds/math-numerics-pde/kb-equation-ca-cuda-validation-evidence-v1.md), карточка [equation-to-ca-cuda](../equation-to-ca-cuda/README.md).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / Связные материалы в каноне",
+      "claim_kind": "claim"
+    }
+  ],
+  "concept_index": []
+}
