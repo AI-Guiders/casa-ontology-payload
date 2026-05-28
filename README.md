@@ -14,6 +14,8 @@
 - `tools/extract_md_graph.py` — вытянуть graph из Markdown (links → edges).
 - `tools/semantic_payload.py` — вытянуть claims и нормализовать `concept_id`.
 - `design/layout.v0.json` — региональная композиция одного CA‑поля (DMN/CEN/SN‑аналог) + порты.
+- `design/ontology-field-poc-findings-v1.md` — **выводы PoC** (locality, кодеки v0–v3, метрики, рекомендации для v1).
+- `tools/codec_grid_v3.py` — placement concepts по provenance (`section` / `doc` / …).
 - `examples/` — примеры на проект-карте `ca-substrate-agent` (CASA).
 
 ## Быстрый старт
@@ -30,6 +32,10 @@ python .\tools\codec_grid_v0.py --bundle .\examples\ca-substrate-agent.bundle.v1
 
 # DMN-only region experiment (scaffold; no NCA yet)
 python .\tools\train_dmn_stub.py --bundle .\examples\ca-substrate-agent.bundle.v1.json --layout .\design\layout.v0.json --region dmn_ontology --seeds 5 --damage-levels "0.0,0.2,0.4" --out .\examples\dmn_stub_report.json
+
+# DMN-only NCA: recover token grid inside DMN region
+python -m pip install -r .\tools\requirements.txt
+python .\tools\train_dmn_nca.py --bundle .\examples\ca-substrate-agent.bundle.v1.json --layout .\design\layout.v0.json --region dmn_ontology --damage 0.25 --steps 32 --epochs 400 --out-dir .\examples\nca_out
 ```
 
 ## Лицензия

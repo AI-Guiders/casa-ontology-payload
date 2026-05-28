@@ -65,4 +65,6 @@
 ## 5) Артефакты
 
 - `design/layout.v0.json` — машинно‑читаемое описание регионов/портов/каналов.
+- `design/ontology-field-poc-findings-v1.md` — выводы PoC «онтология в поле» (locality, кодеки, F1).
+- Канон KB: `work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md`.
 
