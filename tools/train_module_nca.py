@@ -18,10 +18,17 @@ import torch
 
 from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
 from layout_apply import _get_region_rect, mask_outside_region  # type: ignore
-from module_masks import (  # type: ignore
-    cell_indices_for_tokens,
-    damage_module_patches,
-    module_tokens_for_section,
+from module_masks import cell_indices_for_tokens, module_tokens_for_section  # type: ignore
+from nca_train_util import (  # type: ignore
+    add_device_args,
+    configure_cuda,
+    damage_tensor_patches,
+    grid_indices,
+    print_train_device,
+    resolve_amp,
+    resolve_batch_size,
+    resolve_train_device,
+    scatter_grid_tensor,
 )
 from train_dmn_nca import UpdateRule, nca_rollout, nca_rollout_eval, sobel_kernels  # type: ignore
 from train_dmn_nca_multibundle import (  # type: ignore
@@ -106,7 +113,7 @@ def main() -> None:
     p.add_argument("--concept-radius", type=int, default=5)
     p.add_argument("--steps", type=int, default=48)
     p.add_argument("--epochs", type=int, default=800)
-    p.add_argument("--batch-size", type=int, default=8)
+    add_device_args(p)
     p.add_argument("--hidden", type=int, default=192)
     p.add_argument("--lr", type=float, default=3e-4)
     p.add_argument("--fire-rate", type=float, default=0.5)
@@ -134,7 +141,12 @@ def main() -> None:
 
     from codec_grid_v3 import encode_bundle_to_grid as enc_v3, tokens_for_bundle as tok_v3  # type: ignore
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = resolve_train_device(args.device)
+    configure_cuda(device)
+    batch_size = resolve_batch_size(args.batch_size, device)
+    use_amp = resolve_amp(args.amp, device)
+    print_train_device(device, batch_size, use_amp)
+
     layout = _read_json((repo / args.layout).resolve())
     rect = _get_region_rect(layout, args.region)
 
@@ -162,13 +174,14 @@ def main() -> None:
                 token_w[i] = float(args.edge_weight)
     token_w = token_w.view(1, k, 1, 1)
 
-    cached: dict[Path, dict] = {}
+    h, w = 64, 64
+    cached_tgt: dict[Path, torch.Tensor] = {}
     module_masks: dict[tuple[str, str], torch.Tensor] = {}
     for s in specs_b:
         full = enc_v3(
             s.bundle,
-            width=64,
-            height=64,
+            width=w,
+            height=h,
             copies=args.copies,
             node_radius=args.radius,
             edge_radius=args.edge_radius,
@@ -176,87 +189,88 @@ def main() -> None:
             concept_mode=args.concept_mode,
         )
         target_grid = mask_outside_region(full, rect)
-        cached[s.path] = target_grid
+        idx = grid_indices(target_grid, token_to_i)
+        cached_tgt[s.path] = scatter_grid_tensor(idx, k=k, h=h, w=w, device=device)[0]
 
     for ms in module_specs:
-        g = cached.get(ms.bundle_path)
-        if g is None:
+        g_path = ms.bundle_path
+        if g_path not in cached_tgt:
             continue
-        cells = ms.cell_indices
-        h, w = int(g["height"]), int(g["width"])
-        m = torch.zeros(1, 1, h, w, device=device)
-        for idx in cells:
+        m = torch.zeros(h, w, device=device)
+        for idx in ms.cell_indices:
             y, x = idx // w, idx % w
             if rect.contains(x, y):
-                m[0, 0, y, x] = 1.0
-        # avoid zero mask
+                m[y, x] = 1.0
         if m.sum() < 1:
-            m = torch.ones(1, 1, h, w, device=device)
-        module_masks[(str(ms.bundle_path), ms.section_key)] = m
+            m = torch.ones(h, w, device=device)
+        module_masks[(str(g_path), ms.section_key)] = m
 
     kx, ky = sobel_kernels(device)
     rule = UpdateRule(channel_n=channel_n, hidden=args.hidden).to(device)
     opt = torch.optim.Adam(rule.parameters(), lr=args.lr)
+    scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     best_score = -1.0
     best_state: dict | None = None
 
     for epoch in range(args.epochs):
-        batch_x: list[torch.Tensor] = []
         batch_tgt: list[torch.Tensor] = []
+        batch_inp: list[torch.Tensor] = []
         batch_w: list[torch.Tensor] = []
 
-        for b in range(args.batch_size):
+        for b in range(batch_size):
             ms = module_specs[(epoch * 997 + b * 101) % len(module_specs)]
-            target_grid = cached[ms.bundle_path]
+            tgt_tok = cached_tgt[ms.bundle_path]
             mask = module_masks[(str(ms.bundle_path), ms.section_key)]
             seed = args.seed + epoch * 10007 + b * 97
-            dmg, _overlap = damage_module_patches(
-                target_grid,
+            inp_tok = damage_tensor_patches(
+                tgt_tok,
                 rect,
-                ms.cell_indices,
                 patch_w=args.patch_w,
                 patch_h=args.patch_h,
                 count=args.damage_patches,
                 seed=seed,
+                module_mask=mask,
             )
-            x_tok = _grid_to_union_tensor(dmg, token_to_i, device=device)
-            tgt_tok = _grid_to_union_tensor(target_grid, token_to_i, device=device)
-            x0 = torch.zeros(1, channel_n, 64, 64, device=device)
-            x0[:, :k] = x_tok
-            batch_x.append(x0)
             batch_tgt.append(tgt_tok)
-            batch_w.append(mask)
+            batch_inp.append(inp_tok)
+            batch_w.append(mask.unsqueeze(0).unsqueeze(0))
 
-        x = torch.cat(batch_x, dim=0)
-        tgt = torch.cat(batch_tgt, dim=0)
+        tgt = torch.stack(batch_tgt, dim=0)
+        inp = torch.stack(batch_inp, dim=0)
         w_sp = torch.cat(batch_w, dim=0)
+        x = torch.zeros(batch_size, channel_n, h, w, device=device)
+        x[:, :k] = inp
 
-        x = nca_rollout(rule, x, kx, ky, args.steps, args.fire_rate)
-        pred = x[:, :k]
-        diff = (pred - tgt).pow(2)
-        weight = w_sp * token_w
-        loss = (diff * weight).sum() / weight.sum().clamp(min=1e-6)
+        opt.zero_grad(set_to_none=True)
+        with torch.autocast(device_type=device.type, enabled=use_amp):
+            x = nca_rollout(rule, x, kx, ky, args.steps, args.fire_rate)
+            pred = x[:, :k]
+            diff = (pred - tgt).pow(2)
+            weight = w_sp * token_w
+            loss = (diff * weight).sum() / weight.sum().clamp(min=1e-6)
 
-        opt.zero_grad()
-        loss.backward()
+        scaler.scale(loss).backward()
+        scaler.unscale_(opt)
         torch.nn.utils.clip_grad_norm_(rule.parameters(), 1.0)
-        opt.step()
+        scaler.step(opt)
+        scaler.update()
 
         if epoch % 100 == 0 or epoch == args.epochs - 1:
             ms = module_specs[epoch % len(module_specs)]
-            target_grid = cached[ms.bundle_path]
-            dmg, ov = damage_module_patches(
-                target_grid,
+            tgt_tok = cached_tgt[ms.bundle_path]
+            mask = module_masks[(str(ms.bundle_path), ms.section_key)]
+            inp = damage_tensor_patches(
+                tgt_tok,
                 rect,
-                ms.cell_indices,
                 patch_w=args.patch_w,
                 patch_h=args.patch_h,
                 count=args.damage_patches,
                 seed=args.seed + 12345,
+                module_mask=mask,
             )
-            inp = _grid_to_union_tensor(dmg, token_to_i, device=device)
+            ov = float(mask.mean().item())
             x0 = torch.zeros(1, channel_n, 64, 64, device=device)
             x0[:, :k] = inp
             with torch.no_grad():
@@ -300,17 +314,15 @@ def main() -> None:
         for s in specs_b:
             if s.path not in bundle_paths:
                 continue
-            target_grid = cached[s.path]
-            dmg, _ = damage_module_patches(
-                target_grid,
+            tgt_tok = cached_tgt[s.path]
+            inp = damage_tensor_patches(
+                tgt_tok,
                 rect,
-                set(),
                 patch_w=args.patch_w,
                 patch_h=args.patch_h,
                 count=args.damage_patches,
                 seed=args.seed + 999,
             )
-            inp = _grid_to_union_tensor(dmg, token_to_i, device=device)
             x0 = torch.zeros(1, channel_n, 64, 64, device=device)
             x0[:, :k] = inp
             xT = nca_rollout_eval(rule, x0, kx, ky, steps=args.steps)

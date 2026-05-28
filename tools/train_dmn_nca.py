@@ -26,6 +26,17 @@ import torch.nn as nn
 
 from codec_grid_v0 import decode_grid, encode_bundle_to_grid, score_recovery  # type: ignore
 from layout_apply import _get_region_rect, damage_region, mask_outside_region  # type: ignore
+from nca_train_util import (  # type: ignore
+    add_device_args,
+    configure_cuda,
+    damage_tensor_patches,
+    grid_indices,
+    print_train_device,
+    resolve_amp,
+    resolve_batch_size,
+    resolve_train_device,
+    scatter_grid_tensor,
+)
 
 
 def _read_json(path: Path) -> dict:
@@ -138,7 +149,7 @@ def main() -> None:
     p.add_argument("--copies", type=int, default=7)
     p.add_argument("--steps", type=int, default=32)
     p.add_argument("--epochs", type=int, default=400)
-    p.add_argument("--batch-size", type=int, default=4)
+    add_device_args(p, default_batch=0)
     p.add_argument("--hidden", type=int, default=128)
     p.add_argument("--lr", type=float, default=2e-4)
     p.add_argument("--fire-rate", type=float, default=0.5)
@@ -148,7 +159,12 @@ def main() -> None:
     p.add_argument("--save-model", action="store_true", help="Save best model weights to out-dir/model.pt")
     args = p.parse_args()
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = resolve_train_device(args.device)
+    configure_cuda(device)
+    batch_size = resolve_batch_size(args.batch_size, device)
+    use_amp = resolve_amp(args.amp, device)
+    print_train_device(device, batch_size, use_amp)
+
     bundle = _read_json(args.bundle)
     layout = _read_json(args.layout)
     rect = _get_region_rect(layout, args.region)
@@ -160,18 +176,13 @@ def main() -> None:
     # Create target grid (full), then DMN-only masked, then damaged input.
     full_grid = encode_bundle_to_grid(bundle, width=64, height=64, copies=args.copies)
     target_grid = mask_outside_region(full_grid, rect)
-    damaged_grid = damage_region(target_grid, rect, drop_fraction=args.damage, seed=args.damage_seed)
-
-    target = _grid_to_tensor(target_grid, token_ids, device=device)
-    inp = _grid_to_tensor(damaged_grid, token_ids, device=device)
-
-    # initial state: token channels from damaged input, hidden channels zeros
-    seed = torch.zeros(1, channel_n, 64, 64, device=device)
-    seed[:, :k] = inp
+    token_to_i = {t: i for i, t in enumerate(token_ids)}
+    tgt_tok = scatter_grid_tensor(grid_indices(target_grid, token_to_i), k=k, h=64, w=64, device=device)[0]
 
     kx, ky = sobel_kernels(device)
     rule = UpdateRule(channel_n=channel_n, hidden=args.hidden).to(device)
     opt = torch.optim.Adam(rule.parameters(), lr=args.lr)
+    scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     best_f1 = -1.0
@@ -179,30 +190,42 @@ def main() -> None:
 
     for epoch in range(args.epochs):
         # small batch augmentation: vary damage by re-sampling seed damage
-        batch = []
-        targets = []
-        for b in range(args.batch_size):
-            g = damage_region(target_grid, rect, drop_fraction=args.damage, seed=args.damage_seed + epoch * 997 + b * 101)
-            x_tok = _grid_to_tensor(g, token_ids, device=device)
-            x0 = torch.zeros(1, channel_n, 64, 64, device=device)
-            x0[:, :k] = x_tok
-            batch.append(x0)
-            targets.append(target)
-        x = torch.cat(batch, dim=0)
-        tgt = torch.cat(targets, dim=0)
+        batch_inp: list[torch.Tensor] = []
+        for b in range(batch_size):
+            inp_tok = damage_tensor_patches(
+                tgt_tok,
+                rect,
+                patch_w=8,
+                patch_h=8,
+                count=6,
+                seed=args.damage_seed + epoch * 997 + b * 101,
+            )
+            batch_inp.append(inp_tok)
+        inp = torch.stack(batch_inp, dim=0)
+        tgt = tgt_tok.unsqueeze(0).expand(batch_size, -1, -1, -1)
+        x = torch.zeros(batch_size, channel_n, 64, 64, device=device)
+        x[:, :k] = inp
 
-        x = nca_rollout(rule, x, kx, ky, args.steps, args.fire_rate)
-        pred = x[:, :k]
+        opt.zero_grad(set_to_none=True)
+        with torch.autocast(device_type=device.type, enabled=use_amp):
+            x = nca_rollout(rule, x, kx, ky, args.steps, args.fire_rate)
+            pred = x[:, :k]
+            loss = nn.functional.mse_loss(pred, tgt)
 
-        loss = nn.functional.mse_loss(pred, tgt)
-        opt.zero_grad()
-        loss.backward()
+        scaler.scale(loss).backward()
+        scaler.unscale_(opt)
         torch.nn.utils.clip_grad_norm_(rule.parameters(), 1.0)
-        opt.step()
+        scaler.step(opt)
+        scaler.update()
 
         if epoch % 50 == 0 or epoch == args.epochs - 1:
+            eval_inp = damage_tensor_patches(
+                tgt_tok, rect, patch_w=8, patch_h=8, count=6, seed=args.damage_seed + 12345
+            )
+            seed = torch.zeros(1, channel_n, 64, 64, device=device)
+            seed[:, :k] = eval_inp.unsqueeze(0)
             with torch.no_grad():
-                eval_x = nca_rollout_eval(rule, seed.clone(), kx, ky, args.steps)
+                eval_x = nca_rollout_eval(rule, seed, kx, ky, args.steps)
                 grid_eval = _threshold_grid_from_state(eval_x, token_ids=token_ids, threshold=args.threshold)
                 decoded = decode_grid(grid_eval, min_votes=args.min_votes)
                 score = score_recovery(bundle, decoded)
@@ -217,7 +240,10 @@ def main() -> None:
 
     # final artifacts
     with torch.no_grad():
-        final_x = nca_rollout_eval(rule, seed.clone(), kx, ky, args.steps)
+        final_inp = damage_tensor_patches(tgt_tok, rect, patch_w=8, patch_h=8, count=6, seed=args.damage_seed + 999)
+        seed = torch.zeros(1, channel_n, 64, 64, device=device)
+        seed[:, :k] = final_inp.unsqueeze(0)
+        final_x = nca_rollout_eval(rule, seed, kx, ky, args.steps)
         grid_final = _threshold_grid_from_state(final_x, token_ids=token_ids, threshold=args.threshold)
         decoded = decode_grid(grid_final, min_votes=args.min_votes)
         score = score_recovery(bundle, decoded)

@@ -58,10 +58,22 @@ Optional later: restrict rollout spatial mask to union of active modules (SN gat
 - Many modules per cluster → thin data; v0 keeps **shared trunk**, module masks only reweight loss.
 - Fail modules (e.g. research-ml): check graph↔claim alignment before adding per-module heads.
 
+## GPU training
+
+Train scripts use `tools/nca_train_util.py`:
+
+- **Auto batch:** 64 on CUDA, 8 on CPU (`--batch-size 0`)
+- **AMP** on CUDA by default (`--no-amp` to disable)
+- **Targets + patch damage on GPU** (no per-step Python grid→tensor loop)
+- cudnn benchmark + TF32 on NVIDIA
+
+Example: `python tools/train_module_nca.py --cluster research --batch-size 128 --save-model --out-dir ...`
+
 ## Code
 
 | File | Role |
 |------|------|
+| `tools/nca_train_util.py` | Device, AMP, GPU damage, fast scatter |
 | `tools/build_kb_modules.py` | Regenerate `kb-modules.v0.json` |
 | `tools/module_masks.py` | Tokens + cell masks per `(bundle, section_key)` |
 | `tools/train_module_nca.py` | Cluster trunk, module-weighted train |

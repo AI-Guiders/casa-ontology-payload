@@ -19,6 +19,17 @@ import torch.nn as nn
 
 from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
 from layout_apply import _get_region_rect, damage_region, damage_region_patches, mask_outside_region  # type: ignore
+from nca_train_util import (  # type: ignore
+    add_device_args,
+    configure_cuda,
+    damage_tensor_patches,
+    grid_indices,
+    print_train_device,
+    resolve_amp,
+    resolve_batch_size,
+    resolve_train_device,
+    scatter_grid_tensor,
+)
 from train_dmn_nca import UpdateRule, nca_rollout, nca_rollout_eval, sobel_kernels  # type: ignore
 
 
@@ -111,7 +122,7 @@ def main() -> None:
     p.add_argument("--concept-radius", type=int, default=5, help="Concept cluster radius (v3)")
     p.add_argument("--steps", type=int, default=48)
     p.add_argument("--epochs", type=int, default=2000)
-    p.add_argument("--batch-size", type=int, default=8)
+    add_device_args(p)
     p.add_argument("--hidden", type=int, default=192)
     p.add_argument("--lr", type=float, default=3e-4)
     p.add_argument("--fire-rate", type=float, default=0.5)
@@ -127,7 +138,12 @@ def main() -> None:
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = resolve_train_device(args.device)
+    configure_cuda(device)
+    batch_size = resolve_batch_size(args.batch_size, device)
+    use_amp = resolve_amp(args.amp, device)
+    print_train_device(device, batch_size, use_amp)
+
     layout = _read_json(args.layout)
     rect = _get_region_rect(layout, args.region)
 
@@ -173,14 +189,16 @@ def main() -> None:
                 token_w[i] = float(args.edge_weight)
     token_w = token_w.view(1, k, 1, 1)
 
-    # Precompute per-bundle target grids (DMN-masked) for speed.
-    cached: dict[Path, dict] = {}
+    # Precompute per-bundle target tensors on device (DMN-masked grids).
+    cached_tgt: dict[Path, torch.Tensor] = {}
+    cached_grid: dict[Path, dict] = {}
+    h, w = 64, 64
     for s in specs:
         if args.codec == "v3":
             full = encode_bundle_to_grid(
                 s.bundle,
-                width=64,
-                height=64,
+                width=w,
+                height=h,
                 copies=args.copies,
                 node_radius=args.radius,
                 edge_radius=args.edge_radius,
@@ -189,38 +207,41 @@ def main() -> None:
         elif args.codec == "v2":
             full = encode_bundle_to_grid(
                 s.bundle,
-                width=64,
-                height=64,
+                width=w,
+                height=h,
                 copies=args.copies,
                 node_radius=args.radius,
                 edge_radius=args.edge_radius,
             )
         elif args.codec == "v1":
-            full = encode_bundle_to_grid(s.bundle, width=64, height=64, copies=args.copies, radius=args.radius)
+            full = encode_bundle_to_grid(s.bundle, width=w, height=h, copies=args.copies, radius=args.radius)
         else:
-            full = encode_bundle_to_grid(s.bundle, width=64, height=64, copies=args.copies)
+            full = encode_bundle_to_grid(s.bundle, width=w, height=h, copies=args.copies)
         target_grid = mask_outside_region(full, rect)
-        cached[s.path] = target_grid
+        cached_grid[s.path] = target_grid
+        idx = grid_indices(target_grid, token_to_i)
+        cached_tgt[s.path] = scatter_grid_tensor(idx, k=k, h=h, w=w, device=device)[0]
 
     kx, ky = sobel_kernels(device)
     rule = UpdateRule(channel_n=channel_n, hidden=args.hidden).to(device)
     opt = torch.optim.Adam(rule.parameters(), lr=args.lr)
+    scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     best_score = -1.0
     best_state: dict | None = None
 
     for epoch in range(args.epochs):
-        batch_x: list[torch.Tensor] = []
         batch_tgt: list[torch.Tensor] = []
+        batch_inp: list[torch.Tensor] = []
 
-        for b in range(args.batch_size):
+        for b in range(batch_size):
             spec = specs[(epoch * 997 + b * 101) % len(specs)]
-            target_grid = cached[spec.path]
+            tgt_tok = cached_tgt[spec.path]
             seed = args.seed + epoch * 10007 + b * 97
             if args.damage_mode == "patches":
-                dmg = damage_region_patches(
-                    target_grid,
+                inp_tok = damage_tensor_patches(
+                    tgt_tok,
                     rect,
                     patch_w=args.patch_w,
                     patch_h=args.patch_h,
@@ -228,33 +249,37 @@ def main() -> None:
                     seed=seed,
                 )
             else:
+                target_grid = cached_grid[spec.path]
                 dmg = damage_region(target_grid, rect, drop_fraction=args.damage, seed=seed)
-            x_tok = _grid_to_union_tensor(dmg, token_to_i, device=device)
-            tgt_tok = _grid_to_union_tensor(target_grid, token_to_i, device=device)
-            x0 = torch.zeros(1, channel_n, 64, 64, device=device)
-            x0[:, :k] = x_tok
-            batch_x.append(x0)
+                idx = grid_indices(dmg, token_to_i)
+                inp_tok = scatter_grid_tensor(idx, k=k, h=h, w=w, device=device)[0]
             batch_tgt.append(tgt_tok)
+            batch_inp.append(inp_tok)
 
-        x = torch.cat(batch_x, dim=0)
-        tgt = torch.cat(batch_tgt, dim=0)
+        tgt = torch.stack(batch_tgt, dim=0)
+        inp = torch.stack(batch_inp, dim=0)
+        x = torch.zeros(batch_size, channel_n, h, w, device=device)
+        x[:, :k] = inp
 
-        x = nca_rollout(rule, x, kx, ky, args.steps, args.fire_rate)
-        pred = x[:, :k]
-        loss = ((pred - tgt).pow(2) * token_w).mean()
+        opt.zero_grad(set_to_none=True)
+        with torch.autocast(device_type=device.type, enabled=use_amp):
+            x = nca_rollout(rule, x, kx, ky, args.steps, args.fire_rate)
+            pred = x[:, :k]
+            loss = ((pred - tgt).pow(2) * token_w).mean()
 
-        opt.zero_grad()
-        loss.backward()
+        scaler.scale(loss).backward()
+        scaler.unscale_(opt)
         torch.nn.utils.clip_grad_norm_(rule.parameters(), 1.0)
-        opt.step()
+        scaler.step(opt)
+        scaler.update()
 
         if epoch % 100 == 0 or epoch == args.epochs - 1:
             # quick eval: pick one bundle deterministically
             spec = specs[epoch % len(specs)]
-            target_grid = cached[spec.path]
+            tgt_tok = cached_tgt[spec.path]
             if args.damage_mode == "patches":
-                dmg = damage_region_patches(
-                    target_grid,
+                inp = damage_tensor_patches(
+                    tgt_tok,
                     rect,
                     patch_w=args.patch_w,
                     patch_h=args.patch_h,
@@ -262,8 +287,10 @@ def main() -> None:
                     seed=args.seed + 12345,
                 )
             else:
+                target_grid = cached_grid[spec.path]
                 dmg = damage_region(target_grid, rect, drop_fraction=args.damage, seed=args.seed + 12345)
-            inp = _grid_to_union_tensor(dmg, token_to_i, device=device)
+                idx = grid_indices(dmg, token_to_i)
+                inp = scatter_grid_tensor(idx, k=k, h=h, w=w, device=device)[0]
             x0 = torch.zeros(1, channel_n, 64, 64, device=device)
             x0[:, :k] = inp
 
@@ -304,10 +331,10 @@ def main() -> None:
     reports = []
     with torch.no_grad():
         for s in specs:
-            target_grid = cached[s.path]
+            tgt_tok = cached_tgt[s.path]
             if args.damage_mode == "patches":
-                dmg = damage_region_patches(
-                    target_grid,
+                inp = damage_tensor_patches(
+                    tgt_tok,
                     rect,
                     patch_w=args.patch_w,
                     patch_h=args.patch_h,
@@ -315,8 +342,10 @@ def main() -> None:
                     seed=args.seed + 999,
                 )
             else:
+                target_grid = cached_grid[s.path]
                 dmg = damage_region(target_grid, rect, drop_fraction=args.damage, seed=args.seed + 999)
-            inp = _grid_to_union_tensor(dmg, token_to_i, device=device)
+                idx = grid_indices(dmg, token_to_i)
+                inp = scatter_grid_tensor(idx, k=k, h=h, w=w, device=device)[0]
             x0 = torch.zeros(1, channel_n, 64, 64, device=device)
             x0[:, :k] = inp
             xT = nca_rollout_eval(rule, x0, kx, ky, steps=args.steps)
