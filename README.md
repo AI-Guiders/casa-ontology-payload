@@ -27,6 +27,9 @@ python .\tools\build_bundle.py --graph .\examples\ca-substrate-agent.graph.json 
 
 # “ontology in field” v0: encode → damage → decode (symbolic)
 python .\tools\codec_grid_v0.py --bundle .\examples\ca-substrate-agent.bundle.v1.json --out-grid .\examples\grid.json --width 64 --height 64 --copies 7 --damage 0.25 --min-votes 3
+
+# DMN-only region experiment (scaffold; no NCA yet)
+python .\tools\train_dmn_stub.py --bundle .\examples\ca-substrate-agent.bundle.v1.json --layout .\design\layout.v0.json --region dmn_ontology --seeds 5 --damage-levels "0.0,0.2,0.4" --out .\examples\dmn_stub_report.json
 ```
 
 ## Лицензия

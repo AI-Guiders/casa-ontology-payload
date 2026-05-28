@@ -1,0 +1,458 @@
+{
+  "schema_version": 1,
+  "bundle": "examples\\ca-substrate-agent.bundle.v1.json",
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "summary": {
+    "0.0": {
+      "concepts_f1_mean": 0.9333333333333332,
+      "edges_f1_mean": 1.0
+    },
+    "0.2": {
+      "concepts_f1_mean": 0.7680151946818613,
+      "edges_f1_mean": 0.8470588235294118
+    },
+    "0.4": {
+      "concepts_f1_mean": 0.46689186734953325,
+      "edges_f1_mean": 0.6813186813186812
+    }
+  },
+  "runs": [
+    {
+      "damage": 0.0,
+      "seed": 0,
+      "decoded": {
+        "schema_version": 1,
+        "min_votes": 3,
+        "concept_ids": [
+          "casa.goal.ainet_kb_exchange_via_field",
+          "casa.goal.imitation_with_error_and_fix",
+          "casa.metric.adversarial_resistance",
+          "casa.metric.compute_cost",
+          "casa.metric.interpretability",
+          "casa.metric.task_success",
+          "casa.prototype.action_head",
+          "casa.prototype.ca_world_read_write",
+          "casa.prototype.loop_observe_update_act",
+          "casa.prototype.memory_field",
+          "casa.roadmap.v0.substrate_calibration",
+          "casa.roadmap.v1.meaning_in_field",
+          "casa.roadmap.v2.agent_loop",
+          "casa.roadmap.v3.ainet_exchange"
+        ],
+        "edges": [
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ainet/README.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/equation-to-ca-cuda/README.md"
+        ],
+        "present_tokens": 23,
+        "seen_tokens": 23
+      },
+      "score": {
+        "concepts": {
+          "tp": 14,
+          "fp": 0,
+          "fn": 2,
+          "precision": 1.0,
+          "recall": 0.875,
+          "f1": 0.9333333333333333
+        },
+        "edges": {
+          "tp": 9,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      }
+    },
+    {
+      "damage": 0.0,
+      "seed": 1,
+      "decoded": {
+        "schema_version": 1,
+        "min_votes": 3,
+        "concept_ids": [
+          "casa.goal.ainet_kb_exchange_via_field",
+          "casa.goal.imitation_with_error_and_fix",
+          "casa.metric.adversarial_resistance",
+          "casa.metric.compute_cost",
+          "casa.metric.interpretability",
+          "casa.metric.task_success",
+          "casa.prototype.action_head",
+          "casa.prototype.ca_world_read_write",
+          "casa.prototype.loop_observe_update_act",
+          "casa.prototype.memory_field",
+          "casa.roadmap.v0.substrate_calibration",
+          "casa.roadmap.v1.meaning_in_field",
+          "casa.roadmap.v2.agent_loop",
+          "casa.roadmap.v3.ainet_exchange"
+        ],
+        "edges": [
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ainet/README.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/equation-to-ca-cuda/README.md"
+        ],
+        "present_tokens": 23,
+        "seen_tokens": 23
+      },
+      "score": {
+        "concepts": {
+          "tp": 14,
+          "fp": 0,
+          "fn": 2,
+          "precision": 1.0,
+          "recall": 0.875,
+          "f1": 0.9333333333333333
+        },
+        "edges": {
+          "tp": 9,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      }
+    },
+    {
+      "damage": 0.0,
+      "seed": 2,
+      "decoded": {
+        "schema_version": 1,
+        "min_votes": 3,
+        "concept_ids": [
+          "casa.goal.ainet_kb_exchange_via_field",
+          "casa.goal.imitation_with_error_and_fix",
+          "casa.metric.adversarial_resistance",
+          "casa.metric.compute_cost",
+          "casa.metric.interpretability",
+          "casa.metric.task_success",
+          "casa.prototype.action_head",
+          "casa.prototype.ca_world_read_write",
+          "casa.prototype.loop_observe_update_act",
+          "casa.prototype.memory_field",
+          "casa.roadmap.v0.substrate_calibration",
+          "casa.roadmap.v1.meaning_in_field",
+          "casa.roadmap.v2.agent_loop",
+          "casa.roadmap.v3.ainet_exchange"
+        ],
+        "edges": [
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ainet/README.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/equation-to-ca-cuda/README.md"
+        ],
+        "present_tokens": 23,
+        "seen_tokens": 23
+      },
+      "score": {
+        "concepts": {
+          "tp": 14,
+          "fp": 0,
+          "fn": 2,
+          "precision": 1.0,
+          "recall": 0.875,
+          "f1": 0.9333333333333333
+        },
+        "edges": {
+          "tp": 9,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      }
+    },
+    {
+      "damage": 0.2,
+      "seed": 0,
+      "decoded": {
+        "schema_version": 1,
+        "min_votes": 3,
+        "concept_ids": [
+          "casa.goal.ainet_kb_exchange_via_field",
+          "casa.goal.imitation_with_error_and_fix",
+          "casa.metric.adversarial_resistance",
+          "casa.metric.compute_cost",
+          "casa.metric.interpretability",
+          "casa.prototype.action_head",
+          "casa.prototype.ca_world_read_write",
+          "casa.prototype.loop_observe_update_act",
+          "casa.roadmap.v0.substrate_calibration",
+          "casa.roadmap.v3.ainet_exchange"
+        ],
+        "edges": [
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ainet/README.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/equation-to-ca-cuda/README.md"
+        ],
+        "present_tokens": 16,
+        "seen_tokens": 23
+      },
+      "score": {
+        "concepts": {
+          "tp": 10,
+          "fp": 0,
+          "fn": 6,
+          "precision": 1.0,
+          "recall": 0.625,
+          "f1": 0.7692307692307693
+        },
+        "edges": {
+          "tp": 6,
+          "fp": 0,
+          "fn": 3,
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "f1": 0.8
+        }
+      }
+    },
+    {
+      "damage": 0.2,
+      "seed": 1,
+      "decoded": {
+        "schema_version": 1,
+        "min_votes": 3,
+        "concept_ids": [
+          "casa.goal.imitation_with_error_and_fix",
+          "casa.metric.adversarial_resistance",
+          "casa.metric.compute_cost",
+          "casa.metric.interpretability",
+          "casa.metric.task_success",
+          "casa.prototype.action_head",
+          "casa.roadmap.v0.substrate_calibration",
+          "casa.roadmap.v2.agent_loop",
+          "casa.roadmap.v3.ainet_exchange"
+        ],
+        "edges": [
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ainet/README.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/equation-to-ca-cuda/README.md"
+        ],
+        "present_tokens": 15,
+        "seen_tokens": 23
+      },
+      "score": {
+        "concepts": {
+          "tp": 9,
+          "fp": 0,
+          "fn": 7,
+          "precision": 1.0,
+          "recall": 0.5625,
+          "f1": 0.72
+        },
+        "edges": {
+          "tp": 6,
+          "fp": 0,
+          "fn": 3,
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "f1": 0.8
+        }
+      }
+    },
+    {
+      "damage": 0.2,
+      "seed": 2,
+      "decoded": {
+        "schema_version": 1,
+        "min_votes": 3,
+        "concept_ids": [
+          "casa.goal.ainet_kb_exchange_via_field",
+          "casa.goal.imitation_with_error_and_fix",
+          "casa.metric.adversarial_resistance",
+          "casa.metric.compute_cost",
+          "casa.metric.interpretability",
+          "casa.metric.task_success",
+          "casa.prototype.ca_world_read_write",
+          "casa.prototype.loop_observe_update_act",
+          "casa.prototype.memory_field",
+          "casa.roadmap.v0.substrate_calibration",
+          "casa.roadmap.v3.ainet_exchange"
+        ],
+        "edges": [
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ainet/README.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/equation-to-ca-cuda/README.md"
+        ],
+        "present_tokens": 19,
+        "seen_tokens": 23
+      },
+      "score": {
+        "concepts": {
+          "tp": 11,
+          "fp": 0,
+          "fn": 5,
+          "precision": 1.0,
+          "recall": 0.6875,
+          "f1": 0.8148148148148148
+        },
+        "edges": {
+          "tp": 8,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1.0,
+          "recall": 0.8888888888888888,
+          "f1": 0.9411764705882353
+        }
+      }
+    },
+    {
+      "damage": 0.4,
+      "seed": 0,
+      "decoded": {
+        "schema_version": 1,
+        "min_votes": 3,
+        "concept_ids": [
+          "casa.goal.ainet_kb_exchange_via_field",
+          "casa.goal.imitation_with_error_and_fix",
+          "casa.metric.compute_cost",
+          "casa.metric.interpretability",
+          "casa.prototype.ca_world_read_write",
+          "casa.prototype.loop_observe_update_act",
+          "casa.roadmap.v3.ainet_exchange"
+        ],
+        "edges": [
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ainet/README.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/equation-to-ca-cuda/README.md"
+        ],
+        "present_tokens": 12,
+        "seen_tokens": 23
+      },
+      "score": {
+        "concepts": {
+          "tp": 7,
+          "fp": 0,
+          "fn": 9,
+          "precision": 1.0,
+          "recall": 0.4375,
+          "f1": 0.6086956521739131
+        },
+        "edges": {
+          "tp": 5,
+          "fp": 0,
+          "fn": 4,
+          "precision": 1.0,
+          "recall": 0.5555555555555556,
+          "f1": 0.7142857142857143
+        }
+      }
+    },
+    {
+      "damage": 0.4,
+      "seed": 1,
+      "decoded": {
+        "schema_version": 1,
+        "min_votes": 3,
+        "concept_ids": [
+          "casa.prototype.action_head",
+          "casa.roadmap.v0.substrate_calibration",
+          "casa.roadmap.v2.agent_loop"
+        ],
+        "edges": [
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ainet/README.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md"
+        ],
+        "present_tokens": 8,
+        "seen_tokens": 23
+      },
+      "score": {
+        "concepts": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 13,
+          "precision": 1.0,
+          "recall": 0.1875,
+          "f1": 0.3157894736842105
+        },
+        "edges": {
+          "tp": 5,
+          "fp": 0,
+          "fn": 4,
+          "precision": 1.0,
+          "recall": 0.5555555555555556,
+          "f1": 0.7142857142857143
+        }
+      }
+    },
+    {
+      "damage": 0.4,
+      "seed": 2,
+      "decoded": {
+        "schema_version": 1,
+        "min_votes": 3,
+        "concept_ids": [
+          "casa.goal.imitation_with_error_and_fix",
+          "casa.metric.adversarial_resistance",
+          "casa.metric.compute_cost",
+          "casa.prototype.loop_observe_update_act",
+          "casa.roadmap.v0.substrate_calibration"
+        ],
+        "edges": [
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+          "work/projects/door-to-singularity/ca-substrate-agent/README.md|references|work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md"
+        ],
+        "present_tokens": 9,
+        "seen_tokens": 23
+      },
+      "score": {
+        "concepts": {
+          "tp": 5,
+          "fp": 0,
+          "fn": 11,
+          "precision": 1.0,
+          "recall": 0.3125,
+          "f1": 0.47619047619047616
+        },
+        "edges": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 5,
+          "precision": 1.0,
+          "recall": 0.4444444444444444,
+          "f1": 0.6153846153846153
+        }
+      }
+    }
+  ]
+}
