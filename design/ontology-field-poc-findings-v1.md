@@ -16,7 +16,14 @@
 - **Восстановление:** локальное правило NCA (48 шагов), затем `decode_grid` (голосование ≥ `min_votes`).
 - **Метрики:** Precision / Recall / F1 отдельно по `concept_id` и по `edges`.
 
-Репозиторий: `Financial/software/open/casa-ontology-payload/` (GitHub: `AI-Guiders/casa-ontology-payload`).
+## Репозиторий (карточка)
+
+| | |
+|--|--|
+| **GitHub** | https://github.com/AI-Guiders/casa-ontology-payload |
+| **Open pack** | `Financial/software/open/casa-ontology-payload` |
+| **nca-lab bridge** | `Financial/software/open/nca-lab/ontology-field/README.md` |
+| **Submodule** | не используется — клон/соседняя папка достаточно |
 
 ## 3) Главный принцип (locality contract)
 
