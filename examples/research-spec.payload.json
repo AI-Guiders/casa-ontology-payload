@@ -1,0 +1,70 @@
+{
+  "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+  "schema_version": 1,
+  "claims": [
+    {
+      "concept_id": "casa.metric.task_success",
+      "text": "Task success: completion rate, steps-to-solution, recovery, generalization.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Target outcomes (success metrics)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.metric.stability_horizon",
+      "text": "Stability horizon: bounded dynamics, collapse/chaos/drift rates.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Target outcomes (success metrics)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.metric.adversarial_resistance",
+      "text": "Adversarial resistance: performance drop, recovery latency.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Target outcomes (success metrics)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.metric.interpretability",
+      "text": "Interpretability score: motifs, causal tracing, predict failure modes.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Target outcomes (success metrics)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.metric.compute_cost",
+      "text": "Compute cost: latency/step, memory, throughput.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Target outcomes (success metrics)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.ca_world_read_write",
+      "text": "CA-world + read/write interface.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.memory_field",
+      "text": "Internal memory field.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.action_head",
+      "text": "Action head.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.loop_observe_update_act",
+      "text": "Loop observe → update → act.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Minimal prototype (v0)",
+      "claim_kind": "claim"
+    }
+  ],
+  "count": 9
+}

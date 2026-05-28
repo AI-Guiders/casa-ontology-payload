@@ -1,0 +1,56 @@
+{
+  "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+  "schema_version": 1,
+  "claims": [
+    {
+      "concept_id": "casa.goal.ca_substrate_locality",
+      "text": "Цель 1 — CA как субстрат модели и вычислительная локальность.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / Три цели (нормативно)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.goal.ainet_kb_exchange_via_field",
+      "text": "Цель 2 — дорожка к AiNet: обмен знаниями (в т.ч. из KB) через сжатые представления поля и динамики.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / Три цели (нормативно)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.goal.imitation_with_error_and_fix",
+      "text": "Цель 3 — имитационное обучение с правом на ошибку и исправлением.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / Три цели (нормативно)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.roadmap.v0.substrate_calibration",
+      "text": "v0: субстрат (nca-lab)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / v1 → v3 (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.roadmap.v1.meaning_in_field",
+      "text": "v1: смысл в поле (ontology.json → поле; loss на hidden; decode после damage)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / v1 → v3 (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.roadmap.v2.agent_loop",
+      "text": "v2: агентный контур (read/write bands + action head; A/B обучения)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / v1 → v3 (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.roadmap.v3.ainet_exchange",
+      "text": "v3: AiNet (обмен дескриптором + параметрами потока + канон-ссылкой)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / v1 → v3 (кратко)",
+      "claim_kind": "claim"
+    }
+  ],
+  "count": 7
+}
