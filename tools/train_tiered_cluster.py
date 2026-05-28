@@ -51,6 +51,8 @@ def main() -> None:
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     model = args.out_dir / "model.pt"
+    model_phase1 = args.out_dir / "model_phase1.pt"
+    model_hard = args.out_dir / "model_hard.pt"
 
     if not args.skip_phase1:
         print(f"[G] {args.cluster} phase1 cluster_dmn epochs={args.phase1_epochs}")
@@ -74,6 +76,11 @@ def main() -> None:
             ],
             repo,
         )
+        if model.is_file():
+            import shutil
+
+            shutil.copy2(model, model_phase1)
+            print(f"saved {model_phase1.name}")
 
     if not args.skip_phase2 and hard_in_cluster:
         print(
@@ -109,8 +116,17 @@ def main() -> None:
             ],
             repo,
         )
+        if model.is_file():
+            import shutil
+
+            shutil.copy2(model, model_hard)
+            print(f"saved {model_hard.name}")
     elif not hard_in_cluster:
         print(f"[G] {args.cluster} no hard bundles — skip phase2")
+        if model.is_file() and not model_phase1.is_file():
+            import shutil
+
+            shutil.copy2(model, model_phase1)
 
     meta = {
         "schema_version": 1,
@@ -120,6 +136,8 @@ def main() -> None:
         "phase2_epochs": args.phase2_epochs if hard_in_cluster else 0,
         "hard_bundles": sorted(hard_in_cluster),
         "model": str(model),
+        "model_phase1": str(model_phase1) if model_phase1.is_file() else None,
+        "model_hard": str(model_hard) if model_hard.is_file() else str(model),
     }
     (args.out_dir / "train_meta.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
     print(json.dumps(meta, indent=2))
