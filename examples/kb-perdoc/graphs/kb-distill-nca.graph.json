@@ -1,0 +1,132 @@
+{
+  "root": {
+    "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+    "kind": "project_doc",
+    "title": "Distill — *Growing Neural Cellular Automata*: fundamentals v1"
+  },
+  "nodes": [
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "kind": "project_doc",
+      "title": "Distill — *Growing Neural Cellular Automata*: fundamentals v1"
+    },
+    {
+      "id": "https://distill.pub/2020/growing-ca/",
+      "kind": "url",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "https://distill.pub/2020/selforg/",
+      "kind": "url",
+      "title": null
+    },
+    {
+      "id": "https://colab.research.google.com/github/google-research/self-organising-systems/blob/master/notebooks/growing_ca.ipynb",
+      "kind": "url",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-levin-biology-bridge-operational-v1.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "worlds/math-numerics-pde/kb-equation-ca-cuda-validation-evidence-v1.md",
+      "kind": "world_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+      "kind": "project_doc",
+      "title": null
+    }
+  ],
+  "edges": [
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "relation": "references",
+      "dst": "https://distill.pub/2020/growing-ca/",
+      "label": "Distill, 2020"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+      "label": "`ca-substrate-agent`"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "relation": "references",
+      "dst": "https://distill.pub/2020/selforg/",
+      "label": "Differentiable Self-organizing Systems"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "relation": "references",
+      "dst": "https://colab.research.google.com/github/google-research/self-organising-systems/blob/master/notebooks/growing_ca.ipynb",
+      "label": "**growing_ca.ipynb**"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+      "label": "`kb-tda-flow-machines-ca-ainet-fundamentals-v1.md`"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "label": "`playbook-casa-tda-flow-ainet-operational-v1.md`"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md",
+      "label": "`kb-michael-levin-bioelectric-collective-cells-fundamentals-v1.md`"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-levin-biology-bridge-operational-v1.md",
+      "label": "`playbook-casa-levin-biology-bridge-operational-v1.md`"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+      "label": "`README.md`"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "relation": "references",
+      "dst": "worlds/math-numerics-pde/kb-equation-ca-cuda-validation-evidence-v1.md",
+      "label": "`../../../../worlds/math-numerics-pde/kb-equation-ca-cuda-validation-evidence-v1.md`"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+      "label": "`equation-to-ca-cuda`"
+    }
+  ]
+}

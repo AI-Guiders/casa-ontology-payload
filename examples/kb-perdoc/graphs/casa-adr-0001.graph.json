@@ -1,0 +1,49 @@
+{
+  "root": {
+    "id": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+    "kind": "project_doc",
+    "title": "CASA-ADR-0001: CA substrate agent track"
+  },
+  "nodes": [
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "kind": "project_doc",
+      "title": "CASA-ADR-0001: CA substrate agent track"
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+      "kind": "project_doc",
+      "title": null
+    }
+  ],
+  "edges": [
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "label": "research-ml-ca-substrate-agent-v1.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+      "label": "research-ml-ca-vs-matrix.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+      "label": "../equation-to-ca-cuda/README.md"
+    }
+  ]
+}

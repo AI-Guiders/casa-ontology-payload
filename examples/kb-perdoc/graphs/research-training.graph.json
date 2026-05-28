@@ -1,0 +1,94 @@
+{
+  "root": {
+    "id": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+    "kind": "project_doc",
+    "title": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1)"
+  },
+  "nodes": [
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "kind": "project_doc",
+      "title": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1)"
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/door-to-singularity/project-ids-quickref-v1.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/agent-first-learn/README.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/agents-and-humans/INDEX.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "kind": "project_doc",
+      "title": null
+    }
+  ],
+  "edges": [
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+      "label": "README.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/door-to-singularity/project-ids-quickref-v1.md",
+      "label": "project-ids-quickref-v1.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+      "label": "README § Position update"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/agent-first-learn/README.md",
+      "label": "agent-first-learn"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/agents-and-humans/INDEX.md",
+      "label": "agents-and-humans/INDEX.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+      "label": "research-ml-ca-vs-matrix.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "label": "research-ml-ca-substrate-agent-v1.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/agent-first-learn/README.md",
+      "label": "../agent-first-learn/README.md"
+    }
+  ]
+}

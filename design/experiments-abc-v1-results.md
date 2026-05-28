@@ -71,6 +71,23 @@ Stronger agent-error (more patches) → clearer NCA repair signal (CASA goal 3).
 
 ---
 
+## D — Per-doc graphs (follow-up)
+
+**Hypothesis:** shared hub graph caused A failure; each KB doc gets its own `extract_md_graph` root.
+
+**Run:** `python tools/exp_d_kb_perdoc.py` → bundles in `examples/kb-perdoc/`, report `examples/exp_d_kb_perdoc_v1/report.json`
+
+### D results (2026-05-28)
+
+| Metric | A (hub) | D (per-doc) |
+|--------|---------|-------------|
+| mean Δ mix @0.4 | −0.002 | **−0.011** (union larger) |
+| NCA wins | 0/8 | **6/10** |
+
+Per-doc graphs **help per bundle** (6 wins vs 0), but union vocab + shared DMN still drags mean Δ. Gate (+0.03 all-win) **not met** — next: per-doc train or fewer bundles per union.
+
+---
+
 ## Repo
 
 https://github.com/AI-Guiders/casa-ontology-payload

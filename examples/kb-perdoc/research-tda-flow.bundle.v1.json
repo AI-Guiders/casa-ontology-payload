@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+      "kind": "project_doc",
+      "title": "TDA и Flow Machines (CASA × AINET) — stub v1"
+    },
+    "nodes": [
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+        "kind": "project_doc",
+        "title": "TDA и Flow Machines (CASA × AINET) — stub v1"
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+        "kind": "project_doc",
+        "title": null
+      }
+    ],
+    "edges": [
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+        "label": "kb-tda-flow-machines-ca-ainet-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+        "label": "playbook-casa-tda-flow-ainet-operational-v1.md"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "concept_id": null,
+      "text": "[kb-tda-flow-machines-ca-ainet-fundamentals-v1.md](kb-tda-flow-machines-ca-ainet-fundamentals-v1.md)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+      "section": "TDA и Flow Machines (CASA × AINET) — stub v1",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "[playbook-casa-tda-flow-ainet-operational-v1.md](playbook-casa-tda-flow-ainet-operational-v1.md)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+      "section": "TDA и Flow Machines (CASA × AINET) — stub v1",
+      "claim_kind": "claim"
+    }
+  ],
+  "concept_index": []
+}

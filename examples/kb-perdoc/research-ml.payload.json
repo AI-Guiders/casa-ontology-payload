@@ -1,0 +1,525 @@
+{
+  "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+  "schema_version": 1,
+  "claims": [
+    {
+      "concept_id": null,
+      "text": "A CA-based agent can achieve non-trivial task performance using only local state transitions and local neighborhoods.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "A distributed CA substrate may improve some robustness dimensions (for example, resistance to single-point global narrative fitting) relative to centralized matrix-heavy parameterization.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "The same substrate can expose richer observability of internal dynamics via pattern-level instrumentation.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Primary metric: completion rate on defined benchmark tasks.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.1 Task success",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Secondary metrics: average steps-to-solution, recovery from intermediate errors, generalization to unseen variants.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.1 Task success",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Acceptance gate (v1): beats random/reactive baseline by statistically meaningful margin on the same budget.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.1 Task success",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Definition: number of loop steps the system stays within bounded, non-degenerate dynamics while preserving policy usefulness.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.2 Stability horizon",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Metrics: divergence rate, collapse rate (fixed-point dead behavior), chaotic drift rate, long-run reward degradation.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.2 Stability horizon",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Acceptance gate (v1): stable for N-step horizons required by benchmark scenarios (set per scenario).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.2 Stability horizon",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Definition: robustness of behavior under adversarial perturbations of inputs, observations, and local state injections.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.3 Adversarial resistance",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Metrics: performance drop under attack classes, attack transferability, recovery latency.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.3 Adversarial resistance",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Acceptance gate (v1): lower relative degradation versus matched baseline in at least one attack family, without catastrophic regressions elsewhere.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.3 Adversarial resistance",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Definition: how well internal CA dynamics can be mapped to actionable diagnostics.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.4 Interpretability score",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Metrics: reproducible pattern motifs, causal tracing quality, operator ability to predict failure mode from telemetry.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.4 Interpretability score",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Acceptance gate (v1): pre-defined debugging tasks solvable faster/with higher precision than baseline observability.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.4 Interpretability score",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Metrics: wall-clock latency per step, memory footprint, energy proxy (GPU time), training/inference throughput.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.5 Compute cost",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Acceptance gate (v1): bounded by explicit budget envelopes for prototype class.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.5 Compute cost",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.ca_world_read_write",
+      "text": "CA-world + read/write interface",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Discrete grid world (2D initially) with local neighborhood rule updates.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Observation encoder writes external signal into designated read band.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Action decoder reads action band and emits environment action.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.memory_field",
+      "text": "Internal memory field",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Persistent channels in CA state dedicated to short/medium horizon memory.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Memory retention and overwrite policies tested via ablation.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.action_head",
+      "text": "Action head",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Lightweight decoder from CA state to discrete/continuous action.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "No heavy transformer controller in loop (keep substrate purity for v0).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Core loop",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "observe -> update -> act",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "fixed tick schedule with deterministic/reproducible seed mode.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "State tensor (CA field)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 4) Reference architecture (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Local transition kernel",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 4) Reference architecture (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "I/O ports",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 4) Reference architecture (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Policy extraction head",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 4) Reference architecture (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Telemetry plane",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 4) Reference architecture (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Reactive non-memory baseline.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.1 Baselines",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Lightweight recurrent baseline with matched parameter/compute envelope.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.1 Baselines",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Optional matrix baseline (small transformer/RNN) for directional comparison.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.1 Baselines",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Navigation/planning with delayed reward.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.2 Scenario families",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Partial observability with memory demand.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.2 Scenario families",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Adversarial perturbation scenarios (observation noise, localized corruption, targeted trigger patterns).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.2 Scenario families",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Long-horizon control where drift/collapse is measurable.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.2 Scenario families",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Remove memory channels.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.3 Ablations",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Alter neighborhood radius.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.3 Ablations",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Freeze vs adaptive local rules.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.3 Ablations",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Synchronous vs asynchronous updates.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.3 Ablations",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Different action-head capacities.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.3 Ablations",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Training instability: local-rule optimization may collapse into trivial attractors.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 6) Risk register (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Compute inefficiency: CA updates can be dense and expensive at larger grids.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 6) Risk register (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Pseudo-interpretability trap: visible patterns may look meaningful but lack causal relevance.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 6) Risk register (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Benchmark mismatch: gains in robustness may not appear on task suites biased for matrix architectures.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 6) Risk register (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Spec drift: mixing PDE goals from ETCC into CASA and losing agent-specific focus.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 6) Risk register (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Strict metric dashboard with hard fail conditions.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 6) Risk register (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Early ablations before scaling.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 6) Risk register (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Separate ETCC and CASA milestones.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 6) Risk register (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Reproducibility protocol (seed control, deterministic mode, frozen eval sets).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 6) Risk register (v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Implement loop observe -> update -> act.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v0 (minimum viability)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Validate non-random competence on toy tasks.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v0 (minimum viability)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Produce first telemetry pack.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v0 (minimum viability)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Full metric dashboard: task/stability/adversarial/interpretability/cost.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v1 (research-spec aligned prototype)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Baseline comparisons with matched budget.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v1 (research-spec aligned prototype)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Initial risk mitigation checks.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v1 (research-spec aligned prototype)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Expanded adversarial suite.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v2 (robustness and scaling slice)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Longer stability horizons.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v2 (robustness and scaling slice)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Multi-resolution CA fields or sparse-update experiments.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v2 (robustness and scaling slice)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Structured planning tasks with longer dependency chains.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v3 (agentic capability slice)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Memory-field specialization and modular action decoding.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v3 (agentic capability slice)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Decision: continue CASA as standalone substrate track or hybridize with selective matrix components.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v3 (agentic capability slice)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "CASA architecture note (this spec).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 8) Deliverables checklist",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Prototype code skeleton (CA-world, memory field, action head, loop).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 8) Deliverables checklist",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Metrics runner and experiment configs.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 8) Deliverables checklist",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Evaluation report with fail/pass against v1 gates.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 8) Deliverables checklist",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "equation-to-ca-cuda (ETCC): numerical pipeline, PDE discretization, CUDA engineering validation.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 9) Scope boundary with ETCC",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "ca-substrate-agent (CASA): agent cognition/behavior substrate, memory/action loop, robustness and interpretability experiments.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 9) Scope boundary with ETCC",
+      "claim_kind": "claim"
+    }
+  ],
+  "count": 74
+}

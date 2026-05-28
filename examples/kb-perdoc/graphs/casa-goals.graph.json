@@ -1,0 +1,116 @@
+{
+  "root": {
+    "id": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+    "kind": "project_doc",
+    "title": "casa-goals-and-roadmap-v1"
+  },
+  "nodes": [
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "kind": "project_doc",
+      "title": "casa-goals-and-roadmap-v1"
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ainet/README.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "Financial/software/open/cascade-ide/docs/iop-manifest-v1.md",
+      "kind": "md",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "kind": "project_doc",
+      "title": null
+    }
+  ],
+  "edges": [
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+      "label": "README.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "label": "research-ml-ca-substrate-agent-v1.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+      "label": "`equation-to-ca-cuda`"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+      "label": "kb-tda-flow-machines-ca-ainet-fundamentals-v1.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "label": "playbook-casa-tda-flow-ainet-operational-v1.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ainet/README.md",
+      "label": "`ainet`"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "label": "research-ml-ca-substrate-agent-v1.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "relation": "references",
+      "dst": "Financial/software/open/cascade-ide/docs/iop-manifest-v1.md",
+      "label": "iop-manifest-v1.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "label": "research-ml-ca-substrate-agent-v1.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "label": "ontology-in-field-poc-findings-v1.md"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "root": {
+    "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+    "kind": "project_doc",
+    "title": "research-ml-ca-substrate-agent-v1"
+  },
+  "nodes": [
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "kind": "project_doc",
+      "title": "research-ml-ca-substrate-agent-v1"
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "kind": "project_doc",
+      "title": null
+    },
+    {
+      "id": "https://github.com/AI-Guiders/casa-ontology-payload",
+      "kind": "url",
+      "title": null
+    }
+  ],
+  "edges": [
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "label": "casa-goals-and-roadmap-v1.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "relation": "references",
+      "dst": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "label": "ontology-in-field-poc-findings-v1.md"
+    },
+    {
+      "src": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "relation": "references",
+      "dst": "https://github.com/AI-Guiders/casa-ontology-payload",
+      "label": null
+    }
+  ]
+}
