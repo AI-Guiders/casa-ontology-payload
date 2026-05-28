@@ -46,9 +46,11 @@ def main() -> None:
     p.add_argument("--steps", type=int, default=48)
     p.add_argument("--threshold", type=float, default=0.5)
     p.add_argument("--min-votes", type=int, default=3)
-    p.add_argument("--codec", choices=["v0", "v1", "v2"], default="v2")
+    p.add_argument("--codec", choices=["v0", "v1", "v2", "v3"], default="v3")
+    p.add_argument("--concept-mode", choices=["independent", "doc", "section", "doc_section"], default="section")
     p.add_argument("--radius", type=int, default=6)
     p.add_argument("--edge-radius", type=int, default=4)
+    p.add_argument("--concept-radius", type=int, default=5)
     p.add_argument("--model", type=Path, required=True)
     p.add_argument("--out", type=Path, default=Path("examples/nca_bench_union_curve.json"))
     args = p.parse_args()
@@ -94,10 +96,14 @@ def main() -> None:
                 str(args.copies),
                 "--codec",
                 args.codec,
+                "--concept-mode",
+                args.concept_mode,
                 "--radius",
                 str(args.radius),
                 "--edge-radius",
                 str(args.edge_radius),
+                "--concept-radius",
+                str(args.concept_radius),
                 "--steps",
                 str(args.steps),
                 "--threshold",
@@ -120,6 +126,7 @@ def main() -> None:
         "seeds": {"count": args.seeds, "seed0": args.seed0},
         "model": str(args.model),
         "codec": args.codec,
+        "concept_mode": args.concept_mode if args.codec == "v3" else None,
         "damage_mode": args.damage_mode,
         "damage_patches": args.damage_patches,
         "patches_from_damage": args.patches_from_damage,
@@ -130,6 +137,7 @@ def main() -> None:
         "max_patches": max_patches,
         "radius": args.radius,
         "edge_radius": args.edge_radius,
+        "concept_radius": args.concept_radius if args.codec == "v3" else None,
         "rows": rows,
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)

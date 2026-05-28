@@ -260,7 +260,7 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Encode bundle with v3 concept placement")
     p.add_argument("--bundle", type=Path, required=True)
     p.add_argument("--out-grid", type=Path, required=True)
-    p.add_argument("--concept-mode", choices=["independent", "doc", "section", "doc_section"], default="doc")
+    p.add_argument("--concept-mode", choices=["independent", "doc", "section", "doc_section"], default="section")
     p.add_argument("--width", type=int, default=64)
     p.add_argument("--height", type=int, default=64)
     p.add_argument("--copies", type=int, default=7)

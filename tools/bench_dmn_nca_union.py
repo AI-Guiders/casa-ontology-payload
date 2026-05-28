@@ -100,7 +100,7 @@ def main() -> None:
     p.add_argument("--patch-h", type=int, default=8)
     p.add_argument("--copies", type=int, default=7)
     p.add_argument("--codec", choices=["v0", "v1", "v2", "v3"], default="v3")
-    p.add_argument("--concept-mode", choices=["independent", "doc", "section", "doc_section"], default="doc")
+    p.add_argument("--concept-mode", choices=["independent", "doc", "section", "doc_section"], default="section")
     p.add_argument("--radius", type=int, default=6)
     p.add_argument("--edge-radius", type=int, default=4)
     p.add_argument("--concept-radius", type=int, default=5)
