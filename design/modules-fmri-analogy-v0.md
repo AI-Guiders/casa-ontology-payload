@@ -62,7 +62,7 @@ Optional later: restrict rollout spatial mask to union of active modules (SN gat
 
 Train scripts use `tools/nca_train_util.py`:
 
-- **Auto batch:** 64 on CUDA, 8 on CPU (`--batch-size 0`)
+- **Auto batch:** 24 on CUDA (~8GB VRAM), 8 on CPU (`--batch-size 0`). Avoid 64+ on laptop — spikes RAM/VRAM and can freeze the OS.
 - **AMP** on CUDA by default (`--no-amp` to disable)
 - **Targets + patch damage on GPU** (no per-step Python grid→tensor loop)
 - cudnn benchmark + TF32 on NVIDIA

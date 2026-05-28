@@ -27,6 +27,7 @@ from nca_train_util import (  # type: ignore
     print_train_device,
     resolve_amp,
     resolve_batch_size,
+    empty_cuda_cache,
     resolve_train_device,
     scatter_grid_tensor,
 )
@@ -256,6 +257,7 @@ def main() -> None:
         torch.nn.utils.clip_grad_norm_(rule.parameters(), 1.0)
         scaler.step(opt)
         scaler.update()
+        empty_cuda_cache(device)
 
         if epoch % 100 == 0 or epoch == args.epochs - 1:
             ms = module_specs[epoch % len(module_specs)]

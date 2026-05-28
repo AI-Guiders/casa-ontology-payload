@@ -23,7 +23,7 @@ def add_device_args(p: argparse.ArgumentParser, *, default_batch: int | None = N
         "--batch-size",
         type=int,
         default=default_batch if default_batch is not None else 0,
-        help="Batch size (0 = auto: 64 on CUDA, 8 on CPU).",
+        help="Batch size (0 = auto: 24 on CUDA for ~8GB VRAM, 8 on CPU).",
     )
     p.add_argument("--amp", dest="amp", action="store_true", default=None, help="Mixed precision on CUDA.")
     p.add_argument("--no-amp", dest="amp", action="store_false", help="Disable AMP.")
@@ -50,7 +50,13 @@ def configure_cuda(device: torch.device) -> None:
 def resolve_batch_size(requested: int, device: torch.device) -> int:
     if requested > 0:
         return requested
-    return 64 if device.type == "cuda" else 8
+    # 64×48 NCA steps peaks VRAM on 8GB laptop GPUs; 24 is steadier load.
+    return 24 if device.type == "cuda" else 8
+
+
+def empty_cuda_cache(device: torch.device) -> None:
+    if device.type == "cuda":
+        torch.cuda.empty_cache()
 
 
 def resolve_amp(use_amp: bool | None, device: torch.device) -> bool:
