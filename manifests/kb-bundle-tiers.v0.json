@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "baseline_threshold": 0.85,
+  "tier_policy": {
+    "easy": "cluster_dmn_only (Experiment E style, full-field loss)",
+    "hard": "cluster_dmn then module_masked finetune (Experiment G phase 2)"
+  },
+  "source": "exp_e_clusters_v1 bench baseline_mix @ damage 0.4",
+  "bundles": [
+    {
+      "bundle": "casa-goals.bundle.v1.json",
+      "cluster": "goals",
+      "tier": "easy",
+      "baseline_mix": 0.8569696969696969
+    },
+    {
+      "bundle": "casa-adr-0001.bundle.v1.json",
+      "cluster": "goals",
+      "tier": "hard",
+      "baseline_mix": 0.6
+    },
+    {
+      "bundle": "ontology-poc-findings.bundle.v1.json",
+      "cluster": "goals",
+      "tier": "easy",
+      "baseline_mix": 0.9946666666666667
+    },
+    {
+      "bundle": "research-ml.bundle.v1.json",
+      "cluster": "research",
+      "tier": "hard",
+      "baseline_mix": 0.3840000000000001
+    },
+    {
+      "bundle": "research-tda-flow.bundle.v1.json",
+      "cluster": "research",
+      "tier": "easy",
+      "baseline_mix": 0.9822222222222222
+    },
+    {
+      "bundle": "research-training.bundle.v1.json",
+      "cluster": "research",
+      "tier": "easy",
+      "baseline_mix": 0.9164444444444446
+    },
+    {
+      "bundle": "playbook-tda-flow.bundle.v1.json",
+      "cluster": "ops",
+      "tier": "easy",
+      "baseline_mix": 0.9276190476190476
+    },
+    {
+      "bundle": "kb-distill-nca.bundle.v1.json",
+      "cluster": "ops",
+      "tier": "hard",
+      "baseline_mix": 0.7252525252525253
+    }
+  ]
+}

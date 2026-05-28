@@ -98,6 +98,16 @@ See `design/modules-fmri-analogy-v0.md` · output `examples/exp_f_modules_v1/rep
 
 ---
 
+## G — Tiered train (easy vs hard bundles)
+
+**Policy:** baseline_mix ≥ 0.85 → cluster DMN only; else cluster + module finetune.
+
+**Run:** `scripts/run_tiered_g_v0.ps1` → `examples/exp_g_tiered_v1/report.json`
+
+See `design/experiment-g-tiered-v1.md` · `manifests/kb-bundle-tiers.v0.json`
+
+---
+
 ## Repo
 
 https://github.com/AI-Guiders/casa-ontology-payload

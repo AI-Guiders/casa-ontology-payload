@@ -124,6 +124,9 @@ def main() -> None:
     p.add_argument("--edge-weight", type=float, default=5.0)
     p.add_argument("--out-dir", type=Path, required=True)
     p.add_argument("--save-model", action="store_true")
+    p.add_argument("--init-model", type=Path, default=None, help="Load weights from prior cluster train (phase 1)")
+    p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.v0.json"))
+    p.add_argument("--hard-only", action="store_true", help="Train only modules on hard-tier bundles")
     args = p.parse_args()
 
     random.seed(args.seed)
@@ -160,6 +163,15 @@ def main() -> None:
         specs_b.append(BundleSpec(path=bp, bundle=b, token_set=toks))
 
     module_specs = _load_module_specs(repo, modules_manifest, args.cluster, concept_mode=args.concept_mode)
+    if args.hard_only:
+        tiers = _read_json((repo / args.tiers).resolve())
+        hard_names = {
+            r["bundle"]
+            for r in tiers["bundles"]
+            if r["cluster"] == args.cluster and r["tier"] == "hard"
+        }
+        module_specs = [ms for ms in module_specs if ms.bundle_path.name in hard_names]
+        print(f"hard_only modules={len(module_specs)} bundles={sorted(hard_names)}")
     if not module_specs:
         raise SystemExit(f"no modules for cluster {args.cluster}")
 
@@ -208,6 +220,17 @@ def main() -> None:
 
     kx, ky = sobel_kernels(device)
     rule = UpdateRule(channel_n=channel_n, hidden=args.hidden).to(device)
+    if args.init_model is not None:
+        ckpt = torch.load(args.init_model, map_location=device, weights_only=False)
+        saved_ids = list(ckpt.get("token_ids") or [])
+        if saved_ids != token_ids:
+            raise SystemExit(
+                f"init-model token_ids mismatch: checkpoint {len(saved_ids)} vs train {len(token_ids)}"
+            )
+        if int(ckpt.get("channel_n", 0)) != channel_n:
+            raise SystemExit(f"init-model channel_n mismatch: {ckpt.get('channel_n')} vs {channel_n}")
+        rule.load_state_dict(ckpt["state_dict"])
+        print(f"loaded init-model {args.init_model}")
     opt = torch.optim.Adam(rule.parameters(), lr=args.lr)
     scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
 
