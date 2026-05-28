@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+      "kind": "project_doc",
+      "title": "(condensed example)"
+    },
+    "nodes": [
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "kind": "project_doc",
+        "title": "(condensed example)"
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ainet/README.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+        "kind": "project_doc",
+        "title": null
+      }
+    ],
+    "edges": [
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "label": "casa-goals-and-roadmap-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "label": "research-ml-ca-substrate-agent-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+        "label": "CASA-ADR-0001.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+        "label": "research-ml-ca-vs-matrix.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+        "label": "kb-distill-growing-neural-ca-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+        "label": "kb-tda-flow-machines-ca-ainet-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+        "label": "playbook-casa-tda-flow-ainet-operational-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ainet/README.md",
+        "label": "../ainet/README.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+        "label": "../equation-to-ca-cuda/README.md"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "concept_id": "casa.metric.task_success",
+      "text": "Task success: completion rate, steps-to-solution, recovery, generalization.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Target outcomes (success metrics)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.metric.stability_horizon",
+      "text": "Stability horizon: bounded dynamics, collapse/chaos/drift rates.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Target outcomes (success metrics)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.metric.adversarial_resistance",
+      "text": "Adversarial resistance: performance drop, recovery latency.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Target outcomes (success metrics)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.metric.interpretability",
+      "text": "Interpretability score: motifs, causal tracing, predict failure modes.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Target outcomes (success metrics)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.metric.compute_cost",
+      "text": "Compute cost: latency/step, memory, throughput.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Target outcomes (success metrics)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.ca_world_read_write",
+      "text": "CA-world + read/write interface.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.memory_field",
+      "text": "Internal memory field.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.action_head",
+      "text": "Action head.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.loop_observe_update_act",
+      "text": "Loop observe → update → act.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "CASA research spec v1 (condensed) / Minimal prototype (v0)",
+      "claim_kind": "claim"
+    }
+  ],
+  "concept_index": [
+    {
+      "concept_id": "casa.metric.adversarial_resistance",
+      "label": "Adversarial resistance: performance drop, recovery latency."
+    },
+    {
+      "concept_id": "casa.metric.compute_cost",
+      "label": "Compute cost: latency/step, memory, throughput."
+    },
+    {
+      "concept_id": "casa.metric.interpretability",
+      "label": "Interpretability score: motifs, causal tracing, predict failure modes."
+    },
+    {
+      "concept_id": "casa.metric.stability_horizon",
+      "label": "Stability horizon: bounded dynamics, collapse/chaos/drift rates."
+    },
+    {
+      "concept_id": "casa.metric.task_success",
+      "label": "Task success: completion rate, steps-to-solution, recovery, generalization."
+    },
+    {
+      "concept_id": "casa.prototype.action_head",
+      "label": "Action head."
+    },
+    {
+      "concept_id": "casa.prototype.ca_world_read_write",
+      "label": "CA-world + read/write interface."
+    },
+    {
+      "concept_id": "casa.prototype.loop_observe_update_act",
+      "label": "Loop observe → update → act."
+    },
+    {
+      "concept_id": "casa.prototype.memory_field",
+      "label": "Internal memory field."
+    }
+  ]
+}

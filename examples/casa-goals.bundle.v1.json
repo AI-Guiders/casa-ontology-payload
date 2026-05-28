@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+      "kind": "project_doc",
+      "title": "(condensed example)"
+    },
+    "nodes": [
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "kind": "project_doc",
+        "title": "(condensed example)"
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ainet/README.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+        "kind": "project_doc",
+        "title": null
+      }
+    ],
+    "edges": [
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "label": "casa-goals-and-roadmap-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "label": "research-ml-ca-substrate-agent-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+        "label": "CASA-ADR-0001.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-vs-matrix.md",
+        "label": "research-ml-ca-vs-matrix.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+        "label": "kb-distill-growing-neural-ca-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/kb-tda-flow-machines-ca-ainet-fundamentals-v1.md",
+        "label": "kb-tda-flow-machines-ca-ainet-fundamentals-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+        "label": "playbook-casa-tda-flow-ainet-operational-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ainet/README.md",
+        "label": "../ainet/README.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/equation-to-ca-cuda/README.md",
+        "label": "../equation-to-ca-cuda/README.md"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "concept_id": "casa.goal.ca_substrate_locality",
+      "text": "Цель 1 — CA как субстрат модели и вычислительная локальность.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / Три цели (нормативно)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.goal.ainet_kb_exchange_via_field",
+      "text": "Цель 2 — дорожка к AiNet: обмен знаниями (в т.ч. из KB) через сжатые представления поля и динамики.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / Три цели (нормативно)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.goal.imitation_with_error_and_fix",
+      "text": "Цель 3 — имитационное обучение с правом на ошибку и исправлением.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / Три цели (нормативно)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.roadmap.v0.substrate_calibration",
+      "text": "v0: субстрат (nca-lab)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / v1 → v3 (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.roadmap.v1.meaning_in_field",
+      "text": "v1: смысл в поле (ontology.json → поле; loss на hidden; decode после damage)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / v1 → v3 (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.roadmap.v2.agent_loop",
+      "text": "v2: агентный контур (read/write bands + action head; A/B обучения)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / v1 → v3 (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.roadmap.v3.ainet_exchange",
+      "text": "v3: AiNet (обмен дескриптором + параметрами потока + канон-ссылкой)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "CASA — цели, гипотезы и дорожная карта (v1) (condensed) / v1 → v3 (кратко)",
+      "claim_kind": "claim"
+    }
+  ],
+  "concept_index": [
+    {
+      "concept_id": "casa.goal.ainet_kb_exchange_via_field",
+      "label": "Цель 2 — дорожка к AiNet: обмен знаниями (в т.ч. из KB) через сжатые представления поля и динамики."
+    },
+    {
+      "concept_id": "casa.goal.ca_substrate_locality",
+      "label": "Цель 1 — CA как субстрат модели и вычислительная локальность."
+    },
+    {
+      "concept_id": "casa.goal.imitation_with_error_and_fix",
+      "label": "Цель 3 — имитационное обучение с правом на ошибку и исправлением."
+    },
+    {
+      "concept_id": "casa.roadmap.v0.substrate_calibration",
+      "label": "v0: субстрат (nca-lab)"
+    },
+    {
+      "concept_id": "casa.roadmap.v1.meaning_in_field",
+      "label": "v1: смысл в поле (ontology.json → поле; loss на hidden; decode после damage)"
+    },
+    {
+      "concept_id": "casa.roadmap.v2.agent_loop",
+      "label": "v2: агентный контур (read/write bands + action head; A/B обучения)"
+    },
+    {
+      "concept_id": "casa.roadmap.v3.ainet_exchange",
+      "label": "v3: AiNet (обмен дескриптором + параметрами потока + канон-ссылкой)"
+    }
+  ]
+}
