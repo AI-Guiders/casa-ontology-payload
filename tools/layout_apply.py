@@ -89,6 +89,55 @@ def damage_region(grid: dict, rect: Rect, *, drop_fraction: float, seed: int) ->
     return out
 
 
+def damage_region_patches(
+    grid: dict,
+    rect: Rect,
+    *,
+    patch_w: int,
+    patch_h: int,
+    count: int,
+    seed: int,
+) -> dict:
+    """
+    Damage by clearing contiguous rectangular patches within the region.
+
+    This is a harsher, more "structured" corruption than independent cell dropping and
+    is closer to what a local CA/NCA should be able to repair (inpainting/regrowth).
+    """
+    w = int(grid["width"])
+    h = int(grid["height"])
+    cells = [list(x) for x in grid["cells"]]
+    rng = random.Random(seed)
+
+    # Clamp patches to region + grid.
+    patch_w = max(1, min(patch_w, rect.x1 - rect.x0 + 1, w))
+    patch_h = max(1, min(patch_h, rect.y1 - rect.y0 + 1, h))
+
+    dropped = 0
+    for _ in range(count):
+        x0 = rng.randint(rect.x0, rect.x1 - patch_w + 1)
+        y0 = rng.randint(rect.y0, rect.y1 - patch_h + 1)
+        for yy in range(y0, y0 + patch_h):
+            for xx in range(x0, x0 + patch_w):
+                idx = yy * w + xx
+                if cells[idx]:
+                    dropped += 1
+                cells[idx] = []
+
+    out = dict(grid)
+    out["cells"] = cells
+    out["damage"] = {
+        "type": "region_patches",
+        "seed": seed,
+        "patch_w": patch_w,
+        "patch_h": patch_h,
+        "count": count,
+        "cleared_cells_nonempty": dropped,
+        "rect": rect.__dict__,
+    }
+    return out
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description="Mask/damage a token grid according to layout regions")
     p.add_argument("--layout", type=Path, required=True)
@@ -97,6 +146,9 @@ def main() -> None:
     p.add_argument("--mask-outside", action="store_true", default=False)
     p.add_argument("--damage", type=float, default=0.0)
     p.add_argument("--damage-seed", type=int, default=1)
+    p.add_argument("--damage-patches", type=int, default=0, help="If >0, clear this many rectangular patches (overrides --damage)")
+    p.add_argument("--patch-w", type=int, default=8)
+    p.add_argument("--patch-h", type=int, default=8)
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
 
@@ -107,7 +159,9 @@ def main() -> None:
     out = grid
     if args.mask_outside:
         out = mask_outside_region(out, rect)
-    if args.damage and args.damage > 0:
+    if args.damage_patches and args.damage_patches > 0:
+        out = damage_region_patches(out, rect, patch_w=args.patch_w, patch_h=args.patch_h, count=args.damage_patches, seed=args.damage_seed)
+    elif args.damage and args.damage > 0:
         out = damage_region(out, rect, drop_fraction=args.damage, seed=args.damage_seed)
 
     _write_json(args.out, out)
