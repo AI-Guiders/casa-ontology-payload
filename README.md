@@ -13,6 +13,7 @@
 
 - `tools/extract_md_graph.py` — вытянуть graph из Markdown (links → edges).
 - `tools/semantic_payload.py` — вытянуть claims и нормализовать `concept_id`.
+- `design/layout.v0.json` — региональная композиция одного CA‑поля (DMN/CEN/SN‑аналог) + порты.
 - `examples/` — примеры на проект-карте `ca-substrate-agent` (CASA).
 
 ## Быстрый старт

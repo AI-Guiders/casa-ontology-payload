@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "grid": { "width": 64, "height": 64 },
+  "regions": [
+    {
+      "id": "dmn_ontology",
+      "title": "Ontology / Memory (DMN-analog)",
+      "rect": { "x0": 0, "y0": 0, "x1": 31, "y1": 63 },
+      "role": [
+        "store_bundle_tokens",
+        "recover_after_damage",
+        "produce_digest"
+      ],
+      "channels": {
+        "write": ["tok.*"],
+        "read": ["tok.*", "gate.*", "task.*"],
+        "export_ports": ["p1_dmn_to_sn", "p3_cen_to_dmn"]
+      }
+    },
+    {
+      "id": "sn_router",
+      "title": "Router / Salience (SN-analog)",
+      "rect": { "x0": 32, "y0": 0, "x1": 63, "y1": 31 },
+      "role": [
+        "route_digest",
+        "gate_ports_and_channels",
+        "switch_modes"
+      ],
+      "channels": {
+        "write": ["gate.*"],
+        "read": ["digest.*", "gate.*", "task.*"],
+        "export_ports": ["p2_sn_to_cen"]
+      }
+    },
+    {
+      "id": "cen_planner",
+      "title": "Planner / Executor (CEN-analog)",
+      "rect": { "x0": 32, "y0": 32, "x1": 63, "y1": 63 },
+      "role": [
+        "consume_digest",
+        "decide_action",
+        "emit_queries"
+      ],
+      "channels": {
+        "write": ["task.*"],
+        "read": ["task.*", "gate.*", "digest.*"],
+        "export_ports": ["p3_cen_to_dmn"]
+      }
+    }
+  ],
+  "ports": [
+    {
+      "id": "p1_dmn_to_sn",
+      "title": "DMN -> SN digest",
+      "from_region": "dmn_ontology",
+      "to_region": "sn_router",
+      "rect": { "x0": 31, "y0": 14, "x1": 32, "y1": 17 },
+      "channels": ["digest.*"],
+      "direction": "forward"
+    },
+    {
+      "id": "p2_sn_to_cen",
+      "title": "SN -> CEN gate/mode",
+      "from_region": "sn_router",
+      "to_region": "cen_planner",
+      "rect": { "x0": 48, "y0": 31, "x1": 51, "y1": 32 },
+      "channels": ["gate.*"],
+      "direction": "forward"
+    },
+    {
+      "id": "p3_cen_to_dmn",
+      "title": "CEN -> DMN query (optional)",
+      "from_region": "cen_planner",
+      "to_region": "dmn_ontology",
+      "rect": { "x0": 31, "y0": 46, "x1": 32, "y1": 49 },
+      "channels": ["task.query.*"],
+      "direction": "forward",
+      "optional": true
+    }
+  ],
+  "channel_groups": [
+    { "pattern": "tok.*", "meaning": "token lattice for bundle encoding (concepts/edges)" },
+    { "pattern": "digest.*", "meaning": "summary of recovered payload (e.g. concept_id set, confidence)" },
+    { "pattern": "gate.*", "meaning": "gating/mode switches controlling read/write and routing" },
+    { "pattern": "task.*", "meaning": "task context, queries, actions (planner side)" }
+  ]
+}
+
