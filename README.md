@@ -21,6 +21,8 @@
 python .\tools\extract_md_graph.py .\examples\ca-substrate-agent.README.md --root-id "work/projects/door-to-singularity/ca-substrate-agent/README.md" --out .\examples\ca-substrate-agent.graph.json
 
 python .\tools\semantic_payload.py .\examples\casa-goals-and-roadmap-v1.md --doc-path "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md" --out .\examples\casa-goals.payload.json
+
+python .\tools\build_bundle.py --graph .\examples\ca-substrate-agent.graph.json --payload .\examples\casa-goals.payload.json --payload .\examples\research-spec.payload.json --out .\examples\ca-substrate-agent.bundle.v1.json
 ```
 
 ## Лицензия
