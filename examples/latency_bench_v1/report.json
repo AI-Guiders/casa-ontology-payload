@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "timestamp": "2026-05-29T00:17:52.588841+00:00",
+  "query": "import knowledge delta",
+  "model": "qwen2.5-coder:7b",
+  "qwen_available": false,
+  "qwen_skipped": true,
+  "casa_dmn_subprocess_ms": 4396.46,
+  "casa_field_subprocess_ms": 2332.66,
+  "casa_field_inner_ms": 1.89,
+  "casa_dmn_ms": 4396.46,
+  "casa_field_ms": 1.89,
+  "speedup_field_vs_dmn": 2326.2
+}
