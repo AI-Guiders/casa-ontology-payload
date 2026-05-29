@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "kind": "project_doc",
+      "title": "research-ml-ca-substrate-agent-v1"
+    },
+    "nodes": [
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "kind": "project_doc",
+        "title": "research-ml-ca-substrate-agent-v1"
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "https://github.com/AI-Guiders/casa-ontology-payload",
+        "kind": "url",
+        "title": null
+      }
+    ],
+    "edges": [
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "label": "casa-goals-and-roadmap-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+        "label": "ontology-in-field-poc-findings-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "relation": "references",
+        "dst": "https://github.com/AI-Guiders/casa-ontology-payload",
+        "label": null
+      }
+    ]
+  },
+  "claims": [
+    {
+      "concept_id": "casa.prototype.ca_world_read_write",
+      "text": "CA-world + read/write interface",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.memory_field",
+      "text": "Internal memory field",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.prototype.action_head",
+      "text": "Action head",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "casa.lab.import_knowledge_delta",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Online learning",
+      "text": "import_knowledge_delta v1: merge bundle into agent store and write DMN field_state without LLM retrain."
+    }
+  ],
+  "concept_index": [
+    {
+      "concept_id": "casa.prototype.action_head",
+      "label": "Action head"
+    },
+    {
+      "concept_id": "casa.prototype.ca_world_read_write",
+      "label": "CA-world + read/write interface"
+    },
+    {
+      "concept_id": "casa.prototype.memory_field",
+      "label": "Internal memory field"
+    }
+  ]
+}

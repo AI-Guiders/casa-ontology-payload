@@ -30,11 +30,14 @@ Agents exchange **deltas**, not full KB:
 3. **requires** — graph closure (dst nodes the receiver must already have).
 4. **epistemic** — confidence, conflicts (L0: do not merge unchecked claims).
 
-Import pipeline (future `tools/import_knowledge_delta.py`):
+Import pipeline (v1 `tools/import_knowledge_delta.py`):
 
 ```
-receive delta → verify requires → merge bundle → optional hard finetune → re-bench affected modules
+receive delta → verify requires → merge bundle → encode DMN grid → field_state.json
+                → optional copy checkpoint_hard → optional quick bench
 ```
+
+See `design/import-knowledge-delta-v1.md`.
 
 ## Example card (research, from lab)
 
@@ -74,8 +77,9 @@ See `examples/agent-cards/research-agent.v0.json` (generated stub).
 |------|------|-----|
 | **DMN lab** | **Freeze** at H | Best train/infer policy found; further = incremental G, ingest automation |
 | **Federation schemas** | **Done (v0)** | Card + delta — contracts for exchange |
-| **SN gate** | **Yes, next in lab** | Small: digest → gate channels; no LLM; unblocks CEN read path |
-| **CEN stub** | After SN | digest + user question → task JSON (LLM optional); autonomy starts here |
+| **SN gate** | **Done (v1)** | `tools/sn_cen_runtime.py` |
+| **CEN stub** | **Done (v1)** | rule planner + optional LLM later |
+| **import_knowledge_delta** | **Done (v1)** | `tools/import_knowledge_delta.py` — online field write |
 | **cascade-ide** | Parallel track | ADR 0156 correspondence / reverse anchors — UI L2, not field train |
 
 Recommended sequence (unchanged from `cen-sn-runtime-v0.md`):

@@ -17,4 +17,6 @@ examples/exp_f_modules_v1/**/model.pt
 examples/exp_f_modules_v2_gpu/**/model.pt
 examples/exp_g_tiered_v1/**/model.pt
 examples/exp_*/report.json.tmp
+examples/agent-stores/**/checkpoints/*.pt
+examples/agent-stores/**/model*.pt
 

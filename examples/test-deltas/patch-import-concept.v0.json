@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "type": "knowledge_delta",
+  "source_agent_id": "research-agent-lab-v0",
+  "target_cluster": "research",
+  "bundle": {
+    "action": "patch",
+    "inline": {
+      "schema_version": 1,
+      "claims": [
+        {
+          "concept_id": "casa.lab.import_knowledge_delta",
+          "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+          "section": "Online learning",
+          "text": "import_knowledge_delta v1: merge bundle into agent store and write DMN field_state without LLM retrain."
+        }
+      ],
+      "graph": { "nodes": [], "edges": [] }
+    }
+  },
+  "digest": {
+    "summary": "Lab patch: add import-path concept to research-ml field",
+    "added_concept_ids": ["casa.lab.import_knowledge_delta"],
+    "added_edges": [],
+    "modules_activated": ["research/research-ml/5-metrics-compute-cost"],
+    "tier": "hard"
+  },
+  "requires": ["research-ml.bundle.v1.json"],
+  "provides": ["research-ml.bundle.v1.json"],
+  "epistemic": {
+    "confidence": 0.95,
+    "source_doc_paths": [
+      "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md"
+    ],
+    "conflicts_with": []
+  }
+}
