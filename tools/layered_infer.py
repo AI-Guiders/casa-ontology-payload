@@ -18,6 +18,7 @@ from layered_nca_core import (  # type: ignore
     load_dmn_rule,
     run_piston_pipeline,
 )
+from sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict  # type: ignore
 from train_dmn_nca import UpdateRule  # type: ignore
 
 
@@ -57,6 +58,7 @@ def main() -> None:
     p.add_argument("--digest-steps", type=int, default=16)
     p.add_argument("--gate-steps", type=int, default=12)
     p.add_argument("--out", type=Path, default=Path("examples/layered_out/infer_report.json"))
+    p.add_argument("--query", default=None, help="Optional user query for CEN planner")
     args = p.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -123,6 +125,12 @@ def main() -> None:
     decoded = decode_grid(grid_logits, min_votes=CANONICAL_MIN_VOTES)
     score = score_recovery(bundle, decoded)
 
+    digest_vec = x[0, field_layout.digest_slice].mean(dim=(1, 2)).detach().cpu().tolist()
+    gate_vec = x[0, field_layout.gate_slice].mean(dim=(1, 2)).detach().cpu().tolist()
+    digest = digest_from_decoded(decoded, digest_vector=digest_vec)
+    gated = sn_route(digest, gate_vector=gate_vec)
+    task = cen_plan(gated, bundle=bundle, user_query=args.query)
+
     report = {
         "schema_version": 1,
         "pipeline": "layered_piston_v1_cluster",
@@ -133,8 +141,14 @@ def main() -> None:
         "gate_model": str(gate_path) if gate_path else None,
         "damage_patches": args.damage_patches,
         "recovery": score,
-        "digest_mean": x[0, field_layout.digest_slice].mean(dim=(1, 2)).detach().cpu().tolist(),
-        "gate_mean": x[0, field_layout.gate_slice].mean(dim=(1, 2)).detach().cpu().tolist(),
+        "digest_mean": digest_vec,
+        "gate_mean": gate_vec,
+        "sn": {
+            "mode": gated.gate.mode,
+            "ports": gated.gate.ports,
+            "cen_open": gated.gate.cen_open,
+        },
+        "cen": task_to_dict(task),
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
