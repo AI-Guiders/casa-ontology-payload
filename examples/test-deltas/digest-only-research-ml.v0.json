@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "type": "digest_only",
+  "source_agent_id": "research-agent-01",
+  "target_cluster": "research",
+  "provides": ["research-ml.bundle.v1.json"],
+  "digest": {
+    "summary": "Refresh SN/CEN metadata without re-encoding grid",
+    "modules_activated": ["research/research-ml/1-core-hypothesis"],
+    "tier": "easy"
+  }
+}

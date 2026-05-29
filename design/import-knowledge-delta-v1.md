@@ -12,7 +12,7 @@ receive delta → verify requires → merge bundle → encode DMN grid → field
                 → optional copy checkpoint_hard → optional quick bench
 ```
 
-No mandatory `train_*.py` on import. Hard-tier **auto finetune** (default): short module train + vocab expand → `store/checkpoints/model_hard.pt`. Disable: `--no-finetune`.
+No mandatory `train_*.py` on import. Hard-tier **finetune is opt-in** (`--finetune`) or auto when `--bench` concepts F1 below `--finetune-if-below` (default 0.35).
 
 ## Artifacts
 
@@ -41,19 +41,20 @@ python tools/import_knowledge_delta.py `
   --bench
 ```
 
-## Field state (v1)
+## Field state (v2)
 
-Single active bundle grid in DMN rect (multi-bundle union field = v2). Each import updates:
+Union of all bundles in store → one DMN grid + combined `claims_nav`:
 
-- `bundles[name].concept_count`, `digest` from delta
-- `grid.cells` — encoded v3 section layout, masked to `dmn_ontology`
+- `field_version` — monotonic counter on each write
+- `fingerprint.bundles.*.content_hash` — stale detection
+- `grid.source_bundles[]` — union metadata
+- `schema_version` 2 on new stores
 
-## L0 / epistemic
+See `design/substrate-v2-roadmap.md`.
 
-If `epistemic.conflicts_with` intersects merged claims → **fail** unless `--force`.
+## Next (v2+)
 
-## Next (v2)
-
-- Multi-bundle field union on one grid
-- `digest_only` delta type → SN/CEN refresh without full re-encode
+- ~~Multi-bundle field union on one grid~~ — v2 `rebuild_union_field`
+- ~~`digest_only` delta type~~ — implemented
+- KB watcher → auto `kb_sync --import-to`
 - Wire cascade-ide: import delta → refresh correspondence anchors

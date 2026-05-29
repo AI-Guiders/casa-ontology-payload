@@ -20,7 +20,7 @@ from agent_card import read_agent_card, resolve_checkpoint  # type: ignore
 from bench_dmn_nca_union import _grid_to_union_tensor, _threshold_grid_from_union_state  # type: ignore
 from canonical import CANONICAL_CONCEPT_MODE, CANONICAL_FIELD_MIN_VOTES, CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD  # type: ignore
 from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
-from field_write import bundle_from_field_state, decode_field_grid, load_field_state  # type: ignore
+from field_write import bundle_from_field_state, decode_field_grid, field_state_stale, load_field_state  # type: ignore
 from layout_apply import _get_region_rect, damage_region_patches, mask_outside_region  # type: ignore
 from sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict  # type: ignore
 from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
@@ -77,14 +77,14 @@ def _run_from_field(
     store_dir: Path,
     *,
     min_votes: int,
-) -> tuple[str, dict, dict, dict, float]:
+) -> tuple[str, dict, dict, dict, float, dict]:
     t0 = time.perf_counter()
     state = load_field_state(field_path)
     bundle_name, bundle = bundle_from_field_state(state, store_dir=store_dir)
     decoded = decode_field_grid(state, min_votes=min_votes)
     score = score_recovery(bundle, decoded)
     ms = (time.perf_counter() - t0) * 1000
-    return bundle_name, bundle, decoded, score, ms
+    return bundle_name, bundle, decoded, score, ms, state
 
 
 def _layered_gate_digest(
@@ -149,6 +149,7 @@ def main() -> None:
     p.add_argument("--layered", action="store_true", help="Use layered digest/gate channel means")
     p.add_argument("--cluster-root", type=Path, default=Path("examples/exp_e_clusters_v1"))
     p.add_argument("--query", default=None, help="User query for CEN planner")
+    p.add_argument("--llm-enable", action="store_true", help="Enable CEN LLM probe stub")
     p.add_argument("--damage-patches", type=int, default=8)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--dmn-steps", type=int, default=48)
@@ -164,15 +165,21 @@ def main() -> None:
     dmn_path: Path | None = None
     bundle_path: Path | None = None
 
+    field_meta: dict = {}
     if args.from_field:
         if not field_path.is_file():
             raise SystemExit(f"field_state not found: {field_path}")
-        bundle_name, bundle, decoded, recovery, wall_ms = _run_from_field(
+        bundle_name, bundle, decoded, recovery, wall_ms, state = _run_from_field(
             field_path, store, min_votes=CANONICAL_FIELD_MIN_VOTES
         )
         bundle_path = store / "bundles" / bundle_name
         store_ckpt = store / "checkpoints" / "model_hard.pt"
         dmn_path = store_ckpt if store_ckpt.is_file() else None
+        field_meta = {
+            "field_version": state.get("field_version"),
+            "stale": field_state_stale(state, store),
+            "union_bundles": (state.get("grid") or {}).get("source_bundles"),
+        }
     else:
         if not args.bundle:
             raise SystemExit("--bundle required unless --from-field")
@@ -226,15 +233,16 @@ def main() -> None:
         )
 
     digest = digest_from_decoded(decoded, digest_vector=digest_vec)
-    gated = sn_route(digest, gate_vector=gate_vec or None)
-    task = cen_plan(gated, bundle=bundle, user_query=args.query)
+    gated = sn_route(digest, bundle=bundle, gate_vector=gate_vec or None)
+    task = cen_plan(gated, bundle=bundle, user_query=args.query, llm_enable=args.llm_enable)
 
-    pipeline = "sn_cen_field_v1" if args.from_field else "sn_cen_v1"
+    pipeline = "sn_cen_field_v2" if args.from_field else "sn_cen_v2"
     report = {
-        "schema_version": 1,
+        "schema_version": 2,
         "pipeline": pipeline,
         "bundle": str(bundle_path) if bundle_path else None,
         "field_state": str(field_path) if args.from_field else None,
+        "field": field_meta if args.from_field else None,
         "dmn_model": str(dmn_path) if dmn_path else None,
         "wall_ms": round(wall_ms or 0, 2),
         "recovery": recovery,
@@ -249,6 +257,7 @@ def main() -> None:
             "gate_vector": gated.gate.gate_vector,
             "ports": gated.gate.ports,
             "cen_open": gated.gate.cen_open,
+            "salience_top": sorted(gated.salience.items(), key=lambda kv: kv[1], reverse=True)[:5],
         },
         "cen": task_to_dict(task),
     }

@@ -22,6 +22,19 @@ from pathlib import Path
 H_RE = re.compile(r"^(#{1,6})\s+(.*\S)\s*$")
 BULLET_RE = re.compile(r"^\s*[-*]\s+(.*\S)\s*$")
 NUM_RE = re.compile(r"^\s*\d+[\).\]]\s+(.*\S)\s*$")
+CODE_REF_RE = re.compile(
+    r"`([^`\s]+\.(?:cs|py|tsx?|jsx?|md|json))(?::(\d+)(?:-(\d+))?)?`",
+    re.IGNORECASE,
+)
+FENCE_FILE_RE = re.compile(r"^\s*//\s*file:\s*(\S+)\s*$", re.IGNORECASE)
+
+
+@dataclass(frozen=True)
+class CodeAnchor:
+    file: str
+    line: int | None = None
+    line_end: int | None = None
+    symbol: str | None = None
 
 
 @dataclass(frozen=True)
@@ -31,6 +44,32 @@ class Claim:
     doc_path: str
     section: str
     claim_kind: str = "claim"
+    code_anchors: tuple[CodeAnchor, ...] = ()
+
+
+def _extract_code_anchors(text: str) -> tuple[CodeAnchor, ...]:
+    anchors: list[CodeAnchor] = []
+    seen: set[tuple[str, int | None]] = set()
+    for m in CODE_REF_RE.finditer(text):
+        f = m.group(1).replace("\\", "/")
+        line = int(m.group(2)) if m.group(2) else None
+        line_end = int(m.group(3)) if m.group(3) else None
+        key = (f, line)
+        if key not in seen:
+            seen.add(key)
+            anchors.append(CodeAnchor(file=f, line=line, line_end=line_end))
+    return tuple(anchors)
+
+
+def _claim_to_dict(c: Claim) -> dict:
+    d = asdict(c)
+    if c.code_anchors:
+        d["code_anchors"] = [
+            {k: v for k, v in asdict(a).items() if v is not None} for a in c.code_anchors
+        ]
+    else:
+        d.pop("code_anchors", None)
+    return d
 
 
 def _normalize_concept_id(text: str, section: str, doc_path: str) -> str | None:
@@ -87,8 +126,13 @@ def extract_claims(text: str, *, doc_path: str) -> list[Claim]:
     def current_section() -> str:
         return " / ".join(section_stack) if section_stack else ""
 
+    fence_file: str | None = None
     for raw in text.splitlines():
         line = raw.rstrip()
+        fm = FENCE_FILE_RE.match(line)
+        if fm:
+            fence_file = fm.group(1).replace("\\", "/")
+            continue
         m = H_RE.match(line)
         if m:
             level = len(m.group(1))
@@ -109,12 +153,16 @@ def extract_claims(text: str, *, doc_path: str) -> list[Claim]:
             item = re.sub(r"\*([^*]+)\*", r"\1", item)
 
             section = current_section()
+            anchors = _extract_code_anchors(item)
+            if fence_file and not anchors:
+                anchors = (CodeAnchor(file=fence_file),)
             claims.append(
                 Claim(
                     concept_id=_normalize_concept_id(item, section, doc_path),
                     text=item,
                     doc_path=doc_path,
                     section=section,
+                    code_anchors=anchors,
                 )
             )
             break
@@ -137,7 +185,7 @@ def main() -> None:
     payload = {
         "doc_path": doc_path,
         "schema_version": 1,
-        "claims": [asdict(c) for c in claims],
+        "claims": [_claim_to_dict(c) for c in claims],
         "count": len(claims),
     }
     data = json.dumps(payload, ensure_ascii=False, indent=2)

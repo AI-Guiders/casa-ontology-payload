@@ -128,7 +128,7 @@ def main() -> None:
     digest_vec = x[0, field_layout.digest_slice].mean(dim=(1, 2)).detach().cpu().tolist()
     gate_vec = x[0, field_layout.gate_slice].mean(dim=(1, 2)).detach().cpu().tolist()
     digest = digest_from_decoded(decoded, digest_vector=digest_vec)
-    gated = sn_route(digest, gate_vector=gate_vec)
+    gated = sn_route(digest, bundle=bundle, gate_vector=gate_vec)
     task = cen_plan(gated, bundle=bundle, user_query=args.query)
 
     report = {

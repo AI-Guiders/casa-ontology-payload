@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from copy import deepcopy
 from datetime import datetime, timezone
@@ -87,6 +88,133 @@ def merge_bundles(existing: dict | None, incoming: dict, *, action: str, graph_p
     return apply_graph_patch(out, graph_patch)
 
 
+def bundle_content_hash(bundle: dict) -> str:
+    canonical = json.dumps(bundle, ensure_ascii=False, sort_keys=True)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
+
+
+def merge_store_bundles(bundles: list[dict]) -> dict:
+    if not bundles:
+        raise ValueError("no bundles to merge")
+    out = deepcopy(bundles[0])
+    for b in bundles[1:]:
+        out = merge_bundles(out, b, action="add")
+    return out
+
+
+def nav_item_from_claim(c: dict, *, bundle_name: str | None = None) -> dict | None:
+    cid = c.get("concept_id")
+    dp = c.get("doc_path")
+    if not cid or not dp:
+        return None
+    item: dict[str, Any] = {
+        "concept_id": str(cid),
+        "doc_path": str(dp),
+        "section": str(c.get("section") or ""),
+    }
+    if bundle_name:
+        item["bundle"] = bundle_name
+    anchors = c.get("code_anchors")
+    if anchors:
+        item["code_anchors"] = anchors
+    return item
+
+
+def build_claims_nav(loaded: list[tuple[str, dict]]) -> list[dict]:
+    nav: list[dict] = []
+    seen: set[str] = set()
+    for bundle_name, bundle in loaded:
+        for c in bundle.get("claims") or []:
+            item = nav_item_from_claim(c, bundle_name=bundle_name)
+            if item and item["concept_id"] not in seen:
+                seen.add(item["concept_id"])
+                nav.append(item)
+    return nav
+
+
+def compute_field_fingerprint(state: dict, store_dir: Path) -> dict:
+    bundles_meta: dict[str, Any] = {}
+    for name in sorted(state.get("bundles") or {}):
+        p = store_dir / "bundles" / name
+        if p.is_file():
+            bundles_meta[name] = {"content_hash": bundle_content_hash(_read_json(p))}
+    return {"bundle_count": len(bundles_meta), "bundles": bundles_meta}
+
+
+def list_store_bundles(state: dict, store_dir: Path) -> list[tuple[str, dict]]:
+    loaded: list[tuple[str, dict]] = []
+    for name in sorted(state.get("bundles") or {}):
+        p = store_dir / "bundles" / name
+        if p.is_file():
+            loaded.append((name, _read_json(p)))
+    return loaded
+
+
+def rebuild_union_field(
+    state: dict,
+    *,
+    store_dir: Path,
+    layout: dict,
+    concept_mode: str,
+    digest: dict | None = None,
+    last_bundle_name: str | None = None,
+) -> dict:
+    """v2: union all bundles in store → single grid + combined claims_nav."""
+    loaded = list_store_bundles(state, store_dir)
+    if not loaded:
+        return state
+
+    merged = merge_store_bundles([b for _, b in loaded])
+    grid = encode_dmn_grid(merged, layout=layout, concept_mode=concept_mode)
+    names = [n for n, _ in loaded]
+
+    for bundle_name, bundle in loaded:
+        claims = bundle.get("claims") or []
+        meta = state.setdefault("bundles", {}).get(bundle_name) or {}
+        state["bundles"][bundle_name] = {
+            "concept_count": len({c.get("concept_id") for c in claims if c.get("concept_id")}),
+            "claim_count": len(claims),
+            "edge_count": len((bundle.get("graph") or {}).get("edges") or []),
+            "content_hash": bundle_content_hash(bundle),
+            "digest": meta.get("digest") or (digest if bundle_name == last_bundle_name else {}),
+        }
+
+    state["claims_nav"] = build_claims_nav(loaded)
+    state["grid"] = {
+        "width": grid["width"],
+        "height": grid["height"],
+        "cells": grid["cells"],
+        "source_bundle": last_bundle_name or names[-1],
+        "source_bundles": names,
+        "codec": "v3",
+        "union": True,
+    }
+    state["fingerprint"] = compute_field_fingerprint(state, store_dir)
+    state["field_version"] = int(state.get("field_version") or 0) + 1
+    if digest:
+        state["last_digest"] = digest
+    return state
+
+
+def apply_digest_only_update(
+    state: dict,
+    *,
+    bundle_name: str,
+    digest: dict,
+    store_dir: Path,
+) -> dict:
+    """Refresh digest metadata + claims_nav without re-encoding grid."""
+    if bundle_name not in (state.get("bundles") or {}):
+        state.setdefault("bundles", {})[bundle_name] = {}
+    state["bundles"][bundle_name]["digest"] = digest
+    loaded = list_store_bundles(state, store_dir)
+    state["claims_nav"] = build_claims_nav(loaded)
+    state["last_digest"] = digest
+    state["field_version"] = int(state.get("field_version") or 0) + 1
+    state["fingerprint"] = compute_field_fingerprint(state, store_dir)
+    return state
+
+
 def encode_dmn_grid(bundle: dict, *, layout: dict, concept_mode: str, width: int = 64, height: int = 64, copies: int = 7) -> dict:
     from codec_grid_v3 import encode_bundle_to_grid  # type: ignore
     from layout_apply import _get_region_rect, mask_outside_region  # type: ignore
@@ -98,11 +226,13 @@ def encode_dmn_grid(bundle: dict, *, layout: dict, concept_mode: str, width: int
 
 def new_field_state(*, agent_id: str, cluster: str | None = None) -> dict:
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "agent_id": agent_id,
         "cluster": cluster,
         "bundles": {},
         "grid": None,
+        "field_version": 0,
+        "fingerprint": {},
         "updated_at": None,
     }
 
@@ -123,36 +253,49 @@ def write_bundle_to_field(
     *,
     bundle_name: str,
     bundle: dict,
-    grid: dict,
+    grid: dict | None = None,
     digest: dict | None = None,
+    store_dir: Path | None = None,
+    layout: dict | None = None,
+    concept_mode: str | None = None,
 ) -> dict:
-    """Record bundle + its DMN grid footprint in agent field state (v1: single active bundle grid)."""
+    """Register bundle metadata; prefer rebuild_union_field when store_dir+layout provided."""
     if not state.get("schema_version"):
         state.update(new_field_state(agent_id=state.get("agent_id", "unknown"), cluster=state.get("cluster")))
 
-    claims = bundle.get("claims") or []
-    nav: list[dict] = []
-    for c in claims:
-        cid = c.get("concept_id")
-        dp = c.get("doc_path")
-        sec = c.get("section")
-        if cid and dp:
-            nav.append({"concept_id": str(cid), "doc_path": str(dp), "section": str(sec or "")})
-    state["bundles"][bundle_name] = {
-        "concept_count": len({c.get("concept_id") for c in claims if c.get("concept_id")}),
-        "claim_count": len(claims),
+    state.setdefault("bundles", {})[bundle_name] = {
+        "concept_count": len({c.get("concept_id") for c in bundle.get("claims", []) if c.get("concept_id")}),
+        "claim_count": len(bundle.get("claims") or []),
         "edge_count": len((bundle.get("graph") or {}).get("edges") or []),
+        "content_hash": bundle_content_hash(bundle),
         "digest": digest or {},
-        "claims_nav": nav,
     }
+
+    if store_dir is not None and layout is not None and concept_mode is not None:
+        return rebuild_union_field(
+            state,
+            store_dir=store_dir,
+            layout=layout,
+            concept_mode=concept_mode,
+            digest=digest,
+            last_bundle_name=bundle_name,
+        )
+
+    if grid is None:
+        raise ValueError("grid required when store_dir/layout not provided")
+
+    nav = build_claims_nav([(bundle_name, bundle)])
     state["claims_nav"] = nav
     state["grid"] = {
         "width": grid["width"],
         "height": grid["height"],
         "cells": grid["cells"],
         "source_bundle": bundle_name,
+        "source_bundles": [bundle_name],
         "codec": "v3",
+        "union": False,
     }
+    state["field_version"] = int(state.get("field_version") or 0) + 1
     return state
 
 
@@ -182,15 +325,47 @@ def decode_field_grid(state: dict, *, min_votes: int | None = None) -> dict:
     if not grid or "cells" not in grid:
         raise ValueError("field_state has no grid")
     mv = CANONICAL_FIELD_MIN_VOTES if min_votes is None else min_votes
-    return decode_grid(grid, min_votes=mv)
+    decoded = decode_grid(grid, min_votes=mv)
+    vote: dict[str, int] = {}
+    for cell in grid.get("cells") or []:
+        for t in cell:
+            vote[t] = vote.get(t, 0) + 1
+    decoded["present_token_list"] = sorted([t for t, v in vote.items() if v >= mv])
+    return decoded
 
 
 def bundle_from_field_state(state: dict, *, store_dir: Path) -> tuple[str, dict]:
     grid = state.get("grid") or {}
-    name = grid.get("source_bundle")
-    if not name:
-        raise ValueError("field_state.grid.source_bundle missing")
-    path = store_dir / "bundles" / name
-    if not path.is_file():
-        raise FileNotFoundError(path)
-    return name, _read_json(path)
+    names = list(grid.get("source_bundles") or [])
+    if not names:
+        name = grid.get("source_bundle")
+        if not name:
+            raise ValueError("field_state.grid.source_bundle missing")
+        names = [name]
+
+    loaded: list[dict] = []
+    for name in names:
+        path = store_dir / "bundles" / name
+        if not path.is_file():
+            raise FileNotFoundError(path)
+        loaded.append(_read_json(path))
+
+    primary = grid.get("source_bundle") or names[-1]
+    if len(loaded) == 1:
+        return primary, loaded[0]
+    return primary, merge_store_bundles(loaded)
+
+
+def field_state_stale(state: dict, store_dir: Path) -> bool:
+    """True if on-disk bundle hash differs from fingerprint in field_state."""
+    fp = state.get("fingerprint") or {}
+    recorded = (fp.get("bundles") or {})
+    for name in state.get("bundles") or {}:
+        p = store_dir / "bundles" / name
+        if not p.is_file():
+            return True
+        live = bundle_content_hash(_read_json(p))
+        rec = (recorded.get(name) or {}).get("content_hash")
+        if rec and rec != live:
+            return True
+    return False
