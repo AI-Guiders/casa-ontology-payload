@@ -29,6 +29,13 @@
         "playbook-tda-flow.bundle.v1.json",
         "kb-distill-nca.bundle.v1.json"
       ]
+    },
+    {
+      "id": "language",
+      "bundles": [
+        "kb-russian-language-rules-v1.bundle.v1.json",
+        "kb-regex-mre3-ru-chapter-map-v1.bundle.v1.json"
+      ]
     }
   ]
 }

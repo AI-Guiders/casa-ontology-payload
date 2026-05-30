@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "project_id": "vision-bukvar-l",
+  "kb_root_env": "AGENT_NOTES_KB",
+  "default_kb_root_relative": "../../../../../../../../experiments/agent-notes/knowledge",
+  "payload_docs": [
+    {
+      "md": "worlds/evidence-humanities-shelf/kb-math-concrete-schemas-v1.md",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-math-concrete-schemas-v1.md",
+      "status": "todo_L0",
+      "bundle_out": "examples/kb/kb-math-concrete-schemas.bundle.v1.json"
+    },
+    {
+      "md": "worlds/evidence-humanities-shelf/kb-bukvar-ru-animals-v1.md",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-bukvar-ru-animals-v1.md",
+      "status": "todo_L4",
+      "bundle_out": "examples/kb/kb-bukvar-ru-animals.bundle.v1.json"
+    }
+  ],
+  "union_train_bundles": [
+    "examples/kb/kb-math-concrete-schemas.bundle.v1.json",
+    "examples/kb/kb-bukvar-ru-animals.bundle.v1.json"
+  ],
+  "notes": "Exp L: после Exp J. image_ref в examples/exp_l_vision/. См. design/experiment-l-concrete-to-abstract-v0.md"
+}
