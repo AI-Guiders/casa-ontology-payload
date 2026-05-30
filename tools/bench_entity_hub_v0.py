@@ -98,7 +98,7 @@ def main() -> None:
     p.add_argument(
         "--bundle",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/kb-entity-surfaces-dev.v1.json",
+        default=root / "lab/exp_bilingual_v0/kb-entity-surfaces-dev.v1.json",
     )
     p.add_argument("--cues", type=Path, default=None)
     p.add_argument("--no-ingest", action="store_true")

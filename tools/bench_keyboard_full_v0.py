@@ -10,7 +10,7 @@ from pathlib import Path
 
 from boot_core_ltm_v0 import default_core_ltm_dir, merge_core_ltm  # type: ignore
 from input_modality_ingest_v0 import default_input_modality_bundle  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_stack_v0 import decode_lattice  # type: ignore
 from vk_decode_v0 import decode_branches, decode_events  # type: ignore
 from vk_layout_field_v0 import L0_VK_MAP_ID, compose_index_from_lattice  # type: ignore
@@ -79,7 +79,7 @@ def main() -> None:
     root = Path(__file__).resolve().parent.parent
     p = argparse.ArgumentParser(description="Bench full keyboard on CASA field")
     p.add_argument("--core-ltm", type=Path, default=default_core_ltm_dir(root=root))
-    p.add_argument("--cues", type=Path, default=root / "examples/exp_bilingual_v0/keyboard_full_cues.v1.json")
+    p.add_argument("--cues", type=Path, default=root / "lab/exp_bilingual_v0/keyboard_full_cues.v1.json")
     p.add_argument("--bundle", type=Path, default=default_input_modality_bundle(root=root))
     args = p.parse_args()
 
@@ -88,7 +88,7 @@ def main() -> None:
 
     bundle = json.loads(args.bundle.read_text(encoding="utf-8"))
     items = json.loads(args.cues.read_text(encoding="utf-8"))
-    state = ensure_cylinders({"schema_version": "multi_cylinder_v1", "field_version": 0})
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
     merge_core_ltm(state, args.core_ltm)
     report = run_bench(state, items, bundle)
     print(json.dumps(report, ensure_ascii=False, indent=2))

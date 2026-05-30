@@ -18,7 +18,7 @@ from critic_v0 import critic_validate  # type: ignore
 from field_write import load_field_state  # type: ignore
 from ingest_en_lex_dev_v0 import ingest_en_lex, read_headwords  # type: ignore
 from predictor_v0 import l2_prefix_candidates, predict_t9  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
 from sss_segment_v0 import norm_word  # type: ignore
 from store_boot_v0 import boot_store  # type: ignore
 from store_layout_v0 import field_state_path  # type: ignore
@@ -93,7 +93,7 @@ def boot_for_smoke(
     fs = field_state_path(store_dir)
     if prefer_field_state and fs.is_file():
         # Do not call boot_store here: import_pack would replace L2 shards and drop EN overlay.
-        state = ensure_cylinders(load_field_state(fs))
+        state = ensure_prisms(load_field_state(fs))
         return {"source": "field_state", "state": state, "l2_shard_count": None}
     boot = boot_store(store_dir, prefer_field_state=False)
     return {

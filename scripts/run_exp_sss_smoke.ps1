@@ -3,8 +3,8 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$store = 'examples/agent-stores/sss-lab-v0'
-$bundle = 'examples/kb/kb-bukvar-ru-primer-v1.payload.json'
+$store = 'lab/agent-stores/sss-lab-v0'
+$bundle = 'lab/kb/kb-bukvar-ru-primer-v1.payload.json'
 $stack = 'design/sss-lattice-stack.v0.json'
 
 Write-Host '=== SSS: lattice stack + listen ===' -ForegroundColor Cyan
@@ -15,7 +15,7 @@ python tools/bench_sss_lattice.py `
     --store-dir $store `
     --bundle $bundle `
     --stack $stack `
-    --out examples/exp_sss_v1/report_lattice.json
+    --out lab/exp_sss_v1/report_lattice.json
 
 Write-Host '=== SSS: babble L0 L1 L2 ===' -ForegroundColor Cyan
 python tools/sss_surface_v0.py --store-dir $store --lattice L0_grapheme --prompt 'м а'

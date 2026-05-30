@@ -20,7 +20,7 @@ Russian queries → **answer_blocks** (claim text from field/KB), not only navig
 
 ## Store
 
-`examples/agent-stores/language-agent-lab-v0`
+`lab/agent-stores/language-agent-lab-v0`
 
 ## Smoke
 
@@ -29,12 +29,12 @@ $env:AGENT_NOTES_KB = 'D:\experiments\agent-notes\knowledge'
 .\scripts\run_exp_j_language_sync.ps1
 
 python tools/sn_cen_infer.py --from-field --query "согласно приказу" `
-  --store-dir examples/agent-stores/language-agent-lab-v0
+  --store-dir lab/agent-stores/language-agent-lab-v0
 
 python tools/bench_answer_recall.py `
-  --queries examples/exp_j_ru_queries.jsonl `
-  --store-dir examples/agent-stores/language-agent-lab-v0 `
-  --out examples/exp_j_ru_v1/report.json
+  --queries lab/exp_j_ru_queries.jsonl `
+  --store-dir lab/agent-stores/language-agent-lab-v0 `
+  --out lab/exp_j_ru_v1/report.json
 ```
 
 ## Phase 2 — NCA train (modern union)

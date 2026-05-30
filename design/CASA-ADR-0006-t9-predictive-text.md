@@ -163,7 +163,7 @@ T9 **не** выбирает script; получает уже нормализо�
 | `bench_t9_predict_v0.py` | **есть** |
 | `bench_t9_lexicon_sweep_v0.py` | **есть** |
 | `bench_en_t9_smoke_v0.py` | **есть** (EN store) |
-| `examples/exp_t9_v0/t9_manual_cues.v1.json` | **есть** |
+| `lab/exp_t9_v0/t9_manual_cues.v1.json` | **есть** |
 | `unified_tick_v0` + bench | **есть** |
 | `run_t9_demo_cycle_v0` + `t9_runtime_v0` + C# console | **есть** |
 | context L3 (`согласно пр` → `приказу`) | **нет bench** |

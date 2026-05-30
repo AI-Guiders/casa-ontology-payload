@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import l2_lexicon_lattice_ids, nca_model_registry  # type: ignore
 from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
 from store_layout_v0 import nca_lattice_dir, nca_train_registry_path  # type: ignore
@@ -124,7 +124,7 @@ def mark_lattice_trained(
 def sync_registry_from_store(store_dir: Path, state: dict) -> dict[str, Any]:
     """Bootstrap registry entries for lattices that already have model.pt on disk."""
     reg = load_registry(store_dir)
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     for lid in l2_lexicon_lattice_ids(state):
         model = model_path_for_lattice(store_dir, state, lid)
         if not model:
@@ -154,7 +154,7 @@ def find_stale_shards(
     include_pending: bool = True,
     min_tokens: int = 8,
 ) -> list[dict[str, Any]]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     reg = load_registry(store_dir)
     pending = set(reg.get("pending") or []) if include_pending else set()
     current_fv = int(state.get("field_version") or 0)

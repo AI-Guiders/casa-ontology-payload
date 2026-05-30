@@ -73,7 +73,7 @@ def main() -> None:
     p.add_argument(
         "--cues",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/keyboard_ortho_bridge_cues.v1.json",
+        default=root / "lab/exp_bilingual_v0/keyboard_ortho_bridge_cues.v1.json",
     )
     p.add_argument("--core-ltm", type=Path, default=default_core_ltm_dir(root=root))
     args = p.parse_args()

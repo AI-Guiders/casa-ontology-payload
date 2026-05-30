@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "experiment": "H_dual_checkpoint_bench_v1",
+  "policy": "easy -> model_phase1 (or E fallback); hard -> model_hard",
+  "g_root": "lab\\exp_g_tiered_v1",
+  "damage": 0.4,
+  "clusters": [
+    {
+      "cluster": "goals",
+      "train_mode": "dual_checkpoint_infer_v1",
+      "mean_delta_mix": -0.005441077441077395,
+      "nca_wins": 1,
+      "bench_rows": [
+        {
+          "bundle": "casa-goals.bundle.v1.json",
+          "tier": "easy",
+          "model_used": "lab\\exp_e_clusters_v1\\goals\\model.pt",
+          "delta_mix": -0.010989898989898883,
+          "nca_wins": false,
+          "baseline_mix": 0.8569696969696969,
+          "nca_mix": 0.845979797979798
+        },
+        {
+          "bundle": "casa-adr-0001.bundle.v1.json",
+          "tier": "hard",
+          "model_used": "lab\\exp_g_tiered_v1\\goals\\model.pt",
+          "delta_mix": 0.0,
+          "nca_wins": true,
+          "baseline_mix": 0.6,
+          "nca_mix": 0.6
+        },
+        {
+          "bundle": "ontology-poc-findings.bundle.v1.json",
+          "tier": "easy",
+          "model_used": "lab\\exp_e_clusters_v1\\goals\\model.pt",
+          "delta_mix": -0.005333333333333301,
+          "nca_wins": false,
+          "baseline_mix": 0.9946666666666667,
+          "nca_mix": 0.9893333333333334
+        }
+      ]
+    },
+    {
+      "cluster": "research",
+      "train_mode": "dual_checkpoint_infer_v1",
+      "mean_delta_mix": 0.07081481481481473,
+      "nca_wins": 2,
+      "bench_rows": [
+        {
+          "bundle": "research-ml.bundle.v1.json",
+          "tier": "hard",
+          "model_used": "lab\\exp_g_tiered_v1\\research\\model.pt",
+          "delta_mix": 0.21599999999999986,
+          "nca_wins": true,
+          "baseline_mix": 0.3840000000000001,
+          "nca_mix": 0.6
+        },
+        {
+          "bundle": "research-tda-flow.bundle.v1.json",
+          "tier": "easy",
+          "model_used": "lab\\exp_e_clusters_v1\\research\\model.pt",
+          "delta_mix": 0.0,
+          "nca_wins": true,
+          "baseline_mix": 0.9822222222222222,
+          "nca_mix": 0.9822222222222222
+        },
+        {
+          "bundle": "research-training.bundle.v1.json",
+          "tier": "easy",
+          "model_used": "lab\\exp_e_clusters_v1\\research\\model.pt",
+          "delta_mix": -0.003555555555555645,
+          "nca_wins": false,
+          "baseline_mix": 0.9164444444444446,
+          "nca_mix": 0.912888888888889
+        }
+      ]
+    },
+    {
+      "cluster": "ops",
+      "train_mode": "dual_checkpoint_infer_v1",
+      "mean_delta_mix": -0.00484848484848488,
+      "nca_wins": 1,
+      "bench_rows": [
+        {
+          "bundle": "playbook-tda-flow.bundle.v1.json",
+          "tier": "easy",
+          "model_used": "lab\\exp_e_clusters_v1\\ops\\model.pt",
+          "delta_mix": 0.0,
+          "nca_wins": true,
+          "baseline_mix": 0.9276190476190476,
+          "nca_mix": 0.9276190476190476
+        },
+        {
+          "bundle": "kb-distill-nca.bundle.v1.json",
+          "tier": "hard",
+          "model_used": "lab\\exp_g_tiered_v1\\ops\\model.pt",
+          "delta_mix": -0.00969696969696976,
+          "nca_wins": false,
+          "baseline_mix": 0.7252525252525253,
+          "nca_mix": 0.7155555555555555
+        }
+      ]
+    }
+  ]
+}

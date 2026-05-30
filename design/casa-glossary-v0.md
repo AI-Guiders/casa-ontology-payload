@@ -30,7 +30,7 @@
 | Термин | Расшифровка | Смысл |
 |--------|-------------|--------|
 | **CASA** | *Context / CA Substrate Agent* (рабочее имя трека) | Агентный субстрат: KB → поле → SN/CEN → действие/текст. Канон: `ca-substrate-agent` в agent-notes. |
-| **ca-substrate-agent** | id проекта / agent store | Lab: `casa-ontology-payload`, store: `examples/agent-stores/*`. |
+| **ca-substrate-agent** | id проекта / agent store | Lab: `casa-ontology-payload`, store: `lab/agent-stores/*`. |
 | **Ontology in field** | «онтология в поле» | Смысл KB закодирован в **дискретном CA-поле** (токены), не только в векторном RAG. |
 | **Payload** | `casa-ontology-payload` | Репозиторий lab: codec, NCA, import, SN/CEN. |
 | **Agent store** | каталог агента | `field_state.json`, `bundles/`, checkpoints — персистентное состояние поля. |
@@ -130,7 +130,7 @@
 | **B. 4-й регион `fpn_control`** | Узкая полоса или угол grid: `wm.*` channels, читает/пишет CEN и SN. |
 | **C. FPN вне CA** | `agent_session.json` + IDE; поле только DMN/SN/CEN; FPN = orchestration layer в cascade-ide / agent loop. |
 
-**Рекомендация north star:** **B** — отдельный регион `fpn_control` на grid (см. [`fpn-control-region-v0.md`](fpn-control-region-v0.md)). Session/IDE — зеркало и персистентность, не замена поля.
+**Рекомендация north star (2026-05-30):** **control lattice stack** — DMN/SN/FPN/CEN как отдельные решётки + `control_bridge` (см. [`control-lattice-stack-v0.md`](control-lattice-stack-v0.md)). Полосы на одном grid — [`fpn-control-region-v0.md`](fpn-control-region-v0.md) (historical). Session/IDE — зеркало на `lattice_fpn_wm`.
 
 **Cosmos-аналог:** у Reason есть long-context и chain-of-thought; FPN ≈ **удержание плана рассуждения** между шагами, не генерация мира (Predict).
 
@@ -216,7 +216,7 @@
 | **z_phase** | Фаза поршня **внутри** одной решётки (encode / repair / digest). |
 | **z_bridge** | Пространственная связь между соседними `z_level` (compose, correct). |
 | **Von Neumann (mapping)** | Перекладка классики (память/шина/CU/ALU/I/O) на CASA — [`von-neumann-casa-mapping-v0.md`](von-neumann-casa-mapping-v0.md). |
-| **Multi-cylinder** | `cyl_memory` + `cyl_hippo` + опц. `cyl_io` — [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md). |
+| **Prism blocks** (`prism_*`) | `prism_memory` + `prism_hippo` + `prism_control` в `prisms`; квадратные решётки по z — [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md). |
 | **Sleep** | `T_consolidate`: hippo → memory, без I/O — [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md) § Sleep. |
 
 ---

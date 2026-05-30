@@ -1,0 +1,43 @@
+{
+  "bundle_id": "kb-lexicon-frequency-ru-v1",
+  "schema_version": 1,
+  "title": "RU lexicon — frequency meta (ipm, votes, T9)",
+  "entities": [],
+  "claims": [
+    {
+      "concept_id": "meta.freq.ipm",
+      "text": "ipm (items per million) — нормированная частота леммы в корпусе: сколько раз на миллион слов встречается форма."
+    },
+    {
+      "concept_id": "meta.freq.abs",
+      "text": "abs_frequency — сырое число вхождений леммы в корпусе до нормировки."
+    },
+    {
+      "concept_id": "meta.freq.rank",
+      "text": "rank — порядковый номер в частотном списке; меньше rank → слово встречается чаще."
+    },
+    {
+      "concept_id": "meta.t9.votes",
+      "text": "votes на L2 — сила активации слова на полке; при predict_t9 более частотные слова дают выше anchors при том же префиксе."
+    },
+    {
+      "concept_id": "meta.freq.why",
+      "text": "Зачем частота агенту: при одинаковом префиксе T9 сначала поднимает то, что люди пишут чаще; редкие слова остаются в словаре, но слабее. Пересечение с другими корпусами (напр. Афанасьев) нормально — одна лемма, общая полка L2."
+    }
+  ],
+  "graph": {
+    "nodes": [
+      { "id": "meta.freq.ipm", "kind": "meta", "title": "ipm" },
+      { "id": "meta.freq.abs", "kind": "meta", "title": "abs_frequency" },
+      { "id": "meta.freq.rank", "kind": "meta", "title": "rank" },
+      { "id": "meta.t9.votes", "kind": "meta", "title": "L2 votes" },
+      { "id": "meta.freq.why", "kind": "meta", "title": "зачем частота" }
+    ],
+    "edges": [
+      { "src": "meta.freq.why", "relation": "motivates", "dst": "meta.freq.ipm" },
+      { "src": "meta.freq.ipm", "relation": "explains", "dst": "meta.t9.votes" },
+      { "src": "meta.freq.rank", "relation": "correlates", "dst": "meta.t9.votes" },
+      { "src": "meta.freq.why", "relation": "guides", "dst": "meta.t9.votes" }
+    ]
+  }
+}

@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, run_sleep, save_state  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, run_sleep, save_state  # type: ignore
 from sss_vocab_v0 import apply_story_compose, listen_scene  # type: ignore
 
 
@@ -20,7 +20,7 @@ def read_session(
     *,
     bundle: dict | None = None,
 ) -> dict[str, Any]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     copies = max(1, int(session.get("listen_copies") or 3))
     scenes = list(session.get("scenes") or [])
     if bundle:
@@ -30,7 +30,7 @@ def read_session(
         **(state.get("sn") or {}),
         "mode": "listen",
         "active_lattice": "L2_word",
-        "active_cylinder": "cyl_memory",
+        "active_prism": "prism_memory",
     }
 
     frames: list[dict] = []
@@ -91,7 +91,7 @@ def main() -> None:
                 bundle = json.loads(bp.read_text(encoding="utf-8"))
                 break
 
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     report = read_session(state, session, bundle=bundle)
     save_state(path, state)
 

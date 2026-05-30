@@ -6,7 +6,7 @@ Sources:
   - lib.ru FB2 zip (default, 3 volumes 1855 edition on az.lib.ru)
   - local .fb2 / .fb2.zip / .txt
 
-Output: examples/text/corpus/afanasyev/afan-v{vol}-n{no:03d}.txt
+Output: lab/text/corpus/afanasyev/afan-v{vol}-n{no:03d}.txt
 """
 
 from __future__ import annotations
@@ -275,8 +275,8 @@ def fetch_libru_volumes(
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Normalize Afanasyev corpus → per-tale UTF-8 txt")
-    p.add_argument("--out-dir", type=Path, default=Path("examples/text/corpus/afanasyev"))
-    p.add_argument("--cache-dir", type=Path, default=Path("examples/text/_cache/afanasyev"))
+    p.add_argument("--out-dir", type=Path, default=Path("lab/text/corpus/afanasyev"))
+    p.add_argument("--cache-dir", type=Path, default=Path("lab/text/_cache/afanasyev"))
     p.add_argument("--download-libru", action="store_true", help="Fetch 3 volumes from az.lib.ru (fb2.zip)")
     p.add_argument("--volumes", default="1,2,3", help="Which lib.ru volumes (default 1,2,3)")
     p.add_argument("--local", type=Path, nargs="+", default=None, help="Local fb2/fb2.zip/txt; use name skazkiN.* or pass --volume")

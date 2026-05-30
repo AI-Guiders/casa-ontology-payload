@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "bundle": "lab\\research-spec.bundle.v1.json",
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "seeds": {
+    "count": 20,
+    "seed0": 1
+  },
+  "model": "lab\\nca_out_union3_codec2_patches_w8\\model.pt",
+  "codec": "v2",
+  "damage_mode": "patches",
+  "damage_patches": 8,
+  "patch_w": 10,
+  "patch_h": 10,
+  "radius": 6,
+  "edge_radius": 4,
+  "rows": [
+    {
+      "damage": 0.1,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.672810939060939,
+          "std": 0.13982701592680472
+        },
+        "edges_f1": {
+          "mean": 0.4127272727272727,
+          "std": 0.12183888990596936
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_union3_codec2_patches_w8\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.6785801698301699,
+          "std": 0.1346044448306895
+        },
+        "edges_f1": {
+          "mean": 0.43590909090909086,
+          "std": 0.10021616479800233
+        }
+      }
+    },
+    {
+      "damage": 0.2,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.672810939060939,
+          "std": 0.13982701592680472
+        },
+        "edges_f1": {
+          "mean": 0.4127272727272727,
+          "std": 0.12183888990596936
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_union3_codec2_patches_w8\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.6785801698301699,
+          "std": 0.1346044448306895
+        },
+        "edges_f1": {
+          "mean": 0.43590909090909086,
+          "std": 0.10021616479800233
+        }
+      }
+    },
+    {
+      "damage": 0.25,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.672810939060939,
+          "std": 0.13982701592680472
+        },
+        "edges_f1": {
+          "mean": 0.4127272727272727,
+          "std": 0.12183888990596936
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_union3_codec2_patches_w8\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.6785801698301699,
+          "std": 0.1346044448306895
+        },
+        "edges_f1": {
+          "mean": 0.43590909090909086,
+          "std": 0.10021616479800233
+        }
+      }
+    },
+    {
+      "damage": 0.3,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.672810939060939,
+          "std": 0.13982701592680472
+        },
+        "edges_f1": {
+          "mean": 0.4127272727272727,
+          "std": 0.12183888990596936
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_union3_codec2_patches_w8\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.6785801698301699,
+          "std": 0.1346044448306895
+        },
+        "edges_f1": {
+          "mean": 0.43590909090909086,
+          "std": 0.10021616479800233
+        }
+      }
+    },
+    {
+      "damage": 0.4,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.672810939060939,
+          "std": 0.13982701592680472
+        },
+        "edges_f1": {
+          "mean": 0.4127272727272727,
+          "std": 0.12183888990596936
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_union3_codec2_patches_w8\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.6785801698301699,
+          "std": 0.1346044448306895
+        },
+        "edges_f1": {
+          "mean": 0.43590909090909086,
+          "std": 0.10021616479800233
+        }
+      }
+    },
+    {
+      "damage": 0.5,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.672810939060939,
+          "std": 0.13982701592680472
+        },
+        "edges_f1": {
+          "mean": 0.4127272727272727,
+          "std": 0.12183888990596936
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_union3_codec2_patches_w8\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.6785801698301699,
+          "std": 0.1346044448306895
+        },
+        "edges_f1": {
+          "mean": 0.43590909090909086,
+          "std": 0.10021616479800233
+        }
+      }
+    },
+    {
+      "damage": 0.6,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.672810939060939,
+          "std": 0.13982701592680472
+        },
+        "edges_f1": {
+          "mean": 0.4127272727272727,
+          "std": 0.12183888990596936
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_union3_codec2_patches_w8\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.6785801698301699,
+          "std": 0.1346044448306895
+        },
+        "edges_f1": {
+          "mean": 0.43590909090909086,
+          "std": 0.10021616479800233
+        }
+      }
+    }
+  ]
+}

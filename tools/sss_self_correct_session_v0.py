@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, run_sleep, save_state  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, run_sleep, save_state  # type: ignore
 from sss_surface_v0 import surface_from_sss  # type: ignore
 from sss_wake_util import internal_target_from_cue, surface_matches_target  # type: ignore
 from sss_wake_v0 import wake_turn  # type: ignore
@@ -28,7 +28,7 @@ def main() -> None:
     bundle = json.loads(args.bundle.read_text(encoding="utf-8"))
     items = json.loads(args.cues.read_text(encoding="utf-8"))
 
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     turns: list[dict] = []
     self_eps = 0
 

@@ -3,7 +3,12 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Literal
+
+# Lab data root (stores, profiles, corpus, experiments). Formerly `examples/`.
+LAB_DATA_DIR = "lab"
 
 # Production Russian headword lexicon (SSS L0–L3 + sharded L2).
 STORE_RU_LEXICON_V0 = "sss-ru-lexicon-v0"
@@ -11,12 +16,63 @@ STORE_RU_LEXICON_V0 = "sss-ru-lexicon-v0"
 # English folk-tale lexicon (separate store; L2_en_word_* shards).
 STORE_EN_FOLK_V0 = "sss-en-folk-v0"
 
+# Quad corpora v0: general vs tech × ru vs en (batch imprint + per-store NCA).
+STORE_EN_GENERAL_V0 = "sss-en-general-v0"
+STORE_EN_TECH_V0 = "sss-en-tech-v0"
+STORE_RU_GENERAL_V0 = "sss-ru-general-v0"
+STORE_RU_TECH_V0 = "sss-ru-tech-v0"
+
 # Read-only monolith built from Afanasyev ingest (corpus reference only).
 STORE_INGEST_REF_AFAN_V0 = "sss-afan-v0"
 
+Locale = Literal["en", "ru"]
+Tier = Literal["general", "tech"]
+
+
+@dataclass(frozen=True)
+class CorpusSpec:
+    store_id: str
+    locale: Locale
+    tier: Tier
+    corpus_tag: str
+    headwords_rel: str
+
+
+CORPUS_QUAD: dict[str, CorpusSpec] = {
+    "en-general": CorpusSpec(
+        STORE_EN_GENERAL_V0,
+        "en",
+        "general",
+        "en-general-v0",
+        f"{LAB_DATA_DIR}/corpus/en-general-v0/headwords.v1.txt",
+    ),
+    "en-tech": CorpusSpec(
+        STORE_EN_TECH_V0,
+        "en",
+        "tech",
+        "en-tech-v0",
+        f"{LAB_DATA_DIR}/corpus/en-tech-v0/headwords.v1.txt",
+    ),
+    "ru-general": CorpusSpec(
+        STORE_RU_GENERAL_V0,
+        "ru",
+        "general",
+        "ru-general-v0",
+        f"{LAB_DATA_DIR}/corpus/ru-general-v0/headwords.v1.txt",
+    ),
+    "ru-tech": CorpusSpec(
+        STORE_RU_TECH_V0,
+        "ru",
+        "tech",
+        "ru-tech-v0",
+        f"{LAB_DATA_DIR}/corpus/ru-tech-v0/headwords.v1.txt",
+    ),
+}
+
 
 def agent_store_dir(store_id: str, *, root: Path | None = None) -> Path:
-    base = (root / "examples" / "agent-stores") if root is not None else Path("examples/agent-stores")
+    rel = Path(LAB_DATA_DIR) / "agent-stores"
+    base = (root / rel) if root is not None else rel
     return base / store_id
 
 

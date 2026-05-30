@@ -5,8 +5,8 @@ $repo = Split-Path -Parent $PSScriptRoot
 Set-Location $repo
 
 $manifest = 'manifests/kb-bundles-russian-language.json'
-$store = 'examples/agent-stores/language-agent-lab-v0'
-$card = 'examples/agent-cards/research-agent.v0.json'
+$store = 'lab/agent-stores/language-agent-lab-v0'
+$card = 'lab/agent-cards/research-agent.v0.json'
 
 $docs = @(
     'kb-russian-language-rules-v1',

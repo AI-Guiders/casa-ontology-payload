@@ -1,6 +1,6 @@
 # Вторая сигнальная система (ССС) — подсистема CASA
 
-**Status:** lab — `tools/sss_*`, store `examples/agent-stores/sss-lab-v0`  
+**Status:** lab — `tools/sss_*`, store `lab/agent-stores/sss-lab-v0`  
 **Date:** 2026-05-28  
 **Не называть:** «Bukvar Encode», «ещё один codec для KB»  
 **См.:** [`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md) (педагогическая лестница), [`casa-layout-v0.md`](casa-layout-v0.md)

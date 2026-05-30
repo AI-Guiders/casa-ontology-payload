@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import append_rule_episode, ensure_cylinders, run_sleep, save_state  # type: ignore
+from sss_cylinders_v0 import append_rule_episode, ensure_prisms, run_sleep, save_state  # type: ignore
 from sss_internal_repair_v0 import internal_reconcile  # type: ignore
 from sss_segment_v0 import format_segment, parse_segment, segment_hypothesis, verify_segment  # type: ignore
 
@@ -41,8 +41,8 @@ def hypothesis_turn(
     bundle: dict | None = None,
 ) -> dict[str, Any]:
     """Segment from field; optional dialogue input or internal reconcile — no gold lookup."""
-    state = ensure_cylinders(state)
-    state["sn"] = {**(state.get("sn") or {}), "mode": "wake", "active_cylinder": "cyl_memory"}
+    state = ensure_prisms(state)
+    state["sn"] = {**(state.get("sn") or {}), "mode": "wake", "active_prism": "prism_memory"}
 
     hyp = segment_hypothesis(state, word)
     ver = verify_segment(hyp)
@@ -97,7 +97,7 @@ def hypothesis_turn(
             report["rule_taught"] = rec["rule_id"]
             report["matched"] = True
 
-    report["hippo_pending"] = len(state["cylinders"]["cyl_hippo"]["episodes"])
+    report["hippo_pending"] = len(prism_hippo(state)["episodes"])
     return report
 
 

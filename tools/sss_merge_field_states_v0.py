@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
 
 
 def _merge_lattice_cells(target: dict, shard: dict) -> None:
@@ -28,8 +28,8 @@ def _merge_lattice_cells(target: dict, shard: dict) -> None:
 
 
 def _merge_memory_lattices(out: dict, shard: dict) -> None:
-    out_lat = ensure_cylinders(out)["cylinders"]["cyl_memory"]["lattices"]
-    sh_lat = ensure_cylinders(shard)["cylinders"]["cyl_memory"]["lattices"]
+    out_lat = ensure_prisms(out)["prisms"]["prism_memory"]["lattices"]
+    sh_lat = ensure_prisms(shard)["prisms"]["prism_memory"]["lattices"]
     for lid, slat in sh_lat.items():
         if lid not in out_lat:
             out_lat[lid] = deepcopy(slat)
@@ -39,8 +39,8 @@ def _merge_memory_lattices(out: dict, shard: dict) -> None:
 
 
 def _merge_hippo(out: dict, shard: dict) -> None:
-    o_hip = ensure_cylinders(out)["cylinders"]["cyl_hippo"]
-    s_hip = ensure_cylinders(shard)["cylinders"]["cyl_hippo"]
+    o_hip = ensure_prisms(out)["prisms"]["prism_hippo"]
+    s_hip = ensure_prisms(shard)["prisms"]["prism_hippo"]
     seen = {str(e.get("id")) for e in o_hip.get("episodes") or [] if e.get("id")}
     for ep in s_hip.get("episodes") or []:
         eid = str(ep.get("id") or "")
@@ -59,13 +59,13 @@ def _merge_hippo(out: dict, shard: dict) -> None:
 def merge_field_states(base: dict, shards: list[dict], *, base_field_version: int | None = None) -> dict:
     """Union token placements from shards onto base snapshot."""
     out = deepcopy(base)
-    ensure_cylinders(out)
+    ensure_prisms(out)
     base_fv = int(base_field_version if base_field_version is not None else base.get("field_version") or 0)
     delta_total = 0
     done: set[str] = set((out.get("batch_progress") or {}).get("files") or [])
 
     for shard in shards:
-        ensure_cylinders(shard)
+        ensure_prisms(shard)
         _merge_memory_lattices(out, shard)
         _merge_hippo(out, shard)
         sh_fv = int(shard.get("field_version") or 0)

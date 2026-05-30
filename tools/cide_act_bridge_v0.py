@@ -27,12 +27,12 @@ def boot_state(root: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     t0 = time.perf_counter()
     boot = boot_linked_stores(ru, en)
     state = boot["state"]
-    headwords = read_headwords(root / "examples/exp_bilingual_v0/en_folk_headwords.v1.txt")
-    headwords.extend(read_headwords(root / "examples/exp_bilingual_v0/layout_command_headwords.v1.txt"))
+    headwords = read_headwords(root / "lab/exp_bilingual_v0/en_folk_headwords.v1.txt")
+    headwords.extend(read_headwords(root / "lab/exp_bilingual_v0/layout_command_headwords.v1.txt"))
     headwords = list(dict.fromkeys(headwords))
     bootstrap_linked_graphemes(state, en_words=headwords)
     ingest_en_lex_batch(state, ["attach"], copies=2, configure=False)
-    bundle = root / "examples/exp_bilingual_v0/kb-entity-surfaces-dev.v1.json"
+    bundle = root / "lab/exp_bilingual_v0/kb-entity-surfaces-dev.v1.json"
     ingest_entity_hub(state, json.loads(bundle.read_text(encoding="utf-8")))
     imprint_capitalize_bootstrap(state)
     ingest_keyboard_ortho_bridge(state, ensure_ortho_bootstrap=False)

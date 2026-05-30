@@ -1,0 +1,48 @@
+﻿{
+  "schema_version": 1,
+  "note": "Union vocab 162 tokens, 120 epochs. windows_seen = epochs × windows_per_batch.",
+  "rows": [
+    {
+      "arm": "w1",
+      "windows_per_batch": 1,
+      "stride": 16,
+      "tile_count": 3,
+      "epochs": 120,
+      "windows_seen": 120,
+      "train_wall_sec": 14.1,
+      "sec_per_epoch": 0.118,
+      "best_mix": 0.759,
+      "repair_mix": 0.703,
+      "concepts_f1": 0.504,
+      "out_dir": "lab/nca_out_exp_j_ablation_w1_v1"
+    },
+    {
+      "arm": "w32",
+      "windows_per_batch": 32,
+      "stride": 16,
+      "tile_count": 3,
+      "epochs": 120,
+      "windows_seen": 3840,
+      "train_wall_sec": 69.9,
+      "sec_per_epoch": 0.582,
+      "best_mix": 0.759,
+      "repair_mix": 0.703,
+      "concepts_f1": 0.504,
+      "out_dir": "lab/nca_out_exp_j_ablation_w32_v1"
+    },
+    {
+      "arm": "w32_s8",
+      "windows_per_batch": 32,
+      "stride": 8,
+      "tile_count": 5,
+      "epochs": 120,
+      "windows_seen": 3840,
+      "train_wall_sec": 86.6,
+      "sec_per_epoch": 0.721,
+      "best_mix": 0.759,
+      "repair_mix": 0.703,
+      "concepts_f1": 0.504,
+      "out_dir": "lab/nca_out_exp_j_ablation_w32_s8_v1"
+    }
+  ]
+}

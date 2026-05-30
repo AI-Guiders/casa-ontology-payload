@@ -46,8 +46,8 @@ NCA `model.pt` (~2 MiB/полка) чинит **известную раскла�
 ## Команды
 
 ```bash
-python tools/export_ltm_pack_v0.py --store-dir examples/agent-stores/sss-ru-lexicon-v0
-python tools/import_ltm_pack_v0.py --store-dir examples/agent-stores/sss-ru-lexicon-v0
+python tools/export_ltm_pack_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0
+python tools/import_ltm_pack_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0
 python tools/export_ltm_pack_v0.py --store-dir … --compress   # .ltm.zst if zstandard installed
 ```
 

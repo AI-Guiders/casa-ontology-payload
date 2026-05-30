@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import is_l2_word_lattice, lattice_digest_l2_network  # type: ignore
 from sss_stack_v0 import decode_lattice, lattice_digest, load_stack  # type: ignore
 from sss_wake_util import concept_to_surface, rank_for_cue  # type: ignore
@@ -22,12 +22,12 @@ def surface_from_sss(
     min_votes: int = 1,
     prompt: str = "",
 ) -> dict:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     lattices = memory_lattices(state)
     if not lattices:
         raise ValueError("field_state has no memory lattices")
 
-    mem = (state.get("cylinders") or {}).get("cyl_memory") or {}
+    mem = (state.get("prisms") or {}).get("prism_memory") or {}
     sss = state.get("sss") or {}
     stack_path = mem.get("stack") or sss.get("stack") or "design/sss-lattice-stack.v0.json"
     stack = load_stack(Path(stack_path))
@@ -52,7 +52,7 @@ def surface_from_sss(
 
     surfaces = [concept_to_surface(cid) for cid, _ in ranked[:6]]
 
-    if lid == "L0_grapheme":
+    if lid in ("L0_grapheme", "L0_grapheme_cyrl", "L0_grapheme_latn"):
         body = "".join(surfaces[:5]) if surfaces else "…"
         text = f"Surface L0: «{body}»."
     elif lid == "L1_syllable":
@@ -72,7 +72,7 @@ def surface_from_sss(
         "active": [{"concept_id": c, "votes": v} for c, v in ranked[:10]],
         "field_version": state.get("field_version"),
         "z_compose_count": (sss.get("last_compose") or {}).get("count"),
-        "active_cylinder": (state.get("sn") or {}).get("active_cylinder"),
+        "active_prism": (state.get("sn") or {}).get("active_prism"),
         "mode": (state.get("sn") or {}).get("mode", "wake"),
     }
 

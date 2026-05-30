@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import LEGACY_L2, is_l2_word_lattice, l2_word_lattice_ids, nca_model_registry, shard_stats  # type: ignore
 from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
 
@@ -42,7 +42,7 @@ def _fmt_bytes(n: int) -> str:
 
 def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
     store_dir = store_dir.resolve()
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     lattices = memory_lattices(state)
     fs_path = store_dir / "field_state.json"
     fs_bytes = fs_path.stat().st_size if fs_path.is_file() else 0
@@ -88,7 +88,7 @@ def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
         "field_version": state.get("field_version"),
         "schema": state.get("schema_version"),
         "l2_sharding": shard_stats(state),
-        "cylinders": ["cyl_memory", "cyl_hippo"],
+        "prisms": ["prism_memory", "prism_hippo"],
         "lattice_stack": layers,
         "l2_network_ids": l2_word_lattice_ids(state),
         "disk": disk,
@@ -114,7 +114,7 @@ def render_memory_md(manifest: dict[str, Any]) -> str:
         "## Hierarchy (cyl_memory)",
         "",
         "```text",
-        "cyl_memory",
+        "prism_memory",
     ]
     for row in manifest["lattice_stack"]:
         indent = "  " * (int(row.get("z_level") or 0) + 1)
@@ -163,7 +163,7 @@ def main() -> None:
     args = p.parse_args()
 
     path = args.store_dir / "field_state.json"
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     manifest = build_manifest(args.store_dir, state)
 
     compare: list[dict[str, Any]] = []

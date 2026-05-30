@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import append_episode, ensure_cylinders, save_state  # type: ignore
+from sss_cylinders_v0 import append_episode, ensure_prisms, save_state  # type: ignore
 from sss_surface_v0 import surface_from_sss  # type: ignore
 from sss_wake_util import needs_self_correction, surface_attempt_from_wake, surface_matches_target  # type: ignore
 
@@ -37,8 +37,8 @@ def wake_turn(
 ) -> dict[str, Any]:
     """One wake tick: surface emit; episode when wrong (teacher, auto, or self-correct)."""
     external = (target or teacher or "").strip()
-    state = ensure_cylinders(state)
-    state["sn"] = {**(state.get("sn") or {}), "mode": "wake", "active_cylinder": "cyl_memory"}
+    state = ensure_prisms(state)
+    state["sn"] = {**(state.get("sn") or {}), "mode": "wake", "active_prism": "prism_memory"}
 
     wake = surface_from_sss(state, lattice_id=lattice_id, prompt=cue)
     report: dict[str, Any] = {"wake": wake, "cue": cue, "lattice_id": lattice_id}
@@ -89,7 +89,7 @@ def wake_turn(
         report["auto_episode"] = False
         report["self_episode"] = False
 
-    report["hippo_pending"] = len(state["cylinders"]["cyl_hippo"]["episodes"])
+    report["hippo_pending"] = len(prism_hippo(state)["episodes"])
     return report
 
 

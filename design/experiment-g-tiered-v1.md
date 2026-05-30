@@ -29,4 +29,4 @@ Bench: union model, all bundles @ 0.4 (global, same as E/F).
 
 ## Output
 
-`examples/exp_g_tiered_v1/report.json` — compare to E and F via `tools/compare_exp_ef.py` (point F or G).
+`lab/exp_g_tiered_v1/report.json` — compare to E and F via `tools/compare_exp_ef.py` (point F or G).

@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "kind": "project_doc",
+      "title": "ontology-in-field-poc-findings-v1"
+    },
+    "nodes": [
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+        "kind": "project_doc",
+        "title": "ontology-in-field-poc-findings-v1"
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "kind": "project_doc",
+        "title": null
+      },
+      {
+        "id": "https://github.com/AI-Guiders/casa-ontology-payload",
+        "kind": "url",
+        "title": null
+      }
+    ],
+    "edges": [
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "label": "casa-goals-and-roadmap-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+        "label": "research-ml-ca-substrate-agent-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+        "relation": "references",
+        "dst": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+        "label": "casa-goals-and-roadmap-v1.md"
+      },
+      {
+        "src": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+        "relation": "references",
+        "dst": "https://github.com/AI-Guiders/casa-ontology-payload",
+        "label": null
+      }
+    ]
+  },
+  "claims": [
+    {
+      "concept_id": null,
+      "text": "PoC в casa-ontology-payload: bundle из KB (graph + claims), encode в токен-поле DMN, patch-damage, NCA recovery, метрики F1.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Диалог workspace + прогоны NCA/bench (PersonalCursorFolder, 2026-05-28).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Пайплайн работает: encode → damage → NCA → decode → Precision/Recall/F1.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Что доказал PoC (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Без locality NCA бесполезна (размазанные токены v0: NCA ≈ голосование).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Что доказал PoC (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Семантическое размещение работает:",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Что доказал PoC (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "edges у endpoint’ов → устойчивый +Δ edges F1 (сильнее при большем damage);",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Что доказал PoC (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "concepts у section hub → +Δ concepts F1 (~+0.07 среднее по 3 bundle при damage 0.4) vs hash-якорь.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Что доказал PoC (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Patch-damage обязателен для смысловых тестов (дыры, не только random drop).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Что доказал PoC (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Multi-bundle переносится только при общем layout (union + v2/v3), не при «случайной» геометрии.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Что доказал PoC (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "DMN хранит bundle; кодек по умолчанию: v3 + concept_mode=section + edges как v2.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Рекомендации для v1 CASA («смысл в поле»)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Loss / каналы: не только RGBA — токен-поле (и позже hidden); damage — региональные патчи.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Рекомендации для v1 CASA («смысл в поле»)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Embeddings (HCI-стиль) — опциональный слой поверх layout (близость в векторе), не замена provenance hubs.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Рекомендации для v1 CASA («смысл в поле»)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Метрики: concepts и edges отдельно; смотреть прирост vs baseline при росте damage.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Рекомендации для v1 CASA («смысл в поле»)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Региональность (DMN/CEN/SN) — см. layout v0; DMN = ontology/memory, порты digest/gate без смены контракта.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Рекомендации для v1 CASA («смысл в поле»)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Репозиторий: Financial/software/open/casa-ontology-payload/ (публ. AI-Guiders/casa-ontology-payload).",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Артефакты (вне KB)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Бенчи: lab/concept_locality_bench.json, lab/nca_union3_codec2_patches_w8_curve2_*_s20.json.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Артефакты (вне KB)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "A (KB×8): gate не пройден — общий hub-graph, NCA ≈ baseline @0.4.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Experiments A→B→C (2026-05-28)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "B: decode threshold=0.35, min_votes=2 → в tools/canonical.py.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Experiments A→B→C (2026-05-28)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "C (goal 3): win_rate 71% при 10–12 patches — repair vs agent-error.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Experiments A→B→C (2026-05-28)",
+      "claim_kind": "claim"
+    }
+  ],
+  "concept_index": []
+}

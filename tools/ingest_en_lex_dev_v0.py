@@ -68,7 +68,7 @@ def main() -> None:
     p.add_argument(
         "--headwords",
         type=Path,
-        default=Path("examples/exp_bilingual_v0/en_dev_headwords.v1.txt"),
+        default=Path("lab/exp_bilingual_v0/en_dev_headwords.v1.txt"),
     )
     p.add_argument("--copies", type=int, default=3)
     p.add_argument("--write", action="store_true", help="Persist merged state to field_state.json")

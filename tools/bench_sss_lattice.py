@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_stack_v0 import apply_z_compose_v0, decode_lattice, lattice_digest, load_stack  # type: ignore
 
 
@@ -22,7 +22,7 @@ def main() -> None:
 
     bundle = json.loads(args.bundle.read_text(encoding="utf-8"))
     stack = load_stack(args.stack)
-    state = ensure_cylinders(load_field_state(args.store_dir / "field_state.json"))
+    state = ensure_prisms(load_field_state(args.store_dir / "field_state.json"))
     lattices = memory_lattices(state)
     if not lattices:
         raise SystemExit("no memory lattices in field_state")

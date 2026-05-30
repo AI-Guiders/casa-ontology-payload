@@ -14,9 +14,9 @@ def _read(path: Path) -> dict:
 
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--e", type=Path, default=Path("examples/exp_e_clusters_v1/report.json"))
-    p.add_argument("--f", type=Path, default=Path("examples/exp_f_modules_v2_gpu/report.json"))
-    p.add_argument("--out", type=Path, default=Path("examples/exp_compare_ef_v1/report.json"))
+    p.add_argument("--e", type=Path, default=Path("lab/exp_e_clusters_v1/report.json"))
+    p.add_argument("--f", type=Path, default=Path("lab/exp_f_modules_v2_gpu/report.json"))
+    p.add_argument("--out", type=Path, default=Path("lab/exp_compare_ef_v1/report.json"))
     args = p.parse_args()
 
     e_rep = _read(args.e.resolve())

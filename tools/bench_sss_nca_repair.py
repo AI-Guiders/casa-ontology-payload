@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_nca_codec_v0 import word_tokens_from_lattice  # type: ignore
 from sss_nca_repair_v0 import nca_repair_state_lattice  # type: ignore
 
@@ -22,7 +22,7 @@ def main() -> None:
     p.add_argument("--model", type=Path, default=None)
     p.add_argument("--train", action="store_true", help="Train model first (CPU-friendly epochs)")
     p.add_argument("--epochs", type=int, default=120)
-    p.add_argument("--out-dir", type=Path, default=Path("examples/nca_out_sss_l2_smoke"))
+    p.add_argument("--out-dir", type=Path, default=Path("lab/nca_out_sss_l2_smoke"))
     p.add_argument("--damage-patches", type=int, default=4)
     p.add_argument("--seed", type=int, default=7)
     p.add_argument("--write", action="store_true")
@@ -56,7 +56,7 @@ def main() -> None:
         raise SystemExit(f"Model not found: {model}")
 
     path = args.store_dir / "field_state.json"
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     w_before = len(word_tokens_from_lattice(memory_lattices(state)[args.lattice_id]))
 
     rep = nca_repair_state_lattice(

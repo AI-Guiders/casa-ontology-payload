@@ -10,17 +10,17 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$store = 'examples/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab-v0'
 $grammar = "$store/bundles/kb-russian-language-rules-v1.bundle.v1.json"
 $mre3 = "$store/bundles/kb-regex-mre3-ru-chapter-map-v1.bundle.v1.json"
 
 if ($Union) {
     $bundles = @($grammar, $mre3)
-    $outDir = 'examples/nca_out_exp_j_ru_union_full_v1'
+    $outDir = 'lab/nca_out_exp_j_ru_union_full_v1'
     $tag = 'union'
 } else {
     $bundles = @($grammar)
-    $outDir = 'examples/nca_out_exp_j_ru_grammar_full_v1'
+    $outDir = 'lab/nca_out_exp_j_ru_grammar_full_v1'
     $tag = 'grammar'
 }
 
@@ -38,7 +38,7 @@ New-Item -ItemType Directory -Force -Path $ckptDir | Out-Null
 Copy-Item -Force $model "$ckptDir/model_hard.pt"
 Write-Host "Checkpoint: $ckptDir/model_hard.pt"
 
-$curveOut = "examples/exp_j_ru_v1/curve_${tag}_s${Seeds}.json"
+$curveOut = "lab/exp_j_ru_v1/curve_${tag}_s${Seeds}.json"
 Write-Host "=== damage curve 0.10..0.60 seeds=$Seeds ===" -ForegroundColor Cyan
 python tools/bench_curve_dmn_nca_union.py `
     --bundle $grammar `
@@ -51,8 +51,8 @@ python tools/bench_curve_dmn_nca_union.py `
 
 Write-Host "=== answer field vs repair ===" -ForegroundColor Cyan
 python tools/bench_exp_j_repair_answer.py `
-    --queries examples/exp_j_ru_queries.jsonl `
+    --queries lab/exp_j_ru_queries.jsonl `
     --store-dir $store --model $model `
-    --out "examples/exp_j_ru_v1/report_repair_${tag}.json"
+    --out "lab/exp_j_ru_v1/report_repair_${tag}.json"
 
 Write-Host "Done. model=$model curve=$curveOut"

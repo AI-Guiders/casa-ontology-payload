@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
 import argparse
 import json
 import time
@@ -10,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import (  # type: ignore
     LEGACY_L2,
     SHARD_MODE_HASH,
@@ -54,7 +55,7 @@ def migrate_monolith_to_shards(
     progress_every: int = 2000,
     mode: str = SHARD_MODE_LEXICOGRAPHIC,
 ) -> dict[str, Any]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     cfg = sharding_config(state)
     cfg["enabled"] = True
     cfg["mode"] = mode
@@ -85,7 +86,7 @@ def migrate_monolith_to_shards(
         lattices = memory_lattices(state)
         lattices[LEGACY_L2] = empty_l2_lattice()
         lattices[LEGACY_L2]["legacy_cleared"] = True
-        state["cylinders"]["cyl_memory"]["lattices"] = lattices
+        prism_memory(state)["lattices"] = lattices
         state.setdefault("sss", {})["lattices"] = lattices
 
     state["field_version"] = int(state.get("field_version") or 0) + 1
@@ -113,7 +114,7 @@ def main() -> None:
     args = p.parse_args()
 
     path = args.store_dir / "field_state.json"
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     before = shard_stats(state)
     rep = migrate_monolith_to_shards(
         state,

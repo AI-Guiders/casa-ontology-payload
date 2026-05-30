@@ -8,7 +8,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Literal
 
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from vk_keyboard_v0 import (  # type: ignore
     CAPS_LOCK_KEY,
     SHIFT_KEYS,
@@ -74,7 +74,7 @@ def resolve_decode_index(
     state: dict | None = None,
 ) -> tuple[dict[tuple[str, str], str], str]:
     if state is not None:
-        state = ensure_cylinders(state)
+        state = ensure_prisms(state)
         compose = compose_index_from_state(state)
         if compose:
             return compose, "compose"
@@ -91,11 +91,10 @@ def resolve_decode_index(
 def resolve_role_index(*, state: dict | None = None) -> dict[str, str]:
     if state is None:
         return {}
-    state = ensure_cylinders(state)
-    lat = memory_lattices(state).get("L0_vk_map")
-    if not lat:
-        return {}
-    return role_index_from_lattice(lat)
+    state = ensure_prisms(state)
+    from vk_layout_field_v0 import role_index_from_state  # type: ignore
+
+    return role_index_from_state(state)
 
 
 def list_layout_ids(*, state: dict | None = None) -> list[str]:
@@ -180,7 +179,7 @@ def main() -> None:
 
         core = default_core_ltm_dir()
         if (core / "pack.manifest.json").is_file():
-            state = ensure_cylinders({"schema_version": "multi_cylinder_v1", "field_version": 0})
+            state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
             merge_core_ltm(state, core)
             ensure_vk_compose_index(state)
 

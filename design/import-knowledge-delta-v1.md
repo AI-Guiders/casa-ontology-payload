@@ -20,10 +20,10 @@ No mandatory `train_*.py` on import. Hard-tier **finetune is opt-in** (`--finetu
 |------|------|
 | `tools/import_knowledge_delta.py` | CLI import pipeline |
 | `tools/field_write.py` | merge bundle, encode grid, update field state |
-| `examples/agent-stores/<agent>/` | per-agent local store |
-| `examples/agent-stores/<agent>/field_state.json` | online field (grid + bundle digest) |
-| `examples/agent-stores/<agent>/bundles/` | merged bundle copies |
-| `examples/agent-stores/<agent>/import_log.ndjson` | append-only import audit |
+| `lab/agent-stores/<agent>/` | per-agent local store |
+| `lab/agent-stores/<agent>/field_state.json` | online field (grid + bundle digest) |
+| `lab/agent-stores/<agent>/bundles/` | merged bundle copies |
+| `lab/agent-stores/<agent>/import_log.ndjson` | append-only import audit |
 
 ## Run
 
@@ -32,12 +32,12 @@ cd Financial\software\open\casa-ontology-payload
 
 # Full bundle replace (sample delta)
 python tools/import_knowledge_delta.py `
-  --delta examples/agent-cards/sample-knowledge-delta.v0.json `
+  --delta lab/agent-cards/sample-knowledge-delta.v0.json `
   --copy-checkpoint --bench
 
 # Patch delta (after first import populated store)
 python tools/import_knowledge_delta.py `
-  --delta examples/test-deltas/patch-import-concept.v0.json `
+  --delta lab/test-deltas/patch-import-concept.v0.json `
   --bench
 ```
 

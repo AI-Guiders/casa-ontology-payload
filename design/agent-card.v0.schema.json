@@ -14,7 +14,7 @@
       "type": "string",
       "description": "SHA-256 of immutable L0 pack (epistemics, integrity) the agent must honor."
     },
-    "bundle_dir": { "type": "string", "default": "examples/kb-perdoc" },
+    "bundle_dir": { "type": "string", "default": "lab/kb-perdoc" },
     "bundles": {
       "type": "array",
       "items": { "type": "string" },

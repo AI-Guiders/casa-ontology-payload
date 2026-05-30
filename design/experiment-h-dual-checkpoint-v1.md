@@ -19,7 +19,7 @@ Bench-only replay: `tools/exp_h_dual_checkpoint_bench.py` on existing G weights 
 python tools/exp_h_dual_checkpoint_bench.py
 ```
 
-Output: `examples/exp_h_dual_bench_v1/report.json`
+Output: `lab/exp_h_dual_bench_v1/report.json`
 
 ## Expected
 

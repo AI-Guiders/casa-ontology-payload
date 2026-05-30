@@ -3,7 +3,7 @@
   "module_id_scheme": "{cluster}/{bundle_stem}/{section_slug}",
   "section_key_scheme": "{doc_path}|{section}",
   "clusters_manifest": "manifests/kb-clusters.v0.json",
-  "bundle_dir": "examples/kb-perdoc",
+  "bundle_dir": "lab/kb-perdoc",
   "concept_mode": "section",
   "codec": "v3",
   "module_count": 53,

@@ -3,13 +3,14 @@
 
 from __future__ import annotations
 
+from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
 import argparse
 import copy
 import json
 from pathlib import Path
 
 from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_damage_v0 import damage_memory_lattices  # type: ignore
 from sss_repair_v0 import repair_sss_memory  # type: ignore
 from sss_stack_v0 import decode_lattice, lattice_digest, load_stack  # type: ignore
@@ -56,7 +57,7 @@ def main() -> None:
     bundle = json.loads(args.bundle.read_text(encoding="utf-8"))
     stack = load_stack(args.stack)
     path = args.store_dir / "field_state.json"
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     baseline = _coverage(memory_lattices(state), bundle, stack)
 
     lattices = copy.deepcopy(memory_lattices(state))
@@ -91,7 +92,7 @@ def main() -> None:
     }
 
     if args.write:
-        state["cylinders"]["cyl_memory"]["lattices"] = lattices
+        prism_memory(state)["lattices"] = lattices
         state.setdefault("sss", {})["lattices"] = lattices
         state["field_version"] = int(state.get("field_version") or 0) + 1
         state.setdefault("repair", {})["last_bench"] = report

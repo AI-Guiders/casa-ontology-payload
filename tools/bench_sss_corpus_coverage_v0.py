@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
 from sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text  # type: ignore
 from sss_vocab_v0 import punct_votes_from_field, word_votes_from_field  # type: ignore
 
@@ -39,7 +39,7 @@ def main() -> None:
 
     t0 = time.perf_counter()
     expect_w, expect_p, tale_files = scan_corpus(args.corpus_dir, min_word_len=args.min_word_len)
-    state = ensure_cylinders(load_field_state(args.store_dir / "field_state.json"))
+    state = ensure_prisms(load_field_state(args.store_dir / "field_state.json"))
     wvotes = word_votes_from_field(state)
     pvotes = punct_votes_from_field(state)
 

@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "damage": 0.4,
+  "damage_patches": 8,
+  "epochs": 900,
+  "seeds": 20,
+  "rows": [
+    {
+      "concept_mode": "independent",
+      "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_independent\\model.pt",
+      "bundles": {
+        "lab\\ca-substrate-agent.bundle.v1.json": {
+          "concepts_f1": {
+            "baseline": 0.6591228803402716,
+            "nca": 0.6622849356762399,
+            "delta": 0.003162055335968361
+          },
+          "edges_f1": {
+            "baseline": 0.4127272727272727,
+            "nca": 0.45227272727272727,
+            "delta": 0.03954545454545455
+          }
+        },
+        "lab\\casa-goals.bundle.v1.json": {
+          "concepts_f1": {
+            "baseline": 0.5817929292929291,
+            "nca": 0.5817929292929291,
+            "delta": 0.0
+          },
+          "edges_f1": {
+            "baseline": 0.4127272727272727,
+            "nca": 0.45227272727272727,
+            "delta": 0.03954545454545455
+          }
+        },
+        "lab\\research-spec.bundle.v1.json": {
+          "concepts_f1": {
+            "baseline": 0.7049725274725275,
+            "nca": 0.7099175824175824,
+            "delta": 0.0049450549450549275
+          },
+          "edges_f1": {
+            "baseline": 0.4127272727272727,
+            "nca": 0.45227272727272727,
+            "delta": 0.03954545454545455
+          }
+        }
+      }
+    },
+    {
+      "concept_mode": "doc",
+      "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_doc\\model.pt",
+      "bundles": {
+        "lab\\ca-substrate-agent.bundle.v1.json": {
+          "concepts_f1": {
+            "baseline": 0.5222979373567609,
+            "nca": 0.5281802902979373,
+            "delta": 0.00588235294117645
+          },
+          "edges_f1": {
+            "baseline": 0.4127272727272727,
+            "nca": 0.4209090909090909,
+            "delta": 0.008181818181818179
+          }
+        },
+        "lab\\casa-goals.bundle.v1.json": {
+          "concepts_f1": {
+            "baseline": 0.0,
+            "nca": 0.0,
+            "delta": 0.0
+          },
+          "edges_f1": {
+            "baseline": 0.4127272727272727,
+            "nca": 0.4209090909090909,
+            "delta": 0.008181818181818179
+          }
+        },
+        "lab\\research-spec.bundle.v1.json": {
+          "concepts_f1": {
+            "baseline": 0.7327731092436975,
+            "nca": 0.7427731092436975,
+            "delta": 0.010000000000000009
+          },
+          "edges_f1": {
+            "baseline": 0.4127272727272727,
+            "nca": 0.4209090909090909,
+            "delta": 0.008181818181818179
+          }
+        }
+      }
+    },
+    {
+      "concept_mode": "section",
+      "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_section\\model.pt",
+      "bundles": {
+        "lab\\ca-substrate-agent.bundle.v1.json": {
+          "concepts_f1": {
+            "baseline": 0.6634100978265738,
+            "nca": 0.7339349346305868,
+            "delta": 0.070524836804013
+          },
+          "edges_f1": {
+            "baseline": 0.4127272727272727,
+            "nca": 0.48636363636363633,
+            "delta": 0.07363636363636361
+          }
+        },
+        "lab\\casa-goals.bundle.v1.json": {
+          "concepts_f1": {
+            "baseline": 0.33611111111111114,
+            "nca": 0.3954040404040405,
+            "delta": 0.05929292929292934
+          },
+          "edges_f1": {
+            "baseline": 0.4127272727272727,
+            "nca": 0.44409090909090904,
+            "delta": 0.031363636363636316
+          }
+        },
+        "lab\\research-spec.bundle.v1.json": {
+          "concepts_f1": {
+            "baseline": 0.8218956043956045,
+            "nca": 0.9166071428571427,
+            "delta": 0.09471153846153824
+          },
+          "edges_f1": {
+            "baseline": 0.4127272727272727,
+            "nca": 0.48636363636363633,
+            "delta": 0.07363636363636361
+          }
+        }
+      }
+    },
+    {
+      "concept_mode": "doc_section",
+      "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_doc_section\\model.pt",
+      "bundles": {
+        "lab\\ca-substrate-agent.bundle.v1.json": {
+          "concepts_f1": {
+            "baseline": 0.4895170336909468,
+            "nca": 0.6188146837682442,
+            "delta": 0.12929765007729743
+          },
+          "edges_f1": {
+            "baseline": 0.4127272727272727,
+            "nca": 0.43590909090909086,
+            "delta": 0.023181818181818137
+          }
+        },
+        "lab\\casa-goals.bundle.v1.json": {
+          "concepts_f1": {
+            "baseline": 0.0,
+            "nca": 0.3,
+            "delta": 0.3
+          },
+          "edges_f1": {
+            "baseline": 0.4127272727272727,
+            "nca": 0.42772727272727273,
+            "delta": 0.015000000000000013
+          }
+        },
+        "lab\\research-spec.bundle.v1.json": {
+          "concepts_f1": {
+            "baseline": 0.6914099870717518,
+            "nca": 0.8677731092436975,
+            "delta": 0.17636312217194572
+          },
+          "edges_f1": {
+            "baseline": 0.4127272727272727,
+            "nca": 0.43590909090909086,
+            "delta": 0.023181818181818137
+          }
+        }
+      }
+    }
+  ]
+}

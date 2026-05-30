@@ -17,13 +17,13 @@ No PyTorch on watch path. Finetune off unless `--tier hard` + import flags.
 cd Financial\software\open\casa-ontology-payload
 
 # One-shot refresh all manifest docs
-python tools/kb_field_watcher.py --once --store-dir examples/agent-stores/research-agent-lab-v0
+python tools/kb_field_watcher.py --once --store-dir lab/agent-stores/research-agent-lab-v0
 
 # Poll watch (foreground)
-python tools/kb_field_watcher.py --store-dir examples/agent-stores/research-agent-lab-v0
+python tools/kb_field_watcher.py --store-dir lab/agent-stores/research-agent-lab-v0
 ```
 
-Log: `examples/agent-stores/<agent>/watcher_log.ndjson`
+Log: `lab/agent-stores/<agent>/watcher_log.ndjson`
 
 ## Requirements
 

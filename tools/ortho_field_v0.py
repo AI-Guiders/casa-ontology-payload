@@ -15,7 +15,7 @@ from ortho_process_v0 import (  # type: ignore
     capitalize_grapheme,
     lower_grapheme,
 )
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_stack_v0 import _place_token, decode_lattice  # type: ignore
 
 L3_ID = "L3_phrase"
@@ -30,7 +30,7 @@ def _parse_edge(raw: str) -> tuple[str, str, str] | None:
 
 
 def l3_process_edges(state: dict) -> list[tuple[str, str, str]]:
-    lat = memory_lattices(ensure_cylinders(state)).get(L3_ID) or {}
+    lat = memory_lattices(ensure_prisms(state)).get(L3_ID) or {}
     dec = decode_lattice(lat, min_votes=1)
     out: list[tuple[str, str, str]] = []
     for raw in dec.get("edges") or []:
@@ -41,7 +41,7 @@ def l3_process_edges(state: dict) -> list[tuple[str, str, str]]:
 
 
 def l3_process_ids(state: dict) -> set[str]:
-    lat = memory_lattices(ensure_cylinders(state)).get(L3_ID) or {}
+    lat = memory_lattices(ensure_prisms(state)).get(L3_ID) or {}
     dec = decode_lattice(lat, min_votes=1)
     out: set[str] = set()
     for cid in dec.get("concept_ids") or []:
@@ -69,7 +69,7 @@ def l3_process_ids(state: dict) -> set[str]:
 
 def imprint_l3_concept(state: dict, concept_id: str, *, copies: int = 3) -> None:
     """Place C: concept on L3 (meta / bridge, not necessarily proc.*)."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     lat = _ensure_l3_lattice(state)
     g = Grid(width=int(lat["width"]), height=int(lat["height"]), cells=lat["cells"])
     g = _place_token(g, f"C:{concept_id}", f"C:{concept_id}", copies=copies, radius=4)
@@ -78,7 +78,7 @@ def imprint_l3_concept(state: dict, concept_id: str, *, copies: int = 3) -> None
 
 
 def imprint_process(state: dict, proc_id: str, *, copies: int = 4) -> None:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     lat = _ensure_l3_lattice(state)
     g = Grid(width=int(lat["width"]), height=int(lat["height"]), cells=lat["cells"])
     tok = f"P:{proc_id}"
@@ -89,7 +89,7 @@ def imprint_process(state: dict, proc_id: str, *, copies: int = 4) -> None:
 
 
 def imprint_edge(state: dict, src: str, rel: str, dst: str, *, copies: int = 3) -> None:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     lat = _ensure_l3_lattice(state)
     g = Grid(width=int(lat["width"]), height=int(lat["height"]), cells=lat["cells"])
     tok = f"E:{src}|{rel}|{dst}"
@@ -125,7 +125,7 @@ def has_inverse_pair(state: dict, forward: str, inverse: str) -> bool:
 def _alphabet_samples_from_l0(state: dict) -> list[str]:
     from grapheme_ingest_v0 import GRAPHEME_CYRL_PREFIX, GRAPHEME_LATN_PREFIX  # type: ignore
 
-    lat = memory_lattices(ensure_cylinders(state)).get("L0_grapheme") or {}
+    lat = memory_lattices(ensure_prisms(state)).get("L0_grapheme") or {}
     dec = decode_lattice(lat, min_votes=1)
     chars: list[str] = []
     for cid in dec.get("concept_ids") or []:
@@ -170,7 +170,7 @@ def extract_inverse_after_surprise(
     After ortho surprise: mint inverse process on L3 if derivable from forward proc.
     Does not prescribe Lower in bootstrap — only runs post-critic.
     """
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     rep: dict[str, Any] = {
         "applied_proc": applied_proc,
         "canonical": canonical,

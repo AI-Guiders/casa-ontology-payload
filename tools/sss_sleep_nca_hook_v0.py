@@ -9,7 +9,7 @@ from pathlib import Path
 
 from field_write import load_field_state, save_field_state  # type: ignore
 from gen_kb_from_text_v0 import build_bundle_from_text  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, run_sleep  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, run_sleep  # type: ignore
 from sss_text_tokenize_v0 import norm_text  # type: ignore
 
 
@@ -17,14 +17,14 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--model", type=Path, required=True)
-    p.add_argument("--bukvar", type=Path, default=Path("examples/kb/kb-bukvar-ru-full-v1.payload.json"))
-    p.add_argument("--text", type=Path, default=Path("examples/text/corpus/kolobok-excerpt.txt"))
+    p.add_argument("--bukvar", type=Path, default=Path("lab/kb/kb-bukvar-ru-full-v1.payload.json"))
+    p.add_argument("--text", type=Path, default=Path("lab/text/corpus/kolobok-excerpt.txt"))
     p.add_argument("--lattice-id", default="L2_word", help="Lattice for NCA regrow during sleep")
     args = p.parse_args()
 
     bukvar = json.loads(args.bukvar.read_text(encoding="utf-8"))
     path = args.store_dir / "field_state.json"
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     state.setdefault("nca", {})["model_path"] = str(args.model.resolve())
     bundle = build_bundle_from_text(norm_text(args.text.read_text(encoding="utf-8")), bukvar_bundle=bukvar)
     rep = run_sleep(state, bundle, nca_model_path=args.model, nca_lattice_id=args.lattice_id)

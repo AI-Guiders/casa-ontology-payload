@@ -65,7 +65,7 @@ def main() -> int:
     else:
         steps.append({"label": "init_en_folk_store", "ok": True, "skipped": True})
 
-    core_ltm = root / "examples/agent-core/vk-layouts-v0/ltm/pack.manifest.json"
+    core_ltm = root / "lab/agent-core/vk-layouts-v0/ltm/pack.manifest.json"
     if not core_ltm.is_file():
         steps.append(_run([py, "tools/vk_layout_ingest_v0.py"], cwd=root, label="vk_layout_ingest"))
     else:
@@ -103,7 +103,7 @@ def main() -> int:
                 "--store-dir",
                 str(ru_store),
                 "--cues",
-                "examples/exp_t9_v0/t9_manual_cues.v1.json",
+                "lab/exp_t9_v0/t9_manual_cues.v1.json",
             ],
         ),
         (

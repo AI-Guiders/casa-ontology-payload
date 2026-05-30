@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "task_id": "csharp-console-grade8-v1",
+  "language": "csharp",
+  "description": "8-class console curriculum: 8 canonical programs + pedagogy KB",
+  "kb_doc": "worlds/software-dotnet-csharp/kb-csharp-console-grade8-v1.md",
+  "gold_dir": "lab/exp_k_grade8/gold",
+  "levels": {
+    "K0": "answer@1 on lab/exp_k_grade8/queries.jsonl (25 queries)",
+    "K4": "6/8 tasks build+run from emit (future)"
+  }
+}

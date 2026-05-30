@@ -17,7 +17,7 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Exp K emit+build bench (phase 3 stub)")
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--query", type=str, default="напиши консольную игру угадай число на C#")
-    p.add_argument("--out-dir", type=Path, default=Path("examples/exp_k_guess_number/out_run1"))
+    p.add_argument("--out-dir", type=Path, default=Path("lab/exp_k_guess_number/out_run1"))
     p.add_argument("--build", action="store_true")
     p.add_argument("--run", action="store_true")
     args = p.parse_args()
@@ -30,7 +30,7 @@ def main() -> None:
         "query": args.query,
         "store_dir": str(args.store_dir),
         "out_dir": str(args.out_dir),
-        "gold": "examples/exp_k_guess_number/gold/Program.cs",
+        "gold": "lab/exp_k_guess_number/gold/Program.cs",
     }
     args.out_dir.mkdir(parents=True, exist_ok=True)
     report = args.out_dir / "report_emit.json"

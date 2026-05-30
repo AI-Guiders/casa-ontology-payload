@@ -1,127 +1,112 @@
 #!/usr/bin/env python3
-"""FPN working-memory session (v0) — file-backed; mirrors future grid wm.* channels."""
+"""FPN working memory: agent_session.json + optional lattice_fpn_wm mirror."""
 
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
-from sn_cen_runtime import TaskEmit  # type: ignore
+SESSION_NAME = "agent_session.json"
 
 
 @dataclass
-class WmState:
-    tick: int = 0
+class WorkingMemory:
+    mode: str = "explore"
     goal: str = ""
-    mode: str = "dialogue"  # dialogue | kb_query | code_nav | repair_field
-    stack: list[str] = field(default_factory=list)
+    subgoal: str = ""
+    tick: int = 0
+    user_query: str = ""
+    last_concepts: list[str] = field(default_factory=list)
     last_action: str = ""
-    last_query: str = ""
 
     def to_dict(self) -> dict[str, Any]:
-        return {
-            "tick": self.tick,
-            "goal": self.goal,
-            "mode": self.mode,
-            "stack": list(self.stack),
-            "last_action": self.last_action,
-            "last_query": self.last_query,
-        }
+        return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any] | None) -> WmState:
-        if not data:
+    def from_dict(cls, raw: dict | None) -> WorkingMemory:
+        if not raw:
             return cls()
         return cls(
-            tick=int(data.get("tick") or 0),
-            goal=str(data.get("goal") or ""),
-            mode=str(data.get("mode") or "dialogue"),
-            stack=[str(x) for x in (data.get("stack") or [])],
-            last_action=str(data.get("last_action") or ""),
-            last_query=str(data.get("last_query") or ""),
+            mode=str(raw.get("mode") or "explore"),
+            goal=str(raw.get("goal") or ""),
+            subgoal=str(raw.get("subgoal") or ""),
+            tick=int(raw.get("tick") or 0),
+            user_query=str(raw.get("user_query") or ""),
+            last_concepts=list(raw.get("last_concepts") or []),
+            last_action=str(raw.get("last_action") or ""),
         )
 
 
 def session_path(store_dir: Path) -> Path:
-    return store_dir / "agent_session.json"
+    return store_dir.resolve() / SESSION_NAME
 
 
-def load_session(store_dir: Path) -> WmState:
+def load_session(store_dir: Path) -> WorkingMemory:
     path = session_path(store_dir)
     if not path.is_file():
-        return WmState()
-    data = json.loads(path.read_text(encoding="utf-8"))
-    return WmState.from_dict(data.get("wm"))
+        return WorkingMemory()
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    wm = raw.get("wm") if isinstance(raw, dict) and "wm" in raw else raw
+    return WorkingMemory.from_dict(wm if isinstance(wm, dict) else None)
 
 
-def save_session(store_dir: Path, wm: WmState, *, extra: dict[str, Any] | None = None) -> Path:
+def save_session(store_dir: Path, wm: WorkingMemory) -> None:
     path = session_path(store_dir)
-    doc = {
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
         "schema_version": 1,
         "wm": wm.to_dict(),
-        **(extra or {}),
     }
-    path.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
-    return path
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def infer_mode_from_task(task: TaskEmit) -> str:
-    if task.action in ("open_code",):
-        return "code_nav"
-    if task.action in ("open_kb", "answer_from_memory"):
-        return "kb_query"
-    if "repair" in (task.notes or "").lower():
-        return "repair_field"
-    return "dialogue"
+def effective_user_query(wm: WorkingMemory | None, cli_query: str | None) -> str | None:
+    if cli_query and cli_query.strip():
+        return cli_query.strip()
+    if wm and wm.user_query.strip():
+        return wm.user_query.strip()
+    if wm and wm.goal.strip():
+        return wm.goal.strip()
+    return None
+
+
+def salience_mode_bias(
+    wm: WorkingMemory | None,
+    concept_ids: list[str],
+) -> dict[str, float] | None:
+    if wm is None:
+        return None
+    bias: dict[str, float] = {}
+    boost = 0.12 if wm.mode == "execute" else 0.06
+    for cid in wm.last_concepts:
+        if cid in concept_ids:
+            bias[cid] = boost
+    if wm.goal:
+        g = wm.goal.lower()
+        for cid in concept_ids:
+            tail = cid.split(".")[-1].lower()
+            if tail and tail in g:
+                bias[cid] = bias.get(cid, 0.0) + 0.08
+    return bias or None
 
 
 def fpn_after_cen(
-    wm: WmState,
-    task: TaskEmit,
+    wm: WorkingMemory,
+    task: Any,
     *,
     user_query: str | None = None,
-    set_goal_from_query: bool = True,
-) -> WmState:
-    """P4: CEN outcome → update WM for next tick T."""
-    wm = WmState(
+) -> WorkingMemory:
+    action = getattr(task, "action", None) or (task.get("action") if isinstance(task, dict) else "")
+    intent = getattr(task, "intent", None) or (task.get("intent") if isinstance(task, dict) else "")
+    concepts = list(getattr(task, "concepts", None) or (task.get("concepts") if isinstance(task, dict) else []) or [])
+    return WorkingMemory(
+        mode=wm.mode if wm.mode != "explore" else "execute",
+        goal=wm.goal or str(intent or ""),
+        subgoal=str(action or wm.subgoal),
         tick=wm.tick + 1,
-        goal=wm.goal,
-        mode=infer_mode_from_task(task),
-        stack=list(wm.stack),
-        last_action=task.action,
-        last_query=user_query or wm.last_query,
+        user_query=user_query or wm.user_query,
+        last_concepts=concepts[:8] or wm.last_concepts,
+        last_action=str(action or ""),
     )
-    if user_query and set_goal_from_query:
-        wm.goal = user_query.strip()[:240]
-    elif not wm.goal and task.query_to_dmn:
-        wm.goal = task.query_to_dmn[:240]
-    if task.action == "query_to_dmn" or task.query_to_dmn:
-        sub = (task.query_to_dmn or user_query or "")[:120]
-        if sub and (not wm.stack or wm.stack[-1] != sub):
-            wm.stack = (wm.stack + [sub])[-8:]
-    return wm
-
-
-def salience_mode_bias(wm: WmState, concept_ids: list[str]) -> dict[str, float]:
-    """P5 stub: top-down boost by wm.mode."""
-    bias: dict[str, float] = {}
-    if wm.mode == "kb_query":
-        for cid in concept_ids:
-            if cid.startswith("ru.grammar.") or cid.startswith("ru.regex."):
-                bias[cid] = 0.15
-    elif wm.mode == "code_nav":
-        for cid in concept_ids:
-            if "code" in cid.lower():
-                bias[cid] = 0.12
-    return bias
-
-
-def effective_user_query(wm: WmState, user_query: str | None) -> str | None:
-    """Autonomous tick: reuse goal when no new external query."""
-    if user_query and user_query.strip():
-        return user_query.strip()
-    if wm.goal.strip():
-        return wm.goal.strip()
-    return None

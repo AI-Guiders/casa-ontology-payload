@@ -8,10 +8,10 @@ $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 $env:PYTHONUNBUFFERED = '1'
 
-$ingestRef = 'examples/agent-stores/sss-afan-v0'
-$store = 'examples/agent-stores/sss-ru-lexicon-v0'
-$bukvar = 'examples/kb/kb-bukvar-ru-full-v1.payload.json'
-$exp = 'examples/exp_sss_v1'
+$ingestRef = 'lab/agent-stores/sss-afan-v0'
+$store = 'lab/agent-stores/sss-ru-lexicon-v0'
+$bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
+$exp = 'lab/exp_sss_v1'
 
 Write-Host '=== 0) Ensure store (copy monolith once from ingest ref) ===' -ForegroundColor Green
 New-Item -ItemType Directory -Force -Path $store | Out-Null

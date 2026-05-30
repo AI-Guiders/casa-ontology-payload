@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "guess-number-console-v0",
+  "language": "csharp",
+  "description": "Console game: random 1..100, player guesses, Higher/Lower/Correct",
+  "gold_program": "lab/exp_k_guess_number/gold/Program.cs",
+  "levels": {
+    "K0": "answer@1 on queries.jsonl from code-agent store",
+    "K1": "CEN plan action emit_code with code targets",
+    "K2": "dotnet build succeeds on emitted project",
+    "K3": "dotnet run behaves as higher-lower-correct on scripted stdin"
+  }
+}

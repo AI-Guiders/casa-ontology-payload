@@ -12,7 +12,7 @@ from en_lexicon_v0 import ingest_en_lex_batch, read_headwords  # type: ignore
 from export_ltm_pack_v0 import export_pack  # type: ignore
 from field_write import save_field_state  # type: ignore
 from grapheme_ingest_v0 import derive_graphemes_from_words, ingest_graphemes_batch  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
 from store_layout_v0 import STORE_EN_FOLK_V0, agent_store_dir, field_state_path  # type: ignore
 
 
@@ -23,7 +23,7 @@ def init_en_folk_store(
     copies: int = 3,
 ) -> dict[str, Any]:
     store_dir.mkdir(parents=True, exist_ok=True)
-    state = ensure_cylinders({"schema_version": "multi_cylinder_v1", "field_version": 0})
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
     state.setdefault("store", {})["store_id"] = store_dir.name
     state["store"]["locale"] = "en"
     state["store"]["corpus"] = "en-folk-v0"
@@ -51,7 +51,7 @@ def init_en_folk_store(
                     "",
                     "Boot:",
                     f"```bash",
-                    f"python tools/store_boot_v0.py --store-dir examples/agent-stores/{store_dir.name}",
+                    f"python tools/store_boot_v0.py --store-dir lab/agent-stores/{store_dir.name}",
                     f"```",
                     "",
                 ]
@@ -75,12 +75,12 @@ def main() -> None:
     p.add_argument(
         "--store-dir",
         type=Path,
-        default=root / "examples/agent-stores" / STORE_EN_FOLK_V0,
+        default=root / "lab/agent-stores" / STORE_EN_FOLK_V0,
     )
     p.add_argument(
         "--headwords",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/en_folk_headwords.v1.txt",
+        default=root / "lab/exp_bilingual_v0/en_folk_headwords.v1.txt",
     )
     p.add_argument("--copies", type=int, default=3)
     args = p.parse_args()

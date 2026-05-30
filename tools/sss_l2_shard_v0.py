@@ -3,12 +3,14 @@
 
 from __future__ import annotations
 
+from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+
 import unicodedata
 import zlib
 from collections.abc import Iterable
 from typing import Any
 
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_stack_v0 import decode_lattice, lattice_digest  # type: ignore
 
 LEGACY_L2 = "L2_word"
@@ -59,7 +61,7 @@ def route_en_l2_lattice(state: dict, word: str) -> str:
 
 
 def l2_en_word_lattice_ids(state: dict) -> list[str]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     return sorted(lid for lid in memory_lattices(state) if is_l2_en_word_lattice(lid))
 
 
@@ -251,7 +253,7 @@ def letter_range_for_shard(shard: int, ranges: list[dict[str, Any]]) -> dict[str
 
 
 def sharding_config(state: dict) -> dict[str, Any]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     cfg = dict(state.get("l2_sharding") or {})
     cfg.setdefault("enabled", True)
     cfg.setdefault("num_shards", DEFAULT_NUM_SHARDS)
@@ -386,11 +388,11 @@ def empty_l2_lattice(*, width: int = DEFAULT_LATTICE_SIZE, height: int = DEFAULT
 
 def ensure_l2_lattice(state: dict, lattice_id: str) -> dict:
     """Create shard lattice if missing; sync cyl_memory + sss.lattices."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     lattices = memory_lattices(state)
     if lattice_id not in lattices:
         lattices[lattice_id] = empty_l2_lattice()
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
     return lattices[lattice_id]
 
@@ -405,7 +407,7 @@ def register_word_shard(state: dict, word: str, lattice_id: str) -> None:
 
 def resolve_l2_lattice_for_read(state: dict, word: str) -> str:
     """Route for read/surface: index → legacy monolith → new shard."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     cfg = sharding_config(state)
     w = norm_word(word)
     if not w:
@@ -425,7 +427,7 @@ def resolve_l2_lattice_for_read(state: dict, word: str) -> str:
 
 def route_l2_lattice(state: dict, word: str) -> str:
     """Pick L2 shard for a word (index → lex/hash → legacy fallback)."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     cfg = sharding_config(state)
     w = norm_word(word)
     if not w:
@@ -453,7 +455,7 @@ def route_l2_lattice(state: dict, word: str) -> str:
 
 def l2_word_lattice_ids(state: dict) -> list[str]:
     """All L2 layers: legacy monolith + shards (sorted)."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     cfg = sharding_config(state)
     legacy = str(cfg.get("legacy_lattice") or LEGACY_L2)
     ids = {lid for lid in memory_lattices(state) if is_l2_word_lattice(lid)}
@@ -552,7 +554,7 @@ def shard_stats(state: dict) -> dict[str, Any]:
 
 def clear_l2_shards(state: dict, *, keep_legacy: bool = True) -> None:
     """Drop shard lattices and word index (for re-migrate)."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     cfg = sharding_config(state)
     lattices = memory_lattices(state)
     legacy = str(cfg.get("legacy_lattice") or LEGACY_L2)
@@ -561,5 +563,5 @@ def clear_l2_shards(state: dict, *, keep_legacy: bool = True) -> None:
         del lattices[lid]
     cfg["word_index"] = {}
     state["l2_sharding"] = cfg
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices

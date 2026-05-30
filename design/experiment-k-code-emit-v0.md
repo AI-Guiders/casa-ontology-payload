@@ -87,7 +87,7 @@ Guess-number — **первая контрольная**, не финал.
 
 | Артефакт | Статус |
 |----------|--------|
-| `examples/kb/kb-csharp-guess-number-canonical.md` | 1 мини-док, K0 smoke **answer@1=1** |
+| `lab/kb/kb-csharp-guess-number-canonical.md` | 1 мини-док, K0 smoke **answer@1=1** |
 | `code-agent-lab-v0` store | работает |
 | `software-dotnet-csharp` в union | **не импортирован** в code store |
 
@@ -131,8 +131,8 @@ Lab canonical guess-number, `run_exp_k_smoke.ps1`, K0 recall 1.0 на 5 queries.
 ### Phase 1 — KB «8 класс» ✅ (2026-05-29)
 
 - [`kb-csharp-console-grade8-v1.md`](../../../../experiments/agent-notes/knowledge/worlds/software-dotnet-csharp/kb-csharp-console-grade8-v1.md) — **183 claims**, §0 педагогика, §1–11 синтаксис, §12–19 эталоны, §20–22 ошибки/чеклист
-- Sync: `scripts/run_exp_k_sync_grade8.ps1` → **answer@1 = 1.0** на 25 queries (`examples/exp_k_grade8/queries.jsonl`)
-- Gold: `examples/exp_k_grade8/gold/01..08` (+ guess-number в `exp_k_guess_number`)
+- Sync: `scripts/run_exp_k_sync_grade8.ps1` → **answer@1 = 1.0** на 25 queries (`lab/exp_k_grade8/queries.jsonl`)
+- Gold: `lab/exp_k_grade8/gold/01..08` (+ guess-number в `exp_k_guess_number`)
 - 8× `gold/*.cs` + `queries.jsonl` per task
 - Manifest + sync → `code-agent-lab-v0`
 - Target: **answer@1 ≥ 0.9** на **≥40** queries
@@ -159,8 +159,8 @@ Lab canonical guess-number, `run_exp_k_smoke.ps1`, K0 recall 1.0 на 5 queries.
 ```text
 manifests/kb-bundles-csharp-lab-v0.json     # phase 0
 manifests/kb-bundles-csharp-grade8-v1.json  # phase 1 (to add)
-examples/agent-stores/code-agent-lab-v0/
-examples/exp_k_grade8/
+lab/agent-stores/code-agent-lab-v0/
+lab/exp_k_grade8/
   tasks/*.jsonl
   gold/*.cs
 ```

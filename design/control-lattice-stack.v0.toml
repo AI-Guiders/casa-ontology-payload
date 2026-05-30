@@ -1,0 +1,87 @@
+# Control lattice stack (DMN / SN / FPN / CEN)
+# Canon: design/control-lattice-stack-v0.md
+
+schema_version = 1
+subsystem = "control"
+title = "Control lattice stack (DMN / SN / FPN / CEN)"
+doc = "design/control-lattice-stack-v0.md"
+deprecated_interim = "design/layout.v0.json, design/fpn-control-region-v0.md"
+
+[axes]
+x = "cell within lattice"
+y = "cell within lattice"
+z_ctrl = "which control lattice"
+z_phase = "encode | repair | digest | gate within one lattice"
+t = "CA micro-steps inside z_phase"
+T = "agent macro tick"
+
+[[lattices]]
+id = "lattice_dmn"
+z_ctrl = 0
+size = { width = 32, height = 32 }
+concept_prefix = ""
+role = ["ontology", "claims_nav", "bundle_claims"]
+
+[[lattices]]
+id = "lattice_sn"
+z_ctrl = 1
+size = { width = 32, height = 32 }
+concept_prefix = "salience."
+role = ["gate", "router"]
+
+[[lattices]]
+id = "lattice_fpn_wm"
+z_ctrl = 2
+size = { width = 32, height = 32 }
+concept_prefix = "wm."
+role = ["working_memory", "goal", "mode"]
+
+[[lattices]]
+id = "lattice_cen"
+z_ctrl = 3
+size = { width = 32, height = 32 }
+concept_prefix = "task."
+role = ["planner", "act"]
+
+[[control_bridges]]
+id = "port_P1"
+from = "lattice_dmn"
+to = "lattice_sn"
+kind = "digest"
+channels = ["port.digest.*"]
+
+[[control_bridges]]
+id = "port_P2a"
+from = "lattice_sn"
+to = "lattice_fpn_wm"
+kind = "salience"
+channels = ["port.salience.*"]
+
+[[control_bridges]]
+id = "port_P2b"
+from = "lattice_fpn_wm"
+to = "lattice_cen"
+kind = "wm_gated"
+channels = ["port.wm.*"]
+
+[[control_bridges]]
+id = "port_P3"
+from = "lattice_cen"
+to = "lattice_dmn"
+kind = "task_query"
+channels = ["port.task.*"]
+
+[[control_bridges]]
+id = "port_P4"
+from = "lattice_cen"
+to = "lattice_fpn_wm"
+kind = "outcome"
+channels = ["port.outcome.*"]
+
+[[control_bridges]]
+id = "port_P5"
+from = "lattice_fpn_wm"
+to = "lattice_sn"
+kind = "mode_bias"
+channels = ["port.mode.*"]
+optional = true

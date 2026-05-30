@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
 import copy
 from pathlib import Path
 from typing import Any
@@ -177,7 +178,7 @@ def nca_repair_state_lattice(
         device=device,
     )
     lattices[lattice_id] = rep["lattice"]
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
     state.setdefault("nca", {})["last_repair"] = {key: val for key, val in rep.items() if key != "lattice"}
     return rep

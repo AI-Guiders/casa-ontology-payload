@@ -56,7 +56,7 @@ def rebuild_sss_store(
     }
     state["claims_nav"] = build_claims_nav([(bundle_name, bundle)])
     state["subsystem"] = "sss"
-    state["schema_version"] = "multi_cylinder_v1"
+    state["schema_version"] = "multi_prism_v1"
     state["sss"] = {
         "stack": str(stack_path or "design/sss-lattice-stack.v0.json"),
         "lattices": lattices,
@@ -65,14 +65,14 @@ def rebuild_sss_store(
         "listen_passes": listen_passes,
         "last_compose": bridge_report,
     }
-    state["cylinders"] = {
-        "cyl_memory": {
+    state["prisms"] = {
+        "prism_memory": {
             "subsystem": "sss",
             "stack": state["sss"]["stack"],
             "lattices": lattices,
             "active_lattice": "L0_grapheme",
         },
-        "cyl_hippo": {
+        "prism_hippo": {
             "subsystem": "episodic",
             "lattices": {
                 "H0_episode": {
@@ -86,7 +86,7 @@ def rebuild_sss_store(
             "episodes": [],
         },
     }
-    state["sn"] = {"active_cylinder": "cyl_memory", "active_lattice": "L0_grapheme", "mode": "wake"}
+    state["sn"] = {"active_prism": "prism_memory", "active_lattice": "L0_grapheme", "mode": "wake"}
     state["consolidation"] = {"last_sleep_tick": 0, "episodes_merged_total": 0}
     state["grid"] = None
     state["field_version"] = int(state.get("field_version") or 0) + listen_passes

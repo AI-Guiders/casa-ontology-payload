@@ -102,6 +102,6 @@ class UtterancePlan:
 
 ```powershell
 python tools/bench_articulation_realize.py `
-  --queries examples/exp_j_ru_v1/queries_oral_exam.jsonl `
-  --store-dir examples/agent-stores/language-agent-lab-v0
+  --queries lab/exp_j_ru_v1/queries_oral_exam.jsonl `
+  --store-dir lab/agent-stores/language-agent-lab-v0
 ```

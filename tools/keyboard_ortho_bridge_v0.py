@@ -22,7 +22,7 @@ from ortho_process_v0 import (  # type: ignore
     PROC_SENTENCE_CASE,
     PROC_UPPER,
 )
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
 
 # Cross-layer listen edges (L3): input modality ↔ ortho Process
 BRIDGE_EDGES: list[tuple[str, str, str]] = [
@@ -63,7 +63,7 @@ def ingest_keyboard_ortho_bridge(
     Imprint explicit links: Shift → capitalize atom; Caps Lock → ALL CAPS (Upper fold).
     Requires L3; bootstraps Capitalize+Upper if missing.
     """
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     ortho_rep: dict[str, Any] | None = None
     if ensure_ortho_bootstrap and PROC_CAPITALIZE not in l3_process_ids(state):
         ortho_rep = imprint_capitalize_bootstrap(state, copies=copies)
@@ -118,7 +118,7 @@ def main() -> None:
     p.add_argument("--copies", type=int, default=4)
     args = p.parse_args()
 
-    state = ensure_cylinders({"schema_version": "multi_cylinder_v1", "field_version": 0})
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
     rep = ingest_keyboard_ortho_bridge(state, copies=args.copies)
     print(json.dumps(rep, ensure_ascii=False, indent=2))
 

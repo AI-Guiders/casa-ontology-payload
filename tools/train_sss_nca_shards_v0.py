@@ -10,8 +10,13 @@ import sys
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
-from sss_l2_shard_v0 import is_l2_word_lattice, l2_word_lattice_ids, set_nca_model, shard_stats  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
+from sss_l2_shard_v0 import (  # type: ignore
+    is_nca_trainable_lattice,
+    l2_lexicon_lattice_ids,
+    set_nca_model,
+    shard_stats,
+)
 from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
 from nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge  # type: ignore
 from nca_train_util import add_device_args  # type: ignore
@@ -41,12 +46,12 @@ def main() -> None:
     use_store_nca = args.out_dir is None
     report_dir = nca_root(args.store_dir) if use_store_nca else args.out_dir
 
-    state = ensure_cylinders(load_field_state(args.store_dir / "field_state.json"))
+    state = ensure_prisms(load_field_state(args.store_dir / "field_state.json"))
     lattices = memory_lattices(state)
 
     targets: list[str] = []
     if args.layer in ("L2", "all"):
-        targets.extend(l2_word_lattice_ids(state))
+        targets.extend(l2_lexicon_lattice_ids(state))
     if args.layer in ("L1", "all"):
         targets.append("L1_syllable")
     if args.layer in ("L0", "all"):
@@ -63,7 +68,7 @@ def main() -> None:
             row["reason"] = "min_tokens"
             results.append(row)
             continue
-        if is_l2_word_lattice(lid) and token_count > args.max_tokens:
+        if is_nca_trainable_lattice(lid) and token_count > args.max_tokens:
             row["skipped"] = True
             row["reason"] = "max_tokens"
             results.append(row)

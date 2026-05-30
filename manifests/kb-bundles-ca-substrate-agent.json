@@ -6,61 +6,61 @@
   "hub": {
     "md": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
     "root_id": "work/projects/door-to-singularity/ca-substrate-agent/README.md",
-    "graph_out": "examples/kb/ca-substrate-agent.hub.graph.json"
+    "graph_out": "lab/kb/ca-substrate-agent.hub.graph.json"
   },
   "payload_docs": [
     {
       "md": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
       "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
-      "payload_out": "examples/kb/casa-goals.payload.json",
-      "bundle_out": "examples/kb/casa-goals.bundle.v1.json"
+      "payload_out": "lab/kb/casa-goals.payload.json",
+      "bundle_out": "lab/kb/casa-goals.bundle.v1.json"
     },
     {
       "md": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
       "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
-      "payload_out": "examples/kb/research-ml.payload.json",
-      "bundle_out": "examples/kb/research-ml.bundle.v1.json"
+      "payload_out": "lab/kb/research-ml.payload.json",
+      "bundle_out": "lab/kb/research-ml.bundle.v1.json"
     },
     {
       "md": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
       "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
-      "payload_out": "examples/kb/ontology-poc-findings.payload.json",
-      "bundle_out": "examples/kb/ontology-poc-findings.bundle.v1.json"
+      "payload_out": "lab/kb/ontology-poc-findings.payload.json",
+      "bundle_out": "lab/kb/ontology-poc-findings.bundle.v1.json"
     },
     {
       "md": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
       "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
-      "payload_out": "examples/kb/research-training.payload.json",
-      "bundle_out": "examples/kb/research-training.bundle.v1.json"
+      "payload_out": "lab/kb/research-training.payload.json",
+      "bundle_out": "lab/kb/research-training.bundle.v1.json"
     },
     {
       "md": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
       "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
-      "payload_out": "examples/kb/research-tda-flow.payload.json",
-      "bundle_out": "examples/kb/research-tda-flow.bundle.v1.json"
+      "payload_out": "lab/kb/research-tda-flow.payload.json",
+      "bundle_out": "lab/kb/research-tda-flow.bundle.v1.json"
     },
     {
       "md": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
       "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
-      "payload_out": "examples/kb/playbook-tda-flow.payload.json",
-      "bundle_out": "examples/kb/playbook-tda-flow.bundle.v1.json"
+      "payload_out": "lab/kb/playbook-tda-flow.payload.json",
+      "bundle_out": "lab/kb/playbook-tda-flow.bundle.v1.json"
     },
     {
       "md": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
       "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
-      "payload_out": "examples/kb/kb-distill-nca.payload.json",
-      "bundle_out": "examples/kb/kb-distill-nca.bundle.v1.json"
+      "payload_out": "lab/kb/kb-distill-nca.payload.json",
+      "bundle_out": "lab/kb/kb-distill-nca.bundle.v1.json"
     },
     {
       "md": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
       "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
-      "payload_out": "examples/kb/casa-adr-0001.payload.json",
-      "bundle_out": "examples/kb/casa-adr-0001.bundle.v1.json"
+      "payload_out": "lab/kb/casa-adr-0001.payload.json",
+      "bundle_out": "lab/kb/casa-adr-0001.bundle.v1.json"
     }
   ],
   "union_train_bundles": [
-    "examples/ca-substrate-agent.bundle.v1.json",
-    "examples/casa-goals.bundle.v1.json",
-    "examples/research-spec.bundle.v1.json"
+    "lab/ca-substrate-agent.bundle.v1.json",
+    "lab/casa-goals.bundle.v1.json",
+    "lab/research-spec.bundle.v1.json"
   ]
 }

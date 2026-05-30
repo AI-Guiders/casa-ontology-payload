@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Multi-cylinder SSS: cyl_memory + cyl_hippo + sleep consolidate."""
+"""Multi-prism SSS: prism_memory + prism_hippo + sleep consolidate."""
 
 from __future__ import annotations
 
@@ -9,6 +9,15 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
+from prism_state_v0 import (  # type: ignore
+    PRISM_HIPPO,
+    PRISM_MEMORY,
+    SCHEMA_CURRENT,
+    normalize_prisms,
+    prism_hippo,
+    prism_memory,
+    set_active_prism,
+)
 from codec_grid_v0 import Grid  # type: ignore
 from field_write import load_field_state, save_field_state  # type: ignore
 from sss_stack_v0 import (  # type: ignore
@@ -35,40 +44,42 @@ def empty_hippo_lattice(*, width: int = 32, height: int = 32) -> dict:
 
 
 def ensure_cylinders(state: dict) -> dict:
-    """Migrate sss-only field_state → multi_cylinder_v1."""
-    if state.get("cylinders") and state["cylinders"].get("cyl_memory"):
+    """Ensure prism blocks (legacy name ensure_cylinders). Reads old cyl_* on load."""
+    normalize_prisms(state)
+    mem = prism_memory(state)
+    if mem.get("lattices"):
         return state
     sss = state.get("sss") or {}
     lattices = sss.get("lattices") or {}
-    state["schema_version"] = "multi_cylinder_v1"
-    state["cylinders"] = {
-        "cyl_memory": {
-            "subsystem": "sss",
-            "stack": sss.get("stack") or "design/sss-lattice-stack.v0.json",
-            "lattices": lattices,
-            "active_lattice": sss.get("active_lattice") or "L0_grapheme",
-        },
-        "cyl_hippo": {
-            "subsystem": "episodic",
-            "lattices": {"H0_episode": empty_hippo_lattice()},
-            "episodes": list((state.get("cylinders") or {}).get("cyl_hippo", {}).get("episodes") or []),
-        },
+    state["schema_version"] = SCHEMA_CURRENT
+    mem["subsystem"] = "sss"
+    mem["stack"] = sss.get("stack") or "design/sss-lattice-stack.v0.toml"
+    mem["lattices"] = lattices
+    mem["active_lattice"] = sss.get("active_lattice") or "L0_grapheme_cyrl"
+    hip = prism_hippo(state)
+    hip.setdefault("subsystem", "episodic")
+    hip.setdefault("lattices", {"H0_episode": empty_hippo_lattice()})
+    hip.setdefault("episodes", list(hip.get("episodes") or []))
+    state["sn"] = {
+        **(state.get("sn") or {}),
+        "active_lattice": mem["active_lattice"],
+        "mode": (state.get("sn") or {}).get("mode") or "wake",
     }
-    state["sn"] = state.get("sn") or {
-        "active_cylinder": "cyl_memory",
-        "active_lattice": "L0_grapheme",
-        "mode": "wake",
-    }
+    set_active_prism(state, PRISM_MEMORY)
     state["consolidation"] = state.get("consolidation") or {
         "last_sleep_tick": 0,
         "episodes_merged_total": 0,
     }
+    state.setdefault("sss", {})["lattices"] = lattices
     return state
+
+
+ensure_prisms = ensure_cylinders
 
 
 def memory_lattices(state: dict) -> dict[str, dict]:
     state = ensure_cylinders(state)
-    mem = state["cylinders"]["cyl_memory"]
+    mem = prism_memory(state)
     if mem.get("lattices"):
         return mem["lattices"]
     return (state.get("sss") or {}).get("lattices") or {}
@@ -76,7 +87,7 @@ def memory_lattices(state: dict) -> dict[str, dict]:
 
 def hippo_episodes(state: dict) -> list[dict]:
     state = ensure_cylinders(state)
-    return list(state["cylinders"]["cyl_hippo"].get("episodes") or [])
+    return list(prism_hippo(state).get("episodes") or [])
 
 
 def concept_id_for_surface(bundle: dict, surface: str, *, lattice_id: str) -> str | None:
@@ -84,6 +95,8 @@ def concept_id_for_surface(bundle: dict, surface: str, *, lattice_id: str) -> st
     if not surface:
         return None
     prefix_map = {
+        "L0_grapheme_cyrl": "grapheme.cyrl.",
+        "L0_grapheme_latn": "grapheme.latn.",
         "L0_grapheme": "grapheme.",
         "L1_syllable": "syllable.",
         "L2_word": "lang.word.",
@@ -135,7 +148,7 @@ def append_episode(
         "consolidated": False,
         "kind": "surface",
     }
-    hippo = state["cylinders"]["cyl_hippo"]
+    hippo = prism_hippo(state)
     hippo.setdefault("episodes", []).append(ep)
 
     h0 = hippo["lattices"]["H0_episode"]
@@ -148,7 +161,8 @@ def append_episode(
     g = _place_token(g, tok, tok, copies=2, radius=3)
     h0["cells"] = g.cells
 
-    state["sn"] = {**(state.get("sn") or {}), "active_cylinder": "cyl_hippo", "mode": "wake"}
+    set_active_prism(state, PRISM_HIPPO)
+    state["sn"] = {**(state.get("sn") or {}), "mode": "wake"}
     state["field_version"] = int(state.get("field_version") or 0) + 1
     return ep
 
@@ -177,7 +191,7 @@ def append_rule_episode(
         "concept_id": concept_id_for_surface(bundle, word, lattice_id="L2_word") if bundle else None,
         "consolidated": False,
     }
-    hippo = state["cylinders"]["cyl_hippo"]
+    hippo = prism_hippo(state)
     hippo.setdefault("episodes", []).append(ep)
 
     h0 = hippo["lattices"]["H0_episode"]
@@ -192,7 +206,8 @@ def append_rule_episode(
     g = _place_token(g, rtok, rtok, copies=3, radius=4)
     h0["cells"] = g.cells
 
-    state["sn"] = {**(state.get("sn") or {}), "active_cylinder": "cyl_hippo", "mode": "wake"}
+    set_active_prism(state, PRISM_HIPPO)
+    state["sn"] = {**(state.get("sn") or {}), "mode": "wake"}
     state["field_version"] = int(state.get("field_version") or 0) + 1
     return ep
 
@@ -222,7 +237,7 @@ def _strengthen_rule(state: dict, rule_id: str, *, copies: int = 5) -> None:
         g = _place_token(g, rtok, rtok, copies=copies, radius=5)
         lat["cells"] = g.cells
 
-    hippo = state["cylinders"]["cyl_hippo"]
+    hippo = prism_hippo(state)
     h0 = hippo["lattices"]["H0_episode"]
     g = Grid(
         width=int(h0["width"]),
@@ -239,7 +254,7 @@ def _strengthen_rule(state: dict, rule_id: str, *, copies: int = 5) -> None:
         "votes": int(rule_votes_from_field(state).get(rule_id, 0)),
         "source": "field",
     }
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     sss["lattices"] = lattices
 
 
@@ -267,11 +282,11 @@ def run_sleep(
     nca_model_path: Path | None = None,
     nca_lattice_id: str = "L2_word",
 ) -> dict:
-    """T_sleep: merge hippo episodes → cyl_memory; prune consolidated."""
+    """T_sleep: merge hippo episodes → prism_memory; prune consolidated."""
     state = ensure_cylinders(state)
     stack = load_stack(stack_path)
     lattices = memory_lattices(state)
-    hippo = state["cylinders"]["cyl_hippo"]
+    hippo = prism_hippo(state)
     episodes = hippo.get("episodes") or []
     merged: list[dict] = []
     pending = []
@@ -317,7 +332,7 @@ def run_sleep(
     compose = apply_z_compose_v0(lattices, bundle, stack)
 
     hippo["episodes"] = pending
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state["sss"] = {
         **(state.get("sss") or {}),
         "lattices": lattices,
@@ -338,7 +353,7 @@ def run_sleep(
 
             reg = nca_regrow_lattice(lattices[nca_lattice_id], nca_path, device="cpu")
             lattices[nca_lattice_id] = reg["lattice"]
-            state["cylinders"]["cyl_memory"]["lattices"] = lattices
+            prism_memory(state)["lattices"] = lattices
             state.setdefault("sss", {})["lattices"] = lattices
             nca_report = {"mode": "regrow", "lattice_id": nca_lattice_id, **{k: v for k, v in reg.items() if k != "lattice"}}
         except Exception as exc:  # noqa: BLE001 — sleep must not fail on optional NCA
@@ -351,7 +366,8 @@ def run_sleep(
         "items": merged,
         "nca": nca_report,
     }
-    state["sn"] = {**(state.get("sn") or {}), "active_cylinder": "cyl_memory", "mode": "wake"}
+    set_active_prism(state, PRISM_MEMORY)
+    state["sn"] = {**(state.get("sn") or {}), "mode": "wake"}
     state["field_version"] = int(state.get("field_version") or 0) + 1
     return cons["last_sleep"]
 

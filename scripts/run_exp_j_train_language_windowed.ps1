@@ -9,12 +9,12 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$store = 'examples/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab-v0'
 $grammar = "$store/bundles/kb-russian-language-rules-v1.bundle.v1.json"
 $literacy = "$store/bundles/kb-russian-literacy-agent.bundle.v1.json"
 $bundles = @($grammar, $literacy)
-$outDir = 'examples/nca_out_exp_j_ru_language_windowed_v1'
-$reportDir = 'examples/exp_j_ru_v1'
+$outDir = 'lab/nca_out_exp_j_ru_language_windowed_v1'
+$reportDir = 'lab/exp_j_ru_v1'
 
 if (-not (Test-Path $literacy)) {
     throw "Run run_exp_j0_literacy_sync.ps1 first (missing $literacy)"

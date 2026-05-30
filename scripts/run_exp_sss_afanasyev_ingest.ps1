@@ -6,10 +6,10 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'examples/agent-stores/sss-afan-v0'
-$bukvar = 'examples/kb/kb-bukvar-ru-full-v1.payload.json'
-$corpus = 'examples/text/corpus/afanasyev'
-$exp = 'examples/exp_sss_v1'
+$store = 'lab/agent-stores/sss-afan-v0'
+$bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
+$corpus = 'lab/text/corpus/afanasyev'
+$exp = 'lab/exp_sss_v1'
 
 Write-Host '=== sanitize corpus (OCR/editorial) ===' -ForegroundColor Cyan
 python tools/sanitize_afanasyev_corpus_v0.py --corpus-dir $corpus `
@@ -37,7 +37,7 @@ python tools/sss_read_batch_v0.py `
 Write-Host '=== punct coverage sample ===' -ForegroundColor Cyan
 python tools/bench_sss_text_ingest.py `
     --store-dir $store `
-    --text examples/text/corpus/afanasyev/afan-v1-n001.txt `
+    --text lab/text/corpus/afanasyev/afan-v1-n001.txt `
     --out "$exp/report_afanasyev_punct_after_ingest.json"
 
 Write-Host 'Done Afanasyev ingest.'

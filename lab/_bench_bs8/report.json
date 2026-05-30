@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "experiment": "F_module_train_v0",
+  "cluster": "ops",
+  "train_mode": "module_masked_v0",
+  "module_count": 13,
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage_patches": 6,
+  "epochs": 20,
+  "token_count_union": 73,
+  "bundles": [
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\ca-substrate-agent.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\casa-goals.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\kb-distill-nca.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\playbook-tda-flow.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\research-spec.bundle.v1.json"
+  ],
+  "model": null,
+  "reports": [
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\kb-distill-nca.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "edges": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 8,
+          "precision": 1.0,
+          "recall": 0.2,
+          "f1": 0.33333333333333337
+        }
+      }
+    },
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\playbook-tda-flow.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "edges": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571
+        }
+      }
+    }
+  ]
+}

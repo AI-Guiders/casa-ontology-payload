@@ -8,18 +8,18 @@
       "md": "worlds/evidence-humanities-shelf/kb-math-concrete-schemas-v1.md",
       "doc_path": "worlds/evidence-humanities-shelf/kb-math-concrete-schemas-v1.md",
       "status": "todo_L0",
-      "bundle_out": "examples/kb/kb-math-concrete-schemas.bundle.v1.json"
+      "bundle_out": "lab/kb/kb-math-concrete-schemas.bundle.v1.json"
     },
     {
       "md": "worlds/evidence-humanities-shelf/kb-bukvar-ru-animals-v1.md",
       "doc_path": "worlds/evidence-humanities-shelf/kb-bukvar-ru-animals-v1.md",
       "status": "todo_L4",
-      "bundle_out": "examples/kb/kb-bukvar-ru-animals.bundle.v1.json"
+      "bundle_out": "lab/kb/kb-bukvar-ru-animals.bundle.v1.json"
     }
   ],
   "union_train_bundles": [
-    "examples/kb/kb-math-concrete-schemas.bundle.v1.json",
-    "examples/kb/kb-bukvar-ru-animals.bundle.v1.json"
+    "lab/kb/kb-math-concrete-schemas.bundle.v1.json",
+    "lab/kb/kb-bukvar-ru-animals.bundle.v1.json"
   ],
-  "notes": "Exp L: после Exp J. image_ref в examples/exp_l_vision/. См. design/experiment-l-concrete-to-abstract-v0.md"
+  "notes": "Exp L: после Exp J. image_ref в lab/exp_l_vision/. См. design/experiment-l-concrete-to-abstract-v0.md"
 }

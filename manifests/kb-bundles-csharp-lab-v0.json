@@ -5,14 +5,14 @@
   "default_kb_root_relative": "../../../../../../../../experiments/agent-notes/knowledge",
   "payload_docs": [
     {
-      "md": "examples/kb/kb-csharp-guess-number-canonical.md",
-      "doc_path": "examples/kb/kb-csharp-guess-number-canonical.md",
-      "payload_out": "examples/kb/kb-csharp-guess-number-canonical.payload.json",
-      "bundle_out": "examples/kb/kb-csharp-guess-number-canonical.bundle.v1.json"
+      "md": "lab/kb/kb-csharp-guess-number-canonical.md",
+      "doc_path": "lab/kb/kb-csharp-guess-number-canonical.md",
+      "payload_out": "lab/kb/kb-csharp-guess-number-canonical.payload.json",
+      "bundle_out": "lab/kb/kb-csharp-guess-number-canonical.bundle.v1.json"
     }
   ],
   "union_train_bundles": [
-    "examples/kb/kb-csharp-guess-number-canonical.bundle.v1.json"
+    "lab/kb/kb-csharp-guess-number-canonical.bundle.v1.json"
   ],
   "notes": "Exp K phase 0: lab-local canonical guess-number KB. Phase 1 adds agent-notes kb-csharp-console-basics-v1."
 }

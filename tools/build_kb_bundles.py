@@ -41,7 +41,7 @@ def main() -> None:
         "--out-dir",
         type=Path,
         default=None,
-        help="Bundle output dir (default: examples/kb or examples/kb-perdoc)",
+        help="Bundle output dir (default: lab/kb or lab/kb-perdoc)",
     )
     args = p.parse_args()
 
@@ -63,7 +63,7 @@ def main() -> None:
     per_doc = args.per_doc_graph
     out_base = args.out_dir
     if out_base is None:
-        out_base = repo / ("examples/kb-perdoc" if per_doc else "examples/kb")
+        out_base = repo / ("lab/kb-perdoc" if per_doc else "lab/kb")
     else:
         out_base = (repo / out_base).resolve()
     out_base.mkdir(parents=True, exist_ok=True)

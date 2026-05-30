@@ -69,7 +69,7 @@ stroke.down.long
 
 **Reference** для critic v0:
 
-- PNG из [`grapheme-glyphs/`](../examples/exp_bilingual_v0/grapheme-glyphs/) (ScriptS cursive)
+- PNG из [`grapheme-glyphs/`](../lab/exp_bilingual_v0/grapheme-glyphs/) (ScriptS cursive)
 - или упрощённый **prototype** на grid (occupancy mask L0 cell)
 
 Teacher: human overlay «вот так», surprise → Extract mint `proc.stroke.*` или `E: stroke | part_of | grapheme`.

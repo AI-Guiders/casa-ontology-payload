@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, run_sleep, save_state  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, run_sleep, save_state  # type: ignore
 from sss_hypothesis_v0 import hypothesis_turn  # type: ignore
 from sss_segment_v0 import format_segment, segment_vowel_nuclei  # type: ignore
 
@@ -47,7 +47,7 @@ def main() -> None:
     words = heldout if isinstance(heldout, list) else heldout.get("words") or []
 
     path = args.store_dir / "field_state.json"
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
 
     before = _eval(copy.deepcopy(state), words)
 

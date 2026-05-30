@@ -135,12 +135,12 @@ def main() -> int:
     p.add_argument(
         "--bundle",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/kb-entity-surfaces-dev.v1.json",
+        default=root / "lab/exp_bilingual_v0/kb-entity-surfaces-dev.v1.json",
     )
     p.add_argument(
         "--headwords",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/en_folk_headwords.v1.txt",
+        default=root / "lab/exp_bilingual_v0/en_folk_headwords.v1.txt",
     )
     p.add_argument("--top-k", type=int, default=8)
     args = p.parse_args()

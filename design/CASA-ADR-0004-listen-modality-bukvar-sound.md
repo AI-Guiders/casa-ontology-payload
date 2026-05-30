@@ -227,7 +227,7 @@ T:voice.masha              |  speaker_of |  …
 | `listen_mass_ingest_v0.py` | manifest.ndjson → `listen_scene` / checkpoint / `field_version` |
 | `srt_to_listen_manifest_v0.py` | `.srt` → manifest (+ optional ffmpeg slice) |
 | `bench_listen_coverage_v0.py` | после mass: headword / scene activation counts |
-| `examples/exp_listen_v0/` | один эпизод + cues для controlled tick |
+| `lab/exp_listen_v0/` | один эпизод + cues для controlled tick |
 
 **Минимальный v0 без wav:** субтитры → manifest → `listen_mass_ingest` — encode работает **сегодня** через существующий `listen_scene`.
 
@@ -268,7 +268,7 @@ T:voice.masha              |  speaker_of |  …
 
 **Mass до controlled:** сначала encode фонового корпуса (слова и фразы в потоке); lab ticks B0/B1 — на symbolic или вырезках, не вместо «утробы».
 
-Параллель: PNG cursive ([`grapheme-glyphs/`](../examples/exp_bilingual_v0/grapheme-glyphs/)) — **глаз**; audio manifest — **ухо**; один `concept_id`, два visual/acoustic particular.
+Параллель: PNG cursive ([`grapheme-glyphs/`](../lab/exp_bilingual_v0/grapheme-glyphs/)) — **глаз**; audio manifest — **ухо**; один `concept_id`, два visual/acoustic particular.
 
 ### 5. Bilingual
 
@@ -327,7 +327,7 @@ T:voice.masha              |  speaker_of |  …
 - `listen_mass_ingest_v0.py` — manifest → `listen_scene` batch.
 - `srt_to_listen_manifest_v0.py` — субтитры мультиков → manifest.
 - `bench_listen_coverage_v0.py` — coverage после mass corpus.
-- `examples/exp_listen_v0/` — manifest + optional `audio/` + controlled cues.
+- `lab/exp_listen_v0/` — manifest + optional `audio/` + controlled cues.
 
 ### Не делаем в draft
 

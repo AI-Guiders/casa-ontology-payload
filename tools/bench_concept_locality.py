@@ -32,9 +32,9 @@ def main() -> None:
         nargs="+",
         type=Path,
         default=[
-            Path("examples/ca-substrate-agent.bundle.v1.json"),
-            Path("examples/casa-goals.bundle.v1.json"),
-            Path("examples/research-spec.bundle.v1.json"),
+            Path("lab/ca-substrate-agent.bundle.v1.json"),
+            Path("lab/casa-goals.bundle.v1.json"),
+            Path("lab/research-spec.bundle.v1.json"),
         ],
     )
     p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
@@ -43,7 +43,7 @@ def main() -> None:
     p.add_argument("--epochs", type=int, default=1000)
     p.add_argument("--seeds", type=int, default=20)
     p.add_argument("--modes", default="independent,doc,section,doc_section")
-    p.add_argument("--out", type=Path, default=Path("examples/concept_locality_bench.json"))
+    p.add_argument("--out", type=Path, default=Path("lab/concept_locality_bench.json"))
     args = p.parse_args()
 
     root = Path(__file__).resolve().parent.parent
@@ -52,7 +52,7 @@ def main() -> None:
 
     rows: list[dict] = []
     for mode in modes:
-        out_dir = root / "examples" / f"nca_out_v3_{mode}"
+        out_dir = root / "lab" / f"nca_out_v3_{mode}"
         model = out_dir / "model.pt"
         _run(
             [
@@ -94,7 +94,7 @@ def main() -> None:
         mode_row: dict = {"concept_mode": mode, "model": str(model), "bundles": {}}
         for bundle in args.bundles:
             bpath = root / bundle
-            bench_out = root / "examples" / f"_bench_v3_{mode}_{bundle.stem}.json"
+            bench_out = root / "lab" / f"_bench_v3_{mode}_{bundle.stem}.json"
             _run(
                 [
                     py,

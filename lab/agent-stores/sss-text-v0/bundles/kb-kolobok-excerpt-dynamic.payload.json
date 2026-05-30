@@ -1,0 +1,2594 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "lab\\text\\kolobok-excerpt.txt",
+      "kind": "text_ingest",
+      "title": "Читаем: kolobok-excerpt.txt"
+    },
+    "nodes": [
+      {
+        "id": "lab\\text\\kolobok-excerpt.txt",
+        "kind": "text_ingest",
+        "title": "Читаем: kolobok-excerpt.txt"
+      }
+    ],
+    "edges": [
+      {
+        "src": "grapheme.б",
+        "relation": "compose",
+        "dst": "syllable.бку"
+      },
+      {
+        "src": "grapheme.к",
+        "relation": "compose",
+        "dst": "syllable.бку"
+      },
+      {
+        "src": "grapheme.у",
+        "relation": "compose",
+        "dst": "syllable.бку"
+      },
+      {
+        "src": "grapheme.б",
+        "relation": "compose",
+        "dst": "syllable.бок"
+      },
+      {
+        "src": "grapheme.о",
+        "relation": "compose",
+        "dst": "syllable.бок"
+      },
+      {
+        "src": "grapheme.к",
+        "relation": "compose",
+        "dst": "syllable.бок"
+      },
+      {
+        "src": "grapheme.в",
+        "relation": "compose",
+        "dst": "syllable.взя"
+      },
+      {
+        "src": "grapheme.з",
+        "relation": "compose",
+        "dst": "syllable.взя"
+      },
+      {
+        "src": "grapheme.я",
+        "relation": "compose",
+        "dst": "syllable.взя"
+      },
+      {
+        "src": "grapheme.в",
+        "relation": "compose",
+        "dst": "syllable.вот"
+      },
+      {
+        "src": "grapheme.о",
+        "relation": "compose",
+        "dst": "syllable.вот"
+      },
+      {
+        "src": "grapheme.т",
+        "relation": "compose",
+        "dst": "syllable.вот"
+      },
+      {
+        "src": "grapheme.в",
+        "relation": "compose",
+        "dst": "syllable.встре"
+      },
+      {
+        "src": "grapheme.с",
+        "relation": "compose",
+        "dst": "syllable.встре"
+      },
+      {
+        "src": "grapheme.т",
+        "relation": "compose",
+        "dst": "syllable.встре"
+      },
+      {
+        "src": "grapheme.р",
+        "relation": "compose",
+        "dst": "syllable.встре"
+      },
+      {
+        "src": "grapheme.е",
+        "relation": "compose",
+        "dst": "syllable.встре"
+      },
+      {
+        "src": "grapheme.д",
+        "relation": "compose",
+        "dst": "syllable.дить"
+      },
+      {
+        "src": "grapheme.и",
+        "relation": "compose",
+        "dst": "syllable.дить"
+      },
+      {
+        "src": "grapheme.т",
+        "relation": "compose",
+        "dst": "syllable.дить"
+      },
+      {
+        "src": "grapheme.ь",
+        "relation": "compose",
+        "dst": "syllable.дить"
+      },
+      {
+        "src": "grapheme.ж",
+        "relation": "compose",
+        "dst": "syllable.жал"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.жал"
+      },
+      {
+        "src": "grapheme.л",
+        "relation": "compose",
+        "dst": "syllable.жал"
+      },
+      {
+        "src": "grapheme.ж",
+        "relation": "compose",
+        "dst": "syllable.жке"
+      },
+      {
+        "src": "grapheme.к",
+        "relation": "compose",
+        "dst": "syllable.жке"
+      },
+      {
+        "src": "grapheme.е",
+        "relation": "compose",
+        "dst": "syllable.жке"
+      },
+      {
+        "src": "grapheme.й",
+        "relation": "compose",
+        "dst": "syllable.йца"
+      },
+      {
+        "src": "grapheme.ц",
+        "relation": "compose",
+        "dst": "syllable.йца"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.йца"
+      },
+      {
+        "src": "grapheme.й",
+        "relation": "compose",
+        "dst": "syllable.йцу"
+      },
+      {
+        "src": "grapheme.ц",
+        "relation": "compose",
+        "dst": "syllable.йцу"
+      },
+      {
+        "src": "grapheme.у",
+        "relation": "compose",
+        "dst": "syllable.йцу"
+      },
+      {
+        "src": "grapheme.к",
+        "relation": "compose",
+        "dst": "syllable.кла"
+      },
+      {
+        "src": "grapheme.л",
+        "relation": "compose",
+        "dst": "syllable.кла"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.кла"
+      },
+      {
+        "src": "grapheme.л",
+        "relation": "compose",
+        "dst": "syllable.лку"
+      },
+      {
+        "src": "grapheme.к",
+        "relation": "compose",
+        "dst": "syllable.лку"
+      },
+      {
+        "src": "grapheme.у",
+        "relation": "compose",
+        "dst": "syllable.лку"
+      },
+      {
+        "src": "grapheme.л",
+        "relation": "compose",
+        "dst": "syllable.лся"
+      },
+      {
+        "src": "grapheme.с",
+        "relation": "compose",
+        "dst": "syllable.лся"
+      },
+      {
+        "src": "grapheme.я",
+        "relation": "compose",
+        "dst": "syllable.лся"
+      },
+      {
+        "src": "grapheme.о",
+        "relation": "compose",
+        "dst": "syllable.от"
+      },
+      {
+        "src": "grapheme.т",
+        "relation": "compose",
+        "dst": "syllable.от"
+      },
+      {
+        "src": "grapheme.п",
+        "relation": "compose",
+        "dst": "syllable.пел"
+      },
+      {
+        "src": "grapheme.е",
+        "relation": "compose",
+        "dst": "syllable.пел"
+      },
+      {
+        "src": "grapheme.л",
+        "relation": "compose",
+        "dst": "syllable.пел"
+      },
+      {
+        "src": "grapheme.р",
+        "relation": "compose",
+        "dst": "syllable.рик"
+      },
+      {
+        "src": "grapheme.и",
+        "relation": "compose",
+        "dst": "syllable.рик"
+      },
+      {
+        "src": "grapheme.к",
+        "relation": "compose",
+        "dst": "syllable.рик"
+      },
+      {
+        "src": "grapheme.р",
+        "relation": "compose",
+        "dst": "syllable.рит"
+      },
+      {
+        "src": "grapheme.и",
+        "relation": "compose",
+        "dst": "syllable.рит"
+      },
+      {
+        "src": "grapheme.т",
+        "relation": "compose",
+        "dst": "syllable.рит"
+      },
+      {
+        "src": "grapheme.с",
+        "relation": "compose",
+        "dst": "syllable.спе"
+      },
+      {
+        "src": "grapheme.п",
+        "relation": "compose",
+        "dst": "syllable.спе"
+      },
+      {
+        "src": "grapheme.е",
+        "relation": "compose",
+        "dst": "syllable.спе"
+      },
+      {
+        "src": "grapheme.с",
+        "relation": "compose",
+        "dst": "syllable.ста"
+      },
+      {
+        "src": "grapheme.т",
+        "relation": "compose",
+        "dst": "syllable.ста"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.ста"
+      },
+      {
+        "src": "grapheme.с",
+        "relation": "compose",
+        "dst": "syllable.сту"
+      },
+      {
+        "src": "grapheme.т",
+        "relation": "compose",
+        "dst": "syllable.сту"
+      },
+      {
+        "src": "grapheme.у",
+        "relation": "compose",
+        "dst": "syllable.сту"
+      },
+      {
+        "src": "grapheme.с",
+        "relation": "compose",
+        "dst": "syllable.съем"
+      },
+      {
+        "src": "grapheme.ъ",
+        "relation": "compose",
+        "dst": "syllable.съем"
+      },
+      {
+        "src": "grapheme.е",
+        "relation": "compose",
+        "dst": "syllable.съем"
+      },
+      {
+        "src": "grapheme.м",
+        "relation": "compose",
+        "dst": "syllable.съем"
+      },
+      {
+        "src": "grapheme.т",
+        "relation": "compose",
+        "dst": "syllable.тся"
+      },
+      {
+        "src": "grapheme.с",
+        "relation": "compose",
+        "dst": "syllable.тся"
+      },
+      {
+        "src": "grapheme.я",
+        "relation": "compose",
+        "dst": "syllable.тся"
+      },
+      {
+        "src": "grapheme.х",
+        "relation": "compose",
+        "dst": "syllable.хой"
+      },
+      {
+        "src": "grapheme.о",
+        "relation": "compose",
+        "dst": "syllable.хой"
+      },
+      {
+        "src": "grapheme.й",
+        "relation": "compose",
+        "dst": "syllable.хой"
+      },
+      {
+        "src": "grapheme.ш",
+        "relation": "compose",
+        "dst": "syllable.шка"
+      },
+      {
+        "src": "grapheme.к",
+        "relation": "compose",
+        "dst": "syllable.шка"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.шка"
+      },
+      {
+        "src": "grapheme.ш",
+        "relation": "compose",
+        "dst": "syllable.шко"
+      },
+      {
+        "src": "grapheme.к",
+        "relation": "compose",
+        "dst": "syllable.шко"
+      },
+      {
+        "src": "grapheme.о",
+        "relation": "compose",
+        "dst": "syllable.шко"
+      },
+      {
+        "src": "grapheme.ш",
+        "relation": "compose",
+        "dst": "syllable.шёл"
+      },
+      {
+        "src": "grapheme.ё",
+        "relation": "compose",
+        "dst": "syllable.шёл"
+      },
+      {
+        "src": "grapheme.л",
+        "relation": "compose",
+        "dst": "syllable.шёл"
+      },
+      {
+        "src": "grapheme.я",
+        "relation": "compose",
+        "dst": "syllable.яц"
+      },
+      {
+        "src": "grapheme.ц",
+        "relation": "compose",
+        "dst": "syllable.яц"
+      },
+      {
+        "src": "syllable.жи",
+        "relation": "compose",
+        "dst": "lang.word.жили"
+      },
+      {
+        "src": "syllable.ли",
+        "relation": "compose",
+        "dst": "lang.word.жили"
+      },
+      {
+        "src": "syllable.бы",
+        "relation": "compose",
+        "dst": "lang.word.были"
+      },
+      {
+        "src": "syllable.ли",
+        "relation": "compose",
+        "dst": "lang.word.были"
+      },
+      {
+        "src": "syllable.ста",
+        "relation": "compose",
+        "dst": "lang.word.старик"
+      },
+      {
+        "src": "syllable.рик",
+        "relation": "compose",
+        "dst": "lang.word.старик"
+      },
+      {
+        "src": "syllable.со",
+        "relation": "compose",
+        "dst": "lang.word.со"
+      },
+      {
+        "src": "syllable.ста",
+        "relation": "compose",
+        "dst": "lang.word.старухой"
+      },
+      {
+        "src": "syllable.ру",
+        "relation": "compose",
+        "dst": "lang.word.старухой"
+      },
+      {
+        "src": "syllable.хой",
+        "relation": "compose",
+        "dst": "lang.word.старухой"
+      },
+      {
+        "src": "syllable.вот",
+        "relation": "compose",
+        "dst": "lang.word.вот"
+      },
+      {
+        "src": "syllable.и",
+        "relation": "compose",
+        "dst": "lang.word.и"
+      },
+      {
+        "src": "syllable.го",
+        "relation": "compose",
+        "dst": "lang.word.говорит"
+      },
+      {
+        "src": "syllable.во",
+        "relation": "compose",
+        "dst": "lang.word.говорит"
+      },
+      {
+        "src": "syllable.рит",
+        "relation": "compose",
+        "dst": "lang.word.говорит"
+      },
+      {
+        "src": "syllable.ста",
+        "relation": "compose",
+        "dst": "lang.word.старик"
+      },
+      {
+        "src": "syllable.рик",
+        "relation": "compose",
+        "dst": "lang.word.старик"
+      },
+      {
+        "src": "syllable.ста",
+        "relation": "compose",
+        "dst": "lang.word.старухе"
+      },
+      {
+        "src": "syllable.ру",
+        "relation": "compose",
+        "dst": "lang.word.старухе"
+      },
+      {
+        "src": "syllable.хе",
+        "relation": "compose",
+        "dst": "lang.word.старухе"
+      },
+      {
+        "src": "syllable.и",
+        "relation": "compose",
+        "dst": "lang.word.испеки"
+      },
+      {
+        "src": "syllable.спе",
+        "relation": "compose",
+        "dst": "lang.word.испеки"
+      },
+      {
+        "src": "syllable.ки",
+        "relation": "compose",
+        "dst": "lang.word.испеки"
+      },
+      {
+        "src": "syllable.ка",
+        "relation": "compose",
+        "dst": "lang.word.ка"
+      },
+      {
+        "src": "syllable.ста",
+        "relation": "compose",
+        "dst": "lang.word.старушка"
+      },
+      {
+        "src": "syllable.ру",
+        "relation": "compose",
+        "dst": "lang.word.старушка"
+      },
+      {
+        "src": "syllable.шка",
+        "relation": "compose",
+        "dst": "lang.word.старушка"
+      },
+      {
+        "src": "syllable.ко",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.ло",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.бок",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.ста",
+        "relation": "compose",
+        "dst": "lang.word.старуха"
+      },
+      {
+        "src": "syllable.ру",
+        "relation": "compose",
+        "dst": "lang.word.старуха"
+      },
+      {
+        "src": "syllable.ха",
+        "relation": "compose",
+        "dst": "lang.word.старуха"
+      },
+      {
+        "src": "syllable.взя",
+        "relation": "compose",
+        "dst": "lang.word.взяла"
+      },
+      {
+        "src": "syllable.ла",
+        "relation": "compose",
+        "dst": "lang.word.взяла"
+      },
+      {
+        "src": "syllable.му",
+        "relation": "compose",
+        "dst": "lang.word.муку"
+      },
+      {
+        "src": "syllable.ку",
+        "relation": "compose",
+        "dst": "lang.word.муку"
+      },
+      {
+        "src": "syllable.да",
+        "relation": "compose",
+        "dst": "lang.word.да"
+      },
+      {
+        "src": "syllable.и",
+        "relation": "compose",
+        "dst": "lang.word.и"
+      },
+      {
+        "src": "syllable.и",
+        "relation": "compose",
+        "dst": "lang.word.испекла"
+      },
+      {
+        "src": "syllable.спе",
+        "relation": "compose",
+        "dst": "lang.word.испекла"
+      },
+      {
+        "src": "syllable.кла",
+        "relation": "compose",
+        "dst": "lang.word.испекла"
+      },
+      {
+        "src": "syllable.ко",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.ло",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.бок",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.ко",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.ло",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.бок",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.по",
+        "relation": "compose",
+        "dst": "lang.word.положила"
+      },
+      {
+        "src": "syllable.ло",
+        "relation": "compose",
+        "dst": "lang.word.положила"
+      },
+      {
+        "src": "syllable.жи",
+        "relation": "compose",
+        "dst": "lang.word.положила"
+      },
+      {
+        "src": "syllable.ла",
+        "relation": "compose",
+        "dst": "lang.word.положила"
+      },
+      {
+        "src": "syllable.на",
+        "relation": "compose",
+        "dst": "lang.word.на"
+      },
+      {
+        "src": "syllable.о",
+        "relation": "compose",
+        "dst": "lang.word.окошко"
+      },
+      {
+        "src": "syllable.ко",
+        "relation": "compose",
+        "dst": "lang.word.окошко"
+      },
+      {
+        "src": "syllable.шко",
+        "relation": "compose",
+        "dst": "lang.word.окошко"
+      },
+      {
+        "src": "syllable.о",
+        "relation": "compose",
+        "dst": "lang.word.остудить"
+      },
+      {
+        "src": "syllable.сту",
+        "relation": "compose",
+        "dst": "lang.word.остудить"
+      },
+      {
+        "src": "syllable.дить",
+        "relation": "compose",
+        "dst": "lang.word.остудить"
+      },
+      {
+        "src": "syllable.ко",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.ло",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.бок",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.по",
+        "relation": "compose",
+        "dst": "lang.word.полежал"
+      },
+      {
+        "src": "syllable.ле",
+        "relation": "compose",
+        "dst": "lang.word.полежал"
+      },
+      {
+        "src": "syllable.жал",
+        "relation": "compose",
+        "dst": "lang.word.полежал"
+      },
+      {
+        "src": "syllable.по",
+        "relation": "compose",
+        "dst": "lang.word.полежал"
+      },
+      {
+        "src": "syllable.ле",
+        "relation": "compose",
+        "dst": "lang.word.полежал"
+      },
+      {
+        "src": "syllable.жал",
+        "relation": "compose",
+        "dst": "lang.word.полежал"
+      },
+      {
+        "src": "syllable.да",
+        "relation": "compose",
+        "dst": "lang.word.да"
+      },
+      {
+        "src": "syllable.и",
+        "relation": "compose",
+        "dst": "lang.word.и"
+      },
+      {
+        "src": "syllable.по",
+        "relation": "compose",
+        "dst": "lang.word.покатился"
+      },
+      {
+        "src": "syllable.ка",
+        "relation": "compose",
+        "dst": "lang.word.покатился"
+      },
+      {
+        "src": "syllable.ти",
+        "relation": "compose",
+        "dst": "lang.word.покатился"
+      },
+      {
+        "src": "syllable.лся",
+        "relation": "compose",
+        "dst": "lang.word.покатился"
+      },
+      {
+        "src": "syllable.ка",
+        "relation": "compose",
+        "dst": "lang.word.катится"
+      },
+      {
+        "src": "syllable.ти",
+        "relation": "compose",
+        "dst": "lang.word.катится"
+      },
+      {
+        "src": "syllable.тся",
+        "relation": "compose",
+        "dst": "lang.word.катится"
+      },
+      {
+        "src": "syllable.ко",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.ло",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.бок",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.по",
+        "relation": "compose",
+        "dst": "lang.word.по"
+      },
+      {
+        "src": "syllable.до",
+        "relation": "compose",
+        "dst": "lang.word.дорожке"
+      },
+      {
+        "src": "syllable.ро",
+        "relation": "compose",
+        "dst": "lang.word.дорожке"
+      },
+      {
+        "src": "syllable.жке",
+        "relation": "compose",
+        "dst": "lang.word.дорожке"
+      },
+      {
+        "src": "syllable.на",
+        "relation": "compose",
+        "dst": "lang.word.навстречу"
+      },
+      {
+        "src": "syllable.встре",
+        "relation": "compose",
+        "dst": "lang.word.навстречу"
+      },
+      {
+        "src": "syllable.чу",
+        "relation": "compose",
+        "dst": "lang.word.навстречу"
+      },
+      {
+        "src": "syllable.за",
+        "relation": "compose",
+        "dst": "lang.word.зайцу"
+      },
+      {
+        "src": "syllable.йцу",
+        "relation": "compose",
+        "dst": "lang.word.зайцу"
+      },
+      {
+        "src": "syllable.за",
+        "relation": "compose",
+        "dst": "lang.word.заяц"
+      },
+      {
+        "src": "syllable.яц",
+        "relation": "compose",
+        "dst": "lang.word.заяц"
+      },
+      {
+        "src": "syllable.ко",
+        "relation": "compose",
+        "dst": "lang.word.колобку"
+      },
+      {
+        "src": "syllable.ло",
+        "relation": "compose",
+        "dst": "lang.word.колобку"
+      },
+      {
+        "src": "syllable.бку",
+        "relation": "compose",
+        "dst": "lang.word.колобку"
+      },
+      {
+        "src": "syllable.го",
+        "relation": "compose",
+        "dst": "lang.word.говорит"
+      },
+      {
+        "src": "syllable.во",
+        "relation": "compose",
+        "dst": "lang.word.говорит"
+      },
+      {
+        "src": "syllable.рит",
+        "relation": "compose",
+        "dst": "lang.word.говорит"
+      },
+      {
+        "src": "syllable.ко",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.ло",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.бок",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.ко",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.ло",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.бок",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.я",
+        "relation": "compose",
+        "dst": "lang.word.я"
+      },
+      {
+        "src": "syllable.те",
+        "relation": "compose",
+        "dst": "lang.word.тебя"
+      },
+      {
+        "src": "syllable.бя",
+        "relation": "compose",
+        "dst": "lang.word.тебя"
+      },
+      {
+        "src": "syllable.съем",
+        "relation": "compose",
+        "dst": "lang.word.съем"
+      },
+      {
+        "src": "syllable.а",
+        "relation": "compose",
+        "dst": "lang.word.а"
+      },
+      {
+        "src": "syllable.ко",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.ло",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.бок",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.за",
+        "relation": "compose",
+        "dst": "lang.word.запел"
+      },
+      {
+        "src": "syllable.пел",
+        "relation": "compose",
+        "dst": "lang.word.запел"
+      },
+      {
+        "src": "syllable.и",
+        "relation": "compose",
+        "dst": "lang.word.и"
+      },
+      {
+        "src": "syllable.от",
+        "relation": "compose",
+        "dst": "lang.word.от"
+      },
+      {
+        "src": "syllable.за",
+        "relation": "compose",
+        "dst": "lang.word.зайца"
+      },
+      {
+        "src": "syllable.йца",
+        "relation": "compose",
+        "dst": "lang.word.зайца"
+      },
+      {
+        "src": "syllable.у",
+        "relation": "compose",
+        "dst": "lang.word.ушёл"
+      },
+      {
+        "src": "syllable.шёл",
+        "relation": "compose",
+        "dst": "lang.word.ушёл"
+      },
+      {
+        "src": "syllable.ка",
+        "relation": "compose",
+        "dst": "lang.word.катится"
+      },
+      {
+        "src": "syllable.ти",
+        "relation": "compose",
+        "dst": "lang.word.катится"
+      },
+      {
+        "src": "syllable.тся",
+        "relation": "compose",
+        "dst": "lang.word.катится"
+      },
+      {
+        "src": "syllable.ко",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.ло",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.бок",
+        "relation": "compose",
+        "dst": "lang.word.колобок"
+      },
+      {
+        "src": "syllable.да",
+        "relation": "compose",
+        "dst": "lang.word.дальше"
+      },
+      {
+        "src": "syllable.ль",
+        "relation": "compose",
+        "dst": "lang.word.дальше"
+      },
+      {
+        "src": "syllable.ше",
+        "relation": "compose",
+        "dst": "lang.word.дальше"
+      },
+      {
+        "src": "syllable.на",
+        "relation": "compose",
+        "dst": "lang.word.навстречу"
+      },
+      {
+        "src": "syllable.встре",
+        "relation": "compose",
+        "dst": "lang.word.навстречу"
+      },
+      {
+        "src": "syllable.чу",
+        "relation": "compose",
+        "dst": "lang.word.навстречу"
+      },
+      {
+        "src": "syllable.во",
+        "relation": "compose",
+        "dst": "lang.word.волку"
+      },
+      {
+        "src": "syllable.лку",
+        "relation": "compose",
+        "dst": "lang.word.волку"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "concept_id": "syllable.бку",
+      "claim_kind": "syllable",
+      "text": "слог бку",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "бку",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.бок",
+      "claim_kind": "syllable",
+      "text": "слог бок",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "бок",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.взя",
+      "claim_kind": "syllable",
+      "text": "слог взя",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "взя",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.вот",
+      "claim_kind": "syllable",
+      "text": "слог вот",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "вот",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.встре",
+      "claim_kind": "syllable",
+      "text": "слог встре",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "встре",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.дить",
+      "claim_kind": "syllable",
+      "text": "слог дить",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "дить",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.жал",
+      "claim_kind": "syllable",
+      "text": "слог жал",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "жал",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.жке",
+      "claim_kind": "syllable",
+      "text": "слог жке",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "жке",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.йца",
+      "claim_kind": "syllable",
+      "text": "слог йца",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "йца",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.йцу",
+      "claim_kind": "syllable",
+      "text": "слог йцу",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "йцу",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.кла",
+      "claim_kind": "syllable",
+      "text": "слог кла",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "кла",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.лку",
+      "claim_kind": "syllable",
+      "text": "слог лку",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "лку",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.лся",
+      "claim_kind": "syllable",
+      "text": "слог лся",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "лся",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.от",
+      "claim_kind": "syllable",
+      "text": "слог от",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "от",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.пел",
+      "claim_kind": "syllable",
+      "text": "слог пел",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "пел",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.рик",
+      "claim_kind": "syllable",
+      "text": "слог рик",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "рик",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.рит",
+      "claim_kind": "syllable",
+      "text": "слог рит",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "рит",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.спе",
+      "claim_kind": "syllable",
+      "text": "слог спе",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "спе",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.ста",
+      "claim_kind": "syllable",
+      "text": "слог ста",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "ста",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.сту",
+      "claim_kind": "syllable",
+      "text": "слог сту",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "сту",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.съем",
+      "claim_kind": "syllable",
+      "text": "слог съем",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "съем",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.тся",
+      "claim_kind": "syllable",
+      "text": "слог тся",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "тся",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.хой",
+      "claim_kind": "syllable",
+      "text": "слог хой",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "хой",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.шка",
+      "claim_kind": "syllable",
+      "text": "слог шка",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "шка",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.шко",
+      "claim_kind": "syllable",
+      "text": "слог шко",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "шко",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.шёл",
+      "claim_kind": "syllable",
+      "text": "слог шёл",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "шёл",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "syllable.яц",
+      "claim_kind": "syllable",
+      "text": "слог яц",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "syllable": "яц",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.жили",
+      "claim_kind": "word",
+      "text": "слово жили",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "жили",
+        "syllables": [
+          "жи",
+          "ли"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.были",
+      "claim_kind": "word",
+      "text": "слово были",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "были",
+        "syllables": [
+          "бы",
+          "ли"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.старик",
+      "claim_kind": "word",
+      "text": "слово старик",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "старик",
+        "syllables": [
+          "ста",
+          "рик"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.со",
+      "claim_kind": "word",
+      "text": "слово со",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "со",
+        "syllables": [
+          "со"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.старухой",
+      "claim_kind": "word",
+      "text": "слово старухой",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "старухой",
+        "syllables": [
+          "ста",
+          "ру",
+          "хой"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.вот",
+      "claim_kind": "word",
+      "text": "слово вот",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "вот",
+        "syllables": [
+          "вот"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.и",
+      "claim_kind": "word",
+      "text": "слово и",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "и",
+        "syllables": [
+          "и"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.говорит",
+      "claim_kind": "word",
+      "text": "слово говорит",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "говорит",
+        "syllables": [
+          "го",
+          "во",
+          "рит"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.старик",
+      "claim_kind": "word",
+      "text": "слово старик",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "старик",
+        "syllables": [
+          "ста",
+          "рик"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.старухе",
+      "claim_kind": "word",
+      "text": "слово старухе",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "старухе",
+        "syllables": [
+          "ста",
+          "ру",
+          "хе"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.испеки",
+      "claim_kind": "word",
+      "text": "слово испеки",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "испеки",
+        "syllables": [
+          "и",
+          "спе",
+          "ки"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.ка",
+      "claim_kind": "word",
+      "text": "слово ка",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "ка",
+        "syllables": [
+          "ка"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.старушка",
+      "claim_kind": "word",
+      "text": "слово старушка",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "старушка",
+        "syllables": [
+          "ста",
+          "ру",
+          "шка"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.колобок",
+      "claim_kind": "word",
+      "text": "слово колобок",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "колобок",
+        "syllables": [
+          "ко",
+          "ло",
+          "бок"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.старуха",
+      "claim_kind": "word",
+      "text": "слово старуха",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "старуха",
+        "syllables": [
+          "ста",
+          "ру",
+          "ха"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.взяла",
+      "claim_kind": "word",
+      "text": "слово взяла",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "взяла",
+        "syllables": [
+          "взя",
+          "ла"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.муку",
+      "claim_kind": "word",
+      "text": "слово муку",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "муку",
+        "syllables": [
+          "му",
+          "ку"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.да",
+      "claim_kind": "word",
+      "text": "слово да",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "да",
+        "syllables": [
+          "да"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.и",
+      "claim_kind": "word",
+      "text": "слово и",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "и",
+        "syllables": [
+          "и"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.испекла",
+      "claim_kind": "word",
+      "text": "слово испекла",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "испекла",
+        "syllables": [
+          "и",
+          "спе",
+          "кла"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.колобок",
+      "claim_kind": "word",
+      "text": "слово колобок",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "колобок",
+        "syllables": [
+          "ко",
+          "ло",
+          "бок"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.колобок",
+      "claim_kind": "word",
+      "text": "слово колобок",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "колобок",
+        "syllables": [
+          "ко",
+          "ло",
+          "бок"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.положила",
+      "claim_kind": "word",
+      "text": "слово положила",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "положила",
+        "syllables": [
+          "по",
+          "ло",
+          "жи",
+          "ла"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.на",
+      "claim_kind": "word",
+      "text": "слово на",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "на",
+        "syllables": [
+          "на"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.окошко",
+      "claim_kind": "word",
+      "text": "слово окошко",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "окошко",
+        "syllables": [
+          "о",
+          "ко",
+          "шко"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.остудить",
+      "claim_kind": "word",
+      "text": "слово остудить",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "остудить",
+        "syllables": [
+          "о",
+          "сту",
+          "дить"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.колобок",
+      "claim_kind": "word",
+      "text": "слово колобок",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "колобок",
+        "syllables": [
+          "ко",
+          "ло",
+          "бок"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.полежал",
+      "claim_kind": "word",
+      "text": "слово полежал",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "полежал",
+        "syllables": [
+          "по",
+          "ле",
+          "жал"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.полежал",
+      "claim_kind": "word",
+      "text": "слово полежал",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "полежал",
+        "syllables": [
+          "по",
+          "ле",
+          "жал"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.да",
+      "claim_kind": "word",
+      "text": "слово да",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "да",
+        "syllables": [
+          "да"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.и",
+      "claim_kind": "word",
+      "text": "слово и",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "и",
+        "syllables": [
+          "и"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.покатился",
+      "claim_kind": "word",
+      "text": "слово покатился",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "покатился",
+        "syllables": [
+          "по",
+          "ка",
+          "ти",
+          "лся"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.катится",
+      "claim_kind": "word",
+      "text": "слово катится",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "катится",
+        "syllables": [
+          "ка",
+          "ти",
+          "тся"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.колобок",
+      "claim_kind": "word",
+      "text": "слово колобок",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "колобок",
+        "syllables": [
+          "ко",
+          "ло",
+          "бок"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.по",
+      "claim_kind": "word",
+      "text": "слово по",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "по",
+        "syllables": [
+          "по"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.дорожке",
+      "claim_kind": "word",
+      "text": "слово дорожке",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "дорожке",
+        "syllables": [
+          "до",
+          "ро",
+          "жке"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.навстречу",
+      "claim_kind": "word",
+      "text": "слово навстречу",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "навстречу",
+        "syllables": [
+          "на",
+          "встре",
+          "чу"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.зайцу",
+      "claim_kind": "word",
+      "text": "слово зайцу",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "зайцу",
+        "syllables": [
+          "за",
+          "йцу"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.заяц",
+      "claim_kind": "word",
+      "text": "слово заяц",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "заяц",
+        "syllables": [
+          "за",
+          "яц"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.колобку",
+      "claim_kind": "word",
+      "text": "слово колобку",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "колобку",
+        "syllables": [
+          "ко",
+          "ло",
+          "бку"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.говорит",
+      "claim_kind": "word",
+      "text": "слово говорит",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "говорит",
+        "syllables": [
+          "го",
+          "во",
+          "рит"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.колобок",
+      "claim_kind": "word",
+      "text": "слово колобок",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "колобок",
+        "syllables": [
+          "ко",
+          "ло",
+          "бок"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.колобок",
+      "claim_kind": "word",
+      "text": "слово колобок",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "колобок",
+        "syllables": [
+          "ко",
+          "ло",
+          "бок"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.я",
+      "claim_kind": "word",
+      "text": "слово я",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "я",
+        "syllables": [
+          "я"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.тебя",
+      "claim_kind": "word",
+      "text": "слово тебя",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "тебя",
+        "syllables": [
+          "те",
+          "бя"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.съем",
+      "claim_kind": "word",
+      "text": "слово съем",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "съем",
+        "syllables": [
+          "съем"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.а",
+      "claim_kind": "word",
+      "text": "слово а",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "а",
+        "syllables": [
+          "а"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.колобок",
+      "claim_kind": "word",
+      "text": "слово колобок",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "колобок",
+        "syllables": [
+          "ко",
+          "ло",
+          "бок"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.запел",
+      "claim_kind": "word",
+      "text": "слово запел",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "запел",
+        "syllables": [
+          "за",
+          "пел"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.и",
+      "claim_kind": "word",
+      "text": "слово и",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "и",
+        "syllables": [
+          "и"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.от",
+      "claim_kind": "word",
+      "text": "слово от",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "от",
+        "syllables": [
+          "от"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.зайца",
+      "claim_kind": "word",
+      "text": "слово зайца",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "зайца",
+        "syllables": [
+          "за",
+          "йца"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.ушёл",
+      "claim_kind": "word",
+      "text": "слово ушёл",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "ушёл",
+        "syllables": [
+          "у",
+          "шёл"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.катится",
+      "claim_kind": "word",
+      "text": "слово катится",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "катится",
+        "syllables": [
+          "ка",
+          "ти",
+          "тся"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.колобок",
+      "claim_kind": "word",
+      "text": "слово колобок",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "колобок",
+        "syllables": [
+          "ко",
+          "ло",
+          "бок"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.дальше",
+      "claim_kind": "word",
+      "text": "слово дальше",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "дальше",
+        "syllables": [
+          "да",
+          "ль",
+          "ше"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.навстречу",
+      "claim_kind": "word",
+      "text": "слово навстречу",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "навстречу",
+        "syllables": [
+          "на",
+          "встре",
+          "чу"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "lang.word.волку",
+      "claim_kind": "word",
+      "text": "слово волку",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "word": "волку",
+        "syllables": [
+          "во",
+          "лку"
+        ],
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "punct.hyphen",
+      "claim_kind": "punctuation",
+      "text": "знак -",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "mark": "-",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "grapheme.-",
+      "claim_kind": "grapheme",
+      "text": "буква/знак -",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "letter": "-",
+        "source": "punctuation"
+      }
+    },
+    {
+      "concept_id": "punct.period",
+      "claim_kind": "punctuation",
+      "text": "знак .",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "mark": ".",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "grapheme..",
+      "claim_kind": "grapheme",
+      "text": "буква/знак .",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "letter": ".",
+        "source": "punctuation"
+      }
+    },
+    {
+      "concept_id": "punct.colon",
+      "claim_kind": "punctuation",
+      "text": "знак :",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "mark": ":",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "grapheme.:",
+      "claim_kind": "grapheme",
+      "text": "буква/знак :",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "letter": ":",
+        "source": "punctuation"
+      }
+    },
+    {
+      "concept_id": "punct.comma",
+      "claim_kind": "punctuation",
+      "text": "знак ,",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "mark": ",",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "grapheme.,",
+      "claim_kind": "grapheme",
+      "text": "буква/знак ,",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "letter": ",",
+        "source": "punctuation"
+      }
+    },
+    {
+      "concept_id": "punct.exclam",
+      "claim_kind": "punctuation",
+      "text": "знак !",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "mark": "!",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "grapheme.!",
+      "claim_kind": "grapheme",
+      "text": "буква/знак !",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "letter": "!",
+        "source": "punctuation"
+      }
+    },
+    {
+      "concept_id": "punct.emdash",
+      "claim_kind": "punctuation",
+      "text": "знак —",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "mark": "—",
+        "source": "text_extract"
+      }
+    },
+    {
+      "concept_id": "grapheme.—",
+      "claim_kind": "grapheme",
+      "text": "буква/знак —",
+      "doc_path": "lab\\text\\kolobok-excerpt.txt",
+      "slots": {
+        "letter": "—",
+        "source": "punctuation"
+      }
+    }
+  ],
+  "extract": {
+    "words": [
+      "жили",
+      "были",
+      "старик",
+      "со",
+      "старухой",
+      "вот",
+      "и",
+      "говорит",
+      "старик",
+      "старухе",
+      "испеки",
+      "ка",
+      "старушка",
+      "колобок",
+      "старуха",
+      "взяла",
+      "муку",
+      "да",
+      "и",
+      "испекла",
+      "колобок",
+      "колобок",
+      "положила",
+      "на",
+      "окошко",
+      "остудить",
+      "колобок",
+      "полежал",
+      "полежал",
+      "да",
+      "и",
+      "покатился",
+      "катится",
+      "колобок",
+      "по",
+      "дорожке",
+      "навстречу",
+      "зайцу",
+      "заяц",
+      "колобку",
+      "говорит",
+      "колобок",
+      "колобок",
+      "я",
+      "тебя",
+      "съем",
+      "а",
+      "колобок",
+      "запел",
+      "и",
+      "от",
+      "зайца",
+      "ушёл",
+      "катится",
+      "колобок",
+      "дальше",
+      "навстречу",
+      "волку"
+    ],
+    "word_syllables": {
+      "жили": [
+        "жи",
+        "ли"
+      ],
+      "были": [
+        "бы",
+        "ли"
+      ],
+      "старик": [
+        "ста",
+        "рик"
+      ],
+      "со": [
+        "со"
+      ],
+      "старухой": [
+        "ста",
+        "ру",
+        "хой"
+      ],
+      "вот": [
+        "вот"
+      ],
+      "и": [
+        "и"
+      ],
+      "говорит": [
+        "го",
+        "во",
+        "рит"
+      ],
+      "старухе": [
+        "ста",
+        "ру",
+        "хе"
+      ],
+      "испеки": [
+        "и",
+        "спе",
+        "ки"
+      ],
+      "ка": [
+        "ка"
+      ],
+      "старушка": [
+        "ста",
+        "ру",
+        "шка"
+      ],
+      "колобок": [
+        "ко",
+        "ло",
+        "бок"
+      ],
+      "старуха": [
+        "ста",
+        "ру",
+        "ха"
+      ],
+      "взяла": [
+        "взя",
+        "ла"
+      ],
+      "муку": [
+        "му",
+        "ку"
+      ],
+      "да": [
+        "да"
+      ],
+      "испекла": [
+        "и",
+        "спе",
+        "кла"
+      ],
+      "положила": [
+        "по",
+        "ло",
+        "жи",
+        "ла"
+      ],
+      "на": [
+        "на"
+      ],
+      "окошко": [
+        "о",
+        "ко",
+        "шко"
+      ],
+      "остудить": [
+        "о",
+        "сту",
+        "дить"
+      ],
+      "полежал": [
+        "по",
+        "ле",
+        "жал"
+      ],
+      "покатился": [
+        "по",
+        "ка",
+        "ти",
+        "лся"
+      ],
+      "катится": [
+        "ка",
+        "ти",
+        "тся"
+      ],
+      "по": [
+        "по"
+      ],
+      "дорожке": [
+        "до",
+        "ро",
+        "жке"
+      ],
+      "навстречу": [
+        "на",
+        "встре",
+        "чу"
+      ],
+      "зайцу": [
+        "за",
+        "йцу"
+      ],
+      "заяц": [
+        "за",
+        "яц"
+      ],
+      "колобку": [
+        "ко",
+        "ло",
+        "бку"
+      ],
+      "я": [
+        "я"
+      ],
+      "тебя": [
+        "те",
+        "бя"
+      ],
+      "съем": [
+        "съем"
+      ],
+      "а": [
+        "а"
+      ],
+      "запел": [
+        "за",
+        "пел"
+      ],
+      "от": [
+        "от"
+      ],
+      "зайца": [
+        "за",
+        "йца"
+      ],
+      "ушёл": [
+        "у",
+        "шёл"
+      ],
+      "дальше": [
+        "да",
+        "ль",
+        "ше"
+      ],
+      "волку": [
+        "во",
+        "лку"
+      ]
+    },
+    "extra_syllables": [
+      "бку",
+      "бок",
+      "взя",
+      "вот",
+      "встре",
+      "дить",
+      "жал",
+      "жке",
+      "йца",
+      "йцу",
+      "кла",
+      "лку",
+      "лся",
+      "от",
+      "пел",
+      "рик",
+      "рит",
+      "спе",
+      "ста",
+      "сту",
+      "съем",
+      "тся",
+      "хой",
+      "шка",
+      "шко",
+      "шёл",
+      "яц"
+    ],
+    "punctuation": [
+      "-",
+      ".",
+      ":",
+      ",",
+      "!",
+      "—"
+    ]
+  }
+}

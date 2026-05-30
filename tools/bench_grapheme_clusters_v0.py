@@ -24,12 +24,12 @@ def main() -> None:
     p.add_argument(
         "--cues",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/grapheme_cluster_cues.v1.json",
+        default=root / "lab/exp_bilingual_v0/grapheme_cluster_cues.v1.json",
     )
     p.add_argument(
         "--headwords",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/en_folk_headwords.v1.txt",
+        default=root / "lab/exp_bilingual_v0/en_folk_headwords.v1.txt",
     )
     p.add_argument("--no-bootstrap-l0", action="store_true")
     p.add_argument("--out", type=Path, default=None)

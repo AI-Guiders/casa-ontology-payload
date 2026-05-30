@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "train": [
+    {
+      "tag": "grammar_full_monolithic",
+      "present": true,
+      "train_mode": null,
+      "epochs": 1200,
+      "token_count_union": 27,
+      "windows_per_batch": null,
+      "best_mix": 0.8
+    },
+    {
+      "tag": "union_windowed_batched",
+      "present": true,
+      "train_mode": "windowed_batched",
+      "epochs": 1200,
+      "token_count_union": 162,
+      "windows_per_batch": 32,
+      "best_mix": 0.765625
+    },
+    {
+      "tag": "union_full_monolithic",
+      "present": false
+    }
+  ],
+  "curve": {
+    "grammar_full": {
+      "present": true,
+      "points": 0
+    },
+    "union_windowed": {
+      "present": true,
+      "points": 0
+    },
+    "union_monolithic": null
+  },
+  "answer_repair": {
+    "grammar_full": {
+      "label": "grammar_full",
+      "present": true,
+      "answer_at_1_field": 1.0,
+      "answer_at_1_repair": 1.0,
+      "scored_queries": 15
+    },
+    "union_windowed": {
+      "label": "union_windowed",
+      "present": true,
+      "answer_at_1_field": 1.0,
+      "answer_at_1_repair": 1.0,
+      "scored_queries": 20
+    }
+  },
+  "windowed_repair_bench": {
+    "schema_version": 1,
+    "bundle": "lab\\agent-stores\\language-agent-lab-v0\\bundles\\kb-russian-language-rules-v1.bundle.v1.json",
+    "model": "lab\\nca_out_exp_j_ru_union_windowed_v1\\model.pt",
+    "planner": {
+      "tile_count": 3,
+      "total_density": 0.002616223006043583,
+      "max_density": 0.0011935763759538531,
+      "min_density": 0.0006872106459923089
+    },
+    "monolithic": {
+      "concepts": {
+        "tp": 32,
+        "fp": 0,
+        "fn": 57,
+        "precision": 1.0,
+        "recall": 0.3595505617977528,
+        "f1": 0.5289256198347108
+      },
+      "edges": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "windowed": {
+      "concepts": {
+        "tp": 32,
+        "fp": 0,
+        "fn": 57,
+        "precision": 1.0,
+        "recall": 0.3595505617977528,
+        "f1": 0.5289256198347108
+      },
+      "edges": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "mix_monolithic": 0.7173553719008265,
+    "mix_windowed": 0.7173553719008265
+  }
+}

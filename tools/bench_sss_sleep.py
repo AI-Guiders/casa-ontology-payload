@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, episode_vote_for_cue, hippo_episodes  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, episode_vote_for_cue, hippo_episodes  # type: ignore
 
 
 def main() -> None:
@@ -30,7 +30,7 @@ def main() -> None:
 
     store = args.store_dir.resolve()
     bundle = json.loads(args.bundle.read_text(encoding="utf-8"))
-    state = ensure_cylinders(load_field_state(store / "field_state.json"))
+    state = ensure_prisms(load_field_state(store / "field_state.json"))
     votes = episode_vote_for_cue(state, bundle, cue, lattice, concept_id)
 
     print(

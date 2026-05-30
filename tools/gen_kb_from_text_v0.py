@@ -53,7 +53,7 @@ def build_bundle_from_text(
     text: str,
     *,
     bukvar_bundle: dict | None = None,
-    doc_path: str = "examples/text/ingested.txt",
+    doc_path: str = "lab/text/ingested.txt",
     title: str = "text-ingest-dynamic",
 ) -> dict[str, Any]:
     """Dynamic KB slice: words found in text + syllables needed for compose."""
@@ -144,7 +144,7 @@ def main() -> None:
 
     p = argparse.ArgumentParser(description="Build dynamic word bundle from plain text")
     p.add_argument("--text", type=Path, required=True)
-    p.add_argument("--bukvar", type=Path, default=Path("examples/kb/kb-bukvar-ru-full-v1.payload.json"))
+    p.add_argument("--bukvar", type=Path, default=Path("lab/kb/kb-bukvar-ru-full-v1.payload.json"))
     p.add_argument("--out", type=Path, required=True)
     p.add_argument("--title", default="text-ingest-dynamic")
     args = p.parse_args()

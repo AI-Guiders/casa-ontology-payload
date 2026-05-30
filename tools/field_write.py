@@ -332,9 +332,19 @@ def decode_field_grid(state: dict, *, min_votes: int | None = None) -> dict:
     from canonical import CANONICAL_FIELD_MIN_VOTES  # type: ignore
     from codec_grid_v0 import decode_grid  # type: ignore
 
+    try:
+        from control_cylinders_v0 import has_control_stack  # type: ignore
+        from control_stack_v0 import decode_control_dmn  # type: ignore
+
+        if has_control_stack(state):
+            mv = CANONICAL_FIELD_MIN_VOTES if min_votes is None else min_votes
+            return decode_control_dmn(state, min_votes=mv)
+    except Exception:
+        pass
+
     grid = state.get("grid")
     if not grid or "cells" not in grid:
-        raise ValueError("field_state has no grid")
+        raise ValueError("field_state has no grid and no cyl_control.lattice_dmn")
     mv = CANONICAL_FIELD_MIN_VOTES if min_votes is None else min_votes
     decoded = decode_grid(grid, min_votes=mv)
     vote: dict[str, int] = {}
@@ -351,8 +361,11 @@ def bundle_from_field_state(state: dict, *, store_dir: Path) -> tuple[str, dict]
     if not names:
         name = grid.get("source_bundle")
         if not name:
-            raise ValueError("field_state.grid.source_bundle missing")
-        names = [name]
+            names = list((state.get("bundles") or {}).keys())
+        else:
+            names = [name]
+    if not names:
+        raise ValueError("field_state: no bundle ref in grid or bundles")
 
     loaded: list[dict] = []
     for name in names:

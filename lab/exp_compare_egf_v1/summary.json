@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "E": "lab/exp_e_clusters_v1/report.json",
+  "F": "lab/exp_f_modules_v2_gpu/report.json",
+  "G": "lab/exp_g_tiered_v1/report.json",
+  "cluster_mean_delta_mix": {
+    "goals": { "E": -0.0054, "F": -0.0579, "G": -0.0054 },
+    "research": { "E": -0.0012, "F": -0.4796, "G": -0.3689 },
+    "ops": { "E": -0.0048, "F": -0.6480, "G": -0.0077 }
+  },
+  "highlights": {
+    "research-ml_delta_mix": { "E": 0.0, "F": 0.0764, "G": 0.216 },
+    "ops_playbook_delta_mix": { "E": 0.0, "F": -0.6801, "G": -0.0057 }
+  }
+}

@@ -7,12 +7,12 @@
     {
       "md": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
       "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
-      "payload_out": "examples/kb/kb-russian-literacy-agent.payload.json",
-      "bundle_out": "examples/kb/kb-russian-literacy-agent.bundle.v1.json"
+      "payload_out": "lab/kb/kb-russian-literacy-agent.payload.json",
+      "bundle_out": "lab/kb/kb-russian-literacy-agent.bundle.v1.json"
     }
   ],
   "union_train_bundles": [
-    "examples/kb/kb-russian-literacy-agent.bundle.v1.json"
+    "lab/kb/kb-russian-literacy-agent.bundle.v1.json"
   ],
   "notes": "Exp J0: read/write literacy before domain KB. Import into language-agent-lab-v0 with grammar union."
 }

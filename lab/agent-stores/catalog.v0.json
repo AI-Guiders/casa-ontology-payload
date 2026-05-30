@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "title": "Agent store catalog v0",
+  "design": "design/agent-store-catalog-v0.md",
+  "stores": [
+    {
+      "store_id": "sss-ru-lexicon-v0",
+      "path": "sss-ru-lexicon-v0",
+      "locale": "ru",
+      "tier": "literary",
+      "corpus_id": "afanasyev-sharded",
+      "lifecycle": "lab",
+      "profile_roles": ["ru_lexicon"],
+      "notes": "Junction → sss-afan-sharded-v0; legacy BiT9 demo. Prefer sss-ru-general-v0 for prod general."
+    },
+    {
+      "store_id": "sss-ru-general-v0",
+      "path": "sss-ru-general-v0",
+      "locale": "ru",
+      "tier": "general",
+      "corpus_id": "detcorpus-50k-cc0",
+      "lifecycle": "lab",
+      "profile_roles": ["ru_lexicon"],
+      "supersedes": null
+    },
+    {
+      "store_id": "sss-ru-tech-v0",
+      "path": "sss-ru-tech-v0",
+      "locale": "ru",
+      "tier": "tech",
+      "corpus_id": "repo-scan",
+      "lifecycle": "lab",
+      "profile_roles": ["ru_tech"]
+    },
+    {
+      "store_id": "sss-en-folk-v0",
+      "path": "sss-en-folk-v0",
+      "locale": "en",
+      "tier": "general",
+      "corpus_id": "en-folk-gutenberg",
+      "lifecycle": "lab",
+      "profile_roles": ["en_lexicon"]
+    },
+    {
+      "store_id": "sss-en-general-v0",
+      "path": "sss-en-general-v0",
+      "locale": "en",
+      "tier": "general",
+      "corpus_id": "en-folk-gutenberg",
+      "lifecycle": "lab",
+      "profile_roles": ["en_lexicon"]
+    },
+    {
+      "store_id": "sss-en-tech-v0",
+      "path": "sss-en-tech-v0",
+      "locale": "en",
+      "tier": "tech",
+      "corpus_id": "repo-scan",
+      "lifecycle": "lab",
+      "profile_roles": ["en_command", "en_lexicon"]
+    },
+    {
+      "store_id": "control-lab-v0",
+      "path": "control-lab-v0",
+      "locale": null,
+      "tier": "control",
+      "corpus_id": "kb-math-l0",
+      "lifecycle": "lab",
+      "profile_roles": ["control_stack"],
+      "notes": "cyl_control DMN/SN/FPN/CEN; see design/control-lattice-stack-v0.md"
+    },
+    {
+      "store_id": "sss-afan-v0",
+      "path": "sss-afan-v0",
+      "locale": "ru",
+      "tier": "literary",
+      "corpus_id": "afanasyev-monolith",
+      "lifecycle": "ingest_ref",
+      "profile_roles": [],
+      "notes": "Read-only monolith; not for profile boot"
+    }
+  ]
+}

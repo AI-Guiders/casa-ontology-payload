@@ -136,7 +136,7 @@ Segment classifier v0 — эвристика (prefix `/`, ratio latn/cyrl пос
 
 Orion: «0.7 ms infer» — **целевой SLO act-runtime** (NativeAOT + prefix index), не обязательство Python lab (~50 ms/word сегодня).
 
-**Profile:** [`bilingual-t9-console.v0.json`](../examples/agent-profiles/bilingual-t9-console.v0.json) + будущий `bilingual-layout-parity.v0.json` с `input: physical_key`.
+**Profile:** [`bilingual-t9-console.v0.json`](../lab/agent-profiles/bilingual-t9-console.v0.json) + будущий `bilingual-layout-parity.v0.json` с `input: physical_key`.
 
 ### 5. Связь с homoglyph (ADR-0003)
 
@@ -198,7 +198,7 @@ Orion: «0.7 ms infer» — **целевой SLO act-runtime** (NativeAOT + pref
 
 | Документ | Роль |
 |----------|------|
-| [`examples/exp_bilingual_v0/README.md`](../examples/exp_bilingual_v0/README.md) | homoglyph + unified tick benches |
+| [`lab/exp_bilingual_v0/README.md`](../lab/exp_bilingual_v0/README.md) | homoglyph + unified tick benches |
 | [`knowledge/work/cursor-session-f4a4bba6-casa-lab-arc-v0.md`](../../../knowledge/work/cursor-session-f4a4bba6-casa-lab-arc-v0.md) | Orion pitch, product arc |
 | [W3C UI Events — KeyboardEvent.code](https://www.w3.org/TR/uievents/#key-key-values) | рекомендуемый neutral key_id |
 

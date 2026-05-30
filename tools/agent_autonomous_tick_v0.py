@@ -15,7 +15,7 @@ from field_write import load_field_state, save_field_state  # type: ignore
 from lexicon_cold_ingest_v0 import process_lexicon_misses  # type: ignore
 from nca_registry_v0 import find_stale_shards  # type: ignore
 from predictor_v0 import detect_lexicon_miss, l2_prefix_candidates, predict_t9  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
 from store_layout_v0 import field_state_path  # type: ignore
 
 
@@ -140,7 +140,7 @@ def main() -> None:
 
     store = args.store_dir.resolve()
     fs_path = field_state_path(store)
-    state = ensure_cylinders(load_field_state(fs_path))
+    state = ensure_prisms(load_field_state(fs_path))
     if not state:
         raise SystemExit(f"field_state missing: {fs_path}")
 

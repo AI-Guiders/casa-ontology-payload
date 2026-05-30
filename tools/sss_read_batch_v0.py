@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, save_state  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, save_state  # type: ignore
 from sss_text_ingest_v0 import ingest_text  # type: ignore
 from sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text  # type: ignore
 from sss_vocab_v0 import punct_votes_from_field, word_votes_from_field  # type: ignore
@@ -146,7 +146,7 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--corpus-dir", type=Path, required=True)
-    p.add_argument("--bukvar", type=Path, default=Path("examples/kb/kb-bukvar-ru-full-v1.payload.json"))
+    p.add_argument("--bukvar", type=Path, default=Path("lab/kb/kb-bukvar-ru-full-v1.payload.json"))
     p.add_argument("--listen-copies", type=int, default=2)
     p.add_argument("--no-sleep", action="store_true")
     p.add_argument("--field", action="store_true", help="Phase B: field word competition")
@@ -166,7 +166,7 @@ def main() -> None:
         print("[batch] RAM-only mode: field_state saved once at end", flush=True)
     bukvar = json.loads(args.bukvar.read_text(encoding="utf-8")) if args.bukvar.exists() else None
     store_path = args.store_dir / "field_state.json"
-    state = ensure_cylinders(load_field_state(store_path))
+    state = ensure_prisms(load_field_state(store_path))
     report = read_batch(
         state,
         args.corpus_dir,

@@ -9,7 +9,7 @@ from pathlib import Path
 
 from f0_math_ingest_v0 import ingest_math_bundle  # type: ignore
 from f0_stack_v0 import decode_f0_lattice, rank_cue_on_f0  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from store_boot_v0 import boot_store  # type: ignore
 
 
@@ -82,7 +82,7 @@ def main() -> None:
     else:
         from field_write import load_field_state  # type: ignore
 
-        state = ensure_cylinders(load_field_state(args.store_dir / "field_state.json"))
+        state = ensure_prisms(load_field_state(args.store_dir / "field_state.json"))
 
     report = run_bench(state, bundle, cues)
     if args.out:

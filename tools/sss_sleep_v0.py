@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, hippo_episodes, run_sleep, save_state  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, hippo_episodes, run_sleep, save_state  # type: ignore
 
 
 def main() -> None:
@@ -27,7 +27,7 @@ def main() -> None:
 
     bundle = json.loads(args.bundle.read_text(encoding="utf-8"))
     before = len([e for e in hippo_episodes(state) if not e.get("consolidated")])
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     state["sn"] = {**(state.get("sn") or {}), "mode": "sleep"}
     report = run_sleep(state, bundle, stack_path=args.stack, strength=args.strength)
     save_state(path, state)

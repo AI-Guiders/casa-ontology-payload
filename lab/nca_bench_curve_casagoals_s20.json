@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "bundle": "lab\\casa-goals.bundle.v1.json",
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "seeds": {
+    "count": 20,
+    "seed0": 1
+  },
+  "model": "lab\\nca_out_casagoals\\model.pt",
+  "rows": [
+    {
+      "damage": 0.1,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.8684149184149182,
+          "std": 0.05578139051210015
+        },
+        "edges_f1": {
+          "mean": 0.9227205882352942,
+          "std": 0.05506671133398808
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_casagoals\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.8684149184149182,
+          "std": 0.05578139051210015
+        },
+        "edges_f1": {
+          "mean": 0.8964705882352941,
+          "std": 0.05540039848456987
+        }
+      }
+    },
+    {
+      "damage": 0.2,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.7490831390831391,
+          "std": 0.13252493166773716
+        },
+        "edges_f1": {
+          "mean": 0.8575315126050421,
+          "std": 0.11836743724189018
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_casagoals\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.7558003108003106,
+          "std": 0.1236687899169185
+        },
+        "edges_f1": {
+          "mean": 0.8176155462184875,
+          "std": 0.1143189268634008
+        }
+      }
+    },
+    {
+      "damage": 0.25,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.7162043512043511,
+          "std": 0.1258052131306103
+        },
+        "edges_f1": {
+          "mean": 0.8156116677440208,
+          "std": 0.1249092924221701
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_casagoals\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.7176184926184926,
+          "std": 0.11555427798540749
+        },
+        "edges_f1": {
+          "mean": 0.7881270200387848,
+          "std": 0.12670154975927822
+        }
+      }
+    },
+    {
+      "damage": 0.3,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.645959595959596,
+          "std": 0.1439498862960022
+        },
+        "edges_f1": {
+          "mean": 0.7509033613445378,
+          "std": 0.15034760177025258
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_casagoals\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.6615151515151514,
+          "std": 0.12811963481888353
+        },
+        "edges_f1": {
+          "mean": 0.7494901422107305,
+          "std": 0.13712026568516025
+        }
+      }
+    },
+    {
+      "damage": 0.4,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.5423737373737374,
+          "std": 0.1502556993754231
+        },
+        "edges_f1": {
+          "mean": 0.606033966033966,
+          "std": 0.11943540732626039
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_casagoals\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.5676515151515151,
+          "std": 0.13133894104918853
+        },
+        "edges_f1": {
+          "mean": 0.6075174825174824,
+          "std": 0.11095929762871594
+        }
+      }
+    },
+    {
+      "damage": 0.5,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.39828282828282835,
+          "std": 0.22454434129596762
+        },
+        "edges_f1": {
+          "mean": 0.41693806193806193,
+          "std": 0.13377250844561334
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_casagoals\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.42828282828282827,
+          "std": 0.20800350060482484
+        },
+        "edges_f1": {
+          "mean": 0.4778821178821178,
+          "std": 0.12374826717830605
+        }
+      }
+    },
+    {
+      "damage": 0.6,
+      "baseline": {
+        "concepts_f1": {
+          "mean": 0.25083333333333335,
+          "std": 0.19525125014263345
+        },
+        "edges_f1": {
+          "mean": 0.2859090909090909,
+          "std": 0.11613895024226532
+        }
+      },
+      "nca": {
+        "model": "lab\\nca_out_casagoals\\model.pt",
+        "steps": 48,
+        "threshold": 0.5,
+        "min_votes": 3,
+        "concepts_f1": {
+          "mean": 0.27111111111111114,
+          "std": 0.19703454541214338
+        },
+        "edges_f1": {
+          "mean": 0.34318181818181814,
+          "std": 0.09768414537427894
+        }
+      }
+    }
+  ]
+}

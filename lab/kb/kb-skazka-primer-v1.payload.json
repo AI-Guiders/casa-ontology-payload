@@ -1,0 +1,367 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "lab/kb/kb-skazka-primer-v1.md",
+      "kind": "project_doc",
+      "title": "kb-skazka-primer-v1"
+    },
+    "nodes": [
+      {
+        "id": "lab/kb/kb-skazka-primer-v1.md",
+        "kind": "project_doc",
+        "title": "kb-skazka-primer-v1"
+      }
+    ],
+    "edges": [
+      {
+        "src": "grapheme.к",
+        "relation": "compose",
+        "dst": "syllable.кот"
+      },
+      {
+        "src": "grapheme.о",
+        "relation": "compose",
+        "dst": "syllable.кот"
+      },
+      {
+        "src": "grapheme.т",
+        "relation": "compose",
+        "dst": "syllable.кот"
+      },
+      {
+        "src": "grapheme.д",
+        "relation": "compose",
+        "dst": "syllable.дом"
+      },
+      {
+        "src": "grapheme.о",
+        "relation": "compose",
+        "dst": "syllable.дом"
+      },
+      {
+        "src": "grapheme.м",
+        "relation": "compose",
+        "dst": "syllable.дом"
+      },
+      {
+        "src": "grapheme.с",
+        "relation": "compose",
+        "dst": "syllable.сад"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.сад"
+      },
+      {
+        "src": "grapheme.д",
+        "relation": "compose",
+        "dst": "syllable.сад"
+      },
+      {
+        "src": "syllable.ма",
+        "relation": "compose",
+        "dst": "lang.word.мама"
+      },
+      {
+        "src": "syllable.ма",
+        "relation": "compose",
+        "dst": "lang.word.мама"
+      },
+      {
+        "src": "syllable.па",
+        "relation": "compose",
+        "dst": "lang.word.папа"
+      },
+      {
+        "src": "syllable.па",
+        "relation": "compose",
+        "dst": "lang.word.папа"
+      },
+      {
+        "src": "syllable.кот",
+        "relation": "compose",
+        "dst": "lang.word.кот"
+      },
+      {
+        "src": "syllable.дом",
+        "relation": "compose",
+        "dst": "lang.word.дом"
+      },
+      {
+        "src": "syllable.сад",
+        "relation": "compose",
+        "dst": "lang.word.сад"
+      },
+      {
+        "src": "ru.scene.s1",
+        "relation": "shows",
+        "dst": "lang.word.мама"
+      },
+      {
+        "src": "ru.scene.s1",
+        "relation": "shows",
+        "dst": "lang.word.папа"
+      },
+      {
+        "src": "ru.scene.s2",
+        "relation": "shows",
+        "dst": "lang.word.кот"
+      },
+      {
+        "src": "ru.scene.s2",
+        "relation": "shows",
+        "dst": "lang.word.дом"
+      },
+      {
+        "src": "ru.scene.s3",
+        "relation": "shows",
+        "dst": "lang.word.кот"
+      },
+      {
+        "src": "ru.scene.s3",
+        "relation": "shows",
+        "dst": "lang.word.сад"
+      },
+      {
+        "src": "ru.scene.s4",
+        "relation": "shows",
+        "dst": "lang.word.мама"
+      },
+      {
+        "src": "ru.scene.s4",
+        "relation": "shows",
+        "dst": "lang.word.кот"
+      },
+      {
+        "src": "ru.scene.s5",
+        "relation": "shows",
+        "dst": "lang.word.папа"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "concept_id": "syllable.кот",
+      "claim_kind": "syllable",
+      "text": "слог кот",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "B1 / кот",
+      "slots": {
+        "syllable": "кот"
+      }
+    },
+    {
+      "concept_id": "syllable.дом",
+      "claim_kind": "syllable",
+      "text": "слог дом",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "B1 / дом",
+      "slots": {
+        "syllable": "дом"
+      }
+    },
+    {
+      "concept_id": "syllable.сад",
+      "claim_kind": "syllable",
+      "text": "слог сад",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "B1 / сад",
+      "slots": {
+        "syllable": "сад"
+      }
+    },
+    {
+      "concept_id": "lang.word.мама",
+      "claim_kind": "word",
+      "text": "слово мама",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "B2 / мама",
+      "slots": {
+        "word": "мама",
+        "syllables": [
+          "ма",
+          "ма"
+        ]
+      }
+    },
+    {
+      "concept_id": "lang.word.папа",
+      "claim_kind": "word",
+      "text": "слово папа",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "B2 / папа",
+      "slots": {
+        "word": "папа",
+        "syllables": [
+          "па",
+          "па"
+        ]
+      }
+    },
+    {
+      "concept_id": "lang.word.кот",
+      "claim_kind": "word",
+      "text": "слово кот",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "B2 / кот",
+      "slots": {
+        "word": "кот",
+        "syllables": [
+          "кот"
+        ]
+      }
+    },
+    {
+      "concept_id": "lang.word.дом",
+      "claim_kind": "word",
+      "text": "слово дом",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "B2 / дом",
+      "slots": {
+        "word": "дом",
+        "syllables": [
+          "дом"
+        ]
+      }
+    },
+    {
+      "concept_id": "lang.word.сад",
+      "claim_kind": "word",
+      "text": "слово сад",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "B2 / сад",
+      "slots": {
+        "word": "сад",
+        "syllables": [
+          "сад"
+        ]
+      }
+    },
+    {
+      "concept_id": "ru.scene.s1",
+      "claim_kind": "scene",
+      "text": "Мама и папа.",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "scene / s1",
+      "slots": {
+        "scene_id": "s1",
+        "caption": "Мама и папа.",
+        "words": [
+          "мама",
+          "папа"
+        ]
+      }
+    },
+    {
+      "concept_id": "ru.scene.s2",
+      "claim_kind": "scene",
+      "text": "Кот сидит дома.",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "scene / s2",
+      "slots": {
+        "scene_id": "s2",
+        "caption": "Кот сидит дома.",
+        "words": [
+          "кот",
+          "дом"
+        ]
+      }
+    },
+    {
+      "concept_id": "ru.scene.s3",
+      "claim_kind": "scene",
+      "text": "Кот бежит в сад.",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "scene / s3",
+      "slots": {
+        "scene_id": "s3",
+        "caption": "Кот бежит в сад.",
+        "words": [
+          "кот",
+          "сад"
+        ]
+      }
+    },
+    {
+      "concept_id": "ru.scene.s4",
+      "claim_kind": "scene",
+      "text": "Мама зовёт кота.",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "scene / s4",
+      "slots": {
+        "scene_id": "s4",
+        "caption": "Мама зовёт кота.",
+        "words": [
+          "мама",
+          "кот"
+        ]
+      }
+    },
+    {
+      "concept_id": "ru.scene.s5",
+      "claim_kind": "scene",
+      "text": "Папа тоже зовёт.",
+      "doc_path": "lab/kb/kb-skazka-primer-v1.md",
+      "section": "scene / s5",
+      "slots": {
+        "scene_id": "s5",
+        "caption": "Папа тоже зовёт.",
+        "words": [
+          "папа"
+        ]
+      }
+    }
+  ],
+  "story": {
+    "scenes": [
+      {
+        "id": "s1",
+        "caption": "Мама и папа.",
+        "words": [
+          "мама",
+          "папа"
+        ]
+      },
+      {
+        "id": "s2",
+        "caption": "Кот сидит дома.",
+        "words": [
+          "кот",
+          "дом"
+        ]
+      },
+      {
+        "id": "s3",
+        "caption": "Кот бежит в сад.",
+        "words": [
+          "кот",
+          "сад"
+        ]
+      },
+      {
+        "id": "s4",
+        "caption": "Мама зовёт кота.",
+        "words": [
+          "мама",
+          "кот"
+        ]
+      },
+      {
+        "id": "s5",
+        "caption": "Папа тоже зовёт.",
+        "words": [
+          "папа"
+        ]
+      }
+    ],
+    "words": [
+      "мама",
+      "папа",
+      "кот",
+      "дом",
+      "сад"
+    ]
+  }
+}

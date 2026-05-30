@@ -50,10 +50,10 @@
 ## 5) Цифры (ориентиры, 20 seeds)
 
 **Edges** (v2, patch, multi-bundle): при damage≈0.4 edges F1 **0.413→0.436**; при 0.6 **0.291→0.352**.  
-Артефакты: `examples/nca_union3_codec2_patches_w8_curve2_*_s20.json`
+Артефакты: `lab/nca_union3_codec2_patches_w8_curve2_*_s20.json`
 
 **Concepts** (v3, damage=0.4): средний Δ по 3 bundle — `independent` ~0.003, `doc` ~0.005, **`section` ~0.075**, `doc_section` ~0.20 (нестабильно на малых bundle).  
-Артефакт: `examples/concept_locality_bench.json`
+Артефакт: `lab/concept_locality_bench.json`
 
 ## 6) Рекомендации для CASA v1
 
@@ -65,7 +65,7 @@
 ## 7) Шпаргалка команд
 
 ```powershell
-python .\tools\codec_grid_v3.py --bundle .\examples\ca-substrate-agent.bundle.v1.json --concept-mode section --out-grid .\examples\grid.v3.json
-python .\tools\train_dmn_nca_multibundle.py --codec v3 --concept-mode section --damage-mode patches --damage-patches 8 --bundles .\examples\ca-substrate-agent.bundle.v1.json .\examples\casa-goals.bundle.v1.json .\examples\research-spec.bundle.v1.json --save-model --out-dir .\examples\nca_out_v3_section
-python .\tools\bench_concept_locality.py --damage 0.4 --out .\examples\concept_locality_bench.json
+python .\tools\codec_grid_v3.py --bundle .\lab\ca-substrate-agent.bundle.v1.json --concept-mode section --out-grid .\lab\grid.v3.json
+python .\tools\train_dmn_nca_multibundle.py --codec v3 --concept-mode section --damage-mode patches --damage-patches 8 --bundles .\lab\ca-substrate-agent.bundle.v1.json .\lab\casa-goals.bundle.v1.json .\lab\research-spec.bundle.v1.json --save-model --out-dir .\lab\nca_out_v3_section
+python .\tools\bench_concept_locality.py --damage 0.4 --out .\lab\concept_locality_bench.json
 ```

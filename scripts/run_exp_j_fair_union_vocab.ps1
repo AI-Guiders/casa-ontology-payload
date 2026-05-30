@@ -10,13 +10,13 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$store = 'examples/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab-v0'
 $grammar = "$store/bundles/kb-russian-language-rules-v1.bundle.v1.json"
 $mre3 = "$store/bundles/kb-regex-mre3-ru-chapter-map-v1.bundle.v1.json"
 $bundles = @($grammar, $mre3)
-$reportDir = 'examples/exp_j_ru_v1'
-$monoOut = 'examples/nca_out_exp_j_ru_union_full_v1'
-$winOut = 'examples/nca_out_exp_j_ru_union_windowed_v1'
+$reportDir = 'lab/exp_j_ru_v1'
+$monoOut = 'lab/nca_out_exp_j_ru_union_full_v1'
+$winOut = 'lab/nca_out_exp_j_ru_union_windowed_v1'
 $monoModel = "$monoOut/model.pt"
 $winModel = "$winOut/model.pt"
 

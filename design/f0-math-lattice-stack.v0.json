@@ -31,7 +31,7 @@
       "size": { "width": 32, "height": 32 },
       "token_prefix": ["M:", "M:sym:"],
       "role": ["pure_symbol", "stick_count", "operators"],
-      "examples": ["M:sym:one", "M:sym:two", "M:op:add", "M:op:eq"],
+      "lab": ["M:sym:one", "M:sym:two", "M:op:add", "M:op:eq"],
       "status": "v0_text",
       "curriculum": "experiment-l L0"
     },
@@ -41,7 +41,7 @@
       "size": { "width": 32, "height": 32 },
       "token_prefix": ["M:inst:", "M:unit:"],
       "role": ["instance_slots", "homogeneous_merge", "working_memory"],
-      "examples": ["M:inst:cow@a", "M:inst:cow@b", "M:unit:cow"],
+      "lab": ["M:inst:cow@a", "M:inst:cow@b", "M:unit:cow"],
       "status": "design",
       "note": "«одна корова + ещё одна корова» — два слота одного M:unit:cow"
     },
@@ -51,7 +51,7 @@
       "size": { "width": 32, "height": 32 },
       "token_prefix": ["M:qty:"],
       "role": ["bound_quantity", "cardinality_plus_unit"],
-      "examples": ["M:qty:2×cow", "M:qty:3×stick"],
+      "lab": ["M:qty:2×cow", "M:qty:3×stick"],
       "status": "design",
       "note": "результат compose; не путать с lang.word.две"
     }

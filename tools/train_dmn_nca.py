@@ -155,7 +155,7 @@ def main() -> None:
     p.add_argument("--fire-rate", type=float, default=0.5)
     p.add_argument("--threshold", type=float, default=0.5)
     p.add_argument("--min-votes", type=int, default=3)
-    p.add_argument("--out-dir", type=Path, default=Path("examples/nca_out"))
+    p.add_argument("--out-dir", type=Path, default=Path("lab/nca_out"))
     p.add_argument("--save-model", action="store_true", help="Save best model weights to out-dir/model.pt")
     args = p.parse_args()
 

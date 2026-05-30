@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import Any
 
 from predictor_v0 import _L2_PREFIX_INDEX_CACHE  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
 from sss_l2_shard_v0 import (  # type: ignore
     DEFAULT_NUM_SHARDS,
     L2_CONCEPT_PREFIX,
@@ -19,7 +19,7 @@ from sss_vocab_v0 import _strengthen_word_on_l2, norm_word  # type: ignore
 
 def configure_ru_store(state: dict, words: list[str], *, num_shards: int = DEFAULT_NUM_SHARDS) -> dict[str, Any]:
     """Mark store as RU locale; corpus-quantile L2 sharding from headwords."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     cfg = sharding_config(state)
     cfg["locale"] = "ru"
     cfg["enabled"] = True
@@ -37,7 +37,7 @@ def ingest_ru_lex_batch(
     configure: bool = True,
 ) -> dict[str, Any]:
     """Fast batch RU lexicon imprint (field-only, no listen episodes)."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     unique = list(dict.fromkeys(norm_word(w) for w in words if norm_word(w)))
     if configure:
         configure_ru_store(state, unique)

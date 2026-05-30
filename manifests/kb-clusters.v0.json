@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "bundle_dir": "examples/kb-perdoc",
+  "bundle_dir": "lab/kb-perdoc",
   "reference_bundles": [
-    "examples/ca-substrate-agent.bundle.v1.json",
-    "examples/casa-goals.bundle.v1.json",
-    "examples/research-spec.bundle.v1.json"
+    "lab/ca-substrate-agent.bundle.v1.json",
+    "lab/casa-goals.bundle.v1.json",
+    "lab/research-spec.bundle.v1.json"
   ],
   "clusters": [
     {

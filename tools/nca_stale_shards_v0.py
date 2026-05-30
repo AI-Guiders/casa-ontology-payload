@@ -19,7 +19,7 @@ from nca_registry_v0 import (  # type: ignore
 )
 from nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge  # type: ignore
 from nca_train_util import add_device_args, resolve_train_device  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import is_nca_trainable_lattice, set_nca_model  # type: ignore
 from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
 from store_layout_v0 import field_state_path, nca_lattice_dir  # type: ignore
@@ -108,7 +108,7 @@ def main() -> None:
 
     store = args.store_dir.resolve()
     fs_path = field_state_path(store)
-    state = ensure_cylinders(load_field_state(fs_path))
+    state = ensure_prisms(load_field_state(fs_path))
     if not state:
         raise SystemExit(f"field_state missing: {fs_path}")
 

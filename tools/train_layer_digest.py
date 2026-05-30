@@ -41,7 +41,7 @@ def main() -> None:
     p.add_argument("--epochs", type=int, default=400)
     p.add_argument("--lr", type=float, default=2e-4)
     p.add_argument("--hidden", type=int, default=64)
-    p.add_argument("--out", type=Path, default=Path("examples/layered_out/digest_model.pt"))
+    p.add_argument("--out", type=Path, default=Path("lab/layered_out/digest_model.pt"))
     args = p.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

@@ -13,13 +13,13 @@ from pathlib import Path
 def main() -> None:
     p = argparse.ArgumentParser(description="Experiment C — goal-3 repair grid")
     p.add_argument("--repo-root", type=Path, default=Path("."))
-    p.add_argument("--bundle", type=Path, default=Path("examples/ca-substrate-agent.bundle.v1.json"))
+    p.add_argument("--bundle", type=Path, default=Path("lab/ca-substrate-agent.bundle.v1.json"))
     p.add_argument("--model", type=Path, required=True)
     p.add_argument("--patch-counts", default="6,8,10,12")
     p.add_argument("--seeds", default="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20")
     p.add_argument("--patch-w", type=int, default=10)
     p.add_argument("--patch-h", type=int, default=10)
-    p.add_argument("--out-dir", type=Path, default=Path("examples/exp_c_goal3_grid_v1"))
+    p.add_argument("--out-dir", type=Path, default=Path("lab/exp_c_goal3_grid_v1"))
     args = p.parse_args()
 
     repo = args.repo_root.resolve()

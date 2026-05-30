@@ -6,8 +6,8 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'examples/agent-stores/sss-full-v0'
-$bundle = 'examples/kb/kb-bukvar-ru-full-v1.payload.json'
+$store = 'lab/agent-stores/sss-full-v0'
+$bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $stack = 'design/sss-lattice-stack.v0.json'
 
 Write-Host '=== generate full bukvar bundle ===' -ForegroundColor Cyan
@@ -21,6 +21,6 @@ python tools/bench_sss_lattice.py `
     --store-dir $store `
     --bundle $bundle `
     --stack $stack `
-    --out examples/exp_sss_v1/report_full_lattice.json
+    --out lab/exp_sss_v1/report_full_lattice.json
 
 Write-Host 'Done. Store:' $store

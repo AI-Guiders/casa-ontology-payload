@@ -33,7 +33,7 @@ def main() -> None:
     p.add_argument("--threshold", type=float, default=0.5)
     p.add_argument("--min-votes", type=int, default=3)
     p.add_argument("--steps", type=int, default=48)
-    p.add_argument("--out", type=Path, default=Path("examples/goal3_repair_demo.json"))
+    p.add_argument("--out", type=Path, default=Path("lab/goal3_repair_demo.json"))
     args = p.parse_args()
 
     from codec_grid_v3 import encode_bundle_to_grid, tokens_for_bundle  # type: ignore

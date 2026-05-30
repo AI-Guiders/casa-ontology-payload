@@ -21,11 +21,11 @@ def _glob_bundles(kb_dir: Path) -> list[Path]:
 def main() -> None:
     p = argparse.ArgumentParser(description="Experiment A — KB scale")
     p.add_argument("--repo-root", type=Path, default=Path("."))
-    p.add_argument("--kb-dir", type=Path, default=Path("examples/kb"))
+    p.add_argument("--kb-dir", type=Path, default=Path("lab/kb"))
     p.add_argument(
         "--extra-bundles",
         nargs="*",
-        default=["examples/ca-substrate-agent.bundle.v1.json", "examples/casa-goals.bundle.v1.json", "examples/research-spec.bundle.v1.json"],
+        default=["lab/ca-substrate-agent.bundle.v1.json", "lab/casa-goals.bundle.v1.json", "lab/research-spec.bundle.v1.json"],
         help="Reference bundles merged into union train (recommended)",
     )
     p.add_argument("--epochs", type=int, default=1200)
@@ -33,7 +33,7 @@ def main() -> None:
     p.add_argument("--damage-bench", type=float, default=0.4)
     p.add_argument("--curve-bundles", default="research-ml,playbook-tda-flow,research-tda-flow")
     p.add_argument("--skip-train", action="store_true")
-    p.add_argument("--out-dir", type=Path, default=Path("examples/exp_a_kb_scale_v1"))
+    p.add_argument("--out-dir", type=Path, default=Path("lab/exp_a_kb_scale_v1"))
     args = p.parse_args()
 
     repo = args.repo_root.resolve()
@@ -44,7 +44,7 @@ def main() -> None:
         pth = (repo / eb).resolve()
         if pth.is_file() and pth not in bundles:
             bundles.append(pth)
-    # Dedupe: prefer examples/*.bundle over examples/kb/* with same stem
+    # Dedupe: prefer lab/*.bundle over lab/kb/* with same stem
     by_stem: dict[str, Path] = {}
     for b in bundles:
         stem = b.stem

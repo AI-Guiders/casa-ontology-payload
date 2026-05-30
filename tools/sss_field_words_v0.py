@@ -3,10 +3,11 @@
 
 from __future__ import annotations
 
+from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
 from typing import Any
 
 from codec_grid_v0 import Grid  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_field_decode_v0 import grapheme_votes_for_word  # type: ignore
 from sss_segment_v0 import norm_word  # type: ignore
 from sss_stack_v0 import _place_token  # type: ignore
@@ -49,13 +50,13 @@ def _replant_word_hypotheses(state: dict, word: str, segment_copies: dict[str, i
         tok = w_hyp_token(w, segment)
         g = _place_token(g, tok, tok, copies=int(copies), radius=3)
     lat["cells"] = g.cells
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
 
 
 def compete_word_hypotheses(state: dict, surface: str) -> dict[str, Any]:
     """Score syllable parses for one word chunk; pick field_focus (join_ok preferred)."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     w = norm_word(surface)
     entries = enumerate_word_candidates(state, w)
     viable = [e for e in entries if e.get("join_ok")]

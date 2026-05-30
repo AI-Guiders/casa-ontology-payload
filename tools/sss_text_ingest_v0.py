@@ -18,7 +18,7 @@ from typing import Any
 
 from field_write import load_field_state  # type: ignore
 from gen_kb_from_text_v0 import build_bundle_from_text  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, run_sleep, save_state  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, run_sleep, save_state  # type: ignore
 from sss_read_v0 import read_session  # type: ignore
 from sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text, paragraphs_to_scenes  # type: ignore
 from sss_vocab_v0 import punct_votes_from_field, word_votes_from_field  # type: ignore
@@ -38,7 +38,7 @@ def ingest_text(
     Agent hears running text; words extracted from signal (not from labeled cards).
     Returns discovered vs reinforced based on W: votes before listen.
     """
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     before_w = word_votes_from_field(state)
     before_p = punct_votes_from_field(state)
     dynamic = build_bundle_from_text(text, bukvar_bundle=bukvar_bundle, title=title)
@@ -90,7 +90,7 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Ingest plain text tale — words + punctuation from stream")
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--text", type=Path, required=True, help="Plain UTF-8 tale (real or generated)")
-    p.add_argument("--bukvar", type=Path, default=Path("examples/kb/kb-bukvar-ru-full-v1.payload.json"))
+    p.add_argument("--bukvar", type=Path, default=Path("lab/kb/kb-bukvar-ru-full-v1.payload.json"))
     p.add_argument("--title", default=None)
     p.add_argument("--listen-copies", type=int, default=2)
     p.add_argument("--no-sleep", action="store_true")
@@ -118,7 +118,7 @@ def main() -> None:
             encoding="utf-8",
         )
 
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     report = ingest_text(
         state,
         text,

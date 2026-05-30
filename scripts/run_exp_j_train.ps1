@@ -3,8 +3,8 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$store = 'examples/agent-stores/language-agent-lab-v0'
-$outDir = 'examples/nca_out_exp_j_ru_v1'
+$store = 'lab/agent-stores/language-agent-lab-v0'
+$outDir = 'lab/nca_out_exp_j_ru_v1'
 $bundles = @(
   "$store/bundles/kb-russian-language-rules-v1.bundle.v1.json",
   "$store/bundles/kb-regex-mre3-ru-chapter-map-v1.bundle.v1.json"
@@ -29,12 +29,12 @@ python tools/bench_dmn_nca_union.py `
   --bundle "$store/bundles/kb-russian-language-rules-v1.bundle.v1.json" `
   --model $model --codec v3 --concept-mode section `
   --damage-mode patches --damage-patches 8 --seeds 12 `
-  --out examples/exp_j_ru_v1/nca_bench_grammar_s12.json
+  --out lab/exp_j_ru_v1/nca_bench_grammar_s12.json
 
 Write-Host '=== bench answer: field vs repair ===' -ForegroundColor Cyan
 python tools/bench_exp_j_repair_answer.py `
-  --queries examples/exp_j_ru_queries.jsonl `
+  --queries lab/exp_j_ru_queries.jsonl `
   --store-dir $store --model $model `
-  --out examples/exp_j_ru_v1/report_repair.json
+  --out lab/exp_j_ru_v1/report_repair.json
 
 Write-Host 'Done.'

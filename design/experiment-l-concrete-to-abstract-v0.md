@@ -88,7 +88,7 @@
 {
   "concept_id": "vis.count.sticks_2",
   "text": "Две вертикальные палочки (иллюстрация).",
-  "image_ref": "examples/exp_l_vision/sticks/sticks_2.svg",
+  "image_ref": "lab/exp_l_vision/sticks/sticks_2.svg",
   "links": ["math.two", "lang.word.two"]
 }
 ```
@@ -231,7 +231,7 @@ Image file (SVG/PNG)
 | Компонент | v0 | v1+ |
 |-----------|----|-----|
 | Codec | `V:` + `E:` cross-modal | patch hash / лёгкий encoder → **concept** (не grid пикселей) |
-| Store | `examples/agent-stores/vision-agent-lab-v0` | union с language после стабильного J |
+| Store | `lab/agent-stores/vision-agent-lab-v0` | union с language после стабильного J |
 | Train | NCA на **токенах** vis+math+lang | windowed, те же тайлы |
 | MCP | опционально webcam → digest как **наблюдение** | не замена `image_ref` |
 
@@ -301,7 +301,7 @@ L4  [SVG корова]  →  vis.animal.cow  —E—  lang.word.cow
 ## Следующий шаг (когда J выпущен)
 
 1. Author `kb-math-concrete-schemas-v1.md` (L0).  
-2. 5–10 SVG палочек в `examples/exp_l_vision/sticks/`.  
+2. 5–10 SVG палочек в `lab/exp_l_vision/sticks/`.  
 3. Manifest `kb-bundles-vision-bukvar-v1.json` (заглушка).  
 4. Prototype `bench_vis_grounding.py` (read vis+lang из union store).
 

@@ -6,11 +6,11 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'examples/agent-stores/sss-phases-abc-v0'
-$bukvar = 'examples/kb/kb-bukvar-ru-full-v1.payload.json'
-$corpus = 'examples/text/corpus'
-$exp = 'examples/exp_sss_v1'
-$ncaOut = 'examples/nca_out_sss_l2_smoke'
+$store = 'lab/agent-stores/sss-phases-abc-v0'
+$bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
+$corpus = 'lab/text/corpus'
+$exp = 'lab/exp_sss_v1'
+$ncaOut = 'lab/nca_out_sss_l2_smoke'
 
 Write-Host '========== PHASE A: corpus batch + growth + babble ==========' -ForegroundColor Green
 python tools/gen_kb_bukvar_ru_full.py --out $bukvar
@@ -18,7 +18,7 @@ python tools/sss_field.py --store-dir $store --bundle $bukvar --listen-passes 2 
 
 python tools/bench_sss_vocab_growth.py `
     --store-dir $store `
-    --text examples/text/corpus/kolobok-excerpt.txt `
+    --text lab/text/corpus/kolobok-excerpt.txt `
     --bukvar $bukvar `
     --out "$exp/report_abc_phase_a_growth.json"
 
@@ -41,7 +41,7 @@ python tools/sss_read_batch_v0.py `
 
 python tools/sss_text_listen_field_v0.py `
     --store-dir $store `
-    --text examples/text/kolobok-excerpt.txt `
+    --text lab/text/kolobok-excerpt.txt `
     --bukvar $bukvar `
     --out "$exp/report_abc_phase_b_kolobok_field.json"
 
@@ -58,6 +58,6 @@ python tools/sss_sleep_nca_hook_v0.py `
     --store-dir $store `
     --model "$ncaOut/model.pt" `
     --bukvar $bukvar `
-    --text examples/text/corpus/kolobok-excerpt.txt
+    --text lab/text/corpus/kolobok-excerpt.txt
 
 Write-Host 'All phases A-B-C done.' -ForegroundColor Green

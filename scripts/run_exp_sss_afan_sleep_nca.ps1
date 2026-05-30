@@ -6,11 +6,11 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$srcStore = 'examples/agent-stores/sss-afan-v0'
-$store = 'examples/agent-stores/sss-afan-iii-v0'
-$bukvar = 'examples/kb/kb-bukvar-ru-full-v1.payload.json'
-$exp = 'examples/exp_sss_v1'
-$ncaOut = 'examples/nca_out_afan_l1_v0'
+$srcStore = 'lab/agent-stores/sss-afan-v0'
+$store = 'lab/agent-stores/sss-afan-iii-v0'
+$bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
+$exp = 'lab/exp_sss_v1'
+$ncaOut = 'lab/nca_out_afan_l1_v0'
 $lattice = 'L1_syllable'
 
 Write-Host '=== Afan-III: copy golden store (once) ===' -ForegroundColor Cyan
@@ -72,7 +72,7 @@ python tools/sss_sleep_nca_hook_v0.py `
     --model "$ncaOut/model.pt" `
     --lattice-id $lattice `
     --bukvar $bukvar `
-    --text examples/text/kolobok-excerpt.txt `
+    --text lab/text/kolobok-excerpt.txt `
     | Tee-Object -FilePath "$exp/report_afan_iii_sleep_nca.json"
 
 Write-Host '=== babble spot-check after sleep ===' -ForegroundColor Cyan

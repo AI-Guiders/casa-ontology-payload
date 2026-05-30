@@ -9,29 +9,29 @@ __pycache__/
 [Oo]bj/
 
 # scratch / regenerable training outputs
-examples/**/nca/**/final_grid.json
-examples/_tmp_*
-examples/**/_tmp_*
-examples/nca_out_*/
-examples/exp_*/model.pt
-examples/layered_out/*.pt
-examples/exp_e_clusters_v1/**/model.pt
-examples/exp_e_clusters_v1/**/digest_model.pt
-examples/exp_e_clusters_v1/**/gate_model.pt
-examples/exp_f_modules_v1/**/model.pt
-examples/exp_f_modules_v2_gpu/**/model.pt
-examples/exp_g_tiered_v1/**/model.pt
-examples/exp_*/report.json.tmp
-examples/agent-stores/**/checkpoints/*.pt
-examples/agent-stores/**/model*.pt
+lab/**/nca/**/final_grid.json
+lab/_tmp_*
+lab/**/_tmp_*
+lab/nca_out_*/
+lab/exp_*/model.pt
+lab/layered_out/*.pt
+lab/exp_e_clusters_v1/**/model.pt
+lab/exp_e_clusters_v1/**/digest_model.pt
+lab/exp_e_clusters_v1/**/gate_model.pt
+lab/exp_f_modules_v1/**/model.pt
+lab/exp_f_modules_v2_gpu/**/model.pt
+lab/exp_g_tiered_v1/**/model.pt
+lab/exp_*/report.json.tmp
+lab/agent-stores/**/checkpoints/*.pt
+lab/agent-stores/**/model*.pt
 
 # production store runtime (ship ltm/ + nca/ locally; rebuild field_state in lab)
-examples/agent-stores/**/field_state.json
-examples/agent-stores/**/ltm/**/*.ltm
-examples/agent-stores/**/ltm/**/*.ltm.zst
-examples/agent-stores/**/nca/**/model.pt
-examples/agent-stores/**/_parallel_shards/
+lab/agent-stores/**/field_state.json
+lab/agent-stores/**/ltm/**/*.ltm
+lab/agent-stores/**/ltm/**/*.ltm.zst
+lab/agent-stores/**/nca/**/model.pt
+lab/agent-stores/**/_parallel_shards/
 
 # core VK repair models ship with agent-core pack (~1 MiB); regenerate: vk_nca_train_v0.py
-!examples/agent-core/**/nca/**/model.pt
+!lab/agent-core/**/nca/**/model.pt
 

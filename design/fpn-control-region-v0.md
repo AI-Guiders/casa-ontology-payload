@@ -1,6 +1,6 @@
 # FPN control region v0 (layout B)
 
-**Status:** design proposal (not in `layout.v0.json` yet)  
+**Status:** **superseded** — см. [`control-lattice-stack-v0.md`](control-lattice-stack-v0.md) (отдельные решётки + bridges, как SSS).  
 **Date:** 2026-05-28  
 **Prerequisite:** [`casa-glossary-v0.md`](casa-glossary-v0.md) § FPN, [`casa-layout-v0.md`](casa-layout-v0.md)
 

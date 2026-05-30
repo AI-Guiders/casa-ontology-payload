@@ -5,8 +5,8 @@
 
 ## A — KB scale (8 bundles + union train)
 
-**Setup:** `examples/kb/*.bundle.v1.json`, v3/section, 1200 epochs, bench @ damage 0.4, 20 seeds.  
-**Model:** `examples/exp_a_kb_scale_v1/model.pt`
+**Setup:** `lab/kb/*.bundle.v1.json`, v3/section, 1200 epochs, bench @ damage 0.4, 20 seeds.  
+**Model:** `lab/exp_a_kb_scale_v1/model.pt`
 
 ### Summary
 
@@ -23,7 +23,7 @@
 2. **Per-doc concepts** differ, but union vocab dilutes signal across 8 payloads on one layout.
 3. **research-ml.bundle:** concepts F1 = 0 (no recoverable `concept_id` in payload vs graph) — metric artifact.
 
-**Follow-up (A′):** union train **KB + 3 reference** bundles (800 ep) → `examples/exp_a_prime_kb_plus_ref_v1/`
+**Follow-up (A′):** union train **KB + 3 reference** bundles (800 ep) → `lab/exp_a_prime_kb_plus_ref_v1/`
 
 | Metric | A (KB only) | A′ (KB + ref) |
 |--------|-------------|---------------|
@@ -32,7 +32,7 @@
 
 A′ не отменяет вывод A: масштабирование на hub-graph bundle без отдельных graph per doc даёт потолок; reference bundles помогают частично.
 
-Artifacts: `examples/exp_a_kb_scale_v1/`, `examples/exp_a_prime_kb_plus_ref_v1/`
+Artifacts: `lab/exp_a_kb_scale_v1/`, `lab/exp_a_prime_kb_plus_ref_v1/`
 
 ---
 
@@ -48,7 +48,7 @@ Artifacts: `examples/exp_a_kb_scale_v1/`, `examples/exp_a_prime_kb_plus_ref_v1/`
 
 Defaults updated in `tools/canonical.py`: `CANONICAL_THRESHOLD`, `CANONICAL_MIN_VOTES`.
 
-Artifacts: `examples/exp_b_decode_sweep_v1/`, `examples/exp_b_decode_sweep_v1/ref/`
+Artifacts: `lab/exp_b_decode_sweep_v1/`, `lab/exp_b_decode_sweep_v1/ref/`
 
 ---
 
@@ -56,7 +56,7 @@ Artifacts: `examples/exp_b_decode_sweep_v1/`, `examples/exp_b_decode_sweep_v1/re
 
 **Setup:** `ca-substrate-agent.bundle.v1.json`, model `nca_out_v3_section`, patches ∈ {6,8,10,12} × 20 seeds.
 
-See `examples/exp_c_goal3_grid_v1/report.json` for `win_rate` and `patch_summary`.
+See `lab/exp_c_goal3_grid_v1/report.json` for `win_rate` and `patch_summary`.
 
 **Gate (≥50% seeds with repair > error):** **met** — `win_rate` **71.25%** (57/80).
 
@@ -75,7 +75,7 @@ Stronger agent-error (more patches) → clearer NCA repair signal (CASA goal 3).
 
 **Hypothesis:** shared hub graph caused A failure; each KB doc gets its own `extract_md_graph` root.
 
-**Run:** `python tools/exp_d_kb_perdoc.py` → bundles in `examples/kb-perdoc/`, report `examples/exp_d_kb_perdoc_v1/report.json`
+**Run:** `python tools/exp_d_kb_perdoc.py` → bundles in `lab/kb-perdoc/`, report `lab/exp_d_kb_perdoc_v1/report.json`
 
 ### D results (2026-05-28)
 
@@ -94,7 +94,7 @@ Per-doc graphs **help per bundle** (6 wins vs 0), but union vocab + shared DMN s
 
 **Run:** `python tools/build_kb_modules.py` → `manifests/kb-modules.v0.json` · `scripts/run_modules_v0.ps1`
 
-See `design/modules-fmri-analogy-v0.md` · output `examples/exp_f_modules_v1/report.json`
+See `design/modules-fmri-analogy-v0.md` · output `lab/exp_f_modules_v1/report.json`
 
 ---
 
@@ -102,7 +102,7 @@ See `design/modules-fmri-analogy-v0.md` · output `examples/exp_f_modules_v1/rep
 
 **Policy:** baseline_mix ≥ 0.85 → cluster DMN only; else cluster + module finetune.
 
-**Run:** `scripts/run_tiered_g_v0.ps1` → `examples/exp_g_tiered_v1/report.json`
+**Run:** `scripts/run_tiered_g_v0.ps1` → `lab/exp_g_tiered_v1/report.json`
 
 See `design/experiment-g-tiered-v1.md` · `manifests/kb-bundle-tiers.v0.json`
 

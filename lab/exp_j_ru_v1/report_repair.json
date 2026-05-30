@@ -1,0 +1,155 @@
+{
+  "store": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\language-agent-lab-v0",
+  "bundle": "kb-russian-language-rules-v1.bundle.v1.json",
+  "model": "lab\\nca_out_exp_j_ru_v1\\model.pt",
+  "queries": 16,
+  "scored_queries": 15,
+  "answer_at_1_field": 1.0,
+  "answer_at_1_repair": 1.0,
+  "results": [
+    {
+      "query": "согласно приказа или согласно приказу",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 2.79,
+      "repair_hit": true,
+      "repair_ms": 1564.05,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "без второй половинки запятая",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 5.26,
+      "repair_hit": true,
+      "repair_ms": 1632.95,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "надеть ребёнка или одеть пальто",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 4.45,
+      "repair_hit": true,
+      "repair_ms": 1518.83,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "в течение пяти минут как пишется",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 4.37,
+      "repair_hit": true,
+      "repair_ms": 1679.7,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "ихний или ейный ошибка",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 3.64,
+      "repair_hit": true,
+      "repair_ms": 1525.21,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "новый дом новая дача согласование рода",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 4.66,
+      "repair_hit": true,
+      "repair_ms": 1677.52,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "вторая половинка родительный падеж",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 4.84,
+      "repair_hit": true,
+      "repair_ms": 1707.33,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "одушевлённость винительный падеж",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 4.03,
+      "repair_hit": true,
+      "repair_ms": 1571.01,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "прилагательное согласуется в роде числе падеже",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 3.27,
+      "repair_hit": true,
+      "repair_ms": 1460.15,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "антоим надеть снять",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 4.31,
+      "repair_hit": true,
+      "repair_ms": 1565.95,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "одеть больного правильно",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 4.84,
+      "repair_hit": true,
+      "repair_ms": 1579.94,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "новые дома множественное число",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 4.41,
+      "repair_hit": true,
+      "repair_ms": 1466.64,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "Грамота.ру источник правил",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 3.68,
+      "repair_hit": true,
+      "repair_ms": 1620.53,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "проверять согласование при правке текста",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 3.94,
+      "repair_hit": true,
+      "repair_ms": 1519.49,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "роутер русская грамматика какой документ",
+      "optional": false,
+      "field_hit": true,
+      "field_ms": 4.69,
+      "repair_hit": true,
+      "repair_ms": 1653.05,
+      "recovery_concepts_f1": 0.6136363636363636
+    },
+    {
+      "query": "friedl regex книга оглавление",
+      "optional": true,
+      "field_hit": true,
+      "field_ms": 4.58,
+      "repair_hit": true,
+      "repair_ms": 1650.97,
+      "recovery_concepts_f1": 0.6136363636363636
+    }
+  ]
+}

@@ -15,7 +15,7 @@ if (-not $env:AGENT_NOTES_KB) {
 Write-Host '========== PHASE C: sync + benches ==========' -ForegroundColor Magenta
 & (Join-Path $Root 'scripts\run_exp_j_language_write_bench.ps1')
 
-$recall = Get-Content 'examples/exp_j_ru_v1/report_grammar_recall.json' -Raw | ConvertFrom-Json
+$recall = Get-Content 'lab/exp_j_ru_v1/report_grammar_recall.json' -Raw | ConvertFrom-Json
 Write-Host ("grammar read@1 = {0}" -f $recall.answer_at_1) -ForegroundColor Yellow
 if ($recall.answer_at_1 -lt 0.95) {
     Write-Host 'WARN: grammar recall below 0.95 — check report_grammar_recall.json' -ForegroundColor Red

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "pipeline": "sn_cen_v1",
+  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\research-tda-flow.bundle.v1.json",
+  "dmn_model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_e_clusters_v1\\research\\model.pt",
+  "recovery": {
+    "concepts": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "edges": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  "digest": {
+    "concept_ids": [],
+    "edge_count": 2,
+    "mean_confidence": 0.0,
+    "digest_vector": []
+  },
+  "sn": {
+    "mode": "probe",
+    "gate_vector": [
+      0.0,
+      0.1,
+      0.2,
+      0.30000000000000004
+    ],
+    "ports": {
+      "p1_dmn_to_sn": 1.0,
+      "p2_sn_to_cen": 0.15000000000000002,
+      "p3_cen_to_dmn": 0.25
+    },
+    "cen_open": false
+  },
+  "cen": {
+    "intent": "probe",
+    "action": "request_more_context",
+    "concepts": [],
+    "edges": [],
+    "query_to_dmn": "Which section should I repair or expand?",
+    "confidence": 0.15000000000000002,
+    "notes": "low gate confidence"
+  }
+}

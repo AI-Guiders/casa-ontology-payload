@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from grapheme_ingest_v0 import L0_ID, merge_l0_lattices  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import is_l2_en_word_lattice, sharding_config  # type: ignore
 from store_boot_v0 import boot_store  # type: ignore
 
@@ -30,8 +30,8 @@ def merge_linked_states(
     en_dir: Path | None = None,
 ) -> dict[str, Any]:
     """Merge RU ltm boot + EN store lattices; preserve separate L2 namespaces."""
-    base = ensure_cylinders(copy.deepcopy(ru_state))
-    en = ensure_cylinders(en_state)
+    base = ensure_prisms(copy.deepcopy(ru_state))
+    en = ensure_prisms(en_state)
     ru_lattices = memory_lattices(base)
     en_lattices = memory_lattices(en)
 
@@ -49,7 +49,7 @@ def merge_linked_states(
         else:
             ru_lattices[L0_ID] = _copy_lattice(en_l0)
 
-    base["cylinders"]["cyl_memory"]["lattices"] = ru_lattices
+    base["prisms"]["prism_memory"]["lattices"] = ru_lattices
     base.setdefault("sss", {})["lattices"] = ru_lattices
 
     ru_cfg = sharding_config(base)
@@ -97,11 +97,14 @@ def boot_linked_stores(
     )
     vk_boot: dict | None = None
     if merge_vk:
-        from boot_core_ltm_v0 import default_core_ltm_dir, merge_core_ltm  # type: ignore
+        from boot_core_ltm_v0 import merge_core_ltm_stack  # type: ignore
 
-        ltm = core_ltm_dir or default_core_ltm_dir()
-        if (ltm / "pack.manifest.json").is_file():
-            vk_boot = merge_core_ltm(state, ltm)
+        vk_boot = merge_core_ltm_stack(
+            state,
+            include_alphabet=True,
+            include_vk=True,
+            vk_ltm=core_ltm_dir,
+        )
     en_shards = sum(1 for k in memory_lattices(state) if is_l2_en_word_lattice(k))
     return {
         "ru_boot": {"source": ru.get("source"), "l2_shard_count": ru.get("l2_shard_count")},

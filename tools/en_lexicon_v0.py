@@ -3,11 +3,12 @@
 
 from __future__ import annotations
 
+from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
 from typing import Any
 
 from codec_grid_v0 import Grid  # type: ignore
 from predictor_v0 import _L2_PREFIX_INDEX_CACHE  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import (  # type: ignore
     DEFAULT_EN_NUM_SHARDS,
     L2_CONCEPT_PREFIX,
@@ -21,7 +22,7 @@ from sss_vocab_v0 import norm_word, w_token  # type: ignore
 
 def configure_en_store(state: dict, *, num_shards: int = DEFAULT_EN_NUM_SHARDS) -> dict[str, Any]:
     """Mark store as EN locale; enable crc32 EN sharding."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     cfg = dict(state.get("l2_sharding") or {})
     cfg["locale"] = "en"
     cfg["enabled"] = False
@@ -44,7 +45,7 @@ def strengthen_en_word_on_l2(state: dict, word: str, *, copies: int = 3) -> str:
     g = _place_token(g, f"C:{cid}", f"C:{cid}", copies=copies, radius=5)
     g = _place_token(g, w_token(w), w_token(w), copies=max(2, copies), radius=4)
     lat["cells"] = g.cells
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
     return lid
 
@@ -57,7 +58,7 @@ def ingest_en_lex_batch(
     configure: bool = True,
 ) -> dict[str, Any]:
     """Fast batch EN lexicon imprint (field-only, no listen episodes)."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     if configure:
         configure_en_store(state)
 

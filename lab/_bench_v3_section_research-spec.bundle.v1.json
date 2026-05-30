@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\research-spec.bundle.v1.json",
+  "layout": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage": 0.4,
+  "codec": "v3",
+  "concept_mode": "section",
+  "damage_mode": "patches",
+  "damage_patches": 8,
+  "patch_w": 10,
+  "patch_h": 10,
+  "seeds": {
+    "count": 20,
+    "seed0": 1
+  },
+  "baseline": {
+    "concepts_f1": {
+      "mean": 0.8218956043956045,
+      "std": 0.20251251887728577
+    },
+    "edges_f1": {
+      "mean": 0.4127272727272727,
+      "std": 0.12183888990596936
+    }
+  },
+  "nca": {
+    "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_section\\model.pt",
+    "steps": 48,
+    "threshold": 0.5,
+    "min_votes": 3,
+    "concepts_f1": {
+      "mean": 0.9166071428571427,
+      "std": 0.12205870886713284
+    },
+    "edges_f1": {
+      "mean": 0.48636363636363633,
+      "std": 0.04197184167621086
+    }
+  }
+}

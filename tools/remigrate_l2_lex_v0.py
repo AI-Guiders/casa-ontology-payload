@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import (  # type: ignore
     LEX_PLAN_ALPHA,
     LEGACY_L2,
@@ -64,7 +64,7 @@ def remigrate_lex(
     max_copies: int = 6,
     progress_every: int = 2000,
 ) -> dict[str, Any]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     words = collect_words_from_l2(state)
     if not words:
         raise SystemExit("No L2 words found in store")
@@ -137,7 +137,7 @@ def main() -> None:
     args = p.parse_args()
 
     path = args.store_dir / "field_state.json"
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     before = shard_stats(state)
     rep = remigrate_lex(
         state,

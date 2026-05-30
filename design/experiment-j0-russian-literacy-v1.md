@@ -27,7 +27,7 @@ J  field     →  union store, answer@k, NCA repair (опционально уг
 
 ## Store
 
-`examples/agent-stores/language-agent-lab-v0` — **union**: grammar + MRE3 (опц.) + **literacy**.
+`lab/agent-stores/language-agent-lab-v0` — **union**: grammar + MRE3 (опц.) + **literacy**.
 
 ## Metrics
 

@@ -30,13 +30,13 @@ def main() -> None:
     repo = args.repo_root.resolve()
     tools = repo / "tools"
     bundles = [
-        repo / "examples/ca-substrate-agent.bundle.v1.json",
-        repo / "examples/casa-goals.bundle.v1.json",
-        repo / "examples/research-spec.bundle.v1.json",
+        repo / "lab/ca-substrate-agent.bundle.v1.json",
+        repo / "lab/casa-goals.bundle.v1.json",
+        repo / "lab/research-spec.bundle.v1.json",
     ]
-    out_dir = repo / "examples/nca_out_ci_smoke"
+    out_dir = repo / "lab/nca_out_ci_smoke"
     model = out_dir / "model.pt"
-    bench_out = repo / "examples/nca_ci_smoke_bench.json"
+    bench_out = repo / "lab/nca_ci_smoke_bench.json"
 
     _run(
         [

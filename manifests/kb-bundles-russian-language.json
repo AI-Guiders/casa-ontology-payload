@@ -7,19 +7,19 @@
     {
       "md": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
       "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
-      "payload_out": "examples/kb/kb-russian-language-rules.payload.json",
-      "bundle_out": "examples/kb/kb-russian-language-rules.bundle.v1.json"
+      "payload_out": "lab/kb/kb-russian-language-rules.payload.json",
+      "bundle_out": "lab/kb/kb-russian-language-rules.bundle.v1.json"
     },
     {
       "md": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
       "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
-      "payload_out": "examples/kb/kb-regex-mre3-ru-chapter-map.payload.json",
-      "bundle_out": "examples/kb/kb-regex-mre3-ru-chapter-map.bundle.v1.json"
+      "payload_out": "lab/kb/kb-regex-mre3-ru-chapter-map.payload.json",
+      "bundle_out": "lab/kb/kb-regex-mre3-ru-chapter-map.bundle.v1.json"
     }
   ],
   "union_train_bundles": [
-    "examples/kb/kb-russian-language-rules.bundle.v1.json",
-    "examples/kb/kb-regex-mre3-ru-chapter-map.bundle.v1.json"
+    "lab/kb/kb-russian-language-rules.bundle.v1.json",
+    "lab/kb/kb-regex-mre3-ru-chapter-map.bundle.v1.json"
   ],
   "notes": "Современная норма (РГ-80 / Грамота.ру) + опционально MRE3 RU; дореформенная орфография исключена (2026-05-28)."
 }

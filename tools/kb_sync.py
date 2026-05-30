@@ -58,7 +58,7 @@ def _doc_entry_from_manifest(manifest: dict, doc_stem: str) -> dict | None:
 
 def perdoc_bundle_path(repo: Path, md_rel: str) -> Path:
     stem = Path(md_rel).stem
-    return repo / "examples/kb-perdoc" / f"{stem}.bundle.v1.json"
+    return repo / "lab/kb-perdoc" / f"{stem}.bundle.v1.json"
 
 
 def sync_and_import(
@@ -211,7 +211,7 @@ def main() -> None:
     p.add_argument("--per-doc-graph", action="store_true", help="Extract graph per doc (default for kb_sync)")
     p.add_argument("--import-to", type=Path, default=None, help="Agent store dir → run import_knowledge_delta")
     p.add_argument("--store-dir", type=Path, default=None, help="Alias for --import-to")
-    p.add_argument("--agent-card", type=Path, default=Path("examples/agent-cards/research-agent.v0.json"))
+    p.add_argument("--agent-card", type=Path, default=Path("lab/agent-cards/research-agent.v0.json"))
     p.add_argument("--tier", default="easy", choices=("easy", "hard"))
     p.add_argument("--bench", action="store_true")
     args = p.parse_args()
@@ -227,7 +227,7 @@ def main() -> None:
         md_rel = str(md.relative_to(kb_root)).replace("\\", "/") if md.is_relative_to(kb_root) else str(args.md)
         doc_path = args.doc_path or md_rel
         stem = Path(md_rel).stem
-        out = args.out or (repo / "examples/kb-perdoc" / f"{stem}.bundle.v1.json")
+        out = args.out or (repo / "lab/kb-perdoc" / f"{stem}.bundle.v1.json")
     elif args.doc and manifest_path and manifest_path.is_file():
         manifest = _read_json(manifest_path)
         entry = _doc_entry_from_manifest(manifest, args.doc)
@@ -236,7 +236,7 @@ def main() -> None:
         md_rel = str(entry["md"])
         doc_path = entry.get("doc_path") or md_rel
         stem = Path(md_rel).stem
-        out = args.out or (repo / "examples/kb-perdoc" / f"{stem}.bundle.v1.json")
+        out = args.out or (repo / "lab/kb-perdoc" / f"{stem}.bundle.v1.json")
     else:
         raise SystemExit("pass --md or --doc (with --manifest)")
 

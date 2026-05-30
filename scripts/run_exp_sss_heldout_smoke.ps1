@@ -6,10 +6,10 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'examples/agent-stores/sss-heldout-v0'
-$bundle = 'examples/kb/kb-bukvar-ru-full-v1.payload.json'
-$train = 'examples/exp_sss_v1/train_ma_only.json'
-$heldout = 'examples/exp_sss_v1/heldout_syllables.json'
+$store = 'lab/agent-stores/sss-heldout-v0'
+$bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
+$train = 'lab/exp_sss_v1/train_ma_only.json'
+$heldout = 'lab/exp_sss_v1/heldout_syllables.json'
 $stack = 'design/sss-lattice-stack.v0.json'
 
 Write-Host '=== generate bundle + init ===' -ForegroundColor Cyan
@@ -21,7 +21,7 @@ python tools/bench_sss_heldout.py `
     --store-dir $store `
     --bundle $bundle `
     --cases $heldout `
-    --out examples/exp_sss_v1/report_heldout_before.json
+    --out lab/exp_sss_v1/report_heldout_before.json
 
 Write-Host '=== train: only ma (auto-episode if wrong) ===' -ForegroundColor Cyan
 python tools/sss_wake_batch_v0.py --store-dir $store --episodes $train --bundle $bundle --auto
@@ -34,10 +34,10 @@ python tools/bench_sss_heldout.py `
     --store-dir $store `
     --bundle $bundle `
     --cases $heldout `
-    --out examples/exp_sss_v1/report_heldout_after.json
+    --out lab/exp_sss_v1/report_heldout_after.json
 
 Write-Host '=== votes: trained ma vs held-out pa ===' -ForegroundColor Cyan
-python tools/bench_sss_sleep.py --store-dir $store --bundle $bundle --target examples/exp_sss_v1/sleep_smoke_target.json
-python tools/bench_sss_sleep.py --store-dir $store --bundle $bundle --target examples/exp_sss_v1/heldout_target_pa.json
+python tools/bench_sss_sleep.py --store-dir $store --bundle $bundle --target lab/exp_sss_v1/sleep_smoke_target.json
+python tools/bench_sss_sleep.py --store-dir $store --bundle $bundle --target lab/exp_sss_v1/heldout_target_pa.json
 
 Write-Host 'Done.'

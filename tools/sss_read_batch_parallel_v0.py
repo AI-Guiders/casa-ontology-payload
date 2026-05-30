@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, save_state  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, save_state  # type: ignore
 from sss_merge_field_states_v0 import merge_field_states  # type: ignore
 from sss_read_batch_v0 import read_batch  # type: ignore
 from sss_text_tokenize_v0 import norm_text  # type: ignore
@@ -21,7 +21,7 @@ from sss_text_tokenize_v0 import norm_text  # type: ignore
 def _worker_ingest(payload: dict[str, Any]) -> dict[str, Any]:
     os.chdir(payload["root"])
     bukvar = json.loads(Path(payload["bukvar"]).read_text(encoding="utf-8"))
-    base = ensure_cylinders(load_field_state(Path(payload["base_store"])))
+    base = ensure_prisms(load_field_state(Path(payload["base_store"])))
     base_fv = int(base.get("field_version") or 0)
     shard_dir = Path(payload["shard_dir"])
     shard_dir.mkdir(parents=True, exist_ok=True)
@@ -92,7 +92,7 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--corpus-dir", type=Path, required=True)
-    p.add_argument("--bukvar", type=Path, default=Path("examples/kb/kb-bukvar-ru-full-v1.payload.json"))
+    p.add_argument("--bukvar", type=Path, default=Path("lab/kb/kb-bukvar-ru-full-v1.payload.json"))
     p.add_argument("--listen-copies", type=int, default=1)
     p.add_argument("--field", action="store_true")
     p.add_argument("--resume", action="store_true")
@@ -104,7 +104,7 @@ def main() -> None:
 
     root = Path.cwd().resolve()
     store_path = args.store_dir / "field_state.json"
-    base_state = ensure_cylinders(load_field_state(store_path))
+    base_state = ensure_prisms(load_field_state(store_path))
     done = set((base_state.get("batch_progress") or {}).get("files") or []) if args.resume else set()
 
     all_files = sorted(args.corpus_dir.glob("*.txt"))

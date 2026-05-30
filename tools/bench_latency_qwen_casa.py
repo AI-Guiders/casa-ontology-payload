@@ -41,7 +41,7 @@ def _ollama_generate(model: str, prompt: str, *, host: str) -> dict:
 
 
 def _run_sn_cen(repo: Path, extra: list[str]) -> tuple[float, float | None]:
-    out = repo / "examples/latency_bench_v1/_sn_cen_out.json"
+    out = repo / "lab/latency_bench_v1/_sn_cen_out.json"
     cmd = [sys.executable, str(repo / "tools/sn_cen_infer.py"), *extra, "--out", str(out)]
     t0 = time.perf_counter()
     subprocess.run(cmd, cwd=repo, check=True, capture_output=True)
@@ -59,12 +59,12 @@ def main() -> None:
     p.add_argument("--ollama-host", default="http://localhost:11434")
     p.add_argument("--skip-qwen", action="store_true")
     p.add_argument("--query", default="import knowledge delta")
-    p.add_argument("--store-dir", type=Path, default=Path("examples/agent-stores/research-agent-lab-v0"))
-    p.add_argument("--out", type=Path, default=Path("examples/latency_bench_v1/report.json"))
+    p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/research-agent-lab-v0"))
+    p.add_argument("--out", type=Path, default=Path("lab/latency_bench_v1/report.json"))
     args = p.parse_args()
 
     repo = Path.cwd().resolve()
-    out_tmp = repo / "examples/latency_bench_v1/_sn_cen_out.json"
+    out_tmp = repo / "lab/latency_bench_v1/_sn_cen_out.json"
 
     report: dict = {
         "schema_version": 1,
@@ -94,7 +94,7 @@ def main() -> None:
         report["qwen_available"] = False
         report["qwen_skipped"] = True
 
-    bundle = "examples/kb-perdoc/research-ml.bundle.v1.json"
+    bundle = "lab/kb-perdoc/research-ml.bundle.v1.json"
     dmn_sub, _ = _run_sn_cen(repo, ["--bundle", bundle, "--query", args.query])
     report["casa_dmn_subprocess_ms"] = dmn_sub
 

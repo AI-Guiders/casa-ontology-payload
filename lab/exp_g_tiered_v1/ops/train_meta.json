@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "cluster": "ops",
+  "train_mode": "tiered_g_v1",
+  "phase1_epochs": 600,
+  "phase2_epochs": 200,
+  "hard_bundles": [
+    "kb-distill-nca.bundle.v1.json"
+  ],
+  "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_g_tiered_v1\\ops\\model.pt"
+}

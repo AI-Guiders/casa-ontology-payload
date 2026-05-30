@@ -37,14 +37,14 @@ def _row(label: str, obj: dict | None, keys: list[str]) -> dict:
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--root", type=Path, default=Path("."))
-    p.add_argument("--out", type=Path, default=Path("examples/exp_j_ru_v1/compare_grammar_full_vs_union_windowed.json"))
+    p.add_argument("--out", type=Path, default=Path("lab/exp_j_ru_v1/compare_grammar_full_vs_union_windowed.json"))
     args = p.parse_args()
     root = args.root
-    rep = root / "examples/exp_j_ru_v1"
+    rep = root / "lab/exp_j_ru_v1"
 
-    grammar_train = _read(root / "examples/nca_out_exp_j_ru_grammar_full_v1/report.json")
-    union_windowed_train = _read(root / "examples/nca_out_exp_j_ru_union_windowed_v1/report.json")
-    union_mono_train = _read(root / "examples/nca_out_exp_j_ru_union_full_v1/report.json")
+    grammar_train = _read(root / "lab/nca_out_exp_j_ru_grammar_full_v1/report.json")
+    union_windowed_train = _read(root / "lab/nca_out_exp_j_ru_union_windowed_v1/report.json")
+    union_mono_train = _read(root / "lab/nca_out_exp_j_ru_union_full_v1/report.json")
 
     grammar_curve = _read(rep / "curve_grammar_s20.json")
     union_windowed_curve = _read(rep / "curve_union_windowed_s20.json")

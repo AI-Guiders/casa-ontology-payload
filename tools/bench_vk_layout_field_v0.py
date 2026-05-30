@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 from boot_core_ltm_v0 import default_core_ltm_dir, merge_core_ltm  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
 from vk_decode_v0 import _json_index, decode_branches, resolve_decode_index  # type: ignore
 from vk_layout_field_v0 import compose_index_from_state  # type: ignore
 
@@ -65,7 +65,7 @@ def main() -> None:
     p.add_argument(
         "--cues",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/layout_parity_cues.v1.json",
+        default=root / "lab/exp_bilingual_v0/layout_parity_cues.v1.json",
     )
     p.add_argument(
         "--core-ltm",
@@ -77,7 +77,7 @@ def main() -> None:
     if not (args.core_ltm / "pack.manifest.json").is_file():
         raise SystemExit(f"core ltm missing — run: python tools/vk_layout_ingest_v0.py")
 
-    state = ensure_cylinders({"schema_version": "multi_cylinder_v1", "field_version": 0})
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
     boot = merge_core_ltm(state, args.core_ltm)
     items = json.loads(args.cues.read_text(encoding="utf-8"))
     report = run_bench(state, items)

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "experiment": "F_module_train_v0",
+  "cluster": "ops",
+  "train_mode": "module_masked_v0",
+  "module_count": 13,
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage_patches": 6,
+  "epochs": 600,
+  "token_count_union": 73,
+  "bundles": [
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\ca-substrate-agent.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\casa-goals.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\kb-distill-nca.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\playbook-tda-flow.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\research-spec.bundle.v1.json"
+  ],
+  "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v2_gpu\\ops\\model.pt",
+  "reports": [
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\kb-distill-nca.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 6,
+          "fn": 0,
+          "precision": 0.0,
+          "recall": 1.0,
+          "f1": 0.0
+        },
+        "edges": {
+          "tp": 2,
+          "fp": 7,
+          "fn": 8,
+          "precision": 0.2222222222222222,
+          "recall": 0.2,
+          "f1": 0.2105263157894737
+        }
+      }
+    },
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\playbook-tda-flow.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "edges": {
+          "tp": 3,
+          "fp": 1,
+          "fn": 1,
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75
+        }
+      }
+    }
+  ]
+}

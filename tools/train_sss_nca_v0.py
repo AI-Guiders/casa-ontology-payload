@@ -27,7 +27,7 @@ from nca_train_util import (  # type: ignore
     resolve_train_device,
     scatter_grid_tensor,
 )
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_nca_codec_v0 import lattice_as_grid, tokens_from_lattice  # type: ignore
 from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
 
@@ -77,7 +77,7 @@ def main() -> None:
     p.add_argument("--fire-rate", type=float, default=float(_sss["fire_rate"]))
     p.add_argument("--threshold", type=float, default=0.5)
     p.add_argument("--seed", type=int, default=1)
-    p.add_argument("--out-dir", type=Path, default=Path("examples/nca_out_sss_l2_v0"))
+    p.add_argument("--out-dir", type=Path, default=Path("lab/nca_out_sss_l2_v0"))
     p.add_argument("--save-model", action="store_true")
     args = p.parse_args()
 
@@ -86,7 +86,7 @@ def main() -> None:
 
     device = resolve_train_device(args.device)
 
-    state = ensure_cylinders(load_field_state(args.store_dir / "field_state.json"))
+    state = ensure_prisms(load_field_state(args.store_dir / "field_state.json"))
     lattices = memory_lattices(state)
     lattice = lattices.get(args.lattice_id)
     if not lattice:

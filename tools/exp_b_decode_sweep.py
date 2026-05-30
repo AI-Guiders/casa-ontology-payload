@@ -18,10 +18,10 @@ def main() -> None:
         "--bundles",
         nargs="*",
         default=None,
-        help="Bundle paths; default: 3 examples + all examples/kb/*.bundle.v1.json",
+        help="Bundle paths; default: 3 examples + all lab/kb/*.bundle.v1.json",
     )
     p.add_argument("--damage", type=float, default=0.4)
-    p.add_argument("--out-dir", type=Path, default=Path("examples/exp_b_decode_sweep_v1"))
+    p.add_argument("--out-dir", type=Path, default=Path("lab/exp_b_decode_sweep_v1"))
     args = p.parse_args()
 
     repo = args.repo_root.resolve()
@@ -31,8 +31,8 @@ def main() -> None:
     if args.bundles:
         bundles = [repo / b if not Path(b).is_absolute() else Path(b) for b in args.bundles]
     else:
-        bundles = sorted((repo / "examples").glob("*.bundle.v1.json"))
-        bundles += sorted((repo / "examples/kb").glob("*.bundle.v1.json"))
+        bundles = sorted((repo / "lab").glob("*.bundle.v1.json"))
+        bundles += sorted((repo / "lab/kb").glob("*.bundle.v1.json"))
 
     out_dir = (repo / args.out_dir).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)

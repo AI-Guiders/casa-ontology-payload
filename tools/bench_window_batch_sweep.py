@@ -16,14 +16,14 @@ def main() -> None:
     p.add_argument("--bundle", type=Path, required=True)
     p.add_argument("--epochs", type=int, default=40)
     p.add_argument("--batches", type=int, nargs="+", default=[24, 32, 40, 48])
-    p.add_argument("--out", type=Path, default=Path("examples/exp_j_ru_v1/bench_window_batch_sweep.json"))
+    p.add_argument("--out", type=Path, default=Path("lab/exp_j_ru_v1/bench_window_batch_sweep.json"))
     args = p.parse_args()
     root = Path(__file__).resolve().parent.parent
     train = root / "tools" / "train_dmn_nca_windowed.py"
     rows: list[dict] = []
 
     for b in args.batches:
-        out_dir = root / "examples" / f"_tmp_winbatch_{b}"
+        out_dir = root / "lab" / f"_tmp_winbatch_{b}"
         cmd = [
             sys.executable,
             str(train),

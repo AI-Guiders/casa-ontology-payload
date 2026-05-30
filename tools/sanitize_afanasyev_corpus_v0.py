@@ -72,8 +72,8 @@ def sanitize_text(text: str) -> tuple[str, list[str]]:
 
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--corpus-dir", type=Path, default=Path("examples/text/corpus/afanasyev"))
-    p.add_argument("--out", type=Path, default=Path("examples/exp_sss_v1/report_afanasyev_sanitize.json"))
+    p.add_argument("--corpus-dir", type=Path, default=Path("lab/text/corpus/afanasyev"))
+    p.add_argument("--out", type=Path, default=Path("lab/exp_sss_v1/report_afanasyev_sanitize.json"))
     p.add_argument("--dry-run", action="store_true")
     args = p.parse_args()
 

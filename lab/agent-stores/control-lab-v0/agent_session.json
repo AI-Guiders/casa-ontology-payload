@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "wm": {
+    "mode": "execute",
+    "goal": "summarize",
+    "subgoal": "answer_from_memory",
+    "tick": 2,
+    "user_query": "summarize",
+    "last_concepts": [
+      "math.two",
+      "math.three",
+      "math.one"
+    ],
+    "last_action": "answer_from_memory"
+  }
+}

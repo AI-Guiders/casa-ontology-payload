@@ -11,10 +11,10 @@ python tools/normalize_afanasyev_txt_v0.py `
     --download-libru `
     --volumes 1 `
     --limit 30 `
-    --out-dir examples/text/corpus/afanasyev `
-    --manifest examples/exp_sss_v1/report_afanasyev_normalize_smoke.json
+    --out-dir lab/text/corpus/afanasyev `
+    --manifest lab/exp_sss_v1/report_afanasyev_normalize_smoke.json
 
 Write-Host '=== sample file ===' -ForegroundColor Cyan
-Get-Content examples/text/corpus/afanasyev/afan-v1-n001.txt -Encoding UTF8 -TotalCount 12
+Get-Content lab/text/corpus/afanasyev/afan-v1-n001.txt -Encoding UTF8 -TotalCount 12
 
 Write-Host 'Done.'

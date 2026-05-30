@@ -10,21 +10,21 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$store = 'examples/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab-v0'
 $grammar = "$store/bundles/kb-russian-language-rules-v1.bundle.v1.json"
 $mre3 = "$store/bundles/kb-regex-mre3-ru-chapter-map-v1.bundle.v1.json"
 
 if ($Union) {
     $bundles = @($grammar, $mre3)
     $tag = 'union'
-    $outDir = 'examples/nca_out_exp_j_ru_union_windowed_v1'
+    $outDir = 'lab/nca_out_exp_j_ru_union_windowed_v1'
 } else {
     $bundles = @($grammar)
     $tag = 'grammar'
-    $outDir = 'examples/nca_out_exp_j_ru_windowed_v1'
+    $outDir = 'lab/nca_out_exp_j_ru_windowed_v1'
 }
 
-$reportDir = 'examples/exp_j_ru_v1'
+$reportDir = 'lab/exp_j_ru_v1'
 
 Write-Host "=== Exp J WINDOWED train ($tag) epochs=$Epochs ===" -ForegroundColor Cyan
 $env:PYTHONUNBUFFERED = '1'
@@ -73,7 +73,7 @@ if ($Epochs -ge 200) {
 
     Write-Host '=== answer field vs repair ===' -ForegroundColor Cyan
     python tools/bench_exp_j_repair_answer.py `
-        --queries examples/exp_j_ru_queries.jsonl `
+        --queries lab/exp_j_ru_queries.jsonl `
         --store-dir $store --model $model `
         --out "$reportDir/report_repair_${tag}_windowed.json"
 }

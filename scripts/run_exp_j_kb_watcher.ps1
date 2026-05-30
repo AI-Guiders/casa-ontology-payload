@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 Set-Location (Split-Path -Parent $PSScriptRoot)
 
 $env:AGENT_NOTES_KB = 'D:\experiments\agent-notes\knowledge'
-$store = 'examples/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab-v0'
 $manifest = 'manifests/kb-bundles-russian-language.json'
 
 if ($args -contains '--once') {

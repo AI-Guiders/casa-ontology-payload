@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kb_root": "D:\\Experiments\\agent-notes\\knowledge",
+  "mode": "per_doc",
+  "out_dir": "lab\\kb-perdoc",
+  "hub_graph": null,
+  "per_doc_graphs": [
+    "lab\\kb-perdoc\\graphs\\casa-goals.graph.json",
+    "lab\\kb-perdoc\\graphs\\research-ml.graph.json",
+    "lab\\kb-perdoc\\graphs\\ontology-poc-findings.graph.json",
+    "lab\\kb-perdoc\\graphs\\research-training.graph.json",
+    "lab\\kb-perdoc\\graphs\\research-tda-flow.graph.json",
+    "lab\\kb-perdoc\\graphs\\playbook-tda-flow.graph.json",
+    "lab\\kb-perdoc\\graphs\\kb-distill-nca.graph.json",
+    "lab\\kb-perdoc\\graphs\\casa-adr-0001.graph.json"
+  ],
+  "bundles": [
+    "lab\\kb-perdoc\\casa-goals.bundle.v1.json",
+    "lab\\kb-perdoc\\research-ml.bundle.v1.json",
+    "lab\\kb-perdoc\\ontology-poc-findings.bundle.v1.json",
+    "lab\\kb-perdoc\\research-training.bundle.v1.json",
+    "lab\\kb-perdoc\\research-tda-flow.bundle.v1.json",
+    "lab\\kb-perdoc\\playbook-tda-flow.bundle.v1.json",
+    "lab\\kb-perdoc\\kb-distill-nca.bundle.v1.json",
+    "lab\\kb-perdoc\\casa-adr-0001.bundle.v1.json"
+  ]
+}

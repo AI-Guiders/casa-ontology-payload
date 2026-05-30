@@ -7,7 +7,7 @@ import argparse
 import json
 from pathlib import Path
 
-DOC = "examples/kb/kb-bukvar-ru-full-v1.md"
+DOC = "lab/kb/kb-bukvar-ru-full-v1.md"
 
 # Full alphabet (B0)
 RU_ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
@@ -167,7 +167,7 @@ def main() -> None:
     p.add_argument(
         "--out",
         type=Path,
-        default=Path("examples/kb/kb-bukvar-ru-full-v1.payload.json"),
+        default=Path("lab/kb/kb-bukvar-ru-full-v1.payload.json"),
     )
     args = p.parse_args()
     bundle = build_bundle()

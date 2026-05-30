@@ -141,19 +141,19 @@ def main() -> None:
     p.add_argument("--bundle", type=Path, default=None, help="Bundle JSON (optional with --from-field)")
     p.add_argument("--from-field", action="store_true", help="Hot path: decode field_state, skip NCA")
     p.add_argument("--field-state", type=Path, default=None)
-    p.add_argument("--store-dir", type=Path, default=Path("examples/agent-stores/research-agent-lab-v0"))
-    p.add_argument("--agent-card", type=Path, default=Path("examples/agent-cards/research-agent.v0.json"))
+    p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/research-agent-lab-v0"))
+    p.add_argument("--agent-card", type=Path, default=Path("lab/agent-cards/research-agent.v0.json"))
     p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.v0.json"))
     p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
     p.add_argument("--dmn-model", type=Path, default=None)
     p.add_argument("--layered", action="store_true", help="Use layered digest/gate channel means")
-    p.add_argument("--cluster-root", type=Path, default=Path("examples/exp_e_clusters_v1"))
+    p.add_argument("--cluster-root", type=Path, default=Path("lab/exp_e_clusters_v1"))
     p.add_argument("--query", default=None, help="User query for CEN planner")
     p.add_argument("--llm-enable", action="store_true", help="Enable CEN LLM probe stub")
     p.add_argument("--damage-patches", type=int, default=8)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--dmn-steps", type=int, default=48)
-    p.add_argument("--out", type=Path, default=Path("examples/sn_cen_out/infer_v1.json"))
+    p.add_argument("--out", type=Path, default=Path("lab/sn_cen_out/infer_v1.json"))
     p.add_argument(
         "--session",
         action="store_true",
@@ -260,13 +260,27 @@ def main() -> None:
         wm = fpn_after_cen(wm, task, user_query=q)
         save_session(store, wm)
 
-    pipeline = "sn_cen_field_v2" if args.from_field else "sn_cen_v2"
+    control_stack = False
+    if args.from_field:
+        try:
+            from control_cylinders_v0 import has_control_stack  # type: ignore
+
+            control_stack = has_control_stack(state)
+        except Exception:
+            control_stack = False
+
+    pipeline = (
+        "sn_cen_control_stack_v0"
+        if args.from_field and control_stack
+        else ("sn_cen_field_v2" if args.from_field else "sn_cen_v2")
+    )
     report = {
         "schema_version": 2,
         "pipeline": pipeline,
         "bundle": str(bundle_path) if bundle_path else None,
         "field_state": str(field_path) if args.from_field else None,
         "field": field_meta if args.from_field else None,
+        "control_stack": control_stack if args.from_field else None,
         "dmn_model": str(dmn_path) if dmn_path else None,
         "wall_ms": round(wall_ms or 0, 2),
         "recovery": recovery,

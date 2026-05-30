@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
 import copy
 from typing import Any
 
@@ -214,12 +215,12 @@ def repair_sss_memory(
 
 
 def repair_field_state(state: dict, bundle: dict, stack: dict | None = None, **kwargs: Any) -> dict[str, Any]:
-    from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+    from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     lattices = memory_lattices(state)
     report = repair_sss_memory(lattices, bundle, stack, **kwargs)
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
     state["field_version"] = int(state.get("field_version") or 0) + 1
     state.setdefault("sn", {})["mode"] = "wake"

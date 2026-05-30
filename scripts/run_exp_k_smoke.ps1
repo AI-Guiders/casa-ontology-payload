@@ -8,16 +8,16 @@ if (-not $env:AGENT_NOTES_KB) {
 }
 
 $manifest = 'manifests/kb-bundles-csharp-lab-v0.json'
-$store = 'examples/agent-stores/code-agent-lab-v0'
-$card = 'examples/agent-cards/research-agent.v0.json'
+$store = 'lab/agent-stores/code-agent-lab-v0'
+$card = 'lab/agent-cards/research-agent.v0.json'
 $doc = 'kb-csharp-guess-number-canonical'
 
 Write-Host '=== Exp K: sync csharp lab KB ===' -ForegroundColor Cyan
-$md = Join-Path $Root 'examples/kb/kb-csharp-guess-number-canonical.md'
+$md = Join-Path $Root 'lab/kb/kb-csharp-guess-number-canonical.md'
 python tools/kb_sync.py `
     --manifest $manifest `
     --md $md `
-    --doc-path examples/kb/kb-csharp-guess-number-canonical.md `
+    --doc-path lab/kb/kb-csharp-guess-number-canonical.md `
     --import-to $store `
     --agent-card $card `
     --tier easy
@@ -27,9 +27,9 @@ python tools/rebuild_agent_store.py --store-dir $store
 
 Write-Host '=== K0 bench answer recall ===' -ForegroundColor Cyan
 python tools/bench_answer_recall.py `
-    --queries examples/exp_k_guess_number/queries.jsonl `
+    --queries lab/exp_k_guess_number/queries.jsonl `
     --store-dir $store `
-    --out examples/exp_k_guess_number/report_k0_recall.json
+    --out lab/exp_k_guess_number/report_k0_recall.json
 
 Write-Host '=== sample infer ===' -ForegroundColor Cyan
 python tools/sn_cen_infer.py --from-field --store-dir $store `

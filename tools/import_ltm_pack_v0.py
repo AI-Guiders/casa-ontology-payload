@@ -8,6 +8,9 @@ import json
 from pathlib import Path
 from typing import Any
 
+from prism_state_v0 import prism_control, prism_memory  # type: ignore
+
+from control_cylinders_v0 import ensure_control_cylinder  # type: ignore
 from field_write import load_field_state, save_field_state  # type: ignore
 from ltm_pack_v0 import read_ltm  # type: ignore
 from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
@@ -23,7 +26,7 @@ def _resolve_ltm_path(ltm_dir: Path, lid: str, entry: dict[str, Any]) -> Path:
         if cand.is_file():
             return cand
     for ext in ("", ".zst", ".gz"):
-        for sub in ("l2", "l1", "l0", "l3", "h0", "lat"):
+        for sub in ("l2", "l1", "l0", "l3", "h0", "ctrl", "lat"):
             cand = ltm_dir / sub / f"{lid}.ltm{ext}"
             if cand.is_file():
                 return cand
@@ -37,27 +40,40 @@ def import_pack(
     manifest: dict | None = None,
 ) -> dict[str, Any]:
     state = ensure_cylinders(state)
-    lattices = memory_lattices(state)
+    state = ensure_control_cylinder(state)
+    mem_lattices = memory_lattices(state)
+    ctrl_lattices = prism_control(state)["lattices"]
     manifest = manifest or json.loads((ltm_dir / "pack.manifest.json").read_text(encoding="utf-8"))
     loaded: list[str] = []
+    loaded_control: list[str] = []
 
     for lid, entry in (manifest.get("lattices") or {}).items():
         path = _resolve_ltm_path(ltm_dir, lid, entry if isinstance(entry, dict) else {})
         decoded = read_ltm(path)
         meta = entry.get("meta") if isinstance(entry, dict) else {}
         merged = {**(meta or {}), **decoded}
-        lattices[lid] = merged
-        loaded.append(lid)
+        if str(lid).startswith("lattice_"):
+            ctrl_lattices[lid] = merged
+            loaded_control.append(lid)
+        else:
+            mem_lattices[lid] = merged
+            loaded.append(lid)
 
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
-    state.setdefault("sss", {})["lattices"] = lattices
+    prism_memory(state)["lattices"] = mem_lattices
+    prism_control(state)["lattices"] = ctrl_lattices
+    state.setdefault("sss", {})["lattices"] = mem_lattices
     if manifest.get("l2_sharding"):
         state["l2_sharding"] = manifest["l2_sharding"]
     if manifest.get("nca"):
         state["nca"] = manifest["nca"]
     if manifest.get("field_version") is not None:
         state["field_version"] = manifest["field_version"]
-    return {"loaded": loaded, "lattice_count": len(loaded)}
+    return {
+        "loaded": loaded,
+        "loaded_control": loaded_control,
+        "lattice_count": len(loaded),
+        "control_lattice_count": len(loaded_control),
+    }
 
 
 def main() -> None:
@@ -73,7 +89,7 @@ def main() -> None:
     if path.is_file():
         state = ensure_cylinders(load_field_state(path))
     else:
-        state = ensure_cylinders({"schema_version": "multi_cylinder_v1", "field_version": 0})
+        state = ensure_cylinders({"schema_version": "multi_prism_v1", "field_version": 0})
 
     rep = import_pack(state, ltm_dir)
     if args.write:

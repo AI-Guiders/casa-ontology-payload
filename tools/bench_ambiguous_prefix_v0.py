@@ -63,12 +63,12 @@ def main() -> None:
     p.add_argument(
         "--cues",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/ambiguous_prefix_cues.v1.json",
+        default=root / "lab/exp_bilingual_v0/ambiguous_prefix_cues.v1.json",
     )
     p.add_argument(
         "--headwords",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/en_folk_headwords.v1.txt",
+        default=root / "lab/exp_bilingual_v0/en_folk_headwords.v1.txt",
     )
     p.add_argument("--top-k", type=int, default=8)
     p.add_argument("--out", type=Path, default=None)

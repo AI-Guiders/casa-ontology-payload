@@ -81,7 +81,7 @@
 
 ## Store (единственный фокус)
 
-`examples/agent-stores/language-agent-lab-v0`
+`lab/agent-stores/language-agent-lab-v0`
 
 Union bundles (целевой минимум):
 
@@ -122,7 +122,7 @@ $env:AGENT_NOTES_KB = 'D:\experiments\agent-notes\knowledge'
 
 **Свободная речь:** hot path `articulation_realize_v0` (слоты + шаблоны, без вставки claim); legacy `compose_answer_text_sketch` — только bench. См. [`articulation-realize-v0.md`](articulation-realize-v0.md). Болтовня / слабый match → dialogue KB + `soft_miss`, без подмены C#.
 
-Артефакты: `examples/exp_j_ru_v1/report_oral_exam.json`, `report_off_topic_guard.json`.
+Артефакты: `lab/exp_j_ru_v1/report_oral_exam.json`, `report_off_topic_guard.json`.
 
 После всех галочек — можно возвращаться к Exp K без чувства «изверги».
 

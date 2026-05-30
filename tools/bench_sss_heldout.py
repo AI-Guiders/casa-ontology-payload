@@ -11,7 +11,7 @@ from typing import Any
 
 from field_write import load_field_state  # type: ignore
 from sss_surface_v0 import surface_from_sss  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, episode_vote_for_cue  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, episode_vote_for_cue  # type: ignore
 from sss_wake_util import norm_text, surface_attempt_from_wake, surface_matches_target, top_surface  # type: ignore
 
 
@@ -82,7 +82,7 @@ def main() -> None:
         raise SystemExit("cases must be a JSON array or {cases: [...]}")
 
     bundle = json.loads(args.bundle.read_text(encoding="utf-8"))
-    state = ensure_cylinders(load_field_state(args.store_dir / "field_state.json"))
+    state = ensure_prisms(load_field_state(args.store_dir / "field_state.json"))
 
     results = [
         eval_case(

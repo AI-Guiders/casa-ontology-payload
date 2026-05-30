@@ -6,8 +6,8 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'examples/agent-stores/sss-full-v0'
-$bundle = 'examples/kb/kb-bukvar-ru-full-v1.payload.json'
+$store = 'lab/agent-stores/sss-full-v0'
+$bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 
 Write-Host '=== ensure full alphabet store ===' -ForegroundColor Cyan
 python tools/gen_kb_bukvar_ru_full.py --out $bundle
@@ -20,7 +20,7 @@ python tools/bench_sss_damage_repair.py `
     --damage-lattice L0_grapheme `
     --damage-patches 8 `
     --seed 42 `
-    --out examples/exp_sss_v1/report_damage_l0_field.json
+    --out lab/exp_sss_v1/report_damage_l0_field.json
 
 Write-Host '=== repair: field plasticity + optional canonical gaps ===' -ForegroundColor Cyan
 python tools/bench_sss_damage_repair.py `
@@ -31,7 +31,7 @@ python tools/bench_sss_damage_repair.py `
     --seed 42 `
     --allow-canonical `
     --write `
-    --out examples/exp_sss_v1/report_damage_l0_repaired.json
+    --out lab/exp_sss_v1/report_damage_l0_repaired.json
 
 Write-Host '=== damage L1, repair via L0+L2 ===' -ForegroundColor Cyan
 python tools/bench_sss_damage_repair.py `
@@ -41,6 +41,6 @@ python tools/bench_sss_damage_repair.py `
     --damage-patches 6 `
     --seed 7 `
     --allow-canonical `
-    --out examples/exp_sss_v1/report_damage_l1_repaired.json
+    --out lab/exp_sss_v1/report_damage_l1_repaired.json
 
 Write-Host 'Done.'

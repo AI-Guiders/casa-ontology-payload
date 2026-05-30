@@ -48,7 +48,7 @@ def main() -> None:
     p.add_argument(
         "--manifest",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/grapheme-glyphs/manifest.v1.json",
+        default=root / "lab/exp_bilingual_v0/grapheme-glyphs/manifest.v1.json",
     )
     args = p.parse_args()
     if not args.manifest.is_file():

@@ -13,7 +13,7 @@ Write-Host "=== Layered digest + gate per cluster ===" -ForegroundColor Cyan
 python tools/train_layered_cluster.py --digest-epochs 250 --gate-epochs 250
 
 Write-Host "=== Infer samples ===" -ForegroundColor Cyan
-python tools/layered_infer.py --bundle examples/kb-perdoc/research-ml.bundle.v1.json --cluster research --out examples/layered_out/infer_research_cluster.json
-python tools/layered_infer.py --bundle examples/kb-perdoc/casa-goals.bundle.v1.json --cluster goals --out examples/layered_out/infer_goals_cluster.json
+python tools/layered_infer.py --bundle lab/kb-perdoc/research-ml.bundle.v1.json --cluster research --out lab/layered_out/infer_research_cluster.json
+python tools/layered_infer.py --bundle lab/kb-perdoc/casa-goals.bundle.v1.json --cluster goals --out lab/layered_out/infer_goals_cluster.json
 
 Write-Host "Done."

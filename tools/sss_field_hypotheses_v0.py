@@ -3,10 +3,11 @@
 
 from __future__ import annotations
 
+from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
 from typing import Any
 
 from codec_grid_v0 import Grid  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_field_decode_v0 import grapheme_votes_for_word, rule_votes_from_field, syllable_hits_from_field  # type: ignore
 from sss_field_decode_v0 import active_rule_from_field  # type: ignore
 from sss_segment_candidates_v0 import enumerate_field_candidates  # type: ignore
@@ -29,8 +30,8 @@ def parse_h_token(token: str) -> tuple[str, str] | None:
 
 
 def _hippo_h0(state: dict) -> dict:
-    state = ensure_cylinders(state)
-    return state["cylinders"]["cyl_hippo"]["lattices"]["H0_episode"]
+    state = ensure_prisms(state)
+    return prism_hippo(state)["lattices"]["H0_episode"]
 
 
 def _lattice_to_grid(lat: dict) -> Grid:
@@ -100,7 +101,7 @@ def _replant_hypotheses(
                 mirror = max(1, int(copies) // 2)
                 g3 = _place_token(g3, tok, tok, copies=mirror, radius=3)
             lat["cells"] = g3.cells
-            state["cylinders"]["cyl_memory"]["lattices"] = lattices
+            prism_memory(state)["lattices"] = lattices
             state.setdefault("sss", {})["lattices"] = lattices
 
 
@@ -141,7 +142,7 @@ def compete_hypotheses(state: dict, word: str) -> dict[str, Any]:
     Plant competing H: tokens, verify each, suppress failed, boost viable/winner.
     Returns winning hypothesis dict + competition report.
     """
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     w = norm_word(word)
     rule_id, rule_votes = active_rule_from_field(state)
     existing = h_votes_for_word(state, w)

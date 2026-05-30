@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_stack_v0 import decode_lattice  # type: ignore
 from sss_vocab_v0 import norm_word  # type: ignore
 
@@ -30,7 +30,7 @@ def _parse_edge_raw(edge: str) -> tuple[str, str, str] | None:
 
 
 def _l3_edges(state: dict, *, min_votes: int = 1) -> list[tuple[str, str, str]]:
-    lat = memory_lattices(ensure_cylinders(state)).get("L3_phrase") or {}
+    lat = memory_lattices(ensure_prisms(state)).get("L3_phrase") or {}
     dec = decode_lattice(lat, min_votes=min_votes)
     out: list[tuple[str, str, str]] = []
     for raw in dec.get("edges") or []:

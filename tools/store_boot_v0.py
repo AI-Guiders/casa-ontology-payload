@@ -11,7 +11,8 @@ from typing import Any
 from field_write import load_field_state, save_field_state  # type: ignore
 from import_ltm_pack_v0 import import_pack  # type: ignore
 from sss_surface_v0 import surface_from_sss  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from control_cylinders_v0 import control_lattices, has_control_stack  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_stack_v0 import decode_lattice  # type: ignore
 from store_layout_v0 import field_state_path, ltm_root, nca_root  # type: ignore
 
@@ -31,10 +32,10 @@ def boot_store(
 
     fs_path = field_state_path(store_dir)
     if prefer_field_state and fs_path.is_file():
-        state = ensure_cylinders(load_field_state(fs_path))
+        state = ensure_prisms(load_field_state(fs_path))
         source = "field_state"
     else:
-        state = ensure_cylinders({"schema_version": "multi_cylinder_v1", "field_version": 0})
+        state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
         source = "ltm_only"
 
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -50,10 +51,12 @@ def boot_store(
 
     lattices = memory_lattices(state)
     shard_count = sum(1 for k in lattices if k.startswith("L2_word_"))
+    ctrl = control_lattices(state) if has_control_stack(state) else {}
     return {
         "source": source,
         "import": imp,
         "lattice_count": len(lattices),
+        "control_lattice_count": len(ctrl),
         "l2_shard_count": shard_count,
         "field_version": state.get("field_version"),
         "state": state,
@@ -87,7 +90,7 @@ def smoke_report(state: dict, *, lattice_id: str = "L2_word_00") -> dict[str, An
         rep["predict_tick_ok"] = False
         rep["predict_tick_error"] = str(ex)
     try:
-        bundle_path = Path(__file__).resolve().parent.parent / "examples/exp_l_v0/kb-math-concrete-schemas-l0.bundle.v1.json"
+        bundle_path = Path(__file__).resolve().parent.parent / "lab/exp_l_v0/kb-math-concrete-schemas-l0.bundle.v1.json"
         if bundle_path.is_file():
             bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
             st = predict_tick(state, "||", modality="schema", expect="math.two", bundle=bundle)

@@ -10,7 +10,7 @@ public class VkFieldDecoderTests
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir is not null)
         {
-            var ltm = Path.Combine(dir.FullName, "examples", "agent-core", "vk-layouts-v0", "ltm", "l0", "L0_vk_map.ltm");
+            var ltm = Path.Combine(dir.FullName, "lab", "agent-core", "vk-layouts-v0", "ltm", "l0", "L0_vk_map.ltm");
             if (File.Exists(ltm))
                 return dir.FullName;
             dir = dir.Parent;
@@ -21,7 +21,7 @@ public class VkFieldDecoderTests
     private static IReadOnlyDictionary<(string LayoutId, string KeyId), string> LoadIndex()
     {
         var root = PayloadRoot();
-        var path = Path.Combine(root, "examples", "agent-core", "vk-layouts-v0", "ltm", "l0", "L0_vk_map.ltm");
+        var path = Path.Combine(root, "lab", "agent-core", "vk-layouts-v0", "ltm", "l0", "L0_vk_map.ltm");
         var lattice = LtmPackV0.ReadLatticeFile(path);
         return VkFieldDecoder.IndexFromLattice(lattice);
     }
@@ -63,7 +63,7 @@ public class VkFieldDecoderTests
     public void Layout_parity_cues_match_json_fixture()
     {
         var root = PayloadRoot();
-        var cuesPath = Path.Combine(root, "examples", "exp_bilingual_v0", "layout_parity_cues.v1.json");
+        var cuesPath = Path.Combine(root, "lab", "exp_bilingual_v0", "layout_parity_cues.v1.json");
         using var doc = JsonDocument.Parse(File.ReadAllText(cuesPath));
         var index = LoadIndex();
 

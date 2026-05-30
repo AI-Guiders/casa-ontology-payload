@@ -91,7 +91,7 @@ def main() -> None:
     p.add_argument("--threshold", type=float, default=0.5)
     p.add_argument("--steps", type=int, default=48)
     p.add_argument("--model", type=Path, required=True, help="Path to model.pt saved by train_dmn_nca.py --save-model")
-    p.add_argument("--out", type=Path, default=Path("examples/nca_bench_report.json"))
+    p.add_argument("--out", type=Path, default=Path("lab/nca_bench_report.json"))
     args = p.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

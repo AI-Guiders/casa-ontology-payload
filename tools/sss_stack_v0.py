@@ -12,17 +12,28 @@ from codec_grid_v1 import _pick_cells_clustered  # type: ignore
 
 
 def load_stack(path: Path | None = None) -> dict:
-    p = path or Path("design/sss-lattice-stack.v0.json")
-    return json.loads(p.read_text(encoding="utf-8"))
+    from config_io_v0 import load_config  # type: ignore
+
+    p = path or Path("design/sss-lattice-stack.v0.toml")
+    return load_config(p)
 
 
 def lattice_id_for_concept(stack: dict, concept_id: str) -> str:
     cid = concept_id or ""
+    if cid.startswith("grapheme.cyrl."):
+        return "L0_grapheme_cyrl"
+    if cid.startswith("grapheme.latn."):
+        return "L0_grapheme_latn"
+    best: tuple[int, str] | None = None
     for lat in stack.get("lattices") or []:
         prefix = str(lat.get("concept_prefix") or "")
         if prefix and cid.startswith(prefix):
-            return str(lat["id"])
-    return "L0_grapheme"
+            cand = (len(prefix), str(lat["id"]))
+            if best is None or cand[0] > best[0]:
+                best = cand
+    if best:
+        return best[1]
+    return "L0_grapheme_cyrl"
 
 
 def lattice_meta(stack: dict, lattice_id: str) -> dict:

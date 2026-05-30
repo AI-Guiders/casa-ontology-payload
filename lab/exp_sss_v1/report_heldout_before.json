@@ -1,0 +1,140 @@
+{
+  "store": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-heldout-v0",
+  "schema_version": "multi_cylinder_v1",
+  "field_version": 5,
+  "ablate_claims_nav": true,
+  "top_k": 3,
+  "passed": 4,
+  "total": 4,
+  "pass_rate": 1.0,
+  "cases": [
+    {
+      "id": "pa_spaced",
+      "cue": "п а",
+      "target": "па",
+      "concept_id": "syllable.па",
+      "top_concept": {
+        "concept_id": "syllable.па",
+        "surface": "па",
+        "votes": 9
+      },
+      "babble_surface": "па",
+      "rank": 1,
+      "votes": 9,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "syllable.па",
+          "votes": 9
+        },
+        {
+          "concept_id": "syllable.пап",
+          "votes": 9
+        },
+        {
+          "concept_id": "syllable.до",
+          "votes": 9
+        }
+      ]
+    },
+    {
+      "id": "mo_spaced",
+      "cue": "м о",
+      "target": "мо",
+      "concept_id": "syllable.мо",
+      "top_concept": {
+        "concept_id": "syllable.мо",
+        "surface": "мо",
+        "votes": 9
+      },
+      "babble_surface": "мо",
+      "rank": 1,
+      "votes": 9,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "syllable.мо",
+          "votes": 9
+        },
+        {
+          "concept_id": "syllable.до",
+          "votes": 9
+        },
+        {
+          "concept_id": "syllable.ма",
+          "votes": 9
+        }
+      ]
+    },
+    {
+      "id": "no_spaced",
+      "cue": "н о",
+      "target": "но",
+      "concept_id": "syllable.но",
+      "top_concept": {
+        "concept_id": "syllable.но",
+        "surface": "но",
+        "votes": 9
+      },
+      "babble_surface": "но",
+      "rank": 1,
+      "votes": 9,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "syllable.но",
+          "votes": 9
+        },
+        {
+          "concept_id": "syllable.до",
+          "votes": 9
+        },
+        {
+          "concept_id": "syllable.ма",
+          "votes": 9
+        }
+      ]
+    },
+    {
+      "id": "word_mama",
+      "cue": "м а м а",
+      "target": "мама",
+      "concept_id": "lang.word.мама",
+      "top_concept": {
+        "concept_id": "lang.word.мама",
+        "surface": "мама",
+        "votes": 9
+      },
+      "babble_surface": "мама",
+      "rank": 1,
+      "votes": 9,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "lang.word.мама",
+          "votes": 9
+        },
+        {
+          "concept_id": "lang.word.папа",
+          "votes": 9
+        }
+      ]
+    }
+  ]
+}

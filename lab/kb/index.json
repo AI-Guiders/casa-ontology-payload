@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "kb_root": "D:\\Experiments\\agent-notes\\knowledge",
+  "hub_graph": "lab\\kb\\ca-substrate-agent.hub.graph.json",
+  "bundles": [
+    "lab\\kb\\casa-goals.bundle.v1.json",
+    "lab\\kb\\research-ml.bundle.v1.json",
+    "lab\\kb\\ontology-poc-findings.bundle.v1.json",
+    "lab\\kb\\research-training.bundle.v1.json",
+    "lab\\kb\\research-tda-flow.bundle.v1.json",
+    "lab\\kb\\playbook-tda-flow.bundle.v1.json",
+    "lab\\kb\\kb-distill-nca.bundle.v1.json",
+    "lab\\kb\\casa-adr-0001.bundle.v1.json"
+  ]
+}

@@ -176,8 +176,8 @@ def _run_finetune(
 def main() -> None:
     p = argparse.ArgumentParser(description="Import knowledge_delta → union field write")
     p.add_argument("--delta", type=Path, required=True)
-    p.add_argument("--agent-card", type=Path, default=Path("examples/agent-cards/research-agent.v0.json"))
-    p.add_argument("--store-dir", type=Path, default=Path("examples/agent-stores/research-agent-lab-v0"))
+    p.add_argument("--agent-card", type=Path, default=Path("lab/agent-cards/research-agent.v0.json"))
+    p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/research-agent-lab-v0"))
     p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
     p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.v0.json"))
     p.add_argument("--concept-mode", default=CANONICAL_CONCEPT_MODE)
@@ -235,8 +235,8 @@ def main() -> None:
         print(json.dumps(report, ensure_ascii=False, indent=2))
         return
 
-    bundle_dir = repo / (card.get("bundle_dir") or "examples/kb-perdoc")
-    search_dirs = [bundle_dir, repo / "examples", repo]
+    bundle_dir = repo / (card.get("bundle_dir") or "lab/kb-perdoc")
+    search_dirs = [bundle_dir, repo / "lab", repo]
 
     missing = _verify_requires(delta, repo=repo, store_dir=store, search_dirs=search_dirs)
     if missing:

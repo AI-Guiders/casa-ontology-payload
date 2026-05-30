@@ -24,12 +24,12 @@ Optional `--layered`: digest/gate channel means from piston pipeline (Exp E dige
 
 ```powershell
 cd Financial\software\open\casa-ontology-payload
-python tools/sn_cen_infer.py --bundle examples/kb-perdoc/research-ml.bundle.v1.json
-python tools/sn_cen_infer.py --bundle examples/kb-perdoc/research-ml.bundle.v1.json --query "NCA training"
-python tools/sn_cen_infer.py --bundle examples/kb-perdoc/research-tda-flow.bundle.v1.json --layered
+python tools/sn_cen_infer.py --bundle lab/kb-perdoc/research-ml.bundle.v1.json
+python tools/sn_cen_infer.py --bundle lab/kb-perdoc/research-ml.bundle.v1.json --query "NCA training"
+python tools/sn_cen_infer.py --bundle lab/kb-perdoc/research-tda-flow.bundle.v1.json --layered
 ```
 
-Output: `examples/sn_cen_out/infer_v1.json`
+Output: `lab/sn_cen_out/infer_v1.json`
 
 ## v1 limits
 
@@ -43,7 +43,7 @@ After `import_knowledge_delta`, SN/CEN reads `field_state.json` directly — no 
 
 ```powershell
 python tools/sn_cen_infer.py --from-field --query "import knowledge delta"
-python tools/sn_cen_infer.py --from-field --store-dir examples/agent-stores/research-agent-lab-v0
+python tools/sn_cen_infer.py --from-field --store-dir lab/agent-stores/research-agent-lab-v0
 ```
 
 Typical `wall_ms` < 50 ms (decode + SN + CEN only).

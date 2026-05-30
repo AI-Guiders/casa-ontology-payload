@@ -72,7 +72,7 @@ Repair: all planner tiles in **one** `nca_rollout_eval` batch when `len(tiles)>1
 .\scripts\run_exp_j_train_windowed.ps1
 ```
 
-Outputs: `examples/nca_out_exp_j_ru_windowed_v1/`, `examples/exp_j_ru_v1/report_windowed_repair.json`.
+Outputs: `lab/nca_out_exp_j_ru_windowed_v1/`, `lab/exp_j_ru_v1/report_windowed_repair.json`.
 
 ## When to enable full union
 

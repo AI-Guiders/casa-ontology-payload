@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
 from sss_field_hypotheses_v0 import compete_hypotheses, h_votes_for_word  # type: ignore
 from sss_segment_v0 import verify_segment  # type: ignore
 
@@ -21,7 +21,7 @@ def main() -> None:
     args = p.parse_args()
 
     path = args.store_dir / "field_state.json"
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     hyp = compete_hypotheses(state, args.word)
     ver = verify_segment(hyp)
     report = {

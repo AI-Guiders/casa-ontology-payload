@@ -89,22 +89,22 @@ def main() -> None:
     p.add_argument(
         "--cues",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/layout_parity_cues.v1.json",
+        default=root / "lab/exp_bilingual_v0/layout_parity_cues.v1.json",
     )
     p.add_argument(
         "--headwords",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/en_folk_headwords.v1.txt",
+        default=root / "lab/exp_bilingual_v0/en_folk_headwords.v1.txt",
     )
     p.add_argument(
         "--command-headwords",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/layout_command_headwords.v1.txt",
+        default=root / "lab/exp_bilingual_v0/layout_command_headwords.v1.txt",
     )
     p.add_argument(
         "--bundle",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/kb-entity-surfaces-dev.v1.json",
+        default=root / "lab/exp_bilingual_v0/kb-entity-surfaces-dev.v1.json",
     )
     p.add_argument("--top-k", type=int, default=8)
     p.add_argument("--out", type=Path, default=None)

@@ -10,9 +10,9 @@ from typing import Any
 
 from export_ltm_pack_v0 import export_pack  # type: ignore
 from field_write import save_field_state  # type: ignore
-from grapheme_ingest_v0 import derive_graphemes_from_words, ingest_graphemes_batch  # type: ignore
+from boot_core_ltm_v0 import merge_core_ltm_stack  # type: ignore
 from ru_lexicon_v0 import ingest_ru_lex_batch, read_headwords  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
 from store_layout_v0 import STORE_RU_LEXICON_V0, agent_store_dir, field_state_path  # type: ignore
 
 
@@ -23,14 +23,14 @@ def init_ru_dev_store(
     copies: int = 3,
 ) -> dict[str, Any]:
     store_dir.mkdir(parents=True, exist_ok=True)
-    state = ensure_cylinders({"schema_version": "multi_cylinder_v1", "field_version": 0})
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
     state.setdefault("store", {})["store_id"] = store_dir.name
     state["store"]["locale"] = "ru"
     state["store"]["corpus"] = "ru-dev-v0"
 
+    repo = Path(__file__).resolve().parent.parent
+    l0_rep = merge_core_ltm_stack(state, root=repo, include_alphabet=True, include_vk=False)
     ingest_rep = ingest_ru_lex_batch(state, words, copies=copies, configure=True)
-    cyrl_chars = derive_graphemes_from_words(words, "cyrl")
-    l0_rep = ingest_graphemes_batch(state, cyrl_chars, "cyrl", copies=max(3, copies))
 
     fs_path = field_state_path(store_dir)
     save_field_state(fs_path, state, compact=True)
@@ -50,7 +50,7 @@ def init_ru_dev_store(
                     "",
                     "Init:",
                     "```bash",
-                    f"python tools/init_ru_dev_store_v0.py --headwords examples/exp_bilingual_v0/ru_dev_headwords.v1.txt",
+                    f"python tools/init_ru_dev_store_v0.py --headwords lab/exp_bilingual_v0/ru_dev_headwords.v1.txt",
                     "```",
                     "",
                 ]
@@ -78,7 +78,7 @@ def main() -> None:
     p.add_argument(
         "--headwords",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/ru_dev_headwords.v1.txt",
+        default=root / "lab/exp_bilingual_v0/ru_dev_headwords.v1.txt",
     )
     p.add_argument("--copies", type=int, default=3)
     args = p.parse_args()

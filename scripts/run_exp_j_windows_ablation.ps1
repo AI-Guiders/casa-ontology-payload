@@ -11,10 +11,10 @@ Set-Location $Root
 $env:PYTHONUNBUFFERED = '1'
 
 $bundles = @(
-    'examples/agent-stores/language-agent-lab-v0/bundles/kb-russian-language-rules-v1.bundle.v1.json',
-    'examples/agent-stores/language-agent-lab-v0/bundles/kb-regex-mre3-ru-chapter-map-v1.bundle.v1.json'
+    'lab/agent-stores/language-agent-lab-v0/bundles/kb-russian-language-rules-v1.bundle.v1.json',
+    'lab/agent-stores/language-agent-lab-v0/bundles/kb-regex-mre3-ru-chapter-map-v1.bundle.v1.json'
 )
-$reportDir = 'examples/exp_j_ru_v1'
+$reportDir = 'lab/exp_j_ru_v1'
 $rows = @()
 
 function Invoke-Arm {
@@ -62,13 +62,13 @@ function Invoke-Arm {
     }
 }
 
-$rows += Invoke-Arm -Arm 'w1' -WinBatch 1 -Stride 16 -OutDir 'examples/nca_out_exp_j_ablation_w1_v1'
-$rows += Invoke-Arm -Arm 'w32' -WinBatch 32 -Stride 16 -OutDir 'examples/nca_out_exp_j_ablation_w32_v1'
+$rows += Invoke-Arm -Arm 'w1' -WinBatch 1 -Stride 16 -OutDir 'lab/nca_out_exp_j_ablation_w1_v1'
+$rows += Invoke-Arm -Arm 'w32' -WinBatch 32 -Stride 16 -OutDir 'lab/nca_out_exp_j_ablation_w32_v1'
 if (-not $SkipW48) {
-    $rows += Invoke-Arm -Arm 'w48' -WinBatch 48 -Stride 16 -OutDir 'examples/nca_out_exp_j_ablation_w48_v1'
+    $rows += Invoke-Arm -Arm 'w48' -WinBatch 48 -Stride 16 -OutDir 'lab/nca_out_exp_j_ablation_w48_v1'
 }
 if (-not $SkipS8) {
-    $rows += Invoke-Arm -Arm 'w32_s8' -WinBatch 32 -Stride 8 -OutDir 'examples/nca_out_exp_j_ablation_w32_s8_v1'
+    $rows += Invoke-Arm -Arm 'w32_s8' -WinBatch 32 -Stride 8 -OutDir 'lab/nca_out_exp_j_ablation_w32_s8_v1'
 }
 
 $outPath = "$reportDir/windows_ablation_report.json"

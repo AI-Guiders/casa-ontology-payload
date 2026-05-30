@@ -11,7 +11,7 @@ from typing import Any
 
 from field_write import load_field_state  # type: ignore
 from gen_kb_from_text_v0 import build_bundle_from_text  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, run_sleep, save_state  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, run_sleep, save_state  # type: ignore
 from sss_field_words_v0 import listen_word_field  # type: ignore
 from sss_text_stream_v0 import norm_text, scan_paragraphs_to_scenes, scan_stream  # type: ignore
 from sss_text_tokenize_v0 import extract_punctuation_unique  # type: ignore
@@ -24,7 +24,7 @@ def read_session_field(
     *,
     bundle: dict | None = None,
 ) -> dict[str, Any]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     copies = max(1, int(session.get("listen_copies") or 3))
     scenes = list(session.get("scenes") or [])
     if bundle:
@@ -34,7 +34,7 @@ def read_session_field(
         **(state.get("sn") or {}),
         "mode": "listen_field",
         "active_lattice": "L2_word",
-        "active_cylinder": "cyl_memory",
+        "active_prism": "prism_memory",
     }
 
     frames: list[dict] = []
@@ -96,7 +96,7 @@ def ingest_text_field(
     sleep: bool = True,
     min_word_len: int = 1,
 ) -> dict[str, Any]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     before_w = word_votes_from_field(state)
     before_p = punct_votes_from_field(state)
     dynamic = build_bundle_from_text(text, bukvar_bundle=bukvar_bundle, title=title)
@@ -149,7 +149,7 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Ingest text via char scan + W: field competition")
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--text", type=Path, required=True)
-    p.add_argument("--bukvar", type=Path, default=Path("examples/kb/kb-bukvar-ru-full-v1.payload.json"))
+    p.add_argument("--bukvar", type=Path, default=Path("lab/kb/kb-bukvar-ru-full-v1.payload.json"))
     p.add_argument("--title", default=None)
     p.add_argument("--listen-copies", type=int, default=2)
     p.add_argument("--no-sleep", action="store_true")
@@ -162,7 +162,7 @@ def main() -> None:
     title = args.title or f"Читаем (field): {args.text.name}"
     bukvar = json.loads(args.bukvar.read_text(encoding="utf-8")) if args.bukvar.exists() else None
 
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     report = ingest_text_field(
         state,
         text,

@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
 import argparse
 import json
 from pathlib import Path
@@ -10,7 +11,7 @@ from typing import Any
 
 from f0_stack_v0 import encode_f0_lattice, load_f0_stack  # type: ignore
 from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from store_boot_v0 import boot_store  # type: ignore
 from store_layout_v0 import field_state_path  # type: ignore
 
@@ -23,12 +24,12 @@ def ingest_math_bundle(
     stack_path: Path | None = None,
     copies: int = 5,
 ) -> dict[str, Any]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     stack = load_f0_stack(stack_path)
     lat = encode_f0_lattice(bundle, lattice_id=lattice_id, stack=stack, copies=copies)
     lattices = memory_lattices(state)
     lattices[lattice_id] = lat
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
     state["f0"] = {
         "stack": str(stack_path or Path("design/f0-math-lattice-stack.v0.json")),
@@ -39,7 +40,7 @@ def ingest_math_bundle(
         **(state.get("sn") or {}),
         "active_subsystem": "first_signal_math",
         "active_f_lattice": lattice_id,
-        "active_cylinder": "cyl_memory",
+        "active_prism": "prism_memory",
     }
     state["field_version"] = int(state.get("field_version") or 0) + 1
     return {
@@ -64,7 +65,7 @@ def main() -> None:
     if args.boot_ltm_only or not fs.is_file():
         state = boot_store(args.store_dir, prefer_field_state=False)["state"]
     else:
-        state = ensure_cylinders(load_field_state(fs))
+        state = ensure_prisms(load_field_state(fs))
 
     rep = ingest_math_bundle(state, bundle, copies=args.copies)
     if args.write:

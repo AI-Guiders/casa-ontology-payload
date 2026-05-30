@@ -52,7 +52,7 @@ def main() -> None:
     p.add_argument("--edge-radius", type=int, default=4)
     p.add_argument("--concept-radius", type=int, default=5)
     p.add_argument("--model", type=Path, required=True)
-    p.add_argument("--out", type=Path, default=Path("examples/nca_bench_union_curve.json"))
+    p.add_argument("--out", type=Path, default=Path("lab/nca_bench_union_curve.json"))
     args = p.parse_args()
 
     damages = [float(x.strip()) for x in args.damages.split(",") if x.strip()]

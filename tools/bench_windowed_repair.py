@@ -119,7 +119,7 @@ def main() -> None:
     p.add_argument("--threshold", type=float, default=0.5)
     p.add_argument("--min-votes", type=int, default=3)
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--out", type=Path, default=Path("examples/exp_j_ru_v1/report_windowed_repair.json"))
+    p.add_argument("--out", type=Path, default=Path("lab/exp_j_ru_v1/report_windowed_repair.json"))
     args = p.parse_args()
 
     ckpt = torch.load(args.model, map_location="cpu", weights_only=False)

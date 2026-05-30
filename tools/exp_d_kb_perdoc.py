@@ -23,12 +23,12 @@ def main() -> None:
     p.add_argument("--seeds", type=int, default=20)
     p.add_argument("--skip-build", action="store_true")
     p.add_argument("--skip-train", action="store_true")
-    p.add_argument("--out-dir", type=Path, default=Path("examples/exp_d_kb_perdoc_v1"))
+    p.add_argument("--out-dir", type=Path, default=Path("lab/exp_d_kb_perdoc_v1"))
     args = p.parse_args()
 
     repo = args.repo_root.resolve()
     tools = repo / "tools"
-    kb_dir = repo / "examples/kb-perdoc"
+    kb_dir = repo / "lab/kb-perdoc"
 
     if not args.skip_build:
         cmd = [sys.executable, str(tools / "build_kb_bundles.py"), "--per-doc-graph", "--out-dir", str(kb_dir)]
@@ -49,9 +49,9 @@ def main() -> None:
         "--out-dir",
         str(exp_out.relative_to(repo)),
         "--extra-bundles",
-        "examples/ca-substrate-agent.bundle.v1.json",
-        "examples/casa-goals.bundle.v1.json",
-        "examples/research-spec.bundle.v1.json",
+        "lab/ca-substrate-agent.bundle.v1.json",
+        "lab/casa-goals.bundle.v1.json",
+        "lab/research-spec.bundle.v1.json",
     ]
     if args.skip_train:
         exp_cmd.append("--skip-train")

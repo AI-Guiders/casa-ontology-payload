@@ -6,9 +6,9 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'examples/agent-stores/sss-afan-v0'
-$bundle = 'examples/kb/kb-bukvar-ru-full-v1.payload.json'
-$outDir = 'examples/exp_sss_v1'
+$store = 'lab/agent-stores/sss-afan-v0'
+$bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
+$outDir = 'lab/exp_sss_v1'
 
 Write-Host '=== Afan-II: held-out surface (mixed cases) ===' -ForegroundColor Cyan
 python tools/bench_sss_heldout.py `

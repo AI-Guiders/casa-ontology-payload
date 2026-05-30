@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import append_rule_episode, ensure_cylinders, run_sleep, save_state  # type: ignore
+from sss_cylinders_v0 import append_rule_episode, ensure_prisms, run_sleep, save_state  # type: ignore
 from sss_field_decode_v0 import rule_votes_from_field  # type: ignore
 from sss_hypothesis_v0 import hypothesis_turn  # type: ignore
 from sss_internal_repair_v0 import internal_reconcile  # type: ignore
@@ -38,7 +38,7 @@ def kolb_cycle(
     *,
     bundle: dict | None = None,
 ) -> dict[str, Any]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     exp_cfg = session.get("experience") or {}
     word = str(exp_cfg.get("word") or "")
     conc_cfg = session.get("conceptualization") or {}
@@ -190,7 +190,7 @@ def main() -> None:
         if bs:
             bundle = json.loads(bs[0].read_text(encoding="utf-8"))
 
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     report = kolb_cycle(state, session, bundle=bundle)
     save_state(path, state)
 

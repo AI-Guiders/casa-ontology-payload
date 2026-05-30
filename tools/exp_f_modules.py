@@ -26,7 +26,7 @@ def main() -> None:
     p.add_argument("--epochs", type=int, default=600)
     p.add_argument("--seeds", type=int, default=15)
     p.add_argument("--damage", type=float, default=0.4)
-    p.add_argument("--out-root", type=Path, default=Path("examples/exp_f_modules_v1"))
+    p.add_argument("--out-root", type=Path, default=Path("lab/exp_f_modules_v1"))
     p.add_argument("--skip-train", action="store_true")
     args = p.parse_args()
 

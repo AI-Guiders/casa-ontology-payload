@@ -7,27 +7,27 @@ if (-not $env:AGENT_NOTES_KB) {
     $env:AGENT_NOTES_KB = 'D:\experiments\agent-notes\knowledge'
 }
 
-$store = 'examples/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab-v0'
 
 Write-Host '=== sync language store (grammar + literacy) ===' -ForegroundColor Cyan
 & (Join-Path $Root 'scripts\run_exp_j0_literacy_sync.ps1')
 
 Write-Host '=== write@sketch (literacy + explain) ===' -ForegroundColor Cyan
 python tools/bench_write_sketch.py `
-    --queries examples/exp_j0_literacy/queries_write.jsonl `
+    --queries lab/exp_j0_literacy/queries_write.jsonl `
     --store-dir $store `
-    --out examples/exp_j0_literacy/report_write.json
+    --out lab/exp_j0_literacy/report_write.json
 
 Write-Host '=== write@sketch (grammar norm) ===' -ForegroundColor Cyan
 python tools/bench_write_sketch.py `
-    --queries examples/exp_j_ru_v1/queries_grammar.jsonl `
+    --queries lab/exp_j_ru_v1/queries_grammar.jsonl `
     --store-dir $store `
-    --out examples/exp_j_ru_v1/report_write_grammar.json
+    --out lab/exp_j_ru_v1/report_write_grammar.json
 
 Write-Host '=== grammar read@1 (substr in blocks) ===' -ForegroundColor Cyan
 python tools/bench_answer_recall.py `
-    --queries examples/exp_j_ru_v1/queries_grammar.jsonl `
+    --queries lab/exp_j_ru_v1/queries_grammar.jsonl `
     --store-dir $store `
-    --out examples/exp_j_ru_v1/report_grammar_recall.json
+    --out lab/exp_j_ru_v1/report_grammar_recall.json
 
 Write-Host 'Done.'

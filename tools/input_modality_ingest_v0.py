@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
 import argparse
 import json
 from pathlib import Path
@@ -10,12 +11,13 @@ from typing import Any
 
 from codec_grid_v0 import Grid  # type: ignore
 from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_stack_v0 import _place_token, decode_lattice  # type: ignore
 from store_boot_v0 import boot_store  # type: ignore
 from store_layout_v0 import field_state_path  # type: ignore
 from vk_layout_field_v0 import (  # type: ignore
     L0_VK_MAP_ID,
+    L0_VK_PHYSICAL_ID,
     imprint_vk_layouts_on_field,
     vk_physical_concept,
 )
@@ -23,7 +25,7 @@ from vk_layout_field_v0 import (  # type: ignore
 
 def default_input_modality_bundle(*, root: Path | None = None) -> Path:
     base = root or Path(__file__).resolve().parent.parent
-    return base / "examples/exp_bilingual_v0/kb-input-modality-vk.v1.json"
+    return base / "lab/exp_bilingual_v0/kb-input-modality-vk.v1.json"
 
 
 def _concept_ids(bundle: dict) -> list[str]:
@@ -52,12 +54,12 @@ def ingest_input_modality(
     state: dict,
     bundle: dict,
     *,
-    lattice_id: str = L0_VK_MAP_ID,
+    lattice_id: str = L0_VK_PHYSICAL_ID,
     copies: int = 4,
     ensure_vk_map: bool = True,
 ) -> dict[str, Any]:
     """Imprint modality concepts + graph edges onto vk lattice (listen, like bukvar/entity hub)."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     lattices = memory_lattices(state)
     if ensure_vk_map and lattice_id not in lattices:
         imprint_vk_layouts_on_field(state, ensure_graphemes=True)
@@ -103,7 +105,7 @@ def ingest_input_modality(
         "edge_count": edge_count,
     }
     lattices[lattice_id] = lat
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
     state["input_modality"] = {
         "bundle_id": bundle.get("bundle_id"),
@@ -148,9 +150,9 @@ def main() -> None:
         if args.boot_ltm_only or not fs.is_file():
             state = boot_store(store, prefer_field_state=False)["state"]
         else:
-            state = ensure_cylinders(load_field_state(fs))
+            state = ensure_prisms(load_field_state(fs))
     else:
-        state = ensure_cylinders({"schema_version": "multi_cylinder_v1", "field_version": 0})
+        state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
 
     rep = ingest_input_modality(state, bundle, copies=args.copies)
     if args.write and args.store_dir:

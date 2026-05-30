@@ -3,12 +3,13 @@
 
 from __future__ import annotations
 
+from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
 import re
 import unicodedata
 from typing import Any
 
 from codec_grid_v0 import Grid  # type: ignore
-from sss_cylinders_v0 import append_episode, ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import append_episode, ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import (  # type: ignore
     LEGACY_L2,
     concept_votes_l2,
@@ -64,14 +65,14 @@ def punct_concept_id(mark: str) -> str:
 
 def punct_votes_from_field(state: dict) -> dict[str, int]:
     votes: dict[str, int] = {}
-    lattices = memory_lattices(ensure_cylinders(state))
+    lattices = memory_lattices(ensure_prisms(state))
     for lat in lattices.values():
         for cell in lat.get("cells") or []:
             for t in cell:
                 if t.startswith("P:"):
                     m = t[2:]
                     votes[m] = votes.get(m, 0) + 1
-    hippo = state["cylinders"]["cyl_hippo"]
+    hippo = prism_hippo(state)
     for lat in (hippo.get("lattices") or {}).values():
         for cell in lat.get("cells") or []:
             for t in cell:
@@ -83,14 +84,14 @@ def punct_votes_from_field(state: dict) -> dict[str, int]:
 
 def word_votes_from_field(state: dict) -> dict[str, int]:
     votes: dict[str, int] = {}
-    lattices = memory_lattices(ensure_cylinders(state))
+    lattices = memory_lattices(ensure_prisms(state))
     for lat in lattices.values():
         for cell in lat.get("cells") or []:
             for t in cell:
                 if t.startswith("W:"):
                     w = t[2:]
                     votes[w] = votes.get(w, 0) + 1
-    hippo = state["cylinders"]["cyl_hippo"]
+    hippo = prism_hippo(state)
     for lat in (hippo.get("lattices") or {}).values():
         for cell in lat.get("cells") or []:
             for t in cell:
@@ -104,7 +105,7 @@ def concept_votes(state: dict, lattice_id: str, concept_id: str) -> int:
     if lattice_id == LEGACY_L2 or lattice_id.startswith("L2_word_"):
         votes, _ = concept_votes_l2(state, concept_id)
         return votes
-    lattices = memory_lattices(ensure_cylinders(state))
+    lattices = memory_lattices(ensure_prisms(state))
     lat = lattices.get(lattice_id) or {}
     dec = decode_lattice(lat, min_votes=1)
     for c in dec.get("concepts") or []:
@@ -133,7 +134,7 @@ def _strengthen_word_on_l2(
     g = Grid(width=int(lat["width"]), height=int(lat["height"]), cells=lat["cells"])
     g = _place_token(g, f"C:{cid}", f"C:{cid}", copies=copies, radius=5)
     g = _place_token(g, w_token(w), w_token(w), copies=max(2, copies), radius=4)
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
     return lid
 
@@ -164,7 +165,7 @@ def _listen_scene_on_l3(
         ptok = p_token(mark)
         g = _place_token(g, ptok, ptok, copies=max(1, copies - 1), radius=3)
         g = _place_token(g, f"Lp:{scene_id}|{mark}", f"Lp:{scene_id}|{mark}", copies=copies, radius=3)
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
 
 
@@ -182,7 +183,7 @@ def _strengthen_punct_on_field(state: dict, mark: str, *, copies: int = 2) -> No
             g = _place_token(g, f"C:grapheme.{mark}", f"C:grapheme.{mark}", copies=max(1, copies - 1), radius=3)
         if lid == "L3_phrase":
             g = _place_token(g, f"C:{cid}", f"C:{cid}", copies=max(1, copies - 1), radius=3)
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
 
 
@@ -195,7 +196,7 @@ def listen_punct(
     copies: int = 2,
     link_scene: bool = True,
 ) -> dict[str, Any]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     m = mark.strip()
     if not m:
         return {"mark": "", "p_votes": 0}
@@ -222,7 +223,7 @@ def listen_word(
     link_scene: bool = True,
 ) -> dict[str, Any]:
     """Read-aloud one word: imprint on L2 + optional scene link + episodic trace."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     w = norm_word(word)
     lid = _strengthen_word_on_l2(state, w, copies=copies)
     if scene_id and link_scene:
@@ -286,7 +287,7 @@ def listen_scene(
 
 def recall_words_for_scene(state: dict, scene_id: str) -> list[dict[str, Any]]:
     """Recall vocabulary linked to scene — field only, no canon lookup."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     wvotes = word_votes_from_field(state)
     prefix = f"L:{scene_id}|"
     linked: list[str] = []
@@ -320,9 +321,9 @@ def recall_word_best(state: dict, scene_id: str) -> dict[str, Any] | None:
 
 def apply_story_compose(state: dict, bundle: dict, *, stack_path: str | None = None) -> dict:
     """Refresh z_compose after new word edges from skazka bundle."""
-    lattices = memory_lattices(ensure_cylinders(state))
+    lattices = memory_lattices(ensure_prisms(state))
     stack = load_stack(stack_path)
     report = apply_z_compose_v0(lattices, bundle, stack)
-    state["cylinders"]["cyl_memory"]["lattices"] = lattices
+    prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
     return report

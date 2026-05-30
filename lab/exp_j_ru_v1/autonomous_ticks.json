@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "store": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\language-agent-lab-v0",
+  "ticks_run": 3,
+  "wm": {
+    "tick": 3,
+    "goal": "согласно приказу как правильно",
+    "mode": "kb_query",
+    "stack": [],
+    "last_action": "open_kb",
+    "last_query": "согласно приказу как правильно"
+  },
+  "history": [
+    {
+      "tick": 1,
+      "query": "согласно приказу как правильно",
+      "wall_ms": 4.07,
+      "field_version": 7,
+      "recovery_concepts_f1": 0.7021276595744682,
+      "sn_mode": "execute",
+      "cen": {
+        "intent": "query",
+        "action": "open_kb",
+        "concepts": [
+          "ru.grammar.chastye_oshibki.07",
+          "ru.grammar.soglasovanie.01",
+          "ru.grammar.правила_русского_языка_evidence_base.13"
+        ],
+        "edges": [],
+        "targets": [
+          {
+            "kind": "kb",
+            "concept_id": "ru.grammar.chastye_oshibki.07",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)"
+          },
+          {
+            "kind": "kb",
+            "concept_id": "ru.grammar.soglasovanie.01",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "section": "Правила русского языка (evidence-based v1) / 1. Согласование (род, число, падеж)"
+          },
+          {
+            "kind": "kb",
+            "concept_id": "ru.grammar.правила_русского_языка_evidence_base.13",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "section": "Правила русского языка (evidence-based v1) / 7. Операционное использование"
+          }
+        ],
+        "task_band": {
+          "task.intent.query": 1.0,
+          "task.intent.probe": 0.0,
+          "task.action.open_kb": 1.0,
+          "task.action.open_code": 0.0,
+          "task.confidence": 1.0
+        },
+        "query_to_dmn": null,
+        "confidence": 1.0,
+        "notes": "matched claims v2",
+        "llm_probe": null,
+        "answer_blocks": [
+          {
+            "concept_id": "ru.grammar.chastye_oshibki.07",
+            "text": "согласно приказа → согласно приказу",
+            "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "score": 4,
+            "claim_kind": "rule"
+          },
+          {
+            "concept_id": "ru.grammar.soglasovanie.01",
+            "text": "В единственном числе: прилагательное (и порядковое числительное) согласуется в роде, числе и падеже: новый дом, новая дача, новое окно; второй шаг, вторая половинка, второе окно. В родительном падеже с существительным ж.р.: второй половинки (род. п.) → правильно без второй половинки, не «без второго половинки» («второго» — форма м.р./ср.р., не согласована с «половинкой»).",
+            "section": "Правила русского языка (evidence-based v1) / 1. Согласование (род, число, падеж)",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "score": 2,
+            "claim_kind": "claim"
+          },
+          {
+            "concept_id": "ru.grammar.правила_русского_языка_evidence_base.13",
+            "text": "При вопросах пользователя о правильности формулировки опираться на указанные источники (РГ-80, Грамота.ру) и при необходимости давать краткую отсылку к правилу.",
+            "section": "Правила русского языка (evidence-based v1) / 7. Операционное использование",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "score": 2,
+            "claim_kind": "claim"
+          }
+        ],
+        "fpn": {
+          "tick": 1,
+          "goal": "согласно приказу как правильно",
+          "mode": "kb_query",
+          "stack": [],
+          "last_action": "open_kb",
+          "last_query": "согласно приказу как правильно"
+        }
+      },
+      "elapsed_ms": 4.67
+    },
+    {
+      "tick": 2,
+      "query": "согласно приказу как правильно",
+      "wall_ms": 4.74,
+      "field_version": 7,
+      "recovery_concepts_f1": 0.7021276595744682,
+      "sn_mode": "execute",
+      "cen": {
+        "intent": "query",
+        "action": "open_kb",
+        "concepts": [
+          "ru.grammar.chastye_oshibki.07",
+          "ru.grammar.soglasovanie.01",
+          "ru.grammar.правила_русского_языка_evidence_base.13"
+        ],
+        "edges": [],
+        "targets": [
+          {
+            "kind": "kb",
+            "concept_id": "ru.grammar.chastye_oshibki.07",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)"
+          },
+          {
+            "kind": "kb",
+            "concept_id": "ru.grammar.soglasovanie.01",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "section": "Правила русского языка (evidence-based v1) / 1. Согласование (род, число, падеж)"
+          },
+          {
+            "kind": "kb",
+            "concept_id": "ru.grammar.правила_русского_языка_evidence_base.13",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "section": "Правила русского языка (evidence-based v1) / 7. Операционное использование"
+          }
+        ],
+        "task_band": {
+          "task.intent.query": 1.0,
+          "task.intent.probe": 0.0,
+          "task.action.open_kb": 1.0,
+          "task.action.open_code": 0.0,
+          "task.confidence": 1.0
+        },
+        "query_to_dmn": null,
+        "confidence": 1.0,
+        "notes": "matched claims v2",
+        "llm_probe": null,
+        "answer_blocks": [
+          {
+            "concept_id": "ru.grammar.chastye_oshibki.07",
+            "text": "согласно приказа → согласно приказу",
+            "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "score": 4,
+            "claim_kind": "rule"
+          },
+          {
+            "concept_id": "ru.grammar.soglasovanie.01",
+            "text": "В единственном числе: прилагательное (и порядковое числительное) согласуется в роде, числе и падеже: новый дом, новая дача, новое окно; второй шаг, вторая половинка, второе окно. В родительном падеже с существительным ж.р.: второй половинки (род. п.) → правильно без второй половинки, не «без второго половинки» («второго» — форма м.р./ср.р., не согласована с «половинкой»).",
+            "section": "Правила русского языка (evidence-based v1) / 1. Согласование (род, число, падеж)",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "score": 2,
+            "claim_kind": "claim"
+          },
+          {
+            "concept_id": "ru.grammar.правила_русского_языка_evidence_base.13",
+            "text": "При вопросах пользователя о правильности формулировки опираться на указанные источники (РГ-80, Грамота.ру) и при необходимости давать краткую отсылку к правилу.",
+            "section": "Правила русского языка (evidence-based v1) / 7. Операционное использование",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "score": 2,
+            "claim_kind": "claim"
+          }
+        ],
+        "fpn": {
+          "tick": 2,
+          "goal": "согласно приказу как правильно",
+          "mode": "kb_query",
+          "stack": [],
+          "last_action": "open_kb",
+          "last_query": "согласно приказу как правильно"
+        }
+      },
+      "elapsed_ms": 5.3
+    },
+    {
+      "tick": 3,
+      "query": "согласно приказу как правильно",
+      "wall_ms": 3.4,
+      "field_version": 7,
+      "recovery_concepts_f1": 0.7021276595744682,
+      "sn_mode": "execute",
+      "cen": {
+        "intent": "query",
+        "action": "open_kb",
+        "concepts": [
+          "ru.grammar.chastye_oshibki.07",
+          "ru.grammar.soglasovanie.01",
+          "ru.grammar.правила_русского_языка_evidence_base.13"
+        ],
+        "edges": [],
+        "targets": [
+          {
+            "kind": "kb",
+            "concept_id": "ru.grammar.chastye_oshibki.07",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)"
+          },
+          {
+            "kind": "kb",
+            "concept_id": "ru.grammar.soglasovanie.01",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "section": "Правила русского языка (evidence-based v1) / 1. Согласование (род, число, падеж)"
+          },
+          {
+            "kind": "kb",
+            "concept_id": "ru.grammar.правила_русского_языка_evidence_base.13",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "section": "Правила русского языка (evidence-based v1) / 7. Операционное использование"
+          }
+        ],
+        "task_band": {
+          "task.intent.query": 1.0,
+          "task.intent.probe": 0.0,
+          "task.action.open_kb": 1.0,
+          "task.action.open_code": 0.0,
+          "task.confidence": 1.0
+        },
+        "query_to_dmn": null,
+        "confidence": 1.0,
+        "notes": "matched claims v2",
+        "llm_probe": null,
+        "answer_blocks": [
+          {
+            "concept_id": "ru.grammar.chastye_oshibki.07",
+            "text": "согласно приказа → согласно приказу",
+            "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "score": 4,
+            "claim_kind": "rule"
+          },
+          {
+            "concept_id": "ru.grammar.soglasovanie.01",
+            "text": "В единственном числе: прилагательное (и порядковое числительное) согласуется в роде, числе и падеже: новый дом, новая дача, новое окно; второй шаг, вторая половинка, второе окно. В родительном падеже с существительным ж.р.: второй половинки (род. п.) → правильно без второй половинки, не «без второго половинки» («второго» — форма м.р./ср.р., не согласована с «половинкой»).",
+            "section": "Правила русского языка (evidence-based v1) / 1. Согласование (род, число, падеж)",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "score": 2,
+            "claim_kind": "claim"
+          },
+          {
+            "concept_id": "ru.grammar.правила_русского_языка_evidence_base.13",
+            "text": "При вопросах пользователя о правильности формулировки опираться на указанные источники (РГ-80, Грамота.ру) и при необходимости давать краткую отсылку к правилу.",
+            "section": "Правила русского языка (evidence-based v1) / 7. Операционное использование",
+            "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+            "score": 2,
+            "claim_kind": "claim"
+          }
+        ],
+        "fpn": {
+          "tick": 3,
+          "goal": "согласно приказу как правильно",
+          "mode": "kb_query",
+          "stack": [],
+          "last_action": "open_kb",
+          "last_query": "согласно приказу как правильно"
+        }
+      },
+      "elapsed_ms": 3.96
+    }
+  ]
+}

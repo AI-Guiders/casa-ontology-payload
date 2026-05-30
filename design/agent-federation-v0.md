@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-28  
 **Status:** design + JSON schemas (no runtime yet)  
-**DMN lab baseline:** tiered train G + dual-checkpoint infer **H** (`examples/exp_h_dual_bench_v1/`)
+**DMN lab baseline:** tiered train G + dual-checkpoint infer **H** (`lab/exp_h_dual_bench_v1/`)
 
 ## Artifacts
 
@@ -41,7 +41,7 @@ See `design/import-knowledge-delta-v1.md`.
 
 ## Example card (research, from lab)
 
-See `examples/agent-cards/research-agent.v0.json` (generated stub).
+See `lab/agent-cards/research-agent.v0.json` (generated stub).
 
 ## Example delta
 
@@ -52,7 +52,7 @@ See `examples/agent-cards/research-agent.v0.json` (generated stub).
   "source_agent_id": "research-agent-01",
   "target_cluster": "research",
   "bundle": {
-    "path": "examples/kb-perdoc/research-ml.bundle.v1.json",
+    "path": "lab/kb-perdoc/research-ml.bundle.v1.json",
     "action": "replace"
   },
   "digest": {

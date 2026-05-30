@@ -9,7 +9,7 @@ from pathlib import Path
 
 from field_write import load_field_state, save_field_state  # type: ignore
 from sss_surface_v0 import surface_from_sss  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
 from sss_l2_shard_v0 import resolve_l2_lattice_for_read, route_l2_lattice, shard_stats  # type: ignore
 from sss_vocab_v0 import listen_word  # type: ignore
 
@@ -23,7 +23,7 @@ def main() -> None:
     args = p.parse_args()
 
     path = args.store_dir / "field_state.json"
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     before = shard_stats(state)
 
     rep = listen_word(state, args.new_word, copies=2, link_scene=False)

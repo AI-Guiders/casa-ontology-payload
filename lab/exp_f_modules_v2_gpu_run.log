@@ -1,0 +1,697 @@
+train_device=cuda (NVIDIA GeForce RTX 4060 Laptop GPU) batch_size=24 amp=True
+epoch    0 loss=0.001110 module=work/projects/door-to-singularity/ca-substrate-a mix=0.689 overlap=0.01
+epoch  100 loss=0.000992 module=work/projects/door-to-singularity/ca-substrate-a mix=0.600 overlap=1.00
+epoch  200 loss=0.000534 module=work/projects/door-to-singularity/ca-substrate-a mix=0.745 overlap=0.01
+epoch  300 loss=0.000756 module=work/projects/door-to-singularity/ca-substrate-a mix=0.600 overlap=0.00
+epoch  400 loss=0.000388 module=work/projects/door-to-singularity/ca-substrate-a mix=0.745 overlap=0.01
+epoch  500 loss=0.000715 module=work/projects/door-to-singularity/ca-substrate-a mix=0.733 overlap=0.01
+epoch  599 loss=0.000284 module=work/projects/door-to-singularity/ca-substrate-a mix=0.846 overlap=0.01
+{
+  "schema_version": 1,
+  "experiment": "F_module_train_v0",
+  "cluster": "goals",
+  "train_mode": "module_masked_v0",
+  "module_count": 18,
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage_patches": 6,
+  "epochs": 600,
+  "token_count_union": 74,
+  "bundles": [
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\ca-substrate-agent.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\casa-adr-0001.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\casa-goals.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\casa-goals.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\ontology-poc-findings.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\research-spec.bundle.v1.json"
+  ],
+  "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v2_gpu\\goals\\model.pt",
+  "reports": [
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\casa-adr-0001.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "edges": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 3,
+          "precision": 1.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      }
+    },
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\casa-goals.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "edges": {
+          "tp": 4,
+          "fp": 1,
+          "fn": 4,
+          "precision": 0.8,
+          "recall": 0.5,
+          "f1": 0.6153846153846154
+        }
+      }
+    },
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\ontology-poc-findings.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "edges": {
+          "tp": 2,
+          "fp": 4,
+          "fn": 1,
+          "precision": 0.3333333333333333,
+          "recall": 0.6666666666666666,
+          "f1": 0.4444444444444444
+        }
+      }
+    }
+  ]
+}
+{
+  "schema_version": 1,
+  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\casa-goals.bundle.v1.json",
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage": 0.4,
+  "codec": "v3",
+  "concept_mode": "section",
+  "damage_mode": "patches",
+  "damage_patches": 8,
+  "patch_w": 8,
+  "patch_h": 8,
+  "seeds": {
+    "count": 15,
+    "seed0": 1
+  },
+  "baseline": {
+    "concepts_f1": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.6424242424242423,
+      "std": 0.0501865861339894
+    }
+  },
+  "nca": {
+    "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v2_gpu\\goals\\model.pt",
+    "steps": 48,
+    "threshold": 0.35,
+    "min_votes": 2,
+    "concepts_f1": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.6153846153846152,
+      "std": 2.298380017448157e-16
+    }
+  }
+}
+{
+  "schema_version": 1,
+  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\casa-adr-0001.bundle.v1.json",
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage": 0.4,
+  "codec": "v3",
+  "concept_mode": "section",
+  "damage_mode": "patches",
+  "damage_patches": 8,
+  "patch_w": 8,
+  "patch_h": 8,
+  "seeds": {
+    "count": 15,
+    "seed0": 1
+  },
+  "baseline": {
+    "concepts_f1": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.0,
+      "std": 0.0
+    }
+  },
+  "nca": {
+    "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v2_gpu\\goals\\model.pt",
+    "steps": 48,
+    "threshold": 0.35,
+    "min_votes": 2,
+    "concepts_f1": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.0,
+      "std": 0.0
+    }
+  }
+}
+{
+  "schema_version": 1,
+  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\ontology-poc-findings.bundle.v1.json",
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage": 0.4,
+  "codec": "v3",
+  "concept_mode": "section",
+  "damage_mode": "patches",
+  "damage_patches": 8,
+  "patch_w": 8,
+  "patch_h": 8,
+  "seeds": {
+    "count": 15,
+    "seed0": 1
+  },
+  "baseline": {
+    "concepts_f1": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.9866666666666667,
+      "std": 0.051639777949432204
+    }
+  },
+  "nca": {
+    "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v2_gpu\\goals\\model.pt",
+    "steps": 48,
+    "threshold": 0.35,
+    "min_votes": 2,
+    "concepts_f1": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.5792592592592591,
+      "std": 0.05473467615381086
+    }
+  }
+}
+train_device=cuda (NVIDIA GeForce RTX 4060 Laptop GPU) batch_size=24 amp=True
+epoch    0 loss=0.014789 module=work/projects/door-to-singularity/ca-substrate-a mix=0.000 overlap=0.01
+epoch  100 loss=0.004065 module=work/projects/door-to-singularity/ca-substrate-a mix=0.349 overlap=0.01
+epoch  200 loss=0.001980 module=work/projects/door-to-singularity/ca-substrate-a mix=0.507 overlap=0.01
+epoch  300 loss=0.001663 module=work/projects/door-to-singularity/ca-substrate-a mix=0.500 overlap=0.01
+epoch  400 loss=0.001234 module=work/projects/door-to-singularity/ca-substrate-a mix=0.485 overlap=0.01
+epoch  500 loss=0.000935 module=work/projects/door-to-singularity/ca-substrate-a mix=0.512 overlap=0.01
+epoch  599 loss=0.000520 module=work/projects/door-to-singularity/ca-substrate-a mix=0.318 overlap=0.01
+{
+  "schema_version": 1,
+  "experiment": "F_module_train_v0",
+  "cluster": "research",
+  "train_mode": "module_masked_v0",
+  "module_count": 22,
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage_patches": 6,
+  "epochs": 600,
+  "token_count_union": 79,
+  "bundles": [
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\ca-substrate-agent.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\casa-goals.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\research-ml.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\research-spec.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\research-tda-flow.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\research-training.bundle.v1.json"
+  ],
+  "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v2_gpu\\research\\model.pt",
+  "reports": [
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\research-ml.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 3,
+          "fp": 6,
+          "fn": 0,
+          "precision": 0.3333333333333333,
+          "recall": 1.0,
+          "f1": 0.5
+        },
+        "edges": {
+          "tp": 3,
+          "fp": 6,
+          "fn": 0,
+          "precision": 0.3333333333333333,
+          "recall": 1.0,
+          "f1": 0.5
+        }
+      }
+    },
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\research-tda-flow.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 3,
+          "fn": 0,
+          "precision": 0.0,
+          "recall": 1.0,
+          "f1": 0.0
+        },
+        "edges": {
+          "tp": 2,
+          "fp": 8,
+          "fn": 0,
+          "precision": 0.2,
+          "recall": 1.0,
+          "f1": 0.33333333333333337
+        }
+      }
+    },
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\research-training.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 3,
+          "fn": 0,
+          "precision": 0.0,
+          "recall": 1.0,
+          "f1": 0.0
+        },
+        "edges": {
+          "tp": 5,
+          "fp": 5,
+          "fn": 1,
+          "precision": 0.5,
+          "recall": 0.8333333333333334,
+          "f1": 0.625
+        }
+      }
+    }
+  ]
+}
+{
+  "schema_version": 1,
+  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\research-ml.bundle.v1.json",
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage": 0.4,
+  "codec": "v3",
+  "concept_mode": "section",
+  "damage_mode": "patches",
+  "damage_patches": 8,
+  "patch_w": 8,
+  "patch_h": 8,
+  "seeds": {
+    "count": 15,
+    "seed0": 1
+  },
+  "baseline": {
+    "concepts_f1": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.9600000000000002,
+      "std": 0.0828078671210825
+    }
+  },
+  "nca": {
+    "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v2_gpu\\research\\model.pt",
+    "steps": 48,
+    "threshold": 0.35,
+    "min_votes": 2,
+    "concepts_f1": {
+      "mean": 0.4596847596847597,
+      "std": 0.04715117517843299
+    },
+    "edges_f1": {
+      "mean": 0.46153846153846156,
+      "std": 5.745950043620392e-17
+    }
+  }
+}
+{
+  "schema_version": 1,
+  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\research-tda-flow.bundle.v1.json",
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage": 0.4,
+  "codec": "v3",
+  "concept_mode": "section",
+  "damage_mode": "patches",
+  "damage_patches": 8,
+  "patch_w": 8,
+  "patch_h": 8,
+  "seeds": {
+    "count": 15,
+    "seed0": 1
+  },
+  "baseline": {
+    "concepts_f1": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.9555555555555555,
+      "std": 0.11728859175816615
+    }
+  },
+  "nca": {
+    "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v2_gpu\\research\\model.pt",
+    "steps": 48,
+    "threshold": 0.35,
+    "min_votes": 2,
+    "concepts_f1": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.3333333333333333,
+      "std": 5.745950043620392e-17
+    }
+  }
+}
+{
+  "schema_version": 1,
+  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\research-training.bundle.v1.json",
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage": 0.4,
+  "codec": "v3",
+  "concept_mode": "section",
+  "damage_mode": "patches",
+  "damage_patches": 8,
+  "patch_w": 8,
+  "patch_h": 8,
+  "seeds": {
+    "count": 15,
+    "seed0": 1
+  },
+  "baseline": {
+    "concepts_f1": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.7911111111111114,
+      "std": 0.03442651863295483
+    }
+  },
+  "nca": {
+    "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v2_gpu\\research\\model.pt",
+    "steps": 48,
+    "threshold": 0.35,
+    "min_votes": 2,
+    "concepts_f1": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.625,
+      "std": 0.0
+    }
+  }
+}
+train_device=cuda (NVIDIA GeForce RTX 4060 Laptop GPU) batch_size=24 amp=True
+epoch    0 loss=0.014551 module=work/projects/door-to-singularity/ca-substrate-a mix=0.760 overlap=0.01
+epoch  100 loss=0.002599 module=work/projects/door-to-singularity/ca-substrate-a mix=0.126 overlap=0.00
+epoch  200 loss=0.001222 module=work/projects/door-to-singularity/ca-substrate-a mix=0.133 overlap=0.00
+epoch  300 loss=0.001202 module=work/projects/door-to-singularity/ca-substrate-a mix=0.267 overlap=0.01
+epoch  400 loss=0.000655 module=work/projects/door-to-singularity/ca-substrate-a mix=0.089 overlap=0.00
+epoch  500 loss=0.000765 module=work/projects/door-to-singularity/ca-substrate-a mix=0.107 overlap=0.00
+epoch  599 loss=0.000371 module=work/projects/door-to-singularity/ca-substrate-a mix=0.900 overlap=0.01
+{
+  "schema_version": 1,
+  "experiment": "F_module_train_v0",
+  "cluster": "ops",
+  "train_mode": "module_masked_v0",
+  "module_count": 13,
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage_patches": 6,
+  "epochs": 600,
+  "token_count_union": 73,
+  "bundles": [
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\ca-substrate-agent.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\casa-goals.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\kb-distill-nca.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\playbook-tda-flow.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\research-spec.bundle.v1.json"
+  ],
+  "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v2_gpu\\ops\\model.pt",
+  "reports": [
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\kb-distill-nca.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 6,
+          "fn": 0,
+          "precision": 0.0,
+          "recall": 1.0,
+          "f1": 0.0
+        },
+        "edges": {
+          "tp": 2,
+          "fp": 7,
+          "fn": 8,
+          "precision": 0.2222222222222222,
+          "recall": 0.2,
+          "f1": 0.2105263157894737
+        }
+      }
+    },
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\playbook-tda-flow.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "edges": {
+          "tp": 3,
+          "fp": 1,
+          "fn": 1,
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75
+        }
+      }
+    }
+  ]
+}
+{
+  "schema_version": 1,
+  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\playbook-tda-flow.bundle.v1.json",
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage": 0.4,
+  "codec": "v3",
+  "concept_mode": "section",
+  "damage_mode": "patches",
+  "damage_patches": 8,
+  "patch_w": 8,
+  "patch_h": 8,
+  "seeds": {
+    "count": 15,
+    "seed0": 1
+  },
+  "baseline": {
+    "concepts_f1": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.819047619047619,
+      "std": 0.0788646353534119
+    }
+  },
+  "nca": {
+    "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v2_gpu\\ops\\model.pt",
+    "steps": 48,
+    "threshold": 0.35,
+    "min_votes": 2,
+    "concepts_f1": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.6188888888888887,
+      "std": 0.04312526359094351
+    }
+  }
+}
+{
+  "schema_version": 1,
+  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\kb-distill-nca.bundle.v1.json",
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage": 0.4,
+  "codec": "v3",
+  "concept_mode": "section",
+  "damage_mode": "patches",
+  "damage_patches": 8,
+  "patch_w": 8,
+  "patch_h": 8,
+  "seeds": {
+    "count": 15,
+    "seed0": 1
+  },
+  "baseline": {
+    "concepts_f1": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.31313131313131315,
+      "std": 0.05331299625371189
+    }
+  },
+  "nca": {
+    "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v2_gpu\\ops\\model.pt",
+    "steps": 48,
+    "threshold": 0.35,
+    "min_votes": 2,
+    "concepts_f1": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "edges_f1": {
+      "mean": 0.2730604288499025,
+      "std": 0.04446832816177841
+    }
+  }
+}
+{
+  "schema_version": 1,
+  "experiment": "F_module_dmn_v1",
+  "epochs": 600,
+  "damage": 0.4,
+  "modules_manifest": "manifests\\kb-modules.v0.json",
+  "clusters": [
+    {
+      "cluster": "goals",
+      "model": "lab\\exp_f_modules_v2_gpu\\goals\\model.pt",
+      "train_mode": "module_masked_v0",
+      "module_count": 18,
+      "bundles": [
+        "casa-goals.bundle.v1.json",
+        "casa-adr-0001.bundle.v1.json",
+        "ontology-poc-findings.bundle.v1.json"
+      ],
+      "mean_delta_mix": -0.057926271259604666,
+      "nca_wins": 1,
+      "bench_rows": [
+        {
+          "bundle": "casa-goals.bundle.v1.json",
+          "delta_mix": -0.010815850815850903,
+          "nca_wins": false,
+          "baseline_mix": 0.8569696969696969,
+          "nca_mix": 0.846153846153846
+        },
+        {
+          "bundle": "casa-adr-0001.bundle.v1.json",
+          "delta_mix": 0.0,
+          "nca_wins": true,
+          "baseline_mix": 0.6,
+          "nca_mix": 0.6
+        },
+        {
+          "bundle": "ontology-poc-findings.bundle.v1.json",
+          "delta_mix": -0.1629629629629631,
+          "nca_wins": false,
+          "baseline_mix": 0.9946666666666667,
+          "nca_mix": 0.8317037037037036
+        }
+      ]
+    },
+    {
+      "cluster": "research",
+      "model": "lab\\exp_f_modules_v2_gpu\\research\\model.pt",
+      "train_mode": "module_masked_v0",
+      "module_count": 22,
+      "bundles": [
+        "research-ml.bundle.v1.json",
+        "research-tda-flow.bundle.v1.json",
+        "research-training.bundle.v1.json"
+      ],
+      "mean_delta_mix": -0.47963569763569774,
+      "nca_wins": 1,
+      "bench_rows": [
+        {
+          "bundle": "research-ml.bundle.v1.json",
+          "delta_mix": 0.0764262404262403,
+          "nca_wins": true,
+          "baseline_mix": 0.3840000000000001,
+          "nca_mix": 0.4604262404262404
+        },
+        {
+          "bundle": "research-tda-flow.bundle.v1.json",
+          "delta_mix": -0.8488888888888889,
+          "nca_wins": false,
+          "baseline_mix": 0.9822222222222222,
+          "nca_mix": 0.13333333333333333
+        },
+        {
+          "bundle": "research-training.bundle.v1.json",
+          "delta_mix": -0.6664444444444446,
+          "nca_wins": false,
+          "baseline_mix": 0.9164444444444446,
+          "nca_mix": 0.25
+        }
+      ]
+    },
+    {
+      "cluster": "ops",
+      "model": "lab\\exp_f_modules_v2_gpu\\ops\\model.pt",
+      "train_mode": "module_masked_v0",
+      "module_count": 13,
+      "bundles": [
+        "playbook-tda-flow.bundle.v1.json",
+        "kb-distill-nca.bundle.v1.json"
+      ],
+      "mean_delta_mix": -0.6480459228880282,
+      "nca_wins": 0,
+      "bench_rows": [
+        {
+          "bundle": "playbook-tda-flow.bundle.v1.json",
+          "delta_mix": -0.680063492063492,
+          "nca_wins": false,
+          "baseline_mix": 0.9276190476190476,
+          "nca_mix": 0.2475555555555555
+        },
+        {
+          "bundle": "kb-distill-nca.bundle.v1.json",
+          "delta_mix": -0.6160283537125643,
+          "nca_wins": false,
+          "baseline_mix": 0.7252525252525253,
+          "nca_mix": 0.109224171539961
+        }
+      ]
+    }
+  ]
+}

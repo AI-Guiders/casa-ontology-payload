@@ -147,7 +147,7 @@ nca/
 - [x] Round-trip `L2_word_00.cells` идентичен.
 - [x] NCA windowed по умолчанию; дефолты в `nca-train-defaults.v0.json`.
 - [ ] Runtime: agent store стартует из `ltm/` + `nca/` без `field_state.json` на диске.
-- [ ] Документирован tier поставки в [`examples/agent-stores/INDEX.md`](../examples/agent-stores/INDEX.md) (частично).
+- [ ] Документирован tier поставки в [`lab/agent-stores/INDEX.md`](../lab/agent-stores/INDEX.md) (частично).
 - [x] Incremental NCA: `nca_train_registry.v0.json` + `nca_stale_shards_v0.py` (bench: `bench_nca_stale_v0.py`).
 
 ---
@@ -156,7 +156,7 @@ nca/
 
 | Документ | Роль |
 |----------|------|
-| `examples/kb/casa-adr-0001.payload.json` / ADR-0001 в agent-notes | трек CA-субстрата (отдельно) |
+| `lab/kb/casa-adr-0001.payload.json` / ADR-0001 в agent-notes | трек CA-субстрата (отдельно) |
 | [`ltm-pack-v0.md`](ltm-pack-v0.md) | спецификация формата и команд |
 | [`CASA-ADR-0007-agent-profile-store-packs.md`](CASA-ADR-0007-agent-profile-store-packs.md) | agent profile + export ltm (продукты) |
 | [`nca-train-core-v0.md`](nca-train-core-v0.md) | общий цикл обучения NCA |

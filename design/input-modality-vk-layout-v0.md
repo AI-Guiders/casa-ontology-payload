@@ -2,7 +2,7 @@
 
 **Status:** lab v1 (full keyboard compose + shift layer)  
 **ADR:** [CASA-ADR-0008](CASA-ADR-0008-layout-parity-bilingual-t9.md)  
-**KB bundle:** [kb-input-modality-vk.v1.json](../examples/exp_bilingual_v0/kb-input-modality-vk.v1.json)
+**KB bundle:** [kb-input-modality-vk.v1.json](../lab/exp_bilingual_v0/kb-input-modality-vk.v1.json)
 
 ## Для агента (кратко)
 
@@ -29,7 +29,7 @@ python tools/bench_keyboard_full_v0.py
 
 Каталог клавиш: [`keyboard-keys.v0.json`](../design/keyboard-layouts/keyboard-keys.v0.json) — modifiers, actions, navigation, Fn, zones (~99 physical keys на поле).
 
-Bundle: [`kb-input-modality-vk.v1.json`](../examples/exp_bilingual_v0/kb-input-modality-vk.v1.json)  
+Bundle: [`kb-input-modality-vk.v1.json`](../lab/exp_bilingual_v0/kb-input-modality-vk.v1.json)  
 Ingest: `input_modality_ingest_v0.ingest_input_modality` — `C:input.modality.*`, `C:layout.*`, `E:src|relation|dst` на **L0_vk_map** (рядом с compose-рёбрами vk→grapheme).
 
 ```text
@@ -105,8 +105,8 @@ Shift / Caps — как раньше (`surface_effect` → capitalize / upper).
 python tools/vk_nca_train_v0.py --device cuda
 
 # lexicon shards (CUDA по умолчанию)
-python tools/agent_autonomous_tick_v0.py --store-dir examples/agent-stores/sss-ru-lexicon-v0 --sleep --train-nca
-python tools/nca_stale_shards_v0.py --store-dir examples/agent-stores/sss-en-folk-v0 --train --device cuda
+python tools/agent_autonomous_tick_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0 --sleep --train-nca
+python tools/nca_stale_shards_v0.py --store-dir lab/agent-stores/sss-en-folk-v0 --train --device cuda
 ```
 
 **Lexicon:** тренить при pending/stale shards (cold ingest, новые headwords). **VK:** один раз после ingest или при смене layout pack.

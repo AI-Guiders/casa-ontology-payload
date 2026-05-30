@@ -82,7 +82,7 @@ Example: `python tools/train_module_nca.py --cluster research --batch-size 128 -
 
 ## Experiment F output
 
-`examples/exp_f_modules_v1/{cluster}/model.pt`, `report.json`, per-bundle `bench_*.json`.
+`lab/exp_f_modules_v1/{cluster}/model.pt`, `report.json`, per-bundle `bench_*.json`.
 
 Compare to E: same clusters, module-local damage + loss; expect better signal on weak bundles if parcels separate conflicting hubs.
 

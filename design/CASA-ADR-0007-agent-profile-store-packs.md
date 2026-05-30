@@ -42,7 +42,7 @@
 | Слой | Меняется между продуктами? | Пример |
 |------|----------------------------|--------|
 | **Core** | **нет** (версия runtime) | `casa-ontology-payload` tools |
-| **Agent store** | **да** | `examples/agent-stores/sss-ru-lexicon-v0` |
+| **Agent store** | **да** | `lab/agent-stores/sss-ru-lexicon-v0` |
 | **Profile** | **да** | `bilingual-t9-console-v0.json` |
 
 **Цилиндры** (`cyl_memory`, `cyl_hippo`, `cyl_io`) и **SN/DMN/CEN** — **архитектура core**, не отдельный store «Dev-мозг».
@@ -52,8 +52,8 @@
 **Поставка памяти** = каталог agent store после export:
 
 ```bash
-python tools/export_ltm_pack_v0.py --store-dir examples/agent-stores/sss-ru-lexicon-v0
-python tools/export_ltm_pack_v0.py --store-dir examples/agent-stores/sss-en-folk-v0
+python tools/export_ltm_pack_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0
+python tools/export_ltm_pack_v0.py --store-dir lab/agent-stores/sss-en-folk-v0
 # опционально: --compress  → .ltm.zst
 ```
 
@@ -79,7 +79,7 @@ python tools/export_ltm_pack_v0.py --store-dir examples/agent-stores/sss-en-folk
 
 ### 3. Agent profile v0 (рецепт продукта)
 
-Файлы: `examples/agent-profiles/*.v0.json`
+Файлы: `lab/agent-profiles/*.v0.json`
 
 ```json
 {
@@ -87,8 +87,8 @@ python tools/export_ltm_pack_v0.py --store-dir examples/agent-stores/sss-en-folk
   "profile_id": "bilingual-t9-console-v0",
   "title": "Bilingual T9 (RU+EN) — console demo",
   "stores": [
-    { "role": "ru", "store_dir": "examples/agent-stores/sss-ru-lexicon-v0" },
-    { "role": "en", "store_dir": "examples/agent-stores/sss-en-folk-v0" }
+    { "role": "ru", "store_dir": "lab/agent-stores/sss-ru-lexicon-v0" },
+    { "role": "en", "store_dir": "lab/agent-stores/sss-en-folk-v0" }
   ],
   "boot": { "mode": "linked" },
   "export_before_ship": true,
@@ -115,12 +115,12 @@ python tools/export_ltm_pack_v0.py --store-dir examples/agent-stores/sss-en-folk
 **Сейчас (lab):**
 
 ```bash
-python tools/export_ltm_pack_v0.py --store-dir examples/agent-stores/sss-ru-lexicon-v0
+python tools/export_ltm_pack_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0
 python tools/boot_linked_stores_v0.py \
-  --ru-store examples/agent-stores/sss-ru-lexicon-v0 \
-  --en-store examples/agent-stores/sss-en-folk-v0
+  --ru-store lab/agent-stores/sss-ru-lexicon-v0 \
+  --en-store lab/agent-stores/sss-en-folk-v0
 python tools/run_t9_demo_cycle_v0.py
-python tools/store_boot_v0.py --store-dir examples/agent-stores/sss-ru-lexicon-v0 --smoke
+python tools/store_boot_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0 --smoke
 ```
 
 **Целевой:**
@@ -208,7 +208,7 @@ python tools/store_boot_v0.py --store-dir examples/agent-stores/sss-ru-lexicon-v
 | Документ | Роль |
 |----------|------|
 | [`ltm-pack-v0.md`](ltm-pack-v0.md) | export/import команды |
-| [`examples/agent-profiles/`](../examples/agent-profiles/) | profile JSON v0 |
-| [`examples/agent-stores/INDEX.md`](../examples/agent-stores/INDEX.md) | store roles |
+| [`lab/agent-profiles/`](../lab/agent-profiles/) | profile JSON v0 |
+| [`lab/agent-stores/INDEX.md`](../lab/agent-stores/INDEX.md) | store roles |
 | [`CASA-ADR-0006`](CASA-ADR-0006-t9-predictive-text.md) | первый product modality |
 | [`casa-glossary-v0.md`](casa-glossary-v0.md) § surface / predict / act |

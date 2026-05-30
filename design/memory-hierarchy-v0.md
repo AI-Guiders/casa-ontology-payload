@@ -22,7 +22,7 @@ agent-store/{id}/              # e.g. sss-ru-lexicon-v0 (not corpus name)
 └── _parallel_shards/         ← ingest worker artifacts (optional)
 ```
 
-Do **not** use `examples/nca_out_<corpus>_*/` for production — train in-place under `{store}/nca/` (`train_sss_nca_shards_v0.py` default).
+Do **not** use `lab/nca_out_<corpus>_*/` for production — train in-place under `{store}/nca/` (`train_sss_nca_shards_v0.py` default).
 
 ## Logical hierarchy
 
@@ -55,5 +55,5 @@ cylinders
 ## Regenerate index
 
 ```bash
-python tools/sss_memory_manifest_v0.py --store-dir examples/agent-stores/sss-ru-lexicon-v0 --write
+python tools/sss_memory_manifest_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0 --write
 ```

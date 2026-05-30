@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "bundle": "lab\\ca-substrate-agent.bundle.v1.json",
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage": 0.25,
+  "seeds": {
+    "count": 20,
+    "seed0": 1
+  },
+  "baseline": {
+    "concepts_f1": {
+      "mean": 0.7021428426645819,
+      "std": 0.08295836227841152
+    },
+    "edges_f1": {
+      "mean": 0.8156116677440208,
+      "std": 0.1249092924221701
+    }
+  },
+  "nca": {
+    "model": "lab\\nca_out_run2\\model.pt",
+    "steps": 48,
+    "threshold": 0.5,
+    "min_votes": 3,
+    "concepts_f1": {
+      "mean": 0.7643923483923485,
+      "std": 0.056642550604578644
+    },
+    "edges_f1": {
+      "mean": 0.8457457983193277,
+      "std": 0.12282787060195118
+    }
+  }
+}

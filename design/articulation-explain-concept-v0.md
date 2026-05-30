@@ -47,7 +47,7 @@ Hot path **без LLM**: текст собирается из **слотов к�
     "form_hint": "окончания меняются: мама → маме, приказ → приказу, договор → договору",
     "government": "некоторые конструкции требуют дательный: согласно чему? → согласно приказу",
     "agreement_link": "прилагательное/числительное в том же падеже: новый приказ → новому приказу",
-    "examples": ["письмо маме", "согласно договору", "по правилам — согласно указу"]
+    "lab": ["письмо маме", "согласно договору", "по правилам — согласно указу"]
   },
   "provenance": "РГ-80 / rusgram.ru — краткая выжимка, не цитата учебника"
 }
@@ -107,7 +107,7 @@ CEN: при intent **объяснение** + слова «что такое», 
 
 | Шаг | Артефакт |
 |-----|----------|
-| 1 | `examples/kb/kb-russian-grammar-concepts-v1.md` + bundle (5–8 concept cards: dative, genitive, agreement, government) |
+| 1 | `lab/kb/kb-russian-grammar-concepts-v1.md` + bundle (5–8 concept cards: dative, genitive, agreement, government) |
 | 2 | Пересборка `language-agent-lab` store, поле |
 | 3 | CEN: boost `claim_kind=concept` на «что такое / почему» |
 | 4 | `articulation_realize_v0.explain_concept()` + bench `queries_concept_explain.jsonl` |

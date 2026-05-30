@@ -66,7 +66,7 @@ def main() -> None:
     p.add_argument("--min-votes", type=int, default=3)
     p.add_argument("--seeds", type=int, default=5)
     p.add_argument("--damage-levels", default="0.0,0.1,0.2,0.3,0.4")
-    p.add_argument("--out", type=Path, default=Path("examples/dmn_stub_report.json"))
+    p.add_argument("--out", type=Path, default=Path("lab/dmn_stub_report.json"))
     args = p.parse_args()
 
     bundle = _read_json(args.bundle)

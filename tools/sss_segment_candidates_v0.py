@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_field_decode_v0 import (  # type: ignore
     grapheme_votes_for_word,
     rule_votes_from_field,
@@ -16,7 +16,7 @@ from sss_stack_v0 import decode_lattice  # type: ignore
 
 
 def _syllable_vote_map(state: dict) -> dict[str, int]:
-    l1 = memory_lattices(ensure_cylinders(state)).get("L1_syllable") or {}
+    l1 = memory_lattices(ensure_prisms(state)).get("L1_syllable") or {}
     dec = decode_lattice(l1, min_votes=1)
     out: dict[str, int] = {}
     for c in dec.get("concepts") or []:

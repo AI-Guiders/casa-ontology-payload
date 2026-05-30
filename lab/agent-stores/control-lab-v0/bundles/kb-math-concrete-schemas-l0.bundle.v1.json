@@ -1,0 +1,41 @@
+{
+  "bundle_id": "kb-math-concrete-schemas-l0.bundle.v1",
+  "schema_version": 1,
+  "title": "Exp L0 — concrete math schemas on F0",
+  "math_tokens": [
+    { "token": "M:sym:one", "copies": 5 },
+    { "token": "M:sym:two", "copies": 5 },
+    { "token": "M:sym:three", "copies": 5 },
+    { "token": "M:op:add", "copies": 5 },
+    { "token": "M:op:compare", "copies": 4 }
+  ],
+  "claims": [
+    { "concept_id": "math.one", "kind": "concept" },
+    { "concept_id": "math.two", "kind": "concept" },
+    { "concept_id": "math.three", "kind": "concept" },
+    { "concept_id": "math.add", "kind": "concept" },
+    { "concept_id": "math.compare.more", "kind": "concept" }
+  ],
+  "graph": {
+    "edges": [
+      { "src": "M:sym:one", "relation": "schema_of", "dst": "math.one" },
+      { "src": "M:sym:two", "relation": "schema_of", "dst": "math.two" },
+      { "src": "M:sym:three", "relation": "schema_of", "dst": "math.three" },
+      { "src": "M:op:add", "relation": "schema_of", "dst": "math.add" },
+      { "src": "math.add", "relation": "combines", "dst": "math.one" }
+    ]
+  },
+  "math_glyphs": [
+    { "glyph": "|", "concept_id": "math.one" },
+    { "glyph": "||", "concept_id": "math.two" },
+    { "glyph": "|||", "concept_id": "math.three" },
+    { "glyph": "+", "concept_id": "math.add" }
+  ],
+  "math_keywords": {
+    "math.add": ["слож", "скле", "add", "plus"],
+    "math.two": ["два", "two"],
+    "math.one": ["один", "one"],
+    "math.three": ["три", "three"],
+    "math.compare.more": ["больше", "compare", "сравн"]
+  }
+}

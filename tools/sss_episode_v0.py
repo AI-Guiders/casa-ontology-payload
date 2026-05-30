@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import append_episode, ensure_cylinders, save_state  # type: ignore
+from sss_cylinders_v0 import append_episode, ensure_prisms, save_state  # type: ignore
 
 
 def main() -> None:
@@ -36,7 +36,7 @@ def main() -> None:
         if bundles:
             bundle = json.loads(bundles[0].read_text(encoding="utf-8"))
 
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     ep = append_episode(
         state,
         cue=args.cue,
@@ -47,7 +47,7 @@ def main() -> None:
         bundle=bundle,
     )
     save_state(path, state)
-    print(json.dumps({"episode": ep, "hippo_pending": len(state["cylinders"]["cyl_hippo"]["episodes"])}, ensure_ascii=False, indent=2))
+    print(json.dumps({"episode": ep, "hippo_pending": len(prism_hippo(state)["episodes"])}, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":

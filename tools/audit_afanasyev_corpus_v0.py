@@ -72,8 +72,8 @@ def audit_file(path: Path) -> dict:
 
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--corpus-dir", type=Path, default=Path("examples/text/corpus/afanasyev"))
-    p.add_argument("--out", type=Path, default=Path("examples/exp_sss_v1/report_afanasyev_audit.json"))
+    p.add_argument("--corpus-dir", type=Path, default=Path("lab/text/corpus/afanasyev"))
+    p.add_argument("--out", type=Path, default=Path("lab/exp_sss_v1/report_afanasyev_audit.json"))
     p.add_argument("--fail-on-issues", action="store_true")
     args = p.parse_args()
 

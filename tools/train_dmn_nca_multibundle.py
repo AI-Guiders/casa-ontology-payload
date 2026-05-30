@@ -131,7 +131,7 @@ def main() -> None:
     p.add_argument("--min-votes", type=int, default=3)
     p.add_argument("--seed", type=int, default=1)
     p.add_argument("--edge-weight", type=float, default=5.0, help="Loss multiplier for edge tokens (E:...)")
-    p.add_argument("--out-dir", type=Path, default=Path("examples/nca_out_multibundle"))
+    p.add_argument("--out-dir", type=Path, default=Path("lab/nca_out_multibundle"))
     p.add_argument("--save-model", action="store_true")
     args = p.parse_args()
 

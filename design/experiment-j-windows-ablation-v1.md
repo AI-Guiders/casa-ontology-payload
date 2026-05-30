@@ -38,4 +38,4 @@ Union vocab size is determined by both bundles (~162 tokens on current store).
 .\scripts\run_exp_j_windows_ablation.ps1 -Epochs 120   # quick
 ```
 
-Output: `examples/exp_j_ru_v1/windows_ablation_report.json`
+Output: `lab/exp_j_ru_v1/windows_ablation_report.json`

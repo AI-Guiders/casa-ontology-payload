@@ -31,7 +31,7 @@ Proves the full loop **expectation vs reality** before `cow+cow`.
 ## Artifacts (planned)
 
 ```text
-examples/exp_t9_v0/
+lab/exp_t9_v0/
   t9_prefix_cues.v1.json      # [{ "cue": "мам", "expect": "мама", "min_rank": 1 }]
   t9_segment_cues.v1.json
   t9_context_cues.v1.json
@@ -52,8 +52,8 @@ tools/bench_t9_predict_v0.py
 
 ```bash
 python tools/bench_t9_predict_v0.py \
-  --store-dir examples/agent-stores/sss-ru-lexicon-v0 \
-  --cues examples/exp_t9_v0/t9_prefix_cues.v1.json \
+  --store-dir lab/agent-stores/sss-ru-lexicon-v0 \
+  --cues lab/exp_t9_v0/t9_prefix_cues.v1.json \
   --boot-ltm-only
 ```
 

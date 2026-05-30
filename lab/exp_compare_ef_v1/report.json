@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "E": "lab\\exp_e_clusters_v1\\report.json",
+  "F": "lab\\exp_f_modules_v2_gpu\\report.json",
+  "cluster_summary": [
+    {
+      "cluster": "goals",
+      "E_mean_delta_mix": -0.005441077441077395,
+      "F_mean_delta_mix": -0.057926271259604666,
+      "delta_F_minus_E": -0.05248519381852727,
+      "E_wins": 1,
+      "F_wins": 1,
+      "F_train_mode": "module_masked_v0"
+    },
+    {
+      "cluster": "ops",
+      "E_mean_delta_mix": -0.00484848484848488,
+      "F_mean_delta_mix": -0.6480459228880282,
+      "delta_F_minus_E": -0.6431974380395433,
+      "E_wins": 1,
+      "F_wins": 0,
+      "F_train_mode": "module_masked_v0"
+    },
+    {
+      "cluster": "research",
+      "E_mean_delta_mix": -0.001185185185185215,
+      "F_mean_delta_mix": -0.47963569763569774,
+      "delta_F_minus_E": -0.4784505124505125,
+      "E_wins": 2,
+      "F_wins": 1,
+      "F_train_mode": "module_masked_v0"
+    }
+  ],
+  "per_bundle": [
+    {
+      "cluster": "goals",
+      "bundle": "casa-adr-0001.bundle.v1.json",
+      "E_delta_mix": 0.0,
+      "F_delta_mix": 0.0,
+      "F_minus_E": 0,
+      "E_win": true,
+      "F_win": true
+    },
+    {
+      "cluster": "goals",
+      "bundle": "casa-goals.bundle.v1.json",
+      "E_delta_mix": -0.010989898989898883,
+      "F_delta_mix": -0.010815850815850903,
+      "F_minus_E": 0.00017404817404798045,
+      "E_win": false,
+      "F_win": false
+    },
+    {
+      "cluster": "goals",
+      "bundle": "ontology-poc-findings.bundle.v1.json",
+      "E_delta_mix": -0.005333333333333301,
+      "F_delta_mix": -0.1629629629629631,
+      "F_minus_E": -0.15762962962962979,
+      "E_win": false,
+      "F_win": false
+    },
+    {
+      "cluster": "ops",
+      "bundle": "kb-distill-nca.bundle.v1.json",
+      "E_delta_mix": -0.00969696969696976,
+      "F_delta_mix": -0.6160283537125643,
+      "F_minus_E": -0.6063313840155945,
+      "E_win": false,
+      "F_win": false
+    },
+    {
+      "cluster": "ops",
+      "bundle": "playbook-tda-flow.bundle.v1.json",
+      "E_delta_mix": 0.0,
+      "F_delta_mix": -0.680063492063492,
+      "F_minus_E": -0.680063492063492,
+      "E_win": true,
+      "F_win": false
+    },
+    {
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "E_delta_mix": 0.0,
+      "F_delta_mix": 0.0764262404262403,
+      "F_minus_E": 0.0764262404262403,
+      "E_win": true,
+      "F_win": true
+    },
+    {
+      "cluster": "research",
+      "bundle": "research-tda-flow.bundle.v1.json",
+      "E_delta_mix": 0.0,
+      "F_delta_mix": -0.8488888888888889,
+      "F_minus_E": -0.8488888888888889,
+      "E_win": true,
+      "F_win": false
+    },
+    {
+      "cluster": "research",
+      "bundle": "research-training.bundle.v1.json",
+      "E_delta_mix": -0.003555555555555645,
+      "F_delta_mix": -0.6664444444444446,
+      "F_minus_E": -0.662888888888889,
+      "E_win": false,
+      "F_win": false
+    }
+  ]
+}

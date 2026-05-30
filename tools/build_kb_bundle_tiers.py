@@ -14,7 +14,7 @@ def _read(path: Path) -> dict:
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Generate bundle tier manifest from bench baselines")
-    p.add_argument("--bench-root", type=Path, default=Path("examples/exp_e_clusters_v1"))
+    p.add_argument("--bench-root", type=Path, default=Path("lab/exp_e_clusters_v1"))
     p.add_argument("--clusters", type=Path, default=Path("manifests/kb-clusters.v0.json"))
     p.add_argument("--threshold", type=float, default=0.85)
     p.add_argument("--out", type=Path, default=Path("manifests/kb-bundle-tiers.v0.json"))

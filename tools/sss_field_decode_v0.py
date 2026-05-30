@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_segment_v0 import norm_word  # type: ignore
 from sss_stack_v0 import decode_lattice  # type: ignore
 
@@ -19,9 +19,9 @@ def _token_votes(lattice: dict, *, prefix: str) -> dict[str, int]:
 
 
 def all_field_lattices(state: dict) -> dict[str, dict]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     out = dict(memory_lattices(state))
-    hippo = state["cylinders"]["cyl_hippo"]
+    hippo = prism_hippo(state)
     for lid, lat in (hippo.get("lattices") or {}).items():
         out[f"hippo_{lid}"] = lat
     return out
@@ -44,19 +44,25 @@ def active_rule_from_field(state: dict) -> tuple[str | None, dict[str, int]]:
 
 
 def grapheme_votes_for_word(state: dict, word: str) -> dict[str, int]:
-    lattices = memory_lattices(ensure_cylinders(state))
-    l0 = lattices.get("L0_grapheme") or {}
-    dec = decode_lattice(l0, min_votes=1)
-    cmap = {
-        str(c.get("concept_id") or "")[len("grapheme.") :]: int(c.get("votes") or 0)
-        for c in dec.get("concepts") or []
-    }
+    lattices = memory_lattices(ensure_prisms(state))
+    cmap: dict[str, int] = {}
+    for lid in ("L0_grapheme_cyrl", "L0_grapheme_latn", "L0_grapheme"):
+        lat = lattices.get(lid) or {}
+        if not lat:
+            continue
+        dec = decode_lattice(lat, min_votes=1)
+        for c in dec.get("concepts") or []:
+            cid = str(c.get("concept_id") or "")
+            if not cid.startswith("grapheme."):
+                continue
+            ch = cid.split(".", 2)[-1]
+            cmap[ch] = cmap.get(ch, 0) + int(c.get("votes") or 0)
     w = norm_word(word)
     return {ch: cmap.get(ch, 0) for ch in w}
 
 
 def syllable_hits_from_field(state: dict, word: str) -> list[tuple[str, int]]:
-    lattices = memory_lattices(ensure_cylinders(state))
+    lattices = memory_lattices(ensure_prisms(state))
     l1 = lattices.get("L1_syllable") or {}
     dec = decode_lattice(l1, min_votes=1)
     w = norm_word(word)

@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from sss_cylinders_v0 import ensure_prisms  # type: ignore
 from sss_vocab_v0 import recall_words_for_scene, word_votes_from_field  # type: ignore
 
 
@@ -44,7 +44,7 @@ def main() -> None:
     probes_raw = json.loads(args.probes.read_text(encoding="utf-8"))
     probes = probes_raw if isinstance(probes_raw, list) else probes_raw.get("probes") or []
 
-    state = ensure_cylinders(load_field_state(args.store_dir / "field_state.json"))
+    state = ensure_prisms(load_field_state(args.store_dir / "field_state.json"))
     rows = eval_recall(state, probes)
     passed = sum(1 for r in rows if r["hit_top3"])
     report = {

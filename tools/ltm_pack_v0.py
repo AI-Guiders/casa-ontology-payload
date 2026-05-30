@@ -147,4 +147,6 @@ def lattice_subdir(lattice_id: str) -> str:
         return "l3"
     if lattice_id.startswith("H0_"):
         return "h0"
+    if lattice_id.startswith("lattice_"):
+        return "ctrl"
     return "lat"

@@ -13,17 +13,17 @@ from typing import Any
 from nca_registry_v0 import repair_smoke_ratio  # type: ignore
 from nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge  # type: ignore
 from nca_train_util import add_device_args, resolve_train_device  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import set_nca_model  # type: ignore
 from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
 from store_layout_v0 import nca_lattice_dir  # type: ignore
 from field_write import save_field_state  # type: ignore
-from grapheme_ingest_v0 import L0_ID  # type: ignore
+from vk_layout_field_v0 import VK_CORE_LATTICE_IDS  # type: ignore
 from input_modality_ingest_v0 import default_input_modality_bundle, ingest_input_modality  # type: ignore
 from store_layout_v0 import field_state_path  # type: ignore
 from vk_layout_field_v0 import L0_VK_MAP_ID, imprint_vk_layouts_on_field  # type: ignore
 
-CORE_VK_NCA_LATTICES = (L0_VK_MAP_ID, L0_ID)
+CORE_VK_NCA_LATTICES = (L0_VK_MAP_ID, *VK_CORE_LATTICE_IDS)
 
 
 def _train_lattice(
@@ -103,7 +103,7 @@ def train_core_vk_nca(
     damage_patches: int | None = None,
 ) -> dict[str, Any]:
     """Train repair NCA for VK core lattices; write models under core_dir/nca/."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     core_dir = core_dir.resolve()
     core_dir.mkdir(parents=True, exist_ok=True)
     ep = epochs if epochs is not None else epoch_budget("sss_shard_incremental")
@@ -184,7 +184,7 @@ def patch_manifest_nca(core_dir: Path, nca_models: dict[str, str]) -> None:
 def bootstrap_core_field(core_dir: Path) -> dict:
     import json
 
-    state = ensure_cylinders({"schema_version": "multi_cylinder_v1", "field_version": 0})
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
     imprint_vk_layouts_on_field(state)
     bundle = json.loads(default_input_modality_bundle().read_text(encoding="utf-8"))
     ingest_input_modality(state, bundle, ensure_vk_map=False)
@@ -200,7 +200,7 @@ def main() -> None:
     p.add_argument(
         "--core-dir",
         type=Path,
-        default=root / "examples/agent-core/vk-layouts-v0",
+        default=root / "lab/agent-core/vk-layouts-v0",
     )
     p.add_argument("--epochs", type=int, default=epoch_budget("sss_shard_incremental"))
     p.add_argument("--damage-patches", type=int, default=_dmg["damage_patches"])

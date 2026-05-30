@@ -45,7 +45,7 @@ def main() -> None:
     p.add_argument("--threshold", type=float, default=0.5)
     p.add_argument("--min-votes", type=int, default=3)
     p.add_argument("--model", type=Path, required=True)
-    p.add_argument("--out", type=Path, default=Path("examples/nca_bench_curve.json"))
+    p.add_argument("--out", type=Path, default=Path("lab/nca_bench_curve.json"))
     args = p.parse_args()
 
     damages = [float(x.strip()) for x in args.damages.split(",") if x.strip()]

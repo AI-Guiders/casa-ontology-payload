@@ -6,11 +6,11 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'examples/agent-stores/sss-afan-v0'
-$bundle = 'examples/kb/kb-bukvar-ru-full-v1.payload.json'
+$store = 'lab/agent-stores/sss-afan-v0'
+$bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $stack = 'design/sss-lattice-stack.v0.json'
-$corpus = 'examples/text/corpus/afanasyev'
-$outDir = 'examples/exp_sss_v1'
+$corpus = 'lab/text/corpus/afanasyev'
+$outDir = 'lab/exp_sss_v1'
 
 Write-Host '=== Afan-I: lattice (L0 grapheme, L1 syllable, L2 word) ===' -ForegroundColor Cyan
 python tools/bench_sss_lattice.py `
@@ -28,7 +28,7 @@ python tools/bench_sss_corpus_coverage_v0.py `
 Write-Host '=== Afan-I: kolobok excerpt spot-check ===' -ForegroundColor Cyan
 python tools/bench_sss_text_ingest.py `
     --store-dir $store `
-    --text examples/text/kolobok-excerpt.txt `
+    --text lab/text/kolobok-excerpt.txt `
     --out "$outDir/report_afan_kolobok_spot.json"
 
 Write-Host 'Done. Reports in' $outDir

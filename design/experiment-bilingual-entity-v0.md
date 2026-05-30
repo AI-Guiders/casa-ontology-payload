@@ -63,7 +63,7 @@ Not: T9 top-1 `cow` == `корова`.
 ## Paths
 
 ```text
-examples/exp_bilingual_v0/
+lab/exp_bilingual_v0/
   en_dev_headwords.v1.txt
   kb-entity-surfaces-dev.v1.json
   en_segment_cues.v1.json

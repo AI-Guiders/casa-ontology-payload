@@ -6,9 +6,9 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'examples/agent-stores/sss-self-v0'
-$bundle = 'examples/kb/kb-bukvar-ru-full-v1.payload.json'
-$cues = 'examples/exp_sss_v1/self_correct_cues.json'
+$store = 'lab/agent-stores/sss-self-v0'
+$bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
+$cues = 'lab/exp_sss_v1/self_correct_cues.json'
 
 Write-Host '=== init (open syllables only in KB) ===' -ForegroundColor Cyan
 python tools/gen_kb_bukvar_ru_full.py --out $bundle

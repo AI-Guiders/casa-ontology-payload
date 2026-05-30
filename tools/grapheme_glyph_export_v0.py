@@ -170,12 +170,12 @@ def main() -> None:
     p.add_argument(
         "--out",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/grapheme-glyphs",
+        default=root / "lab/exp_bilingual_v0/grapheme-glyphs",
     )
     p.add_argument(
         "--fonts-dir",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/fonts",
+        default=root / "lab/exp_bilingual_v0/fonts",
     )
     p.add_argument("--latn-font", type=Path, default=None, help="Default: Script MT Bold on Windows")
     p.add_argument("--cyrl-font", type=Path, default=None, help="Default: Propisi.ttf in fonts-dir")
@@ -183,7 +183,7 @@ def main() -> None:
     p.add_argument(
         "--headwords",
         type=Path,
-        default=root / "examples/exp_bilingual_v0/en_folk_headwords.v1.txt",
+        default=root / "lab/exp_bilingual_v0/en_folk_headwords.v1.txt",
     )
     p.add_argument("--latn-only", action="store_true")
     args = p.parse_args()
@@ -228,7 +228,7 @@ def main() -> None:
             print(f"cyrl: {cyrl_rep['exported']} glyphs from {cyrl_font.name} ({cyrl_rep['font_family']})")
         else:
             print(
-                "cyrl: skipped — place Propisi.ttf in examples/exp_bilingual_v0/fonts/ "
+                "cyrl: skipped — place Propisi.ttf in lab/exp_bilingual_v0/fonts/ "
                 "(Script MT has no Cyrillic)",
                 file=sys.stderr,
             )

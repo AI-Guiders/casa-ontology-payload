@@ -10,7 +10,7 @@ python tools/bench_latency_qwen_casa.py
 python tools/bench_latency_qwen_casa.py --skip-qwen   # CASA only
 ```
 
-Output: `examples/latency_bench_v1/report.json`
+Output: `lab/latency_bench_v1/report.json`
 
 ## Metrics
 

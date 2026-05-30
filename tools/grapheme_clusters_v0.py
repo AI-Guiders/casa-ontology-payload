@@ -10,7 +10,7 @@ from grapheme_ingest_v0 import (  # type: ignore
     GRAPHEME_LATN_PREFIX,
     L0_ID,
 )
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import (  # type: ignore
     L2_CONCEPT_PREFIX,
     concept_votes_l2,
@@ -25,7 +25,7 @@ Basin = Literal["en", "ru", "latn", "cyrl"]
 
 def _grapheme_concept_map(state: dict) -> dict[str, tuple[int, str]]:
     """char/suffix -> (votes, full concept_id) for all grapheme concepts on L0."""
-    lat = memory_lattices(ensure_cylinders(state)).get(L0_ID) or {}
+    lat = memory_lattices(ensure_prisms(state)).get(L0_ID) or {}
     dec = decode_lattice(lat, min_votes=1)
     out: dict[str, tuple[int, str]] = {}
     for c in dec.get("concepts") or []:

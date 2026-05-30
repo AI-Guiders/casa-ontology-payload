@@ -3,8 +3,8 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$store = 'examples/agent-stores/bukvar-lab-v0'
-$bundle = 'examples/kb/kb-bukvar-ru-primer-v1.payload.json'
+$store = 'lab/agent-stores/bukvar-lab-v0'
+$bundle = 'lab/kb/kb-bukvar-ru-primer-v1.payload.json'
 $layout = 'design/layout.v1.json'
 
 Write-Host '=== B0: init store + listen (3 passes) ===' -ForegroundColor Cyan
@@ -15,7 +15,7 @@ python tools/bench_bukvar_coverage.py `
     --store-dir $store `
     --bundle $bundle `
     --layout $layout `
-    --out examples/exp_b0_bukvar/report_coverage.json
+    --out lab/exp_b0_bukvar/report_coverage.json
 
 Write-Host '=== B0: surface B0 (graphemes) ===' -ForegroundColor Cyan
 python tools/bukvar_surface_v0.py --store-dir $store --layout $layout --layer B0 --prompt 'м а'

@@ -7,7 +7,7 @@ from typing import Any
 
 from f0_math_ingest_v0 import ingest_math_bundle  # type: ignore
 from f0_stack_v0 import decode_f0_lattice, rank_cue_on_f0  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import L2_CONCEPT_PREFIX, lattice_digest_l2_network  # type: ignore
 from sss_segment_v0 import format_segment, norm_word, segment_hypothesis, verify_segment  # type: ignore
 
@@ -147,7 +147,7 @@ def l2_lexicon_digest(state: dict) -> list[tuple[str, int]]:
 
 def l2_prefix_index(state: dict, *, force: bool = False) -> dict[str, list[tuple[str, int]]]:
     """Prefix bucket index; built once per state and reused on hot path."""
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     if not force and _L2_PREFIX_INDEX_CACHE in state:
         return state[_L2_PREFIX_INDEX_CACHE]
     index = build_l2_prefix_index(l2_lexicon_digest(state))
@@ -180,7 +180,7 @@ def detect_lexicon_miss(prefix: str, ranked: list[tuple[str, int]]) -> dict[str,
 
 
 def predict_segment(state: dict, cue: str) -> dict[str, Any]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     word = norm_word(cue)
     hyp = segment_hypothesis(state, word)
     syllables = list(hyp.get("syllables") or [])
@@ -246,7 +246,7 @@ def predict_schema(
     lattice_id: str = "F0_schema",
     top_k: int = 8,
 ) -> dict[str, Any]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     lattices = memory_lattices(state)
     if lattice_id not in lattices:
         ingest_math_bundle(state, bundle, lattice_id=lattice_id)
@@ -277,7 +277,7 @@ def predict_schema(
 
 
 def predict_t9(state: dict, cue: str, *, top_k: int = 8) -> dict[str, Any]:
-    state = ensure_cylinders(state)
+    state = ensure_prisms(state)
     prefix = norm_word(cue)
     ranked = l2_prefix_candidates(state, prefix, top_k=top_k)
     anchors = word_anchors_from_ranked(ranked, cue=prefix)

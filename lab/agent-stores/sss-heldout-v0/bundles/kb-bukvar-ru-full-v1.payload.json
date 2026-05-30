@@ -1,0 +1,581 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "kind": "project_doc",
+      "title": "kb-bukvar-ru-full-v1"
+    },
+    "nodes": [
+      {
+        "id": "lab/kb/kb-bukvar-ru-full-v1.md",
+        "kind": "project_doc",
+        "title": "kb-bukvar-ru-full-v1"
+      }
+    ],
+    "edges": [
+      {
+        "src": "grapheme.м",
+        "relation": "compose",
+        "dst": "syllable.ма"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.ма"
+      },
+      {
+        "src": "grapheme.м",
+        "relation": "compose",
+        "dst": "syllable.мо"
+      },
+      {
+        "src": "grapheme.о",
+        "relation": "compose",
+        "dst": "syllable.мо"
+      },
+      {
+        "src": "grapheme.м",
+        "relation": "compose",
+        "dst": "syllable.мам"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.мам"
+      },
+      {
+        "src": "grapheme.м",
+        "relation": "compose",
+        "dst": "syllable.мам"
+      },
+      {
+        "src": "grapheme.п",
+        "relation": "compose",
+        "dst": "syllable.па"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.па"
+      },
+      {
+        "src": "grapheme.п",
+        "relation": "compose",
+        "dst": "syllable.пап"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.пап"
+      },
+      {
+        "src": "grapheme.п",
+        "relation": "compose",
+        "dst": "syllable.пап"
+      },
+      {
+        "src": "grapheme.н",
+        "relation": "compose",
+        "dst": "syllable.но"
+      },
+      {
+        "src": "grapheme.о",
+        "relation": "compose",
+        "dst": "syllable.но"
+      },
+      {
+        "src": "grapheme.н",
+        "relation": "compose",
+        "dst": "syllable.на"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.на"
+      },
+      {
+        "src": "grapheme.д",
+        "relation": "compose",
+        "dst": "syllable.до"
+      },
+      {
+        "src": "grapheme.о",
+        "relation": "compose",
+        "dst": "syllable.до"
+      },
+      {
+        "src": "grapheme.р",
+        "relation": "compose",
+        "dst": "syllable.ра"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.ра"
+      },
+      {
+        "src": "syllable.ма",
+        "relation": "compose",
+        "dst": "lang.word.мама"
+      },
+      {
+        "src": "syllable.мам",
+        "relation": "compose",
+        "dst": "lang.word.мама"
+      },
+      {
+        "src": "syllable.па",
+        "relation": "compose",
+        "dst": "lang.word.папа"
+      },
+      {
+        "src": "syllable.пап",
+        "relation": "compose",
+        "dst": "lang.word.папа"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "concept_id": "grapheme.а",
+      "claim_kind": "grapheme",
+      "text": "буква а",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / а",
+      "slots": {
+        "letter": "а"
+      }
+    },
+    {
+      "concept_id": "grapheme.б",
+      "claim_kind": "grapheme",
+      "text": "буква б",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / б",
+      "slots": {
+        "letter": "б"
+      }
+    },
+    {
+      "concept_id": "grapheme.в",
+      "claim_kind": "grapheme",
+      "text": "буква в",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / в",
+      "slots": {
+        "letter": "в"
+      }
+    },
+    {
+      "concept_id": "grapheme.г",
+      "claim_kind": "grapheme",
+      "text": "буква г",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / г",
+      "slots": {
+        "letter": "г"
+      }
+    },
+    {
+      "concept_id": "grapheme.д",
+      "claim_kind": "grapheme",
+      "text": "буква д",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / д",
+      "slots": {
+        "letter": "д"
+      }
+    },
+    {
+      "concept_id": "grapheme.е",
+      "claim_kind": "grapheme",
+      "text": "буква е",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / е",
+      "slots": {
+        "letter": "е"
+      }
+    },
+    {
+      "concept_id": "grapheme.ё",
+      "claim_kind": "grapheme",
+      "text": "буква ё",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / ё",
+      "slots": {
+        "letter": "ё"
+      }
+    },
+    {
+      "concept_id": "grapheme.ж",
+      "claim_kind": "grapheme",
+      "text": "буква ж",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / ж",
+      "slots": {
+        "letter": "ж"
+      }
+    },
+    {
+      "concept_id": "grapheme.з",
+      "claim_kind": "grapheme",
+      "text": "буква з",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / з",
+      "slots": {
+        "letter": "з"
+      }
+    },
+    {
+      "concept_id": "grapheme.и",
+      "claim_kind": "grapheme",
+      "text": "буква и",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / и",
+      "slots": {
+        "letter": "и"
+      }
+    },
+    {
+      "concept_id": "grapheme.й",
+      "claim_kind": "grapheme",
+      "text": "буква й",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / й",
+      "slots": {
+        "letter": "й"
+      }
+    },
+    {
+      "concept_id": "grapheme.к",
+      "claim_kind": "grapheme",
+      "text": "буква к",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / к",
+      "slots": {
+        "letter": "к"
+      }
+    },
+    {
+      "concept_id": "grapheme.л",
+      "claim_kind": "grapheme",
+      "text": "буква л",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / л",
+      "slots": {
+        "letter": "л"
+      }
+    },
+    {
+      "concept_id": "grapheme.м",
+      "claim_kind": "grapheme",
+      "text": "буква м",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / м",
+      "slots": {
+        "letter": "м"
+      }
+    },
+    {
+      "concept_id": "grapheme.н",
+      "claim_kind": "grapheme",
+      "text": "буква н",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / н",
+      "slots": {
+        "letter": "н"
+      }
+    },
+    {
+      "concept_id": "grapheme.о",
+      "claim_kind": "grapheme",
+      "text": "буква о",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / о",
+      "slots": {
+        "letter": "о"
+      }
+    },
+    {
+      "concept_id": "grapheme.п",
+      "claim_kind": "grapheme",
+      "text": "буква п",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / п",
+      "slots": {
+        "letter": "п"
+      }
+    },
+    {
+      "concept_id": "grapheme.р",
+      "claim_kind": "grapheme",
+      "text": "буква р",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / р",
+      "slots": {
+        "letter": "р"
+      }
+    },
+    {
+      "concept_id": "grapheme.с",
+      "claim_kind": "grapheme",
+      "text": "буква с",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / с",
+      "slots": {
+        "letter": "с"
+      }
+    },
+    {
+      "concept_id": "grapheme.т",
+      "claim_kind": "grapheme",
+      "text": "буква т",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / т",
+      "slots": {
+        "letter": "т"
+      }
+    },
+    {
+      "concept_id": "grapheme.у",
+      "claim_kind": "grapheme",
+      "text": "буква у",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / у",
+      "slots": {
+        "letter": "у"
+      }
+    },
+    {
+      "concept_id": "grapheme.ф",
+      "claim_kind": "grapheme",
+      "text": "буква ф",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / ф",
+      "slots": {
+        "letter": "ф"
+      }
+    },
+    {
+      "concept_id": "grapheme.х",
+      "claim_kind": "grapheme",
+      "text": "буква х",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / х",
+      "slots": {
+        "letter": "х"
+      }
+    },
+    {
+      "concept_id": "grapheme.ц",
+      "claim_kind": "grapheme",
+      "text": "буква ц",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / ц",
+      "slots": {
+        "letter": "ц"
+      }
+    },
+    {
+      "concept_id": "grapheme.ч",
+      "claim_kind": "grapheme",
+      "text": "буква ч",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / ч",
+      "slots": {
+        "letter": "ч"
+      }
+    },
+    {
+      "concept_id": "grapheme.ш",
+      "claim_kind": "grapheme",
+      "text": "буква ш",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / ш",
+      "slots": {
+        "letter": "ш"
+      }
+    },
+    {
+      "concept_id": "grapheme.щ",
+      "claim_kind": "grapheme",
+      "text": "буква щ",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / щ",
+      "slots": {
+        "letter": "щ"
+      }
+    },
+    {
+      "concept_id": "grapheme.ъ",
+      "claim_kind": "grapheme",
+      "text": "буква ъ",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / ъ",
+      "slots": {
+        "letter": "ъ"
+      }
+    },
+    {
+      "concept_id": "grapheme.ы",
+      "claim_kind": "grapheme",
+      "text": "буква ы",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / ы",
+      "slots": {
+        "letter": "ы"
+      }
+    },
+    {
+      "concept_id": "grapheme.ь",
+      "claim_kind": "grapheme",
+      "text": "буква ь",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / ь",
+      "slots": {
+        "letter": "ь"
+      }
+    },
+    {
+      "concept_id": "grapheme.э",
+      "claim_kind": "grapheme",
+      "text": "буква э",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / э",
+      "slots": {
+        "letter": "э"
+      }
+    },
+    {
+      "concept_id": "grapheme.ю",
+      "claim_kind": "grapheme",
+      "text": "буква ю",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / ю",
+      "slots": {
+        "letter": "ю"
+      }
+    },
+    {
+      "concept_id": "grapheme.я",
+      "claim_kind": "grapheme",
+      "text": "буква я",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B0 / я",
+      "slots": {
+        "letter": "я"
+      }
+    },
+    {
+      "concept_id": "syllable.ма",
+      "claim_kind": "syllable",
+      "text": "слог ма",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B1 / ма",
+      "slots": {
+        "syllable": "ма"
+      }
+    },
+    {
+      "concept_id": "syllable.мо",
+      "claim_kind": "syllable",
+      "text": "слог мо",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B1 / мо",
+      "slots": {
+        "syllable": "мо"
+      }
+    },
+    {
+      "concept_id": "syllable.мам",
+      "claim_kind": "syllable",
+      "text": "слог мам",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B1 / мам",
+      "slots": {
+        "syllable": "мам"
+      }
+    },
+    {
+      "concept_id": "syllable.па",
+      "claim_kind": "syllable",
+      "text": "слог па",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B1 / па",
+      "slots": {
+        "syllable": "па"
+      }
+    },
+    {
+      "concept_id": "syllable.пап",
+      "claim_kind": "syllable",
+      "text": "слог пап",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B1 / пап",
+      "slots": {
+        "syllable": "пап"
+      }
+    },
+    {
+      "concept_id": "syllable.но",
+      "claim_kind": "syllable",
+      "text": "слог но",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B1 / но",
+      "slots": {
+        "syllable": "но"
+      }
+    },
+    {
+      "concept_id": "syllable.на",
+      "claim_kind": "syllable",
+      "text": "слог на",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B1 / на",
+      "slots": {
+        "syllable": "на"
+      }
+    },
+    {
+      "concept_id": "syllable.до",
+      "claim_kind": "syllable",
+      "text": "слог до",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B1 / до",
+      "slots": {
+        "syllable": "до"
+      }
+    },
+    {
+      "concept_id": "syllable.ра",
+      "claim_kind": "syllable",
+      "text": "слог ра",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B1 / ра",
+      "slots": {
+        "syllable": "ра"
+      }
+    },
+    {
+      "concept_id": "lang.word.мама",
+      "claim_kind": "word",
+      "text": "слово мама",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B2 / мама",
+      "slots": {
+        "word": "мама"
+      }
+    },
+    {
+      "concept_id": "lang.word.папа",
+      "claim_kind": "word",
+      "text": "слово папа",
+      "doc_path": "lab/kb/kb-bukvar-ru-full-v1.md",
+      "section": "B2 / папа",
+      "slots": {
+        "word": "папа"
+      }
+    }
+  ]
+}

@@ -6,9 +6,9 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'examples/agent-stores/sss-shard-smoke-v0'
-$bukvar = 'examples/kb/kb-bukvar-ru-full-v1.payload.json'
-$exp = 'examples/exp_sss_v1'
+$store = 'lab/agent-stores/sss-shard-smoke-v0'
+$bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
+$exp = 'lab/exp_sss_v1'
 
 Write-Host '=== init small store ===' -ForegroundColor Cyan
 New-Item -ItemType Directory -Force -Path $store | Out-Null
@@ -16,7 +16,7 @@ python tools/gen_kb_bukvar_ru_full.py --out $bukvar
 python tools/sss_field.py --store-dir $store --bundle $bukvar --listen-passes 2 --init
 
 Write-Host '=== ingest kolobok (words -> shards) ===' -ForegroundColor Cyan
-python tools/sss_text_listen_field_v0.py --store-dir $store --text examples/text/kolobok-excerpt.txt --bukvar $bukvar
+python tools/sss_text_listen_field_v0.py --store-dir $store --text lab/text/kolobok-excerpt.txt --bukvar $bukvar
 
 Write-Host '=== shard stats + babble ===' -ForegroundColor Cyan
 python tools/bench_sss_l2_shard_v0.py --store-dir $store --write `
@@ -27,7 +27,7 @@ python tools/train_sss_nca_shards_v0.py --store-dir $store --layer L2 --dry-run 
     | Tee-Object -FilePath "$exp/report_l2_shard_nca_plan.json"
 
 Write-Host '=== Afan stats (legacy monolith, read-only) ===' -ForegroundColor Cyan
-python -c "import json,sys; sys.path.insert(0,'tools'); from pathlib import Path; from field_write import load_field_state; from sss_cylinders_v0 import ensure_cylinders; from sss_l2_shard_v0 import shard_stats; s=ensure_cylinders(load_field_state(Path('examples/agent-stores/sss-afan-v0/field_state.json'))); print(json.dumps(shard_stats(s), ensure_ascii=False, indent=2))" `
+python -c "import json,sys; sys.path.insert(0,'tools'); from pathlib import Path; from field_write import load_field_state; from sss_cylinders_v0 import ensure_cylinders; from sss_l2_shard_v0 import shard_stats; s=ensure_cylinders(load_field_state(Path('lab/agent-stores/sss-afan-v0/field_state.json'))); print(json.dumps(shard_stats(s), ensure_ascii=False, indent=2))" `
     | Tee-Object -FilePath "$exp/report_afan_l2_shard_stats.json"
 
 Write-Host 'Done.'

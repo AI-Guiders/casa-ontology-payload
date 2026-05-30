@@ -36,7 +36,7 @@ def main() -> None:
     p.add_argument("--steps", type=int, default=48)
     p.add_argument("--thresholds", default="0.35,0.40,0.45,0.50,0.55,0.60")
     p.add_argument("--min-votes", default="2,3,4,5")
-    p.add_argument("--out", type=Path, default=Path("examples/decode_sweep_v3_section.json"))
+    p.add_argument("--out", type=Path, default=Path("lab/decode_sweep_v3_section.json"))
     args = p.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

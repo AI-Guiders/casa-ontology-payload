@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders, save_state  # type: ignore
+from sss_cylinders_v0 import ensure_prisms, save_state  # type: ignore
 from sss_wake_v0 import wake_turn  # type: ignore
 
 
@@ -25,7 +25,7 @@ def main() -> None:
     bundle = json.loads(args.bundle.read_text(encoding="utf-8"))
     items = json.loads(args.episodes.read_text(encoding="utf-8"))
 
-    state = ensure_cylinders(load_field_state(path))
+    state = ensure_prisms(load_field_state(path))
     report: list[dict] = []
     recorded = 0
     skipped = 0
@@ -58,7 +58,7 @@ def main() -> None:
                 "turns": len(report),
                 "episodes_recorded": recorded,
                 "skipped_correct": skipped,
-                "hippo_pending": len(state["cylinders"]["cyl_hippo"]["episodes"]),
+                "hippo_pending": len(prism_hippo(state)["episodes"]),
                 "items": report,
             },
             ensure_ascii=False,
