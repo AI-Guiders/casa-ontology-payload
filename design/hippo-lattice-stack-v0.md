@@ -31,7 +31,8 @@
     H1 surface├──── h_bridge ────┤  T: → L1 / L2_word_XX
     H0 io     ├──────────────────┘  raw listen (roadmap)
               │
-    T_sleep: h_bridge_* → cyl_memory ; prune ; (опц.) NCA finetune
+    T_sleep: h_bridge_* → cyl_memory ; prune ; (опц.) NCA_repair finetune на полках;
+             critic-pass → NCA_rule train (regrow validated rule patch; та же math, что repair)
 ```
 
 **Consolidate scheduler** (`H_replay_queue`) — не решётка, а **очередь replay** на sleep (что прогнать на memory / NCA).

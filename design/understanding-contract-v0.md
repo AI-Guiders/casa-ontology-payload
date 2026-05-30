@@ -12,6 +12,8 @@
 
 **Понимание** — когда после explain / correct / направить агент на **held-out** ситуации **стабильно ведёт себя правильно**, опираясь **только** на структуру поля (digest, decode, hub), а не на `claim.text` / grep по bundle.
 
+**И ещё:** понимание — не только «пережил сбой», а **постоянная внутренняя симуляция**: поле порождает ожидание → реальность его проверяет → расхождение консолидируется в структуру.
+
 Provenance (`concept_id`, `doc_path`, git-KB) — **аудит снаружи hot path**, не генератор ответа.
 
 ---
@@ -22,11 +24,140 @@ Provenance (`concept_id`, `doc_path`, git-KB) — **аудит снаружи ho
 |----------|---------------------|
 | `claims_nav` + `compose_answer_text(claim.text)` | библиотечный поиск |
 | ConceptCard / `explain_concept` для пользователя | педагогика **наружу**, не структура **внутри** |
-| Высокий recovery NCA | помнит **раскладку** токенов, не **правило** |
+| Высокий recovery NCA | помнит **раскладку** токенов, не **правило**; repair ≠ predict |
+| NCA только как «иммунитет» | восстановление после damage — **реактивно**; мышление — **проактивная** симуляция (см. § ниже) |
 | paste_ratio на **тех же** фразах из KB | подражание канону |
 | LLM на hot path | внешняя RAM, не поле |
 
 См. deferred [`articulation-explain-concept-v0.md`](articulation-explain-concept-v0.md).
+
+---
+
+## Predictive cognition vs NCA repair (ключевая ось)
+
+Одна из **центральных** особенностей мышления — не только восстановление после сбоев, а **постоянное применение** имеющихся знаний: построить внутреннюю модель «что должно произойти, если…», сравнить **ожидание / реальность**, адаптироваться к новой ситуации. Мозг **симулирует реальность внутри себя** — не ждёт поломки.
+
+В CASA это **два ортогональных контура** на **одном CA-субстрате** (решётка + локальное правило NCA). Не два разных «мозга».
+
+### На CA? Да
+
+| Слой | Роль на CA | Аналог |
+|------|------------|--------|
+| **Решётка + `ltm/`** | где лежат `C:`, `W:`, `R:`, `E:`, `M:` — **карта мира** | long-term memory / schema |
+| **NCA (локальное правило)** | k шагов CA: соседи → новое состояние ячеек | **физика поля**, не энциклопедия |
+| **decode + digest** | чтение активных токенов и hub после шагов | «что сейчас в модели активно» |
+| **babble / compose** | генерация **гипотезы** из digest | forward pass / internal simulation |
+| **surprise** | `hypothesis` ≠ observation (teacher, held-out, internal verify) | prediction error |
+| **hippo → sleep** | episodic + merge в memory | belief update |
+
+**NCA repair** (после damage patch) — **гомеостаз**: «ткань поля цела, раскладка восстановлена».  
+**Predictive loop** — **кognition**: «если я понял правило — **должно** получиться X» → проверка → Extract при mismatch.
+
+Оба используют **те же** решётки и то же локальное правило CA. Отличие — **цель шага**:
+
+```text
+  REPAIR (реактивно)          PREDICT (проактивно)
+  ─────────────────          ────────────────────
+  patch cells → NCA k steps   cue → encode → NCA k steps
+  → layout ≈ target           → decode → digest → babble (= ожидание Y)
+  метрика: recovery           метрика: Y vs reality / held-out
+```
+
+Внешний LLM на hot path **не нужен** для симуляции: «модель мира» = **структура на grid** + **динамика CA** + **decode**. Цитата из KB — cold path.
+
+### Петля на каждом осмысленном тике (целевое)
+
+```text
+  digest (модель сейчас)
+       │
+       ▼
+  PREDICT ──► babble / compose / segment_hypothesis
+       │         («если сделаю X — ожидаю Y»)
+       ▼
+  ACT или OBSERVE ──► utterance учителя / held-out / env
+       │
+       ▼
+  COMPARE ──► hypothesis vs target
+       │
+   match │ mismatch (surprise)
+       │      │
+       │      ▼
+       │   ASK (CEN clarify) или Extract → hippo
+       │      │
+       └──────┴──► sleep → memory обновлена → следующий predict точнее
+```
+
+**Постоянство:** не только «один раз после explain», а **на новых cues** — прогон имеющихся `R:`, `E:`, `M:` через predict (фоновый self-test или перед act). Held-out bench — внешняя проверка той же петли.
+
+### Lab сегодня (зачатки)
+
+| Компонент | Файл | Что делает |
+|-----------|------|------------|
+| hypothesis → verify | `tools/sss_hypothesis_v0.py` | сегмент-гипотеза, verify, reconcile |
+| multi-hypothesis | `tools/sss_field_hypotheses_v0.py` | конкуренция `H:{word}/{segment}` на hippo |
+| UnderstandingUnit | § ниже | поля `hypothesis` / `target` |
+| COMPREHEND | § «Эпистемический контур» | predict → validate → ask → extract |
+
+**Не реализовано:** predict как **обязательный** шаг hot path перед act; surprise → CEN `clarify` без fallback на RAG.
+
+### Инвариант контракта
+
+> **Repair** сохраняет **носитель** знания (grid). **Predict** проверяет и **обновляет** знание (структура + episodic). Понимание без predict — только архив, не мышление.
+
+### Два NCA repair на CA (одна математика, разные полки)
+
+ADR-0002 фиксирует **NCA repair** на полках lexicon. Для **правил** — **тот же** механизм (damage → regrow), но **другая полка** и **другой gate на обучение**: только паттерны, которые Predict вывел и **Critic** подтвердил.
+
+**Почему NCA на правилах:** правило на grid — тоже **раскладка** (`R:`, `E:`, cue→target на patch). При повреждении поля правило **должно восстанавливаться**, как слово на L2. Иначе predict/decoding ломается не только на лексиконе, но и на **выведенной структуре правила**.
+
+```text
+  PREDICT ──► гипотеза Y
+       │
+       ▼
+  CRITIC ──► pass │ fail
+       │ pass only
+       ▼
+  EXTRACT + REMEMBER
+       ├── ltm/ + grid  (canonical layout правила)
+       └── train NCA_rule  (regrow этого layout после damage — как repair на L2)
+```
+
+| NCA | Полка / patch | Target для обучения | Loss (тот же класс) |
+|-----|---------------|---------------------|---------------------|
+| **`NCA_repair`** | `L0…L3`, `L2_word_XX` | раскладка лексикона после listen/remigrate | patch damage → **regrow** `[K,H,W]` |
+| **`NCA_rule`** | `H2_rule`, `L3_phrase` (rule region), `F2` compose patch | **только** snapshot после **Critic pass** | patch damage → **regrow** validated rule patch |
+
+**Один и тот же CA:** локальное правило NCA, BPTT, windowed defaults — см. `nca-train-defaults.v0.json`. Различие — **не формула**, а **что** считается таргетом и **когда** разрешено обучать:
+
+| | Lexicon repair | Rule repair |
+|--|----------------|-------------|
+| **Таргет** | полка после corpus/listen | patch правила после validate |
+| **Gate** | remigrate / ingest | **Critic pass** (без pass — не train) |
+| **Путь** | `nca/L2_word_07/model.pt` | `nca/rules/<rule_id>/model.pt` |
+
+**Критик** — VALIDATE (SN + operational checks, § COMPREHEND). Fail → ASK / discard; **без pass — нет ни ltm-promote rule-NCA, ни snapshot для regrow.**
+
+**Зачем и `ltm/`, и `NCA_rule`?**
+
+| Носитель | Роль |
+|----------|------|
+| **`ltm/` + tokens** | **канон раскладки** правила на grid (sparse placements) |
+| **`NCA_rule`** | **устойчивость** этой раскладки: после damage на patch — k шагов CA → layout ≈ validated target |
+
+На hot path: decode повреждённого rule-patch → **`NCA_rule` regrow** → decode → predict/babble. Lexicon и rule **не смешиваются** в одном `model.pt`: разные полки, разные веса, **один** repair-алгоритм.
+
+**Sleep pipeline (целевое v1):**
+
+```text
+critic_pass(unit) →
+  merge R:, E: to memory ( _strengthen_rule )
+  export rule patch to ltm (tier rule)
+  snapshot [K,H,W] validated patch
+  train nca/rules/<rule_id>/model.pt  (damage/regrow, windowed)
+  pack.manifest.json: nca.rules[] + nca.models[]
+```
+
+**Lab сегодня:** `NCA_repair` на memory-полках; rule-patch repair + Critic gate — **UC v1.4**.
 
 ---
 
@@ -95,8 +226,15 @@ understand_extract(state, event) → UnderstandingUnit[]
 **Выход:** babble, realize, compose — **только**:
 
 ```text
-encode(cue) → repair(NCA) → decode → digest → SN → CEN → articulate(digest, field_slots)
+encode(cue) → [optional: NCA repair if damaged]
+           → NCA k steps (field dynamics)
+           → decode → digest
+           → PREDICT: babble/compose (= внутреннее ожидание Y)
+           → [compare Y vs cue/context if self-test]
+           → SN → CEN → articulate(digest, field_slots)
 ```
+
+На act-тике **PREDICT** может идти **до** articulation наружу: агент сначала «прогоняет модель», потом говорит / спрашивает.
 
 **Запрещено на hot path (ablation off = pass):**
 
@@ -157,8 +295,8 @@ KB-claim может **зеркалиться** в git после sleep — ка�
 │  HOT (понимание)          │  COLD (аудит / IDE)         │
 ├───────────────────────────┼───────────────────────────────┤
 │  field_state / ltm→grid   │  bundle.json, git KB          │
-│  NCA repair               │  claim.text, ConceptCard      │
-│  digest, decode           │  doc_path, section            │
+│  NCA steps + repair       │  claim.text, ConceptCard      │
+│  digest, decode, PREDICT  │  doc_path, section            │
 │  hippo (wake only)        │  export reports, bench logs     │
 └───────────────────────────┴───────────────────────────────┘
 ```
@@ -326,6 +464,8 @@ heuristic → failure mode → operational check → revisit trigger
 | Remember | `run_sleep`, `_strengthen_*` | `H_replay_queue`, h_bridge table |
 | Use digest-only | `bukvar_babble_v0`, `sss_babble_v0` | CEN/realize без claim.text |
 | Self-correct loop | `sss_self_correct_session_v0.py` | + teacher_correct events |
+| **Predict / hypothesis** | `sss_hypothesis_v0.py`, `sss_field_hypotheses_v0.py` | predict **обязателен** перед act; surprise → hippo |
+| **Critic → NCA_rule** | — | `critic_pass(unit)`; `nca/rules/<rule_id>/` после validate |
 | **Comprehend / validate / ask** | — | COMPREHEND loop; CEN `clarify`; confidence on SN |
 | Listen → field | `sss_text_listen_field_v0.py` | без обязательного bundle ingest |
 | Bench | read@1, paste, segment | **`bench_understanding_v0.py`** |
@@ -340,10 +480,12 @@ heuristic → failure mode → operational check → revisit trigger
 |-----------|-------------|
 | **UC v0.1** | ablation `claims_nav_enabled` в `cen_plan`; `store_boot_v0.py` (ltm-only); Exp L0 bench |
 | **UC v0.2** | `bench_understanding_v0.py` на 10 held-out pairs (segment/dative) |
+| **UC v0.5** | predict на act-тике: hypothesis → compare; wire `sss_hypothesis_v0` в hot path |
 | **UC v1.0** | hot path articulate **только** digest; pass ablation на bench |
 | **UC v1.1** | hippo H1/H2 split; migrate off `H0_episode` |
 | **UC v1.2** | teacher_correct → UnderstandingUnit JSON schema stable |
 | **UC v1.3** | COMPREHEND: predict → validate → CEN clarify (без claim.text) |
+| **UC v1.4** | **Critic** gate stable; **NCA_rule** train on critic-pass patches; predict uses rule-NCA |
 | **UC v2.0** | F0 compose в том же контракте (kind=compose) |
 
 ---

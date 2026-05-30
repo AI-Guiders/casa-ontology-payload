@@ -55,14 +55,16 @@
 | **KB / bundle** | канон: claims + graph, редактируемый источник | git / kb-public / ingest |
 | **`ltm/`** | компактная **раскладка** памяти на решётках (vocab + placements) | **да** |
 | **`nca/<lattice>/model.pt`** | локальное правило **repair/regrow** для этой полки | **да** |
+| **`nca/rules/<rule_id>/model.pt`** | **NCA_rule**: repair/regrow **validated rule patch** (v1+; та же math, gate = Critic) | **да** (когда есть rules) |
 | **`field_state.json`** | полный runtime-state (в т.ч. episodic, версии) | **лаб**, не обязателен в дистрибутиве |
 
 Формула поставки агента с лексиконом:
 
 ```text
 память (структура на поле)  =  ltm/
-устойчивость поля           =  nca/
-канон правды                =  KB → ingest (по необходимости обновления)
+repair лексикона             =  nca/<lattice>/          (L0–L3, L2 shards)
+repair выведенных правил     =  nca/rules/<rule_id>/    (после Critic; та же regrow-math)
+канон правды                 =  KB → ingest
 ```
 
 ### 2. Принять **ltm-pack v0** как формат памяти для отгрузки
@@ -73,11 +75,19 @@
 
 Инструменты: `export_ltm_pack_v0.py`, `import_ltm_pack_v0.py` — см. [`ltm-pack-v0.md`](ltm-pack-v0.md).
 
-### 3. NCA — только «иммунитет поля», не энциклопедия
+### 3. NCA — «иммунитет поля», не энциклопедия (v0)
 
 - Обучение: целевой тензор `[K,H,W]` с полки после listen/remigrate; loss — вернуть паттерн после damage.
 - Размер мал, потому что в весах **динамика CA**, а не 42k лемм.
 - Обучение по канону: [`nca-train-defaults.v0.json`](nca-train-defaults.v0.json), режим **windowed** по умолчанию для шардов L2.
+
+**v1 (roadmap, не отменяет v0):** **`NCA_rule`** — **тот же** damage→regrow, что lexicon repair, но на **patch правила** (`H2` / `L3` rule region / `F2`). Обучается **только** на snapshot после pass **Critic** (Predict → validate). Без validate — правило не получает regrow-weights. См. [`understanding-contract-v0.md`](understanding-contract-v0.md) § «Два NCA repair».
+
+```text
+nca/
+  L2_word_07/model.pt              # NCA_repair (v0, есть)
+  rules/ru.case.dative.after_soglasno/model.pt   # NCA_rule (v1, roadmap)
+```
 
 ### 4. Выровнять дорожную карту с моделью KB
 
