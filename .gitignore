@@ -20,3 +20,10 @@ examples/exp_*/report.json.tmp
 examples/agent-stores/**/checkpoints/*.pt
 examples/agent-stores/**/model*.pt
 
+# production store runtime (ship ltm/ + nca/ locally; rebuild field_state in lab)
+examples/agent-stores/**/field_state.json
+examples/agent-stores/**/ltm/**/*.ltm
+examples/agent-stores/**/ltm/**/*.ltm.zst
+examples/agent-stores/**/nca/**/model.pt
+examples/agent-stores/**/_parallel_shards/
+
