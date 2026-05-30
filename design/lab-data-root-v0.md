@@ -14,3 +14,5 @@
 | `kb/`, `exp_*`, `nca_out*` | бандлы, эксперименты, артефакты прогонов |
 
 Канон путей в коде: `tools/store_layout_v0.py` → `LAB_DATA_DIR = "lab"`.
+
+**Без junction:** store — обычная папка под `lab/agent-stores/<store_id>/` (напр. `sss-ru-lexicon-v0`, не ярлык на другое имя).

@@ -122,6 +122,12 @@ def run_sweep(
 def main() -> None:
     p = argparse.ArgumentParser(description="Sweep T9 over lexicon words")
     p.add_argument("--store-dir", type=Path, required=True)
+    p.add_argument(
+        "--prefer-field-state",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Use field_state.json when present (needed for full L2 vocab stats)",
+    )
     p.add_argument("--sample", type=int, default=0, help="0 = all words")
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--top-k", type=int, default=8)
@@ -132,7 +138,7 @@ def main() -> None:
 
     prefix_lens = tuple(int(x.strip()) for x in args.prefix_lens.split(",") if x.strip())
     t0 = time.perf_counter()
-    boot = boot_store(args.store_dir, prefer_field_state=False)
+    boot = boot_store(args.store_dir, prefer_field_state=args.prefer_field_state)
     state = boot["state"]
     vocab = all_lexicon_words(state)
     boot_ms = round((time.perf_counter() - t0) * 1000)

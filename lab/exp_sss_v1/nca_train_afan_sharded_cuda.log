@@ -5,7 +5,7 @@ epoch   79 loss=0.000411
 {
   "schema_version": 1,
   "lattice_id": "L2_word_00",
-  "store": "lab\\agent-stores\\sss-afan-sharded-v0",
+  "store": "lab\\agent-stores\\sss-ru-lexicon-v0",
   "token_count": 1310,
   "grid_size": [
     32,

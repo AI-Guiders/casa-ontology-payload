@@ -76,7 +76,7 @@ internal static partial class QuadHeadwordBuilder
         {
             throw new InvalidOperationException(
                 $"{storeId}: only {rep.UniqueHeadwords} headwords (need >={minWords}). "
-                + "Do not export from incomplete junction stores (e.g. sss-afan-sharded-v0).");
+                + "Rebuild field_state from ltm or pick a store with a full L2 lexicon.");
         }
 
         rep = rep with { SourceStore = storeId };

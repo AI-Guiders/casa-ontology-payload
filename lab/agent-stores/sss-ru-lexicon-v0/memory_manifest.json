@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "kind": "sss_memory_manifest",
-  "store_id": "sss-afan-sharded-v0",
-  "store_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-afan-sharded-v0",
+  "store_id": "sss-ru-lexicon-v0",
+  "store_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-lexicon-v0",
   "generated_at": "2026-05-30T09:09:06.697789+00:00",
   "field_version": 710685,
   "schema": "multi_cylinder_v1",

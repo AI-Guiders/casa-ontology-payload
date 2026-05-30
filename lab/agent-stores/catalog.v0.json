@@ -11,7 +11,7 @@
       "corpus_id": "afanasyev-sharded",
       "lifecycle": "lab",
       "profile_roles": ["ru_lexicon"],
-      "notes": "Junction → sss-afan-sharded-v0; legacy BiT9 demo. Prefer sss-ru-general-v0 for prod general."
+      "notes": "RU literary lexicon (Afanasyev ingest, sharded L2). Prefer sss-ru-general-v0 for frequency general tier."
     },
     {
       "store_id": "sss-ru-general-v0",
