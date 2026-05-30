@@ -1,123 +1,74 @@
 #!/usr/bin/env python3
-"""
-Extract a lightweight ontology graph from Markdown.
-
-Goal: mirror how KB (agent-notes) behaves: nodes = md files, edges = links.
-
-This is *not* an RDF/RDL system: it's a pragmatic graph for experiments.
-"""
+"""Extract a minimal link graph from Markdown (knowledge-relative paths)."""
 
 from __future__ import annotations
 
 import argparse
 import json
-import posixpath
 import re
-from dataclasses import dataclass, asdict
 from pathlib import Path
 
-
-MD_LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
-BARE_URL_RE = re.compile(r"(?<!\()https?://[^\s)]+")
-
-
-@dataclass(frozen=True)
-class Node:
-    id: str
-    kind: str
-    title: str | None = None
+LINK_RE = re.compile(r"\[([^\]]*)\]\(([^)]+)\)")
+ROOT_ID_RE = re.compile(r"^#{1,6}\s+")
 
 
-@dataclass(frozen=True)
-class Edge:
-    src: str
-    relation: str
-    dst: str
-    label: str | None = None
-
-
-def _guess_kind(path: str) -> str:
-    p = path.replace("\\", "/")
-    if p.startswith("work/projects/"):
-        return "project_doc"
-    if p.startswith("worlds/"):
-        return "world_doc"
-    if p.startswith("domains/"):
-        return "domain_doc"
-    if p.startswith("META/"):
-        return "meta_doc"
-    if p.startswith("adr/"):
-        return "kb_adr"
-    if p.endswith(".md"):
-        return "md"
-    return "external"
-
-
-def _read_text(path: Path) -> str:
-    return path.read_text(encoding="utf-8", errors="replace")
-
-
-def _first_h1(text: str) -> str | None:
-    for line in text.splitlines():
-        if line.startswith("# "):
-            return line[2:].strip() or None
+def _norm_path(raw: str, *, md_file: Path, root_id: str) -> str | None:
+    target = raw.strip().split("#", 1)[0].strip()
+    if not target or target.startswith(("http://", "https://", "mailto:")):
+        return None
+    if target.startswith("knowledge/"):
+        return target.replace("\\", "/")
+    if target.endswith(".md"):
+        if "/" in target or "\\" in target:
+            return target.replace("\\", "/")
+        return target.replace("\\", "/")
     return None
 
 
-def extract_graph(md_path: Path, *, root_id: str | None = None) -> dict:
-    text = _read_text(md_path)
-    title = _first_h1(text) or md_path.stem
-    root_id = root_id or md_path.as_posix()
-    root = Node(id=root_id, kind=_guess_kind(root_id), title=title)
-    root_dir = str(Path(root_id).parent).replace("\\", "/")
+def extract_graph(md_text: str, *, root_id: str, md_path: Path | None = None) -> dict:
+    root_id = root_id.replace("\\", "/")
+    title = Path(root_id).stem
+    nodes: dict[str, dict] = {
+        root_id: {"id": root_id, "kind": "project_doc", "title": title},
+    }
+    edges: list[dict] = []
 
-    nodes: dict[str, Node] = {root.id: root}
-    edges: list[Edge] = []
-
-    for label, target in MD_LINK_RE.findall(text):
-        target = target.strip()
-        if not target or target.startswith("#"):
+    for m in LINK_RE.finditer(md_text):
+        label = m.group(1).strip() or None
+        dst = _norm_path(m.group(2), md_file=md_path or Path(root_id), root_id=root_id)
+        if not dst:
             continue
-
-        if target.startswith("http://") or target.startswith("https://"):
-            dst = target
-            if dst not in nodes:
-                nodes[dst] = Node(id=dst, kind="url", title=None)
-            edges.append(Edge(src=root.id, relation="references", dst=dst, label=label.strip() or None))
-            continue
-
-        dst = target.replace("\\", "/")
-        if dst.endswith(".md") and not dst.startswith(("work/", "worlds/", "domains/", "META/", "adr/")):
-            dst = f"{root_dir}/{dst}".replace("\\", "/")
-        dst = posixpath.normpath(dst)
         if dst not in nodes:
-            nodes[dst] = Node(id=dst, kind=_guess_kind(dst), title=None)
-        edges.append(Edge(src=root.id, relation="references", dst=dst, label=label.strip() or None))
+            kind = "project_doc" if dst.startswith("work/") else "md"
+            nodes[dst] = {"id": dst, "kind": kind, "title": Path(dst).stem}
+        edges.append(
+            {
+                "src": root_id,
+                "relation": "references",
+                "dst": dst,
+                "label": label,
+            }
+        )
 
-    for url in BARE_URL_RE.findall(text):
-        if url not in nodes:
-            nodes[url] = Node(id=url, kind="url", title=None)
-        edges.append(Edge(src=root.id, relation="references", dst=url, label=None))
-
-    return {"root": asdict(root), "nodes": [asdict(n) for n in nodes.values()], "edges": [asdict(e) for e in edges]}
+    return {
+        "root": {"id": root_id, "kind": "project_doc", "title": title},
+        "nodes": list(nodes.values()),
+        "edges": edges,
+    }
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="Extract lightweight ontology graph from a Markdown file")
+    p = argparse.ArgumentParser(description="Extract graph from Markdown links")
     p.add_argument("md_path", type=Path)
-    p.add_argument("--root-id", default=None, help="Override node id (e.g. knowledge-relative path)")
-    p.add_argument("--out", type=Path, default=None, help="Output JSON path (default: stdout)")
+    p.add_argument("--root-id", required=True, help="knowledge-relative doc id")
+    p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
 
-    g = extract_graph(args.md_path, root_id=args.root_id)
-    data = json.dumps(g, ensure_ascii=False, indent=2)
-    if args.out:
-        args.out.parent.mkdir(parents=True, exist_ok=True)
-        args.out.write_text(data, encoding="utf-8")
-    else:
-        print(data)
+    text = args.md_path.read_text(encoding="utf-8", errors="replace")
+    graph = extract_graph(text, root_id=args.root_id, md_path=args.md_path)
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(json.dumps(graph, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 if __name__ == "__main__":
     main()
-

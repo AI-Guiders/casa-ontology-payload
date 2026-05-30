@@ -1,0 +1,114 @@
+#!/usr/bin/env python3
+"""Boot agent store from ltm/ + nca/ without requiring field_state.json."""
+
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+from typing import Any
+
+from field_write import load_field_state, save_field_state  # type: ignore
+from import_ltm_pack_v0 import import_pack  # type: ignore
+from sss_babble_v0 import babble_from_sss  # type: ignore
+from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from sss_stack_v0 import decode_lattice  # type: ignore
+from store_layout_v0 import field_state_path, ltm_root, nca_root  # type: ignore
+
+
+def boot_store(
+    store_dir: Path,
+    *,
+    prefer_field_state: bool = False,
+    ltm_dir: Path | None = None,
+) -> dict[str, Any]:
+    """Load runtime state: ltm pack required; optional merge from field_state."""
+    store_dir = store_dir.resolve()
+    ltm = ltm_dir or ltm_root(store_dir)
+    manifest_path = ltm / "pack.manifest.json"
+    if not manifest_path.is_file():
+        raise FileNotFoundError(f"ltm pack missing: {manifest_path}")
+
+    fs_path = field_state_path(store_dir)
+    if prefer_field_state and fs_path.is_file():
+        state = ensure_cylinders(load_field_state(fs_path))
+        source = "field_state"
+    else:
+        state = ensure_cylinders({"schema_version": "multi_cylinder_v1", "field_version": 0})
+        source = "ltm_only"
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    imp = import_pack(state, ltm, manifest=manifest)
+    state.setdefault("store", {})["boot_source"] = source
+    state["store"]["store_id"] = store_dir.name
+    state["store"]["ltm_dir"] = str(ltm)
+    state["store"]["nca_root"] = str(nca_root(store_dir))
+
+    nca_manifest = manifest.get("nca") or {}
+    if nca_manifest:
+        state["nca"] = {**(state.get("nca") or {}), **nca_manifest}
+
+    lattices = memory_lattices(state)
+    shard_count = sum(1 for k in lattices if k.startswith("L2_word_"))
+    return {
+        "source": source,
+        "import": imp,
+        "lattice_count": len(lattices),
+        "l2_shard_count": shard_count,
+        "field_version": state.get("field_version"),
+        "state": state,
+    }
+
+
+def smoke_report(state: dict, *, lattice_id: str = "L2_word_00") -> dict[str, Any]:
+    lattices = memory_lattices(state)
+    rep: dict[str, Any] = {"lattices": len(lattices)}
+    if lattice_id in lattices:
+        dec = decode_lattice(lattices[lattice_id], min_votes=1)
+        rep["sample_lattice"] = lattice_id
+        rep["sample_concepts"] = len(dec.get("concept_ids") or [])
+        rep["sample_seen_tokens"] = dec.get("seen_tokens")
+        try:
+            bab = babble_from_sss(state, lattice_id=lattice_id, prompt="мама")
+            rep["babble_ok"] = bool(bab.get("active"))
+            rep["babble_sample"] = bab.get("babble_text", "")[:120]
+        except Exception as ex:
+            rep["babble_ok"] = False
+            rep["babble_error"] = str(ex)
+    return rep
+
+
+def main() -> None:
+    p = argparse.ArgumentParser(description="Boot store from ltm/ (+ optional field_state)")
+    p.add_argument("--store-dir", type=Path, required=True)
+    p.add_argument("--ltm-dir", type=Path, default=None)
+    p.add_argument("--prefer-field-state", action="store_true")
+    p.add_argument("--write", action="store_true", help="Write merged state to field_state.json")
+    p.add_argument("--smoke", action="store_true")
+    p.add_argument("--sample-lattice", default="L2_word_00")
+    args = p.parse_args()
+
+    boot = boot_store(
+        args.store_dir,
+        prefer_field_state=args.prefer_field_state,
+        ltm_dir=args.ltm_dir,
+    )
+    out: dict[str, Any] = {
+        "source": boot["source"],
+        "import": boot["import"],
+        "lattice_count": boot["lattice_count"],
+        "l2_shard_count": boot["l2_shard_count"],
+        "field_version": boot["field_version"],
+    }
+    if args.smoke:
+        out["smoke"] = smoke_report(boot["state"], lattice_id=args.sample_lattice)
+
+    if args.write:
+        save_field_state(field_state_path(args.store_dir), boot["state"], compact=True)
+        out["written"] = str(field_state_path(args.store_dir))
+
+    print(json.dumps(out, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

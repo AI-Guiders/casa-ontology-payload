@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
@@ -15,9 +16,15 @@ def _read_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _write_json(path: Path, obj: dict) -> None:
+def _write_json(path: Path, obj: dict, *, compact: bool = False) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
+    if compact:
+        data = json.dumps(obj, ensure_ascii=False, separators=(",", ":"))
+    else:
+        data = json.dumps(obj, ensure_ascii=False, indent=2)
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(data, encoding="utf-8")
+    os.replace(tmp, path)
 
 
 def _edge_key(e: dict) -> tuple[str, str, str]:
@@ -111,7 +118,11 @@ def nav_item_from_claim(c: dict, *, bundle_name: str | None = None) -> dict | No
         "concept_id": str(cid),
         "doc_path": str(dp),
         "section": str(c.get("section") or ""),
+        "text": str(c.get("text") or "")[:500],
     }
+    kind = c.get("claim_kind")
+    if kind:
+        item["claim_kind"] = str(kind)
     if bundle_name:
         item["bundle"] = bundle_name
     anchors = c.get("code_anchors")
@@ -243,9 +254,9 @@ def load_field_state(path: Path) -> dict:
     return {}
 
 
-def save_field_state(path: Path, state: dict) -> None:
+def save_field_state(path: Path, state: dict, *, compact: bool = False) -> None:
     state["updated_at"] = datetime.now(timezone.utc).isoformat()
-    _write_json(path, state)
+    _write_json(path, state, compact=compact)
 
 
 def write_bundle_to_field(

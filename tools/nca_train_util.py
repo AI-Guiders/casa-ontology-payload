@@ -47,11 +47,47 @@ def configure_cuda(device: torch.device) -> None:
     torch.backends.cudnn.allow_tf32 = True
 
 
+def _default_cuda_batch() -> int:
+    try:
+        from nca_train_defaults_v0 import cuda_batch_size_full  # type: ignore
+
+        return cuda_batch_size_full()
+    except Exception:
+        return 24
+
+
 def resolve_batch_size(requested: int, device: torch.device) -> int:
     if requested > 0:
         return requested
-    # 64×48 NCA steps peaks VRAM on 8GB laptop GPUs; 24 is steadier load.
-    return 24 if device.type == "cuda" else 8
+    return _default_cuda_batch() if device.type == "cuda" else 8
+
+
+def resolve_windows_per_batch(
+    requested: int,
+    device: torch.device,
+    *,
+    crop_h: int,
+    crop_w: int,
+    monolith_batch: int | None = None,
+    max_windows: int | None = None,
+) -> int:
+    if monolith_batch is None:
+        monolith_batch = _default_cuda_batch()
+    if max_windows is None:
+        try:
+            from nca_train_defaults_v0 import load_nca_train_defaults  # type: ignore
+
+            max_windows = int(load_nca_train_defaults()["windowed"]["max_windows_per_batch"])
+        except Exception:
+            max_windows = 32
+    """Auto window batch: smaller crops → more parallel windows on GPU (capped for 8GB)."""
+    if requested > 0:
+        return requested
+    if device.type != "cuda":
+        return 16
+    scale = (64 * 64) / max(crop_h * crop_w, 1)
+    # ~0.55 — 8GB laptop: B=64 saturated VRAM and was slower than B=24 serial
+    return max(16, min(int(monolith_batch * scale * 0.55), max_windows))
 
 
 def empty_cuda_cache(device: torch.device) -> None:

@@ -154,6 +154,11 @@ def main() -> None:
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--dmn-steps", type=int, default=48)
     p.add_argument("--out", type=Path, default=Path("examples/sn_cen_out/infer_v1.json"))
+    p.add_argument(
+        "--session",
+        action="store_true",
+        help="Load/save FPN agent_session.json in store-dir",
+    )
     args = p.parse_args()
 
     store = args.store_dir.resolve()
@@ -232,9 +237,28 @@ def main() -> None:
             device=device,
         )
 
+    wm = None
+    if args.session:
+        from fpn_state import fpn_after_cen, load_session, salience_mode_bias, save_session  # type: ignore
+
+        wm = load_session(store)
+
     digest = digest_from_decoded(decoded, digest_vector=digest_vec)
-    gated = sn_route(digest, bundle=bundle, gate_vector=gate_vec or None)
-    task = cen_plan(gated, bundle=bundle, user_query=args.query, llm_enable=args.llm_enable)
+    wm_bias = salience_mode_bias(wm, digest.concept_ids) if wm else None
+    gated = sn_route(
+        digest,
+        bundle=bundle,
+        gate_vector=gate_vec or None,
+        wm_mode=wm.mode if wm else None,
+        wm_salience_bias=wm_bias,
+    )
+    from fpn_state import effective_user_query  # type: ignore
+
+    q = effective_user_query(wm, args.query) if wm else args.query
+    task = cen_plan(gated, bundle=bundle, user_query=q, llm_enable=args.llm_enable)
+    if wm is not None:
+        wm = fpn_after_cen(wm, task, user_query=q)
+        save_session(store, wm)
 
     pipeline = "sn_cen_field_v2" if args.from_field else "sn_cen_v2"
     report = {
@@ -259,7 +283,7 @@ def main() -> None:
             "cen_open": gated.gate.cen_open,
             "salience_top": sorted(gated.salience.items(), key=lambda kv: kv[1], reverse=True)[:5],
         },
-        "cen": task_to_dict(task),
+        "cen": task_to_dict(task, fpn=wm.to_dict() if wm else None),
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
