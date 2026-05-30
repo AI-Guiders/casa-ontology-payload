@@ -76,6 +76,6 @@ python tools/sss_sleep_nca_hook_v0.py `
     | Tee-Object -FilePath "$exp/report_afan_iii_sleep_nca.json"
 
 Write-Host '=== babble spot-check after sleep ===' -ForegroundColor Cyan
-python tools/sss_babble_v0.py --store-dir $store --lattice L2_word --prompt-file "$exp/afan_cue_volk.txt"
+python tools/sss_surface_v0.py --store-dir $store --lattice L2_word --prompt-file "$exp/afan_cue_volk.txt"
 
 Write-Host 'Done. Working store:' $store '(golden' $srcStore 'untouched)'

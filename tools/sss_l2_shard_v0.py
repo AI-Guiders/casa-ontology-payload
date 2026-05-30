@@ -366,7 +366,7 @@ def register_word_shard(state: dict, word: str, lattice_id: str) -> None:
 
 
 def resolve_l2_lattice_for_read(state: dict, word: str) -> str:
-    """Route for read/babble: index → legacy monolith → new shard."""
+    """Route for read/surface: index → legacy monolith → new shard."""
     state = ensure_cylinders(state)
     cfg = sharding_config(state)
     w = norm_word(word)

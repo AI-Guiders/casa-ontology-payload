@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Smoke: L2 sharding stats + new word route + babble on small store."""
+"""Smoke: L2 sharding stats + new word route + surface on small store."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from field_write import load_field_state, save_field_state  # type: ignore
-from sss_babble_v0 import babble_from_sss  # type: ignore
+from sss_surface_v0 import surface_from_sss  # type: ignore
 from sss_cylinders_v0 import ensure_cylinders  # type: ignore
 from sss_l2_shard_v0 import resolve_l2_lattice_for_read, route_l2_lattice, shard_stats  # type: ignore
 from sss_vocab_v0 import listen_word  # type: ignore
@@ -29,7 +29,7 @@ def main() -> None:
     rep = listen_word(state, args.new_word, copies=2, link_scene=False)
     route_new = route_l2_lattice(state, args.new_word)
     route_cue = resolve_l2_lattice_for_read(state, args.cue_word)
-    wake = babble_from_sss(state, lattice_id="L2_word", prompt=args.cue_word)
+    wake = surface_from_sss(state, lattice_id="L2_word", prompt=args.cue_word)
     top = (wake.get("active") or [{}])[0]
 
     if args.write:

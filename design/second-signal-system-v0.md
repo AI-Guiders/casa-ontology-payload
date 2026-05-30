@@ -42,11 +42,11 @@
 |----------|----------|
 | `bukvar_codec_v0.py` | размещение **знаков** по слоям цилиндра (не «encode учебника») |
 | `bukvar_field.py` | персистентный **снимок ССС** в `field_state` (`codec: sss_v0`) |
-| `bukvar_babble_v0.py` | продукция со **второй** сигнальности (лепет), без `claim.text` |
+| `bukvar_surface_v0.py` | продукция со **второй** сигнальности (surface), без `claim.text` |
 | `layout.v1.json` | **interim:** y-полосы на одной плоскости |
 | `sss-lattice-stack.v0.json` | **цель:** отдельная решётка на `z_level`, z-мосты |
 
-Целевые имена (когда стабилизируем): `sss_codec`, `sss_field`, `sss_babble`, store `sss-lab-v0`.
+Целевые имена (когда стабилизируем): `sss_codec`, `sss_field`, `sss_surface`, store `sss-lab-v0`.
 
 ## Что ССС делает и не делает
 

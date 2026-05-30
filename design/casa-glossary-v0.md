@@ -221,6 +221,36 @@
 
 ---
 
+## Продукция с поля (surface) — **не «лепет»**
+
+**Канон с 2026-05-30:** инженерный термин — **`surface`** (modality / фаза UC).  
+**`babble` / «лепет»** — **удалено** (2026-05-30); см. **`surface`**.
+
+| Термин | Смысл | Код / modality |
+|--------|--------|----------------|
+| **predict** | **Читает** поле → конкурирующие якоря / гипотеза (`anchors[]`, T9, segment, schema) | `predictor_v0`, `modality=t9` … |
+| **surface** | **Синтезирует** строку **из digest** (черновик до critic) — «что поле *выдаёт* наружу» | `modality=surface`, `sss_surface_v0.py`, `bukvar_surface_v0.py` |
+| **articulate** | **Финальная реплика** после SN/CEN (pass critic, compose слотов) | CEN / `articulation_*` |
+| **realize** | Связная фраза из слотов *(legacy naming)* — ближе к **articulate**, не к surface | realize v0 docs |
+
+```text
+  cue → PREDICT (anchors, внутреннее ожидание)
+           → SURFACE (digest → черновик строки, self-test)
+           → CRITIC (pass | surprise)
+           → ARTICULATE (наружу пользователю / act)
+```
+
+| Hippo | Смысл |
+|-------|--------|
+| **`H1_surface`** | episodic: **неверный surface** → teacher correct → sleep → L1/L2 |
+| `episode_kind=surface` | не `babble_wrong` в новом коде |
+
+**Русский в prose:** «**вывод с поля**», «**surface-черновик**» — не «лепет» (путается с шумом и с детской метафорой).
+
+См. [`understanding-contract-v0.md`](understanding-contract-v0.md), [`predictor-v0.md`](predictor-v0.md) § modalities, [`language-acquisition-loop-v0.md`](language-acquisition-loop-v0.md).
+
+---
+
 ## Артикуляция и MoE (proposed)
 
 | Термин | Смысл |
@@ -249,6 +279,8 @@
 | «CEN = FPN» | CEN — **момент решения**; FPN — **удержание задачи во времени** (v0 частично вне grid) |
 | «DMN = LLM» | DMN = **поле + KB**; LLM только опционально вне hot path |
 | «Поле = embeddings only» | Сначала **дискретные токены** + provenance; `emb_*` — опциональный слой |
+| «babble / лепет = вся речь агента» | **`surface`** = черновик с digest; **`articulate`** = наружу; **`predict`** = якоря до critic |
+| «babble = predict» | predict **читает** конкуренцию; surface **собирает** строку из digest |
 
 ---
 

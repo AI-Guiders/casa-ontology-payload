@@ -1,4 +1,4 @@
-# Exp B0: bukvar primer — layered DMN, listen, babble from field (no CEN claims).
+# Exp B0: bukvar primer — layered DMN, listen, surface from field (no CEN claims).
 $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
@@ -17,13 +17,13 @@ python tools/bench_bukvar_coverage.py `
     --layout $layout `
     --out examples/exp_b0_bukvar/report_coverage.json
 
-Write-Host '=== B0: babble B0 (graphemes) ===' -ForegroundColor Cyan
-python tools/bukvar_babble_v0.py --store-dir $store --layout $layout --layer B0 --prompt 'м а'
+Write-Host '=== B0: surface B0 (graphemes) ===' -ForegroundColor Cyan
+python tools/bukvar_surface_v0.py --store-dir $store --layout $layout --layer B0 --prompt 'м а'
 
-Write-Host '=== B0: babble B1 (syllables) ===' -ForegroundColor Cyan
-python tools/bukvar_babble_v0.py --store-dir $store --layout $layout --layer B1 --prompt 'ма'
+Write-Host '=== B0: surface B1 (syllables) ===' -ForegroundColor Cyan
+python tools/bukvar_surface_v0.py --store-dir $store --layout $layout --layer B1 --prompt 'ма'
 
-Write-Host '=== B0: babble B2 (words) ===' -ForegroundColor Cyan
-python tools/bukvar_babble_v0.py --store-dir $store --layout $layout --layer B2 --prompt 'мама'
+Write-Host '=== B0: surface B2 (words) ===' -ForegroundColor Cyan
+python tools/bukvar_surface_v0.py --store-dir $store --layout $layout --layer B2 --prompt 'мама'
 
 Write-Host 'Done. Store:' $store

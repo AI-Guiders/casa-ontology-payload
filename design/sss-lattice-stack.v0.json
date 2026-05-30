@@ -70,7 +70,7 @@
   ],
   "routing": {
     "sn": ["active_lattice", "allow_compose_up"],
-    "cen": ["babble_from_active_lattice", "correct_on_z_bridge"],
+    "cen": ["surface_from_active_lattice", "correct_on_z_bridge"],
     "l2_sharding": {
       "doc": "design/l2-lattice-sharding-v0.md",
       "enabled_default": true,

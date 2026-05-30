@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""T_wake: babble + teacher correction → hippo episode (auto if wrong)."""
+"""T_wake: surface + teacher correction → hippo episode (auto if wrong)."""
 
 from __future__ import annotations
 
@@ -9,9 +9,9 @@ from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state  # type: ignore
-from sss_babble_v0 import babble_from_sss  # type: ignore
 from sss_cylinders_v0 import append_episode, ensure_cylinders, save_state  # type: ignore
-from sss_wake_util import babble_attempt_surface, babble_matches_target, needs_self_correction  # type: ignore
+from sss_surface_v0 import surface_from_sss  # type: ignore
+from sss_wake_util import needs_self_correction, surface_attempt_from_wake, surface_matches_target  # type: ignore
 
 
 def _load_bundle(store: Path, bundle_path: Path | None) -> dict | None:
@@ -35,12 +35,12 @@ def wake_turn(
     force_episode: bool = False,
     self_correct: bool = False,
 ) -> dict[str, Any]:
-    """One wake tick: babble; episode when wrong (teacher, auto, or self-correct)."""
+    """One wake tick: surface emit; episode when wrong (teacher, auto, or self-correct)."""
     external = (target or teacher or "").strip()
     state = ensure_cylinders(state)
     state["sn"] = {**(state.get("sn") or {}), "mode": "wake", "active_cylinder": "cyl_memory"}
 
-    wake = babble_from_sss(state, lattice_id=lattice_id, prompt=cue)
+    wake = surface_from_sss(state, lattice_id=lattice_id, prompt=cue)
     report: dict[str, Any] = {"wake": wake, "cue": cue, "lattice_id": lattice_id}
 
     if self_correct and not external:
@@ -53,14 +53,14 @@ def wake_turn(
         correct = external
         report["self_correct"] = False
         report["internal_target"] = None
-        report["matched"] = babble_matches_target(wake, correct, lattice_id=lattice_id)
+        report["matched"] = surface_matches_target(wake, correct, lattice_id=lattice_id)
     else:
         report["matched"] = None
         report["episode"] = None
         report["self_correct"] = False
         return report
 
-    report["babble_surface"] = babble_attempt_surface(wake, lattice_id=lattice_id)
+    report["surface_attempt"] = surface_attempt_from_wake(wake, lattice_id=lattice_id)
     report["target"] = correct
     if bundle and correct:
         from sss_cylinders_v0 import concept_id_for_surface  # type: ignore
@@ -76,7 +76,7 @@ def wake_turn(
         ep = append_episode(
             state,
             cue=cue,
-            babble=report["babble_surface"],
+            surface_attempt=report["surface_attempt"],
             correct=correct,
             lattice_id=lattice_id,
             bundle=bundle,
@@ -98,11 +98,15 @@ def main() -> None:
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--cue", required=True)
     p.add_argument("--lattice", default="L1_syllable")
-    p.add_argument("--target", default=None, help="expected form; auto-episode if babble differs")
+    p.add_argument("--target", default=None, help="expected form; auto-episode if surface differs")
     p.add_argument("--teacher", default=None, help="alias for --target (always records if set without --auto)")
     p.add_argument("--bundle", type=Path, default=None)
     p.add_argument("--auto", action=argparse.BooleanOptionalAction, default=True)
-    p.add_argument("--self-correct", action="store_true", help="derive target from cue; episode if babble mismatches")
+    p.add_argument(
+        "--self-correct",
+        action="store_true",
+        help="derive target from cue; episode if surface mismatches",
+    )
     p.add_argument("--force-episode", action="store_true")
     args = p.parse_args()
 

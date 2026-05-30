@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Shared wake/babble scoring — top surface, normalize, auto-episode gate."""
+"""Shared wake/surface scoring — top surface, normalize, auto-episode gate."""
 
 from __future__ import annotations
 
@@ -21,7 +21,11 @@ def concept_to_surface(concept_id: str) -> str:
     return cid.split(".", 1)[-1]
 
 
-def top_babble(wake: dict) -> dict[str, Any] | None:
+def wake_surface_text(wake: dict) -> str:
+    return str(wake.get("surface_text") or wake.get("babble_text") or "")
+
+
+def top_surface(wake: dict) -> dict[str, Any] | None:
     active = wake.get("active") or []
     if not active:
         return None
@@ -34,9 +38,13 @@ def top_babble(wake: dict) -> dict[str, Any] | None:
     }
 
 
-def lepet_surfaces(wake: dict, *, limit: int = 4) -> list[str]:
-    text = str(wake.get("babble_text") or "")
-    m = re.search(r"Лепет L\d:\s*(.+?)(?:\.|$)", text)
+def parse_surfaces_from_text(wake: dict, *, limit: int = 4) -> list[str]:
+    text = wake_surface_text(wake)
+    m = re.search(r"Surface L\d:\s*(.+?)(?:\.|$)", text)
+    if not m:
+        m = re.search(r"Surface [^:]+:\s*(.+?)(?:\.|$)", text)
+    if not m:
+        m = re.search(r"Лепет L\d:\s*(.+?)(?:\.|$)", text)
     if not m:
         m = re.search(r"Лепет [^:]+:\s*(.+?)(?:\.|$)", text)
     if not m:
@@ -51,18 +59,18 @@ def lepet_surfaces(wake: dict, *, limit: int = 4) -> list[str]:
     return [p for p in parts if p][:limit]
 
 
-def babble_matches_target(wake: dict, target: str, *, lattice_id: str | None = None) -> bool:
+def surface_matches_target(wake: dict, target: str, *, lattice_id: str | None = None) -> bool:
     want = norm_text(target)
     if not want:
         return False
-    top = top_babble(wake)
+    top = top_surface(wake)
     if top and norm_text(str(top["surface"])) == want:
         return True
-    for surf in lepet_surfaces(wake):
+    for surf in parse_surfaces_from_text(wake):
         if norm_text(surf) == want:
             return True
     if lattice_id == "L0_grapheme" and want:
-        joined = norm_text("".join(lepet_surfaces(wake, limit=8)))
+        joined = norm_text("".join(parse_surfaces_from_text(wake, limit=8)))
         if joined.startswith(want) or want in joined:
             return True
     return False
@@ -101,7 +109,6 @@ def rank_for_cue(
             return exact_boost
         if lattice_id == "L0_grapheme" and surf in cue_chars:
             return 500
-        # Open syllable only: two heard graphemes → one CV syllable (not spelled words).
         if (
             lattice_id == "L1_syllable"
             and len(cue_joined) == 2
@@ -116,16 +123,12 @@ def rank_for_cue(
 
 
 def cue_from_wake(wake: dict) -> str:
-    text = str(wake.get("babble_text") or "")
+    text = wake_surface_text(wake)
     m = re.search(r"Слышал:\s*«([^»]+)»", text)
     return m.group(1).strip() if m else ""
 
 
 def internal_target_from_cue(cue: str, *, lattice_id: str) -> str:
-    """
-    Internal expectation from heard input (no external teacher).
-    Spaced cue «м а» → «ма»; «в о л к» on L2 → «волк» (monosyllable = word).
-    """
     return cue_joined_for_lattice(cue, lattice_id=lattice_id)
 
 
@@ -136,22 +139,22 @@ def needs_self_correction(
     lattice_id: str,
     external_target: str | None = None,
 ) -> tuple[bool, str]:
-    """Agent notices babble ≠ internal expectation; returns (needs_fix, internal_target)."""
+    """Agent notices surface ≠ internal expectation; returns (needs_fix, internal_target)."""
     target = (external_target or "").strip() or internal_target_from_cue(cue, lattice_id=lattice_id)
     if not target:
         return False, target
-    ok = babble_matches_target(wake, target, lattice_id=lattice_id)
+    ok = surface_matches_target(wake, target, lattice_id=lattice_id)
     return not ok, target
 
 
-def babble_attempt_surface(wake: dict, *, lattice_id: str | None = None) -> str:
-    top = top_babble(wake)
+def surface_attempt_from_wake(wake: dict, *, lattice_id: str | None = None) -> str:
+    top = top_surface(wake)
     if top:
         return str(top["surface"])
-    lepet = lepet_surfaces(wake, limit=1)
-    if lepet:
-        return lepet[0]
+    parsed = parse_surfaces_from_text(wake, limit=1)
+    if parsed:
+        return parsed[0]
     if lattice_id == "L0_grapheme":
-        joined = "".join(lepet_surfaces(wake, limit=8))
+        joined = "".join(parse_surfaces_from_text(wake, limit=8))
         return joined[:80]
     return cue_from_wake(wake)[:80]

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-correct session: babble → internal mismatch → hippo → optional sleep → retry."""
+"""Self-correct session: surface → internal mismatch → hippo → optional sleep → retry."""
 
 from __future__ import annotations
 
@@ -8,9 +8,9 @@ import json
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
-from sss_babble_v0 import babble_from_sss  # type: ignore
 from sss_cylinders_v0 import ensure_cylinders, run_sleep, save_state  # type: ignore
-from sss_wake_util import babble_matches_target, internal_target_from_cue  # type: ignore
+from sss_surface_v0 import surface_from_sss  # type: ignore
+from sss_wake_util import internal_target_from_cue, surface_matches_target  # type: ignore
 from sss_wake_v0 import wake_turn  # type: ignore
 
 
@@ -20,7 +20,7 @@ def main() -> None:
     p.add_argument("--bundle", type=Path, required=True)
     p.add_argument("--cues", type=Path, required=True, help="JSON array: {cue, lattice}")
     p.add_argument("--sleep-after", action="store_true")
-    p.add_argument("--retry", action="store_true", help="babble again after sleep")
+    p.add_argument("--retry", action="store_true", help="surface again after sleep")
     args = p.parse_args()
 
     store = args.store_dir.resolve()
@@ -49,14 +49,14 @@ def main() -> None:
         for item in items:
             lattice = str(item.get("lattice") or "L1_syllable")
             cue = str(item.get("cue") or "")
-            wake = babble_from_sss(state, lattice_id=lattice, prompt=cue)
+            wake = surface_from_sss(state, lattice_id=lattice, prompt=cue)
             internal = internal_target_from_cue(cue, lattice_id=lattice)
             retries.append(
                 {
                     "cue": cue,
                     "internal_target": internal,
-                    "matched": babble_matches_target(wake, internal, lattice_id=lattice),
-                    "babble_surface": wake.get("active", [{}])[0] if wake.get("active") else None,
+                    "matched": surface_matches_target(wake, internal, lattice_id=lattice),
+                    "surface_attempt": wake.get("active", [{}])[0] if wake.get("active") else None,
                 }
             )
 

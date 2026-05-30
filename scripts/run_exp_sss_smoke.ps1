@@ -18,8 +18,8 @@ python tools/bench_sss_lattice.py `
     --out examples/exp_sss_v1/report_lattice.json
 
 Write-Host '=== SSS: babble L0 L1 L2 ===' -ForegroundColor Cyan
-python tools/sss_babble_v0.py --store-dir $store --lattice L0_grapheme --prompt 'м а'
-python tools/sss_babble_v0.py --store-dir $store --lattice L1_syllable --prompt 'ма'
-python tools/sss_babble_v0.py --store-dir $store --lattice L2_word --prompt 'мама'
+python tools/sss_surface_v0.py --store-dir $store --lattice L0_grapheme --prompt 'м а'
+python tools/sss_surface_v0.py --store-dir $store --lattice L1_syllable --prompt 'ма'
+python tools/sss_surface_v0.py --store-dir $store --lattice L2_word --prompt 'мама'
 
 Write-Host 'Done. Store:' $store

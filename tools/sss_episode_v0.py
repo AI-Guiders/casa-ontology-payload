@@ -15,7 +15,7 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--cue", required=True)
-    p.add_argument("--babble", required=True)
+    p.add_argument("--surface-attempt", required=True)
     p.add_argument("--correct", required=True)
     p.add_argument("--lattice", default="L1_syllable")
     p.add_argument("--concept-id", default=None)
@@ -40,7 +40,7 @@ def main() -> None:
     ep = append_episode(
         state,
         cue=args.cue,
-        babble=args.babble,
+        surface_attempt=args.surface_attempt,
         correct=args.correct,
         lattice_id=args.lattice,
         concept_id=args.concept_id,

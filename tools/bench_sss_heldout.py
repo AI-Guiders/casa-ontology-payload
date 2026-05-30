@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Held-out cue bench: babble from field only (claims_nav ablation), no teacher."""
+"""Held-out cue bench: surface from field only (claims_nav ablation), no teacher."""
 
 from __future__ import annotations
 
@@ -10,9 +10,9 @@ from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state  # type: ignore
-from sss_babble_v0 import babble_from_sss  # type: ignore
+from sss_surface_v0 import surface_from_sss  # type: ignore
 from sss_cylinders_v0 import ensure_cylinders, episode_vote_for_cue  # type: ignore
-from sss_wake_util import babble_attempt_surface, babble_matches_target, norm_text, top_babble  # type: ignore
+from sss_wake_util import norm_text, surface_attempt_from_wake, surface_matches_target, top_surface  # type: ignore
 
 
 def _rank_of(concept_id: str, wake: dict) -> int | None:
@@ -40,11 +40,11 @@ def eval_case(
     target = str(case.get("target") or "")
     concept_id = str(case.get("concept_id") or "")
 
-    wake = babble_from_sss(st, lattice_id=lattice, prompt=cue)
-    top = top_babble(wake)
+    wake = surface_from_sss(st, lattice_id=lattice, prompt=cue)
+    top = top_surface(wake)
     rank = _rank_of(concept_id, wake) if concept_id else None
     votes = episode_vote_for_cue(st, bundle, cue, lattice, concept_id) if concept_id else 0
-    target_ok = babble_matches_target(wake, target, lattice_id=lattice) if target else False
+    target_ok = surface_matches_target(wake, target, lattice_id=lattice) if target else False
     top_ok = bool(top and concept_id and str(top["concept_id"]) == concept_id)
     rank_ok = rank is not None and rank <= top_k
 
@@ -54,7 +54,7 @@ def eval_case(
         "target": target,
         "concept_id": concept_id,
         "top_concept": top,
-        "babble_surface": babble_attempt_surface(wake, lattice_id=lattice),
+        "surface_attempt": surface_attempt_from_wake(wake, lattice_id=lattice),
         "rank": rank,
         "votes": votes,
         "top1_match": top_ok,

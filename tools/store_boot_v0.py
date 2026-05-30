@@ -10,7 +10,7 @@ from typing import Any
 
 from field_write import load_field_state, save_field_state  # type: ignore
 from import_ltm_pack_v0 import import_pack  # type: ignore
-from sss_babble_v0 import babble_from_sss  # type: ignore
+from sss_surface_v0 import surface_from_sss  # type: ignore
 from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
 from sss_stack_v0 import decode_lattice  # type: ignore
 from store_layout_v0 import field_state_path, ltm_root, nca_root  # type: ignore
@@ -61,6 +61,8 @@ def boot_store(
 
 
 def smoke_report(state: dict, *, lattice_id: str = "L2_word_00") -> dict[str, Any]:
+    from predict_tick_v0 import predict_tick  # type: ignore
+
     lattices = memory_lattices(state)
     rep: dict[str, Any] = {"lattices": len(lattices)}
     if lattice_id in lattices:
@@ -69,12 +71,31 @@ def smoke_report(state: dict, *, lattice_id: str = "L2_word_00") -> dict[str, An
         rep["sample_concepts"] = len(dec.get("concept_ids") or [])
         rep["sample_seen_tokens"] = dec.get("seen_tokens")
         try:
-            bab = babble_from_sss(state, lattice_id=lattice_id, prompt="мама")
-            rep["babble_ok"] = bool(bab.get("active"))
-            rep["babble_sample"] = bab.get("babble_text", "")[:120]
+            surf = surface_from_sss(state, lattice_id=lattice_id, prompt="мама")
+            rep["surface_ok"] = bool(surf.get("active"))
+            rep["surface_sample"] = surf.get("surface_text", "")[:120]
         except Exception as ex:
-            rep["babble_ok"] = False
-            rep["babble_error"] = str(ex)
+            rep["surface_ok"] = False
+            rep["surface_error"] = str(ex)
+    try:
+        tick = predict_tick(state, "мам", modality="t9", expect="мама")
+        rep["predict_tick_ok"] = tick["verdict"] in ("pass", "provisional")
+        rep["predict_tick_anchors"] = [
+            a.get("word") for a in (tick.get("predict") or {}).get("anchors") or []
+        ][:6]
+    except Exception as ex:
+        rep["predict_tick_ok"] = False
+        rep["predict_tick_error"] = str(ex)
+    try:
+        bundle_path = Path(__file__).resolve().parent.parent / "examples/exp_l_v0/kb-math-concrete-schemas-l0.bundle.v1.json"
+        if bundle_path.is_file():
+            bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
+            st = predict_tick(state, "||", modality="schema", expect="math.two", bundle=bundle)
+            rep["schema_tick_ok"] = st["verdict"] in ("pass", "provisional")
+            rep["schema_tick_hypothesis"] = (st.get("predict") or {}).get("hypothesis")
+    except Exception as ex:
+        rep["schema_tick_ok"] = False
+        rep["schema_tick_error"] = str(ex)
     return rep
 
 

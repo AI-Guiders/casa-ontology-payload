@@ -3,7 +3,7 @@
 **Статус:** design draft (контракт понимания; реализация v1+)  
 **Дата:** 2026-05-30  
 **Родитель:** [`language-acquisition-loop-v0.md`](language-acquisition-loop-v0.md)  
-**Соседи:** [`hippo-lattice-stack-v0.md`](hippo-lattice-stack-v0.md), [`f0-math-logical-layer-v0.md`](f0-math-logical-layer-v0.md), [`predictor-v0.md`](predictor-v0.md), [`critic-v0.md`](critic-v0.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md)  
+**Соседи:** [`hippo-lattice-stack-v0.md`](hippo-lattice-stack-v0.md), [`f0-math-logical-layer-v0.md`](f0-math-logical-layer-v0.md), [`predictor-v0.md`](predictor-v0.md), [`critic-v0.md`](critic-v0.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0003-emergent-forms-tags-predictor.md`](CASA-ADR-0003-emergent-forms-tags-predictor.md)  
 **KB (эпистемика, канон):** `knowledge/worlds/knowledge-engineering/playbook-epistemic-methods-and-calibration-v1.md` — `epistemic-hpmor-heuristics-v1`, `epistemic-methodology-v1`; L0 `epistemic-default-distrust-v1`
 
 ---
@@ -103,6 +103,8 @@ Provenance (`concept_id`, `doc_path`, git-KB) — **аудит снаружи ho
 ### Инвариант контракта
 
 > **Repair** сохраняет **носитель** знания (grid). **Predict** проверяет и **обновляет** знание (структура + episodic). Понимание без predict — только архив, не мышление.
+
+**Form vs Predict:** Predictor активирует **уже имеющиеся** якоря (`anchors[]`); **новые** hub/правила (`entity.*`, `R:`, `meta.tag.*`) — контур **Extract** после surprise. См. [`CASA-ADR-0003-emergent-forms-tags-predictor.md`](CASA-ADR-0003-emergent-forms-tags-predictor.md).
 
 ### Два NCA repair на CA (одна математика, разные полки)
 
@@ -244,7 +246,7 @@ encode(cue) → [optional: NCA repair if damaged]
 
 **Разрешено off-path:** provenance block в ответе для IDE («откуда взял concept_id»).
 
-Сегодня частично: `bukvar_babble_v0.py`, `sss_babble_v0.py` — digest-only lepet; CEN/realize v0 **ещё** тянет claims.
+Сегодня частично: `bukvar_surface_v0.py`, `sss_surface_v0.py` — digest-only surface; CEN/realize v0 **ещё** тянет claims.
 
 ---
 
@@ -462,7 +464,7 @@ heuristic → failure mode → operational check → revisit trigger
 |-----------|--------------|-------------|
 | Extract surface/rule | `append_episode`, `append_rule_episode` | `understand_extract`; shards H1/H2 |
 | Remember | `run_sleep`, `_strengthen_*` | `H_replay_queue`, h_bridge table |
-| Use digest-only | `bukvar_babble_v0`, `sss_babble_v0` | CEN/realize без claim.text |
+| Use digest-only | `bukvar_surface_v0`, `sss_surface_v0` | CEN/realize без claim.text |
 | Self-correct loop | `sss_self_correct_session_v0.py` | + teacher_correct events |
 | **Predict / hypothesis** | `sss_hypothesis_v0.py`, `sss_field_hypotheses_v0.py` | predict **обязателен** перед act; surprise → hippo |
 | **Critic → NCA_rule** | — | `critic_pass(unit)`; `nca/rules/<rule_id>/` после validate |

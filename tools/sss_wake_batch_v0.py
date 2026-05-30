@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Batch T_wake with auto-episode when babble ≠ target."""
+"""Batch T_wake with auto-episode when surface ≠ target."""
 
 from __future__ import annotations
 

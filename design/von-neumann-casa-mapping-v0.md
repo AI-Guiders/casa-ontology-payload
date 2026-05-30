@@ -116,7 +116,7 @@ PoC — один буфер. Целевое: **`cyl_memory`** (LTM, SSS) + **`cy
 | Шина | `z_compose` v0 (логика) | NCA `zbr.*` |
 | CU | SN/CEN частично | FPN + `active_lattice` в SN |
 | ALU | NCA repair (DMN PoC) | train compose bridge |
-| I/O | KB → encode; `sss_babble` | listen-only T; correct write |
+| I/O | KB → encode; `sss_surface` | listen-only T; correct write |
 
 ## Для Cursor
 

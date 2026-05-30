@@ -26,6 +26,6 @@ Write-Host '=== votes after sleep (syllable.ma) ===' -ForegroundColor Cyan
 python tools/bench_sss_sleep.py --store-dir $store --bundle $bundle --target examples/exp_sss_v1/sleep_smoke_target.json
 
 Write-Host '=== T_wake after sleep (babble) ===' -ForegroundColor Cyan
-python tools/sss_babble_v0.py --store-dir $store --lattice L1_syllable --prompt-file examples/exp_sss_v1/sleep_smoke_cue.txt
+python tools/sss_surface_v0.py --store-dir $store --lattice L1_syllable --prompt-file examples/exp_sss_v1/sleep_smoke_cue.txt
 
 Write-Host 'Done.'

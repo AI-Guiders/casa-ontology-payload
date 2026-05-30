@@ -31,7 +31,7 @@ python tools/sss_read_batch_v0.py `
     --out "$exp/report_phase_a_batch.json"
 
 Write-Host '=== babble scene p1 ===' -ForegroundColor Cyan
-python tools/sss_vocab_babble_v0.py `
+python tools/sss_vocab_surface_v0.py `
     --store-dir $store `
     --scene-id p1 `
     --caption 'kolobok opening'

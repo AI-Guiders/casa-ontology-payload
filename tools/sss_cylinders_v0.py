@@ -115,7 +115,7 @@ def append_episode(
     state: dict,
     *,
     cue: str,
-    babble: str,
+    surface_attempt: str,
     correct: str,
     lattice_id: str,
     concept_id: str | None = None,
@@ -128,7 +128,7 @@ def append_episode(
     ep = {
         "id": _now_id(),
         "cue": cue.strip()[:120],
-        "babble": babble.strip()[:120],
+        "surface_attempt": surface_attempt.strip()[:120],
         "correct": correct.strip()[:120],
         "lattice_id": lattice_id,
         "concept_id": concept_id,
@@ -289,7 +289,7 @@ def run_sleep(
                     "kind": "rule",
                     "rule_id": rid,
                     "cue": ep.get("cue"),
-                    "attempt": ep.get("babble"),
+                    "attempt": ep.get("surface_attempt") or ep.get("babble"),
                     "correct": ep.get("correct"),
                     "rule_hint": ep.get("rule_hint"),
                 }

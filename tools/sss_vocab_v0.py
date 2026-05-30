@@ -231,7 +231,7 @@ def listen_word(
     ep = append_episode(
         state,
         cue=caption or scene_id or w,
-        babble="",
+        surface_attempt="",
         correct=w,
         lattice_id=lid,
         concept_id=f"lang.word.{w}",
