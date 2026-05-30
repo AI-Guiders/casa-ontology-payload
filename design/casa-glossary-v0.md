@@ -284,11 +284,24 @@
 
 ---
 
+## Input modality (keyboard / layout)
+
+| Термин | Смысл |
+|--------|--------|
+| **PhysicalKeyEvent** | Layout-neutral key down/up; канон `key_id` = W3C `KeyboardEvent.code`. |
+| **Layout decode** | `layout.qwerty_us` / `layout.jcuken_ru` — таблицы на **`L0_vk_map`** (рёбра к grapheme). |
+| **Layout parity** | Dual decode + segment bias (prose → RU, `/command` → EN). |
+| **core ltm** | Immutable ship pack (`L0_vk_map` + `L0_grapheme`); boot → field RAM. |
+
+Канон: [`input-modality-vk-layout-v0.md`](input-modality-vk-layout-v0.md), ADR-0008.
+
+---
+
 ## Файлы-якоря
 
 | Тема | Путь |
 |------|------|
-| Layout + регионы | `design/layout.v0.json`, `design/casa-layout-v0.md` |
+| Input modality VK | `design/input-modality-vk-layout-v0.md`, `tools/vk_decode_v0.py` |
 | FPN (layout B) | `design/fpn-control-region-v0.md` |
 | SN/CEN контракт | `design/cen-sn-runtime-v0.md`, `tools/sn_cen_runtime.py` |
 | Infer CLI | `tools/sn_cen_infer.py` |

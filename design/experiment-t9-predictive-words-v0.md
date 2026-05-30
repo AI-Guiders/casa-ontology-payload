@@ -2,6 +2,7 @@
 
 **Status:** design (bench после `predictor_v0`)  
 **Date:** 2026-05-30  
+**Канон:** [`CASA-ADR-0006-t9-predictive-text.md`](CASA-ADR-0006-t9-predictive-text.md) — архитектурные решения; этот файл — experiment cues и metrics.  
 **Depends on:** [`predictor-v0.md`](predictor-v0.md), [`critic-v0.md`](critic-v0.md), store `sss-ru-lexicon-v0`  
 **Blocks:** Exp L F1/F2 compose until green
 

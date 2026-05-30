@@ -11,7 +11,8 @@ from typing import Any
 from field_write import load_field_state  # type: ignore
 from ltm_pack_v0 import lattice_subdir, write_ltm  # type: ignore
 from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import l2_word_lattice_ids  # type: ignore
+from sss_l2_shard_v0 import l2_en_word_lattice_ids, l2_lexicon_lattice_ids, l2_word_lattice_ids  # type: ignore
+from store_layout_v0 import nca_train_registry_path  # type: ignore
 
 
 def _lattice_meta(lat: dict) -> dict[str, Any]:
@@ -23,6 +24,7 @@ def export_pack(
     state: dict,
     out_dir: Path,
     *,
+    store_dir: Path | None = None,
     lattice_ids: list[str] | None = None,
     compress: bool = False,
 ) -> dict[str, Any]:
@@ -58,6 +60,10 @@ def export_pack(
             "file_bytes": total_file,
         },
     }
+    if store_dir is not None:
+        reg_path = nca_train_registry_path(store_dir)
+        if reg_path.is_file():
+            manifest["nca_train_registry"] = json.loads(reg_path.read_text(encoding="utf-8"))
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "pack.manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2),
@@ -78,7 +84,7 @@ def main() -> None:
     lattices = memory_lattices(state)
     targets: list[str] = []
     if args.layer in ("L2", "all"):
-        targets.extend(l2_word_lattice_ids(state))
+        targets.extend(l2_lexicon_lattice_ids(state))
         if "L2_word" in lattices and "L2_word" not in targets:
             targets.append("L2_word")
     if args.layer in ("L1", "all") and "L1_syllable" in lattices:
@@ -90,7 +96,7 @@ def main() -> None:
     targets = list(dict.fromkeys(targets))
 
     out_dir = args.out or (args.store_dir / "ltm")
-    manifest = export_pack(state, out_dir, lattice_ids=targets, compress=args.compress)
+    manifest = export_pack(state, out_dir, store_dir=args.store_dir, lattice_ids=targets, compress=args.compress)
     print(json.dumps(manifest["totals"], ensure_ascii=False, indent=2))
 
 

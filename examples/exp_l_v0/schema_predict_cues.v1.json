@@ -1,0 +1,7 @@
+[
+  { "id": "one_stick", "cue": "|", "expect": "math.one", "modality": "schema" },
+  { "id": "two_sticks", "cue": "||", "expect": "math.two", "modality": "schema" },
+  { "id": "three_sticks", "cue": "|||", "expect": "math.three", "modality": "schema" },
+  { "id": "add_glyphs", "cue": "| + |", "expect": "math.add", "modality": "schema" },
+  { "id": "add_keyword_ru", "cue": "сложить палочки", "expect": "math.add", "modality": "schema" }
+]

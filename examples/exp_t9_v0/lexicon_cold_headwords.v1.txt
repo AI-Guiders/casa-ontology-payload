@@ -1,0 +1,5 @@
+# Offline dictionary v0 (simulates MCP lookup until adapter exists)
+компьютер
+программист
+интернет
+телефон

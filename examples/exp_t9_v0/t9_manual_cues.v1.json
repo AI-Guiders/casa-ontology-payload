@@ -1,0 +1,8 @@
+[
+  { "id": "ma_ambiguous", "cue": "ма", "modality": "t9", "expect_in": ["ма", "мак", "мал", "мама", "мат"] },
+  { "id": "mam_mama", "cue": "мам", "modality": "t9", "expect": "мама" },
+  { "id": "mama_full", "cue": "мама", "modality": "t9", "expect": "мама" },
+  { "id": "ros_ambiguous", "cue": "рос", "modality": "t9", "expect_in": ["рос", "роса", "рост", "росток"] },
+  { "id": "prika", "cue": "прика", "modality": "t9", "expect": "приказ" },
+  { "id": "soglasn", "cue": "согласн", "modality": "t9", "expect": "согласна" }
+]

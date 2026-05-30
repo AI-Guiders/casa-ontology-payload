@@ -1,0 +1,6 @@
+[
+  { "id": "comp_oov", "word": "компьютер", "prefix_cue": "комп", "expect": "компьютер" },
+  { "id": "prog_oov", "word": "программист", "prefix_cue": "програм", "expect": "программист" },
+  { "id": "net_oov", "word": "интернет", "prefix_cue": "интер", "expect": "интернет" },
+  { "id": "phone_oov", "word": "телефон", "prefix_cue": "телеф", "expect": "телефон" }
+]

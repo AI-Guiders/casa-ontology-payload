@@ -25,7 +25,11 @@ def run_bench(
         expect = item.get("expect") or item.get("expect_top")
         modality = str(item.get("modality") or "segment")
         pred = predict(state, cue, modality=modality, bundle=bundle)
-        crit = critic_validate(pred, expect=str(expect) if expect is not None else None)
+        crit = critic_validate(
+            pred,
+            expect=str(expect) if expect is not None else None,
+            expect_in=[str(x) for x in item.get("expect_in") or []] or None,
+        )
         ok = crit["verdict"] in ("pass", "provisional") and crit["checks"][0].get("pass")
         if ok:
             passed += 1
@@ -35,9 +39,15 @@ def run_bench(
                 "modality": modality,
                 "cue": cue,
                 "expect": expect,
+                "anchors": [
+                    a.get("word") or a.get("concept_id") for a in pred.get("anchors") or []
+                ][:6],
+                "focus": pred.get("focus"),
                 "hypothesis": pred.get("hypothesis"),
                 "confidence": pred.get("confidence"),
+                "lexicon_miss": pred.get("lexicon_miss"),
                 "verdict": crit["verdict"],
+                "clarify": crit.get("clarify"),
                 "ok": ok,
             }
         )
