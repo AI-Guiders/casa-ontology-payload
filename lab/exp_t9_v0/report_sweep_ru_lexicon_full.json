@@ -1,0 +1,914 @@
+{
+  "schema_version": 1,
+  "bench": "t9_lexicon_sweep_v0",
+  "words_tested": 41953,
+  "full_word": {
+    "passed": 40959,
+    "total": 41953,
+    "pass_rate": 0.9763
+  },
+  "prefix_in_top_k": {
+    "top_k": 8,
+    "prefix_lens": [
+      2,
+      3
+    ],
+    "passed": 14464,
+    "total": 82508,
+    "pass_rate": 0.1753
+  },
+  "samples": [
+    {
+      "cue": "аб",
+      "target_word": "абазвався",
+      "anchors": [
+        {
+          "word": "аб",
+          "votes": 6
+        },
+        {
+          "word": "або",
+          "votes": 6
+        },
+        {
+          "word": "абы",
+          "votes": 3
+        },
+        {
+          "word": "абн",
+          "votes": 2
+        },
+        {
+          "word": "абед",
+          "votes": 1
+        },
+        {
+          "word": "абаран",
+          "votes": 6
+        }
+      ],
+      "target_in_anchors": false
+    },
+    {
+      "cue": "аб",
+      "target_word": "абед",
+      "anchors": [
+        {
+          "word": "аб",
+          "votes": 6
+        },
+        {
+          "word": "або",
+          "votes": 6
+        },
+        {
+          "word": "абы",
+          "votes": 3
+        },
+        {
+          "word": "абн",
+          "votes": 2
+        },
+        {
+          "word": "абед",
+          "votes": 1
+        },
+        {
+          "word": "абаран",
+          "votes": 6
+        }
+      ],
+      "target_in_anchors": true
+    },
+    {
+      "cue": "аб",
+      "target_word": "абедать",
+      "anchors": [
+        {
+          "word": "аб",
+          "votes": 6
+        },
+        {
+          "word": "або",
+          "votes": 6
+        },
+        {
+          "word": "абы",
+          "votes": 3
+        },
+        {
+          "word": "абн",
+          "votes": 2
+        },
+        {
+          "word": "абед",
+          "votes": 1
+        },
+        {
+          "word": "абаран",
+          "votes": 6
+        }
+      ],
+      "target_in_anchors": false
+    },
+    {
+      "cue": "аб",
+      "target_word": "абедом",
+      "anchors": [
+        {
+          "word": "аб",
+          "votes": 6
+        },
+        {
+          "word": "або",
+          "votes": 6
+        },
+        {
+          "word": "абы",
+          "votes": 3
+        },
+        {
+          "word": "абн",
+          "votes": 2
+        },
+        {
+          "word": "абед",
+          "votes": 1
+        },
+        {
+          "word": "абаран",
+          "votes": 6
+        }
+      ],
+      "target_in_anchors": false
+    },
+    {
+      "cue": "аб",
+      "target_word": "аблак",
+      "anchors": [
+        {
+          "word": "аб",
+          "votes": 6
+        },
+        {
+          "word": "або",
+          "votes": 6
+        },
+        {
+          "word": "абы",
+          "votes": 3
+        },
+        {
+          "word": "абн",
+          "votes": 2
+        },
+        {
+          "word": "абед",
+          "votes": 1
+        },
+        {
+          "word": "абаран",
+          "votes": 6
+        }
+      ],
+      "target_in_anchors": true
+    },
+    {
+      "cue": "аб",
+      "target_word": "абодранный",
+      "anchors": [
+        {
+          "word": "аб",
+          "votes": 6
+        },
+        {
+          "word": "або",
+          "votes": 6
+        },
+        {
+          "word": "абы",
+          "votes": 3
+        },
+        {
+          "word": "абн",
+          "votes": 2
+        },
+        {
+          "word": "абед",
+          "votes": 1
+        },
+        {
+          "word": "абаран",
+          "votes": 6
+        }
+      ],
+      "target_in_anchors": false
+    },
+    {
+      "cue": "аб",
+      "target_word": "абрабе",
+      "anchors": [
+        {
+          "word": "аб",
+          "votes": 6
+        },
+        {
+          "word": "або",
+          "votes": 6
+        },
+        {
+          "word": "абы",
+          "votes": 3
+        },
+        {
+          "word": "абн",
+          "votes": 2
+        },
+        {
+          "word": "абед",
+          "votes": 1
+        },
+        {
+          "word": "абаран",
+          "votes": 6
+        }
+      ],
+      "target_in_anchors": false
+    },
+    {
+      "cue": "ав",
+      "target_word": "авечка",
+      "anchors": [
+        {
+          "word": "авось",
+          "votes": 6
+        },
+        {
+          "word": "авса",
+          "votes": 1
+        },
+        {
+          "word": "авёс",
+          "votes": 1
+        },
+        {
+          "word": "авечк",
+          "votes": 2
+        },
+        {
+          "word": "авечка",
+          "votes": 1
+        }
+      ],
+      "target_in_anchors": true
+    },
+    {
+      "cue": "ав",
+      "target_word": "авёс",
+      "anchors": [
+        {
+          "word": "авось",
+          "votes": 6
+        },
+        {
+          "word": "авса",
+          "votes": 1
+        },
+        {
+          "word": "авёс",
+          "votes": 1
+        },
+        {
+          "word": "авечк",
+          "votes": 2
+        },
+        {
+          "word": "авечка",
+          "votes": 1
+        }
+      ],
+      "target_in_anchors": true
+    },
+    {
+      "cue": "аг",
+      "target_word": "агафон",
+      "anchors": [
+        {
+          "word": "ага",
+          "votes": 5
+        },
+        {
+          "word": "агей",
+          "votes": 5
+        },
+        {
+          "word": "агню",
+          "votes": 2
+        },
+        {
+          "word": "агня",
+          "votes": 1
+        },
+        {
+          "word": "агонь",
+          "votes": 1
+        },
+        {
+          "word": "агафон",
+          "votes": 1
+        }
+      ],
+      "target_in_anchors": true
+    },
+    {
+      "cue": "ад",
+      "target_word": "адда",
+      "anchors": [
+        {
+          "word": "ад",
+          "votes": 6
+        },
+        {
+          "word": "адз",
+          "votes": 6
+        },
+        {
+          "word": "аду",
+          "votes": 4
+        },
+        {
+          "word": "адда",
+          "votes": 6
+        },
+        {
+          "word": "адна",
+          "votes": 6
+        },
+        {
+          "word": "адну",
+          "votes": 6
+        }
+      ],
+      "target_in_anchors": true
+    },
+    {
+      "cue": "ад",
+      "target_word": "аддышем",
+      "anchors": [
+        {
+          "word": "ад",
+          "votes": 6
+        },
+        {
+          "word": "адз",
+          "votes": 6
+        },
+        {
+          "word": "аду",
+          "votes": 4
+        },
+        {
+          "word": "адда",
+          "votes": 6
+        },
+        {
+          "word": "адна",
+          "votes": 6
+        },
+        {
+          "word": "адну",
+          "votes": 6
+        }
+      ],
+      "target_in_anchors": false
+    }
+  ],
+  "failures": [
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абазвався",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абаратився",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абвахтам",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абверце",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абвязавшись",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абедали",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абедать",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абедаць",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абедзе",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абедом",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абезчесц",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "абе",
+      "expect": "абезчесц",
+      "ranked_top8": [
+        "абед",
+        "абедзе",
+        "абедом",
+        "абедать",
+        "абещали",
+        "абедали",
+        "абедаць",
+        "абещала"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абещала",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абещали",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абкарм",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абклав",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абманом",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абмануць",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абмый",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абмыць",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абодранный",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абрабе",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абрама",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абратно",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    },
+    {
+      "kind": "prefix",
+      "cue": "аб",
+      "expect": "абросим",
+      "ranked_top8": [
+        "аб",
+        "або",
+        "абы",
+        "абн",
+        "абед",
+        "абаран",
+        "абищо",
+        "аблак"
+      ],
+      "match_count": 8
+    }
+  ],
+  "boot": {
+    "source": "field_state",
+    "ms": 2663,
+    "index_ms": 283,
+    "sweep_ms": 39367,
+    "vocab_size": 41953
+  },
+  "passed": false,
+  "manual": {
+    "passed": 6,
+    "total": 6,
+    "items": [
+      {
+        "id": "ma_ambiguous",
+        "cue": "ма",
+        "expect": null,
+        "expect_in": [
+          "ма",
+          "мак",
+          "мал",
+          "мама",
+          "мат"
+        ],
+        "hypothesis": "ма",
+        "anchors_top8": [
+          "ма",
+          "мак",
+          "мал",
+          "мат",
+          "маю",
+          "мая",
+          "мазг",
+          "мала"
+        ],
+        "ok": true
+      },
+      {
+        "id": "mam_mama",
+        "cue": "мам",
+        "expect": "мама",
+        "expect_in": null,
+        "hypothesis": "мама",
+        "anchors_top8": [
+          "мама",
+          "мамо",
+          "мамая",
+          "мамки",
+          "мамок",
+          "мамай",
+          "мамаю",
+          "мамка"
+        ],
+        "ok": true
+      },
+      {
+        "id": "mama_full",
+        "cue": "мама",
+        "expect": "мама",
+        "expect_in": null,
+        "hypothesis": "мама",
+        "anchors_top8": [
+          "мама",
+          "мамая",
+          "мамай",
+          "мамаю",
+          "мамаем",
+          "маманька"
+        ],
+        "ok": true
+      },
+      {
+        "id": "ros_ambiguous",
+        "cue": "рос",
+        "expect": null,
+        "expect_in": [
+          "рос",
+          "роса",
+          "рост",
+          "росток"
+        ],
+        "hypothesis": "рос",
+        "anchors_top8": [
+          "рос",
+          "роса",
+          "рост",
+          "росли",
+          "росе",
+          "росток",
+          "ростом",
+          "росла"
+        ],
+        "ok": true
+      },
+      {
+        "id": "prika",
+        "cue": "прика",
+        "expect": "приказ",
+        "expect_in": null,
+        "hypothesis": "приказ",
+        "anchors_top8": [
+          "приказ",
+          "прикажи",
+          "приказу",
+          "приказы",
+          "прикажу",
+          "приказав",
+          "приказал",
+          "приказом"
+        ],
+        "ok": true
+      },
+      {
+        "id": "soglasn",
+        "cue": "согласн",
+        "expect": "согласна",
+        "expect_in": null,
+        "hypothesis": "согласна",
+        "anchors_top8": [
+          "согласна",
+          "согласно",
+          "согласны"
+        ],
+        "ok": true
+      }
+    ]
+  }
+}

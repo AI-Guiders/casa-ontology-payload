@@ -33,6 +33,37 @@ def _resolve_ltm_path(ltm_dir: Path, lid: str, entry: dict[str, Any]) -> Path:
     raise FileNotFoundError(f"no .ltm for {lid!r}")
 
 
+def _ltm_lattice_id(path: Path) -> str:
+    name = path.name
+    for suffix in (".ltm.zst", ".ltm.gz", ".ltm"):
+        if name.endswith(suffix):
+            return name[: -len(suffix)]
+    return path.stem
+
+
+def import_ltm_dir_scan(state: dict, ltm_dir: Path) -> dict[str, Any]:
+    """Load every *.ltm under ltm/{l0,l1,l2,l3,h0} — even if missing from pack.manifest."""
+    state = ensure_cylinders(state)
+    state = ensure_control_cylinder(state)
+    mem_lattices = memory_lattices(state)
+    loaded: list[str] = []
+    for sub in ("l0", "l1", "l2", "l3", "h0"):
+        subdir = ltm_dir / sub
+        if not subdir.is_dir():
+            continue
+        for path in sorted(subdir.glob("*.ltm*")):
+            if not path.is_file():
+                continue
+            lid = _ltm_lattice_id(path)
+            if not lid or lid in mem_lattices:
+                continue
+            mem_lattices[lid] = read_ltm(path)
+            loaded.append(lid)
+    prism_memory(state)["lattices"] = mem_lattices
+    state.setdefault("sss", {})["lattices"] = mem_lattices
+    return {"scanned": loaded, "scan_count": len(loaded)}
+
+
 def import_pack(
     state: dict,
     ltm_dir: Path,
@@ -82,16 +113,28 @@ def main() -> None:
     p.add_argument("--ltm-dir", type=Path, default=None)
     p.add_argument("--write", action="store_true", help="Save field_state.json after import")
     p.add_argument("--compact", action="store_true", default=True)
+    p.add_argument(
+        "--scan-ltm",
+        action="store_true",
+        help="Also load all ltm/l0|l1|l2|l3/*.ltm not listed in manifest",
+    )
+    p.add_argument(
+        "--fresh",
+        action="store_true",
+        help="Ignore existing field_state.json (rebuild from ltm only)",
+    )
     args = p.parse_args()
 
     ltm_dir = args.ltm_dir or (args.store_dir / "ltm")
     path = args.store_dir / "field_state.json"
-    if path.is_file():
-        state = ensure_cylinders(load_field_state(path))
-    else:
+    if args.fresh or not path.is_file():
         state = ensure_cylinders({"schema_version": "multi_prism_v1", "field_version": 0})
+    else:
+        state = ensure_cylinders(load_field_state(path))
 
     rep = import_pack(state, ltm_dir)
+    if args.scan_ltm:
+        rep["scan"] = import_ltm_dir_scan(state, ltm_dir)
     if args.write:
         save_field_state(path, state, compact=args.compact)
     print(json.dumps(rep, ensure_ascii=False, indent=2))

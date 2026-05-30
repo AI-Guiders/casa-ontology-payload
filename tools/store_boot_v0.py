@@ -31,15 +31,24 @@ def boot_store(
         raise FileNotFoundError(f"ltm pack missing: {manifest_path}")
 
     fs_path = field_state_path(store_dir)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if prefer_field_state and fs_path.is_file():
         state = ensure_prisms(load_field_state(fs_path))
         source = "field_state"
+        # Do not import_pack lattice bodies — stale ltm can overwrite a full field (see ru-lexicon 92-word regression).
+        imp = {
+            "loaded": [],
+            "loaded_control": [],
+            "lattice_count": 0,
+            "control_lattice_count": 0,
+            "skipped_ltm_lattice_import": True,
+        }
+        if manifest.get("nca"):
+            state["nca"] = {**(state.get("nca") or {}), **manifest["nca"]}
     else:
         state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
         source = "ltm_only"
-
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    imp = import_pack(state, ltm, manifest=manifest)
+        imp = import_pack(state, ltm, manifest=manifest)
     state.setdefault("store", {})["boot_source"] = source
     state["store"]["store_id"] = store_dir.name
     state["store"]["ltm_dir"] = str(ltm)
