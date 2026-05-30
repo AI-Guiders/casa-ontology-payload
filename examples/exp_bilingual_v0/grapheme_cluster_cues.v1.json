@@ -1,0 +1,10 @@
+[
+  { "id": "en_cow", "cue": "cow", "expect_l2": "en", "expect_l0": "latn" },
+  { "id": "en_the", "cue": "the", "expect_l2": "en", "expect_l0": "latn" },
+  { "id": "en_baby", "cue": "baby", "expect_l2": "en", "expect_l0": "latn", "confusable_cyrl": "в" },
+  { "id": "ru_korova", "cue": "корова", "expect_l2": "ru", "expect_l0": "cyrl" },
+  { "id": "ru_voda", "cue": "вода", "expect_l2": "ru", "expect_l0": "cyrl", "confusable_latn": "b" },
+  { "id": "ru_mama", "cue": "мама", "expect_l2": "ru", "expect_l0": "cyrl" },
+  { "id": "en_mother", "cue": "mother", "expect_l2": "en", "expect_l0": "latn" },
+  { "id": "en_house", "cue": "house", "expect_l2": "en", "expect_l0": "latn" }
+]

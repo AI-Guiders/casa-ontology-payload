@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "key_id_canon": "w3c_keyboard_event_code",
+  "device_id": "input.device.keyboard",
+  "modifiers": {
+    "ShiftLeft": "modifier.shift",
+    "ShiftRight": "modifier.shift",
+    "ControlLeft": "modifier.control",
+    "ControlRight": "modifier.control",
+    "AltLeft": "modifier.alt",
+    "AltRight": "modifier.alt",
+    "MetaLeft": "modifier.meta",
+    "MetaRight": "modifier.meta",
+    "CapsLock": "modifier.caps_lock"
+  },
+  "actions": {
+    "Enter": "action.enter",
+    "Backspace": "action.backspace",
+    "Tab": "action.tab",
+    "Escape": "action.escape",
+    "Delete": "action.delete",
+    "Insert": "action.insert"
+  },
+  "navigation": {
+    "ArrowUp": "action.arrow_up",
+    "ArrowDown": "action.arrow_down",
+    "ArrowLeft": "action.arrow_left",
+    "ArrowRight": "action.arrow_right",
+    "Home": "action.home",
+    "End": "action.end",
+    "PageUp": "action.page_up",
+    "PageDown": "action.page_down"
+  },
+  "function": {
+    "F1": "action.f1",
+    "F2": "action.f2",
+    "F3": "action.f3",
+    "F4": "action.f4",
+    "F5": "action.f5",
+    "F6": "action.f6",
+    "F7": "action.f7",
+    "F8": "action.f8",
+    "F9": "action.f9",
+    "F10": "action.f10",
+    "F11": "action.f11",
+    "F12": "action.f12"
+  },
+  "zones": {
+    "zone.alphanumeric": [
+      "KeyA", "KeyB", "KeyC", "KeyD", "KeyE", "KeyF", "KeyG", "KeyH", "KeyI", "KeyJ",
+      "KeyK", "KeyL", "KeyM", "KeyN", "KeyO", "KeyP", "KeyQ", "KeyR", "KeyS", "KeyT",
+      "KeyU", "KeyV", "KeyW", "KeyX", "KeyY", "KeyZ",
+      "Digit0", "Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9",
+      "Slash", "Backslash", "Minus", "Equal", "BracketLeft", "BracketRight",
+      "Semicolon", "Quote", "Comma", "Period", "Backquote", "Space"
+    ],
+    "zone.modifier_row": [
+      "ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight",
+      "AltLeft", "AltRight", "MetaLeft", "MetaRight", "CapsLock"
+    ],
+    "zone.editing": ["Enter", "Backspace", "Tab", "Delete", "Insert"],
+    "zone.navigation": [
+      "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
+      "Home", "End", "PageUp", "PageDown"
+    ],
+    "zone.function_row": [
+      "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"
+    ],
+    "zone.numpad": [
+      "Numpad0", "Numpad1", "Numpad2", "Numpad3", "Numpad4", "Numpad5",
+      "Numpad6", "Numpad7", "Numpad8", "Numpad9",
+      "NumpadAdd", "NumpadSubtract", "NumpadMultiply", "NumpadDivide",
+      "NumpadDecimal", "NumpadEnter"
+    ]
+  }
+}

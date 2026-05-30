@@ -1,0 +1,31 @@
+[
+  {
+    "id": "slash_attach_command",
+    "events": [
+      { "key_id": "Slash", "action": "down" },
+      { "key_id": "KeyA", "action": "down" },
+      { "key_id": "KeyT", "action": "down" },
+      { "key_id": "KeyT", "action": "down" },
+      { "key_id": "KeyA", "action": "down" },
+      { "key_id": "KeyC", "action": "down" },
+      { "key_id": "KeyH", "action": "down" }
+    ],
+    "expect_winner_layout": "qwerty_us",
+    "expect_grapheme": "/attach",
+    "expect_segment": "command",
+    "expect_en_in": ["attach"]
+  },
+  {
+    "id": "mama_prose_jcuken",
+    "events": [
+      { "key_id": "KeyV", "action": "down" },
+      { "key_id": "KeyF", "action": "down" },
+      { "key_id": "KeyV", "action": "down" },
+      { "key_id": "KeyF", "action": "down" }
+    ],
+    "expect_winner_layout": "jcuken_ru",
+    "expect_grapheme": "мама",
+    "expect_segment": "prose",
+    "expect_ru_in": ["мама"]
+  }
+]

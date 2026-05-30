@@ -1,0 +1,113 @@
+{
+  "bundle_id": "kb-entity-surfaces-dev.v1",
+  "schema_version": 1,
+  "title": "Exp bilingual — entity hub surfaces (RU + EN)",
+  "entities": [
+    {
+      "entity_id": "entity.cow",
+      "surfaces": [
+        { "lang": "ru", "word": "корова" },
+        { "lang": "en", "word": "cow" }
+      ]
+    },
+    {
+      "entity_id": "entity.mother",
+      "surfaces": [
+        { "lang": "ru", "word": "мама" },
+        { "lang": "en", "word": "mom" },
+        { "lang": "en", "word": "mother" }
+      ]
+    },
+    {
+      "entity_id": "entity.cat",
+      "surfaces": [
+        { "lang": "ru", "word": "кот" },
+        { "lang": "en", "word": "cat" }
+      ]
+    },
+    {
+      "entity_id": "entity.dog",
+      "surfaces": [
+        { "lang": "ru", "word": "собака" },
+        { "lang": "en", "word": "dog" }
+      ]
+    },
+    {
+      "entity_id": "entity.house",
+      "surfaces": [
+        { "lang": "ru", "word": "дом" },
+        { "lang": "en", "word": "house" }
+      ]
+    },
+    {
+      "entity_id": "entity.water",
+      "surfaces": [
+        { "lang": "ru", "word": "вода" },
+        { "lang": "en", "word": "water" }
+      ]
+    },
+    {
+      "entity_id": "entity.book",
+      "surfaces": [
+        { "lang": "ru", "word": "книга" },
+        { "lang": "en", "word": "book" }
+      ]
+    },
+    {
+      "entity_id": "entity.sun",
+      "surfaces": [
+        { "lang": "ru", "word": "солнце" },
+        { "lang": "en", "word": "sun" }
+      ]
+    },
+    {
+      "entity_id": "entity.tree",
+      "surfaces": [
+        { "lang": "ru", "word": "дерево" },
+        { "lang": "en", "word": "tree" }
+      ]
+    },
+    {
+      "entity_id": "entity.bird",
+      "surfaces": [
+        { "lang": "ru", "word": "птица" },
+        { "lang": "en", "word": "bird" }
+      ]
+    },
+    {
+      "entity_id": "entity.fish",
+      "surfaces": [
+        { "lang": "ru", "word": "рыба" },
+        { "lang": "en", "word": "fish" }
+      ]
+    },
+    {
+      "entity_id": "entity.boy",
+      "surfaces": [
+        { "lang": "ru", "word": "мальчик" },
+        { "lang": "en", "word": "boy" }
+      ]
+    },
+    {
+      "entity_id": "entity.girl",
+      "surfaces": [
+        { "lang": "ru", "word": "девочка" },
+        { "lang": "en", "word": "girl" }
+      ]
+    },
+    {
+      "entity_id": "entity.apple",
+      "surfaces": [
+        { "lang": "ru", "word": "яблоко" },
+        { "lang": "en", "word": "apple" }
+      ]
+    },
+    {
+      "entity_id": "entity.bread",
+      "surfaces": [
+        { "lang": "ru", "word": "хлеб" },
+        { "lang": "en", "word": "bread" }
+      ]
+    }
+  ]
+}

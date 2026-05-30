@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "format": "ltm-pack-v0",
+  "kind": "core_ltm_vk_layouts_v0",
+  "immutable": true,
+  "decode_mode": "compose",
+  "field_version": 1,
+  "updated_at": "2026-05-30T18:09:51.323614+00:00",
+  "lattices": {
+    "L0_vk_map": {
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\agent-core\\vk-layouts-v0\\ltm\\l0\\L0_vk_map.ltm",
+      "compress": null,
+      "raw_bytes": 28228,
+      "file_bytes": 28228,
+      "vocab": 543,
+      "placements": 1456,
+      "width": 48,
+      "height": 48,
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "vk.",
+        "immutable": true,
+        "kind": "vk_keyboard_compose_v1",
+        "edge_count": 190,
+        "role_edge_count": 35,
+        "zone_edge_count": 196,
+        "physical_key_count": 99,
+        "listen": {
+          "input_modality_v0": {
+            "bundle_id": "kb-input-modality-vk-v1",
+            "concept_count": 34,
+            "edge_count": 47
+          }
+        }
+      }
+    },
+    "L0_grapheme": {
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\agent-core\\vk-layouts-v0\\ltm\\l0\\L0_grapheme.ltm",
+      "compress": null,
+      "raw_bytes": 4622,
+      "file_bytes": 4622,
+      "vocab": 206,
+      "placements": 515,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "grapheme."
+      }
+    }
+  },
+  "totals": {
+    "lattice_count": 2,
+    "mapping_count": 190,
+    "edge_count": 190,
+    "modality_concepts": 34,
+    "modality_edges": 47,
+    "raw_bytes": 32850,
+    "file_bytes": 32850
+  },
+  "input_modality": {
+    "lattice_id": "L0_vk_map",
+    "bundle_id": "kb-input-modality-vk-v1",
+    "concepts_placed": 34,
+    "edges_placed": 47,
+    "concepts_on_field": 34,
+    "concepts_missing": [],
+    "lattice_edges": 376,
+    "field_version": 3
+  },
+  "nca": {
+    "schema_version": 1,
+    "models": {
+      "L0_vk_map": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\agent-core\\vk-layouts-v0\\nca\\L0_vk_map\\model.pt",
+      "L0_grapheme": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\agent-core\\vk-layouts-v0\\nca\\L0_grapheme\\model.pt"
+    },
+    "models_rel": {
+      "L0_vk_map": "nca/L0_vk_map/model.pt",
+      "L0_grapheme": "nca/L0_grapheme/model.pt"
+    }
+  }
+}

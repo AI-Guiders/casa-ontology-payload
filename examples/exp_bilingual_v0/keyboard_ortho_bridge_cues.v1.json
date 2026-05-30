@@ -1,0 +1,49 @@
+[
+  {
+    "id": "base_layer_lowercase",
+    "events": [{ "key_id": "KeyA", "action": "down" }],
+    "layout": "qwerty_us",
+    "expect_decode": "a",
+    "require_bridge": true
+  },
+  {
+    "id": "bridge_present",
+    "require_bridge": true
+  },
+  {
+    "id": "shift_equals_capitalize_glyph",
+    "events": [
+      { "key_id": "ShiftLeft", "action": "down" },
+      { "key_id": "KeyA", "action": "down" },
+      { "key_id": "ShiftLeft", "action": "up" }
+    ],
+    "layout": "qwerty_us",
+    "expect_decode": "A"
+  },
+  {
+    "id": "caps_lock_all_caps_word",
+    "events": [
+      { "key_id": "CapsLock", "action": "down" },
+      { "key_id": "KeyA", "action": "down" },
+      { "key_id": "KeyT", "action": "down" },
+      { "key_id": "KeyT", "action": "down" },
+      { "key_id": "KeyA", "action": "down" },
+      { "key_id": "KeyC", "action": "down" },
+      { "key_id": "KeyH", "action": "down" }
+    ],
+    "layout": "qwerty_us",
+    "expect_decode": "ATTACH"
+  },
+  {
+    "id": "ortho_shout_all_caps",
+    "ortho_context": "shout",
+    "word": "attach",
+    "expect_ortho_display": "ATTACH"
+  },
+  {
+    "id": "ortho_sentence_case",
+    "ortho_context": "sentence",
+    "word": "attach",
+    "expect_ortho_display": "Attach"
+  }
+]

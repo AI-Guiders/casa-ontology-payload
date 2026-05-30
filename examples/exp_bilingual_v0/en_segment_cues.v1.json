@@ -1,0 +1,12 @@
+[
+  { "id": "cow", "cue": "cow", "expect": "cow", "modality": "segment_en" },
+  { "id": "mother", "cue": "mother", "expect": "mo|ther", "modality": "segment_en" },
+  { "id": "table", "cue": "table", "expect": "ta|ble", "modality": "segment_en" },
+  { "id": "apple", "cue": "apple", "expect": "a|pple", "modality": "segment_en" },
+  { "id": "happy", "cue": "happy", "expect": "ha|ppy", "modality": "segment_en" },
+  { "id": "yes", "cue": "yes", "expect": "yes", "modality": "segment_en" },
+  { "id": "water", "cue": "water", "expect": "wa|ter", "modality": "segment_en" },
+  { "id": "little", "cue": "little", "expect": "li|ttle", "modality": "segment_en" },
+  { "id": "garden", "cue": "garden", "expect": "ga|rden", "modality": "segment_en" },
+  { "id": "open", "cue": "open", "expect": "o|pen", "modality": "segment_en" }
+]

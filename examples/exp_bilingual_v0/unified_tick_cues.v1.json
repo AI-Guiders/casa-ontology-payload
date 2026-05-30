@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ru_mama_type",
+    "mode": "type",
+    "word": "мама",
+    "expect_lang": "ru",
+    "with_ortho": false,
+    "with_hub": true
+  },
+  {
+    "id": "en_cow_type",
+    "mode": "type",
+    "word": "cow",
+    "expect_lang": "en",
+    "with_ortho": false,
+    "with_hub": true
+  },
+  {
+    "id": "co_ambiguous_unified",
+    "mode": "steps",
+    "steps": [
+      {
+        "id": "co_dual",
+        "visual": "co",
+        "expect_commitment": "ambiguous",
+        "expect_en_in": ["cow"],
+        "expect_ru_in": ["сова"]
+      },
+      {
+        "id": "cow_en",
+        "visual": "cow",
+        "expect_lang": "en",
+        "expect_word": "cow",
+        "with_hub": true
+      }
+    ]
+  }
+]

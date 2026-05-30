@@ -1,0 +1,43 @@
+[
+  {
+    "id": "shift_uppercase_us",
+    "events": [
+      { "key_id": "ShiftLeft", "action": "down" },
+      { "key_id": "KeyA", "action": "down" },
+      { "key_id": "ShiftLeft", "action": "up" }
+    ],
+    "expect_layout": "qwerty_us",
+    "expect_grapheme": "A"
+  },
+  {
+    "id": "enter_not_grapheme",
+    "events": [
+      { "key_id": "KeyA", "action": "down" },
+      { "key_id": "Enter", "action": "down" }
+    ],
+    "expect_layout": "qwerty_us",
+    "expect_contains": "a\n"
+  },
+  {
+    "id": "caps_lock_latch",
+    "events": [
+      { "key_id": "CapsLock", "action": "down" },
+      { "key_id": "KeyH", "action": "down" },
+      { "key_id": "CapsLock", "action": "down" },
+      { "key_id": "KeyH", "action": "down" }
+    ],
+    "expect_layout": "qwerty_us",
+    "expect_contains": "Hh"
+  },
+  {
+    "id": "modifier_catalog",
+    "expect_concepts": [
+      "input.device.keyboard",
+      "modifier.shift",
+      "action.enter",
+      "zone.alphanumeric",
+      "zone.modifier_row"
+    ],
+    "expect_min_physical_keys": 80
+  }
+]

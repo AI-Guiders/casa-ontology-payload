@@ -1,0 +1,56 @@
+[
+  {
+    "id": "co_cow_vs_sova",
+    "description": "Visual co — child has not picked script; cow (EN) and сова (RU) both live",
+    "steps": [
+      {
+        "id": "c_early",
+        "visual": "c",
+        "expect_commitment": "ambiguous",
+        "expect_en_in": ["co", "cow"],
+        "expect_ru_in": ["с", "со"]
+      },
+      {
+        "id": "co_fork",
+        "visual": "co",
+        "expect_commitment": "ambiguous",
+        "expect_en_in": ["cow"],
+        "expect_ru_in": ["сова"]
+      },
+      {
+        "id": "cow_lock_en",
+        "visual": "cow",
+        "expect_commitment": "resolved",
+        "expect_lang": "en",
+        "expect_en_in": ["cow"]
+      }
+    ]
+  },
+  {
+    "id": "ru_sova_path_cyrl",
+    "description": "Cyrillic path: со → сов → сова (no Latin w fork)",
+    "steps": [
+      {
+        "id": "so_ambiguous",
+        "visual": "со",
+        "expect_commitment": "resolved",
+        "expect_lang": "ru",
+        "expect_ru_in": ["сова"]
+      },
+      {
+        "id": "sov_narrow",
+        "visual": "сов",
+        "expect_commitment": "resolved",
+        "expect_lang": "ru",
+        "expect_ru_in": ["сова"]
+      },
+      {
+        "id": "sova_done",
+        "visual": "сова",
+        "expect_commitment": "resolved",
+        "expect_lang": "ru",
+        "expect_ru_in": ["сова"]
+      }
+    ]
+  }
+]

@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "bundle_id": "kb-input-modality-vk-v1",
+  "title": "Input modality: full keyboard device + layouts",
+  "claims": [
+    {
+      "concept_id": "input.device.keyboard",
+      "claim": "Keyboard is a layout-neutral input device: physical keys, zones, modifiers, and decode layouts."
+    },
+    {
+      "concept_id": "input.modality.physical_key",
+      "claim": "PhysicalKeyEvent is layout-neutral: key_id follows W3C KeyboardEvent.code (KeyA, Slash), not OS Unicode."
+    },
+    {
+      "concept_id": "input.modality.layout",
+      "claim": "Keyboard layout is a decode table: same physical keys → different graphemes (qwerty_us vs jcuken_ru)."
+    },
+    {
+      "concept_id": "input.modality.base_layer",
+      "claim": "Base (unshifted) layout layer: default keyboard register — lowercase letters when no Shift/Caps latch."
+    },
+    {
+      "concept_id": "input.modality.shift_layer",
+      "claim": "Shift layer is a second decode table (layout.*.shift) selected while Shift modifier is held or Caps latched."
+    },
+    {
+      "concept_id": "input.modality.modifier",
+      "claim": "Modifier keys (Shift, Control, Alt, Meta, CapsLock) change decode context; they do not emit graphemes."
+    },
+    {
+      "concept_id": "input.modality.action_key",
+      "claim": "Action keys (Enter, Backspace, arrows, Fn) emit action.* concepts, not grapheme strings."
+    },
+    {
+      "concept_id": "input.modality.layout_parity",
+      "claim": "Layout parity runs dual decode branches and picks winner by segment (prose RU vs command EN)."
+    },
+    {
+      "concept_id": "layout.qwerty_us",
+      "claim": "US QWERTY layout: physical keys decode to Latin graphemes on L0_grapheme."
+    },
+    {
+      "concept_id": "layout.jcuken_ru",
+      "claim": "Russian JCUKEN layout: same physical keys decode to Cyrillic graphemes on L0_grapheme."
+    },
+    {
+      "concept_id": "grapheme.latn",
+      "claim": "Latin script namespace on L0_grapheme (grapheme.latn.*)."
+    },
+    {
+      "concept_id": "grapheme.cyrl",
+      "claim": "Cyrillic script namespace on L0_grapheme (grapheme.cyrl.*)."
+    },
+    {
+      "concept_id": "modifier.shift",
+      "claim": "Shift modifier selects shift decode layer (uppercase / symbols)."
+    },
+    {
+      "concept_id": "modifier.control",
+      "claim": "Control modifier — chord context (v1 listen only, no chord decode yet)."
+    },
+    {
+      "concept_id": "modifier.alt",
+      "claim": "Alt modifier — chord context (v1 listen only)."
+    },
+    {
+      "concept_id": "modifier.meta",
+      "claim": "Meta/OS modifier — chord context (v1 listen only)."
+    },
+    {
+      "concept_id": "modifier.caps_lock",
+      "claim": "CapsLock toggles caps latch: letters decode from shift layer until toggled off; surface effect = ALL CAPS (proc.word.upper)."
+    },
+    {
+      "concept_id": "input.modality.caps_latch",
+      "claim": "Caps latch state: persistent shift-layer decode for letters (like Caps Lock on)."
+    },
+    {
+      "concept_id": "ortho.display.all_caps",
+      "claim": "ALL CAPS display = proc.word.upper (fold proc.grapheme.capitalize over word); same surface as Caps Lock typing."
+    },
+    {
+      "concept_id": "proc.grapheme.capitalize",
+      "claim": "Ortho atom: one grapheme lower → upper (м→М, a→A). Shift layer surface_effect."
+    },
+    {
+      "concept_id": "proc.word.upper",
+      "claim": "Ortho fold: Capitalize every letter in word (ALL CAPS). Caps Lock surface_effect."
+    },
+    {
+      "concept_id": "proc.word.sentence_case",
+      "claim": "Ortho: Capitalize first letter only (sentence/title case); complements Shift (manual cap)."
+    },
+    {
+      "concept_id": "ortho.display.lowercase_register",
+      "claim": "Lowercase register from keyboard = base layer decode (no modifiers). Not the same as emergent proc.grapheme.lower."
+    },
+    {
+      "concept_id": "proc.grapheme.lower",
+      "claim": "Emergent ortho inverse of Capitalize (М→м) after surprise — display correction, not default keyboard path."
+    },
+    {
+      "concept_id": "action.enter",
+      "claim": "Enter key — line break / submit action."
+    },
+    {
+      "concept_id": "action.backspace",
+      "claim": "Backspace key — delete left action."
+    },
+    {
+      "concept_id": "zone.alphanumeric",
+      "claim": "Alphanumeric typing zone (letters, digits, punctuation, space)."
+    },
+    {
+      "concept_id": "zone.modifier_row",
+      "claim": "Modifier row zone (Shift, Ctrl, Alt, Meta, CapsLock)."
+    },
+    {
+      "concept_id": "zone.editing",
+      "claim": "Editing zone (Enter, Backspace, Tab, Delete)."
+    },
+    {
+      "concept_id": "zone.navigation",
+      "claim": "Navigation zone (arrows, Home, End, PgUp/PgDn)."
+    },
+    {
+      "concept_id": "zone.function_row",
+      "claim": "Function row (F1–F12)."
+    },
+    {
+      "concept_id": "vk.physical",
+      "claim": "vk.physical.* concepts name physical keys; compose edges link to grapheme.* or action.*."
+    },
+    {
+      "concept_id": "memory.core_ltm.vk",
+      "claim": "VK keyboard ships as immutable core ltm (listen, no NCA train); boot → field RAM."
+    },
+    {
+      "concept_id": "memory.train.lexicon_nca",
+      "claim": "Lexicon L2 shards train via sleep NCA (nca_stale_shards / agent_autonomous_tick) — separate from VK listen."
+    }
+  ],
+  "graph": {
+    "edges": [
+      { "src": "input.device.keyboard", "relation": "has_zone", "dst": "zone.alphanumeric" },
+      { "src": "input.device.keyboard", "relation": "has_zone", "dst": "zone.modifier_row" },
+      { "src": "input.device.keyboard", "relation": "has_zone", "dst": "zone.editing" },
+      { "src": "input.device.keyboard", "relation": "has_zone", "dst": "zone.navigation" },
+      { "src": "input.device.keyboard", "relation": "has_zone", "dst": "zone.function_row" },
+      { "src": "input.modality.physical_key", "relation": "part_of", "dst": "input.device.keyboard" },
+      { "src": "input.modality.physical_key", "relation": "decode_via", "dst": "input.modality.layout" },
+      { "src": "input.modality.modifier", "relation": "part_of", "dst": "input.device.keyboard" },
+      { "src": "input.modality.action_key", "relation": "part_of", "dst": "input.device.keyboard" },
+      { "src": "input.modality.shift_layer", "relation": "selected_by", "dst": "modifier.shift" },
+      { "src": "input.modality.layout", "relation": "has_layer", "dst": "input.modality.shift_layer" },
+      { "src": "input.modality.layout", "relation": "has_layer", "dst": "input.modality.base_layer" },
+      { "src": "input.modality.base_layer", "relation": "standard_register", "dst": "ortho.display.lowercase_register" },
+      { "src": "input.modality.base_layer", "relation": "complements", "dst": "input.modality.shift_layer" },
+      { "src": "proc.grapheme.lower", "relation": "emergent_inverse", "dst": "proc.grapheme.capitalize" },
+      { "src": "proc.grapheme.lower", "relation": "distinct_from", "dst": "ortho.display.lowercase_register" },
+      { "src": "input.modality.layout", "relation": "instance", "dst": "layout.qwerty_us" },
+      { "src": "input.modality.layout", "relation": "instance", "dst": "layout.jcuken_ru" },
+      { "src": "input.modality.layout", "relation": "maps_to", "dst": "grapheme.latn" },
+      { "src": "input.modality.layout", "relation": "maps_to", "dst": "grapheme.cyrl" },
+      { "src": "layout.qwerty_us", "relation": "uses_script", "dst": "grapheme.latn" },
+      { "src": "layout.jcuken_ru", "relation": "uses_script", "dst": "grapheme.cyrl" },
+      { "src": "input.modality.layout_parity", "relation": "feeds", "dst": "input.modality.physical_key" },
+      { "src": "input.modality.layout_parity", "relation": "chooses_between", "dst": "layout.qwerty_us" },
+      { "src": "input.modality.layout_parity", "relation": "chooses_between", "dst": "layout.jcuken_ru" },
+      { "src": "vk.physical.KeyA", "relation": "exemplar_of", "dst": "input.modality.physical_key" },
+      { "src": "vk.physical.ShiftLeft", "relation": "exemplar_of", "dst": "input.modality.modifier" },
+      { "src": "vk.physical.Enter", "relation": "exemplar_of", "dst": "input.modality.action_key" },
+      { "src": "memory.core_ltm.vk", "relation": "stores", "dst": "layout.qwerty_us" },
+      { "src": "memory.core_ltm.vk", "relation": "stores", "dst": "layout.jcuken_ru" },
+      { "src": "memory.train.lexicon_nca", "relation": "applies_to", "dst": "grapheme.latn" },
+      { "src": "input.modality.shift_layer", "relation": "surface_effect", "dst": "proc.grapheme.capitalize" },
+      { "src": "modifier.shift", "relation": "selects_layer", "dst": "input.modality.shift_layer" },
+      { "src": "modifier.caps_lock", "relation": "latch_like", "dst": "input.modality.shift_layer" },
+      { "src": "modifier.caps_lock", "relation": "toggles", "dst": "input.modality.caps_latch" },
+      { "src": "input.modality.caps_latch", "relation": "selects_layer", "dst": "input.modality.shift_layer" },
+      { "src": "modifier.caps_lock", "relation": "surface_effect", "dst": "proc.word.upper" },
+      { "src": "modifier.caps_lock", "relation": "produces", "dst": "ortho.display.all_caps" },
+      { "src": "ortho.display.all_caps", "relation": "same_as", "dst": "proc.word.upper" },
+      { "src": "proc.word.upper", "relation": "fold", "dst": "proc.grapheme.capitalize" },
+      { "src": "proc.word.sentence_case", "relation": "uses", "dst": "proc.grapheme.capitalize" },
+      { "src": "input.modality.shift_layer", "relation": "complements", "dst": "proc.word.sentence_case" }
+    ]
+  },
+  "exemplars": [
+    { "layout_id": "qwerty_us", "key_id": "KeyA" },
+    { "layout_id": "jcuken_ru", "key_id": "KeyA" },
+    { "layout_id": "qwerty_us", "key_id": "ShiftLeft" },
+    { "layout_id": "qwerty_us", "key_id": "Enter" },
+    { "layout_id": "qwerty_us", "key_id": "CapsLock" }
+  ]
+}

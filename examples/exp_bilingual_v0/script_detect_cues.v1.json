@@ -1,0 +1,11 @@
+[
+  { "id": "en_m", "cue": "m", "expect_lang": "en", "expect_script": "latn", "letter_by_letter": false },
+  { "id": "en_mother", "cue": "mother", "expect_lang": "en", "expect_script": "latn", "letter_by_letter": true },
+  { "id": "en_cow", "cue": "cow", "expect_lang": "en", "expect_script": "latn", "letter_by_letter": false },
+  { "id": "ru_m", "cue": "м", "expect_lang": "ru", "expect_script": "cyrl", "letter_by_letter": false },
+  { "id": "ru_ko", "cue": "ко", "expect_lang": "ru", "expect_script": "cyrl", "letter_by_letter": true },
+  { "id": "ru_mama", "cue": "мама", "expect_lang": "ru", "expect_script": "cyrl", "letter_by_letter": true },
+  { "id": "ru_voda", "cue": "вода", "expect_lang": "ru", "expect_script": "cyrl", "letter_by_letter": false },
+  { "id": "lat_a", "cue": "a", "expect_lang": "en", "expect_script": "latn", "letter_by_letter": false },
+  { "id": "cyrl_a", "cue": "а", "expect_lang": "ru", "expect_script": "cyrl", "letter_by_letter": false }
+]
