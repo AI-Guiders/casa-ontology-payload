@@ -63,4 +63,20 @@ python tools/f0_math_ingest_v0.py --store-dir examples/agent-stores/sss-ru-lexic
 
 См. `design/f0-math-logical-layer-v0.md`, `design/understanding-contract-v0.md` (UC v0.1: `claims_nav_enabled` в `cen_plan`).
 
+## Exp T9 / Predictor smoke (UC v0.5)
+
+```bash
+# Segment predict + critic (field intuition)
+python tools/bench_predict_v0.py \
+  --store-dir examples/agent-stores/sss-ru-lexicon-v0 \
+  --cues examples/exp_t9_v0/segment_predict_cues.v1.json
+
+# T9 prefix disambiguation on L2 lexicon
+python tools/bench_t9_predict_v0.py \
+  --store-dir examples/agent-stores/sss-ru-lexicon-v0 \
+  --cues examples/exp_t9_v0/t9_prefix_cues.v1.json
+```
+
+См. `design/predictor-v0.md`, `design/experiment-t9-predictive-words-v0.md`.
+
 Regenerate map: `python tools/sss_memory_manifest_v0.py --store-dir <path> --write`

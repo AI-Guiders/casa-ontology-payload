@@ -1,0 +1,5 @@
+[
+  { "id": "mama", "cue": "мама", "expect": "ма|ма", "modality": "segment" },
+  { "id": "vstrecha_field", "cue": "встреча", "expect": "в|стре|ча", "modality": "segment" },
+  { "id": "prikaz_field", "cue": "приказ", "expect": "п|ри|каз", "modality": "segment" }
+]

@@ -1,0 +1,6 @@
+[
+  { "id": "mam_mama", "cue": "мам", "expect": "мама" },
+  { "id": "prika_prikaz", "cue": "прика", "expect": "приказ" },
+  { "id": "prikaz_full", "cue": "приказ", "expect": "приказ" },
+  { "id": "soglasn_soglasna", "cue": "согласн", "expect": "согласна" }
+]
