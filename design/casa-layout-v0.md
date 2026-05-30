@@ -13,6 +13,8 @@
 
 Мы считаем, что есть одно поле \(H\times W\) с \(C\) каналами на клетку.
 
+**Несколько «решёток» внутри DMN** (слои букваря B0→B3, домены `lang` / `math` / `vis` по sub-rect или по **y**/ **x**) — **разрешены контрактом**: один цилиндр, SN маршрутизирует **какой** sub-rect и слой активен (gate + digest mask). См. [`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md) § «Несколько решёток». v0 lab пока кладёт union в один `dmn_ontology`; v1 — `layout.v1` с bands/domains.
+
 Регион (sub‑CA) задаётся:
 
 - прямоугольником координат,
@@ -68,6 +70,9 @@
 - `design/ontology-field-poc-findings-v1.md` — выводы PoC «онтология в поле» (locality, кодеки, F1).
 - `design/embeddings-on-layout-v0.md` — stub: embeddings поверх layout (не вместо provenance).
 - `design/cen-sn-runtime-v0.md` — контракт SN/CEN после DMN PoC.
+- `design/casa-cosmos-mapping-v0.md` — north star: CASA ↔ NVIDIA Cosmos (Predict / Transfer / Reason).
+- `design/casa-glossary-v0.md` — глоссарий: DMN, SN, CEN, FPN, порты, bundle, hot path.
+- `design/fpn-control-region-v0.md` — **proposed** v1: четвёртый регион FPN (layout B).
 - Канон KB: `work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md`.
 - Репо: https://github.com/AI-Guiders/casa-ontology-payload · локально `Financial/software/open/casa-ontology-payload`.
 

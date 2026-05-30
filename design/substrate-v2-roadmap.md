@@ -37,6 +37,13 @@ MCP: `casa_field_infer`.
 
 `tools/kb_field_watcher.py` — poll + debounce → `kb_sync` → import. See `design/kb-field-watcher-v1.md`.
 
+## North star
+
+| Тема | Документ |
+|------|----------|
+| **Существование агента** (Kay, duck test, без квалиа) | [`agent-existence-north-star-v0.md`](agent-existence-north-star-v0.md) |
+| **Cosmos analogy** (DMN / SN / CEN / articulation) | [`casa-cosmos-mapping-v0.md`](casa-cosmos-mapping-v0.md) |
+
 ## Smoke
 
 ```powershell

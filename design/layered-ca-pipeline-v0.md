@@ -14,7 +14,9 @@ See also: `design/casa-layout-v0.md`, `design/layout.v0.json`, `design/layered-c
 | t | CA iterations within one z |
 | T | Macro tick (outside this doc) |
 
-**Regions** (DMN / SN / CEN) = *where* on (x,y). **Phases** (z) = *which rule* runs. Combined via masks.
+**Regions** (DMN / SN / CEN) = *where* on (x,y). **Phases** (z_phase) = *which rule* runs on **one** lattice. Combined via masks.
+
+**ССС (отдельно):** `z_level` = стек **целых решёток** L0..L3 + `z_bridge` между слоями — см. [`sss-multi-lattice-z-v0.md`](sss-multi-lattice-z-v0.md). Не смешивать `z_phase` (encode/repair) с `z_level` (графема/слог/слово).
 
 ## Phases v0 (lab)
 

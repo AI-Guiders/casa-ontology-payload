@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "subsystem": "hippo",
+  "title": "Episodic cylinder — lattice stack (специалисты гиппокампа)",
+  "doc": "design/hippo-lattice-stack-v0.md",
+  "parent_cylinder": "cyl_hippo",
+  "legacy_monolith": "H0_episode",
+  "axes": {
+    "x": "cell within hippo lattice",
+    "y": "cell within hippo lattice",
+    "h_level": "which hippo lattice (H0..H3); episodic specialist",
+    "t": "CA micro-steps (optional on hippo — mostly fast write)",
+    "T_wake": "online: babble, listen, episode append",
+    "T_sleep": "consolidate hippo → cyl_memory"
+  },
+  "lattices": [
+    {
+      "id": "H0_io",
+      "h_level": 0,
+      "size": { "width": 32, "height": 32 },
+      "token_prefix": ["U:", "raw."],
+      "role": ["listen_buffer", "discard_or_promote"],
+      "status": "roadmap",
+      "note": "Сырой utterance; не пишет в LTM напрямую"
+    },
+    {
+      "id": "H1_surface",
+      "h_level": 1,
+      "size": { "width": 32, "height": 32 },
+      "token_prefix": ["T:"],
+      "episode_kind": "surface",
+      "role": ["fast_write", "pattern_separation", "babble_correction"],
+      "status": "v0",
+      "legacy_alias": "H0_episode"
+    },
+    {
+      "id": "H2_rule",
+      "h_level": 2,
+      "size": { "width": 32, "height": 32 },
+      "token_prefix": ["T:", "R:"],
+      "episode_kind": "rule",
+      "role": ["segment_hypothesis", "rule_anchor", "internal_repair"],
+      "status": "partial",
+      "note": "append_rule_episode уже пишет R: на общую решётку — миграция сюда"
+    },
+    {
+      "id": "H3_scene",
+      "h_level": 3,
+      "size": { "width": 32, "height": 32 },
+      "token_prefix": ["T:", "S3:"],
+      "episode_kind": "scene",
+      "role": ["dialogue_turn", "cue_context", "phrase_binding"],
+      "status": "roadmap",
+      "note": "Связь с L3_phrase в cyl_memory"
+    }
+  ],
+  "h_bridges": [
+    {
+      "id": "h_bridge_H1_L1",
+      "from": "H1_surface",
+      "to": "L1_syllable",
+      "kind": "consolidate_strengthen",
+      "trigger": "sleep",
+      "when": "episode.lattice_id == L1_syllable"
+    },
+    {
+      "id": "h_bridge_H1_L2",
+      "from": "H1_surface",
+      "to": "L2_word",
+      "kind": "consolidate_strengthen",
+      "trigger": "sleep",
+      "when": "episode.lattice_id matches L2_word*",
+      "shard_route": "design/l2-lattice-sharding-v0.md"
+    },
+    {
+      "id": "h_bridge_H2_L3",
+      "from": "H2_rule",
+      "to": "L3_phrase",
+      "kind": "consolidate_rule",
+      "trigger": "sleep",
+      "action": "_strengthen_rule"
+    },
+    {
+      "id": "h_bridge_H2_L2",
+      "from": "H2_rule",
+      "to": "L2_word",
+      "kind": "consolidate_compose",
+      "trigger": "sleep",
+      "status": "roadmap"
+    },
+    {
+      "id": "h_bridge_H3_L3",
+      "from": "H3_scene",
+      "to": "L3_phrase",
+      "kind": "consolidate_bind",
+      "trigger": "sleep"
+    },
+    {
+      "id": "h_bridge_H0_io_H1",
+      "from": "H0_io",
+      "to": "H1_surface",
+      "kind": "promote",
+      "trigger": "wake",
+      "status": "roadmap"
+    }
+  ],
+  "replay": {
+    "id": "H_replay_queue",
+    "kind": "scheduler",
+    "not_a_lattice": true,
+    "role": ["sleep_replay_order", "nca_finetune_windows"],
+    "targets": "cyl_memory lattices",
+    "note": "Очередь «что прогнать» на T_sleep; не дословное хранение LTM"
+  },
+  "routing": {
+    "sn": ["active_cylinder", "active_hippo_lattice", "episode_kind_route"],
+    "episode_kind_to_lattice": {
+      "surface": "H1_surface",
+      "rule": "H2_rule",
+      "scene": "H3_scene"
+    },
+    "consolidation": {
+      "doc": "design/multi-cylinder-memory-v0.md",
+      "sleep_fn": "run_sleep",
+      "prune_after_merge": true,
+      "ttl_episodes": null
+    }
+  },
+  "shipment": {
+    "doc": "design/ltm-pack-v0.md",
+    "tier": "B",
+    "format_future": "etm/ (episodic tensor manifest) — roadmap",
+    "exclude_from_ltm_pack_v0": true
+  }
+}

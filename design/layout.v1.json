@@ -1,0 +1,101 @@
+{
+  "schema_version": 2,
+  "grid": { "width": 64, "height": 64 },
+  "parent": "design/layout.v0.json",
+  "notes": "INTERIM: y-bands simulate SSS levels. Target: separate lattices per z_level + z_bridges (sss-lattice-stack.v0.json).",
+  "status": "interim",
+  "superseded_by": "design/sss-lattice-stack.v0.json",
+  "subsystem": {
+    "id": "sss",
+    "title": "Second signal system (вторая сигнальная система)",
+    "doc": "design/second-signal-system-v0.md",
+    "dmn_layers": ["dmn_b0_grapheme", "dmn_b1_syllable", "dmn_b2_word", "dmn_b3_phrase"]
+  },
+  "regions": [
+    {
+      "id": "dmn_b0_grapheme",
+      "title": "Bukvar B0 graphemes",
+      "rect": { "x0": 0, "y0": 48, "x1": 31, "y1": 63 },
+      "role": ["grapheme_layer", "listen", "babble"],
+      "layer": "B0",
+      "channels": { "write": ["tok.grapheme.*"], "read": ["tok.*", "gate.*"] }
+    },
+    {
+      "id": "dmn_b1_syllable",
+      "title": "Bukvar B1 syllables",
+      "rect": { "x0": 0, "y0": 32, "x1": 31, "y1": 47 },
+      "role": ["syllable_layer", "compose"],
+      "layer": "B1",
+      "channels": { "write": ["tok.syllable.*"], "read": ["tok.*", "gate.*"] }
+    },
+    {
+      "id": "dmn_b2_word",
+      "title": "Bukvar B2 words",
+      "rect": { "x0": 0, "y0": 16, "x1": 31, "y1": 31 },
+      "role": ["word_layer"],
+      "layer": "B2",
+      "channels": { "write": ["tok.word.*"], "read": ["tok.*", "gate.*"] }
+    },
+    {
+      "id": "dmn_b3_phrase",
+      "title": "Bukvar B3 phrases (reserved)",
+      "rect": { "x0": 0, "y0": 0, "x1": 31, "y1": 15 },
+      "role": ["phrase_layer"],
+      "layer": "B3",
+      "channels": { "write": ["tok.phrase.*"], "read": ["tok.*", "gate.*"] }
+    },
+    {
+      "id": "sn_router",
+      "title": "Router / Salience (SN-analog)",
+      "rect": { "x0": 32, "y0": 0, "x1": 63, "y1": 31 },
+      "role": ["route_digest", "gate_ports_and_channels", "active_layer"],
+      "channels": {
+        "write": ["gate.*"],
+        "read": ["digest.*", "gate.*", "task.*"],
+        "export_ports": ["p2_sn_to_cen"]
+      }
+    },
+    {
+      "id": "cen_planner",
+      "title": "Planner / Executor (CEN-analog)",
+      "rect": { "x0": 32, "y0": 32, "x1": 63, "y1": 63 },
+      "role": ["consume_digest", "babble", "correct"],
+      "channels": {
+        "write": ["task.*"],
+        "read": ["task.*", "gate.*", "digest.*"],
+        "export_ports": ["p3_cen_to_dmn"]
+      }
+    }
+  ],
+  "ports": [
+    {
+      "id": "p1_dmn_to_sn",
+      "title": "DMN -> SN digest",
+      "from_region": "dmn_b2_word",
+      "to_region": "sn_router",
+      "rect": { "x0": 31, "y0": 22, "x1": 32, "y1": 25 },
+      "channels": ["digest.*"],
+      "direction": "forward"
+    },
+    {
+      "id": "p2_sn_to_cen",
+      "title": "SN -> CEN gate/mode",
+      "from_region": "sn_router",
+      "to_region": "cen_planner",
+      "rect": { "x0": 48, "y0": 31, "x1": 51, "y1": 32 },
+      "channels": ["gate.*"],
+      "direction": "forward"
+    }
+  ],
+  "layer_routing": {
+    "grapheme.": "dmn_b0_grapheme",
+    "syllable.": "dmn_b1_syllable",
+    "lang.word.": "dmn_b2_word",
+    "ru.dialog.": "dmn_b3_phrase"
+  },
+  "channel_groups": [
+    { "pattern": "tok.*", "meaning": "token lattice" },
+    { "pattern": "digest.*", "meaning": "layer-aware digest" },
+    { "pattern": "gate.*", "meaning": "active layer / domain" }
+  ]
+}

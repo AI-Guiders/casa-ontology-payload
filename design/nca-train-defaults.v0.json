@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "title": "NCA train defaults (tuned RTX 4060 8GB, 2026-05-29)",
+  "note": "Structural geometry and batch caps — fixed across runs. Epoch counts are task budgets, not ablation knobs.",
+  "spatial_rule": "tile = field_edge/2, stride = tile/2, ghost = 2 → ~3 tiles/axis on DMN 64² and SSS 32²",
+  "fields": {
+    "dmn": { "width": 64, "height": 64 },
+    "sss_lattice": { "width": 32, "height": 32 }
+  },
+  "windowed": {
+    "ghost": 2,
+    "windows_per_batch": 0,
+    "max_windows_per_batch": 32,
+    "by_field_edge": {
+      "64": { "tile_w": 32, "tile_h": 32, "stride_x": 16, "stride_y": 16 },
+      "32": { "tile_w": 16, "tile_h": 16, "stride_x": 8, "stride_y": 8 }
+    }
+  },
+  "damage": {
+    "mode": "patches",
+    "patches": 6,
+    "patch_w": 8,
+    "patch_h": 8
+  },
+  "device_cuda": {
+    "batch_size_full": 24,
+    "amp": true
+  },
+  "nca": {
+    "dmn": {
+      "steps": 48,
+      "hidden": 192,
+      "channel_extra": 8,
+      "lr": 0.0003,
+      "fire_rate": 0.5,
+      "edge_weight": 5.0
+    },
+    "sss": {
+      "steps": 24,
+      "hidden": 96,
+      "channel_extra": 6,
+      "lr": 0.0002,
+      "fire_rate": 0.5
+    }
+  },
+  "epochs": {
+    "dmn_union_smoke": 600,
+    "dmn_union_full": 1200,
+    "sss_shard_cuda": 80,
+    "sss_monolith": 300
+  },
+  "l2_sharding": {
+    "num_shards": 64,
+    "lex_plan": "corpus_quantile"
+  }
+}

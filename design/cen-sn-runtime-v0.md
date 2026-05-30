@@ -1,7 +1,8 @@
 # CEN / SN runtime contract v0
 
 **Status:** SN/CEN **lab v1** implemented — see `design/sn-cen-lab-v1.md`, `tools/sn_cen_infer.py`  
-**Layout:** `design/layout.v0.json` · overview `design/casa-layout-v0.md`
+**Layout:** `design/layout.v0.json` · overview `design/casa-layout-v0.md`  
+**Термины:** `design/casa-glossary-v0.md` (DMN, SN, CEN, порты P1–P3)
 
 ## DMN (done in PoC)
 
