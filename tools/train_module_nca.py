@@ -177,15 +177,15 @@ def main() -> None:
 
     token_ids = sorted(union_tokens)
     token_to_i = {t: i for i, t in enumerate(token_ids)}
-    k = len(token_ids)
-    channel_n = k + 8
+    token_count = len(token_ids)
+    channel_n = token_count + 8
 
-    token_w = torch.ones(k, device=device)
+    token_w = torch.ones(token_count, device=device)
     if args.edge_weight != 1.0:
         for i, t in enumerate(token_ids):
             if t.startswith("E:"):
                 token_w[i] = float(args.edge_weight)
-    token_w = token_w.view(1, k, 1, 1)
+    token_w = token_w.view(1, token_count, 1, 1)
 
     h, w = 64, 64
     cached_tgt: dict[Path, torch.Tensor] = {}
@@ -203,7 +203,7 @@ def main() -> None:
         )
         target_grid = mask_outside_region(full, rect)
         idx = grid_indices(target_grid, token_to_i)
-        cached_tgt[s.path] = scatter_grid_tensor(idx, k=k, h=h, w=w, device=device)[0]
+        cached_tgt[s.path] = scatter_grid_tensor(idx, token_channels=token_count, h=h, w=w, device=device)[0]
 
     for ms in module_specs:
         g_path = ms.bundle_path
@@ -265,12 +265,12 @@ def main() -> None:
         inp = torch.stack(batch_inp, dim=0)
         w_sp = torch.cat(batch_w, dim=0)
         x = torch.zeros(batch_size, channel_n, h, w, device=device)
-        x[:, :k] = inp
+        x[:, :token_count] = inp
 
         opt.zero_grad(set_to_none=True)
         with torch.autocast(device_type=device.type, enabled=use_amp):
             x = nca_rollout(rule, x, kx, ky, args.steps, args.fire_rate)
-            pred = x[:, :k]
+            pred = x[:, :token_count]
             diff = (pred - tgt).pow(2)
             weight = w_sp * token_w
             loss = (diff * weight).sum() / weight.sum().clamp(min=1e-6)
@@ -297,7 +297,7 @@ def main() -> None:
             )
             ov = float(mask.mean().item())
             x0 = torch.zeros(1, channel_n, 64, 64, device=device)
-            x0[:, :k] = inp
+            x0[:, :token_count] = inp
             with torch.no_grad():
                 xT = nca_rollout_eval(rule, x0, kx, ky, steps=args.steps)
                 grid_logits = _threshold_grid_from_union_state(xT, token_ids=token_ids, threshold=args.threshold)
@@ -349,7 +349,7 @@ def main() -> None:
                 seed=args.seed + 999,
             )
             x0 = torch.zeros(1, channel_n, 64, 64, device=device)
-            x0[:, :k] = inp
+            x0[:, :token_count] = inp
             xT = nca_rollout_eval(rule, x0, kx, ky, steps=args.steps)
             grid_logits = _threshold_grid_from_union_state(xT, token_ids=token_ids, threshold=args.threshold)
             decoded = decode_grid(grid_logits, min_votes=args.min_votes)
@@ -366,7 +366,7 @@ def main() -> None:
         "region": args.region,
         "damage_patches": args.damage_patches,
         "epochs": args.epochs,
-        "token_count_union": k,
+        "token_count_union": token_count,
         "bundles": [str(b) for b in train_paths],
         "model": str(out_model) if args.save_model else None,
         "reports": reports,

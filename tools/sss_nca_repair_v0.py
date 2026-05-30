@@ -22,8 +22,8 @@ def _load_model(path: Path) -> dict[str, Any]:
 
 
 def _threshold_grid(state: torch.Tensor, token_ids: list[str], threshold: float = 0.5) -> dict:
-    k = len(token_ids)
-    x = state[0, :k].detach().cpu().numpy()
+    token_count = len(token_ids)
+    x = state[0, :token_count].detach().cpu().numpy()
     x = np.clip(x, 0.0, 1.0)
     h, w = x.shape[1], x.shape[2]
     cells: list[list[str]] = [[] for _ in range(w * h)]
@@ -49,7 +49,7 @@ def nca_repair_lattice(
 ) -> dict[str, Any]:
     ckpt = _load_model(model_path)
     token_ids: list[str] = list(ckpt["token_ids"])
-    k = len(token_ids)
+    token_count = len(token_ids)
     channel_n = int(ckpt["channel_n"])
     steps = int(ckpt.get("steps") or 24)
     hidden = int(ckpt.get("hidden") or 96)
@@ -66,7 +66,9 @@ def nca_repair_lattice(
     w = int(grid["width"])
     rect = Rect(x0=0, y0=0, x1=w - 1, y1=h - 1)
     token_to_i = {t: i for i, t in enumerate(token_ids)}
-    inp_tok = scatter_grid_tensor(grid_indices(grid, token_to_i), k=k, h=h, w=w, device=torch.device(device))[0]
+    inp_tok = scatter_grid_tensor(
+        grid_indices(grid, token_to_i), token_channels=token_count, h=h, w=w, device=torch.device(device)
+    )[0]
 
     dev = torch.device(device)
     rule = UpdateRule(channel_n=channel_n, hidden=hidden)
@@ -76,7 +78,7 @@ def nca_repair_lattice(
 
     kx, ky = sobel_kernels(dev)
     seed_t = torch.zeros(1, channel_n, h, w, device=dev)
-    seed_t[:, :k] = inp_tok.unsqueeze(0)
+    seed_t[:, :token_count] = inp_tok.unsqueeze(0)
     with torch.no_grad():
         out = nca_rollout_eval(rule, seed_t, kx, ky, steps)
     repaired_grid = _threshold_grid(out, token_ids, threshold=threshold)
@@ -114,7 +116,7 @@ def nca_regrow_lattice(
     """Sleep regrowth: rollout from current lattice (no intentional damage)."""
     ckpt = _load_model(model_path)
     token_ids: list[str] = list(ckpt["token_ids"])
-    k = len(token_ids)
+    token_count = len(token_ids)
     channel_n = int(ckpt["channel_n"])
     steps = int(ckpt.get("steps") or 24)
     hidden = int(ckpt.get("hidden") or 96)
@@ -123,7 +125,9 @@ def nca_regrow_lattice(
     h = int(grid["height"])
     w = int(grid["width"])
     token_to_i = {t: i for i, t in enumerate(token_ids)}
-    inp_tok = scatter_grid_tensor(grid_indices(grid, token_to_i), k=k, h=h, w=w, device=torch.device(device))[0]
+    inp_tok = scatter_grid_tensor(
+        grid_indices(grid, token_to_i), token_channels=token_count, h=h, w=w, device=torch.device(device)
+    )[0]
 
     dev = torch.device(device)
     rule = UpdateRule(channel_n=channel_n, hidden=hidden)
@@ -133,7 +137,7 @@ def nca_regrow_lattice(
 
     kx, ky = sobel_kernels(dev)
     seed_t = torch.zeros(1, channel_n, h, w, device=dev)
-    seed_t[:, :k] = inp_tok.unsqueeze(0)
+    seed_t[:, :token_count] = inp_tok.unsqueeze(0)
     with torch.no_grad():
         out = nca_rollout_eval(rule, seed_t, kx, ky, steps)
     regrown = _threshold_grid(out, token_ids, threshold=threshold)
@@ -175,5 +179,5 @@ def nca_repair_state_lattice(
     lattices[lattice_id] = rep["lattice"]
     state["cylinders"]["cyl_memory"]["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
-    state.setdefault("nca", {})["last_repair"] = {k: v for k, v in rep.items() if k != "lattice"}
+    state.setdefault("nca", {})["last_repair"] = {key: val for key, val in rep.items() if key != "lattice"}
     return rep

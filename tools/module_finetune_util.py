@@ -180,8 +180,8 @@ def finetune_after_import(
         raise RuntimeError(f"no modules to finetune for {bundle_name}")
 
     token_ids = sorted(union_tokens)
-    k = len(token_ids)
-    channel_n = k + 8
+    token_count = len(token_ids)
+    channel_n = token_count + 8
 
     device = resolve_train_device(device_name)
     configure_cuda(device)
@@ -195,13 +195,13 @@ def finetune_after_import(
     else:
         rule, token_ids, channel_n = expand_rule_for_vocab(ckpt, token_ids, hidden=int(ckpt.get("hidden", 192)))
         rule = rule.to(device)
-        k = len(token_ids)
+        token_count = len(token_ids)
 
-    token_w = torch.ones(k, device=device)
+    token_w = torch.ones(token_count, device=device)
     for i, t in enumerate(token_ids):
         if t.startswith("E:"):
             token_w[i] = 5.0
-    token_w = token_w.view(1, k, 1, 1)
+    token_w = token_w.view(1, token_count, 1, 1)
 
     h, w = 64, 64
     token_to_i = {t: i for i, t in enumerate(token_ids)}
@@ -210,7 +210,7 @@ def finetune_after_import(
         full = enc_v3(s.bundle, width=w, height=h, copies=7, concept_mode=concept_mode)
         target_grid = mask_outside_region(full, rect)
         idx = grid_indices(target_grid, token_to_i)
-        cached_tgt[s.path] = scatter_grid_tensor(idx, k=k, h=h, w=w, device=device)[0]
+        cached_tgt[s.path] = scatter_grid_tensor(idx, token_channels=token_count, h=h, w=w, device=device)[0]
 
     module_masks: dict[tuple[str, str], torch.Tensor] = {}
     for ms in module_specs:
@@ -258,12 +258,12 @@ def finetune_after_import(
         inp = torch.stack(batch_inp, dim=0)
         w_sp = torch.cat(batch_w, dim=0)
         x = torch.zeros(batch_size, channel_n, h, w, device=device)
-        x[:, :k] = inp
+        x[:, :token_count] = inp
 
         opt.zero_grad(set_to_none=True)
         with torch.autocast(device_type=device.type, enabled=use_amp):
             x = nca_rollout(rule, x, kx, ky, steps, fire_rate)
-            diff = (x[:, :k] - tgt).pow(2)
+            diff = (x[:, :token_count] - tgt).pow(2)
             weight = w_sp * token_w
             loss = (diff * weight).sum() / weight.sum().clamp(min=1e-6)
 
@@ -288,7 +288,7 @@ def finetune_after_import(
                 module_mask=mask,
             )
             x0 = torch.zeros(1, channel_n, h, w, device=device)
-            x0[:, :k] = inp
+            x0[:, :token_count] = inp
             with torch.no_grad():
                 xT = nca_rollout_eval(rule, x0, kx, ky, steps=steps)
                 grid_logits = _threshold_grid_from_union_state(xT, token_ids=token_ids, threshold=0.5)

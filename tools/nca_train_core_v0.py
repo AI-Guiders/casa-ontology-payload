@@ -50,7 +50,7 @@ def edge_token_weights(
 
 @dataclass
 class NcaTrainerConfig:
-    k: int
+    token_channels: int
     h: int
     w: int
     hidden: int = 96
@@ -71,7 +71,7 @@ class NcaTrainerConfig:
 
     @property
     def channel_n(self) -> int:
-        return self.k + self.channel_extra
+        return self.token_channels + self.channel_extra
 
 
 @dataclass
@@ -149,12 +149,12 @@ def train_epoch_full_field(
     inp = torch.stack(batch_inp, dim=0)
     tgt_b = tgt.unsqueeze(0).expand(batch_size, -1, -1, -1)
     x = torch.zeros(batch_size, cfg.channel_n, cfg.h, cfg.w, device=rt.device)
-    x[:, : cfg.k] = inp
+    x[:, : cfg.token_channels] = inp
 
     rt.opt.zero_grad(set_to_none=True)
     with torch.autocast(device_type=rt.device.type, enabled=rt.use_amp):
         x = nca_rollout(rt.rule, x, rt.kx, rt.ky, cfg.steps, cfg.fire_rate)
-        loss = nn.functional.mse_loss(x[:, : cfg.k], tgt_b)
+        loss = nn.functional.mse_loss(x[:, : cfg.token_channels], tgt_b)
 
     rt.scaler.scale(loss).backward()
     rt.scaler.unscale_(rt.opt)
@@ -205,11 +205,11 @@ def train_epoch_windowed(
     inp_b = torch.stack(crops_i, dim=0)
     mask_b = torch.cat(masks, dim=0)
     x = torch.zeros(windows_per_batch, cfg.channel_n, canvas_h, canvas_w, device=rt.device)
-    x[:, : cfg.k] = inp_b
+    x[:, : cfg.token_channels] = inp_b
 
     with torch.autocast(device_type=rt.device.type, enabled=rt.use_amp):
         x = nca_rollout(rt.rule, x, rt.kx, rt.ky, cfg.steps, cfg.fire_rate)
-        pred = x[:, : cfg.k]
+        pred = x[:, : cfg.token_channels]
         diff = (pred - tgt_b).pow(2)
         if token_w is not None:
             diff = diff * token_w
@@ -237,7 +237,7 @@ def run_nca_training(
     """
     Train recovery NCA on a target field tensor.
 
-    tgt: [K,H,W] token activations (SSS lattice or masked DMN region).
+    tgt: [token_channels, H, W] token activations (SSS lattice or masked DMN region).
     """
     rt = _build_runtime(cfg)
     win = windowed or WindowedTrainConfig()

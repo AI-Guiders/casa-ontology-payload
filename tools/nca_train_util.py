@@ -143,13 +143,13 @@ def grid_indices(grid: dict, token_to_i: dict[str, int]) -> GridIndex:
 def scatter_grid_tensor(
     idx: GridIndex,
     *,
-    k: int,
+    token_channels: int,
     h: int,
     w: int,
     device: torch.device,
     batch: int = 1,
 ) -> torch.Tensor:
-    x = torch.zeros(batch, k, h, w, device=device)
+    x = torch.zeros(batch, token_channels, h, w, device=device)
     if not idx.empty:
         x[0, idx.channel.to(device), idx.y.to(device), idx.x.to(device)] = 1.0
     return x
@@ -158,13 +158,13 @@ def scatter_grid_tensor(
 def scatter_batch_from_indices(
     indices: list[GridIndex],
     *,
-    k: int,
+    token_channels: int,
     h: int,
     w: int,
     device: torch.device,
 ) -> torch.Tensor:
     b = len(indices)
-    x = torch.zeros(b, k, h, w, device=device)
+    x = torch.zeros(b, token_channels, h, w, device=device)
     for bi, idx in enumerate(indices):
         if idx.empty:
             continue

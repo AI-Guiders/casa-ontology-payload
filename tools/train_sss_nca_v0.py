@@ -37,8 +37,8 @@ def _read_json(path: Path) -> dict:
 
 
 def _threshold_grid_from_state(state: torch.Tensor, *, token_ids: list[str], threshold: float = 0.5) -> dict:
-    k = len(token_ids)
-    x = state[0, :k].detach().cpu().numpy()
+    token_count = len(token_ids)
+    x = state[0, :token_count].detach().cpu().numpy()
     x = np.clip(x, 0.0, 1.0)
     h, w = x.shape[1], x.shape[2]
     cells: list[list[str]] = [[] for _ in range(w * h)]
@@ -97,18 +97,20 @@ def main() -> None:
     if not token_ids:
         raise SystemExit("Lattice has no tokens to train on")
 
-    k = len(token_ids)
-    channel_n = k + 6
+    token_count = len(token_ids)
+    channel_n = token_count + 6
     h = int(grid["height"])
     w = int(grid["width"])
     rect = _lattice_rect(lattice)
     token_to_i = {t: i for i, t in enumerate(token_ids)}
-    tgt_tok = scatter_grid_tensor(grid_indices(grid, token_to_i), k=k, h=h, w=w, device=device)[0]
+    tgt_tok = scatter_grid_tensor(
+        grid_indices(grid, token_to_i), token_channels=token_count, h=h, w=w, device=device
+    )[0]
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
     train_cfg = NcaTrainerConfig(
-        k=k,
+        token_channels=token_count,
         h=h,
         w=w,
         hidden=args.hidden,
@@ -153,7 +155,7 @@ def main() -> None:
             tgt_tok, rect, patch_w=args.patch_w, patch_h=args.patch_h, count=args.damage_patches, seed=args.seed + 999
         )
         seed_t = torch.zeros(1, channel_n, h, w, device=device)
-        seed_t[:, :k] = eval_inp.unsqueeze(0)
+        seed_t[:, :token_count] = eval_inp.unsqueeze(0)
         final_x = nca_rollout_eval(rule, seed_t, kx, ky, args.steps)
         grid_final = _threshold_grid_from_state(final_x, token_ids=token_ids, threshold=args.threshold)
 
@@ -164,7 +166,7 @@ def main() -> None:
         "schema_version": 1,
         "lattice_id": args.lattice_id,
         "store": str(args.store_dir),
-        "token_count": k,
+        "token_count": token_count,
         "grid_size": [w, h],
         "epochs": args.epochs,
         "steps": args.steps,

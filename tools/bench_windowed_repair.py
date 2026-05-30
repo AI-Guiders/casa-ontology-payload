@@ -44,7 +44,7 @@ def _eval_mode(
     tgt: torch.Tensor,
     planner: FieldPlannerV0,
     *,
-    k: int,
+    token_channels: int,
     channel_n: int,
     token_ids: list[str],
     bundle: dict,
@@ -68,7 +68,7 @@ def _eval_mode(
             rule,
             tgt,
             planner,
-            k=k,
+            token_channels=token_channels,
             channel_n=channel_n,
             kx=kx,
             ky=ky,
@@ -82,9 +82,9 @@ def _eval_mode(
         )
     else:
         x0 = torch.zeros(1, channel_n, 64, 64, device=device)
-        x0[:, :k] = damaged.unsqueeze(0)
+        x0[:, :token_channels] = damaged.unsqueeze(0)
         xT = nca_rollout_eval(rule, x0, kx, ky, steps=args.steps)
-        pred = xT[0, :k]
+        pred = xT[0, :token_channels]
 
     grid_logits = _threshold_grid_from_union_state(
         pred.unsqueeze(0),
@@ -124,7 +124,7 @@ def main() -> None:
 
     ckpt = torch.load(args.model, map_location="cpu", weights_only=False)
     token_ids: list[str] = list(ckpt["token_ids"])
-    k = len(token_ids)
+    token_count = len(token_ids)
     channel_n = int(ckpt["channel_n"])
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     rule = UpdateRule(channel_n=channel_n, hidden=int(ckpt["hidden"])).to(device)
@@ -145,7 +145,7 @@ def main() -> None:
     full = _encode_bundle(bundle, args)
     grid = mask_outside_region(full, rect)
     idx = grid_indices(grid, token_to_i)
-    tgt = scatter_grid_tensor(idx, k=k, h=64, w=64, device=device)[0]
+    tgt = scatter_grid_tensor(idx, token_channels=token_count, h=64, w=64, device=device)[0]
 
     planner = FieldPlannerV0.from_field_tensor(
         tgt,
@@ -157,10 +157,10 @@ def main() -> None:
     )
 
     mono = _eval_mode(
-        rule, tgt, planner, k=k, channel_n=channel_n, token_ids=token_ids, bundle=bundle, args=args, device=device, windowed=False
+        rule, tgt, planner, token_channels=token_count, channel_n=channel_n, token_ids=token_ids, bundle=bundle, args=args, device=device, windowed=False
     )
     win = _eval_mode(
-        rule, tgt, planner, k=k, channel_n=channel_n, token_ids=token_ids, bundle=bundle, args=args, device=device, windowed=True
+        rule, tgt, planner, token_channels=token_count, channel_n=channel_n, token_ids=token_ids, bundle=bundle, args=args, device=device, windowed=True
     )
 
     def mix(s: dict) -> float:

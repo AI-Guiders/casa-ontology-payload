@@ -144,15 +144,15 @@ def main() -> None:
 
     token_ids = sorted(union_tokens)
     token_to_i = {t: i for i, t in enumerate(token_ids)}
-    k = len(token_ids)
-    channel_n = k + 8
+    token_count = len(token_ids)
+    channel_n = token_count + 8
 
-    token_w = torch.ones(k, device=device)
+    token_w = torch.ones(token_count, device=device)
     if args.edge_weight != 1.0:
         for i, t in enumerate(token_ids):
             if t.startswith("E:"):
                 token_w[i] = float(args.edge_weight)
-    token_w = token_w.view(1, k, 1, 1)
+    token_w = token_w.view(1, token_count, 1, 1)
 
     h, w = 64, 64
     cached_tgt: dict[Path, torch.Tensor] = {}
@@ -183,7 +183,7 @@ def main() -> None:
             full = encode_bundle_to_grid(s.bundle, width=w, height=h, copies=args.copies)
         target_grid = mask_outside_region(full, rect)
         idx = grid_indices(target_grid, token_to_i)
-        tgt = scatter_grid_tensor(idx, k=k, h=h, w=w, device=device)[0]
+        tgt = scatter_grid_tensor(idx, token_channels=token_count, h=h, w=w, device=device)[0]
         cached_tgt[s.path] = tgt
         planners[s.path] = FieldPlannerV0.from_field_tensor(
             tgt,
@@ -263,11 +263,11 @@ def main() -> None:
         inp_b = torch.stack(crops_i, dim=0)
         mask_b = torch.cat(masks, dim=0)
         x = torch.zeros(win_batch, channel_n, canvas_h, canvas_w, device=device)
-        x[:, :k] = inp_b
+        x[:, :token_count] = inp_b
 
         with torch.autocast(device_type=device.type, enabled=use_amp):
             x = nca_rollout(rule, x, kx, ky, args.steps, args.fire_rate)
-            pred = x[:, :k]
+            pred = x[:, :token_count]
             diff = (pred - tgt_b).pow(2) * token_w
             denom = mask_b.sum().clamp(min=1.0)
             loss = (diff * mask_b).sum() / denom
@@ -290,7 +290,7 @@ def main() -> None:
                     rule,
                     cached_tgt[spec.path],
                     planner,
-                    k=k,
+                    token_channels=token_count,
                     channel_n=channel_n,
                     kx=kx,
                     ky=ky,
@@ -366,7 +366,7 @@ def main() -> None:
         "canvas_h": canvas_h,
         "canvas_w": canvas_w,
         "epochs": args.epochs,
-        "token_count_union": k,
+        "token_count_union": token_count,
         "bundles": [str(b) for b in args.bundles],
         "model": str(out_model) if args.save_model else None,
         "best_mix": best_score,

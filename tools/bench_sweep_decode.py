@@ -63,7 +63,7 @@ def main() -> None:
     ckpt = torch.load(args.model, map_location="cpu")
     token_ids = list(ckpt["token_ids"])
     token_to_i = {t: i for i, t in enumerate(token_ids)}
-    k = len(token_ids)
+    token_count = len(token_ids)
     missing = sorted([t for t in bundle_tokens if t not in token_to_i])
     if missing:
         raise SystemExit(f"model missing tokens: {missing[:5]}")
@@ -74,7 +74,7 @@ def main() -> None:
     kx, ky = sobel_kernels(device)
     inp = _grid_to_union_tensor(damaged, token_to_i, device=device)
     x0 = torch.zeros(1, int(ckpt["channel_n"]), 64, 64, device=device)
-    x0[:, :k] = inp
+    x0[:, :token_count] = inp
     with torch.no_grad():
         xT = nca_rollout_eval(rule, x0, kx, ky, steps=args.steps)
 

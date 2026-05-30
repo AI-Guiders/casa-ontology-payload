@@ -40,9 +40,9 @@ def _tokens_for_bundle(bundle: dict) -> list[str]:
 
 def _grid_to_tensor(grid: dict, token_ids: list[str], device: torch.device) -> torch.Tensor:
     w, h = int(grid["width"]), int(grid["height"])
-    k = len(token_ids)
+    token_count = len(token_ids)
     token_to_i = {t: i for i, t in enumerate(token_ids)}
-    x = torch.zeros(1, k, h, w, device=device)
+    x = torch.zeros(1, token_count, h, w, device=device)
     for idx, cell in enumerate(grid["cells"]):
         y = idx // w
         xcoord = idx % w
@@ -59,8 +59,8 @@ def _threshold_grid_from_logits(
     token_ids: list[str],
     threshold: float,
 ) -> dict:
-    k = len(token_ids)
-    x = logits[0, :k].detach().cpu().numpy()  # [K,H,W]
+    token_count = len(token_ids)
+    x = logits[0, :token_count].detach().cpu().numpy()
     x = np.clip(x, 0.0, 1.0)
     h, w = x.shape[1], x.shape[2]
     cells: list[list[str]] = [[] for _ in range(w * h)]
@@ -70,7 +70,7 @@ def _threshold_grid_from_logits(
             on = np.where(x[:, yi, xi] >= threshold)[0]
             if on.size:
                 cells[idx] = [token_ids[int(j)] for j in on]
-    return {"schema_version": 1, "width": w, "height": h, "copies": None, "tokens_count": k, "cells": cells}
+    return {"schema_version": 1, "width": w, "height": h, "copies": None, "tokens_count": token_count, "cells": cells}
 
 
 def _mean_std(xs: list[float]) -> dict:
@@ -100,7 +100,7 @@ def main() -> None:
     rect = _get_region_rect(layout, args.region)
 
     token_ids = _tokens_for_bundle(bundle)
-    k = len(token_ids)
+    token_count = len(token_ids)
 
     full_grid = encode_bundle_to_grid(bundle, width=64, height=64, copies=args.copies)
     target_grid = mask_outside_region(full_grid, rect)
@@ -133,7 +133,7 @@ def main() -> None:
         # nca
         inp = _grid_to_tensor(damaged_grid, token_ids, device=device)
         x0 = torch.zeros(1, channel_n, 64, 64, device=device)
-        x0[:, :k] = inp
+        x0[:, :token_count] = inp
         xT = nca_rollout_eval(rule, x0, kx, ky, steps=args.steps)
         grid_logits = _threshold_grid_from_logits(xT, token_ids=token_ids, threshold=args.threshold)
         decoded_nca = decode_grid(grid_logits, min_votes=args.min_votes)

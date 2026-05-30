@@ -52,8 +52,8 @@ def _tokens_for_bundle(bundle: dict) -> list[str]:
 
 def _grid_to_union_tensor(grid: dict, token_to_i: dict[str, int], device: torch.device) -> torch.Tensor:
     w, h = int(grid["width"]), int(grid["height"])
-    k = len(token_to_i)
-    x = torch.zeros(1, k, h, w, device=device)
+    token_count = len(token_to_i)
+    x = torch.zeros(1, token_count, h, w, device=device)
     for idx, cell in enumerate(grid["cells"]):
         y = idx // w
         xcoord = idx % w
@@ -70,8 +70,8 @@ def _threshold_grid_from_union_state(
     token_ids: list[str],
     threshold: float,
 ) -> dict:
-    k = len(token_ids)
-    x = state[0, :k].detach().cpu().numpy()  # [K,H,W]
+    token_count = len(token_ids)
+    x = state[0, :token_count].detach().cpu().numpy()
     x = np.clip(x, 0.0, 1.0)
     h, w = x.shape[1], x.shape[2]
     cells: list[list[str]] = [[] for _ in range(w * h)]
@@ -81,7 +81,7 @@ def _threshold_grid_from_union_state(
             on = np.where(x[:, yi, xi] >= threshold)[0]
             if on.size:
                 cells[idx] = [token_ids[int(j)] for j in on]
-    return {"schema_version": 1, "width": w, "height": h, "copies": None, "tokens_count": k, "cells": cells}
+    return {"schema_version": 1, "width": w, "height": h, "copies": None, "tokens_count": token_count, "cells": cells}
 
 
 def _mean_std(xs: list[float]) -> dict:
@@ -143,7 +143,7 @@ def main() -> None:
     token_ids = list(ckpt["token_ids"])
     token_to_i = {t: i for i, t in enumerate(token_ids)}
     channel_n = int(ckpt["channel_n"])
-    k = len(token_ids)
+    token_count = len(token_ids)
 
     missing = sorted([t for t in bundle_tokens if t not in token_to_i])
     if missing:
@@ -205,7 +205,7 @@ def main() -> None:
 
         inp = _grid_to_union_tensor(damaged_grid, token_to_i, device=device)
         x0 = torch.zeros(1, channel_n, 64, 64, device=device)
-        x0[:, :k] = inp
+        x0[:, :token_count] = inp
         with torch.no_grad():
             xT = nca_rollout_eval(rule, x0, kx, ky, steps=args.steps)
         grid_logits = _threshold_grid_from_union_state(xT, token_ids=token_ids, threshold=args.threshold)

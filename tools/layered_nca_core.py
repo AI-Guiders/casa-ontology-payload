@@ -149,8 +149,8 @@ def build_digest_target(
     # global max over full grid per token channel
     pooled = target_tok[0, layout.tok_slice].amax(dim=(1, 2))  # [K]
     d = layout.n_digest
-    k = pooled.shape[0]
-    for i in range(min(d, k)):
+    pooled_channels = pooled.shape[0]
+    for i in range(min(d, pooled_channels)):
         val = pooled[i]
         for y in range(h):
             for x in range(w):
@@ -183,17 +183,17 @@ class PhaseCheckpoints:
 def load_dmn_rule(ckpt_path: Path, device: torch.device) -> tuple[UpdateRule, list[str], int, LayeredChannelLayout]:
     ckpt = torch.load(ckpt_path, map_location="cpu")
     token_ids = list(ckpt["token_ids"])
-    k = len(token_ids)
+    token_count = len(token_ids)
     fl = ckpt.get("field_layout")
     if isinstance(fl, dict):
         layout = LayeredChannelLayout(
-            k_tokens=int(fl.get("k_tokens", k)),
+            k_tokens=int(fl.get("k_tokens", token_count)),
             n_digest=int(fl.get("n_digest", 8)),
             n_gate=int(fl.get("n_gate", 4)),
             n_hidden=int(fl.get("n_hidden", 8)),
         )
     else:
-        layout = LayeredChannelLayout(k_tokens=k)
+        layout = LayeredChannelLayout(k_tokens=token_count)
     dm_c = int(ckpt["channel_n"])
     rule = UpdateRule(channel_n=dm_c, hidden=int(ckpt["hidden"])).to(device)
     rule.load_state_dict(ckpt["state_dict"])
@@ -212,21 +212,21 @@ def run_dmn_phase_on_layered(
 ) -> torch.Tensor:
     """Run DMN checkpoint (K+hidden_dm channels) on layered buffer without touching digest/gate."""
     device = x.device
-    k = field_layout.k_tokens
-    h_dm = dm_channel_n - k
+    token_channels = field_layout.k_tokens
+    h_dm = dm_channel_n - token_channels
     h, w = x.shape[2], x.shape[3]
     sub = torch.zeros(1, dm_channel_n, h, w, device=device)
-    sub[:, :k] = x[:, field_layout.tok_slice]
+    sub[:, :token_channels] = x[:, field_layout.tok_slice]
     if h_dm > 0:
-        sub[:, k:] = x[:, field_layout.hidden_slice][:, :h_dm]
+        sub[:, token_channels:] = x[:, field_layout.hidden_slice][:, :h_dm]
     m = spatial_mask_tensor(dmn_rect, h=h, w=w, device=device)
     tok_mask = torch.zeros(dm_channel_n, device=device)
-    tok_mask[:k] = 1.0
+    tok_mask[:token_channels] = 1.0
     tok_mask = tok_mask.view(1, dm_channel_n, 1, 1)
     sub = phase_rollout(dmn_rule, sub, steps=steps, channel_mask=tok_mask, spatial_mask=m, fire_rate=1.0)
-    x[:, field_layout.tok_slice] = sub[:, :k]
+    x[:, field_layout.tok_slice] = sub[:, :token_channels]
     if h_dm > 0:
-        x[:, field_layout.hidden_slice][:, :h_dm] = sub[:, k:]
+        x[:, field_layout.hidden_slice][:, :h_dm] = sub[:, token_channels:]
     return x
 
 

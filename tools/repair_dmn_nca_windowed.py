@@ -23,7 +23,7 @@ def repair_field_windowed(
     tgt: torch.Tensor,
     planner: FieldPlannerV0,
     *,
-    k: int,
+    token_channels: int,
     channel_n: int,
     kx: torch.Tensor,
     ky: torch.Tensor,
@@ -63,7 +63,7 @@ def repair_field_windowed(
             rule,
             damaged,
             tiles,
-            k=k,
+            token_channels=token_channels,
             channel_n=channel_n,
             kx=kx,
             ky=ky,
@@ -77,7 +77,7 @@ def repair_field_windowed(
         rule,
         damaged,
         tiles,
-        k=k,
+        token_channels=token_channels,
         channel_n=channel_n,
         kx=kx,
         ky=ky,
@@ -92,7 +92,7 @@ def _repair_serial(
     damaged: torch.Tensor,
     tiles: list,
     *,
-    k: int,
+    token_channels: int,
     channel_n: int,
     kx: torch.Tensor,
     ky: torch.Tensor,
@@ -101,16 +101,16 @@ def _repair_serial(
     device: torch.device,
 ) -> torch.Tensor:
     h, w = int(damaged.shape[-2]), int(damaged.shape[-1])
-    accum = torch.zeros(k, h, w, device=device)
+    accum = torch.zeros(token_channels, h, w, device=device)
     weight = torch.zeros(1, h, w, device=device)
 
     for tile in tiles:
         crop_d, ox, oy = crop_with_ghost(damaged, tile, ghost)
         ch, cw = crop_d.shape[-2], crop_d.shape[-1]
         x = torch.zeros(1, channel_n, ch, cw, device=device)
-        x[:, :k] = crop_d.unsqueeze(0)
+        x[:, :token_channels] = crop_d.unsqueeze(0)
         xT = nca_rollout_eval(rule, x, kx, ky, steps=steps)
-        pred = xT[0, :k]
+        pred = xT[0, :token_channels]
         blend = merge_weight_map(tile, ch, cw, ox, oy, device)[0]
         paste_crop_blended(accum, weight, pred, tile, ox, oy, blend)
 
@@ -122,7 +122,7 @@ def _repair_batched(
     damaged: torch.Tensor,
     tiles: list,
     *,
-    k: int,
+    token_channels: int,
     channel_n: int,
     kx: torch.Tensor,
     ky: torch.Tensor,
@@ -149,13 +149,13 @@ def _repair_batched(
 
     batch = torch.stack(crops, dim=0)
     x = torch.zeros(batch.shape[0], channel_n, canvas_h, canvas_w, device=device)
-    x[:, :k] = batch
+    x[:, :token_channels] = batch
     xT = nca_rollout_eval(rule, x, kx, ky, steps=steps)
 
-    accum = torch.zeros(k, h, w, device=device)
+    accum = torch.zeros(token_channels, h, w, device=device)
     weight = torch.zeros(1, h, w, device=device)
     for i, (tile, fx0, fy0) in enumerate(meta):
-        pred = xT[i, :k]
+        pred = xT[i, :token_channels]
         blend = merge_weight_map(tile, canvas_h, canvas_w, fx0, fy0, device)[0]
         paste_crop_blended(accum, weight, pred, tile, fx0, fy0, blend)
 

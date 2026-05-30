@@ -108,11 +108,11 @@ def _quick_bench(bundle: dict, model_path: Path, *, layout: dict, device) -> dic
     rule.load_state_dict(ckpt["state_dict"])
     rule.eval()
 
-    k = len(token_ids)
+    token_count = len(token_ids)
     token_to_i = {t: i for i, t in enumerate(token_ids)}
     inp = _grid_to_union_tensor(damaged, token_to_i, device)
     x0 = torch.zeros(1, ch, 64, 64, device=device)
-    x0[:, :k] = inp
+    x0[:, :token_count] = inp
     kx, ky = sobel_kernels(device)
     with torch.no_grad():
         xT = nca_rollout_eval(rule, x0, kx, ky, steps=48)

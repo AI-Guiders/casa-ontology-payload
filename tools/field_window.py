@@ -200,7 +200,7 @@ def paste_crop_blended(
     Add ``pred`` token channels into global ``accum`` / ``weight`` ([K,H,W]).
     ``pred`` and ``blend`` are crop-sized; only tile interior is written.
     """
-    k, ch, cw = pred.shape[0], pred.shape[-2], pred.shape[-1]
+    token_channels, ch, cw = pred.shape[0], pred.shape[-2], pred.shape[-1]
     ix0 = tile.x0 - crop_origin_x
     iy0 = tile.y0 - crop_origin_y
     gy0, gx0 = tile.y0, tile.x0

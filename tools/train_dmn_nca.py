@@ -53,8 +53,8 @@ def _threshold_grid_from_state(
     state: [1, C, H, W] where first K channels are token logits in [0,1] (we clamp).
     returns grid dict compatible with decode_grid().
     """
-    k = len(token_ids)
-    x = state[0, :k].detach().cpu().numpy()  # [K,H,W]
+    token_count = len(token_ids)
+    x = state[0, :token_count].detach().cpu().numpy()
     x = np.clip(x, 0.0, 1.0)
     h, w = x.shape[1], x.shape[2]
     cells: list[list[str]] = [[] for _ in range(w * h)]
@@ -64,7 +64,7 @@ def _threshold_grid_from_state(
             on = np.where(x[:, yi, xi] >= threshold)[0]
             if on.size:
                 cells[idx] = [token_ids[int(j)] for j in on]
-    return {"schema_version": 1, "width": w, "height": h, "copies": None, "tokens_count": k, "cells": cells}
+    return {"schema_version": 1, "width": w, "height": h, "copies": None, "tokens_count": token_count, "cells": cells}
 
 
 def sobel_kernels(device: torch.device) -> tuple[torch.Tensor, torch.Tensor]:
@@ -126,9 +126,9 @@ def _tokens_for_bundle(bundle: dict) -> list[str]:
 
 def _grid_to_tensor(grid: dict, token_ids: list[str], device: torch.device) -> torch.Tensor:
     w, h = int(grid["width"]), int(grid["height"])
-    k = len(token_ids)
+    token_count = len(token_ids)
     token_to_i = {t: i for i, t in enumerate(token_ids)}
-    x = torch.zeros(1, k, h, w, device=device)
+    x = torch.zeros(1, token_count, h, w, device=device)
     for idx, cell in enumerate(grid["cells"]):
         y = idx // w
         xcoord = idx % w
@@ -170,14 +170,16 @@ def main() -> None:
     rect = _get_region_rect(layout, args.region)
 
     token_ids = _tokens_for_bundle(bundle)
-    k = len(token_ids)
-    channel_n = k + 8  # add a few hidden channels
+    token_count = len(token_ids)
+    channel_n = token_count + 8  # add a few hidden channels
 
     # Create target grid (full), then DMN-only masked, then damaged input.
     full_grid = encode_bundle_to_grid(bundle, width=64, height=64, copies=args.copies)
     target_grid = mask_outside_region(full_grid, rect)
     token_to_i = {t: i for i, t in enumerate(token_ids)}
-    tgt_tok = scatter_grid_tensor(grid_indices(target_grid, token_to_i), k=k, h=64, w=64, device=device)[0]
+    tgt_tok = scatter_grid_tensor(
+        grid_indices(target_grid, token_to_i), token_channels=token_count, h=64, w=64, device=device
+    )[0]
 
     kx, ky = sobel_kernels(device)
     rule = UpdateRule(channel_n=channel_n, hidden=args.hidden).to(device)
@@ -204,12 +206,12 @@ def main() -> None:
         inp = torch.stack(batch_inp, dim=0)
         tgt = tgt_tok.unsqueeze(0).expand(batch_size, -1, -1, -1)
         x = torch.zeros(batch_size, channel_n, 64, 64, device=device)
-        x[:, :k] = inp
+        x[:, :token_count] = inp
 
         opt.zero_grad(set_to_none=True)
         with torch.autocast(device_type=device.type, enabled=use_amp):
             x = nca_rollout(rule, x, kx, ky, args.steps, args.fire_rate)
-            pred = x[:, :k]
+            pred = x[:, :token_count]
             loss = nn.functional.mse_loss(pred, tgt)
 
         scaler.scale(loss).backward()
@@ -223,7 +225,7 @@ def main() -> None:
                 tgt_tok, rect, patch_w=8, patch_h=8, count=6, seed=args.damage_seed + 12345
             )
             seed = torch.zeros(1, channel_n, 64, 64, device=device)
-            seed[:, :k] = eval_inp.unsqueeze(0)
+            seed[:, :token_count] = eval_inp.unsqueeze(0)
             with torch.no_grad():
                 eval_x = nca_rollout_eval(rule, seed, kx, ky, args.steps)
                 grid_eval = _threshold_grid_from_state(eval_x, token_ids=token_ids, threshold=args.threshold)
@@ -232,7 +234,7 @@ def main() -> None:
                 f1 = float(score["concepts"]["f1"] * 0.6 + score["edges"]["f1"] * 0.4)
                 if f1 > best_f1:
                     best_f1 = f1
-                    best_state = {k: v.detach().clone() for k, v in rule.state_dict().items()}
+                    best_state = {name: v.detach().clone() for name, v in rule.state_dict().items()}
                 print(f"epoch {epoch:4d} loss={loss.item():.6f} f1mix={f1:.3f} concepts={score['concepts']['f1']:.3f} edges={score['edges']['f1']:.3f}")
 
     if best_state is not None:
@@ -242,7 +244,7 @@ def main() -> None:
     with torch.no_grad():
         final_inp = damage_tensor_patches(tgt_tok, rect, patch_w=8, patch_h=8, count=6, seed=args.damage_seed + 999)
         seed = torch.zeros(1, channel_n, 64, 64, device=device)
-        seed[:, :k] = final_inp.unsqueeze(0)
+        seed[:, :token_count] = final_inp.unsqueeze(0)
         final_x = nca_rollout_eval(rule, seed, kx, ky, args.steps)
         grid_final = _threshold_grid_from_state(final_x, token_ids=token_ids, threshold=args.threshold)
         decoded = decode_grid(grid_final, min_votes=args.min_votes)
@@ -255,7 +257,7 @@ def main() -> None:
             "damage": args.damage,
             "steps": args.steps,
             "epochs": args.epochs,
-            "token_count": k,
+            "token_count": token_count,
             "decoded": decoded,
             "score": score,
         }

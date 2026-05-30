@@ -58,11 +58,11 @@ def _run_dmn_repair(
     damaged = damage_region_patches(target, rect, patch_w=8, patch_h=8, count=damage_patches, seed=seed)
 
     rule, token_ids, ch = _load_dmn(model_path, device)
-    k = len(token_ids)
+    token_count = len(token_ids)
     token_to_i = {t: i for i, t in enumerate(token_ids)}
     inp = _grid_to_union_tensor(damaged, token_to_i, device)
     x0 = torch.zeros(1, ch, 64, 64, device=device)
-    x0[:, :k] = inp
+    x0[:, :token_count] = inp
     kx, ky = sobel_kernels(device)
     with torch.no_grad():
         xT = nca_rollout_eval(rule, x0, kx, ky, steps=steps)

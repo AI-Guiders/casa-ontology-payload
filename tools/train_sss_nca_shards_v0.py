@@ -30,7 +30,7 @@ def main() -> None:
     )
     p.add_argument("--layer", default="L2", help="L2 | L1 | all")
     p.add_argument("--epochs", type=int, default=epoch_budget("sss_shard_cuda"))
-    p.add_argument("--max-tokens", type=int, default=4096, help="Skip shards above this k")
+    p.add_argument("--max-tokens", type=int, default=4096, help="Skip shards above this token count")
     p.add_argument("--min-tokens", type=int, default=8)
     _dmg = damage_defaults()
     p.add_argument("--damage-patches", type=int, default=_dmg["damage_patches"])
@@ -56,14 +56,14 @@ def main() -> None:
     results: list[dict] = []
     for lid in targets:
         lat = lattices.get(lid) or {}
-        k = len(tokens_from_lattice(lat))
-        row = {"lattice_id": lid, "token_count": k, "trained": False, "skipped": False}
-        if k < args.min_tokens:
+        token_count = len(tokens_from_lattice(lat))
+        row = {"lattice_id": lid, "token_count": token_count, "trained": False, "skipped": False}
+        if token_count < args.min_tokens:
             row["skipped"] = True
             row["reason"] = "min_tokens"
             results.append(row)
             continue
-        if is_l2_word_lattice(lid) and k > args.max_tokens:
+        if is_l2_word_lattice(lid) and token_count > args.max_tokens:
             row["skipped"] = True
             row["reason"] = "max_tokens"
             results.append(row)
@@ -115,6 +115,16 @@ def main() -> None:
                 shutil.copy2(model, store_nca / "model.pt")
             set_nca_model(state, lid, str((store_nca / "model.pt").resolve()))
             row["trained"] = (store_nca / "model.pt").is_file()
+            if row["trained"]:
+                from nca_registry_v0 import mark_lattice_trained, repair_smoke_ratio  # type: ignore
+
+                ratio = repair_smoke_ratio(lat, store_nca / "model.pt")
+                row["registry"] = mark_lattice_trained(
+                    args.store_dir,
+                    state,
+                    lid,
+                    repair_ratio=ratio,
+                )
         results.append(row)
 
     from field_write import save_field_state  # type: ignore
