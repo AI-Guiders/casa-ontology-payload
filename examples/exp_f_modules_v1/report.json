@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "experiment": "F_module_dmn_v1",
+  "epochs": 600,
+  "damage": 0.4,
+  "modules_manifest": "manifests\\kb-modules.v0.json",
+  "clusters": [
+    {
+      "cluster": "goals",
+      "model": "examples\\exp_f_modules_v1\\goals\\model.pt",
+      "train_mode": "module_masked_v0",
+      "module_count": 18,
+      "bundles": [
+        "casa-goals.bundle.v1.json",
+        "casa-adr-0001.bundle.v1.json",
+        "ontology-poc-findings.bundle.v1.json"
+      ],
+      "mean_delta_mix": 0.07700033300033297,
+      "nca_wins": 1,
+      "bench_rows": [
+        {
+          "bundle": "casa-goals.bundle.v1.json",
+          "delta_mix": -0.014332334332334384,
+          "nca_wins": false,
+          "baseline_mix": 0.8569696969696969,
+          "nca_mix": 0.8426373626373626
+        },
+        {
+          "bundle": "casa-adr-0001.bundle.v1.json",
+          "delta_mix": 0.4,
+          "nca_wins": true,
+          "baseline_mix": 0.6,
+          "nca_mix": 1.0
+        },
+        {
+          "bundle": "ontology-poc-findings.bundle.v1.json",
+          "delta_mix": -0.15466666666666673,
+          "nca_wins": false,
+          "baseline_mix": 0.9946666666666667,
+          "nca_mix": 0.84
+        }
+      ]
+    },
+    {
+      "cluster": "research",
+      "model": "examples\\exp_f_modules_v1\\research\\model.pt",
+      "train_mode": "module_masked_v0",
+      "module_count": 22,
+      "bundles": [
+        "research-ml.bundle.v1.json",
+        "research-tda-flow.bundle.v1.json",
+        "research-training.bundle.v1.json"
+      ],
+      "mean_delta_mix": -0.48136357106945354,
+      "nca_wins": 1,
+      "bench_rows": [
+        {
+          "bundle": "research-ml.bundle.v1.json",
+          "delta_mix": 0.05457595345830629,
+          "nca_wins": true,
+          "baseline_mix": 0.3840000000000001,
+          "nca_mix": 0.4385759534583064
+        },
+        {
+          "bundle": "research-tda-flow.bundle.v1.json",
+          "delta_mix": -0.8488888888888889,
+          "nca_wins": false,
+          "baseline_mix": 0.9822222222222222,
+          "nca_mix": 0.13333333333333333
+        },
+        {
+          "bundle": "research-training.bundle.v1.json",
+          "delta_mix": -0.649777777777778,
+          "nca_wins": false,
+          "baseline_mix": 0.9164444444444446,
+          "nca_mix": 0.26666666666666666
+        }
+      ]
+    },
+    {
+      "cluster": "ops",
+      "model": "examples\\exp_f_modules_v1\\ops\\model.pt",
+      "train_mode": "module_masked_v0",
+      "module_count": 13,
+      "bundles": [
+        "playbook-tda-flow.bundle.v1.json",
+        "kb-distill-nca.bundle.v1.json"
+      ],
+      "mean_delta_mix": 0.0,
+      "nca_wins": 2,
+      "bench_rows": [
+        {
+          "bundle": "playbook-tda-flow.bundle.v1.json",
+          "delta_mix": 0.0,
+          "nca_wins": true,
+          "baseline_mix": 0.9276190476190476,
+          "nca_mix": 0.9276190476190476
+        },
+        {
+          "bundle": "kb-distill-nca.bundle.v1.json",
+          "delta_mix": 0.0,
+          "nca_wins": true,
+          "baseline_mix": 0.7252525252525253,
+          "nca_mix": 0.7252525252525253
+        }
+      ]
+    }
+  ]
+}

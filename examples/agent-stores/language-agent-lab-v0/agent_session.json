@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "wm": {
+    "tick": 3,
+    "goal": "согласно приказу как правильно",
+    "mode": "kb_query",
+    "stack": [],
+    "last_action": "open_kb",
+    "last_query": "согласно приказу как правильно"
+  },
+  "last_tick_reports": 3
+}

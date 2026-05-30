@@ -1,0 +1,20 @@
+{"query": "сделай приложение которое складывает два введённых целых", "expect_any": ["сумм", "TryParse", "два"]}
+{"query": "пользователь вводит a и b нужно вывести a плюс b", "expect_any": ["сумм", "два", "ReadLine"]}
+{"query": "add two ints from stdin", "expect_any": ["sum", "два", "int"]}
+{"query": "программа спрашивает как тебя зовут и здоровается", "expect_any": ["имя", "Hello", "ReadLine"]}
+{"query": "hello with user name from console input", "expect_any": ["name", "Hello", "ReadLine"]}
+{"query": "выведи семёрку умножить на 1 2 3 до 10", "expect_any": ["умнож", "for", "7"]}
+{"query": "multiplication table for seven in a loop", "expect_any": ["for", "умнож", "10"]}
+{"query": "найди наибольшее среди трёх введённых", "expect_any": ["максим", "трёх", "if"]}
+{"query": "max of three numbers console", "expect_any": ["max", "трёх", "three"]}
+{"query": "загадай число от 1 до 100 пока не угадают", "expect_any": ["Random", "secret", "while"]}
+{"query": "guess number higher lower until correct", "expect_any": ["Higher", "Random", "while"]}
+{"query": "меню 1 привет 2 дата 0 выход", "expect_any": ["switch", "меню", "case"]}
+{"query": "повторяй меню пока не выберут ноль", "expect_any": ["switch", "меню", "0"]}
+{"query": "введи n и выведи все числа 1..n", "expect_any": ["for", "N", "счёт"]}
+{"query": "count from 1 to entered n", "expect_any": ["for", "N", "1"]}
+{"query": "введи сколько оценок потом среднее", "expect_any": ["средн", "оцен", "sum"]}
+{"query": "average of school grades program", "expect_any": ["avg", "grades", "средн"]}
+{"query": "не используй массив только цикл для среднего", "expect_any": ["без", "массив", "средн"]}
+{"query": "объясни что такое TryParse простыми словами", "expect_any": ["TryParse", "числ", "ReadLine"]}
+{"query": "чем Write отличается от WriteLine", "expect_any": ["WriteLine", "Write", "перевод"]}

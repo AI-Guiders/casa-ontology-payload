@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "pipeline": "import_knowledge_delta_v2",
+  "timestamp": "2026-05-29T10:28:11.213017+00:00",
+  "delta": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\agent-stores\\code-agent-lab-v0\\_kb_sync_delta.json",
+  "source_agent_id": "kb-sync",
+  "target_cluster": "research",
+  "bundle": "kb-csharp-guess-number-canonical.bundle.v1.json",
+  "action": "replace",
+  "store_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\agent-stores\\code-agent-lab-v0",
+  "field_state": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\agent-stores\\code-agent-lab-v0\\field_state.json",
+  "field_version": 4,
+  "union_bundles": [
+    "kb-csharp-console-grade8.bundle.v1.json",
+    "kb-csharp-guess-number-canonical.bundle.v1.json"
+  ],
+  "concept_count": 12,
+  "digest": {
+    "summary": "kb_sync kb-csharp-guess-number-canonical.bundle.v1.json",
+    "added_concept_ids": [
+      "lang.ru.kb_csharp_guess_number_canonical.c_canonical_guess_the_number_console.001",
+      "lang.ru.kb_csharp_guess_number_canonical.c_canonical_guess_the_number_console.002",
+      "lang.ru.kb_csharp_guess_number_canonical.c_canonical_guess_the_number_console_c_b.006",
+      "lang.ru.kb_csharp_guess_number_canonical.c_canonical_guess_the_number_console_c_b.007",
+      "lang.ru.kb_csharp_guess_number_canonical.c_canonical_guess_the_number_console_c_b.008",
+      "lang.ru.kb_csharp_guess_number_canonical.c_canonical_guess_the_number_console_c_b.009",
+      "lang.ru.kb_csharp_guess_number_canonical.c_canonical_guess_the_number_console_gam.003",
+      "lang.ru.kb_csharp_guess_number_canonical.c_canonical_guess_the_number_console_gam.004",
+      "lang.ru.kb_csharp_guess_number_canonical.c_canonical_guess_the_number_console_gam.005",
+      "lang.ru.kb_csharp_guess_number_canonical.c_canonical_guess_the_number_console_ref.012",
+      "lang.ru.kb_csharp_guess_number_canonical.c_canonical_guess_the_number_console_str.010",
+      "lang.ru.kb_csharp_guess_number_canonical.c_canonical_guess_the_number_console_str.011"
+    ],
+    "tier": "easy"
+  },
+  "checkpoint_copied": null,
+  "finetune": null,
+  "bench": null,
+  "requires_ok": true
+}

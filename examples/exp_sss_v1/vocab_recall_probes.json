@@ -1,0 +1,7 @@
+[
+  {"scene_id": "s2", "word": "кот", "note": "Кот сидит дома"},
+  {"scene_id": "s2", "word": "дом", "note": "caption mentions дом"},
+  {"scene_id": "s3", "word": "сад", "note": "Кот бежит в сад"},
+  {"scene_id": "s4", "word": "мама", "note": "Мама зовёт кота"},
+  {"scene_id": "s1", "word": "папа", "note": "Мама и папа"}
+]

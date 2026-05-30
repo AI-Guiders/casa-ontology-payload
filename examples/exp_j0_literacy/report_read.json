@@ -1,0 +1,112 @@
+{
+  "store": "examples\\agent-stores\\language-agent-lab-v0",
+  "queries": 15,
+  "answer_at_1": 1.0,
+  "results": [
+    {
+      "query": "что значит напиши программу для агента",
+      "hit": true,
+      "wall_ms": 43.24,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "объясни и найди в KB разница",
+      "hit": true,
+      "wall_ms": 18.56,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "исправь ошибку компиляции что делать",
+      "hit": true,
+      "wall_ms": 15.77,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "сумма двух чисел консоль",
+      "hit": true,
+      "wall_ms": 10.47,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "сложи два целых с клавиатуры",
+      "hit": true,
+      "wall_ms": 8.99,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "поздороваться спросить имя пользователя",
+      "hit": true,
+      "wall_ms": 11.59,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "таблица умножения на 7 цикл",
+      "hit": true,
+      "wall_ms": 9.43,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "большее из трёх чисел if",
+      "hit": true,
+      "wall_ms": 12.55,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "игра угадай число больше меньше",
+      "hit": true,
+      "wall_ms": 11.44,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "консольное меню switch выход",
+      "hit": true,
+      "wall_ms": 7.99,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "напечатать числа от 1 до N",
+      "hit": true,
+      "wall_ms": 11.28,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "средний балл оценок программа",
+      "hit": true,
+      "wall_ms": 7.94,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "write console app two integers sum",
+      "hit": true,
+      "wall_ms": 7.94,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "как отвечать пользователю связным текстом",
+      "hit": true,
+      "wall_ms": 8.44,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "перефраз тот же смысл другие слова",
+      "hit": true,
+      "wall_ms": 8.68,
+      "action": "open_kb",
+      "blocks": 3
+    }
+  ]
+}

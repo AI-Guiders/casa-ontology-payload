@@ -1,0 +1,16 @@
+{
+  "title": "Kolb segment: встреча → internal reconcile → held-out",
+  "experience": {
+    "word": "встреча"
+  },
+  "reflection": {
+    "include_ce": true
+  },
+  "conceptualization": {
+    "internal_repair": true,
+    "sleep": true
+  },
+  "experiment": {
+    "words": ["второй", "привет", "стрела", "молоко", "задача"]
+  }
+}

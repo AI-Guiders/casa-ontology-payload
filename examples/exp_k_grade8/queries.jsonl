@@ -1,0 +1,25 @@
+{"query": "что такое консольная программа C# Main", "expect_substr": "Main", "optional": false}
+{"query": "Console WriteLine и Write разница", "expect_substr": "WriteLine", "optional": false}
+{"query": "переменная int string bool C#", "expect_substr": "int", "optional": false}
+{"query": "как ввести число с клавиатуры TryParse", "expect_substr": "TryParse", "optional": false}
+{"query": "if else ветвление C# пример", "expect_substr": "if", "optional": false}
+{"query": "цикл while break continue", "expect_substr": "while", "optional": false}
+{"query": "цикл for таблица умножения", "expect_substr": "for", "optional": false}
+{"query": "switch меню консоль", "expect_substr": "switch", "optional": false}
+{"query": "Random Next диапазон 1 100", "expect_substr": "Next", "optional": false}
+{"query": "static метод return C#", "expect_substr": "static", "optional": false}
+{"query": "массив оценок среднее double", "expect_substr": "Length", "optional": false}
+{"query": "Hello World первая программа C#", "expect_substr": "Hello", "optional": false}
+{"query": "программа поздороваться с именем ReadLine", "expect_substr": "ReadLine", "optional": false}
+{"query": "сумма двух чисел консоль C#", "expect_substr": "Sum", "optional": false}
+{"query": "напечатать таблицу умножения на 7", "expect_substr": "10", "optional": false}
+{"query": "максимум из трёх чисел if", "expect_substr": "max", "optional": false}
+{"query": "C# игра угадай число больше меньше", "expect_substr": "secret", "optional": false}
+{"query": "консольное меню switch выход 0", "expect_substr": "case 0", "optional": false}
+{"query": "счётчик от 1 до N for", "expect_substr": "for", "optional": false}
+{"query": "среднее оценок цикл sum", "expect_substr": "avg", "optional": false}
+{"query": "ошибка компиляции точка с запятой expected", "expect_substr": "expected", "optional": false}
+{"query": "Random Next верхняя граница исключается 101", "expect_substr": "101", "optional": false}
+{"query": "как учить C# школьнику куррикула", "expect_substr": "куррикул", "optional": false}
+{"query": "dotnet build run консоль", "expect_substr": "dotnet build", "optional": false}
+{"query": "педагогика компилятор обратная связь", "expect_substr": "компилятор", "optional": false}

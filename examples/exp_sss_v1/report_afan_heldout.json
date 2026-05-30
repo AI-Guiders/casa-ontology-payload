@@ -1,0 +1,441 @@
+{
+  "store": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\agent-stores\\sss-afan-v0",
+  "schema_version": "multi_cylinder_v1",
+  "field_version": 710683,
+  "ablate_claims_nav": true,
+  "top_k": 3,
+  "passed": 12,
+  "total": 13,
+  "pass_rate": 0.9231,
+  "cases": [
+    {
+      "id": "bukvar_pa",
+      "cue": "п а",
+      "target": "па",
+      "concept_id": "syllable.па",
+      "top_concept": {
+        "concept_id": "syllable.пап",
+        "surface": "пап",
+        "votes": 54
+      },
+      "babble_surface": "пап",
+      "rank": 2,
+      "votes": 54,
+      "top1_match": false,
+      "topk_match": true,
+      "target_match": false,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "syllable.пап",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.па",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.а",
+          "votes": 54
+        }
+      ]
+    },
+    {
+      "id": "bukvar_mo",
+      "cue": "м о",
+      "target": "мо",
+      "concept_id": "syllable.мо",
+      "top_concept": {
+        "concept_id": "syllable.мо",
+        "surface": "мо",
+        "votes": 54
+      },
+      "babble_surface": "мо",
+      "rank": 1,
+      "votes": 54,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "syllable.мо",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.а",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.ба",
+          "votes": 54
+        }
+      ]
+    },
+    {
+      "id": "bukvar_no",
+      "cue": "н о",
+      "target": "но",
+      "concept_id": "syllable.но",
+      "top_concept": {
+        "concept_id": "syllable.но",
+        "surface": "но",
+        "votes": 54
+      },
+      "babble_surface": "но",
+      "rank": 1,
+      "votes": 54,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "syllable.но",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.а",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.ба",
+          "votes": 54
+        }
+      ]
+    },
+    {
+      "id": "bukvar_mama",
+      "cue": "м а м а",
+      "target": "мама",
+      "concept_id": "lang.word.мама",
+      "top_concept": {
+        "concept_id": "lang.word.мама",
+        "surface": "мама",
+        "votes": 59
+      },
+      "babble_surface": "мама",
+      "rank": 1,
+      "votes": 59,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "lang.word.мама",
+          "votes": 59
+        },
+        {
+          "concept_id": "lang.word.и",
+          "votes": 6877
+        },
+        {
+          "concept_id": "lang.word.в",
+          "votes": 5728
+        }
+      ]
+    },
+    {
+      "id": "afan_de",
+      "cue": "д е",
+      "target": "де",
+      "concept_id": "syllable.де",
+      "top_concept": {
+        "concept_id": "syllable.де",
+        "surface": "де",
+        "votes": 54
+      },
+      "babble_surface": "де",
+      "rank": 1,
+      "votes": 54,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "syllable.де",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.а",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.ба",
+          "votes": 54
+        }
+      ]
+    },
+    {
+      "id": "afan_by",
+      "cue": "б ы",
+      "target": "бы",
+      "concept_id": "syllable.бы",
+      "top_concept": {
+        "concept_id": "syllable.бы",
+        "surface": "бы",
+        "votes": 54
+      },
+      "babble_surface": "бы",
+      "rank": 1,
+      "votes": 54,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "syllable.бы",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.а",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.ба",
+          "votes": 54
+        }
+      ]
+    },
+    {
+      "id": "afan_go",
+      "cue": "г о",
+      "target": "го",
+      "concept_id": "syllable.го",
+      "top_concept": {
+        "concept_id": "syllable.го",
+        "surface": "го",
+        "votes": 54
+      },
+      "babble_surface": "го",
+      "rank": 1,
+      "votes": 54,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "syllable.го",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.а",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.ба",
+          "votes": 54
+        }
+      ]
+    },
+    {
+      "id": "afan_vo",
+      "cue": "в о",
+      "target": "во",
+      "concept_id": "syllable.во",
+      "top_concept": {
+        "concept_id": "syllable.во",
+        "surface": "во",
+        "votes": 54
+      },
+      "babble_surface": "во",
+      "rank": 1,
+      "votes": 54,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "syllable.во",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.а",
+          "votes": 54
+        },
+        {
+          "concept_id": "syllable.ба",
+          "votes": 54
+        }
+      ]
+    },
+    {
+      "id": "afan_kolobok_word",
+      "cue": "колобок",
+      "target": "колобок",
+      "concept_id": "lang.word.колобок",
+      "top_concept": {
+        "concept_id": "lang.word.колобок",
+        "surface": "колобок",
+        "votes": 63
+      },
+      "babble_surface": "колобок",
+      "rank": 1,
+      "votes": 63,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "lang.word.колобок",
+          "votes": 63
+        },
+        {
+          "concept_id": "lang.word.и",
+          "votes": 6877
+        },
+        {
+          "concept_id": "lang.word.в",
+          "votes": 5728
+        }
+      ]
+    },
+    {
+      "id": "afan_zayac_word",
+      "cue": "заяц",
+      "target": "заяц",
+      "concept_id": "lang.word.заяц",
+      "top_concept": {
+        "concept_id": "lang.word.заяц",
+        "surface": "заяц",
+        "votes": 176
+      },
+      "babble_surface": "заяц",
+      "rank": 1,
+      "votes": 176,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "lang.word.заяц",
+          "votes": 176
+        },
+        {
+          "concept_id": "lang.word.и",
+          "votes": 6877
+        },
+        {
+          "concept_id": "lang.word.в",
+          "votes": 5728
+        }
+      ]
+    },
+    {
+      "id": "afan_volk_word",
+      "cue": "волк",
+      "target": "волк",
+      "concept_id": "lang.word.волк",
+      "top_concept": {
+        "concept_id": "lang.word.волк",
+        "surface": "волк",
+        "votes": 893
+      },
+      "babble_surface": "волк",
+      "rank": 1,
+      "votes": 893,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "lang.word.волк",
+          "votes": 893
+        },
+        {
+          "concept_id": "lang.word.и",
+          "votes": 6877
+        },
+        {
+          "concept_id": "lang.word.в",
+          "votes": 5728
+        }
+      ]
+    },
+    {
+      "id": "oov_klass",
+      "cue": "к л а с с",
+      "target": "класс",
+      "concept_id": "lang.word.класс",
+      "top_concept": {
+        "concept_id": "lang.word.и",
+        "surface": "и",
+        "votes": 6877
+      },
+      "babble_surface": "и",
+      "rank": null,
+      "votes": 0,
+      "top1_match": false,
+      "topk_match": false,
+      "target_match": false,
+      "pass": false,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "lang.word.и",
+          "votes": 6877
+        },
+        {
+          "concept_id": "lang.word.в",
+          "votes": 5728
+        },
+        {
+          "concept_id": "lang.word.на",
+          "votes": 5697
+        }
+      ]
+    },
+    {
+      "id": "oov_privet",
+      "cue": "п р и в е т",
+      "target": "привет",
+      "concept_id": "lang.word.привет",
+      "top_concept": {
+        "concept_id": "lang.word.привет",
+        "surface": "привет",
+        "votes": 1
+      },
+      "babble_surface": "привет",
+      "rank": 1,
+      "votes": 1,
+      "top1_match": true,
+      "topk_match": true,
+      "target_match": true,
+      "pass": true,
+      "top_k": 3,
+      "active_top": [
+        {
+          "concept_id": "lang.word.привет",
+          "votes": 1
+        },
+        {
+          "concept_id": "lang.word.и",
+          "votes": 6877
+        },
+        {
+          "concept_id": "lang.word.в",
+          "votes": 5728
+        }
+      ]
+    }
+  ]
+}

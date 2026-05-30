@@ -1,0 +1,42 @@
+{
+  "store": "examples\\agent-stores\\code-agent-lab-v0",
+  "queries": 5,
+  "answer_at_1": 1.0,
+  "results": [
+    {
+      "query": "C# игра угадай число больше меньше",
+      "hit": true,
+      "wall_ms": 13.21,
+      "action": "open_kb",
+      "blocks": 2
+    },
+    {
+      "query": "Random.Next диапазон 1 100",
+      "hit": true,
+      "wall_ms": 3.39,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "Console ReadLine int TryParse",
+      "hit": true,
+      "wall_ms": 1.27,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "сравнение guess secret больше меньше",
+      "hit": true,
+      "wall_ms": 1.1,
+      "action": "open_kb",
+      "blocks": 3
+    },
+    {
+      "query": "консольная игра угадал цикл while",
+      "hit": true,
+      "wall_ms": 1.32,
+      "action": "open_kb",
+      "blocks": 2
+    }
+  ]
+}

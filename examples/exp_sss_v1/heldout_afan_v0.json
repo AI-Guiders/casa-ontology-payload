@@ -1,0 +1,96 @@
+{
+  "description": "Afan-II: field-only babble (claims_nav off). Bukvar held-out + frequent Afan syllables + corpus words + OOV.",
+  "cases": [
+    {
+      "id": "bukvar_pa",
+      "cue": "п а",
+      "target": "па",
+      "concept_id": "syllable.па",
+      "lattice": "L1_syllable"
+    },
+    {
+      "id": "bukvar_mo",
+      "cue": "м о",
+      "target": "мо",
+      "concept_id": "syllable.мо",
+      "lattice": "L1_syllable"
+    },
+    {
+      "id": "bukvar_no",
+      "cue": "н о",
+      "target": "но",
+      "concept_id": "syllable.но",
+      "lattice": "L1_syllable"
+    },
+    {
+      "id": "bukvar_mama",
+      "cue": "м а м а",
+      "target": "мама",
+      "concept_id": "lang.word.мама",
+      "lattice": "L2_word"
+    },
+    {
+      "id": "afan_de",
+      "cue": "д е",
+      "target": "де",
+      "concept_id": "syllable.де",
+      "lattice": "L1_syllable"
+    },
+    {
+      "id": "afan_by",
+      "cue": "б ы",
+      "target": "бы",
+      "concept_id": "syllable.бы",
+      "lattice": "L1_syllable"
+    },
+    {
+      "id": "afan_go",
+      "cue": "г о",
+      "target": "го",
+      "concept_id": "syllable.го",
+      "lattice": "L1_syllable"
+    },
+    {
+      "id": "afan_vo",
+      "cue": "в о",
+      "target": "во",
+      "concept_id": "syllable.во",
+      "lattice": "L1_syllable"
+    },
+    {
+      "id": "afan_kolobok_word",
+      "cue": "колобок",
+      "target": "колобок",
+      "concept_id": "lang.word.колобок",
+      "lattice": "L2_word"
+    },
+    {
+      "id": "afan_zayac_word",
+      "cue": "заяц",
+      "target": "заяц",
+      "concept_id": "lang.word.заяц",
+      "lattice": "L2_word"
+    },
+    {
+      "id": "afan_volk_word",
+      "cue": "волк",
+      "target": "волк",
+      "concept_id": "lang.word.волк",
+      "lattice": "L2_word"
+    },
+    {
+      "id": "oov_klass",
+      "cue": "к л а с с",
+      "target": "класс",
+      "concept_id": "lang.word.класс",
+      "lattice": "L2_word"
+    },
+    {
+      "id": "oov_privet",
+      "cue": "п р и в е т",
+      "target": "привет",
+      "concept_id": "lang.word.привет",
+      "lattice": "L2_word"
+    }
+  ]
+}

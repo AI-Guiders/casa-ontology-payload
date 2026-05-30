@@ -1,0 +1,4 @@
+[
+  { "cue": "м а", "target": "ма", "lattice": "L1_syllable" },
+  { "cue": "п а", "target": "па", "lattice": "L1_syllable" }
+]

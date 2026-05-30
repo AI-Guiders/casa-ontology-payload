@@ -1,0 +1,5 @@
+{"query": "C# игра угадай число больше меньше", "expect_substr": "Random", "optional": false}
+{"query": "Random.Next диапазон 1 100", "expect_substr": "Next", "optional": false}
+{"query": "Console ReadLine int TryParse", "expect_substr": "ReadLine", "optional": false}
+{"query": "сравнение guess secret больше меньше", "expect_substr": "secret", "optional": false}
+{"query": "консольная игра угадал цикл while", "expect_substr": "while", "optional": false}

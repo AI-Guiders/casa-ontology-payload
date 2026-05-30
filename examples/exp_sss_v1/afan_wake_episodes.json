@@ -1,0 +1,5 @@
+[
+  { "cue": "волк", "target": "волк", "lattice": "L2_word", "force_episode": true },
+  { "cue": "колобок", "target": "колобок", "lattice": "L2_word", "force_episode": true },
+  { "cue": "п а", "target": "па", "lattice": "L1_syllable", "force_episode": true }
+]

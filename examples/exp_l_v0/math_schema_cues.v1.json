@@ -1,0 +1,7 @@
+[
+  { "id": "sticks_two", "cue": "||", "expect_top": "math.two", "min_score": 2 },
+  { "id": "sticks_three", "cue": "|||", "expect_top": "math.three", "min_score": 2 },
+  { "id": "add_glyphs", "cue": "| + |", "expect_top": "math.add", "min_score": 2 },
+  { "id": "add_ru", "cue": "склеить палочки", "expect_top": "math.add", "min_score": 2 },
+  { "id": "count_two_ru", "cue": "сколько палочек ||", "expect_top": "math.two", "min_score": 2 }
+]

@@ -1,0 +1,33 @@
+{
+  "description": "Held-out cues NOT in train_ma_only.json — field-only babble (claims_nav off)",
+  "cases": [
+    {
+      "id": "pa_spaced",
+      "cue": "п а",
+      "target": "па",
+      "concept_id": "syllable.па",
+      "lattice": "L1_syllable"
+    },
+    {
+      "id": "mo_spaced",
+      "cue": "м о",
+      "target": "мо",
+      "concept_id": "syllable.мо",
+      "lattice": "L1_syllable"
+    },
+    {
+      "id": "no_spaced",
+      "cue": "н о",
+      "target": "но",
+      "concept_id": "syllable.но",
+      "lattice": "L1_syllable"
+    },
+    {
+      "id": "word_mama",
+      "cue": "м а м а",
+      "target": "мама",
+      "concept_id": "lang.word.мама",
+      "lattice": "L2_word"
+    }
+  ]
+}

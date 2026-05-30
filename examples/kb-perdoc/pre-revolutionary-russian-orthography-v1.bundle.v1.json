@@ -1,0 +1,495 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "language/pre-revolutionary-russian-orthography-v1.md",
+      "kind": "project_doc",
+      "title": "pre-revolutionary-russian-orthography-v1"
+    },
+    "nodes": [
+      {
+        "id": "language/pre-revolutionary-russian-orthography-v1.md",
+        "kind": "project_doc",
+        "title": "pre-revolutionary-russian-orthography-v1"
+      }
+    ],
+    "edges": []
+  },
+  "claims": [
+    {
+      "concept_id": "ru.orthography.doreform.01",
+      "text": "Дореформенная графика — не «украшение», а иной слой нормы: другой ритм глаза, иногда другая морфемная подсказка (ять, «лишние» ъ).",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.02",
+      "text": "Без базового набора правил теряется скорость и уверенность при чтении изданий до 1918 г., факсимиле, старых PDF.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.03",
+      "text": "Для сопоставления с современной нормой достаточно ограниченного алфавита отличий и нескольких устойчивых соответствий.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.04",
+      "text": "Гражданский шрифт (петровская графическая реформа XVIII в.) постепенно сближал русскую письменность с произношением, но сохранял этимологические и греко-церковные буквы (ять, фита, ижица и т.д.).",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 2. История в двух абзацах",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.05",
+      "text": "Декреты 1917–1918 гг. (закреплены в РСФСР) упростили алфавит: часть букв сняли, оконечный ъ убрали, правила написания сдвинули к современным. Отсюда разрыв между классикой в старой графике и учебниками XX–XXI вв.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 2. История в двух абзацах",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.06",
+      "text": "Старое → Как читать сегодня (упрощённо)",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 3. Алфавит: что исчезло или слилось",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.07",
+      "text": "**Ѣ ѣ** (ять) → чаще всего **е** (реже **э** по позиции/диалектным следам в поэзии)",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 3. Алфавит: что исчезло или слилось",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.08",
+      "text": "**І і** → **и**",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 3. Алфавит: что исчезло или слилось",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.09",
+      "text": "**Ѳ ѳ** (фита) → **ф**",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 3. Алфавит: что исчезло или слилось",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.10",
+      "text": "**Ѵ ѵ** (ижица) → чаще **и**, иногда **в** (в отдельных словах/типографике)",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 3. Алфавит: что исчезло или слилось",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.11",
+      "text": "**ъ** в конце слова → **∅** (ничего) или переход в мягкость предыдущего согласного по норме после реформы",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 3. Алфавит: что исчезло или слилось",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.12",
+      "text": "**Ъ** как разделитель (сейчас) → сохранился **только** в роли разделителя после приставок",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 3. Алфавит: что исчезло или слилось",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.13",
+      "text": "В подавляющем большинстве слов ять при чтении «переводится» в е:",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 4. Ять (Ѣ ѣ): главное правило для чтения",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.14",
+      "text": "Реже встречаются исключения и поэтические формы; для прозы XIX в. держи е как первую гипотезу.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 4. Ять (Ѣ ѣ): главное правило для чтения",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.15",
+      "text": "Не путать с э: в старой орфографии э тоже встречалась ограниченно; уверенность даёт словарь/контекст.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 4. Ять (Ѣ ѣ): главное правило для чтения",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.16",
+      "text": "В дореволюционной русской печати І часто стоит там, где сейчас и в заимствованиях и по старым правилам: визуально «лишняя точка» сверху.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 5. І и И (и «двойная и»)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.17",
+      "text": "Для чтения: почти всегда и.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 5. І и И (и «двойная и»)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.18",
+      "text": "Тонкости различения і / и в исторической орфографии (этимология, грецизмы) нужны редакторам и лингвистам, не обязательны для понимания сюжета.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 5. І и И (и «двойная и»)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.19",
+      "text": "Читается как ф: Афина могла писаться с Ѳ.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 6. Фита (Ѳ ѳ)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.20",
+      "text": "Редкая буква в бытовой прозе; чаще в именах, научной и церковно-книжной лексике.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 6. Фита (Ѳ ѳ)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.21",
+      "text": "Исторически связана с греческим υ; в русской гражданской печати часто читается как и в ряде слов, в других традициях — в (особенно в окончаниях типа мѵро и т.п.).",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 7. Ижица (Ѵ ѵ)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.22",
+      "text": "Практика для прозы: если не угадывается — словарь или контекст; на первом проходе и чаще спасает смысл, чем в, но исключения есть.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 7. Ижица (Ѵ ѵ)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.23",
+      "text": "В старой норме ъ писали в конце слова после согласного на месте нынешнего нулевого окончания или исторического «ер»: былъ, велѣлъ, учитель иногда с особой графикой в зависимости от издания.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 8. Оконечный твёрдый знак (ъ)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.24",
+      "text": "После реформы конечный ъ убрали: былъ → был.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 8. Оконечный твёрдый знак (ъ)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.25",
+      "text": "Чтение: не произносится отдельно; это маркер твёрдости/границы морфем в старой графике.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 8. Оконечный твёрдый знак (ъ)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.26",
+      "text": "В целом ближе к современному использованию, но в старых текстах встречаются иные наборы форм (устаревшие склонения, архаичные повелительные и т.д.). Это уже морфология, не только орфография.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 9. Мягкий знак (ь)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.27",
+      "text": "В XIX — начале XX в. ё в печати часто не выделяли, писали е (все / всё в одной графе с контекстом).",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 10. Буква Ё",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.28",
+      "text": "При чтении полагайся на смысл и ударение; при необходимости — сверка с современным изданием.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 10. Буква Ё",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.29",
+      "text": "Титлы над буквами (сокращения предлогов, господь и т.д.) встречаются в церковных и части художественных изданий.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 11. Сокращения и типографика старых изданий",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.30",
+      "text": "Длинное тире, номера римские, особая нумерация глав — не орфография, но тормозят чтение; это отдельный навык (палеография лёгкая).",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 11. Сокращения и типографика старых изданий",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.31",
+      "text": "Мысленно нормализуй алфавит: ѣ→е, і→и, ѳ→ф, конечный ъ→∅.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 12. Алгоритм чтения (практический)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.32",
+      "text": "Прочитай громко или про себя с современными окончаниями, где они очевидны (былъ → был).",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 12. Алгоритм чтения (практический)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.33",
+      "text": "Не застревай на ижице и редких именах — отметь и проверь по словарю после абзаца.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 12. Алгоритм чтения (практический)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.34",
+      "text": "Для Толстого, Достоевского, Чехова в факсимиле: сравни один абзац с современной типографикой — глаз калибруется на 1–2 страницы.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 12. Алгоритм чтения (практический)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.35",
+      "text": "Путать ять с э на автомате — иногда ломается только ударение/форма; вернуться с контекстом.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 13. Типичные ловушки",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.36",
+      "text": "Думать, что «старый текст = архаичная грамматика везде» — нет: большая часть совпадает с ожиданиями носителя XXI в., меняется графика и отдельные формы.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 13. Типичные ловушки",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.37",
+      "text": "Перегруз словарём на первом абзаце — лучше проплыть сквозь текст, потом уточнять.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 13. Типичные ловушки",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.38",
+      "text": "Полные собрания сочинений до 1918 г. и факсимильные репринты сохраняют дореформенную графику.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 14. Связь с «Войной и миром» и классикой",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.39",
+      "text": "Современные учебные издания дают нормализованную орфографию — это другой объект для сравнения «как печатали тогда / как печатаем сейчас».",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 14. Связь с «Войной и миром» и классикой",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.40",
+      "text": "Для литературоведческого анализа иногда важна самая ранняя типографика; для сюжета и стиля достаточно навыка чтения по §3–§8.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 14. Связь с «Войной и миром» и классикой",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.41",
+      "text": "Отдельный лист: церковнославянские вкрапления vs гражданская графика в одном томе.",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 15. Куда копать дальше (v2+)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.42",
+      "text": "Ударения в старых изданиях (редко, нерегулярно).",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 15. Куда копать дальше (v2+)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.43",
+      "text": "Сравнение дореволюционных правил с ACTA 1918 по пунктам (для редакторов).",
+      "doc_path": "language/pre-revolutionary-russian-orthography-v1.md",
+      "section": "1. Зачем это в KB / 15. Куда копать дальше (v2+)",
+      "claim_kind": "claim"
+    }
+  ],
+  "concept_index": [
+    {
+      "concept_id": "ru.orthography.doreform.01",
+      "label": "Дореформенная графика — не «украшение», а иной слой нормы: другой ритм глаза, иногда другая морфемная подсказка (ять, «лишние» ъ)."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.02",
+      "label": "Без базового набора правил теряется скорость и уверенность при чтении изданий до 1918 г., факсимиле, старых PDF."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.03",
+      "label": "Для сопоставления с современной нормой достаточно ограниченного алфавита отличий и нескольких устойчивых соответствий."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.04",
+      "label": "Гражданский шрифт (петровская графическая реформа XVIII в.) постепенно сближал русскую письменность с произношением, но сохранял этимологические и греко-церковные буквы (ять, фита, ижица и т.д.)."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.05",
+      "label": "Декреты 1917–1918 гг. (закреплены в РСФСР) упростили алфавит: часть букв сняли, оконечный ъ убрали, правила написания сдвинули к современным. Отсюда разрыв между классикой в старой графике и учебниками XX–XXI вв."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.06",
+      "label": "Старое → Как читать сегодня (упрощённо)"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.07",
+      "label": "**Ѣ ѣ** (ять) → чаще всего **е** (реже **э** по позиции/диалектным следам в поэзии)"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.08",
+      "label": "**І і** → **и**"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.09",
+      "label": "**Ѳ ѳ** (фита) → **ф**"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.10",
+      "label": "**Ѵ ѵ** (ижица) → чаще **и**, иногда **в** (в отдельных словах/типографике)"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.11",
+      "label": "**ъ** в конце слова → **∅** (ничего) или переход в мягкость предыдущего согласного по норме после реформы"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.12",
+      "label": "**Ъ** как разделитель (сейчас) → сохранился **только** в роли разделителя после приставок"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.13",
+      "label": "В подавляющем большинстве слов ять при чтении «переводится» в е:"
+    },
+    {
+      "concept_id": "ru.orthography.doreform.14",
+      "label": "Реже встречаются исключения и поэтические формы; для прозы XIX в. держи е как первую гипотезу."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.15",
+      "label": "Не путать с э: в старой орфографии э тоже встречалась ограниченно; уверенность даёт словарь/контекст."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.16",
+      "label": "В дореволюционной русской печати І часто стоит там, где сейчас и в заимствованиях и по старым правилам: визуально «лишняя точка» сверху."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.17",
+      "label": "Для чтения: почти всегда и."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.18",
+      "label": "Тонкости различения і / и в исторической орфографии (этимология, грецизмы) нужны редакторам и лингвистам, не обязательны для понимания сюжета."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.19",
+      "label": "Читается как ф: Афина могла писаться с Ѳ."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.20",
+      "label": "Редкая буква в бытовой прозе; чаще в именах, научной и церковно-книжной лексике."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.21",
+      "label": "Исторически связана с греческим υ; в русской гражданской печати часто читается как и в ряде слов, в других традициях — в (особенно в окончаниях типа мѵро и т.п.)."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.22",
+      "label": "Практика для прозы: если не угадывается — словарь или контекст; на первом проходе и чаще спасает смысл, чем в, но исключения есть."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.23",
+      "label": "В старой норме ъ писали в конце слова после согласного на месте нынешнего нулевого окончания или исторического «ер»: былъ, велѣлъ, учитель иногда с особой графикой в зависимости от издания."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.24",
+      "label": "После реформы конечный ъ убрали: былъ → был."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.25",
+      "label": "Чтение: не произносится отдельно; это маркер твёрдости/границы морфем в старой графике."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.26",
+      "label": "В целом ближе к современному использованию, но в старых текстах встречаются иные наборы форм (устаревшие склонения, архаичные повелительные и т.д.). Это уже морфология, не только орфография."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.27",
+      "label": "В XIX — начале XX в. ё в печати часто не выделяли, писали е (все / всё в одной графе с контекстом)."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.28",
+      "label": "При чтении полагайся на смысл и ударение; при необходимости — сверка с современным изданием."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.29",
+      "label": "Титлы над буквами (сокращения предлогов, господь и т.д.) встречаются в церковных и части художественных изданий."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.30",
+      "label": "Длинное тире, номера римские, особая нумерация глав — не орфография, но тормозят чтение; это отдельный навык (палеография лёгкая)."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.31",
+      "label": "Мысленно нормализуй алфавит: ѣ→е, і→и, ѳ→ф, конечный ъ→∅."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.32",
+      "label": "Прочитай громко или про себя с современными окончаниями, где они очевидны (былъ → был)."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.33",
+      "label": "Не застревай на ижице и редких именах — отметь и проверь по словарю после абзаца."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.34",
+      "label": "Для Толстого, Достоевского, Чехова в факсимиле: сравни один абзац с современной типографикой — глаз калибруется на 1–2 страницы."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.35",
+      "label": "Путать ять с э на автомате — иногда ломается только ударение/форма; вернуться с контекстом."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.36",
+      "label": "Думать, что «старый текст = архаичная грамматика везде» — нет: большая часть совпадает с ожиданиями носителя XXI в., меняется графика и отдельные формы."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.37",
+      "label": "Перегруз словарём на первом абзаце — лучше проплыть сквозь текст, потом уточнять."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.38",
+      "label": "Полные собрания сочинений до 1918 г. и факсимильные репринты сохраняют дореформенную графику."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.39",
+      "label": "Современные учебные издания дают нормализованную орфографию — это другой объект для сравнения «как печатали тогда / как печатаем сейчас»."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.40",
+      "label": "Для литературоведческого анализа иногда важна самая ранняя типографика; для сюжета и стиля достаточно навыка чтения по §3–§8."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.41",
+      "label": "Отдельный лист: церковнославянские вкрапления vs гражданская графика в одном томе."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.42",
+      "label": "Ударения в старых изданиях (редко, нерегулярно)."
+    },
+    {
+      "concept_id": "ru.orthography.doreform.43",
+      "label": "Сравнение дореволюционных правил с ACTA 1918 по пунктам (для редакторов)."
+    }
+  ]
+}

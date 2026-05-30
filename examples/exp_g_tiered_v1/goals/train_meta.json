@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "cluster": "goals",
+  "train_mode": "tiered_g_v1",
+  "phase1_epochs": 600,
+  "phase2_epochs": 200,
+  "hard_bundles": [
+    "casa-adr-0001.bundle.v1.json"
+  ],
+  "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\exp_g_tiered_v1\\goals\\model.pt"
+}

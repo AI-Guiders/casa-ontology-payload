@@ -1,0 +1,38 @@
+{
+  "root": {
+    "id": "worlds/software-dotnet-csharp/kb-csharp-console-grade8-v1.md",
+    "kind": "project_doc",
+    "title": "kb-csharp-console-grade8-v1"
+  },
+  "nodes": [
+    {
+      "id": "worlds/software-dotnet-csharp/kb-csharp-console-grade8-v1.md",
+      "kind": "project_doc",
+      "title": "kb-csharp-console-grade8-v1"
+    },
+    {
+      "id": "kb-dotnet-fundamentals-v1.md",
+      "kind": "md",
+      "title": "kb-dotnet-fundamentals-v1"
+    },
+    {
+      "id": "../software-authoring/code-writing-principles-v1.md",
+      "kind": "md",
+      "title": "code-writing-principles-v1"
+    }
+  ],
+  "edges": [
+    {
+      "src": "worlds/software-dotnet-csharp/kb-csharp-console-grade8-v1.md",
+      "relation": "references",
+      "dst": "kb-dotnet-fundamentals-v1.md",
+      "label": "`kb-dotnet-fundamentals-v1.md`"
+    },
+    {
+      "src": "worlds/software-dotnet-csharp/kb-csharp-console-grade8-v1.md",
+      "relation": "references",
+      "dst": "../software-authoring/code-writing-principles-v1.md",
+      "label": "`code-writing-principles-v1.md`"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "type": "knowledge_delta",
+  "source_agent_id": "kb-sync",
+  "target_cluster": "research",
+  "bundle": {
+    "path": "examples/kb-perdoc/casa-adr-0001.bundle.v1.json",
+    "action": "replace"
+  },
+  "digest": {
+    "summary": "kb_sync casa-adr-0001.bundle.v1.json",
+    "added_concept_ids": [],
+    "tier": "easy"
+  },
+  "provides": [
+    "casa-adr-0001.bundle.v1.json"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "lattice_id": "L2_word_33",
+  "store": "examples\\agent-stores\\sss-ru-lexicon-v0",
+  "token_count": 1310,
+  "grid_size": [
+    32,
+    32
+  ],
+  "epochs": 80,
+  "steps": 24,
+  "train_mode": "windowed",
+  "best_loss": 1.425383448600769,
+  "w_tokens_before_damage_eval": 1480,
+  "w_tokens_after_nca_eval": 1017
+}

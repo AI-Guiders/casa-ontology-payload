@@ -1,0 +1,264 @@
+{
+  "cycle_id": "kolb-9127573",
+  "title": "Kolb segment: встреча → internal reconcile → held-out",
+  "concrete_experience": {
+    "word": "встреча",
+    "hypothesis": {
+      "word": "встреча",
+      "rule_id": null,
+      "syllables": [
+        "в",
+        "стре",
+        "ча"
+      ],
+      "syllable_count": 3,
+      "vowel_count": 2,
+      "join_ok": true,
+      "count_matches_vowels": false,
+      "intuition_source": "field",
+      "field_rule_votes": {},
+      "field_grapheme_confidence": 6.0,
+      "field_score": 39.0,
+      "segment_source": "field_competition",
+      "segment": "в|стре|ча",
+      "syllable_hits": [
+        "ре",
+        "ча",
+        "а",
+        "е"
+      ],
+      "h_votes_before": 0,
+      "competition": {
+        "cue": "встреча",
+        "planted": 2,
+        "viable_count": 1,
+        "failed_count": 1,
+        "babble_segment": "в|стре|ча",
+        "field_focus_segment": "встре|ча",
+        "winner_votes_after": 13,
+        "contenders": [
+          {
+            "segment": "в|стре|ча",
+            "field_score": 39.0,
+            "h_votes_before": 0,
+            "inner_ok": false,
+            "copies_after": 1
+          },
+          {
+            "segment": "встре|ча",
+            "field_score": 39.0,
+            "h_votes_before": 0,
+            "inner_ok": true,
+            "copies_after": 9
+          }
+        ]
+      },
+      "alternatives": [
+        {
+          "syllables": [
+            "встре",
+            "ча"
+          ],
+          "field_score": 39.0,
+          "segment": "встре|ча",
+          "verify": {
+            "ok": true,
+            "checks": {
+              "join_ok": true,
+              "count_matches_vowels": true
+            }
+          }
+        }
+      ],
+      "candidates_considered": 2
+    },
+    "verify": {
+      "ok": false,
+      "checks": {
+        "join_ok": true,
+        "count_matches_vowels": false
+      }
+    },
+    "attempt": "в|стре|ча",
+    "matched": false,
+    "episode": null,
+    "rule_taught": null,
+    "heard_segment": null,
+    "teacher_segment": null,
+    "reconcile": null,
+    "hippo_pending": 0,
+    "kolb_phase": "concrete_experience"
+  },
+  "reflective_observation": {
+    "phase": "reflective_observation",
+    "observations": [
+      "На поле 2 H:-гипотез: viable=1, babble «в|стре|ча», focus «встре|ча» (13 votes).",
+      "На поле пока нет сильного R: — слабая врождённая эвристика.",
+      "Слогов 3, гласных 2 — числа не совпали.",
+      "Явного правила слогоделения в памяти ещё нет."
+    ],
+    "questions": [
+      "Может, одна гласная = один слог?"
+    ],
+    "needs_teacher": true,
+    "verify": {
+      "ok": false,
+      "checks": {
+        "join_ok": true,
+        "count_matches_vowels": false
+      }
+    },
+    "attempt": "в|стре|ча",
+    "internal_ok": false,
+    "experience_word": "встреча",
+    "rule_used": null
+  },
+  "abstract_conceptualization": {
+    "phase": "abstract_conceptualization",
+    "applied": true,
+    "reconcile": {
+      "word": "встреча",
+      "before": "в|стре|ча",
+      "after": "встре|ча",
+      "syllables": [
+        "встре",
+        "ча"
+      ],
+      "verify": {
+        "ok": true,
+        "checks": {
+          "join_ok": true,
+          "count_matches_vowels": true
+        }
+      },
+      "rule_id": "rule.segment.vowel_nuclei",
+      "rule_hint": "на «встреча» было 3 кусков при 2 гласных; склеивание дало 2 — столько же, сколько гласных в слове",
+      "source": "internal_reconcile",
+      "field_score": 39.0,
+      "candidates_tried": 2
+    },
+    "source": "internal_reconcile",
+    "episode": {
+      "id": "ep-9127416",
+      "kind": "rule",
+      "cue": "встреча",
+      "babble": "в|стре|ча",
+      "correct": "встре|ча",
+      "rule_id": "rule.segment.vowel_nuclei",
+      "rule_hint": "на «встреча» было 3 кусков при 2 гласных; склеивание дало 2 — столько же, сколько гласных в слове",
+      "lattice_id": "L2_word",
+      "concept_id": "lang.word.встреча",
+      "consolidated": false
+    },
+    "rule_id": "rule.segment.vowel_nuclei",
+    "sleep": {
+      "merged": 1,
+      "pending": 0,
+      "z_compose": 234,
+      "items": [
+        {
+          "episode_id": "ep-9127416",
+          "kind": "rule",
+          "rule_id": "rule.segment.vowel_nuclei",
+          "cue": "встреча",
+          "attempt": "в|стре|ча",
+          "correct": "встре|ча",
+          "rule_hint": "на «встреча» было 3 кусков при 2 гласных; склеивание дало 2 — столько же, сколько гласных в слове"
+        }
+      ]
+    },
+    "field_rule_votes_after": {
+      "rule.segment.vowel_nuclei": 10
+    }
+  },
+  "active_experimentation": {
+    "phase": "active_experimentation",
+    "passed": 5,
+    "total": 5,
+    "pass_rate": 1.0,
+    "items": [
+      {
+        "word": "второй",
+        "attempt": "вто|рой",
+        "inner_ok": true,
+        "rule_id": "rule.segment.vowel_nuclei",
+        "eval_gold": "вто|рой",
+        "reflection": {
+          "phase": "reflective_observation",
+          "word": "второй",
+          "observations": [
+            "Слово «второй»: попытка «вто|рой».",
+            "Внутренняя проверка прошла — можно продолжать без внешней подсказки."
+          ],
+          "inner_ok": true
+        }
+      },
+      {
+        "word": "привет",
+        "attempt": "при|вет",
+        "inner_ok": true,
+        "rule_id": "rule.segment.vowel_nuclei",
+        "eval_gold": "при|вет",
+        "reflection": {
+          "phase": "reflective_observation",
+          "word": "привет",
+          "observations": [
+            "Слово «привет»: попытка «при|вет».",
+            "Внутренняя проверка прошла — можно продолжать без внешней подсказки."
+          ],
+          "inner_ok": true
+        }
+      },
+      {
+        "word": "стрела",
+        "attempt": "стре|ла",
+        "inner_ok": true,
+        "rule_id": "rule.segment.vowel_nuclei",
+        "eval_gold": "стре|ла",
+        "reflection": {
+          "phase": "reflective_observation",
+          "word": "стрела",
+          "observations": [
+            "Слово «стрела»: попытка «стре|ла».",
+            "Внутренняя проверка прошла — можно продолжать без внешней подсказки."
+          ],
+          "inner_ok": true
+        }
+      },
+      {
+        "word": "молоко",
+        "attempt": "мо|ло|ко",
+        "inner_ok": true,
+        "rule_id": "rule.segment.vowel_nuclei",
+        "eval_gold": "мо|ло|ко",
+        "reflection": {
+          "phase": "reflective_observation",
+          "word": "молоко",
+          "observations": [
+            "Слово «молоко»: попытка «мо|ло|ко».",
+            "Внутренняя проверка прошла — можно продолжать без внешней подсказки."
+          ],
+          "inner_ok": true
+        }
+      },
+      {
+        "word": "задача",
+        "attempt": "за|да|ча",
+        "inner_ok": true,
+        "rule_id": "rule.segment.vowel_nuclei",
+        "eval_gold": "за|да|ча",
+        "reflection": {
+          "phase": "reflective_observation",
+          "word": "задача",
+          "observations": [
+            "Слово «задача»: попытка «за|да|ча».",
+            "Внутренняя проверка прошла — можно продолжать без внешней подсказки."
+          ],
+          "inner_ok": true
+        }
+      }
+    ]
+  },
+  "field_version": 4,
+  "generalized": true
+}

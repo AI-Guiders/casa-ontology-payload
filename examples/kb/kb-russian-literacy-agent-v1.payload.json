@@ -1,0 +1,812 @@
+{
+  "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+  "schema_version": 1,
+  "claims": [
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.01",
+      "text": "doc_id: kb-russian-literacy-agent-v1",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.02",
+      "text": "audience: CASA-агент (не замена школьного РКШ); слой до доменных KB (C#, грамматика нормы).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.03",
+      "text": "Цель: понимать разные формулировки задачи и отвечать связным русским, не только находить страницу по совпадению слов.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.04",
+      "text": "Связь: норма письма — kb-russian-language-rules-v1.md; C# — kb-csharp-console-grade8-v1 (software-dotnet-csharp).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.05",
+      "text": "Человек в 8 классе сначала читает условие задачи, потом пишет код. Агент без слоя literacy — «слепой к учебнику по оглавлению».",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 0. Педагогика: сначала читать и писать, потом C#",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.06",
+      "text": "Читать = извлечь намерение: что просят (написать / объяснить / найти / исправить), объект (программа, правило, число), ограничения.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 0. Педагогика: сначала читать и писать, потом C#",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.07",
+      "text": "Писать = короткий связный ответ пользователю на русском (что понял, что сделаю, откуда взял факт) — не обязательно длинный эссе.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 0. Педагогика: сначала читать и писать, потом C#",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.08",
+      "text": "Один запрос может быть перефразирован — смысл тот же, слова другие; literacy-KB хранит кластеры перефразов.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 0. Педагогика: сначала читать и писать, потом C#",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.09",
+      "text": "Код на C# и ключевые API — на английском; literacy связывает русское ТЗ с английскими якорями (Console, TryParse).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 0. Педагогика: сначала читать и писать, потом C#",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.10",
+      "text": "Ошибка literacy: перепутать «объясни» и «напиши программу» — разные действия CEN.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 0. Педагогика: сначала читать и писать, потом C#",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.11",
+      "text": "Напиши / сделай / создай — просьба сгенерировать артефакт (код, файл, текст).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 1. Глаголы намерения (что просит пользователь)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.12",
+      "text": "Объясни / расскажи / что такое — просьба объяснить из памяти, без обязательного emit кода.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 1. Глаголы намерения (что просит пользователь)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.13",
+      "text": "Найди / покажи / где в KB — навигация, open_kb, top claims.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 1. Глаголы намерения (что просит пользователь)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.14",
+      "text": "Исправь / почини / отладь — есть ошибка; нужен разбор и правка.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 1. Глаголы намерения (что просит пользователь)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.15",
+      "text": "Сравни / чем отличается — два объекта или два правила.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 1. Глаголы намерения (что просит пользователь)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.16",
+      "text": "Проверь / верно ли — да/нет + краткое обоснование по claim.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 1. Глаголы намерения (что просит пользователь)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.17",
+      "text": "Перефразируй / своими словами — тот же смысл, другая формулировка (тест literacy).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 1. Глаголы намерения (что просит пользователь)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.18",
+      "text": "Русский повелительный часто без «ты»: «Напиши программу» = «Напиши ты программу».",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 1. Глаголы намерения (что просит пользователь)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.19",
+      "text": "Программа / приложение / консоль — обычно домен code (C# console).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 2. Существительные задачи (объект запроса)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.20",
+      "text": "Игра — чаще code; уточнить правила (угадай число, счёт).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 2. Существительные задачи (объект запроса)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.21",
+      "text": "Текст / абзац / письмо — домен grammar / стиль.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 2. Существительные задачи (объект запроса)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.22",
+      "text": "Ошибка / баг / не компилируется — code + §20 ошибок компилятора.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 2. Существительные задачи (объект запроса)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.23",
+      "text": "Правило / норма / запятая — grammar KB.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 2. Существительные задачи (объект запроса)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.24",
+      "text": "Число / сумма / среднее / максимум — уточнить: объяснение или программа.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 2. Существительные задачи (объект запроса)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.25",
+      "text": "Канон: ввести два целых, вывести сумму.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 3. Чтение: кластер «сумма двух чисел» (перефразы → один смысл)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.26",
+      "text": "Перефразы запроса (все ведут к одному intent code.sum_two):",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 3. Чтение: кластер «сумма двух чисел» (перефразы → один смысл)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.27",
+      "text": "«сумма двух чисел»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 3. Чтение: кластер «сумма двух чисел» (перефразы → один смысл)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.28",
+      "text": "«сложи два целых»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 3. Чтение: кластер «сумма двух чисел» (перефразы → один смысл)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.29",
+      "text": "«программа складывает два числа с клавиатуры»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 3. Чтение: кластер «сумма двух чисел» (перефразы → один смысл)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.30",
+      "text": "«пользователь вводит a и b, вывести a+b»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 3. Чтение: кластер «сумма двух чисел» (перефразы → один смысл)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.31",
+      "text": "«add two integers console»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 3. Чтение: кластер «сумма двух чисел» (перефразы → один смысл)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.32",
+      "text": "Якоря для поиска в code-KB: TryParse, Sum, два, ReadLine.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 3. Чтение: кластер «сумма двух чисел» (перефразы → один смысл)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.33",
+      "text": "Не путать с средним оценок (там деление и цикл по N).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 3. Чтение: кластер «сумма двух чисел» (перефразы → один смысл)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.34",
+      "text": "Канон: спросить имя, вывести приветствие.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 4. Чтение: кластер «приветствие по имени»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.35",
+      "text": "«Hello с именем»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 4. Чтение: кластер «приветствие по имени»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.36",
+      "text": "«поздороваться с пользователем»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 4. Чтение: кластер «приветствие по имени»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.37",
+      "text": "«программа спрашивает как тебя зовут»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 4. Чтение: кластер «приветствие по имени»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.38",
+      "text": "«как тебя зовут и здоровается»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 4. Чтение: кластер «приветствие по имени»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.39",
+      "text": "«hello with user name from console input»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 4. Чтение: кластер «приветствие по имени»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.40",
+      "text": "«консоль привет имя ReadLine»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 4. Чтение: кластер «приветствие по имени»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.41",
+      "text": "Якоря: ReadLine, Hello, WriteLine, name.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 4. Чтение: кластер «приветствие по имени»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.42",
+      "text": "Фраза целиком: «программа спрашивает как тебя зовут и здоровается» → Console.Write имя, ReadLine, приветствие.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 4. Чтение: кластер «приветствие по имени»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.43",
+      "text": "Канон: для числа N напечатать строки умножения на 1..10 (или одну строку в упрощённом варианте).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 5. Чтение: кластер «таблица умножения»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.44",
+      "text": "«таблица умножения на семь»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 5. Чтение: кластер «таблица умножения»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.45",
+      "text": "«выведи 7×1 7×2 …»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 5. Чтение: кластер «таблица умножения»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.46",
+      "text": "«цикл for таблица»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 5. Чтение: кластер «таблица умножения»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.47",
+      "text": "Якоря: for, ×, умнож, 10.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 5. Чтение: кластер «таблица умножения»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.48",
+      "text": "Канон: три числа → вывести наибольшее.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 6. Чтение: кластер «максимум из трёх»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.49",
+      "text": "«найди максимум среди трёх»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 6. Чтение: кластер «максимум из трёх»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.50",
+      "text": "«большее из a b c»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 6. Чтение: кластер «максимум из трёх»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.51",
+      "text": "«if сравнить три числа»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 6. Чтение: кластер «максимум из трёх»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.52",
+      "text": "«max of three numbers console»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 6. Чтение: кластер «максимум из трёх»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.53",
+      "text": "«наибольшее среди трёх введённых»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 6. Чтение: кластер «максимум из трёх»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.54",
+      "text": "Якоря: max, if, трёх, трех.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 6. Чтение: кластер «максимум из трёх»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.55",
+      "text": "Канон: загадать 1..100, цикл подсказок больше/меньше/угадал.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 7. Чтение: кластер «угадай число»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.56",
+      "text": "«игра угадай число»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 7. Чтение: кластер «угадай число»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.57",
+      "text": "«загадай число от 1 до 100 пока не угадают»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 7. Чтение: кластер «угадай число»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.58",
+      "text": "«Random и while больше меньше»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 7. Чтение: кластер «угадай число»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.59",
+      "text": "«guess the number 1 to 100»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 7. Чтение: кластер «угадай число»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.60",
+      "text": "«guess number higher lower until correct»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 7. Чтение: кластер «угадай число»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.61",
+      "text": "Якоря: Random, secret, Higher, Lower, while.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 7. Чтение: кластер «угадай число»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.62",
+      "text": "Фраза: «загадай число от 1 до 100 пока не угадают» = Random.Next(1, 101) + цикл while + подсказки.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 7. Чтение: кластер «угадай число»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.63",
+      "text": "Канон: цикл: показать пункты, switch или if по выбору, выход по 0.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 8. Чтение: кластер «меню в консоли»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.64",
+      "text": "«консольное меню 1 2 3»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 8. Чтение: кластер «меню в консоли»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.65",
+      "text": "«выбор пункта switch»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 8. Чтение: кластер «меню в консоли»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.66",
+      "text": "«повторять пока не выйти»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 8. Чтение: кластер «меню в консоли»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.67",
+      "text": "Якоря: switch, case, меню, Choice.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 8. Чтение: кластер «меню в консоли»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.68",
+      "text": "Канон: ввести N, напечатать 1, 2, …, N.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 9. Чтение: кластер «счёт от 1 до N»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.69",
+      "text": "«счётчик до n»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 9. Чтение: кластер «счёт от 1 до N»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.70",
+      "text": "«вывести все числа от 1 до введённого»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 9. Чтение: кластер «счёт от 1 до N»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.71",
+      "text": "«цикл for от 1 до N»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 9. Чтение: кластер «счёт от 1 до N»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.72",
+      "text": "«count from 1 to entered n»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 9. Чтение: кластер «счёт от 1 до N»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.73",
+      "text": "«введи n и выведи все числа 1..n»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 9. Чтение: кластер «счёт от 1 до N»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.74",
+      "text": "Якоря: for, N, счётчик.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 9. Чтение: кластер «счёт от 1 до N»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.75",
+      "text": "Канон: ввести количество оценок, ввести оценки, среднее арифметическое.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 10. Чтение: кластер «среднее оценок»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.76",
+      "text": "«средний балл»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 10. Чтение: кластер «среднее оценок»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.77",
+      "text": "«average grades»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 10. Чтение: кластер «среднее оценок»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.78",
+      "text": "«сумма оценок делить на количество»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 10. Чтение: кластер «среднее оценок»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.79",
+      "text": "Якоря: avg, sum, grades, double.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 10. Чтение: кластер «среднее оценок»",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.80",
+      "text": "Начать с что понял: «Нужна консольная программа: сумма двух целых с ввода».",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 11. Письмо: как отвечать пользователю (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.81",
+      "text": "Дать опору: сослаться на раздел KB или concept_id (в IDE — doc_path).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 11. Письмо: как отвечать пользователю (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.82",
+      "text": "Если emit кода ещё нет — честно: «Нашёл в памяти эталон; генерация файла — следующий шаг».",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 11. Письмо: как отвечать пользователю (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.83",
+      "text": "Предложение — законченное, с подлежащим и сказуемым; не телеграф «сумма два числа try parse».",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 11. Письмо: как отвечать пользователю (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.84",
+      "text": "Списки — с дефисом или нумерацией; в коде — отдельным блоком.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 11. Письмо: как отвечать пользователю (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.85",
+      "text": "Тон нейтральный, на ты если пользователь на «ты» (по политике сессии).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 11. Письмо: как отвечать пользователю (кратко)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.86",
+      "text": "Не выдумывать факты вне claims; если пусто — «в памяти нет, открой KB / sync».",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 11. Письмо: как отвечать пользователю (кратко)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.87",
+      "text": "Объяснение: «По памяти: … (claim). Это значит, что …»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 12. Письмо: шаблоны ответа (чтение → ответ)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.88",
+      "text": "Навигация: «Открой раздел … в kb-csharp-console-grade8-v1, §…»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 12. Письмо: шаблоны ответа (чтение → ответ)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.89",
+      "text": "Перед кодом: «Сейчас соберу Program.cs с TryParse и циклом …»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 12. Письмо: шаблоны ответа (чтение → ответ)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.90",
+      "text": "После ошибки компиляции: «Компилятор сообщает CS… — обычно это …; исправление: …»",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 12. Письмо: шаблоны ответа (чтение → ответ)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.91",
+      "text": "Смешанный запрос нормален: «напиши console app sum two ints».",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 13. Английский в запросах (чтение)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.92",
+      "text": "Ключевые API искать по английским токенам: Console, ReadLine, static, void.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 13. Английский в запросах (чтение)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.93",
+      "text": "«write a program» = «напиши программу» → intent emit code.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 13. Английский в запросах (чтение)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.94",
+      "text": "«fix compile error» = исправь ошибку сборки.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 13. Английский в запросах (чтение)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.95",
+      "text": "Не требовать перевода всего KB на EN; достаточно двуязычных якорей в перефразах (§3–10).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 13. Английский в запросах (чтение)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.96",
+      "text": "Только / именно — сужают задачу: «только for, без while».",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 14. Ловушки понимания (читать внимательно)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.97",
+      "text": "Не / без — запрет: «без массива» → не использовать [].",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 14. Ловушки понимания (читать внимательно)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.98",
+      "text": "«Два числа» ≠ «список чисел» ≠ «N чисел».",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 14. Ловушки понимания (читать внимательно)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastitsy.99",
+      "text": "«Вывести» = Console.WriteLine, не «сохранить в файл» (если не сказано).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 14. Ловушки понимания (читать внимательно)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.100",
+      "text": "«Самое простое» — минимальный код, один файл, без лишних классов.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 14. Ловушки понимания (читать внимательно)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.101",
+      "text": "Вопрос «как» — чаще объяснение; «сделай» — чаще код.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 14. Ловушки понимания (читать внимательно)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.102",
+      "text": "Сигналы в запросе → Домен (Следующий KB)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 15. Маршрутизация: literacy → домен",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.103",
+      "text": "|-------------------|--------|----------------|",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 15. Маршрутизация: literacy → домен",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.104",
+      "text": "программа, консоль, C#, код, игра, compile → code (kb-csharp-console-grade8-v1)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 15. Маршрутизация: literacy → домен",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.105",
+      "text": "запятая, орфография, согласно, пароним, текст → grammar (kb-russian-language-rules-v1)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 15. Маршрутизация: literacy → домен",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.106",
+      "text": "перефраз, своими словами, тот же смысл → literacy (этот документ)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 15. Маршрутизация: literacy → домен",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.107",
+      "text": "regex, выражение, MRE → regex (kb-regex-mre3-ru-chapter-map-v1)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 15. Маршрутизация: literacy → домен",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.108",
+      "text": "При конфликте: уточнить одним вопросом («Нужен готовый код или объяснение правила?»).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 15. Маршрутизация: literacy → домен",
+      "claim_kind": "question"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.109",
+      "text": "read@1 — перефраз запроса → top claim содержит якорь intent (bench queries_paraphrase.jsonl).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 16. Метрики literacy (Exp J0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.110",
+      "text": "write@sketch — ответ содержит связное пересказанное условие (ручная или LLM-оценка позже).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 16. Метрики literacy (Exp J0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.111",
+      "text": "Цель v1: read@1 ≥ 0.85 на 30 перефразах при полном sync literacy + language store.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 16. Метрики literacy (Exp J0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.112",
+      "text": "Ниже 0.7 — расширять кластеры §3–10, не добавлять C#.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 16. Метрики literacy (Exp J0)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.113",
+      "text": "Store: language-agent-lab-v0 (union с grammar + literacy).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 17. Операционное использование",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.114",
+      "text": "Sync: manifests/kb-bundles-russian-literacy-v1.json, скрипт run_exp_j0_literacy_sync.ps1.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 17. Операционное использование",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.115",
+      "text": "Перед Exp K emit: прогнать paraphrase bench; code-agent опирается на digest после literacy-маршрута (будущий P3).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
+      "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 17. Операционное использование",
+      "claim_kind": "claim"
+    }
+  ],
+  "count": 115
+}

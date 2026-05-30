@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "experiment": "F_module_train_v0",
+  "cluster": "research",
+  "train_mode": "module_masked_v0",
+  "module_count": 22,
+  "layout": "design\\layout.v0.json",
+  "region": "dmn_ontology",
+  "damage_patches": 6,
+  "epochs": 600,
+  "token_count_union": 79,
+  "bundles": [
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\ca-substrate-agent.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\casa-goals.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\kb-perdoc\\research-ml.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\research-spec.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\kb-perdoc\\research-tda-flow.bundle.v1.json",
+    "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\kb-perdoc\\research-training.bundle.v1.json"
+  ],
+  "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\exp_f_modules_v1\\research\\model.pt",
+  "reports": [
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\kb-perdoc\\research-ml.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 1,
+          "fp": 6,
+          "fn": 2,
+          "precision": 0.14285714285714285,
+          "recall": 0.3333333333333333,
+          "f1": 0.2
+        },
+        "edges": {
+          "tp": 3,
+          "fp": 6,
+          "fn": 0,
+          "precision": 0.3333333333333333,
+          "recall": 1.0,
+          "f1": 0.5
+        }
+      }
+    },
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\kb-perdoc\\research-tda-flow.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "precision": 0.0,
+          "recall": 1.0,
+          "f1": 0.0
+        },
+        "edges": {
+          "tp": 2,
+          "fp": 7,
+          "fn": 0,
+          "precision": 0.2222222222222222,
+          "recall": 1.0,
+          "f1": 0.3636363636363636
+        }
+      }
+    },
+    {
+      "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\kb-perdoc\\research-training.bundle.v1.json",
+      "score": {
+        "concepts": {
+          "tp": 0,
+          "fp": 3,
+          "fn": 0,
+          "precision": 0.0,
+          "recall": 1.0,
+          "f1": 0.0
+        },
+        "edges": {
+          "tp": 5,
+          "fp": 3,
+          "fn": 1,
+          "precision": 0.625,
+          "recall": 0.8333333333333334,
+          "f1": 0.7142857142857143
+        }
+      }
+    }
+  ]
+}

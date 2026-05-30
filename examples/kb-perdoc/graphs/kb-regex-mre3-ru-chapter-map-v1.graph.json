@@ -1,0 +1,15 @@
+{
+  "root": {
+    "id": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+    "kind": "project_doc",
+    "title": "kb-regex-mre3-ru-chapter-map-v1"
+  },
+  "nodes": [
+    {
+      "id": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "kind": "project_doc",
+      "title": "kb-regex-mre3-ru-chapter-map-v1"
+    }
+  ],
+  "edges": []
+}

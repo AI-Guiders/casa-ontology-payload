@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "pipeline": "import_knowledge_delta_v2",
+  "timestamp": "2026-05-29T00:59:37.019938+00:00",
+  "delta": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\agent-stores\\research-agent-lab-v0\\_kb_sync_delta.json",
+  "source_agent_id": "kb-sync",
+  "target_cluster": "research",
+  "bundle": "ontology-in-field-poc-findings-v1.bundle.v1.json",
+  "action": "replace",
+  "store_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\agent-stores\\research-agent-lab-v0",
+  "field_state": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\agent-stores\\research-agent-lab-v0\\field_state.json",
+  "field_version": 4,
+  "union_bundles": [
+    "casa-goals-and-roadmap-v1.bundle.v1.json",
+    "ontology-in-field-poc-findings-v1.bundle.v1.json",
+    "research-ml-ca-substrate-agent-v1.bundle.v1.json",
+    "research-ml.bundle.v1.json"
+  ],
+  "concept_count": 0,
+  "digest": {
+    "summary": "kb_sync ontology-in-field-poc-findings-v1.bundle.v1.json",
+    "added_concept_ids": [],
+    "tier": "easy"
+  },
+  "checkpoint_copied": null,
+  "finetune": null,
+  "bench": null,
+  "requires_ok": true
+}

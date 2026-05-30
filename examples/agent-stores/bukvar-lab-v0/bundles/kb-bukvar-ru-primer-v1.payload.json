@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "kind": "project_doc",
+      "title": "kb-bukvar-ru-primer-v1"
+    },
+    "nodes": [
+      {
+        "id": "examples/kb/kb-bukvar-ru-primer-v1.md",
+        "kind": "project_doc",
+        "title": "kb-bukvar-ru-primer-v1"
+      }
+    ],
+    "edges": [
+      {
+        "src": "grapheme.м",
+        "relation": "compose",
+        "dst": "syllable.ма"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.ма"
+      },
+      {
+        "src": "grapheme.м",
+        "relation": "compose",
+        "dst": "syllable.мам"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.мам"
+      },
+      {
+        "src": "grapheme.м",
+        "relation": "compose",
+        "dst": "syllable.мо"
+      },
+      {
+        "src": "grapheme.о",
+        "relation": "compose",
+        "dst": "syllable.мо"
+      },
+      {
+        "src": "grapheme.п",
+        "relation": "compose",
+        "dst": "syllable.па"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.па"
+      },
+      {
+        "src": "grapheme.п",
+        "relation": "compose",
+        "dst": "syllable.пап"
+      },
+      {
+        "src": "grapheme.а",
+        "relation": "compose",
+        "dst": "syllable.пап"
+      },
+      {
+        "src": "syllable.ма",
+        "relation": "compose",
+        "dst": "lang.word.мама"
+      },
+      {
+        "src": "syllable.мам",
+        "relation": "compose",
+        "dst": "lang.word.мама"
+      },
+      {
+        "src": "syllable.па",
+        "relation": "compose",
+        "dst": "lang.word.папа"
+      },
+      {
+        "src": "syllable.пап",
+        "relation": "compose",
+        "dst": "lang.word.папа"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "concept_id": "grapheme.а",
+      "claim_kind": "grapheme",
+      "text": "буква а",
+      "doc_path": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "section": "B0 / а",
+      "slots": {
+        "letter": "а"
+      }
+    },
+    {
+      "concept_id": "grapheme.м",
+      "claim_kind": "grapheme",
+      "text": "буква м",
+      "doc_path": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "section": "B0 / м",
+      "slots": {
+        "letter": "м"
+      }
+    },
+    {
+      "concept_id": "grapheme.о",
+      "claim_kind": "grapheme",
+      "text": "буква о",
+      "doc_path": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "section": "B0 / о",
+      "slots": {
+        "letter": "о"
+      }
+    },
+    {
+      "concept_id": "grapheme.п",
+      "claim_kind": "grapheme",
+      "text": "буква п",
+      "doc_path": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "section": "B0 / п",
+      "slots": {
+        "letter": "п"
+      }
+    },
+    {
+      "concept_id": "grapheme.у",
+      "claim_kind": "grapheme",
+      "text": "буква у",
+      "doc_path": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "section": "B0 / у",
+      "slots": {
+        "letter": "у"
+      }
+    },
+    {
+      "concept_id": "syllable.ма",
+      "claim_kind": "syllable",
+      "text": "слог ма",
+      "doc_path": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "section": "B1 / ма",
+      "slots": {
+        "syllable": "ма"
+      }
+    },
+    {
+      "concept_id": "syllable.мо",
+      "claim_kind": "syllable",
+      "text": "слог мо",
+      "doc_path": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "section": "B1 / мо",
+      "slots": {
+        "syllable": "мо"
+      }
+    },
+    {
+      "concept_id": "syllable.мам",
+      "claim_kind": "syllable",
+      "text": "слог мам",
+      "doc_path": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "section": "B1 / мам",
+      "slots": {
+        "syllable": "мам"
+      }
+    },
+    {
+      "concept_id": "syllable.па",
+      "claim_kind": "syllable",
+      "text": "слог па",
+      "doc_path": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "section": "B1 / па",
+      "slots": {
+        "syllable": "па"
+      }
+    },
+    {
+      "concept_id": "syllable.пап",
+      "claim_kind": "syllable",
+      "text": "слог пап",
+      "doc_path": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "section": "B1 / пап",
+      "slots": {
+        "syllable": "пап"
+      }
+    },
+    {
+      "concept_id": "lang.word.мама",
+      "claim_kind": "word",
+      "text": "слово мама",
+      "doc_path": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "section": "B2 / мама",
+      "slots": {
+        "word": "мама"
+      }
+    },
+    {
+      "concept_id": "lang.word.папа",
+      "claim_kind": "word",
+      "text": "слово папа",
+      "doc_path": "examples/kb/kb-bukvar-ru-primer-v1.md",
+      "section": "B2 / папа",
+      "slots": {
+        "word": "папа"
+      }
+    }
+  ]
+}

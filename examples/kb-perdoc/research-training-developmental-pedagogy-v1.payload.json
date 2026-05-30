@@ -1,0 +1,77 @@
+{
+  "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+  "schema_version": 1,
+  "claims": [
+    {
+      "concept_id": null,
+      "text": "Куррикулярность: этапы сложности; сжатый таргет, потом разрешение.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / Гипотеза: педагогика развития как ориентир протокола",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Редкие семантические коррекции (почему неверно) vs плотный шум меток.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / Гипотеза: педагогика развития как ориентир протокола",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Интерактив и среда (действие → наблюдение), а не пассивный датасет.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / Гипотеза: педагогика развития как ориентир протокола",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Социальный/культурный слой снаружи модели — канон, партнёрство, явные правила — чтобы не требовать, чтобы вся норма жила в весах одной сети.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / Гипотеза: педагогика развития как ориентир протокола",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Что мозг ребёнка «просто трансформер» — нет; метафора педагогического протокола, не биологическая идентичность.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / Что сознательно не утверждаем здесь",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Что CA уже даёт дешёвый SOTA LLM «из коробки» — нет; только направление исследования.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / Что сознательно не утверждаем здесь",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Замена воспитания человека симуляцией — нет; речь о дизайне обучения искусственного агента и о культуре партнёрства вокруг инструментов.",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / Что сознательно не утверждаем здесь",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "CA vs matrix (короткий черновик): [research-ml-ca-vs-matrix.md](research-ml-ca-vs-matrix.md)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / См. также",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Research spec: [research-ml-ca-substrate-agent-v1.md](research-ml-ca-substrate-agent-v1.md)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / См. также",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": null,
+      "text": "Курс и партнёрство: [../agent-first-learn/README.md](../agent-first-learn/README.md)",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / См. также",
+      "claim_kind": "claim"
+    }
+  ],
+  "count": 10
+}

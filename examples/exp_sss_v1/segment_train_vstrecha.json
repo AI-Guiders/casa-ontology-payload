@@ -1,0 +1,5 @@
+{
+  "train_word": "встреча",
+  "train_gold": "встре|ча",
+  "probe_word": "встреча"
+}

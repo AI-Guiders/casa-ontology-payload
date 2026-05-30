@@ -1,0 +1,517 @@
+{
+  "schema_version": 1,
+  "graph": {
+    "root": {
+      "id": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "kind": "project_doc",
+      "title": "kb-regex-mre3-ru-chapter-map-v1"
+    },
+    "nodes": [
+      {
+        "id": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+        "kind": "project_doc",
+        "title": "kb-regex-mre3-ru-chapter-map-v1"
+      }
+    ],
+    "edges": []
+  },
+  "claims": [
+    {
+      "concept_id": "ru.regex.mre3_map.01",
+      "text": "source_refs: локальный PDF c:\\Users\\dkara\\Downloads\\OReilly-Регулярные-выражения-3-е-изд.-Дж.Фридл.pdf (закладки/оглавление извлечены программно, 598 стр.); оригинал: Mastering Regular Expressions, 3rd ed.",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Provenance (происхождение)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.02",
+      "text": "created_at: 2026-03-21",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Provenance (происхождение)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.03",
+      "text": "updated_at: 2026-03-21",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Provenance (происхождение)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.04",
+      "text": "author: (агент; сверка структуры по PDF)",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Provenance (происхождение)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.05",
+      "text": "card_id: kb-regex-mre3-ru-chapter-map-v1",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Metadata",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.06",
+      "text": "world: programming / regex",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Metadata",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.07",
+      "text": "layer: router",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Metadata",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.08",
+      "text": "tags: regex, friedl, mre3, ru-translation, chapter-index",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Metadata",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.09",
+      "text": "status: active",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Metadata",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.10",
+      "text": "epistemic_basis: fact (структура оглавления PDF) + inference (сопоставление с карточками KB)",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Epistemic Linkage",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.11",
+      "text": "evidence_type: machine-extracted bookmarks",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Epistemic Linkage",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.12",
+      "text": "confidence: high (оглавление), medium (сопоставление с KB)",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Epistemic Linkage",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.13",
+      "text": "uncertainty: названия подпунктов в закладках иногда обрезаны; нумерация страниц в PDF может отличаться от бумажного издания",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Epistemic Linkage",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.14",
+      "text": "falsification_trigger: расхождение оглавления с ревизией файла PDF",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Epistemic Linkage",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.15",
+      "text": "transfer_boundary: карточки KB не цитируют текст книги; для формулировок и доказательств — только первоисточник",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Epistemic Linkage",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.16",
+      "text": "context: чтение/поиск по книге и параллельная работа с кластером regex-friedl-mre3",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Core Unit",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.17",
+      "text": "signal: нужна глава или тема из оглавления",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Core Unit",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.18",
+      "text": "action: открыть соответствующие файлы KB по таблице ниже; при расхождении — книга первична",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Core Unit",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.19",
+      "text": "outcome: быстрый переход от главы к сжатой памяти агента",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Core Unit",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.20",
+      "text": "lesson: гл. 4–6 книги = теория движка и эффективность; гл. 7–10 = конкретные API языков",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Core Unit",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.21",
+      "text": "first_adoption_task: держать PDF в стабильном пути или обновить source_refs при переносе файла",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Operationalization",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.22",
+      "text": "validation_check: открыть закладку «Глава N» в ридере и сравнить с таблицей",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Operationalization",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.23",
+      "text": "success_criterion: любая глава 1–10 имеет хотя бы одну карточку KB",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Operationalization",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.24",
+      "text": "rollback_or_mitigation: при удалении кластера — карта теряет смысл; хранить в каноне вместе с kb-regex-*",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Operationalization",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.25",
+      "text": "supersedes: —",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Lifecycle",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.26",
+      "text": "superseded_by: —",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Lifecycle",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.27",
+      "text": "deprecation_reason: —",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Lifecycle",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.28",
+      "text": "Глава (рус. изд.) → О чём (кратко) (Карточки KB)",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Соответствие глав → карточки KB (кластер `regex-friedl-mre3`)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.29",
+      "text": "|-------------------|----------------|-------------|",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Соответствие глав → карточки KB (кластер `regex-friedl-mre3`)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.30",
+      "text": "1. Знакомство с регулярными выражениями → egrep, метасимволы, классы, якоря, квантификаторы, скобки, обратные ссылки (kb-regex-quickref-v1.md, kb-regex-syntax-features-v1.md)",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Соответствие глав → карточки KB (кластер `regex-friedl-mre3`)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.31",
+      "text": "2. Дополнительные примеры → разбор задач, закрепление синтаксиса (kb-regex-syntax-features-v1.md, kb-regex-flavors-practice-v1.md (раздел workflow))",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Соответствие глав → карточки KB (кластер `regex-friedl-mre3`)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.32",
+      "text": "3. Возможности и диалекты → отличия инструментов, Unicode-свойства, POSIX (kb-regex-flavors-practice-v1.md, kb-regex-unicode-boundaries-v1.md)",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Соответствие глав → карточки KB (кластер `regex-friedl-mre3`)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.33",
+      "text": "4. Механика обработки → НКА, откат, жадность, атомарность, владение, сравнение с ДКА (kb-regex-engines-efficiency-v1.md)",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Соответствие глав → карточки KB (кластер `regex-friedl-mre3`)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.34",
+      "text": "5. Практические приёмы построения → баланс скобок, IP, HTML/URL, CSV и т.д. (kb-regex-syntax-features-v1.md + для вложенных грамматик — не только regex; детали — в книге)",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Соответствие глав → карточки KB (кластер `regex-friedl-mre3`)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.35",
+      "text": "6. Эффективные выражения → катастрофический backtracking, оптимизации (kb-regex-engines-efficiency-v1.md, kb-regex-flavors-practice-v1.md (таймауты, API))",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Соответствие глав → карточки KB (кластер `regex-friedl-mre3`)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.36",
+      "text": "7. Perl → специфика Perl/PCRE-наследия (kb-regex-flavors-practice-v1.md (раздел PCRE / Perl-стиль))",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Соответствие глав → карточки KB (кластер `regex-friedl-mre3`)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.37",
+      "text": "8. Java → java.util.regex, Matcher, split (kb-regex-flavors-practice-v1.md (раздел Java))",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Соответствие глав → карточки KB (кластер `regex-friedl-mre3`)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.38",
+      "text": "9. .NET → Regex, Match, Group, опции (kb-regex-flavors-practice-v1.md (раздел .NET))",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Соответствие глав → карточки KB (кластер `regex-friedl-mre3`)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.39",
+      "text": "10. PHP → preg_* (kb-regex-flavors-practice-v1.md (упоминание PHP/preg; при расширении — отдельная секция))",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Соответствие глав → карточки KB (кластер `regex-friedl-mre3`)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.40",
+      "text": "Роутер кластера: index-knowledge-regex-cluster-v1.md",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Указатель",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.41",
+      "text": "Шаблон карточки KB: templates/template-knowledge-card-v1.md",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Указатель",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.42",
+      "text": "Операционный контракт: regex-playbook.md",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Указатель",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.43",
+      "text": "<!-- section:bookmarks-note -->",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Указатель",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.44",
+      "text": "Оглавление в PDF содержит 294 закладки верхнего уровня (плоский список в экспорте); для навигации по подпунктам удобнее сам ридер PDF.",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Указатель",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.45",
+      "text": "<!-- /section:bookmarks-note -->",
+      "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
+      "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Указатель",
+      "claim_kind": "claim"
+    }
+  ],
+  "concept_index": [
+    {
+      "concept_id": "ru.regex.mre3_map.01",
+      "label": "source_refs: локальный PDF c:\\Users\\dkara\\Downloads\\OReilly-Регулярные-выражения-3-е-изд.-Дж.Фридл.pdf (закладки/оглавление извлечены программно, 598 стр.); оригинал: Mastering Regular Expressions, 3rd ed."
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.02",
+      "label": "created_at: 2026-03-21"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.03",
+      "label": "updated_at: 2026-03-21"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.04",
+      "label": "author: (агент; сверка структуры по PDF)"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.05",
+      "label": "card_id: kb-regex-mre3-ru-chapter-map-v1"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.06",
+      "label": "world: programming / regex"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.07",
+      "label": "layer: router"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.08",
+      "label": "tags: regex, friedl, mre3, ru-translation, chapter-index"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.09",
+      "label": "status: active"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.10",
+      "label": "epistemic_basis: fact (структура оглавления PDF) + inference (сопоставление с карточками KB)"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.11",
+      "label": "evidence_type: machine-extracted bookmarks"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.12",
+      "label": "confidence: high (оглавление), medium (сопоставление с KB)"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.13",
+      "label": "uncertainty: названия подпунктов в закладках иногда обрезаны; нумерация страниц в PDF может отличаться от бумажного издания"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.14",
+      "label": "falsification_trigger: расхождение оглавления с ревизией файла PDF"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.15",
+      "label": "transfer_boundary: карточки KB не цитируют текст книги; для формулировок и доказательств — только первоисточник"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.16",
+      "label": "context: чтение/поиск по книге и параллельная работа с кластером regex-friedl-mre3"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.17",
+      "label": "signal: нужна глава или тема из оглавления"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.18",
+      "label": "action: открыть соответствующие файлы KB по таблице ниже; при расхождении — книга первична"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.19",
+      "label": "outcome: быстрый переход от главы к сжатой памяти агента"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.20",
+      "label": "lesson: гл. 4–6 книги = теория движка и эффективность; гл. 7–10 = конкретные API языков"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.21",
+      "label": "first_adoption_task: держать PDF в стабильном пути или обновить source_refs при переносе файла"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.22",
+      "label": "validation_check: открыть закладку «Глава N» в ридере и сравнить с таблицей"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.23",
+      "label": "success_criterion: любая глава 1–10 имеет хотя бы одну карточку KB"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.24",
+      "label": "rollback_or_mitigation: при удалении кластера — карта теряет смысл; хранить в каноне вместе с kb-regex-*"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.25",
+      "label": "supersedes: —"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.26",
+      "label": "superseded_by: —"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.27",
+      "label": "deprecation_reason: —"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.28",
+      "label": "Глава (рус. изд.) → О чём (кратко) (Карточки KB)"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.29",
+      "label": "|-------------------|----------------|-------------|"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.30",
+      "label": "1. Знакомство с регулярными выражениями → egrep, метасимволы, классы, якоря, квантификаторы, скобки, обратные ссылки (kb-regex-quickref-v1.md, kb-regex-syntax-features-v1.md)"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.31",
+      "label": "2. Дополнительные примеры → разбор задач, закрепление синтаксиса (kb-regex-syntax-features-v1.md, kb-regex-flavors-practice-v1.md (раздел workflow))"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.32",
+      "label": "3. Возможности и диалекты → отличия инструментов, Unicode-свойства, POSIX (kb-regex-flavors-practice-v1.md, kb-regex-unicode-boundaries-v1.md)"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.33",
+      "label": "4. Механика обработки → НКА, откат, жадность, атомарность, владение, сравнение с ДКА (kb-regex-engines-efficiency-v1.md)"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.34",
+      "label": "5. Практические приёмы построения → баланс скобок, IP, HTML/URL, CSV и т.д. (kb-regex-syntax-features-v1.md + для вложенных грамматик — не только regex; детали — в книге)"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.35",
+      "label": "6. Эффективные выражения → катастрофический backtracking, оптимизации (kb-regex-engines-efficiency-v1.md, kb-regex-flavors-practice-v1.md (таймауты, API))"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.36",
+      "label": "7. Perl → специфика Perl/PCRE-наследия (kb-regex-flavors-practice-v1.md (раздел PCRE / Perl-стиль))"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.37",
+      "label": "8. Java → java.util.regex, Matcher, split (kb-regex-flavors-practice-v1.md (раздел Java))"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.38",
+      "label": "9. .NET → Regex, Match, Group, опции (kb-regex-flavors-practice-v1.md (раздел .NET))"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.39",
+      "label": "10. PHP → preg_* (kb-regex-flavors-practice-v1.md (упоминание PHP/preg; при расширении — отдельная секция))"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.40",
+      "label": "Роутер кластера: index-knowledge-regex-cluster-v1.md"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.41",
+      "label": "Шаблон карточки KB: templates/template-knowledge-card-v1.md"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.42",
+      "label": "Операционный контракт: regex-playbook.md"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.43",
+      "label": "<!-- section:bookmarks-note -->"
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.44",
+      "label": "Оглавление в PDF содержит 294 закладки верхнего уровня (плоский список в экспорте); для навигации по подпунктам удобнее сам ридер PDF."
+    },
+    {
+      "concept_id": "ru.regex.mre3_map.45",
+      "label": "<!-- /section:bookmarks-note -->"
+    }
+  ]
+}

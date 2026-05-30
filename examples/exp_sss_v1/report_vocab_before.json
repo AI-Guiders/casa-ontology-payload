@@ -1,0 +1,49 @@
+{
+  "passed": 0,
+  "total": 5,
+  "pass_rate": 0.0,
+  "word_votes": {},
+  "items": [
+    {
+      "scene_id": "s2",
+      "expect": "кот",
+      "top": "",
+      "hit_top3": false,
+      "w_votes": 0,
+      "ranked": []
+    },
+    {
+      "scene_id": "s2",
+      "expect": "дом",
+      "top": "",
+      "hit_top3": false,
+      "w_votes": 0,
+      "ranked": []
+    },
+    {
+      "scene_id": "s3",
+      "expect": "сад",
+      "top": "",
+      "hit_top3": false,
+      "w_votes": 0,
+      "ranked": []
+    },
+    {
+      "scene_id": "s4",
+      "expect": "мама",
+      "top": "",
+      "hit_top3": false,
+      "w_votes": 0,
+      "ranked": []
+    },
+    {
+      "scene_id": "s1",
+      "expect": "папа",
+      "top": "",
+      "hit_top3": false,
+      "w_votes": 0,
+      "ranked": []
+    }
+  ],
+  "vocab_ok": false
+}

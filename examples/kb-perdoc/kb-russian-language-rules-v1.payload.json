@@ -1,0 +1,679 @@
+{
+  "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+  "schema_version": 1,
+  "claims": [
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.01",
+      "text": "Справочник по грамматике и норме русского языка с опорой на академические и авторитетные источники.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.02",
+      "text": "Цель — при генерации или правке текста на русском проверять согласование, управление и типичные ошибки; ответы по норме опирать на указанные источники.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.soglasovanie.03",
+      "text": "По Русской грамматике (1980) и описаниям на rusgram.ru согласование — синтаксическая связь, при которой зависимое слово (прилагательное, порядковое числительное, причастие, местоимение) принимает те же грамматические формы, что и главное слово (существительное): род, число, падеж.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 1. Согласование (род, число, падеж)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.soglasovanie.04",
+      "text": "В единственном числе: прилагательное (и порядковое числительное) согласуется в роде, числе и падеже: новый дом, новая дача, новое окно; второй шаг, вторая половинка, второе окно. В родительном падеже с существительным ж.р.: второй половинки (род. п.) → правильно без второй половинки, не «без второго половинки» («второго» — форма м.р./ср.р., не согласована с «половинкой»).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 1. Согласование (род, число, падеж)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.soglasovanie.05",
+      "text": "Во множественном числе: согласование в числе и падеже: новые дома, новых домов.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 1. Согласование (род, число, падеж)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.soglasovanie.06",
+      "text": "Одушевлённость: при винительном падеже мн. ч. и м.р. ед. ч. прилагательное совпадает с формой родительного при одушевлённом существительном (вижу красивых девочек).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 1. Согласование (род, число, падеж)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chislitelnye.07",
+      "text": "Порядковые числительные (первый, вторая, третий и т.д.) изменяются по числам, родам и падежам так же, как прилагательные.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 2. Порядковые числительные",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chislitelnye.08",
+      "text": "В единственном числе — три рода (м., ж., ср.), во множественном — одна форма для всех родов.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 2. Порядковые числительные",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chislitelnye.09",
+      "text": "Окончания совпадают с адъективным склонением: им.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 2. Порядковые числительные",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chislitelnye.10",
+      "text": "Поэтому с существительным ж.р.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 2. Порядковые числительные",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chislitelnye.11",
+      "text": "(половинка → половинки) правильно вторая половинки → в контексте предлога без: без второй половинки.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 2. Порядковые числительные",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.upravlenie.12",
+      "text": "Грамота.ру (словарь-справочник трудностей русского языка): предлог согласно в современном русском литературном языке требует дательного падежа: согласно чему, не согласно чего.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 3. Управление предлогов / 3.1 Предлог *согласно*",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.upravlenie.13",
+      "text": "Нормативна только конструкция с дательным.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 3. Управление предлогов / 3.1 Предлог *согласно*",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.upravlenie.14",
+      "text": "Правильно: согласно закону, согласно договору, согласно приказу, согласно указу, согласно распоряжению.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 3. Управление предлогов / 3.1 Предлог *согласно*",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.upravlenie.15",
+      "text": "Употребление родительного (согласно приказа) — распространённая ошибка, в т.ч.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 3. Управление предлогов / 3.1 Предлог *согласно*",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.upravlenie.16",
+      "text": "в официально-деловой речи; норма — дательный падеж.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 3. Управление предлогов / 3.1 Предлог *согласно*",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.upravlenie.17",
+      "text": "В течение (в значении времени) пишется раздельно, на е в конце.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 3. Управление предлогов / 3.2 Предлог *в течение*",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.upravlenie.18",
+      "text": "Управляет родительным падежом: в течение пяти минут, в течение дня.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 3. Управление предлогов / 3.2 Предлог *в течение*",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.paronimy.19",
+      "text": "Грамота.ру и справочники по культуре речи: это паронимы с разным управлением и значением.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 4. Паронимы: *надеть* / *одеть*",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.paronimy.20",
+      "text": "Надеть — натянуть, надвинуть что-то на кого-то/что-то: надеть пальто, надеть на себя, надеть очки. Антоним — снять.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 4. Паронимы: *надеть* / *одеть*",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.paronimy.21",
+      "text": "Одеть — облечь кого-то одеждой (одушевлённый объект): одеть ребёнка, одеть больного. Антоним — раздеть. С неодушевлённым (одеть пальто) — ошибка.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 4. Паронимы: *надеть* / *одеть*",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.paronimy.22",
+      "text": "Мнемоника: надеть на себя, одеть кого-то.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 4. Паронимы: *надеть* / *одеть*",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.23",
+      "text": "|----------|--------|------------------------|",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.24",
+      "text": "без второго половинки → без второй половинки (Согласование: половинка (ж.р.), род. п. — вторая половинки (РГ-80, § согласование).)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.25",
+      "text": "согласно приказа → согласно приказу (Грамота.ру: согласно + дат. п.)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.26",
+      "text": "в течении пяти минут → в течение пяти минут (Орфография: предлог времени пишется раздельно, на «е».)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.paronimy.27",
+      "text": "одеть пальто / надеть ребёнка → надеть пальто, одеть ребёнка (Грамота.ру / паронимы: надеть — что на кого; одеть — кого.)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.28",
+      "text": "ихний, ейный → их, её (Разговорные формы; в нейтральном/деловом тексте — их, её (Грамота.ру, стилистика).)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.29",
+      "text": "Список можно дополнять по мере выявления повторяющихся ошибок с указанием источника.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 5. Другие частые ошибки (краткий список с опорой на источники)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.30",
+      "text": "При подлежащем-местоимении или обобщённом существительном (каждый, никто, агент, пользователь) сказуемое в ед.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 6. Число и род при обобщениях",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.31",
+      "text": "ч.; род — по смыслу или м.р.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 6. Число и род при обобщениях",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.32",
+      "text": "при неопределённости: агент проверил, каждый должен проверить.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 6. Число и род при обобщениях",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.33",
+      "text": "Обращение «они» в единственном числе допустимо по запросу пользователя (нейтральное обращение); иначе — согласование по грамматическому роду.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 6. Число и род при обобщениях",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.34",
+      "text": "При генерации или правке текста на русском при сомнении в согласовании, управлении или норме подтягивать этот документ и проверять по указанным разделам.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 7. Операционное использование",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.35",
+      "text": "При формулировках с числительными и существительными (вторая половинка, без одной части и т.п.) проверять род и падеж существительного и ставить зависимое слово в тот же род и падеж.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 7. Операционное использование",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.36",
+      "text": "При вопросах пользователя о правильности формулировки опираться на указанные источники (РГ-80, Грамота.ру) и при необходимости давать краткую отсылку к правилу.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 7. Операционное использование",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.37",
+      "text": "Роутер: при сомнении в русской грамматике загружать knowledge/worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md (см. index-knowledge-router-v1.md).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 7. Операционное использование",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.punktsuaciya.38",
+      "text": "Перед что, чтобы, который/которая/которое/которые (в придаточных) запятая обычно нужна: Я знаю, что он придёт; Сделай так, чтобы окно закрылось.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 8. Пунктуация: запятые и тире",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.punktsuaciya.39",
+      "text": "Вводные слова и конструкции (конечно, однако, на мой взгляд, кстати) выделяются запятыми: Он, конечно, придёт.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 8. Пунктуация: запятые и тире",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.punktsuaciya.40",
+      "text": "Союз а между частями сложного предложения — запятая: Было холодно, а мы вышли.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 8. Пунктуация: запятые и тире",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.punktsuaciya.41",
+      "text": "Тире между подлежащим и сказуемым — когда обе части существительные в именительном: Жизнь — это движение (проверка: можно подставить «это есть»).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 8. Пунктуация: запятые и тире",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.punktsuaciya.42",
+      "text": "Дефис в сложных прилагательных и частицах: кто-то, как-нибудь, по-русски, интернет-магазин.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 8. Пунктуация: запятые и тире",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.punktsuaciya.43",
+      "text": "|----------|--------|------------|",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 8. Пунктуация: запятые и тире",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.punktsuaciya.44",
+      "text": "Я знаю что он придёт → Я знаю, что он придёт (Придаточное изъяснительное.)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 8. Пунктуация: запятые и тире",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.punktsuaciya.45",
+      "text": "Однако мы пошли → Однако, мы пошли (Вводное «однако» в начале — запятая после.)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 8. Пунктуация: запятые и тире",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.punktsuaciya.46",
+      "text": "по русски → по-русски (Наречия на -ски/-цки с дефисом.)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 8. Пунктуация: запятые и тире",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.47",
+      "text": "также — в значении «и, к тому же» пишется раздельно: Он также пришёл; так же — «таким же образом»: Он поступил так же.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 9. Слитно и раздельно (частые пары)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.48",
+      "text": "то есть — вводная = раздельно: то есть уточняю; тоесть как часть слова не используется.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 9. Слитно и раздельно (частые пары)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.49",
+      "text": "ввиду (предлог, «учитывая») — слитно: ввиду обстоятельств; в виду — «в поле зрения»: держать в виду.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 9. Слитно и раздельно (частые пары)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.50",
+      "text": "вследствие (предлог) — слитно + род. п.: вследствие дождя; в следствие — ошибка.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 9. Слитно и раздельно (частые пары)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.51",
+      "text": "в течение — слитно, род. п.; в течении — неверно (кроме редких терминов вроде «в течении реки»).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 9. Слитно и раздельно (частые пары)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.52",
+      "text": "ввиду того что → ввиду того, что",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 9. Слитно и раздельно (частые пары)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.53",
+      "text": "вследствии аварии → вследствие аварии",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 9. Слитно и раздельно (частые пары)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.54",
+      "text": "так же как → также / так же, как (по смыслу)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 9. Слитно и раздельно (частые пары)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.chastitsy.55",
+      "text": "не с глаголами пишется раздельно, если можно вставить слово: не (хотел) сказать → не сказал; иначе слитно по словарю: нельзя, некогда, нечего.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 10. Частица «не» и глаголы",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.chastitsy.56",
+      "text": "ни усиливает отрицание, часто парное ни… ни: ни разу, нигде.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 10. Частица «не» и глаголы",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastitsy.57",
+      "text": "-то, -ли, -бы/-б — частицы, пишутся раздельно: что-то, не так ли, если бы.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 10. Частица «не» и глаголы",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastitsy.58",
+      "text": "незнаю → не знаю",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 10. Частица «не» и глаголы",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.chastitsy.59",
+      "text": "не могу не смотреть → не могу не смотреть (раздельно «не» у «могу»)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 10. Частица «не» и глаголы",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.chastitsy.60",
+      "text": "еслиб → если бы",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 10. Частица «не» и глаголы",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.61",
+      "text": "В личных формах глагола — -тся (он пишется, они учатся).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 11. -тся / -ться (глаголы)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.62",
+      "text": "В инфинитиве — -ться (писаться, учиться).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 11. -тся / -ться (глаголы)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.63",
+      "text": "Проверка: подставить было/была — писалось, училось → инфинитив с -ться.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 11. -тся / -ться (глаголы)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.64",
+      "text": "учится (инфинитив) → учиться",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 11. -тся / -ться (глаголы)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.65",
+      "text": "можно писатся → можно писаться",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 11. -тся / -ться (глаголы)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.66",
+      "text": "он учиться → он учится",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 11. -тся / -ться (глаголы)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.soglasovanie.67",
+      "text": "Один субъект — сказуемое в ед. ч.: Агент проверил, Команда (как коллектив) выиграла.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 12. Согласование сказуемого с подлежащим",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.soglasovanie.68",
+      "text": "Собирательные (многие, большинство, ряд) — чаще мн. ч.: Многие согласны; смотреть на смысл.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 12. Согласование сказуемого с подлежащим",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.soglasovanie.69",
+      "text": "Число + существительное — согласование с последним словом: Два агента проверили; Двадцать файлов обработаны.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 12. Согласование сказуемого с подлежащим",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.soglasovanie.70",
+      "text": "Ты в ответах пользователю — глагол во 2 л. ед. или безличная конструкция; не «Вы проверили» без запроса вежливой формы.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 12. Согласование сказуемого с подлежащим",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.soglasovanie.71",
+      "text": "Большинство голосовало → Большинство голосовало / голосовали (оба варианта в корпусах; в деловом тексте чаще ед.)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 12. Согласование сказуемого с подлежащим",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.soglasovanie.72",
+      "text": "Два агента проверил → Два агента проверили",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 12. Согласование сказуемого с подлежащим",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.73",
+      "text": "Избегать разговорных ихний, ейный, здесьствует — норма их, её, присутствует.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 13. Лексика и стиль (деловой текст)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.74",
+      "text": "Данный, указанный, вышеупомянутый — умеренно; не в каждом предложении.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 13. Лексика и стиль (деловой текст)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.75",
+      "text": "В целях + род. п. — деловой штамп, допустим; для того, чтобы — яснее в инструкциях.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 13. Лексика и стиль (деловой текст)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.76",
+      "text": "Тавтологии: предварительный этап подготовки → этап подготовки; свободная вакансия → вакансия.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 13. Лексика и стиль (деловой текст)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.77",
+      "text": "предварительный этап → этап подготовки (без «предварительный», если не нужен смысл)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 13. Лексика и стиль (деловой текст)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.78",
+      "text": "в целях улучшения → чтобы улучшить / для улучшения",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 13. Лексика и стиль (деловой текст)",
+      "claim_kind": "rule"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.79",
+      "text": "ихний дом / ихний: разговорная форма; в нормативном и деловом тексте — их дом, не ихний.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 15. Якоря retrieval (частые запросы бенча)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.80",
+      "text": "ейный: заменять на её; ейный — разговорное.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 15. Якоря retrieval (частые запросы бенча)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.81",
+      "text": "по русски: ошибка; правильно по-русски (дефис), как по-английски, по-немецки.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 15. Якоря retrieval (частые запросы бенча)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.82",
+      "text": "по русски или по-русски: верно только по-русски; раздельное по русски — норма нарушена (дефис обязателен).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 15. Якоря retrieval (частые запросы бенча)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.83",
+      "text": "согласно для официального письма / деловой речи: только дательный падеж — согласно приказу, согласно распоряжению, согласно договору; не согласно приказа.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 15. Якоря retrieval (частые запросы бенча)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.84",
+      "text": "объясни правило согласно для официального письма: в официальном письме согласно + дательный (согласно приказу, согласно указу).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 15. Якоря retrieval (частые запросы бенча)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.chastye_oshibki.85",
+      "text": "можно ли писать согласно указа: нет; верно согласно указу.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 15. Якоря retrieval (частые запросы бенча)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.86",
+      "text": "Вопрос «как пишется» → дать норму, пример, источник (Грамота.ру / РГ-80).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 14. Краткий FAQ (формулировки для агента)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.87",
+      "text": "Вопрос «правильно ли …» → ответ: да/нет + исправление + правило одной фразой.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 14. Краткий FAQ (формулировки для агента)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.88",
+      "text": "Сомнение в падеже после предлога → сверить §3 (управление) и таблицу §5.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 14. Краткий FAQ (формулировки для агента)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.paronimy.89",
+      "text": "Паронимы одежды → §4 (надеть / одеть).",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 14. Краткий FAQ (формулировки для агента)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.90",
+      "text": "Пунктуация в сложном предложении → §8.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / 14. Краткий FAQ (формулировки для агента)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.91",
+      "text": "source_refs: РГ-80, Грамота.ру (указаны в документе)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / Provenance (происхождение)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.92",
+      "text": "created_at: 2026-03",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / Provenance (происхождение)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.93",
+      "text": "updated_at: 2026-05-29 (§8–14, расширение для CASA Exp J)",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / Provenance (происхождение)",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.94",
+      "text": "status: active",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / Metadata",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.95",
+      "text": "layer: kb / evidence-based language reference",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / Metadata",
+      "claim_kind": "claim"
+    },
+    {
+      "concept_id": "ru.grammar.правила_русского_языка_evidence_base.96",
+      "text": "transfer_boundary: применимо при любом порождении или редактировании русского текста агентом; ответы по норме русского языка опирать на указанные источники.",
+      "doc_path": "worlds/evidence-humanities-shelf/kb-russian-language-rules-v1.md",
+      "section": "Правила русского языка (evidence-based v1) / Metadata",
+      "claim_kind": "claim"
+    }
+  ],
+  "count": 96
+}

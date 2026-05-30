@@ -1,0 +1,7 @@
+{"query": "Привет, как дела?", "expect_action": "answer_from_memory", "expect_any": ["привет", "дела", "разговор"], "forbid": ["readline", "два целых"]}
+{"query": "Здравствуй!", "expect_action": "answer_from_memory", "expect_any": ["привет", "помощник", "dialogue"]}
+{"query": "Что умеешь?", "expect_action": "answer_from_memory", "expect_any": ["language-agent", "умею", "dialogue"]}
+{"query": "Мне нужно позвонить маме вечером, как лучше сформулировать?", "expect_action": "answer_from_memory", "expect_any": ["мама", "вечером", "наберу"]}
+{"query": "Какой фильм посмотреть на выходных?", "expect_action": "answer_from_memory", "expect_any": ["фрагмента нет", "переформулируй", "грамматик"]}
+{"query": "согласно приказа или согласно приказу", "expect_action": "open_kb", "expect_any": ["согласно приказу", "дательн"]}
+{"query": "напиши программу сумма двух чисел какое намерение", "expect_action": "open_kb", "expect_any": ["сумм", "два", "намерен"]}

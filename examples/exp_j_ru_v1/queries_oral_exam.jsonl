@@ -1,0 +1,18 @@
+{"query": "Привет, как дела?", "category": "dialogue", "expect_any": ["дела", "привет", "dialogue"]}
+{"query": "Что умеешь?", "category": "dialogue", "expect_any": ["language-agent", "умею"]}
+{"query": "Позвонить маме вечером — как сказать красиво?", "category": "dialogue", "expect_any": ["мама", "наберу", "вечером"]}
+{"query": "согласно приказа или согласно приказу", "category": "grammar", "expect_any": ["согласно приказу", "дательн", "ошибк"]}
+{"query": "одеть пальто или надеть пальто", "category": "grammar", "expect_any": ["надеть", "одеть"]}
+{"query": "в течении или в течение часа", "category": "grammar", "expect_any": ["течение", "раздельно", "слитно"]}
+{"query": "ихний дом — нормально?", "category": "grammar", "expect_any": ["ихний", "ошибк", "норм"]}
+{"query": "по русски или по-русски", "category": "grammar", "expect_any": ["по-русски", "дефис", "раздельно"]}
+{"query": "Объясни простыми словами запятую перед что", "category": "grammar", "expect_any": ["запят", "что", "придаточ"]}
+{"query": "программа складывает два числа с клавиатуры", "category": "literacy_code", "expect_any": ["сумм", "два", "числ"]}
+{"query": "чем отличается объясни от напиши программу", "category": "literacy", "expect_any": ["объясни", "напиши", "намерен"]}
+{"query": "перефраз: сложи два числа с консоли", "category": "literacy", "expect_any": ["сумм", "два", "перефраз"]}
+{"query": "как отвечать связным русским без копипаста", "category": "literacy", "expect_any": ["ответ", "связн", "памят"]}
+{"query": "верно ли: я знаю что он придёт", "category": "grammar", "expect_any": ["запят", "знаю", "прид"]}
+{"query": "также или так же в начале предложения", "category": "grammar", "expect_any": ["также", "так же"]}
+{"query": "Кто ты такой?", "category": "dialogue", "expect_any": ["language-agent", "помощник"]}
+{"query": "найди правило согласно договору", "category": "grammar", "expect_any": ["согласно", "договор"]}
+{"query": "расскажи про паронимы надел одеть", "category": "grammar", "expect_any": ["надел", "одеть", "пароним"]}

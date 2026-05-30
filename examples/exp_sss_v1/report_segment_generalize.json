@@ -1,0 +1,186 @@
+{
+  "train": {
+    "word": "встреча",
+    "hypothesis": {
+      "word": "встреча",
+      "rule_id": "rule.segment.isolated_onset_guess",
+      "syllables": [
+        "в",
+        "стре",
+        "ча"
+      ],
+      "syllable_count": 3,
+      "vowel_count": 2,
+      "join_ok": true,
+      "count_matches_vowels": false
+    },
+    "verify": {
+      "ok": false,
+      "checks": {
+        "join_ok": true,
+        "count_matches_vowels": false
+      }
+    },
+    "attempt": "в|стре|ча",
+    "teacher_segment": "встре|ча",
+    "matched": false,
+    "episode": {
+      "id": "ep-7971836",
+      "kind": "rule",
+      "cue": "встреча",
+      "babble": "в|стре|ча",
+      "correct": "встре|ча",
+      "rule_id": "rule.segment.vowel_nuclei",
+      "rule_hint": "сколько гласных, столько слогов; каждый слог — одна гласная",
+      "lattice_id": "L2_word",
+      "concept_id": "lang.word.встреча",
+      "consolidated": false
+    },
+    "rule_taught": "rule.segment.vowel_nuclei",
+    "hippo_pending": 1
+  },
+  "sleep": {
+    "merged": 1,
+    "pending": 0,
+    "z_compose": 234,
+    "items": [
+      {
+        "episode_id": "ep-7971836",
+        "kind": "rule",
+        "rule_id": "rule.segment.vowel_nuclei",
+        "cue": "встреча",
+        "attempt": "в|стре|ча",
+        "correct": "встре|ча",
+        "rule_hint": "сколько гласных, столько слогов; каждый слог — одна гласная"
+      }
+    ]
+  },
+  "active_rules": [
+    "rule.segment.vowel_nuclei"
+  ],
+  "before": {
+    "passed": 1,
+    "total": 4,
+    "items": [
+      {
+        "word": "второй",
+        "attempt": "в|то|рой",
+        "gold": "вто|рой",
+        "rule_id": "rule.segment.isolated_onset_guess",
+        "ok": false,
+        "verify": {
+          "ok": false,
+          "checks": {
+            "join_ok": true,
+            "count_matches_vowels": false
+          }
+        }
+      },
+      {
+        "word": "привет",
+        "attempt": "п|ри|вет",
+        "gold": "при|вет",
+        "rule_id": "rule.segment.isolated_onset_guess",
+        "ok": false,
+        "verify": {
+          "ok": false,
+          "checks": {
+            "join_ok": true,
+            "count_matches_vowels": false
+          }
+        }
+      },
+      {
+        "word": "класс",
+        "attempt": "класс",
+        "gold": "класс",
+        "rule_id": "rule.segment.isolated_onset_guess",
+        "ok": true,
+        "verify": {
+          "ok": true,
+          "checks": {
+            "join_ok": true,
+            "count_matches_vowels": true
+          }
+        }
+      },
+      {
+        "word": "стрела",
+        "attempt": "с|тре|ла",
+        "gold": "стре|ла",
+        "rule_id": "rule.segment.isolated_onset_guess",
+        "ok": false,
+        "verify": {
+          "ok": false,
+          "checks": {
+            "join_ok": true,
+            "count_matches_vowels": false
+          }
+        }
+      }
+    ]
+  },
+  "after": {
+    "passed": 4,
+    "total": 4,
+    "items": [
+      {
+        "word": "второй",
+        "attempt": "вто|рой",
+        "gold": "вто|рой",
+        "rule_id": "rule.segment.vowel_nuclei",
+        "ok": true,
+        "verify": {
+          "ok": true,
+          "checks": {
+            "join_ok": true,
+            "count_matches_vowels": true
+          }
+        }
+      },
+      {
+        "word": "привет",
+        "attempt": "при|вет",
+        "gold": "при|вет",
+        "rule_id": "rule.segment.vowel_nuclei",
+        "ok": true,
+        "verify": {
+          "ok": true,
+          "checks": {
+            "join_ok": true,
+            "count_matches_vowels": true
+          }
+        }
+      },
+      {
+        "word": "класс",
+        "attempt": "класс",
+        "gold": "класс",
+        "rule_id": "rule.segment.vowel_nuclei",
+        "ok": true,
+        "verify": {
+          "ok": true,
+          "checks": {
+            "join_ok": true,
+            "count_matches_vowels": true
+          }
+        }
+      },
+      {
+        "word": "стрела",
+        "attempt": "стре|ла",
+        "gold": "стре|ла",
+        "rule_id": "rule.segment.vowel_nuclei",
+        "ok": true,
+        "verify": {
+          "ok": true,
+          "checks": {
+            "join_ok": true,
+            "count_matches_vowels": true
+          }
+        }
+      }
+    ]
+  },
+  "generalized": true
+}

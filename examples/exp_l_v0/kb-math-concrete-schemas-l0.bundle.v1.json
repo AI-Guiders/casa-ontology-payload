@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "bundle_id": "kb-math-concrete-schemas-l0",
+  "title": "Exp L0 — палочки и операции (текст)",
+  "claims": [
+    {
+      "concept_id": "math.one",
+      "claim_kind": "concept",
+      "text": "Одна вертикальная палочка: |",
+      "section": "L0.sticks"
+    },
+    {
+      "concept_id": "math.two",
+      "claim_kind": "concept",
+      "text": "Две палочки рядом: ||",
+      "section": "L0.sticks"
+    },
+    {
+      "concept_id": "math.three",
+      "claim_kind": "concept",
+      "text": "Три палочки: |||",
+      "section": "L0.sticks"
+    },
+    {
+      "concept_id": "math.add",
+      "claim_kind": "rule",
+      "text": "Сложить группы палочек — склеить: | + | → |||",
+      "section": "L0.ops"
+    },
+    {
+      "concept_id": "math.compare.more",
+      "claim_kind": "concept",
+      "text": "Больше палочек — длиннее запись ||| чем ||",
+      "section": "L0.compare"
+    }
+  ],
+  "graph": {
+    "edges": [
+      { "src": "math.one", "relation": "compose", "dst": "math.two" },
+      { "src": "math.two", "relation": "compose", "dst": "math.three" },
+      { "src": "math.add", "relation": "applies", "dst": "math.compose_sticks" },
+      { "src": "math.compose_sticks", "relation": "example", "dst": "math.three" }
+    ]
+  },
+  "math_tokens": [
+    { "token": "M:sym:one", "copies": 5 },
+    { "token": "M:sym:two", "copies": 5 },
+    { "token": "M:sym:three", "copies": 5 },
+    { "token": "M:op:add", "copies": 6 },
+    { "token": "M:op:eq", "copies": 4 },
+    { "token": "M:glyph:|", "copies": 4 }
+  ],
+  "math_glyphs": [
+    { "glyph": "|||", "concept_id": "math.three" },
+    { "glyph": "||", "concept_id": "math.two" },
+    { "glyph": "|", "concept_id": "math.one" }
+  ],
+  "math_keywords": {
+    "math.add": ["+", "слож", "скле", "add"],
+    "math.two": ["две", "two", "||"],
+    "math.three": ["три", "three", "|||"],
+    "math.one": ["одна", "one", "|"]
+  }
+}
