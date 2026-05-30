@@ -3,7 +3,7 @@
 **Статус:** design draft (контракт понимания; реализация v1+)  
 **Дата:** 2026-05-30  
 **Родитель:** [`language-acquisition-loop-v0.md`](language-acquisition-loop-v0.md)  
-**Соседи:** [`hippo-lattice-stack-v0.md`](hippo-lattice-stack-v0.md), [`f0-math-logical-layer-v0.md`](f0-math-logical-layer-v0.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md)  
+**Соседи:** [`hippo-lattice-stack-v0.md`](hippo-lattice-stack-v0.md), [`f0-math-logical-layer-v0.md`](f0-math-logical-layer-v0.md), [`predictor-v0.md`](predictor-v0.md), [`critic-v0.md`](critic-v0.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md)  
 **KB (эпистемика, канон):** `knowledge/worlds/knowledge-engineering/playbook-epistemic-methods-and-calibration-v1.md` — `epistemic-hpmor-heuristics-v1`, `epistemic-methodology-v1`; L0 `epistemic-default-distrust-v1`
 
 ---
@@ -470,7 +470,9 @@ heuristic → failure mode → operational check → revisit trigger
 | Listen → field | `sss_text_listen_field_v0.py` | без обязательного bundle ingest |
 | Bench | read@1, paste, segment | **`bench_understanding_v0.py`** |
 | Shipment | `ltm/` + `nca/` | runtime boot без `field_state.json` |
-| F0 compose | design only | F1/F2 + bench_math_compose |
+| F0 compose | design only | F1/F2 + bench_math_compose **после UC v0.5 predict** |
+| **Predictor** | design [`predictor-v0.md`](predictor-v0.md) | `predictor_v0.py`, `bench_predict_v0.py` |
+| **Critic** | design [`critic-v0.md`](critic-v0.md) | `critic_v0.py` gate before Extract / NCA_rule |
 
 ---
 
@@ -480,7 +482,8 @@ heuristic → failure mode → operational check → revisit trigger
 |-----------|-------------|
 | **UC v0.1** | ablation `claims_nav_enabled` в `cen_plan`; `store_boot_v0.py` (ltm-only); Exp L0 bench |
 | **UC v0.2** | `bench_understanding_v0.py` на 10 held-out pairs (segment/dative) |
-| **UC v0.5** | predict на act-тике: hypothesis → compare; wire `sss_hypothesis_v0` в hot path |
+| **UC v0.5** | **`predictor_v0.py`** + **`bench_predict_v0`** (segment, schema); см. [`predictor-v0.md`](predictor-v0.md) |
+| **UC v0.6** | **`critic_v0.py`** stub; predict→critic pass rate |
 | **UC v1.0** | hot path articulate **только** digest; pass ablation на bench |
 | **UC v1.1** | hippo H1/H2 split; migrate off `H0_episode` |
 | **UC v1.2** | teacher_correct → UnderstandingUnit JSON schema stable |
