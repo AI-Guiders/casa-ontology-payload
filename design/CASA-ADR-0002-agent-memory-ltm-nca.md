@@ -89,7 +89,17 @@ nca/
   rules/ru.case.dative.after_soglasno/model.pt   # NCA_rule (v1, roadmap)
 ```
 
-### 4. Выровнять дорожную карту с моделью KB
+**Инкрементальный sleep-repair (v0, 2026-05-30):** после cold ingest лексикона или drift `field_version` / `token_count` переобучать **только устаревшие полки**, а не все 64 шарда.
+
+| Артефакт | Роль |
+|----------|------|
+| `{store}/nca_train_registry.v0.json` | `last_trained_at`, `field_version_at_train`, `token_count_at_train`, очередь `pending[]` |
+| `tools/nca_stale_shards_v0.py` | `--dry-run` / `--train` по stale; default **25** epochs (`sss_shard_incremental`) |
+| `tools/lexicon_cold_ingest_v0.py` | после ingest → `merge_pending(shard_histogram)` |
+
+Причины stale: `missing_model`, `pending_ingest`, `field_version_drift`, `token_count_drift`, опционально `repair_smoke_fail`. Порог `min_tokens` (default 8) — как в `train_sss_nca_shards_v0.py`; для разреженных dev-store в bench — `--min-tokens 1`.
+
+### 5. Выровнять дорожную карту с моделью KB
 
 **Сейчас (v0):** KB/bundle → listen/import → `field_state` → export → **`ltm/`** + train → **`nca/`**.
 
@@ -138,6 +148,7 @@ nca/
 - [x] NCA windowed по умолчанию; дефолты в `nca-train-defaults.v0.json`.
 - [ ] Runtime: agent store стартует из `ltm/` + `nca/` без `field_state.json` на диске.
 - [ ] Документирован tier поставки в [`examples/agent-stores/INDEX.md`](../examples/agent-stores/INDEX.md) (частично).
+- [x] Incremental NCA: `nca_train_registry.v0.json` + `nca_stale_shards_v0.py` (bench: `bench_nca_stale_v0.py`).
 
 ---
 
@@ -147,6 +158,7 @@ nca/
 |----------|------|
 | `examples/kb/casa-adr-0001.payload.json` / ADR-0001 в agent-notes | трек CA-субстрата (отдельно) |
 | [`ltm-pack-v0.md`](ltm-pack-v0.md) | спецификация формата и команд |
+| [`CASA-ADR-0007-agent-profile-store-packs.md`](CASA-ADR-0007-agent-profile-store-packs.md) | agent profile + export ltm (продукты) |
 | [`nca-train-core-v0.md`](nca-train-core-v0.md) | общий цикл обучения NCA |
 | KB `kb-one-pager-structure-and-protocols-v1.md` | слои L0–L3, домены, роутинг |
 

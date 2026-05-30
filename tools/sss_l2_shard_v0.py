@@ -34,6 +34,44 @@ def norm_word(word: str) -> str:
     return unicodedata.normalize("NFC", (word or "").strip().lower())
 
 
+L2_EN_SHARD_PREFIX = "L2_en_word_"
+DEFAULT_EN_NUM_SHARDS = 16
+
+
+def is_l2_en_word_lattice(lattice_id: str) -> bool:
+    return str(lattice_id).startswith(L2_EN_SHARD_PREFIX)
+
+
+def en_l2_shard_id(word: str, *, num_shards: int = DEFAULT_EN_NUM_SHARDS) -> str:
+    w = norm_word(word)
+    idx = zlib.crc32(w.encode("utf-8")) % max(1, num_shards)
+    return f"{L2_EN_SHARD_PREFIX}{idx:02d}"
+
+
+def route_en_l2_lattice(state: dict, word: str) -> str:
+    cfg = sharding_config(state)
+    en_cfg = cfg.get("en") or {}
+    num = int(en_cfg.get("num_shards") or DEFAULT_EN_NUM_SHARDS)
+    shard = en_l2_shard_id(word, num_shards=num)
+    ensure_l2_lattice(state, shard)
+    register_word_shard(state, word, shard)
+    return shard
+
+
+def l2_en_word_lattice_ids(state: dict) -> list[str]:
+    state = ensure_cylinders(state)
+    return sorted(lid for lid in memory_lattices(state) if is_l2_en_word_lattice(lid))
+
+
+def l2_lexicon_lattice_ids(state: dict) -> list[str]:
+    return sorted(set(l2_word_lattice_ids(state)) | set(l2_en_word_lattice_ids(state)))
+
+
+def is_nca_trainable_lattice(lattice_id: str) -> bool:
+    """RU/EN L2 shards (and legacy L2_word) — eligible for per-shard NCA repair."""
+    return is_l2_word_lattice(lattice_id) or is_l2_en_word_lattice(lattice_id)
+
+
 def is_l2_word_lattice(lattice_id: str) -> bool:
     return lattice_id == LEGACY_L2 or lattice_id.startswith(L2_SHARD_PREFIX)
 
@@ -429,9 +467,9 @@ def lattice_digest_l2_network(
     prefix: str = L2_CONCEPT_PREFIX,
     min_votes: int = 1,
 ) -> list[tuple[str, int]]:
-    """Merge concept digests across legacy L2 + all shards."""
+    """Merge concept digests across RU + EN L2 shards."""
     merged: dict[str, int] = {}
-    for lid in l2_word_lattice_ids(state):
+    for lid in l2_lexicon_lattice_ids(state):
         lat = memory_lattices(state).get(lid) or {}
         dec = decode_lattice(lat, min_votes=min_votes)
         for cid, votes in lattice_digest(dec, prefix=prefix):

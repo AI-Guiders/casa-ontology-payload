@@ -47,6 +47,7 @@
     "dmn_union_smoke": 600,
     "dmn_union_full": 1200,
     "sss_shard_cuda": 80,
+    "sss_shard_incremental": 25,
     "sss_monolith": 300
   },
   "l2_sharding": {

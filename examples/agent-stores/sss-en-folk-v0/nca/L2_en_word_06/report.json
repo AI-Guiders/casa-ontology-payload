@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "lattice_id": "L2_en_word_06",
+  "store": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\examples\\agent-stores\\sss-en-folk-v0",
+  "token_count": 890,
+  "grid_size": [
+    32,
+    32
+  ],
+  "epochs": 25,
+  "steps": 24,
+  "train_mode": "windowed",
+  "best_loss": 1.6636722087860107,
+  "w_tokens_before_damage_eval": 1335,
+  "w_tokens_after_nca_eval": 897
+}
