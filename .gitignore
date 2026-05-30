@@ -4,7 +4,12 @@ __pycache__/
 .python-version
 .DS_Store
 
+# .NET build artifacts (apps/, tools with csproj)
+[Bb]in/
+[Oo]bj/
+
 # scratch / regenerable training outputs
+examples/**/nca/**/final_grid.json
 examples/_tmp_*
 examples/**/_tmp_*
 examples/nca_out_*/
@@ -26,4 +31,7 @@ examples/agent-stores/**/ltm/**/*.ltm
 examples/agent-stores/**/ltm/**/*.ltm.zst
 examples/agent-stores/**/nca/**/model.pt
 examples/agent-stores/**/_parallel_shards/
+
+# core VK repair models ship with agent-core pack (~1 MiB); regenerate: vk_nca_train_v0.py
+!examples/agent-core/**/nca/**/model.pt
 
