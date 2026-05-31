@@ -49,6 +49,15 @@ UPOS_TO_POS: dict[str, str] = {
 }
 
 
+def rel_to_root(path: Path, root: Path) -> str:
+    """Repo-relative posix path for manifests (no absolute machine paths in tracked files)."""
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(root).as_posix()
+    except ValueError:
+        return resolved.as_posix()
+
+
 def download(url: str, dest: Path) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     with urllib.request.urlopen(url, timeout=180) as resp:
@@ -119,7 +128,7 @@ def main() -> None:
                 "source": "Universal Dependencies",
                 "corpus_urls": UD_CORPORA[args.locale],
                 "lemma_count": len(lemma_pos),
-                "out": str(out.resolve()),
+                "out": rel_to_root(out, root),
             },
             ensure_ascii=False,
             indent=2,

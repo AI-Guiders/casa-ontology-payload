@@ -5,6 +5,6 @@
   "url": "https://raw.githubusercontent.com/Digital-Pushkin-Lab/Russian-Word-Frequency-Lists-for-Children/main/wordlist_detcorpus_50000.csv",
   "unique_lemmas": 49981,
   "min_ipm": 0.0,
-  "headwords": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\corpus\\ru-general-v0\\headwords.v1.txt",
-  "meta": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\corpus\\ru-general-v0\\frequency.ipm.v1.jsonl"
+  "headwords": "lab/corpus/ru-general-v0/headwords.v1.txt",
+  "meta": "lab/corpus/ru-general-v0/frequency.ipm.v1.jsonl"
 }

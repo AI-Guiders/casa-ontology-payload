@@ -21,6 +21,15 @@ SOURCE_ID = "detcorpus-50k-cc0"
 RU_LEMMA_RE = re.compile(r"^[а-яё]+(?:-[а-яё]+)?$", re.IGNORECASE)
 
 
+def rel_to_root(path: Path, root: Path) -> str:
+    """Repo-relative posix path for manifests (no absolute machine paths in tracked files)."""
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(root).as_posix()
+    except ValueError:
+        return resolved.as_posix()
+
+
 def download_csv(url: str, dest: Path) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     with urllib.request.urlopen(url, timeout=120) as resp:
@@ -120,8 +129,8 @@ def main() -> None:
                 "url": args.url,
                 "unique_lemmas": len(words),
                 "min_ipm": args.min_ipm,
-                "headwords": str(args.out.resolve()),
-                "meta": str(args.meta_out.resolve()),
+                "headwords": rel_to_root(args.out, root),
+                "meta": rel_to_root(args.meta_out, root),
             },
             ensure_ascii=False,
             indent=2,

@@ -8,10 +8,14 @@ __pycache__/
 [Bb]in/
 [Oo]bj/
 
+# third-party corpora (download via scripts/download_corpora.py; see THIRD-PARTY-NOTICES.md)
+lab/corpus/**/source/
+
 # scratch / regenerable training outputs
 lab/**/nca/**/final_grid.json
 lab/_tmp_*
 lab/**/_tmp_*
+lab/_bench_*
 lab/nca_out_*/
 lab/exp_*/model.pt
 lab/layered_out/*.pt

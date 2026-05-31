@@ -7,5 +7,5 @@
     "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-GSD/master/ru_gsd-ud-test.conllu"
   ],
   "lemma_count": 16280,
-  "out": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\corpus\\ru-general-v0\\ud_lemma_pos.v1.json"
+  "out": "lab/corpus/ru-general-v0/ud_lemma_pos.v1.json"
 }

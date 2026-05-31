@@ -5,6 +5,6 @@
   "url": "https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/en/en_50k.txt",
   "unique_lemmas": 48261,
   "corpus_tokens": 684099432,
-  "headwords": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\corpus\\en-general-v0\\headwords.v1.txt",
-  "meta": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\corpus\\en-general-v0\\frequency.ipm.v1.jsonl"
+  "headwords": "lab/corpus/en-general-v0/headwords.v1.txt",
+  "meta": "lab/corpus/en-general-v0/frequency.ipm.v1.jsonl"
 }
