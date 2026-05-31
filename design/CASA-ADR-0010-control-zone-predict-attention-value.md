@@ -97,7 +97,7 @@ DMN(что знаем) ─P1─► SN(что релевантно) ─P2a─► 
 
 - [ ] **R1 (design):** этот ADR; обновить `casa-cosmos-mapping-v0` (Predict→lattice_predict) и `control-lattice-stack-v0` (таблица lattice_id + P6–P9).
 - [x] **R2 (value brick):** value-взвешенный replay в [`replay_buffer_v0.py`](../tools/replay_buffer_v0.py) (`value_weight`, тег value) + тесты — **первый кирпич `lattice_value`** без нового органа.
-- [x] **R3 (predict):** `lattice_predict` (z_ctrl 4) + мост P8 в `control-lattice-stack.v0.json`; digest-уровневый [`predict_tick_v0.py`](../tools/predict_tick_v0.py) (fit/predict_next/rollout/prediction_error/surprise) + [`bench_predict_error_v0.py`](../tools/bench_predict_error_v0.py) (predicted vs no-rollout baseline) + `tests/test_predict_tick.py`. Field-rollout (`train_sss_nca_v0 --lattice-id lattice_predict`) — следующий шаг того же кирпича.
+- [x] **R3 (predict):** `lattice_predict` (z_ctrl 4) + мост P8 в `control-lattice-stack.v0.json`; digest-уровневый [`lattice_predict_v0.py`](../tools/lattice_predict_v0.py) (fit/predict_next/rollout/prediction_error/surprise) + [`bench_predict_error_v0.py`](../tools/bench_predict_error_v0.py) (predicted vs no-rollout baseline) + `tests/test_lattice_predict.py`. Field-rollout (`train_sss_nca_v0 --lattice-id lattice_predict`) — следующий шаг того же кирпича.
 - [ ] **R4 (attention split):** `lattice_dan` + P6/P7; sparse rollout mask из spotlight; SN сужается до salience+P8.
 - [ ] **R5 (value organ):** `lattice_value` на поле + P9 в SN gate и в sleep-порядок; источники value: повторный surprise (`surface_error_v0`), teacher-emphasis, task-relevance из FPN.
 

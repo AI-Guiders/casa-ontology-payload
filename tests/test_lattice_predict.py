@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import bench_predict_error_v0 as bench
-import predict_tick_v0 as pt
+import lattice_predict_v0 as pt
 
 
 def test_fit_and_predict_next_simple():

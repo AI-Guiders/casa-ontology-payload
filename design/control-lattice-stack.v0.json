@@ -47,7 +47,7 @@
       "size": { "width": 32, "height": 32 },
       "concept_prefix": "predict.",
       "role": ["forward_model", "rollout", "prediction_error"],
-      "doc": "tools/predict_tick_v0.py, design/CASA-ADR-0010-control-zone-predict-attention-value.md"
+      "doc": "tools/lattice_predict_v0.py, design/CASA-ADR-0010-control-zone-predict-attention-value.md"
     }
   ],
   "control_bridges": [
