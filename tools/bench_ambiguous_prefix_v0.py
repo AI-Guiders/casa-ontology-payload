@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bench: ambiguous visual prefix (co → cow | сова) before script commitment."""
+"""Bench: ambiguous visual prefix — merged BiT9 preview (freq RU + EN homoglyph)."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from ambiguous_prefix_v0 import ambiguous_tick, simulate_ambiguous_track  # type
 from boot_linked_stores_v0 import boot_linked_stores  # type: ignore
 from en_lexicon_v0 import read_headwords  # type: ignore
 from grapheme_ingest_v0 import bootstrap_linked_graphemes  # type: ignore
-from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir  # type: ignore
+from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_GENERAL_V0, agent_store_dir  # type: ignore
 
 
 def evaluate_track(state: dict, track: dict, *, top_k: int) -> dict[str, Any]:
@@ -36,6 +36,9 @@ def evaluate_track(state: dict, track: dict, *, top_k: int) -> dict[str, Any]:
         expect_lang=track.get("expect_lang"),
         expect_en_in=track.get("expect_en_in"),
         expect_ru_in=track.get("expect_ru_in"),
+        expect_preview_in=track.get("expect_preview_in"),
+        expect_preview_en_any=track.get("expect_preview_en_any"),
+        expect_preview_ru_any=track.get("expect_preview_ru_any"),
         top_k=top_k,
     )
     return {"id": track.get("id"), "mode": "single", "ok": tick["verdict"] == "pass", "tick": tick}
@@ -57,8 +60,8 @@ def run_bench(state: dict, tracks: list[dict], *, top_k: int = 8) -> dict[str, A
 
 def main() -> None:
     root = Path(__file__).resolve().parent.parent
-    p = argparse.ArgumentParser(description="Bench homoglyph ambiguous prefix (co → cow | сова)")
-    p.add_argument("--ru-store", type=Path, default=agent_store_dir(STORE_RU_LEXICON_V0, root=root))
+    p = argparse.ArgumentParser(description="Bench homoglyph ambiguous prefix (merged BiT9 preview)")
+    p.add_argument("--ru-store", type=Path, default=agent_store_dir(STORE_RU_GENERAL_V0, root=root))
     p.add_argument("--en-store", type=Path, default=agent_store_dir(STORE_EN_FOLK_V0, root=root))
     p.add_argument(
         "--cues",
@@ -91,7 +94,8 @@ def main() -> None:
     text = json.dumps(report, ensure_ascii=False, indent=2)
     if args.out:
         args.out.write_text(text + "\n", encoding="utf-8")
-    print(text)
+    else:
+        print(text)
 
     print(f"\nSUMMARY: {report['passed']}/{report['total']} boot={boot_ms}ms", file=sys.stderr)
     raise SystemExit(0 if report["all_passed"] else 1)

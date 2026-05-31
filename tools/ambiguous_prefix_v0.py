@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ambiguous prefix lab: co → cow | сова until disambiguation (child view)."""
+"""Ambiguous prefix lab: co → merged preview (freq RU + EN homoglyph) until commitment."""
 
 from __future__ import annotations
 
@@ -7,7 +7,9 @@ from typing import Any, Literal
 
 from grapheme_clusters_v0 import l2_basin  # type: ignore
 from homoglyph_v0 import dual_script_readings  # type: ignore
+from merge_preview_v0 import merge_preview_anchors  # type: ignore
 from predictor_v0 import l2_prefix_candidates  # type: ignore
+from preview_critic_v0 import apply_preview_expectations  # type: ignore
 
 Commitment = Literal["ambiguous", "resolved", "unknown"]
 
@@ -69,6 +71,17 @@ def predict_ambiguous_prefix(
     for b in branches:
         dual_top[str(b["language"])] = b.get("hypothesis")
 
+    merge_input = [
+        {
+            "language": b.get("language"),
+            "script": b.get("script"),
+            "grapheme_string": b.get("grapheme_string"),
+            "anchors": [a.get("word") for a in b.get("anchors") or []],
+        }
+        for b in branches
+    ]
+    preview = merge_preview_anchors(merge_input, state=state, top_k=top_k, hub_boost=True)
+
     return {
         "schema_version": 1,
         "modality": "ambiguous_prefix",
@@ -76,6 +89,7 @@ def predict_ambiguous_prefix(
         "visual": visual,
         "readings": readings,
         "branches": branches,
+        "preview": preview,
         "commitment": commitment,
         "hypothesis_lang": resolved_lang,
         "dual_hypothesis": dual_top,
@@ -93,6 +107,9 @@ def ambiguous_tick(
     expect_lang: str | None = None,
     expect_en_in: list[str] | None = None,
     expect_ru_in: list[str] | None = None,
+    expect_preview_in: list[str] | None = None,
+    expect_preview_en_any: list[str] | None = None,
+    expect_preview_ru_any: list[str] | None = None,
     top_k: int = 8,
 ) -> dict[str, Any]:
     pred = predict_ambiguous_prefix(state, visual, top_k=top_k)
@@ -135,6 +152,26 @@ def ambiguous_tick(
         checks.append({"name": "ru_branch", "pass": r_ok, "detail": {"found": sorted(found), "anchors": ru_words[:8]}})
         ok = ok and r_ok
 
+    merge_input = [
+        {
+            "language": b.get("language"),
+            "script": b.get("script"),
+            "grapheme_string": b.get("grapheme_string"),
+            "anchors": [a["word"] for a in b.get("anchors") or []],
+        }
+        for b in pred.get("branches") or []
+    ]
+    preview_ok = apply_preview_expectations(
+        checks,
+        branches=merge_input,
+        top_k=top_k,
+        state=state,
+        expect_preview_in=expect_preview_in,
+        expect_preview_en_any=expect_preview_en_any,
+        expect_preview_ru_any=expect_preview_ru_any,
+    )
+    ok = ok and preview_ok
+
     return {
         "schema_version": 1,
         "modality": "ambiguous_prefix",
@@ -165,6 +202,9 @@ def simulate_ambiguous_track(
             expect_lang=step.get("expect_lang"),
             expect_en_in=step.get("expect_en_in"),
             expect_ru_in=step.get("expect_ru_in"),
+            expect_preview_in=step.get("expect_preview_in"),
+            expect_preview_en_any=step.get("expect_preview_en_any"),
+            expect_preview_ru_any=step.get("expect_preview_ru_any"),
             top_k=top_k,
         )
         tick["step_id"] = step.get("id")

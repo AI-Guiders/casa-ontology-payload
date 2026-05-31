@@ -16,15 +16,15 @@
     "with_hub": true
   },
   {
-    "id": "co_ambiguous_unified",
+    "id": "co_merged_unified",
     "mode": "steps",
     "steps": [
       {
-        "id": "co_dual",
+        "id": "co_preview",
         "visual": "co",
         "expect_commitment": "ambiguous",
-        "expect_en_in": ["cow"],
-        "expect_ru_in": ["сова"]
+        "expect_preview_in": ["cow"],
+        "expect_preview_ru_any": ["сон", "сок", "сом", "со"]
       },
       {
         "id": "cow_en",

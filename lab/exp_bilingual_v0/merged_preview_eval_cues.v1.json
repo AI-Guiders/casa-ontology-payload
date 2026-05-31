@@ -1,0 +1,60 @@
+[
+  {
+    "id": "co_merged_bit9",
+    "description": "Visual co — one chip: freq RU (со/сон/сок/сом) + EN homoglyph (cow); no junk сол",
+    "visual": "co",
+    "expect_commitment": "ambiguous",
+    "expect_both_langs": true,
+    "min_en_in_preview": 2,
+    "min_ru_in_preview": 2,
+    "preview_must": ["cow"],
+    "preview_en_any": ["co", "cow", "coal", "coat"],
+    "preview_ru_any": ["сон", "сок", "сом", "со"],
+    "preview_must_not": ["сол", "сова"],
+    "expect_hub_surface_for": {"cow": "корова"},
+    "unified_verdict_pass": true
+  },
+  {
+    "id": "c_early_ambiguous",
+    "description": "Single c — still ambiguous, both scripts in preview",
+    "visual": "c",
+    "expect_commitment": "ambiguous",
+    "expect_both_langs": true,
+    "preview_en_any": ["co", "c"],
+    "preview_ru_any": ["с"]
+  },
+  {
+    "id": "cow_lock_en",
+    "description": "Full cow — EN resolved, cow in branch",
+    "visual": "cow",
+    "expect_commitment": "resolved",
+    "expect_lang": "en",
+    "preview_must": ["cow"],
+    "expect_hub_surface_for": {"cow": "корова"}
+  },
+  {
+    "id": "ru_so_freq",
+    "description": "Cyrillic-only со — freq completions, not forced сова",
+    "visual": "со",
+    "expect_commitment": "resolved",
+    "expect_lang": "ru",
+    "preview_ru_any": ["сон", "сок", "сом", "со"],
+    "preview_must_not": ["сол"]
+  },
+  {
+    "id": "ru_sov_narrow",
+    "description": "сов — совет/сова/совок family",
+    "visual": "сов",
+    "expect_commitment": "resolved",
+    "expect_lang": "ru",
+    "preview_ru_any": ["совет", "сова", "совок"]
+  },
+  {
+    "id": "ru_sova_done",
+    "description": "Full сова — RU lock",
+    "visual": "сова",
+    "expect_commitment": "resolved",
+    "expect_lang": "ru",
+    "preview_must": ["сова"]
+  }
+]

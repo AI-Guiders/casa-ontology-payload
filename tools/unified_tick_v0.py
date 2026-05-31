@@ -9,8 +9,10 @@ from ambiguous_prefix_v0 import predict_ambiguous_prefix  # type: ignore
 from critic_v0 import critic_validate  # type: ignore
 from homoglyph_v0 import dual_script_readings  # type: ignore
 from hub_neighbors_v0 import hub_neighbors  # type: ignore
+from merge_preview_v0 import merge_preview_anchors, preview_words  # type: ignore
 from ortho_tick_v0 import ortho_tick  # type: ignore
 from predictor_v0 import predict_t9  # type: ignore
+from preview_critic_v0 import apply_preview_expectations  # type: ignore
 from script_detect_v0 import predict_script  # type: ignore
 from sss_vocab_v0 import norm_word  # type: ignore
 
@@ -38,6 +40,9 @@ def unified_tick(
     expect_in: list[str] | None = None,
     expect_en_in: list[str] | None = None,
     expect_ru_in: list[str] | None = None,
+    expect_preview_in: list[str] | None = None,
+    expect_preview_en_any: list[str] | None = None,
+    expect_preview_ru_any: list[str] | None = None,
     with_ortho: bool = False,
     with_hub: bool = False,
     top_k: int = 8,
@@ -74,6 +79,8 @@ def unified_tick(
             }
         )
 
+    preview = merge_preview_anchors(t9_branches, state=state, top_k=top_k, hub_boost=True)
+
     ortho: dict[str, Any] | None = None
     target = expect_word or prefix
     is_final = expect_word is not None and (
@@ -103,6 +110,13 @@ def unified_tick(
         checks.append({"name": "lang", "pass": lang_ok, "detail": script_pred.get("hypothesis_lang")})
         ok = ok and lang_ok
 
+    if mode == "ambiguous" and (
+        expect_en_in or expect_ru_in or expect_preview_in or expect_preview_en_any or expect_preview_ru_any
+    ):
+        amb_ok = script_pred.get("commitment") == "ambiguous"
+        checks.append({"name": "ambiguous", "pass": amb_ok, "detail": script_pred.get("commitment")})
+        ok = ok and amb_ok
+
     if expect_en_in or expect_ru_in:
         en_words: list[str] = []
         ru_words: list[str] = []
@@ -121,10 +135,17 @@ def unified_tick(
             r_ok = len(found) >= 1
             checks.append({"name": "ru_branch", "pass": r_ok, "detail": {"found": sorted(found)}})
             ok = ok and r_ok
-        if mode == "ambiguous":
-            amb_ok = script_pred.get("commitment") == "ambiguous"
-            checks.append({"name": "ambiguous", "pass": amb_ok, "detail": script_pred.get("commitment")})
-            ok = ok and amb_ok
+
+    preview_ok = apply_preview_expectations(
+        checks,
+        branches=t9_branches,
+        top_k=top_k,
+        state=state,
+        expect_preview_in=expect_preview_in,
+        expect_preview_en_any=expect_preview_en_any,
+        expect_preview_ru_any=expect_preview_ru_any,
+    )
+    ok = ok and preview_ok
 
     if expect_in:
         all_anchors: list[str] = []
@@ -159,6 +180,8 @@ def unified_tick(
         "commitment": commitment,
         "script": script_pred,
         "t9_branches": t9_branches,
+        "preview": preview,
+        "preview_words": preview_words(preview),
         "ortho": ortho,
         "hub": hub,
         "critic": {"verdict": "pass" if ok else "fail", "ok": ok, "checks": checks},
@@ -200,11 +223,10 @@ def simulate_unified_type(
         if is_final:
             all_ok = tick["verdict"] == "pass"
         elif len(prefix) >= max(1, len(target) - 1):
-            # near-final: target should appear in some branch
-            anchors: list[str] = []
+            merged = tick.get("preview_words") or []
             for tb in tick.get("t9_branches") or []:
-                anchors.extend(tb.get("anchors") or [])
-            step_ok = target in anchors or norm_word(target) in {norm_word(a) for a in anchors}
+                merged.extend(tb.get("anchors") or [])
+            step_ok = target in merged or norm_word(target) in {norm_word(a) for a in merged}
             all_ok = all_ok and step_ok
             tick["step_ok"] = step_ok
         else:

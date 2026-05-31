@@ -16,7 +16,7 @@ from entity_hub_ingest_v0 import ingest_entity_hub  # type: ignore
 from grapheme_ingest_v0 import bootstrap_linked_graphemes  # type: ignore
 from ortho_field_v0 import imprint_capitalize_bootstrap  # type: ignore
 from unified_tick_v0 import simulate_unified_type, unified_tick  # type: ignore
-from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir  # type: ignore
+from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_GENERAL_V0, agent_store_dir  # type: ignore
 
 
 def evaluate_item(state: dict, item: dict, *, top_k: int) -> dict[str, Any]:
@@ -55,20 +55,12 @@ def evaluate_item(state: dict, item: dict, *, top_k: int) -> dict[str, Any]:
                 visual,
                 expect_en_in=step.get("expect_en_in"),
                 expect_ru_in=step.get("expect_ru_in"),
+                expect_preview_in=step.get("expect_preview_in"),
+                expect_preview_en_any=step.get("expect_preview_en_any"),
+                expect_preview_ru_any=step.get("expect_preview_ru_any"),
                 top_k=top_k,
             )
-            amb_ok = tick.get("commitment") == "ambiguous"
-            en_words: list[str] = []
-            ru_words: list[str] = []
-            for tb in tick.get("t9_branches") or []:
-                if tb.get("language") == "en":
-                    en_words.extend(tb.get("anchors") or [])
-                if tb.get("language") == "ru":
-                    ru_words.extend(tb.get("anchors") or [])
-            if step.get("expect_en_in"):
-                amb_ok = amb_ok and bool(set(step["expect_en_in"]) & set(en_words))
-            if step.get("expect_ru_in"):
-                amb_ok = amb_ok and bool(set(step["expect_ru_in"]) & set(ru_words))
+            amb_ok = tick.get("commitment") == "ambiguous" and tick.get("verdict") == "pass"
             tick["step_ok"] = amb_ok
             all_ok = all_ok and amb_ok
         else:
@@ -103,7 +95,7 @@ def run_bench(state: dict, items: list[dict], *, top_k: int = 8) -> dict[str, An
 def main() -> None:
     root = Path(__file__).resolve().parent.parent
     p = argparse.ArgumentParser(description="Bench unified script→T9→ortho pipeline")
-    p.add_argument("--ru-store", type=Path, default=agent_store_dir(STORE_RU_LEXICON_V0, root=root))
+    p.add_argument("--ru-store", type=Path, default=agent_store_dir(STORE_RU_GENERAL_V0, root=root))
     p.add_argument("--en-store", type=Path, default=agent_store_dir(STORE_EN_FOLK_V0, root=root))
     p.add_argument(
         "--bundle",
@@ -145,7 +137,8 @@ def main() -> None:
     text = json.dumps(report, ensure_ascii=False, indent=2)
     if args.out:
         args.out.write_text(text + "\n", encoding="utf-8")
-    print(text)
+    else:
+        print(text)
 
     print(f"\nSUMMARY: {report['passed']}/{report['total']} boot={boot_ms}ms", file=sys.stderr)
     raise SystemExit(0 if report["all_passed"] else 1)

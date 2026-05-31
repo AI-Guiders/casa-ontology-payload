@@ -15,12 +15,26 @@ python tools/init_en_folk_store_v0.py \
 
 # Linked RU+EN + entity hub on L3 (no duplicate L2 imprint)
 python tools/bench_bilingual_linked_v0.py \
-  --ru-store lab/agent-stores/sss-ru-lexicon-v0 \
+  --ru-store lab/agent-stores/sss-ru-general-v0 \
   --en-store lab/agent-stores/sss-en-folk-v0 \
   --bundle lab/exp_bilingual_v0/kb-entity-surfaces-dev.v1.json
 ```
 
 Expected linked bench: L2 **6/6**, T9 **3/3**, entity_hub **12/12**, cross_links **3/3**.
+
+Gate script (track A): `scripts/run_bit9_gate_v0.ps1` — **merged preview eval** (canonical) + linked + unified + ambiguous + runtime smoke.
+
+### Merged BiT9 preview — **canonical eval** (`co` → сон/сок/сом + cow + корова)
+
+Single pass/fail bench for product semantics: ipm-ranked EN/RU chip, hub injection, junk filter (`сол`), no early `сова` on 2-char prefix.
+
+```bash
+python tools/bench_bit9_merged_preview_v0.py \
+  --cues lab/exp_bilingual_v0/merged_preview_eval_cues.v1.json \
+  --out lab/exp_bilingual_v0/reports/bit9_merged_preview.json
+```
+
+Expected **6/6** (`co_merged_bit9`, `c`/`cow`/`со`/`сов`/`сова` paths). Cues: `merged_preview_eval_cues.v1.json`. API: `merge_preview_v0.py`, `bench_bit9_merged_preview_v0.py`.
 
 ### Grapheme basin separability (ADR-0003)
 
@@ -52,16 +66,16 @@ python tools/bench_script_detect_v0.py \
 
 Expected **9/9** (`mother`, `мама`, `a` vs `а`; **not** `co` — that is pre-commit). API: `script_tick_v0.py`, `script_detect_v0.py`.
 
-### Ambiguous prefix — **pre-commit** (`co` → cow | сова)
+### Ambiguous prefix — **merged preview** (`co` → сон/сок/сом + cow)
 
-Visual stream may be read as **both** latn and cyrl homoglyphs until a letter breaks the fork (`w` in `cow` locks EN; RU `сова` continues on **real Cyrillic** `со`→`сов`, not via `b`/`в` — those are confusables, not homoglyphs):
+Visual `co` is read as **both** latn and cyrl homoglyphs; **preview chip** interleaves EN + RU anchors (freq RU on `со`, EN homoglyph on `co`). Not the old `cow|сова` demo — hub pairs `cow↔корова` separately.
 
 ```bash
 python tools/bench_ambiguous_prefix_v0.py \
   --cues lab/exp_bilingual_v0/ambiguous_prefix_cues.v1.json
 ```
 
-Expected **2/2** tracks. API: `ambiguous_prefix_v0.py`, `homoglyph_v0.py`. Distinct from strict `script_detect` (which commits early when glyphs are unambiguous).
+Expected **2/2** tracks (`co_merged_bit9`, `ru_freq_co_path`). API: `merge_preview_v0.py`, `ambiguous_prefix_v0.py`.
 
 ## Bilingual T9 demo (console)
 

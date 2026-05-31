@@ -1,21 +1,21 @@
 [
   {
-    "id": "co_cow_vs_sova",
-    "description": "Visual co — child has not picked script; cow (EN) and сова (RU) both live",
+    "id": "co_merged_bit9",
+    "description": "Visual co — merged preview: freq RU on со + EN homoglyph (cow); not cow|сова",
     "steps": [
       {
         "id": "c_early",
         "visual": "c",
         "expect_commitment": "ambiguous",
-        "expect_en_in": ["co", "cow"],
-        "expect_ru_in": ["с", "со"]
+        "expect_preview_en_any": ["co", "cow"],
+        "expect_preview_ru_any": ["с"]
       },
       {
-        "id": "co_fork",
+        "id": "co_preview",
         "visual": "co",
         "expect_commitment": "ambiguous",
-        "expect_en_in": ["cow"],
-        "expect_ru_in": ["сова"]
+        "expect_preview_in": ["cow"],
+        "expect_preview_ru_any": ["сон", "сок", "сом", "со"]
       },
       {
         "id": "cow_lock_en",
@@ -27,22 +27,22 @@
     ]
   },
   {
-    "id": "ru_sova_path_cyrl",
-    "description": "Cyrillic path: со → сов → сова (no Latin w fork)",
+    "id": "ru_freq_co_path",
+    "description": "Cyrillic-only path: со → freq RU completions (сон/сок…), not forced сова",
     "steps": [
       {
-        "id": "so_ambiguous",
+        "id": "so_freq",
         "visual": "со",
         "expect_commitment": "resolved",
         "expect_lang": "ru",
-        "expect_ru_in": ["сова"]
+        "expect_ru_in": ["сон", "сок", "сом", "со"]
       },
       {
         "id": "sov_narrow",
         "visual": "сов",
         "expect_commitment": "resolved",
         "expect_lang": "ru",
-        "expect_ru_in": ["сова"]
+        "expect_ru_in": ["совет", "сова", "совок"]
       },
       {
         "id": "sova_done",

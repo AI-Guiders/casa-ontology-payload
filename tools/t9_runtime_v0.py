@@ -15,7 +15,7 @@ from en_lexicon_v0 import read_headwords as read_en_headwords  # type: ignore
 from entity_hub_ingest_v0 import ingest_entity_hub  # type: ignore
 from grapheme_ingest_v0 import bootstrap_linked_graphemes  # type: ignore
 from ortho_field_v0 import imprint_capitalize_bootstrap  # type: ignore
-from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir  # type: ignore
+from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_GENERAL_V0, agent_store_dir  # type: ignore
 from unified_tick_v0 import unified_tick  # type: ignore
 
 
@@ -49,6 +49,7 @@ def boot_demo_field(
 def tick_view(state: dict, prefix: str, *, top_k: int = 8) -> dict[str, Any]:
     """Unified tick + compact console-friendly view."""
     raw = unified_tick(state, prefix, top_k=top_k)
+    preview = raw.get("preview") or []
     branches: list[dict[str, Any]] = []
     for tb in raw.get("t9_branches") or []:
         pred = tb.get("predict") or {}
@@ -77,6 +78,10 @@ def tick_view(state: dict, prefix: str, *, top_k: int = 8) -> dict[str, Any]:
         "script_mode": raw.get("script_mode"),
         "commitment": raw.get("commitment"),
         "script_lang": (raw.get("script") or {}).get("hypothesis_lang"),
+        "preview": [
+            {"word": p.get("word"), "language": p.get("language"), "rank": p.get("preview_rank")}
+            for p in preview
+        ],
         "branches": branches,
         "verdict": raw.get("verdict"),
         "raw": raw,
@@ -130,7 +135,7 @@ def main() -> int:
         help="serve=stdio loop; once=single prefix",
     )
     p.add_argument("--prefix", type=str, default="", help="For once: visual prefix cue")
-    p.add_argument("--ru-store", type=Path, default=agent_store_dir(STORE_RU_LEXICON_V0, root=root))
+    p.add_argument("--ru-store", type=Path, default=agent_store_dir(STORE_RU_GENERAL_V0, root=root))
     p.add_argument("--en-store", type=Path, default=agent_store_dir(STORE_EN_FOLK_V0, root=root))
     p.add_argument(
         "--bundle",
@@ -143,6 +148,17 @@ def main() -> int:
         default=root / "lab/exp_bilingual_v0/en_folk_headwords.v1.txt",
     )
     p.add_argument("--top-k", type=int, default=8)
+    p.add_argument(
+        "--summary",
+        action="store_true",
+        help="For once: print one-line SUMMARY to stderr instead of full JSON",
+    )
+    p.add_argument(
+        "--out",
+        type=Path,
+        default=None,
+        help="For once: write full JSON report here",
+    )
     args = p.parse_args()
 
     if not args.ru_store.is_dir():
@@ -170,7 +186,27 @@ def main() -> int:
 
     if args.command == "once":
         view = tick_view(state, args.prefix, top_k=args.top_k)
-        print(json.dumps({**meta, **view}, ensure_ascii=False, indent=2))
+        report = {**meta, **view}
+        if args.out:
+            args.out.write_text(
+                json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+        if args.summary:
+            preview = view.get("preview") or []
+            preview_s = ", ".join(f"{p.get('word')}:{p.get('language')}" for p in preview[:8])
+            branches = view.get("branches") or []
+            langs = "+".join(
+                f"{b.get('language', '?')}:{len(b.get('anchors') or [])}"
+                for b in branches
+            )
+            print(
+                f"SUMMARY: once ok={view.get('verdict') == 'pass'} "
+                f"prefix={args.prefix!r} preview=[{preview_s}] boot={meta.get('boot_ms')}ms",
+                file=sys.stderr,
+            )
+        elif not args.out:
+            print(json.dumps(report, ensure_ascii=False, indent=2))
         return 0
 
     return serve_stdio(state, meta=meta)
