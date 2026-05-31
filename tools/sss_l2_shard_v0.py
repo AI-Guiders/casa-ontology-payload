@@ -10,6 +10,7 @@ import zlib
 from collections.abc import Iterable
 from typing import Any
 
+from lattice_names_v1 import parse_words_shard, words_shard_id  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_stack_v0 import decode_lattice, lattice_digest  # type: ignore
 
@@ -41,7 +42,11 @@ DEFAULT_EN_NUM_SHARDS = 16
 
 
 def is_l2_en_word_lattice(lattice_id: str) -> bool:
-    return str(lattice_id).startswith(L2_EN_SHARD_PREFIX)
+    lid = str(lattice_id)
+    if lid.startswith(L2_EN_SHARD_PREFIX):
+        return True
+    parsed = parse_words_shard(lid)
+    return parsed is not None and parsed[0] == "en"
 
 
 def en_l2_shard_id(word: str, *, num_shards: int = DEFAULT_EN_NUM_SHARDS) -> str:
@@ -75,7 +80,11 @@ def is_nca_trainable_lattice(lattice_id: str) -> bool:
 
 
 def is_l2_word_lattice(lattice_id: str) -> bool:
-    return lattice_id == LEGACY_L2 or lattice_id.startswith(L2_SHARD_PREFIX)
+    lid = str(lattice_id)
+    if lid == LEGACY_L2 or lid.startswith(L2_SHARD_PREFIX):
+        return True
+    parsed = parse_words_shard(lid)
+    return parsed is not None and parsed[0] == "ru"
 
 
 def first_letter_index(char: str) -> int:
@@ -362,6 +371,7 @@ def l2_shard_id(
     letter_ranges: list[dict[str, Any]] | None = None,
     lex_plan: str = DEFAULT_LEX_PLAN,
     shard_starts: list[str] | None = None,
+    shard_prefix: str | None = None,
 ) -> str:
     idx = l2_shard_index(
         word,
@@ -371,7 +381,11 @@ def l2_shard_id(
         lex_plan=lex_plan,
         shard_starts=shard_starts,
     )
-    return f"{L2_SHARD_PREFIX}{idx:02d}"
+    prefix = shard_prefix or L2_SHARD_PREFIX
+    if prefix.startswith("words-"):
+        locale = prefix.removeprefix("words-").rstrip("-")
+        return words_shard_id(locale, idx)
+    return f"{prefix}{idx:02d}"
 
 
 def empty_l2_lattice(*, width: int = DEFAULT_LATTICE_SIZE, height: int = DEFAULT_LATTICE_SIZE) -> dict:
@@ -447,6 +461,7 @@ def route_l2_lattice(state: dict, word: str) -> str:
         letter_ranges=ranges,
         lex_plan=str(cfg.get("lex_plan") or DEFAULT_LEX_PLAN),
         shard_starts=cfg.get("lex_shard_starts"),
+        shard_prefix=str(cfg.get("shard_prefix") or L2_SHARD_PREFIX),
     )
     ensure_l2_lattice(state, shard)
     register_word_shard(state, w, shard)

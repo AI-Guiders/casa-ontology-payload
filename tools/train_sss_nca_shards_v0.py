@@ -18,6 +18,8 @@ from sss_l2_shard_v0 import (  # type: ignore
     shard_stats,
 )
 from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
+from lattice_names_v1 import is_alphabet_lattice  # type: ignore
+from nca_registry_v0 import mark_lattice_trained, repair_smoke_ratio  # type: ignore
 from nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge  # type: ignore
 from nca_train_util import add_device_args  # type: ignore
 from store_layout_v0 import nca_lattice_dir, nca_root  # type: ignore
@@ -33,7 +35,10 @@ def main() -> None:
         default=None,
         help="Per-lattice train dirs (default: <store-dir>/nca/<lattice_id>/)",
     )
-    p.add_argument("--layer", default="L2", help="L2 | L1 | all")
+    p.add_argument("--layer", default="L2", help="L2 | L1 | L0 | all")
+    p.add_argument("--skip-trained", action="store_true", default=True, help="Skip shards with model.pt (default on)")
+    p.add_argument("--no-skip-trained", action="store_false", dest="skip_trained")
+    p.add_argument("--from-lattice", default=None, help="Train only this id and later (lex sort)")
     p.add_argument("--epochs", type=int, default=epoch_budget("sss_shard_cuda"))
     p.add_argument("--max-tokens", type=int, default=4096, help="Skip shards above this token count")
     p.add_argument("--min-tokens", type=int, default=8)
@@ -53,10 +58,13 @@ def main() -> None:
     if args.layer in ("L2", "all"):
         targets.extend(l2_lexicon_lattice_ids(state))
     if args.layer in ("L1", "all"):
-        targets.append("L1_syllable")
+        targets.extend(sorted(lid for lid in lattices if lid.startswith("syllables-") or lid.startswith("L1_")))
     if args.layer in ("L0", "all"):
-        targets.append("L0_grapheme")
+        targets.extend(sorted(lid for lid in lattices if is_alphabet_lattice(lid) or lid.startswith("L0_grapheme")))
     targets = list(dict.fromkeys(targets))
+    if args.from_lattice:
+        start = str(args.from_lattice)
+        targets = [t for t in targets if t >= start]
 
     results: list[dict] = []
     for lid in targets:
@@ -77,6 +85,11 @@ def main() -> None:
         store_nca = nca_lattice_dir(args.store_dir, lid)
         model = out / "model.pt"
         row["out_dir"] = str(out)
+        if args.skip_trained and store_nca.joinpath("model.pt").is_file():
+            row["skipped"] = True
+            row["reason"] = "already_trained"
+            results.append(row)
+            continue
         if not args.dry_run:
             out.mkdir(parents=True, exist_ok=True)
             cmd = [
@@ -121,8 +134,6 @@ def main() -> None:
             set_nca_model(state, lid, str((store_nca / "model.pt").resolve()))
             row["trained"] = (store_nca / "model.pt").is_file()
             if row["trained"]:
-                from nca_registry_v0 import mark_lattice_trained, repair_smoke_ratio  # type: ignore
-
                 ratio = repair_smoke_ratio(lat, store_nca / "model.pt")
                 row["registry"] = mark_lattice_trained(
                     args.store_dir,

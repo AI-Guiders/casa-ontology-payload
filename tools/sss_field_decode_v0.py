@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from prism_state_v0 import prism_hippo  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_segment_v0 import norm_word  # type: ignore
 from sss_stack_v0 import decode_lattice  # type: ignore

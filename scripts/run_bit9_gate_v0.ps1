@@ -1,4 +1,4 @@
-# BiT9 track A gate — linked RU (modern) + EN, no NCA wait.
+﻿# BiT9 track A gate — linked RU (modern) + EN, no NCA wait.
 # Run from casa-ontology-payload/: .\scripts\run_bit9_gate_v0.ps1
 #
 # Phases:

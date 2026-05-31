@@ -15,6 +15,7 @@ from control_cylinders_v0 import control_lattices, has_control_stack  # type: ig
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_stack_v0 import decode_lattice  # type: ignore
 from lexicon_usage_axes_v0 import attach_axes_to_state, load_axes_jsonl  # type: ignore
+from sss_l2_shard_v0 import is_l2_word_lattice  # type: ignore
 from store_layout_v0 import field_state_path, ltm_root, nca_root  # type: ignore
 
 
@@ -64,7 +65,7 @@ def boot_store(
         state["nca"] = {**(state.get("nca") or {}), **nca_manifest}
 
     lattices = memory_lattices(state)
-    shard_count = sum(1 for k in lattices if k.startswith("L2_word_"))
+    shard_count = sum(1 for k in lattices if is_l2_word_lattice(k))
     ctrl = control_lattices(state) if has_control_stack(state) else {}
     return {
         "source": source,

@@ -17,6 +17,7 @@ from sss_l2_shard_v0 import (  # type: ignore
     L2_CONCEPT_PREFIX,
     concept_votes_l2,
     is_l2_en_word_lattice,
+    is_l2_word_lattice,
     l2_word_lattice_ids,
 )
 from sss_stack_v0 import decode_lattice  # type: ignore
@@ -62,7 +63,7 @@ def l2_basin(state: dict, word: str) -> dict[str, Any]:
     basin: Basin | None
     if lid and is_l2_en_word_lattice(str(lid)):
         basin = "en"
-    elif lid and (str(lid).startswith("L2_word") or str(lid) == "L2_word"):
+    elif lid and is_l2_word_lattice(str(lid)):
         basin = "ru"
     else:
         basin = None

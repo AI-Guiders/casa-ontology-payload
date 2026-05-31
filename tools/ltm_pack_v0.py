@@ -137,16 +137,27 @@ def read_ltm(path: Path) -> dict[str, Any]:
 
 
 def lattice_subdir(lattice_id: str) -> str:
-    if lattice_id.startswith("L0_"):
+    lid = str(lattice_id)
+    if lid.startswith("alphabet-") or lid.startswith("punct-") or lid.startswith("layout-") or lid == "keys-physical":
         return "l0"
-    if lattice_id.startswith("L1_"):
+    if lid.startswith("syllables-"):
         return "l1"
-    if lattice_id.startswith("L2_"):
+    if lid.startswith("words-"):
         return "l2"
-    if lattice_id.startswith("L3_"):
+    if lid in ("phrases",):
         return "l3"
-    if lattice_id.startswith("H0_"):
+    if lid.startswith(("schema-", "compose-", "quantity-")):
         return "h0"
-    if lattice_id.startswith("lattice_"):
+    if lid.startswith("L0_"):
+        return "l0"
+    if lid.startswith("L1_"):
+        return "l1"
+    if lid.startswith("L2_"):
+        return "l2"
+    if lid.startswith("L3_"):
+        return "l3"
+    if lid.startswith("H0_"):
+        return "h0"
+    if lid.startswith("lattice_"):
         return "ctrl"
     return "lat"

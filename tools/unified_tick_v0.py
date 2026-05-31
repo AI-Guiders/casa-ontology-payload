@@ -14,6 +14,7 @@ from ortho_tick_v0 import ortho_tick  # type: ignore
 from predictor_v0 import predict_t9  # type: ignore
 from preview_critic_v0 import apply_preview_expectations  # type: ignore
 from script_detect_v0 import predict_script  # type: ignore
+from surface_error_v0 import classify_surface_error  # type: ignore
 from sss_vocab_v0 import norm_word  # type: ignore
 
 ScriptMode = Literal["ambiguous", "commit"]
@@ -35,6 +36,8 @@ def unified_tick(
     prefix: str,
     *,
     context: str = "plain",
+    surface_attempt: str | None = None,
+    scene: str | None = None,
     expect_lang: str | None = None,
     expect_word: str | None = None,
     expect_in: list[str] | None = None,
@@ -171,11 +174,34 @@ def unified_tick(
 
     commitment = script_pred.get("commitment") if mode == "ambiguous" else "resolved"
 
+    teacher_routing: dict[str, Any] | None = None
+    if surface_attempt:
+        fork_n = 0
+        for tb in t9_branches:
+            fork_n = max(fork_n, len(tb.get("anchors") or []))
+        teacher_routing = classify_surface_error(
+            prefix,
+            surface_attempt,
+            correct=expect_word or "",
+            scene=scene,
+            fork_count=fork_n,
+        )
+        if teacher_routing.get("surprise") and teacher_routing.get("correction_kind"):
+            checks.append(
+                {
+                    "name": "teacher_routing",
+                    "pass": True,
+                    "detail": teacher_routing,
+                }
+            )
+
     return {
         "schema_version": 1,
         "modality": "unified",
         "cue": prefix,
         "context": context,
+        "surface_attempt": surface_attempt,
+        "scene": scene,
         "script_mode": mode,
         "commitment": commitment,
         "script": script_pred,
@@ -184,6 +210,7 @@ def unified_tick(
         "preview_words": preview_words(preview),
         "ortho": ortho,
         "hub": hub,
+        "teacher_routing": teacher_routing,
         "critic": {"verdict": "pass" if ok else "fail", "ok": ok, "checks": checks},
         "verdict": "pass" if ok else "fail",
     }

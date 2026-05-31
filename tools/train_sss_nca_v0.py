@@ -11,6 +11,7 @@ import numpy as np
 import torch
 
 from field_write import load_field_state  # type: ignore
+from lattice_names_v1 import resolve_store_lattice_id  # type: ignore
 from layout_apply import Rect  # type: ignore
 from nca_train_core_v0 import NcaTrainerConfig, WindowedTrainConfig, run_nca_training  # type: ignore
 from nca_train_defaults_v0 import (  # type: ignore
@@ -88,9 +89,13 @@ def main() -> None:
 
     state = ensure_prisms(load_field_state(args.store_dir / "field_state.json"))
     lattices = memory_lattices(state)
-    lattice = lattices.get(args.lattice_id)
-    if not lattice:
-        raise SystemExit(f"Lattice {args.lattice_id!r} not in store")
+    try:
+        lattice_key = resolve_store_lattice_id(args.lattice_id, lattices)
+    except KeyError as exc:
+        raise SystemExit(str(exc)) from exc
+    lattice = lattices[lattice_key]
+    if lattice_key != args.lattice_id:
+        args.out_dir = args.out_dir.parent / lattice_key.replace("/", "_")
 
     grid = lattice_as_grid(lattice)
     token_ids = tokens_from_lattice(lattice)
@@ -164,7 +169,7 @@ def main() -> None:
 
     report = {
         "schema_version": 1,
-        "lattice_id": args.lattice_id,
+        "lattice_id": lattice_key,
         "store": str(args.store_dir),
         "token_count": token_count,
         "grid_size": [w, h],
@@ -175,6 +180,7 @@ def main() -> None:
         "w_tokens_before_damage_eval": w_before,
         "w_tokens_after_nca_eval": w_after,
     }
+    args.out_dir.mkdir(parents=True, exist_ok=True)
     (args.out_dir / "final_grid.json").write_text(json.dumps(grid_final, ensure_ascii=False, indent=2), encoding="utf-8")
     (args.out_dir / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -183,7 +189,7 @@ def main() -> None:
             {
                 "schema_version": 1,
                 "kind": "sss_lattice_nca",
-                "lattice_id": args.lattice_id,
+                "lattice_id": lattice_key,
                 "channel_n": channel_n,
                 "token_ids": token_ids,
                 "width": w,
