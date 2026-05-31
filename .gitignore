@@ -39,3 +39,17 @@ lab/agent-stores/**/_parallel_shards/
 # core VK repair models ship with agent-core pack (~1 MiB); regenerate: vk_nca_train_v0.py
 !lab/agent-core/**/nca/**/model.pt
 
+# third-party research sources (papers — not redistributable in public repo)
+lab/sources/
+
+# field_state snapshots & backups (regenerate in lab; ltm/+nca/ ship instead)
+lab/agent-stores/**/field_state.*.json
+lab/**/*.bak
+
+# pipeline / training logs (regenerable)
+lab/**/*.log
+
+# experiment bench outputs (regenerable; curate results in design/*.md)
+lab/exp_*/reports/
+lab/exp_*/report_*.json
+
