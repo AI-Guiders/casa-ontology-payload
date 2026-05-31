@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Top-down attention spotlight for lattice_dan (CASA-ADR-0010, R4).
+"""Top-down attention spotlight for control-attention (CASA-ADR-0010, R4).
 
 DAN answers: *which* concepts / shards / lattice regions to amplify on this tick.
 SN keeps bottom-up salience (including prediction error via P8); DAN is the
@@ -18,7 +18,7 @@ import json
 from pathlib import Path
 from typing import Callable, Iterable
 
-import lattice_predict_v0 as lp
+import control_predict_v0 as lp
 
 
 def as_set(items: Iterable[str] | None) -> set[str]:

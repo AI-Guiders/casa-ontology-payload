@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import lattice_value_v0 as lv
+import control_value_v0 as lv
 import replay_buffer_v0 as rb
 
 

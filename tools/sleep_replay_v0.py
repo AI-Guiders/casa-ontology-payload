@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-import lattice_value_v0 as lv
+import control_value_v0 as lv
 import replay_buffer_v0 as rb
 from sss_cylinders_v0 import append_episode, append_rule_episode  # type: ignore
 

@@ -10,9 +10,9 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from typing import Any, Iterable
 
-import lattice_dan_v0 as dan
-import lattice_predict_v0 as predict
-import lattice_value_v0 as value
+import control_attention_v0 as dan
+import control_predict_v0 as predict
+import control_value_v0 as value
 
 
 @dataclass(frozen=True, slots=True)

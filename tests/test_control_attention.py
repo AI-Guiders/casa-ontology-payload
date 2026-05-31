@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import bench_predict_error_v0 as bench
-import lattice_dan_v0 as dan
+import control_attention_v0 as dan
 
 
 def test_spotlight_includes_goal_in_universe():

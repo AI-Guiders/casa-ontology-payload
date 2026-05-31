@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Digest-level forward model for lattice_predict (CASA-ADR-0010, R3).
+"""Digest-level forward model for control-predict (CASA-ADR-0010, R3).
 
-DMN answers "what we know"; lattice_predict answers "what we expect next".
+DMN answers "what we know"; control-predict answers "what we expect next".
 understanding-contract-v0 makes the predict loop an invariant: roll the model
 forward, compare to what actually arrives, and feed the mismatch (prediction
 error) back as bottom-up surprise (bridge P8 -> SN).
