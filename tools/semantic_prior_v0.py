@@ -1,35 +1,6 @@
 #!/usr/bin/env python3
-"""Optional semantic priors for preview/T9 (entity taxonomy, off by default on hot path)."""
+"""Shim → casa.prisms.memory.semantic_prior_v0 (M2 layout)."""
+from _shim_v0 import load_casa
 
-from __future__ import annotations
-
-from typing import Any
-
-from entity_taxonomy_lookup_v0 import taxonomy_bonus  # type: ignore
-from pos_lookup_v0 import word_pos  # type: ignore
-
-
-def preview_semantic_bonus(
-    state: dict | None,
-    word: str,
-    *,
-    lang: str | None = None,
-    enable_taxonomy: bool = True,
-    enable_pos: bool = False,
-    prefer_pos: str | None = None,
-) -> float:
-    """
-    Sleep/L3 priors for merged preview scoring — not used in predict_t9 v0 hot path.
-
-    ``enable_pos`` + ``prefer_pos`` (e.g. pos.noun): small boost when POS matches.
-    """
-    if state is None:
-        return 0.0
-    bonus = 0.0
-    if enable_taxonomy:
-        bonus += taxonomy_bonus(state, word)
-    if enable_pos and prefer_pos:
-        got = word_pos(state, word).get("pos")
-        if got == prefer_pos:
-            bonus += 6.0
-    return bonus
+load_casa("casa.prisms.memory.semantic_prior_v0")
+from casa.prisms.memory.semantic_prior_v0 import *  # noqa: F403
