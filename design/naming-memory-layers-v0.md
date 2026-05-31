@@ -27,6 +27,8 @@
 
 Не сокращать до «L1 hippocampus» — использовать `episodic.*` или `H1_*` lattice id.
 
+**Repo layout:** stacks и папки по призмам — [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md); `sss_*` modules → `casa/prisms/memory/` (roadmap).
+
 ## Prose rule
 
 - ✓ «shard `memory.lexicon` (`L2_word_07`)»

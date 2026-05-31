@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "prism_id": "prism_spatial",
+  "semantic_namespace": "sensory.spatial",
+  "description": "Dorsal stream — depth, surfaces, egocentric pose (ADR-0011 §6). Not the same as z_level on vis lattice.",
+  "lattices": [
+    { "lattice_id": "S0_disparity", "semantic_id": "sensory.spatial.disparity", "z_level": 0, "nca_profile": "sss", "inputs": ["stereo_pair", "motion_parallax"] },
+    { "lattice_id": "S1_surface", "semantic_id": "sensory.spatial.surface", "z_level": 1, "nca_profile": "sss" },
+    { "lattice_id": "S2_object_pose", "semantic_id": "sensory.spatial.object_pose", "z_level": 2, "nca_profile": "sss" },
+    { "lattice_id": "S2_ego", "semantic_id": "sensory.spatial.ego", "z_level": 2, "nca_profile": "sss", "status": "roadmap" }
+  ],
+  "bridges": [
+    { "bridge_id": "v_bridge_V1_S0", "kind": "x_bridge", "from": "prism_visual.V1_object", "to": "S0_disparity" },
+    { "bridge_id": "s_bridge_S0_S1", "kind": "z_bridge", "from": "S0_disparity", "to": "S1_surface" },
+    { "bridge_id": "s_bridge_S1_S2", "kind": "z_bridge", "from": "S1_surface", "to": "S2_object_pose" },
+    { "bridge_id": "a_bridge_A2_S2", "kind": "x_bridge", "from": "prism_auditory.A2_localization", "to": "S2_object_pose" },
+    { "bridge_id": "f_bridge_S2_memory", "kind": "x_bridge", "from": "S2_object_pose", "to": "prism_memory.hub", "status": "design" }
+  ],
+  "nca_path_template": "nca/spatial/{lattice_id}/"
+}

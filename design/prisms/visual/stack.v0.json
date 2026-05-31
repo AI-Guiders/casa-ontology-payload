@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "prism_id": "prism_visual",
+  "semantic_namespace": "sensory.vis",
+  "description": "Ventral visual stream — what, not where (spatial = prism_spatial).",
+  "lattices": [
+    { "lattice_id": "V0_patch", "semantic_id": "sensory.vis.patch", "z_level": 0, "nca_profile": "sss" },
+    { "lattice_id": "V1_object", "semantic_id": "sensory.vis.object", "z_level": 1, "nca_profile": "sss" },
+    { "lattice_id": "V2_scene", "semantic_id": "sensory.vis.scene", "z_level": 2, "nca_profile": "sss" }
+  ],
+  "bridges": [
+    { "bridge_id": "v_bridge_V0_V1", "kind": "z_bridge", "from": "V0_patch", "to": "V1_object" },
+    { "bridge_id": "v_bridge_V1_V2", "kind": "z_bridge", "from": "V1_object", "to": "V2_scene" },
+    { "bridge_id": "v_bridge_V1_lang", "kind": "x_bridge", "from": "V1_object", "to": "prism_memory.hub", "via": "vis.* concept_id" }
+  ],
+  "nca_path_template": "nca/visual/{lattice_id}/"
+}
