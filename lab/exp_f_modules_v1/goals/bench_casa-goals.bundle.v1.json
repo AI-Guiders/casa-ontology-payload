@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\casa-goals.bundle.v1.json",
+  "bundle": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\casa-goals.bundle.v1.json",
   "layout": "design\\layout.v0.json",
   "region": "dmn_ontology",
   "damage": 0.4,
@@ -25,7 +25,7 @@
     }
   },
   "nca": {
-    "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v1\\goals\\model.pt",
+    "model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_f_modules_v1\\goals\\model.pt",
     "steps": 48,
     "threshold": 0.35,
     "min_votes": 2,

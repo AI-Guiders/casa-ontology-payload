@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "pipeline": "layered_piston_v1_cluster",
-  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\casa-goals.bundle.v1.json",
+  "bundle": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\casa-goals.bundle.v1.json",
   "cluster": "goals",
-  "dmn_model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_e_clusters_v1\\goals\\model.pt",
-  "digest_model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_e_clusters_v1\\goals\\digest_model.pt",
-  "gate_model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_e_clusters_v1\\goals\\gate_model.pt",
+  "dmn_model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_e_clusters_v1\\goals\\model.pt",
+  "digest_model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_e_clusters_v1\\goals\\digest_model.pt",
+  "gate_model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_e_clusters_v1\\goals\\gate_model.pt",
   "damage_patches": 8,
   "recovery": {
     "concepts": {

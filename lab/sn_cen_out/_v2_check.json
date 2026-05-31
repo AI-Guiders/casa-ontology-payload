@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "pipeline": "sn_cen_field_v2",
-  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\research-agent-lab-v0\\bundles\\research-ml.bundle.v1.json",
-  "field_state": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\research-agent-lab-v0\\field_state.json",
+  "bundle": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\research-agent-lab-v0\\bundles\\research-ml.bundle.v1.json",
+  "field_state": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\research-agent-lab-v0\\field_state.json",
   "field": {
     "field_version": 1,
     "stale": false,
@@ -10,7 +10,7 @@
       "research-ml.bundle.v1.json"
     ]
   },
-  "dmn_model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\research-agent-lab-v0\\checkpoints\\model_hard.pt",
+  "dmn_model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\research-agent-lab-v0\\checkpoints\\model_hard.pt",
   "wall_ms": 17.72,
   "recovery": {
     "concepts": {

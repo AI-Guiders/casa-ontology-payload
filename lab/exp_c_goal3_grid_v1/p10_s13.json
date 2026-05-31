@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "scenario": "casa_goal3_repair_prototype",
-  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\ca-substrate-agent.bundle.v1.json",
-  "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_section\\model.pt",
+  "bundle": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\ca-substrate-agent.bundle.v1.json",
+  "model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_section\\model.pt",
   "damage_patches": 10,
   "seed": 13,
   "scores": {

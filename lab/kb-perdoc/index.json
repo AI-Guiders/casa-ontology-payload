@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "kb_root": "D:\\Experiments\\agent-notes\\knowledge",
+  "kb_root": "../agent-notes/knowledge",
   "mode": "per_doc",
   "out_dir": "lab\\kb-perdoc",
   "hub_graph": null,

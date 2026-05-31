@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "kb_root": "D:\\Experiments\\agent-notes\\knowledge",
+  "kb_root": "../agent-notes/knowledge",
   "hub_graph": "lab\\kb\\ca-substrate-agent.hub.graph.json",
   "bundles": [
     "lab\\kb\\casa-goals.bundle.v1.json",

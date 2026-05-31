@@ -7,7 +7,7 @@
   "rows": [
     {
       "concept_mode": "independent",
-      "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_independent\\model.pt",
+      "model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_independent\\model.pt",
       "bundles": {
         "lab\\ca-substrate-agent.bundle.v1.json": {
           "concepts_f1": {
@@ -49,7 +49,7 @@
     },
     {
       "concept_mode": "doc",
-      "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_doc\\model.pt",
+      "model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_doc\\model.pt",
       "bundles": {
         "lab\\ca-substrate-agent.bundle.v1.json": {
           "concepts_f1": {
@@ -91,7 +91,7 @@
     },
     {
       "concept_mode": "section",
-      "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_section\\model.pt",
+      "model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_section\\model.pt",
       "bundles": {
         "lab\\ca-substrate-agent.bundle.v1.json": {
           "concepts_f1": {
@@ -133,7 +133,7 @@
     },
     {
       "concept_mode": "doc_section",
-      "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_doc_section\\model.pt",
+      "model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_doc_section\\model.pt",
       "bundles": {
         "lab\\ca-substrate-agent.bundle.v1.json": {
           "concepts_f1": {

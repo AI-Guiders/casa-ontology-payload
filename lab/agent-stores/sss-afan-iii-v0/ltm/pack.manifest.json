@@ -67,7 +67,7 @@
   },
   "l2_sharding": null,
   "nca": {
-    "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_afan_l1_v0\\model.pt"
+    "model_path": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_afan_l1_v0\\model.pt"
   },
   "totals": {
     "lattice_count": 4,

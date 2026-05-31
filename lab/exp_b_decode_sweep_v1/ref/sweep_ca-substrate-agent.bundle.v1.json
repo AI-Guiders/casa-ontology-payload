@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\ca-substrate-agent.bundle.v1.json",
-  "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_section\\model.pt",
+  "bundle": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\ca-substrate-agent.bundle.v1.json",
+  "model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\nca_out_v3_section\\model.pt",
   "codec": "v3",
   "concept_mode": "section",
   "damage": 0.4,

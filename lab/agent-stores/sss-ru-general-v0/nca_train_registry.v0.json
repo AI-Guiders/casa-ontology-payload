@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "nca_train_registry_v0",
   "store_id": "sss-ru-general-v0",
-  "updated_at": "2026-05-31T07:21:45.925688+00:00",
+  "updated_at": "2026-05-31T07:22:10.930684+00:00",
   "field_version": 6,
   "pending": [],
   "lattices": {
@@ -525,13 +525,13 @@
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_predict/model.pt"
     },
     "lattice_dan": {
-      "last_trained_at": "2026-05-31T07:21:36.356364+00:00",
+      "last_trained_at": "2026-05-31T07:22:01.649465+00:00",
       "field_version_at_train": 6,
       "token_count_at_train": 0,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_dan/model.pt"
     },
     "lattice_value": {
-      "last_trained_at": "2026-05-31T07:21:45.924241+00:00",
+      "last_trained_at": "2026-05-31T07:22:10.929178+00:00",
       "field_version_at_train": 6,
       "token_count_at_train": 0,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_value/model.pt"

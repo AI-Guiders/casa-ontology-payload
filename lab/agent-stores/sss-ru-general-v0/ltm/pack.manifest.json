@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "format": "ltm-pack-v0",
-  "field_version": 5,
-  "updated_at": "2026-05-31T07:18:40.891994+00:00",
+  "field_version": 6,
+  "updated_at": "2026-05-31T07:22:10.932692+00:00",
   "lattices": {
     "words-ru-00": {
       "path": "ltm/l2/words-ru-00.ltm",
@@ -51850,7 +51850,10 @@
       "words-ru-48": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-48/model.pt",
       "words-ru-49": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-49/model.pt",
       "words-ru-50": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-50/model.pt",
-      "words-ru-51": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-51/model.pt"
+      "words-ru-51": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-51/model.pt",
+      "lattice_predict": "lab/agent-stores/sss-ru-general-v0/nca/lattice_predict/model.pt",
+      "lattice_dan": "lab/agent-stores/sss-ru-general-v0/nca/lattice_dan/model.pt",
+      "lattice_value": "lab/agent-stores/sss-ru-general-v0/nca/lattice_value/model.pt"
     }
   },
   "totals": {
@@ -51862,8 +51865,8 @@
     "schema_version": 1,
     "kind": "nca_train_registry_v0",
     "store_id": "sss-ru-general-v0",
-    "updated_at": "2026-05-31T07:18:40.890949+00:00",
-    "field_version": 5,
+    "updated_at": "2026-05-31T07:22:10.930684+00:00",
+    "field_version": 6,
     "pending": [],
     "lattices": {
       "words-ru-00": {
@@ -52377,6 +52380,24 @@
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-63/model.pt",
         "last_repair_ratio": 2.405,
         "last_repair_at": "2026-05-31T07:18:40.890416+00:00"
+      },
+      "lattice_predict": {
+        "last_trained_at": "2026-05-31T07:21:43.287427+00:00",
+        "field_version_at_train": 6,
+        "token_count_at_train": 0,
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_predict/model.pt"
+      },
+      "lattice_dan": {
+        "last_trained_at": "2026-05-31T07:22:01.649465+00:00",
+        "field_version_at_train": 6,
+        "token_count_at_train": 0,
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_dan/model.pt"
+      },
+      "lattice_value": {
+        "last_trained_at": "2026-05-31T07:22:10.929178+00:00",
+        "field_version_at_train": 6,
+        "token_count_at_train": 0,
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_value/model.pt"
       }
     }
   }

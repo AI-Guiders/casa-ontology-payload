@@ -4,7 +4,7 @@
   "claims": [
     {
       "concept_id": "ru.regex.mre3_map.01",
-      "text": "source_refs: локальный PDF c:\\Users\\dkara\\Downloads\\OReilly-Регулярные-выражения-3-е-изд.-Дж.Фридл.pdf (закладки/оглавление извлечены программно, 598 стр.); оригинал: Mastering Regular Expressions, 3rd ed.",
+      "text": "source_refs: локальный PDF <repo> (закладки/оглавление извлечены программно, 598 стр.); оригинал: Mastering Regular Expressions, 3rd ed.",
       "doc_path": "worlds/pattern-regex/kb-regex-mre3-ru-chapter-map-v1.md",
       "section": "Карта глав: Jeffrey Friedl — «Регулярные выражения», 3-е изд. (рус. перевод O'Reilly) / Provenance (происхождение)",
       "claim_kind": "claim"

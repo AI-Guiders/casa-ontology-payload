@@ -3,7 +3,7 @@
   "kind": "sss_memory_manifest",
   "store_id": "sss-ru-general-v0",
   "store_path": "lab/agent-stores/sss-ru-general-v0",
-  "generated_at": "2026-05-31T07:21:48.074161+00:00",
+  "generated_at": "2026-05-31T07:22:26.669523+00:00",
   "field_version": 6,
   "schema": "multi_prism_v1",
   "l2_sharding": {

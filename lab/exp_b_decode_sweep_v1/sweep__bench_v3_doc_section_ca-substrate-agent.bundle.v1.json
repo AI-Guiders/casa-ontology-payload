@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "bundle": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\_bench_v3_doc_section_ca-substrate-agent.bundle.v1.json",
-  "model": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_a_kb_scale_v1\\model.pt",
+  "bundle": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\_bench_v3_doc_section_ca-substrate-agent.bundle.v1.json",
+  "model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_a_kb_scale_v1\\model.pt",
   "codec": "v3",
   "concept_mode": "section",
   "damage": 0.4,

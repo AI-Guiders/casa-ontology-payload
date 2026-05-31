@@ -5,14 +5,14 @@
   "sources": [
     {
       "script": "latn",
-      "font_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_bilingual_v0\\fonts\\ScriptS.ttf",
+      "font_path": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_bilingual_v0\\fonts\\ScriptS.ttf",
       "font_family": "ScriptS",
       "exported": 26,
       "missing": []
     },
     {
       "script": "cyrl",
-      "font_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_bilingual_v0\\fonts\\ScriptS.ttf",
+      "font_path": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_bilingual_v0\\fonts\\ScriptS.ttf",
       "font_family": "ScriptS",
       "exported": 32,
       "missing": [
