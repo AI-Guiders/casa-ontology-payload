@@ -4,16 +4,13 @@ version = "0.0.0"
 description = "CASA research lab: bilingual T9, lattice stores, NCA repair (research preview)."
 requires-python = ">=3.12"
 
-# NOTE: `tools/` is currently a flat script collection imported by bare module
-# name (Python puts the entrypoint's dir on sys.path). It is not yet an
-# installable package. `pythonpath` below lets tests and type-checkers import
-# those modules without per-file sys.path hacks. Converting `tools/` into a real
-# package (casa/{predict,store,nca,lexicon,bench}) is tracked separately.
+# M2: canonical code under `casa/prisms/`; `tools/` keeps thin shims + CLIs.
+# `pythonpath` lets tests import both legacy module names and `casa.*`.
 
 [tool.pytest.ini_options]
-pythonpath = ["tools"]
+pythonpath = [".", "tools"]
 testpaths = ["tests"]
 addopts = "-q"
 
 [tool.pyright]
-extraPaths = ["tools"]
+extraPaths = [".", "tools"]

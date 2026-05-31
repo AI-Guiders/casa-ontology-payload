@@ -143,12 +143,13 @@ CASA: **store profile** = composition root:
 
 - [ ] `memory_manifest.json`: block `prism_layout_version`, `path_aliases` (`ltm/l2` ↔ `ltm/memory/lexicon`, …)
 - [ ] `store_layout_v0.py`: resolve **both** legacy and canonical nca/ltm paths
-- [ ] `tools/README.md` → map legacy → `casa/prisms/*`
+- [x] `tools/README.md` → map legacy → `casa/prisms/*`
 
 ### Phase M2 — package skeleton + shims
 
-- [ ] Create `casa/prisms/{control,memory,shared,field_bus}/`
-- [ ] Move **new** code only under `casa/`; `tools/sss_foo.py` → one-line shim re-export
+- [x] Create `casa/prisms/{control,memory,shared,hippo}/` (hippo/memory skeleton only)
+- [x] Move **control stack + lattice_names** under `casa/`; `tools/*` → one-line shims
+- [ ] Move memory (`sss_*`) and shared (`store_layout`, `prism_state`) modules
 - [ ] FieldBus v0: publish `ConsolidatePhaseEvent`, `FieldVersionDriftEvent` from stale train + post_train
 
 ### Phase M3 — store paths (new writes canonical)

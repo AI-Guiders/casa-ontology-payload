@@ -170,8 +170,8 @@ Boot loader resolves **both** paths until migration complete.
 | Step | Action |
 |------|--------|
 | S1 | Этот doc + `design/prisms/*.json` + ADR-0012 |
-| S2 | `tools/README.md` — карта «куда переедет» |
-| S3 | Create `casa/prisms/{control,memory}/` + shims; **no** store path break |
+| S2 | `tools/README.md` — карта «куда переедет» | **done** |
+| S3 | Create `casa/prisms/{control,memory}/` + shims; **no** store path break | **in progress** (control + shared ids) |
 | S4 | New sensory code **only** under `casa/prisms/auditory|visual|spatial/` |
 | S5 | Optional store subdirs `ltm/memory/` alongside `ltm/l2/` |
 | S6 | Drop `sss_` prefix when shims unused |
