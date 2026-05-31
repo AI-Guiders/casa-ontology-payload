@@ -23,7 +23,8 @@
     "math.entity": "считаемый объект (cow — не unit)",
     "math.category": "надтип для агрегации (livestock)",
     "math.unit": "SI unit (m, kg) only",
-    "math.op": "схема оператора (+, −, ×)",
+    "math.op": "схема оператора (+, −, ×, |)",
+    "math.ctx": "контекст чтения символа (cardinal, bitwise, arithmetic)",
     "lang": "имя на второй СС — мост, не дубликат логики",
     "vis": "якорь картинки — Exp L, not hot path v0"
   },
@@ -110,7 +111,9 @@
     "edges": [
       "E:math.entity.cow|lang.word.cow",
       "E:math.num.two|lang.word.two",
-      "E:M:qty:12×category:livestock|lang.word.скот"
+      "E:M:qty:12×category:livestock|lang.word.скот",
+      "E:grapheme.latn.+|denotes|math.op.add",
+      "E:grapheme.latn.=|denotes|math.op.eq"
     ],
     "rule": "логика на F*; слова на L*; связь через E:, не слияние решёток"
   },

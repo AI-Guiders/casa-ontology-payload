@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 5,
   "bundle_id": "kb-math-concrete-schemas-l0",
   "title": "Exp L — schemas: dim.count, entity, category, op",
   "doc": "design/f0-math-logical-layer.md",
@@ -8,6 +8,7 @@
     { "token": "M:sym:two", "copies": 6 },
     { "token": "M:sym:three", "copies": 5 },
     { "token": "M:op:add", "copies": 5 },
+    { "token": "M:op:concat", "copies": 4 },
     { "token": "M:op:eq", "copies": 4 },
     { "token": "M:entity:cow", "copies": 4 },
     { "token": "M:entity:sheep", "copies": 3 },
@@ -19,7 +20,13 @@
     { "concept_id": "math.num.two", "text": "Cardinality two (||)." },
     { "concept_id": "math.num.three", "text": "Cardinality three (|||)." },
     { "concept_id": "math.op.add", "text": "Addition operator schema (glyph +)." },
+    { "concept_id": "math.op.concat", "text": "String concatenation (\"a\"+\"b\")." },
     { "concept_id": "math.op.eq", "text": "Equality relation schema (glyph =)." },
+    { "concept_id": "math.op.or", "text": "Bitwise OR (glyph | between operands, e.g. x|y)." },
+    { "concept_id": "math.ctx.cardinal", "text": "Reading: pipe runs | || as cardinality." },
+    { "concept_id": "math.ctx.bitwise", "text": "Reading: infix | between identifiers (x|y)." },
+    { "concept_id": "math.ctx.string", "text": "Reading: quoted literals with + (\"a\"+\"b\")." },
+    { "concept_id": "math.ctx.arithmetic", "text": "Reading: + = and stick addition | + |." },
     { "concept_id": "math.dim.count", "text": "Dimension: discrete counting (head, pieces)." },
     { "concept_id": "math.dim.length", "text": "Dimension: length (SI roadmap)." },
     { "concept_id": "math.entity.cow", "text": "Countable entity: cow (not SI unit)." },
@@ -34,6 +41,7 @@
       { "src": "M:sym:two", "relation": "schema_of", "dst": "math.num.two" },
       { "src": "M:sym:three", "relation": "schema_of", "dst": "math.num.three" },
       { "src": "M:op:add", "relation": "schema_of", "dst": "math.op.add" },
+      { "src": "M:op:concat", "relation": "schema_of", "dst": "math.op.concat" },
       { "src": "M:op:eq", "relation": "schema_of", "dst": "math.op.eq" },
       { "src": "M:entity:cow", "relation": "schema_of", "dst": "math.entity.cow" },
       { "src": "M:entity:sheep", "relation": "schema_of", "dst": "math.entity.sheep" },
@@ -53,19 +61,104 @@
       { "src": "math.category.livestock", "relation": "denotes", "dst": "lang.word.скот" }
     ]
   },
+  "reading_contexts": [
+    {
+      "id": "math.ctx.cardinal",
+      "when": { "shape": "glyph_run", "glyph_class": "pipe" },
+      "weight": 10,
+      "text": "Surface: only pipe glyphs (stick counting)."
+    },
+    {
+      "id": "math.ctx.bitwise",
+      "when": { "shape": "infix", "op": "|", "operand": "identifier" },
+      "weight": 12,
+      "text": "Infix | between identifiers (incl. numeric literals)."
+    },
+    {
+      "id": "math.ctx.string",
+      "when": { "shape": "infix", "op": "+", "operand": "string_literal" },
+      "weight": 14,
+      "text": "Infix + between quoted strings."
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": { "shape": "infix", "op": "+", "operand": "pipe_run" },
+      "weight": 10,
+      "text": "Stick compose | + |."
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": { "shape": "infix", "op": "+", "operand": "number" },
+      "weight": 11,
+      "text": "Numeric addition 1+2."
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": { "shape": "singleton", "glyph": "+" },
+      "weight": 10
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": { "shape": "singleton", "glyph": "=" },
+      "weight": 10
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": { "shape": "contains", "glyph": "=" },
+      "weight": 8
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": { "shape": "default" },
+      "weight": 1
+    }
+  ],
+  "symbol_senses": [
+    { "glyph": "|", "context": "math.ctx.cardinal", "concept_id": "math.num.one" },
+    { "glyph": "||", "context": "math.ctx.cardinal", "concept_id": "math.num.two" },
+    { "glyph": "|||", "context": "math.ctx.cardinal", "concept_id": "math.num.three" },
+    { "glyph": "|", "grapheme": "grapheme.latn.|", "context": "math.ctx.bitwise", "concept_id": "math.op.or" },
+    { "glyph": "+", "grapheme": "grapheme.latn.+", "context": "math.ctx.arithmetic", "concept_id": "math.op.add" },
+    { "glyph": "+", "grapheme": "grapheme.latn.+", "context": "math.ctx.string", "concept_id": "math.op.concat" },
+    { "glyph": "=", "grapheme": "grapheme.latn.=", "context": "math.ctx.arithmetic", "concept_id": "math.op.eq" }
+  ],
+  "symbol_concepts": ["grapheme.latn.+", "grapheme.latn.=", "grapheme.latn.|"],
+  "keyboard_symbols": [
+    {
+      "char": "+",
+      "grapheme": "grapheme.latn.+",
+      "math_op": "math.op.add",
+      "context": "math.ctx.arithmetic",
+      "layout": "jcuken_ru",
+      "key": "Equal",
+      "shift": true,
+      "note": "punct.latn.+ realizes grapheme on keyboard lattice"
+    },
+    {
+      "char": "=",
+      "grapheme": "grapheme.latn.=",
+      "math_op": "math.op.eq",
+      "context": "math.ctx.arithmetic",
+      "layout": "jcuken_ru",
+      "key": "Equal",
+      "shift": false
+    }
+  ],
   "math_glyphs": [
-    { "glyph": "|||", "concept_id": "math.num.three" },
-    { "glyph": "||", "concept_id": "math.num.two" },
-    { "glyph": "|", "concept_id": "math.num.one" },
-    { "glyph": "+", "concept_id": "math.op.add" },
-    { "glyph": "=", "concept_id": "math.op.eq" }
+    { "glyph": "|||", "concept_id": "math.num.three", "context": "math.ctx.cardinal" },
+    { "glyph": "||", "concept_id": "math.num.two", "context": "math.ctx.cardinal" },
+    { "glyph": "|", "concept_id": "math.num.one", "context": "math.ctx.cardinal" },
+    { "glyph": "+", "concept_id": "math.op.add", "context": "math.ctx.arithmetic" },
+    { "glyph": "=", "concept_id": "math.op.eq", "context": "math.ctx.arithmetic" }
   ],
   "math_keywords": {
     "math.num.one": ["one", "один", "одна", "stick"],
     "math.num.two": ["two", "два", "две", "pair"],
     "math.num.three": ["three", "три"],
     "math.op.add": ["add", "сложить", "склеить", "plus"],
+    "math.op.concat": ["concat", "string", "строк", "склеить строк"],
     "math.op.eq": ["eq", "равно", "equals"],
+    "math.op.or": ["or", "бит", "bitwise", "побит"],
     "math.entity.cow": ["cow", "корова", "коровы"],
     "math.entity.sheep": ["sheep", "овца", "овцы"],
     "math.entity.stick": ["stick", "палоч", "палочк"],

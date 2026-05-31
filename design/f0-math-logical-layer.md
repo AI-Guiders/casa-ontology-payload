@@ -78,6 +78,35 @@
 
 Код: `math_compose.py` · bench: `bench_math_compose`.
 
+### Символ ↔ смысл (контекст чтения)
+
+**Принцип:** glyph нейтрален; смысл = **symbol × reading frame**. Frame выводится из **формы cue** (операнды + оператор), не из списка примеров в коде.
+
+```text
+  analyze(cue) → operand kinds (string_literal, identifier, pipe_run, …)
+              → reading_contexts[] in bundle (when: shape + op + operand)
+              → symbol_senses[] (glyph + context → math.op.*)
+              → E:grapheme@math.ctx.*|denotes|concept on field
+```
+
+| `when.shape` | Параметры | Смысл |
+|--------------|-----------|--------|
+| `glyph_run` | `glyph_class: pipe` | палочки → `math.num.*` |
+| `infix` | `op`, `operand` kind | `\|` между id → or; `"a"+"b"` → concat; `\|+\|` → add |
+| `singleton` / `contains` | `glyph` | клавиша `+`, `=` |
+| `default` | — | слабый fallback |
+
+Новый случай (union, matrix `+`, …) — **строка в bundle**, не патч Python. Legacy теги `pipes_only` / `string_concat` ещё понимаются.
+
+Код: `f0_reading.py` (analyze + match), `f0_stack.py` (encode/rank).
+
+### Оператор ↔ клавиатура
+
+```text
+  jcuken Equal+shift → grapheme.latn.+ @ math.ctx.arithmetic → math.op.add
+  jcuken Equal       → grapheme.latn.= @ math.ctx.arithmetic → math.op.eq
+```
+
 ## Правила логической зоны (контракт)
 
 | Правило | Смысл |

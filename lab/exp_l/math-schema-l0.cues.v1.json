@@ -3,6 +3,13 @@
   { "id": "sticks_one", "cue": "|", "expect_top": "math.num.one", "min_score": 3 },
   { "id": "sticks_three", "cue": "|||", "expect_top": "math.num.three", "min_score": 3 },
   { "id": "add_glyph", "cue": "| + |", "expect_top": "math.op.add", "min_score": 5 },
+  { "id": "add_key_plus", "cue": "+", "expect_top": "math.op.add", "min_score": 10 },
+  { "id": "eq_key_equals", "cue": "=", "expect_top": "math.op.eq", "min_score": 10 },
+  { "id": "bitwise_or_xy", "cue": "x|y", "expect_top": "math.op.or", "min_score": 8 },
+  { "id": "bitwise_or_ab", "cue": "a | b", "expect_top": "math.op.or", "min_score": 8 },
+  { "id": "concat_ab", "cue": "\"a\"+\"b\"", "expect_top": "math.op.concat", "min_score": 10 },
+  { "id": "concat_spaced", "cue": "\"hello\" + \"world\"", "expect_top": "math.op.concat", "min_score": 10 },
+  { "id": "numeric_add", "cue": "1+2", "expect_top": "math.op.add", "min_score": 8 },
   { "id": "add_keyword_ru", "cue": "сложить группы", "expect_top": "math.op.add", "min_score": 3 },
   { "id": "cow_entity", "cue": "корова", "expect_top": "math.entity.cow", "min_score": 3 }
 ]
