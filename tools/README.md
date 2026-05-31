@@ -47,8 +47,9 @@ python scripts/migrate_tools_to_casa.py reshim-all    # перегенерить
 
 ## M4 (ещё не сделано)
 
-- Удалить shims, когда grep `tools/` imports clean
-- FieldBus v0
-- Store path aliases (`ltm/memory/lexicon` vs `ltm/l2`)
+- [x] CI: `scripts/check_tools_shims.py` — все `tools/*.py` = shims
+- [ ] `check_tools_shims.py --strict-casa-imports` green (casa/ без legacy imports)
+- [ ] `pyproject` console_scripts → удалить shims
+- [ ] Re-export `sss-ru-general-v0` ltm/ на canonical-only (опционально legacy mirror off)
 
 Тесты: **`tests/`** (не в `tools/`).
