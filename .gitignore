@@ -10,8 +10,17 @@ __pycache__/
 
 # third-party corpora (download via scripts/download_corpora.py; see THIRD-PARTY-NOTICES.md)
 lab/corpus/**/source/
+lab/corpus/**/*.gutenberg.txt
+lab/corpus/**/headwords.v1.txt
+lab/corpus/**/ud_lemma_pos.v1.json
+lab/corpus/**/frequency.ipm.v1.jsonl
+lab/corpus/**/lexicon_axes.v0.jsonl
+lab/corpus/**/extract_report.v1.json
+lab/corpus/**/split-report.v0.json
 
 # scratch / regenerable training outputs
+lab/**/nca/**/report.json
+lab/**/nca/train_shards_report.json
 lab/**/nca/**/final_grid.json
 lab/_tmp_*
 lab/**/_tmp_*
@@ -59,8 +68,16 @@ lab/**/*.bak
 
 # pipeline / training logs (regenerable)
 lab/**/*.log
+post_train_ru_general.*
+train_*.log
+lab/agent-stores/**/import_log.ndjson
+lab/agent-stores/**/watcher_log.ndjson
+lab/agent-stores/**/lexicon_axes.v0.jsonl
 
 # experiment bench outputs (regenerable; curate results in design/*.md)
 lab/exp_*/reports/
 lab/exp_*/report_*.json
+lab/exp_*/**/report.json
+lab/exp_*/curve_*.json
+lab/exp_*/*.log
 
