@@ -5,7 +5,7 @@
   "updated_at": "2026-05-31T16:59:41.903322+00:00",
   "lattices": {
     "words-ru-00": {
-      "path": "ltm/l2/words-ru-00.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-00.ltm",
       "compress": null,
       "raw_bytes": 56338,
       "file_bytes": 56338,
@@ -20,7 +20,7 @@
       }
     },
     "words-ru-01": {
-      "path": "ltm/l2/words-ru-01.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-01.ltm",
       "compress": null,
       "raw_bytes": 55900,
       "file_bytes": 55900,
@@ -35,7 +35,7 @@
       }
     },
     "words-ru-02": {
-      "path": "ltm/l2/words-ru-02.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-02.ltm",
       "compress": null,
       "raw_bytes": 58550,
       "file_bytes": 58550,
@@ -50,7 +50,7 @@
       }
     },
     "words-ru-03": {
-      "path": "ltm/l2/words-ru-03.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-03.ltm",
       "compress": null,
       "raw_bytes": 59260,
       "file_bytes": 59260,
@@ -65,7 +65,7 @@
       }
     },
     "words-ru-04": {
-      "path": "ltm/l2/words-ru-04.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-04.ltm",
       "compress": null,
       "raw_bytes": 55876,
       "file_bytes": 55876,
@@ -80,7 +80,7 @@
       }
     },
     "words-ru-05": {
-      "path": "ltm/l2/words-ru-05.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-05.ltm",
       "compress": null,
       "raw_bytes": 56106,
       "file_bytes": 56106,
@@ -95,7 +95,7 @@
       }
     },
     "words-ru-06": {
-      "path": "ltm/l2/words-ru-06.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-06.ltm",
       "compress": null,
       "raw_bytes": 57564,
       "file_bytes": 57564,
@@ -110,7 +110,7 @@
       }
     },
     "words-ru-07": {
-      "path": "ltm/l2/words-ru-07.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-07.ltm",
       "compress": null,
       "raw_bytes": 60802,
       "file_bytes": 60802,
@@ -125,7 +125,7 @@
       }
     },
     "words-ru-08": {
-      "path": "ltm/l2/words-ru-08.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-08.ltm",
       "compress": null,
       "raw_bytes": 62402,
       "file_bytes": 62402,
@@ -140,7 +140,7 @@
       }
     },
     "words-ru-09": {
-      "path": "ltm/l2/words-ru-09.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-09.ltm",
       "compress": null,
       "raw_bytes": 55968,
       "file_bytes": 55968,
@@ -155,7 +155,7 @@
       }
     },
     "words-ru-10": {
-      "path": "ltm/l2/words-ru-10.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-10.ltm",
       "compress": null,
       "raw_bytes": 56792,
       "file_bytes": 56792,
@@ -170,7 +170,7 @@
       }
     },
     "words-ru-11": {
-      "path": "ltm/l2/words-ru-11.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-11.ltm",
       "compress": null,
       "raw_bytes": 56240,
       "file_bytes": 56240,
@@ -185,7 +185,7 @@
       }
     },
     "words-ru-12": {
-      "path": "ltm/l2/words-ru-12.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-12.ltm",
       "compress": null,
       "raw_bytes": 58606,
       "file_bytes": 58606,
@@ -200,7 +200,7 @@
       }
     },
     "words-ru-13": {
-      "path": "ltm/l2/words-ru-13.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-13.ltm",
       "compress": null,
       "raw_bytes": 56182,
       "file_bytes": 56182,
@@ -215,7 +215,7 @@
       }
     },
     "words-ru-14": {
-      "path": "ltm/l2/words-ru-14.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-14.ltm",
       "compress": null,
       "raw_bytes": 55320,
       "file_bytes": 55320,
@@ -230,7 +230,7 @@
       }
     },
     "words-ru-15": {
-      "path": "ltm/l2/words-ru-15.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-15.ltm",
       "compress": null,
       "raw_bytes": 62030,
       "file_bytes": 62030,
@@ -245,7 +245,7 @@
       }
     },
     "words-ru-16": {
-      "path": "ltm/l2/words-ru-16.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-16.ltm",
       "compress": null,
       "raw_bytes": 62206,
       "file_bytes": 62206,
@@ -260,7 +260,7 @@
       }
     },
     "words-ru-17": {
-      "path": "ltm/l2/words-ru-17.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-17.ltm",
       "compress": null,
       "raw_bytes": 56454,
       "file_bytes": 56454,
@@ -275,7 +275,7 @@
       }
     },
     "words-ru-18": {
-      "path": "ltm/l2/words-ru-18.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-18.ltm",
       "compress": null,
       "raw_bytes": 60048,
       "file_bytes": 60048,
@@ -290,7 +290,7 @@
       }
     },
     "words-ru-19": {
-      "path": "ltm/l2/words-ru-19.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-19.ltm",
       "compress": null,
       "raw_bytes": 57252,
       "file_bytes": 57252,
@@ -305,7 +305,7 @@
       }
     },
     "words-ru-20": {
-      "path": "ltm/l2/words-ru-20.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-20.ltm",
       "compress": null,
       "raw_bytes": 55752,
       "file_bytes": 55752,
@@ -320,7 +320,7 @@
       }
     },
     "words-ru-21": {
-      "path": "ltm/l2/words-ru-21.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-21.ltm",
       "compress": null,
       "raw_bytes": 57194,
       "file_bytes": 57194,
@@ -335,7 +335,7 @@
       }
     },
     "words-ru-22": {
-      "path": "ltm/l2/words-ru-22.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-22.ltm",
       "compress": null,
       "raw_bytes": 59508,
       "file_bytes": 59508,
@@ -350,7 +350,7 @@
       }
     },
     "words-ru-23": {
-      "path": "ltm/l2/words-ru-23.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-23.ltm",
       "compress": null,
       "raw_bytes": 56794,
       "file_bytes": 56794,
@@ -365,7 +365,7 @@
       }
     },
     "words-ru-24": {
-      "path": "ltm/l2/words-ru-24.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-24.ltm",
       "compress": null,
       "raw_bytes": 53766,
       "file_bytes": 53766,
@@ -380,7 +380,7 @@
       }
     },
     "words-ru-25": {
-      "path": "ltm/l2/words-ru-25.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-25.ltm",
       "compress": null,
       "raw_bytes": 54014,
       "file_bytes": 54014,
@@ -395,7 +395,7 @@
       }
     },
     "words-ru-26": {
-      "path": "ltm/l2/words-ru-26.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-26.ltm",
       "compress": null,
       "raw_bytes": 56454,
       "file_bytes": 56454,
@@ -410,7 +410,7 @@
       }
     },
     "words-ru-27": {
-      "path": "ltm/l2/words-ru-27.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-27.ltm",
       "compress": null,
       "raw_bytes": 58138,
       "file_bytes": 58138,
@@ -425,7 +425,7 @@
       }
     },
     "words-ru-28": {
-      "path": "ltm/l2/words-ru-28.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-28.ltm",
       "compress": null,
       "raw_bytes": 55628,
       "file_bytes": 55628,
@@ -440,7 +440,7 @@
       }
     },
     "words-ru-29": {
-      "path": "ltm/l2/words-ru-29.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-29.ltm",
       "compress": null,
       "raw_bytes": 60410,
       "file_bytes": 60410,
@@ -455,7 +455,7 @@
       }
     },
     "words-ru-30": {
-      "path": "ltm/l2/words-ru-30.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-30.ltm",
       "compress": null,
       "raw_bytes": 63274,
       "file_bytes": 63274,
@@ -470,7 +470,7 @@
       }
     },
     "words-ru-31": {
-      "path": "ltm/l2/words-ru-31.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-31.ltm",
       "compress": null,
       "raw_bytes": 65784,
       "file_bytes": 65784,
@@ -485,7 +485,7 @@
       }
     },
     "words-ru-32": {
-      "path": "ltm/l2/words-ru-32.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-32.ltm",
       "compress": null,
       "raw_bytes": 57242,
       "file_bytes": 57242,
@@ -500,7 +500,7 @@
       }
     },
     "words-ru-33": {
-      "path": "ltm/l2/words-ru-33.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-33.ltm",
       "compress": null,
       "raw_bytes": 61410,
       "file_bytes": 61410,
@@ -515,7 +515,7 @@
       }
     },
     "words-ru-34": {
-      "path": "ltm/l2/words-ru-34.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-34.ltm",
       "compress": null,
       "raw_bytes": 58554,
       "file_bytes": 58554,
@@ -530,7 +530,7 @@
       }
     },
     "words-ru-35": {
-      "path": "ltm/l2/words-ru-35.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-35.ltm",
       "compress": null,
       "raw_bytes": 61988,
       "file_bytes": 61988,
@@ -545,7 +545,7 @@
       }
     },
     "words-ru-36": {
-      "path": "ltm/l2/words-ru-36.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-36.ltm",
       "compress": null,
       "raw_bytes": 56608,
       "file_bytes": 56608,
@@ -560,7 +560,7 @@
       }
     },
     "words-ru-37": {
-      "path": "ltm/l2/words-ru-37.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-37.ltm",
       "compress": null,
       "raw_bytes": 64170,
       "file_bytes": 64170,
@@ -575,7 +575,7 @@
       }
     },
     "words-ru-38": {
-      "path": "ltm/l2/words-ru-38.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-38.ltm",
       "compress": null,
       "raw_bytes": 58490,
       "file_bytes": 58490,
@@ -590,7 +590,7 @@
       }
     },
     "words-ru-39": {
-      "path": "ltm/l2/words-ru-39.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-39.ltm",
       "compress": null,
       "raw_bytes": 63572,
       "file_bytes": 63572,
@@ -605,7 +605,7 @@
       }
     },
     "words-ru-40": {
-      "path": "ltm/l2/words-ru-40.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-40.ltm",
       "compress": null,
       "raw_bytes": 61462,
       "file_bytes": 61462,
@@ -620,7 +620,7 @@
       }
     },
     "words-ru-41": {
-      "path": "ltm/l2/words-ru-41.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-41.ltm",
       "compress": null,
       "raw_bytes": 61442,
       "file_bytes": 61442,
@@ -635,7 +635,7 @@
       }
     },
     "words-ru-42": {
-      "path": "ltm/l2/words-ru-42.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-42.ltm",
       "compress": null,
       "raw_bytes": 65338,
       "file_bytes": 65338,
@@ -650,7 +650,7 @@
       }
     },
     "words-ru-43": {
-      "path": "ltm/l2/words-ru-43.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-43.ltm",
       "compress": null,
       "raw_bytes": 64998,
       "file_bytes": 64998,
@@ -665,7 +665,7 @@
       }
     },
     "words-ru-44": {
-      "path": "ltm/l2/words-ru-44.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-44.ltm",
       "compress": null,
       "raw_bytes": 65416,
       "file_bytes": 65416,
@@ -680,7 +680,7 @@
       }
     },
     "words-ru-45": {
-      "path": "ltm/l2/words-ru-45.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-45.ltm",
       "compress": null,
       "raw_bytes": 58994,
       "file_bytes": 58994,
@@ -695,7 +695,7 @@
       }
     },
     "words-ru-46": {
-      "path": "ltm/l2/words-ru-46.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-46.ltm",
       "compress": null,
       "raw_bytes": 65420,
       "file_bytes": 65420,
@@ -710,7 +710,7 @@
       }
     },
     "words-ru-47": {
-      "path": "ltm/l2/words-ru-47.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-47.ltm",
       "compress": null,
       "raw_bytes": 57920,
       "file_bytes": 57920,
@@ -725,7 +725,7 @@
       }
     },
     "words-ru-48": {
-      "path": "ltm/l2/words-ru-48.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-48.ltm",
       "compress": null,
       "raw_bytes": 55840,
       "file_bytes": 55840,
@@ -740,7 +740,7 @@
       }
     },
     "words-ru-49": {
-      "path": "ltm/l2/words-ru-49.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-49.ltm",
       "compress": null,
       "raw_bytes": 58390,
       "file_bytes": 58390,
@@ -755,7 +755,7 @@
       }
     },
     "words-ru-50": {
-      "path": "ltm/l2/words-ru-50.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-50.ltm",
       "compress": null,
       "raw_bytes": 57512,
       "file_bytes": 57512,
@@ -770,7 +770,7 @@
       }
     },
     "words-ru-51": {
-      "path": "ltm/l2/words-ru-51.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-51.ltm",
       "compress": null,
       "raw_bytes": 58458,
       "file_bytes": 58458,
@@ -785,7 +785,7 @@
       }
     },
     "words-ru-52": {
-      "path": "ltm/l2/words-ru-52.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-52.ltm",
       "compress": null,
       "raw_bytes": 59966,
       "file_bytes": 59966,
@@ -800,7 +800,7 @@
       }
     },
     "words-ru-53": {
-      "path": "ltm/l2/words-ru-53.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-53.ltm",
       "compress": null,
       "raw_bytes": 58418,
       "file_bytes": 58418,
@@ -815,7 +815,7 @@
       }
     },
     "words-ru-54": {
-      "path": "ltm/l2/words-ru-54.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-54.ltm",
       "compress": null,
       "raw_bytes": 55738,
       "file_bytes": 55738,
@@ -830,7 +830,7 @@
       }
     },
     "words-ru-55": {
-      "path": "ltm/l2/words-ru-55.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-55.ltm",
       "compress": null,
       "raw_bytes": 55512,
       "file_bytes": 55512,
@@ -845,7 +845,7 @@
       }
     },
     "words-ru-56": {
-      "path": "ltm/l2/words-ru-56.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-56.ltm",
       "compress": null,
       "raw_bytes": 56730,
       "file_bytes": 56730,
@@ -860,7 +860,7 @@
       }
     },
     "words-ru-57": {
-      "path": "ltm/l2/words-ru-57.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-57.ltm",
       "compress": null,
       "raw_bytes": 58030,
       "file_bytes": 58030,
@@ -875,7 +875,7 @@
       }
     },
     "words-ru-58": {
-      "path": "ltm/l2/words-ru-58.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-58.ltm",
       "compress": null,
       "raw_bytes": 56926,
       "file_bytes": 56926,
@@ -890,7 +890,7 @@
       }
     },
     "words-ru-59": {
-      "path": "ltm/l2/words-ru-59.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-59.ltm",
       "compress": null,
       "raw_bytes": 54916,
       "file_bytes": 54916,
@@ -905,7 +905,7 @@
       }
     },
     "words-ru-60": {
-      "path": "ltm/l2/words-ru-60.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-60.ltm",
       "compress": null,
       "raw_bytes": 55268,
       "file_bytes": 55268,
@@ -920,7 +920,7 @@
       }
     },
     "words-ru-61": {
-      "path": "ltm/l2/words-ru-61.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-61.ltm",
       "compress": null,
       "raw_bytes": 55842,
       "file_bytes": 55842,
@@ -935,7 +935,7 @@
       }
     },
     "words-ru-62": {
-      "path": "ltm/l2/words-ru-62.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-62.ltm",
       "compress": null,
       "raw_bytes": 54352,
       "file_bytes": 54352,
@@ -950,7 +950,7 @@
       }
     },
     "words-ru-63": {
-      "path": "ltm/l2/words-ru-63.ltm",
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-63.ltm",
       "compress": null,
       "raw_bytes": 54692,
       "file_bytes": 54692,
@@ -52405,5 +52405,9 @@
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_value/model.pt"
       }
     }
+  },
+  "lattice_naming": {
+    "version": 1,
+    "migrated_at": "2026-05-31T17:39:54.933365+00:00"
   }
 }

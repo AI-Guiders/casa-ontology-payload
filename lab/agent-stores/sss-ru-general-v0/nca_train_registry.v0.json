@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "nca_train_registry_v0",
   "store_id": "sss-ru-general-v0",
-  "updated_at": "2026-05-31T16:59:41.887790+00:00",
+  "updated_at": "2026-05-31T17:39:55.052426+00:00",
   "field_version": 7,
   "pending": [],
   "lattices": {
@@ -518,23 +518,23 @@
       "last_repair_ratio": 2.405,
       "last_repair_at": "2026-05-31T16:55:57.962246+00:00"
     },
-    "lattice_predict": {
+    "control-predict": {
       "last_trained_at": "2026-05-31T16:59:23.742786+00:00",
       "field_version_at_train": 7,
       "token_count_at_train": 0,
-      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_predict/model.pt"
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/control-predict/model.pt"
     },
-    "lattice_dan": {
+    "control-attention": {
       "last_trained_at": "2026-05-31T16:59:32.938379+00:00",
       "field_version_at_train": 7,
       "token_count_at_train": 0,
-      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_dan/model.pt"
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/control-attention/model.pt"
     },
-    "lattice_value": {
+    "control-value": {
       "last_trained_at": "2026-05-31T16:59:41.887264+00:00",
       "field_version_at_train": 7,
       "token_count_at_train": 0,
-      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_value/model.pt"
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/control-value/model.pt"
     }
   }
 }
