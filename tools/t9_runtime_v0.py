@@ -46,8 +46,12 @@ def boot_demo_field(
     return state, meta
 
 
-def tick_view(state: dict, prefix: str, *, top_k: int = 8) -> dict[str, Any]:
-    """Unified tick + compact console-friendly view."""
+def tick_view(state: dict, prefix: str, *, top_k: int = 8, debug: bool = False) -> dict[str, Any]:
+    """Unified tick + compact console-friendly view.
+
+    ``debug`` attaches the full ``raw`` unified_tick payload; off by default to
+    keep the per-keystroke stdio message small on the hot path.
+    """
     raw = unified_tick(state, prefix, top_k=top_k)
     preview = raw.get("preview") or []
     branches: list[dict[str, Any]] = []
@@ -72,7 +76,7 @@ def tick_view(state: dict, prefix: str, *, top_k: int = 8) -> dict[str, Any]:
                 "hypothesis": pred.get("hypothesis"),
             }
         )
-    return {
+    view: dict[str, Any] = {
         "schema_version": 1,
         "prefix": prefix,
         "script_mode": raw.get("script_mode"),
@@ -84,11 +88,13 @@ def tick_view(state: dict, prefix: str, *, top_k: int = 8) -> dict[str, Any]:
         ],
         "branches": branches,
         "verdict": raw.get("verdict"),
-        "raw": raw,
     }
+    if debug:
+        view["raw"] = raw
+    return view
 
 
-def serve_stdio(state: dict, *, meta: dict[str, Any]) -> int:
+def serve_stdio(state: dict, *, meta: dict[str, Any], debug: bool = False) -> int:
     ready = {"schema_version": 1, "event": "ready", **meta}
     print(json.dumps(ready, ensure_ascii=False), flush=True)
     for line in sys.stdin:
@@ -116,8 +122,9 @@ def serve_stdio(state: dict, *, meta: dict[str, Any]) -> int:
             continue
         prefix = str(req.get("prefix") or "")
         top_k = int(req.get("top_k") or 8)
+        dbg = bool(req.get("debug", debug))
         t0 = time.perf_counter()
-        view = tick_view(state, prefix, top_k=top_k)
+        view = tick_view(state, prefix, top_k=top_k, debug=dbg)
         view["event"] = "tick"
         view["tick_ms"] = round((time.perf_counter() - t0) * 1000)
         print(json.dumps(view, ensure_ascii=False), flush=True)
@@ -148,6 +155,11 @@ def main() -> int:
         default=root / "lab/exp_bilingual_v0/en_folk_headwords.v1.txt",
     )
     p.add_argument("--top-k", type=int, default=8)
+    p.add_argument(
+        "--debug",
+        action="store_true",
+        help="Attach full raw unified_tick payload to each tick (larger messages)",
+    )
     p.add_argument(
         "--summary",
         action="store_true",
@@ -185,7 +197,7 @@ def main() -> int:
     )
 
     if args.command == "once":
-        view = tick_view(state, args.prefix, top_k=args.top_k)
+        view = tick_view(state, args.prefix, top_k=args.top_k, debug=args.debug)
         report = {**meta, **view}
         if args.out:
             args.out.write_text(
@@ -209,7 +221,7 @@ def main() -> int:
             print(json.dumps(report, ensure_ascii=False, indent=2))
         return 0
 
-    return serve_stdio(state, meta=meta)
+    return serve_stdio(state, meta=meta, debug=args.debug)
 
 
 if __name__ == "__main__":
