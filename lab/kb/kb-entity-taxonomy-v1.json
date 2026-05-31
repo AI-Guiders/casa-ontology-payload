@@ -1,0 +1,31 @@
+{
+  "bundle_id": "kb-entity-taxonomy-v1",
+  "schema_version": 1,
+  "title": "Entity taxonomy — instanceOf types (animal, plant, person, …)",
+  "types": [
+    { "entity_id": "entity.animal", "label": "Animal" },
+    { "entity_id": "entity.plant", "label": "Plant" },
+    { "entity_id": "entity.person", "label": "Person" },
+    { "entity_id": "entity.food", "label": "Food" },
+    { "entity_id": "entity.place", "label": "Place / object" },
+    { "entity_id": "entity.nature", "label": "Nature (celestial, water, …)" }
+  ],
+  "instances": [
+    { "entity_id": "entity.cow", "instance_of": "entity.animal" },
+    { "entity_id": "entity.cat", "instance_of": "entity.animal" },
+    { "entity_id": "entity.dog", "instance_of": "entity.animal" },
+    { "entity_id": "entity.bird", "instance_of": "entity.animal" },
+    { "entity_id": "entity.fish", "instance_of": "entity.animal" },
+    { "entity_id": "entity.tree", "instance_of": "entity.plant" },
+    { "entity_id": "entity.apple", "instance_of": "entity.plant" },
+    { "entity_id": "entity.mother", "instance_of": "entity.person" },
+    { "entity_id": "entity.boy", "instance_of": "entity.person" },
+    { "entity_id": "entity.girl", "instance_of": "entity.person" },
+    { "entity_id": "entity.bread", "instance_of": "entity.food" },
+    { "entity_id": "entity.apple", "instance_of": "entity.food" },
+    { "entity_id": "entity.house", "instance_of": "entity.place" },
+    { "entity_id": "entity.book", "instance_of": "entity.place" },
+    { "entity_id": "entity.water", "instance_of": "entity.nature" },
+    { "entity_id": "entity.sun", "instance_of": "entity.nature" }
+  ]
+}

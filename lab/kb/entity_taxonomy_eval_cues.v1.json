@@ -1,0 +1,10 @@
+[
+  { "id": "cow_animal", "word": "cow", "expect_entity": "entity.cow", "expect_type": "entity.animal" },
+  { "id": "korova_animal", "word": "корова", "expect_entity": "entity.cow", "expect_type": "entity.animal" },
+  { "id": "cat_animal", "word": "cat", "expect_entity": "entity.cat", "expect_type": "entity.animal" },
+  { "id": "tree_plant", "word": "tree", "expect_entity": "entity.tree", "expect_type": "entity.plant" },
+  { "id": "apple_food", "word": "apple", "expect_entity": "entity.apple", "expect_type": "entity.food" },
+  { "id": "mama_person", "word": "мама", "expect_entity": "entity.mother", "expect_type": "entity.person" },
+  { "id": "house_place", "word": "house", "expect_entity": "entity.house", "expect_type": "entity.place" },
+  { "id": "sun_nature", "word": "sun", "expect_entity": "entity.sun", "expect_type": "entity.nature" }
+]
