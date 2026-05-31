@@ -1,108 +1,272 @@
 #!/usr/bin/env python3
+
 """
-One or more autonomous agent ticks T: field → SN → CEN → FPN session update.
+
+One or more autonomous agent ticks T: field → act rollout → SN → CEN → surprise/hippo → sleep.
+
+
 
 v0: session file `agent_session.json` in store (FPN mirror; grid wm.* later).
+
 """
+
+
 
 from __future__ import annotations
 
+
+
 from casa._paths import ensure_import_paths
+
+
 
 ensure_import_paths()
 
+
+
 import argparse
+
 import json
+
 import time
+
 from pathlib import Path
 
-from casa.prisms.shared.canonical import CANONICAL_FIELD_MIN_VOTES
-from casa.prisms.control.fpn_state import (
-    effective_user_query,
-    fpn_after_cen,
-    load_session,
-    salience_mode_bias,
-    save_session,
-)
-from casa.prisms.control.tick import run_control_extensions
-from casa.prisms.control.sn_cen_infer import _run_from_field
-from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict
+
+
+from casa.prisms.control.fpn_state import load_session, save_session
+
+from casa.prisms.shared.store_persist import save_runtime_state
+
+from casa.prisms.tick.orchestrator import LearningTickConfig, run_learning_tick
+
+
+
 
 
 def run_tick(
+
     *,
+
     store_dir: Path,
+
     user_query: str | None,
+
     wm,
-) -> tuple[dict, object]:
-    field_path = store_dir / "field_state.json"
-    _, bundle, decoded, recovery, wall_ms, state = _run_from_field(
-        field_path, store_dir, min_votes=CANONICAL_FIELD_MIN_VOTES
+
+    config: LearningTickConfig | None = None,
+
+) -> tuple[dict, object, dict]:
+
+    return run_learning_tick(
+
+        store_dir=store_dir,
+
+        user_query=user_query,
+
+        wm=wm,
+
+        config=config,
+
     )
-    digest = digest_from_decoded(decoded)
-    bias = salience_mode_bias(wm, digest.concept_ids)
-    gated = sn_route(digest, bundle=bundle, wm_mode=wm.mode, wm_salience_bias=bias)
-    q = effective_user_query(wm, user_query)
-    task = cen_plan(gated, bundle=bundle, user_query=q)
-    wm_next = fpn_after_cen(wm, task, user_query=q)
-    control = run_control_extensions(
-        prior_digest=wm.last_concepts,
-        current_digest=digest.concept_ids,
-        goal=[wm.goal] if wm.goal else digest.concept_ids[:8],
-        task_relevant=bool(wm.goal or q),
-    )
-    wm_next.last_concepts = list(digest.concept_ids)
-    report = {
-        "tick": wm_next.tick,
-        "query": q,
-        "wall_ms": round(wall_ms, 2),
-        "field_version": state.get("field_version"),
-        "recovery_concepts_f1": (recovery or {}).get("concepts", {}).get("f1"),
-        "sn_mode": gated.gate.mode,
-        "cen": task_to_dict(task, fpn=wm_next.to_dict()),
-        "control": control.to_dict(),
-    }
-    return report, wm_next
+
+
+
 
 
 def main() -> None:
+
     p = argparse.ArgumentParser()
+
     p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/language-agent-lab"))
+
     p.add_argument("--query", default=None, help="External query; if omitted uses WM goal or probe")
+
     p.add_argument("--ticks", type=int, default=1, help="Macro ticks T to run in sequence")
+
     p.add_argument("--goal", default=None, help="Seed WM goal before first tick")
+
     p.add_argument("--out", type=Path, default=None)
+
+    p.add_argument(
+
+        "--no-write-field",
+
+        action="store_true",
+
+        help="Skip field_state.json persist (session still saved)",
+
+    )
+
+    p.add_argument("--no-act-rollout", action="store_true", help="Skip NCA act rollout on memory lattice")
+
+    p.add_argument("--sleep-every", type=int, default=0, help="Run sleep every N ticks when hippo has episodes")
+
+    p.add_argument(
+
+        "--sleep-on-value",
+
+        type=float,
+
+        default=1.0,
+
+        help="Run sleep when control.value >= threshold and hippo has episodes",
+
+    )
+
+    p.add_argument("--no-surprise-episode", action="store_true", help="Skip hippo episode on predict surprise")
+
+    p.add_argument("--no-remember-surprise", action="store_true", help="Skip agent_remember on high surprise")
+
+    p.add_argument("--kolb-session", type=Path, default=None, help="Optional Kolb session JSON (batch hook)")
+
     args = p.parse_args()
 
+
+
+    kolb_session = None
+
+    if args.kolb_session:
+
+        kolb_session = json.loads(args.kolb_session.read_text(encoding="utf-8"))
+
+
+
+    config = LearningTickConfig(
+
+        act_rollout=not args.no_act_rollout,
+
+        surprise_episode=not args.no_surprise_episode,
+
+        remember_on_surprise=not args.no_remember_surprise,
+
+        sleep_every=max(0, int(args.sleep_every)),
+
+        sleep_on_value=float(args.sleep_on_value),
+
+        kolb_session=kolb_session,
+
+    )
+
+
+
     store = args.store_dir.resolve()
+
     wm = load_session(store)
+
     if args.goal:
+
         wm.goal = args.goal.strip()[:240]
+
         wm.mode = "kb_query"
 
+
+
     history: list[dict] = []
+
+    last_state: dict | None = None
+
     for _ in range(max(1, args.ticks)):
+
         t0 = time.perf_counter()
-        row, wm = run_tick(store_dir=store, user_query=args.query if len(history) == 0 else None, wm=wm)
+
+        row, wm, last_state = run_tick(
+
+            store_dir=store,
+
+            user_query=args.query if len(history) == 0 else None,
+
+            wm=wm,
+
+            config=config if len(history) == 0 else LearningTickConfig(
+
+                act_rollout=config.act_rollout,
+
+                act_device=config.act_device,
+
+                surprise_episode=config.surprise_episode,
+
+                surprise_min_value=config.surprise_min_value,
+
+                remember_on_surprise=config.remember_on_surprise,
+
+                remember_min_value=config.remember_min_value,
+
+                sleep_every=config.sleep_every,
+
+                sleep_on_value=config.sleep_on_value,
+
+                kolb_session=None,
+
+            ),
+
+        )
+
         row["elapsed_ms"] = round((time.perf_counter() - t0) * 1000, 2)
+
         history.append(row)
-        args.query = None  # follow-up ticks use WM goal
+
+        args.query = None
+
+
 
     if not wm.goal and history:
+
         last_q = history[-1].get("query")
+
         if last_q:
+
             wm.goal = str(last_q)[:240]
 
-    save_session(store, wm, extra={"last_tick_reports": len(history)})
-    doc = {"schema_version": 1, "store": str(store), "ticks_run": len(history), "wm": wm.to_dict(), "history": history}
+
+
+    save_session(store, wm)
+
+    persist: dict | None = None
+
+    if not args.no_write_field and last_state is not None:
+
+        persist = save_runtime_state(store, last_state)
+
+
+
+    doc = {
+
+        "schema_version": 1,
+
+        "store": str(store),
+
+        "ticks_run": len(history),
+
+        "wm": wm.to_dict(),
+
+        "history": history,
+
+        "persist": persist,
+
+    }
+
     text = json.dumps(doc, ensure_ascii=False, indent=2)
+
     if args.out:
+
         args.out.parent.mkdir(parents=True, exist_ok=True)
+
         args.out.write_text(text, encoding="utf-8")
+
     import sys
+
+
+
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
     print(text)
 
 
+
+
+
 if __name__ == "__main__":
+
     main()
+

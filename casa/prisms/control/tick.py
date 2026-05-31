@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Digest-level control extensions: predict / DAN / value (CASA-ADR-0010).
 
-Runs after DMN decode on each macro tick T. Field NCA rollout is roadmap; this
-module is the deterministic digest contract wired into SN/CEN tick reports.
+Runs after DMN decode on each macro tick T. Act-phase NCA rollout lives in
+`casa/prisms/tick/act_rollout.py`; full loop in `casa/prisms/tick/orchestrator.py`.
 """
 
 from __future__ import annotations

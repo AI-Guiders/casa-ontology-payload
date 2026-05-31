@@ -21,7 +21,8 @@ from pathlib import Path
 from typing import Any
 
 from casa.prisms.shared.field_write import load_field_state
-from casa.prisms.memory.memory_prisms import append_rule_episode, ensure_prisms, run_sleep, save_state
+from casa.prisms.memory.memory_prisms import append_rule_episode, ensure_prisms, run_sleep
+from casa.prisms.shared.store_persist import save_runtime_state
 from casa.prisms.memory.field_decode import rule_votes_from_field
 from casa.prisms.hippo.hypothesis import hypothesis_turn
 from casa.prisms.hippo.internal_repair import internal_reconcile
@@ -196,7 +197,7 @@ def main() -> None:
 
     state = ensure_prisms(load_field_state(path))
     report = kolb_cycle(state, session, bundle=bundle)
-    save_state(path, state)
+    save_runtime_state(store, state)
 
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)

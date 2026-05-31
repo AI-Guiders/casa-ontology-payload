@@ -1,1 +1,3 @@
-"""Digest-level tick, T9 runtime, teacher preflight."""
+"""Macro tick — act rollout, orchestrator, articulation (import submodules directly)."""
+
+__all__: list[str] = []
