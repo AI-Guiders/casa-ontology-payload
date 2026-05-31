@@ -141,22 +141,22 @@ CASA: **store profile** = composition root:
 
 ### Phase M1 — aliases, no break
 
-- [ ] `memory_manifest.json`: block `prism_layout_version`, `path_aliases` (`ltm/l2` ↔ `ltm/memory/lexicon`, …)
-- [ ] `store_layout_v0.py`: resolve **both** legacy and canonical nca/ltm paths
+- [x] `memory_manifest.json`: block `prism_layout_version`, `path_aliases` (`ltm/l2` ↔ `ltm/memory/lexicon`, …)
+- [x] `store_layout_v0` / `store_paths_v1.py`: resolve **both** legacy and canonical nca/ltm paths
 - [x] `tools/README.md` → map legacy → `casa/prisms/*`
 
 ### Phase M2 — package skeleton + shims
 
 - [x] Create `casa/prisms/{control,memory,shared,hippo,tick}/` + `casa/cli/`
 - [x] Move runtime modules under `casa/`; `tools/*` → sys.modules shims
-- [ ] FieldBus v0: publish `ConsolidatePhaseEvent`, `FieldVersionDriftEvent` from stale train + post_train
-- [ ] M4: drop shims when grep clean
+- [x] FieldBus v0: publish `ConsolidatePhaseEvent`, `FieldVersionDriftEvent`, `TrainCompleteEvent`
+- [ ] M4: drop shims when grep clean (`check_tools_shims.py --strict-casa-imports`)
 
 ### Phase M3 — store paths (new writes canonical)
 
-- [ ] `export_ltm_pack_v0` writes `ltm/memory/lexicon/` **and** symlink/copy alias `ltm/l2/` (transition)
-- [ ] NCA export: `nca/memory/lexicon/words-ru-NN/` primary; keep legacy path readable
-- [ ] One store migrated (`sss-ru-general-v0`); boot smoke + bench green
+- [x] `export_ltm_pack_v0` writes `ltm/memory/lexicon/` **and** legacy alias `ltm/l2/` + `ltm/lat/`
+- [x] NCA resolve: `nca/memory/lexicon/<id>/` primary; flat `nca/<id>/` readable
+- [ ] One store migrated on disk (`sss-ru-general-v0` re-export); boot smoke + bench green
 
 ### Phase M4 — drop legacy
 
