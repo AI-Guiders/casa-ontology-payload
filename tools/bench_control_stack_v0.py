@@ -18,6 +18,11 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Bench control lattice stack migration")
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--min-votes", type=int, default=1)
+    p.add_argument(
+        "--structure-only",
+        action="store_true",
+        help="Pass when all control lattices exist (no DMN concepts / sn_cen infer required)",
+    )
     args = p.parse_args()
 
     store = args.store_dir.resolve()
@@ -93,8 +98,11 @@ def main() -> None:
         "control_extensions": control_ext,
         "infer_ok": infer_ok,
         "infer_detail": infer_detail if not infer_ok else str(out),
-        "pass": stack_ok and extensions_ok and infer_ok,
     }
+    if args.structure_only:
+        report["pass"] = ok_stack and not missing
+    else:
+        report["pass"] = stack_ok and extensions_ok and infer_ok
     print(json.dumps(report, ensure_ascii=False, indent=2))
     raise SystemExit(0 if report["pass"] else 1)
 

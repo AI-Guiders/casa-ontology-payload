@@ -50,9 +50,6 @@ def main() -> None:
     bundle = _load_bundle(store, args.bundle) if args.bundle else None
     layout = _read_json(args.layout) if args.layout.is_file() else None
 
-    if bundle is None and not state.get("grid"):
-        raise SystemExit("Provide --bundle or field_state with legacy grid")
-
     report = migrate_control_stack(
         state,
         bundle,

@@ -1,14 +1,14 @@
 # Memory map: `sss-ru-general-v0`
 
-Generated: 2026-05-31T07:20:07.349132+00:00
-field_version: **5**
+Generated: 2026-05-31T07:21:14.429752+00:00
+field_version: **6**
 
 ## Disk
 
 | Path | Size |
 |------|------|
-| `field_state.json` | 44.6 MiB |
-| store total | 257.3 MiB |
+| `field_state.json` | 26.0 MiB |
+| store total | 238.7 MiB |
 | `nca/` | 157.7 MiB |
 | `_parallel_shards/` | 0 B |
 

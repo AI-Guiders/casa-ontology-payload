@@ -3,8 +3,8 @@
   "kind": "sss_memory_manifest",
   "store_id": "sss-ru-general-v0",
   "store_path": "lab/agent-stores/sss-ru-general-v0",
-  "generated_at": "2026-05-31T07:20:07.349132+00:00",
-  "field_version": 5,
+  "generated_at": "2026-05-31T07:21:14.429752+00:00",
+  "field_version": 6,
   "schema": "multi_prism_v1",
   "l2_sharding": {
     "enabled": true,
@@ -1940,10 +1940,10 @@
     "words-ru-63"
   ],
   "disk": {
-    "field_state_json": 46777297,
-    "field_state_human": "44.6 MiB",
-    "store_total": 269819267,
-    "store_total_human": "257.3 MiB",
+    "field_state_json": 27264636,
+    "field_state_human": "26.0 MiB",
+    "store_total": 250307636,
+    "store_total_human": "238.7 MiB",
     "nca_dir": 165328790,
     "parallel_shards_dir": 0,
     "examples_exp_reports": 613239
