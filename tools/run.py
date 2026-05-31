@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Backward compat: python tools/run.py store_boot_v0 --smoke … → python -m casa.cli …"""
+"""Backward compat: python tools/run.py store_boot --smoke … → python -m casa.cli …"""
 from __future__ import annotations
 
 import sys

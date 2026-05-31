@@ -1,7 +1,7 @@
-"""Pytest: legacy module aliases (replaces tools/ shims)."""
+"""Pytest: ensure casa import paths."""
 
 from __future__ import annotations
 
-from casa.legacy import install_legacy_modules
+from casa._paths import ensure_import_paths
 
-install_legacy_modules()
+ensure_import_paths()

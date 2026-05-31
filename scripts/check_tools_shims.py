@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CI gate: legacy manifest complete; casa/ uses casa.* imports only (M4)."""
+"""CI gate: casa layout — cli_modules.json, no tools shims, no sss_* imports."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-MANIFEST = ROOT / "casa" / "cli" / "legacy_manifest.json"
+MODULES = ROOT / "casa" / "cli" / "cli_modules.json"
 CASA = ROOT / "casa"
 TOOLS = ROOT / "tools"
 
@@ -18,17 +18,17 @@ FROM_LEGACY = re.compile(r"^from ([a-z_][a-z0-9_]*) import")
 IMPORT_LEGACY = re.compile(r"^import ([a-z_][a-z0-9_]*)")
 
 
-def check_manifest() -> list[str]:
+def check_modules() -> list[str]:
     errors: list[str] = []
-    if not MANIFEST.is_file():
-        return ["missing casa/cli/legacy_manifest.json"]
-    data = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    if len(data) < 200:
-        errors.append(f"manifest too small: {len(data)} entries")
+    if not MODULES.is_file():
+        return ["missing casa/cli/cli_modules.json — run scripts/generate_cli_modules.py"]
+    data = json.loads(MODULES.read_text(encoding="utf-8"))
+    if len(data) < 150:
+        errors.append(f"cli_modules too small: {len(data)} entries")
     return errors
 
 
-def check_no_legacy_shims() -> list[str]:
+def check_no_tools_shims() -> list[str]:
     errors: list[str] = []
     for path in TOOLS.glob("*.py"):
         if path.name in ("run.py",):
@@ -37,9 +37,8 @@ def check_no_legacy_shims() -> list[str]:
     return errors
 
 
-def check_casa_imports(manifest: dict[str, str]) -> list[str]:
+def check_casa_imports() -> list[str]:
     errors: list[str] = []
-    legacy_names = set(manifest)
     for py in CASA.rglob("*.py"):
         for i, line in enumerate(py.read_text(encoding="utf-8").splitlines(), 1):
             for pat in (FROM_LEGACY, IMPORT_LEGACY):
@@ -47,27 +46,35 @@ def check_casa_imports(manifest: dict[str, str]) -> list[str]:
                 if not m:
                     continue
                 mod = m.group(1)
-                if mod in legacy_names or mod.startswith("sss_"):
+                if mod.startswith("sss_"):
                     errors.append(f"{py.relative_to(ROOT)}:{i}: legacy import {mod!r}")
+    return errors
+
+
+def check_no_sss_filenames() -> list[str]:
+    errors: list[str] = []
+    for py in CASA.rglob("sss_*.py"):
+        errors.append(f"{py.relative_to(ROOT)}: rename sss_* module")
     return errors
 
 
 def main() -> int:
     p = argparse.ArgumentParser()
-    p.add_argument("--allow-tools-shims", action="store_true", help="Deprecated M2 shims still present")
+    p.add_argument("--allow-tools-shims", action="store_true")
     args = p.parse_args()
-    errors = check_manifest()
-    manifest = json.loads(MANIFEST.read_text(encoding="utf-8")) if MANIFEST.is_file() else {}
-    errors.extend(check_casa_imports(manifest))
+    errors = check_modules()
+    errors.extend(check_casa_imports())
+    errors.extend(check_no_sss_filenames())
     if not args.allow_tools_shims:
-        errors.extend(check_no_legacy_shims())
+        errors.extend(check_no_tools_shims())
     if errors:
         for e in errors[:50]:
             print(e, file=sys.stderr)
         if len(errors) > 50:
             print(f"... and {len(errors) - 50} more", file=sys.stderr)
         return 1
-    print(f"M4 layout OK (manifest {len(manifest)} modules)")
+    manifest = json.loads(MODULES.read_text(encoding="utf-8"))
+    print(f"casa layout OK ({len(manifest)} CLI modules, canonical paths)")
     return 0
 
 

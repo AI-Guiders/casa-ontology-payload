@@ -1,78 +1,61 @@
 #!/usr/bin/env python3
-"""Prism layout v1: canonical store paths + legacy aliases (M1)."""
+"""Prism layout v1: canonical store paths only."""
 
 from __future__ import annotations
 
-import os
-import shutil
 from pathlib import Path
 from typing import Any
 
 PRISM_LAYOUT_VERSION = 1
 
-# legacy ltm/<tier> → canonical path under ltm/
-LTM_TIER_ALIASES: dict[str, str] = {
-    "l0": "memory/grapheme",
-    "l1": "memory/syllable",
-    "l2": "memory/lexicon",
-    "l3": "memory/phrase",
-    "h0": "memory/math",
-    "lat": "memory/lexicon",
-    "ctrl": "control",
-}
+# Canonical subdirs under ltm/ (no legacy tier mirrors)
+LTM_SUBDIRS: tuple[str, ...] = (
+    "memory/grapheme",
+    "memory/syllable",
+    "memory/lexicon",
+    "memory/phrase",
+    "memory/math",
+    "control",
+    "hippo",
+)
 
 
 def manifest_layout_block() -> dict[str, Any]:
-    return {
-        "prism_layout_version": PRISM_LAYOUT_VERSION,
-        "path_aliases": {f"ltm/{k}": f"ltm/{v}" for k, v in LTM_TIER_ALIASES.items()},
-    }
+    return {"prism_layout_version": PRISM_LAYOUT_VERSION}
 
 
-def merge_path_aliases(manifest: dict[str, Any] | None) -> dict[str, str]:
-    out = dict(LTM_TIER_ALIASES)
-    if manifest:
-        raw = manifest.get("path_aliases") or {}
-        for k, v in raw.items():
-            key = str(k).removeprefix("ltm/")
-            val = str(v).removeprefix("ltm/")
-            out[key] = val
-    return out
-
-
-def legacy_ltm_tier(lattice_id: str) -> str:
-    """Legacy single-segment dir under ltm/ (l0, l2, lat, ctrl, …)."""
+def ltm_tier_for_lattice(lattice_id: str) -> str:
+    """Internal tier slug → canonical subdir key in LTM_SUBDIRS mapping."""
     lid = str(lattice_id)
     if lid.startswith("control-") or lid.startswith("lattice_"):
-        return "ctrl"
+        return "control"
     if lid.startswith("lexicon-") or lid.startswith("words-"):
-        return "l2"
+        return "memory/lexicon"
     if lid.startswith("alphabet-") or lid.startswith("punct-") or lid.startswith("layout-") or lid == "keys-physical":
-        return "l0"
+        return "memory/grapheme"
     if lid.startswith("syllables-"):
-        return "l1"
+        return "memory/syllable"
     if lid in ("phrases",):
-        return "l3"
+        return "memory/phrase"
     if lid.startswith(("schema-", "compose-", "cardinal-", "quantity-")):
-        return "h0"
+        return "memory/math"
+    if lid.startswith("episodic-"):
+        return "hippo"
     if lid.startswith("L0_"):
-        return "l0"
+        return "memory/grapheme"
     if lid.startswith("L1_"):
-        return "l1"
+        return "memory/syllable"
     if lid.startswith("L2_"):
-        return "l2"
+        return "memory/lexicon"
     if lid.startswith("L3_"):
-        return "l3"
-    if lid.startswith("H0_"):
-        return "h0"
-    return "lat"
+        return "memory/phrase"
+    if lid.startswith("H0_") or lid.startswith("F0_"):
+        return "memory/math"
+    return "memory/lexicon"
 
 
 def canonical_ltm_subdir(lattice_id: str) -> Path:
-    """Path relative to ltm/, e.g. memory/lexicon."""
-    tier = legacy_ltm_tier(lattice_id)
-    mapped = LTM_TIER_ALIASES.get(tier, tier)
-    return Path(mapped)
+    return Path(ltm_tier_for_lattice(lattice_id))
 
 
 def ltm_ltm_filename(lattice_id: str) -> str:
@@ -80,38 +63,17 @@ def ltm_ltm_filename(lattice_id: str) -> str:
 
 
 def ltm_write_targets(ltm_root: Path, lattice_id: str) -> tuple[Path, list[Path]]:
-    """Primary (canonical) file and legacy alias paths to mirror."""
+    """Primary canonical path only (no legacy mirrors)."""
     name = ltm_ltm_filename(lattice_id)
     primary = ltm_root / canonical_ltm_subdir(lattice_id) / name
-    aliases: list[Path] = []
-    tier = legacy_ltm_tier(lattice_id)
-    legacy = ltm_root / tier / name
-    if legacy != primary:
-        aliases.append(legacy)
-    if tier == "l2":
-        lat = ltm_root / "lat" / name
-        if lat not in (primary, *aliases):
-            aliases.append(lat)
-    return primary, aliases
-
-
-def mirror_ltm_file(primary: Path, alias: Path) -> None:
-    alias.parent.mkdir(parents=True, exist_ok=True)
-    if alias.is_file():
-        alias.unlink()
-    try:
-        os.link(primary, alias)
-    except OSError:
-        shutil.copy2(primary, alias)
+    return primary, []
 
 
 def ltm_scan_subdirs(ltm_dir: Path, *, manifest: dict[str, Any] | None = None) -> list[Path]:
-    """Directories to scan for *.ltm (canonical + legacy tiers)."""
-    aliases = merge_path_aliases(manifest)
-    rels: set[str] = set(LTM_TIER_ALIASES) | set(aliases.values()) | set(aliases.keys())
+    del manifest
     out: list[Path] = []
     seen: set[Path] = set()
-    for rel in sorted(rels):
+    for rel in LTM_SUBDIRS:
         p = ltm_dir / rel
         if p.is_dir() and p not in seen:
             seen.add(p)
@@ -140,14 +102,8 @@ def canonical_nca_relpath(lattice_id: str) -> Path:
 
 def nca_dir_candidates(store_dir: Path, lattice_id: str) -> list[Path]:
     root = store_dir / "nca"
-    lid = str(lattice_id)
     canon = root / canonical_nca_relpath(lattice_id)
-    flat = root / lid.replace("/", "_")
-    out: list[Path] = []
-    for p in (canon, flat):
-        if p not in out:
-            out.append(p)
-    return out
+    return [canon]
 
 
 def resolve_nca_lattice_dir(store_dir: Path, lattice_id: str) -> Path:
@@ -158,7 +114,7 @@ def resolve_nca_lattice_dir(store_dir: Path, lattice_id: str) -> Path:
 
 
 def resolve_ltm_file(ltm_dir: Path, lattice_id: str, entry: dict[str, Any] | None = None) -> Path:
-    """Find .ltm on disk: manifest path, then canonical, then legacy tiers."""
+    """Find .ltm on disk: manifest path, then canonical subdir."""
     lid = str(lattice_id)
     if entry:
         p = entry.get("path")
@@ -169,8 +125,8 @@ def resolve_ltm_file(ltm_dir: Path, lattice_id: str, entry: dict[str, Any] | Non
             cand = ltm_dir.parent / p
             if cand.is_file():
                 return cand
-    primary, aliases = ltm_write_targets(ltm_dir, lid)
-    for cand in (primary, *aliases):
+    primary, _aliases = ltm_write_targets(ltm_dir, lid)
+    for cand in (primary,):
         for ext in ("", ".zst", ".gz"):
             path = Path(str(cand) + ext) if ext else cand
             if path.is_file():

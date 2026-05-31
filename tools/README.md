@@ -3,11 +3,11 @@
 Runtime lives in **`casa/`**. Run CLIs:
 
 ```powershell
-python -m casa.cli store_boot_v0 --store-dir lab/agent-stores/sss-ru-general-v0 --smoke
+python -m casa.cli store_boot --store-dir lab/agent-stores/sss-ru-general --smoke
 # or backward compat:
-python tools/run.py store_boot_v0 --store-dir ...
+python tools/run.py store_boot --store-dir ...
 ```
 
-Module map: `casa/cli/legacy_manifest.json` (274 entries).
+Module map: `casa/cli/cli_modules.json` (regenerate: `python scripts/generate_cli_modules.py`).
 
 Python deps: `requirements-dev.txt` (pytest), `requirements.txt` (runtime).
