@@ -9,7 +9,7 @@ Covers **26** Latin + **33** Cyrillic cursive glyphs in one font.
 
 ## Fallback Latin (Windows)
 
-**Script MT Bold** — `C:\Windows\Fonts\SCRIPTBL.TTF` — if ScriptS not present.
+**Script MT Bold** — `%WINDIR%\Fonts\SCRIPTBL.TTF` — if ScriptS not present.
 
 ## Fallback Cyrillic
 

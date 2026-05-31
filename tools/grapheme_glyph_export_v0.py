@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any, Literal
@@ -24,8 +25,10 @@ STYLE_CURSIVE = "cursive"
 LATN_ALPHABET = [chr(c) for c in range(ord("a"), ord("z") + 1)]
 CYRL_ALPHABET = list("абвгдеёжзийклмнопрстуфхцчшщъыьэюя")
 
-DEFAULT_WIN_LATN = Path(r"C:\Windows\Fonts\SCRIPTBL.TTF")
-DEFAULT_WIN_LATN_ALT = Path(r"C:\Windows\Fonts\FRSCRIPT.TTF")
+# Windows cursive fallbacks, resolved via %WINDIR% so no machine path is hard-coded.
+_WIN_FONTS = Path(os.environ.get("WINDIR", "")) / "Fonts"
+DEFAULT_WIN_LATN = _WIN_FONTS / "SCRIPTBL.TTF"
+DEFAULT_WIN_LATN_ALT = _WIN_FONTS / "FRSCRIPT.TTF"
 
 
 def _font_cmap(font_path: Path) -> dict[int, str]:

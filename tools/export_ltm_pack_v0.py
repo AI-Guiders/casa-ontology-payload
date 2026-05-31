@@ -29,6 +29,8 @@ def _rel_nca_block(nca: dict | None) -> dict | None:
     models = nca.get("models")
     if isinstance(models, dict):
         out["models"] = {lid: rel_to_repo(p) for lid, p in models.items()}
+    if isinstance(nca.get("model_path"), str):
+        out["model_path"] = rel_to_repo(nca["model_path"])
     return out
 
 
