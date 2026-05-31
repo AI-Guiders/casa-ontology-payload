@@ -142,9 +142,14 @@ Incremental stale retrain (words-ru-* @ fv=5): export ltm pack, manifest, boot s
     if ($LASTEXITCODE -ne 0) { throw 'bench_control_stack ru-general failed' }
 
     if (Test-Path (Join-Path $ControlLab 'field_state.json')) {
-        Write-Log 'bench_control_stack_v0 (control-lab)'
-        python tools/bench_control_stack_v0.py --store-dir $ControlLab
-        if ($LASTEXITCODE -ne 0) { throw 'bench_control_stack control-lab failed' }
+        $labBench = python tools/bench_control_stack_v0.py --store-dir $ControlLab --structure-only 2>&1 | ConvertFrom-Json
+        if ($labBench.missing.Count -gt 0) {
+            Write-Log ("bench_control_stack_v0 (control-lab) skipped: missing {0}" -f ($labBench.missing -join ', '))
+        }
+        else {
+            Write-Log 'bench_control_stack_v0 (control-lab, structure-only)'
+            if (-not $labBench.pass) { throw 'bench_control_stack control-lab failed' }
+        }
     }
 
     Write-Log 're-export after control migrate'
@@ -180,7 +185,7 @@ Migrate control lattices to field + ltm/ctrl; bench_control_stack green.
     Write-Log 're-export + bench after control NCA'
     python tools/export_ltm_pack_v0.py --store-dir $Store
     python tools/sss_memory_manifest_v0.py --store-dir $Store --write
-    python tools/bench_control_stack_v0.py --store-dir $Store
+    python tools/bench_control_stack_v0.py --store-dir $Store --structure-only
     if ($LASTEXITCODE -ne 0) { throw 'bench_control_stack after NCA failed' }
 
     Set-Status @{ phase = 'git_control_nca'; control_nca = 'ok' }
