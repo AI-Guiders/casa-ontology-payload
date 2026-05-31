@@ -20,6 +20,7 @@ ROOT = "prisms"
 PRISM_MEMORY = "prism_memory"
 PRISM_HIPPO = "prism_hippo"
 PRISM_CONTROL = "prism_control"
+PRISM_AGENT = "prism_agent"
 
 _LEGACY_BLOCK = {
     "cyl_memory": PRISM_MEMORY,
@@ -86,6 +87,20 @@ def prism_control(state: dict) -> dict[str, Any]:
             "stack": "design/control-lattice-stack.json",
             "lattices": {},
             "active_lattice": CONTROL_DMN,
+        },
+    )
+
+
+def prism_agent(state: dict) -> dict[str, Any]:
+    """Agent-owned lattice stack — not exported in profile ltm/ by default."""
+    p = prisms(state)
+    return p.setdefault(
+        PRISM_AGENT,
+        {
+            "subsystem": "agent_owned",
+            "lattices": {},
+            "active_lattice": None,
+            "nca": {"models": {}},
         },
     )
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Import store/ltm/*.ltm → field_state memory lattices."""
+"""Import store/ltm/*.ltm → field_state (**shipped** tier only; not runtime checkpoint)."""
 
 from __future__ import annotations
 

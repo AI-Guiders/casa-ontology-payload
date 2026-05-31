@@ -29,8 +29,27 @@ STORE_RU_TECH_V0 = "sss-ru-tech"
 # Read-only monolith built from Afanasyev ingest (corpus reference only).
 STORE_INGEST_REF_AFAN_V0 = "sss-afan"
 
+# Role-based lab stores (no corpus in name — see agent-store-catalog.md)
+STORE_MATH_L0_LAB = "math-l0-lab"
+STORE_LANGUAGE_AGENT_LAB = "language-agent-lab"
+STORE_CONTROL_LAB = "control-lab"
+STORE_CODE_AGENT_LAB = "code-agent-lab"
+STORE_BUKVAR_LAB = "bukvar-lab"
+STORE_RESEARCH_AGENT_LAB = "research-agent-lab"
+
 Locale = Literal["en", "ru"]
 Tier = Literal["general", "tech"]
+
+# --- Store tiers (canon) ---
+# Shipped  = profile pack in distro (ltm/ + nca/)
+# Runtime  = checkpoint on disk — survives process restart, NOT in profile tar
+# Self     = agent-owned (agent/, journal/) — no auto-export to ltm/
+STORE_TIER_SHIPPED = "shipped"
+STORE_TIER_RUNTIME = "runtime"
+STORE_TIER_SELF = "self"
+
+RUNTIME_CHECKPOINT_FILES: tuple[str, ...] = ("field_state.json", "agent_session.json")
+SELF_TIER_DIR_NAMES: tuple[str, ...] = ("agent", "journal")
 
 
 @dataclass(frozen=True)
@@ -89,6 +108,18 @@ def ru_general_store(*, root: Path | None = None) -> Path:
     return agent_store_dir(STORE_RU_GENERAL_V0, root=root)
 
 
+def math_l0_lab_store(*, root: Path | None = None) -> Path:
+    return agent_store_dir(STORE_MATH_L0_LAB, root=root)
+
+
+def language_agent_lab_store(*, root: Path | None = None) -> Path:
+    return agent_store_dir(STORE_LANGUAGE_AGENT_LAB, root=root)
+
+
+def control_lab_store(*, root: Path | None = None) -> Path:
+    return agent_store_dir(STORE_CONTROL_LAB, root=root)
+
+
 def en_folk_store(*, root: Path | None = None) -> Path:
     return agent_store_dir(STORE_EN_FOLK_V0, root=root)
 
@@ -122,6 +153,53 @@ def ltm_root(store_dir: Path) -> Path:
     return store_dir / "ltm"
 
 
+def journal_root(store_dir: Path) -> Path:
+    """Agent-owned journal — not exported in ltm/ cartridges."""
+    return store_dir / "journal"
+
+
+def journal_index_path(store_dir: Path) -> Path:
+    return journal_root(store_dir) / "index.json"
+
+
+def journal_domain_dir(store_dir: Path, domain: str) -> Path:
+    return journal_root(store_dir) / domain
+
+
+def journal_entries_path(store_dir: Path, domain: str) -> Path:
+    return journal_domain_dir(store_dir, domain) / "entries.jsonl"
+
+
+def agent_prism_root(store_dir: Path) -> Path:
+    """Agent-owned prism on disk — separate from profile ltm/."""
+    return store_dir / "agent"
+
+
+def agent_manifest_path(store_dir: Path) -> Path:
+    return agent_prism_root(store_dir) / "manifest.json"
+
+
+def agent_bridges_path(store_dir: Path) -> Path:
+    """Agent-owned control bridges — not exported in profile ltm/."""
+    return agent_prism_root(store_dir) / "bridges.json"
+
+
+def agent_lattices_dir(store_dir: Path) -> Path:
+    return agent_prism_root(store_dir) / "lattices"
+
+
+def agent_lattice_path(store_dir: Path, lattice_id: str) -> Path:
+    return agent_lattices_dir(store_dir) / f"{lattice_id}.json"
+
+
+def agent_nca_root(store_dir: Path) -> Path:
+    return agent_prism_root(store_dir) / "nca"
+
+
+def agent_nca_lattice_dir(store_dir: Path, lattice_id: str) -> Path:
+    return agent_nca_root(store_dir) / lattice_id
+
+
 def nca_train_registry_path(store_dir: Path) -> Path:
     return store_dir / "nca_train_registry.json"
 
@@ -144,3 +222,24 @@ def rel_to_repo(path: Path | str | None) -> str | None:
         return p.resolve().relative_to(repo_root()).as_posix()
     except ValueError:
         return p.as_posix()
+
+
+def runtime_checkpoint_paths(store_dir: Path) -> dict[str, Path]:
+    """On-disk **runtime checkpoint** tier (not shipped in profile tar)."""
+    store_dir = store_dir.resolve()
+    return {
+        "field_state": field_state_path(store_dir),
+        "agent_session": store_dir / "agent_session.json",
+    }
+
+
+def shipped_tier_roots(store_dir: Path) -> dict[str, Path]:
+    """Profile pack paths (ship in distro)."""
+    store_dir = store_dir.resolve()
+    return {"ltm": ltm_root(store_dir), "nca": nca_root(store_dir)}
+
+
+def self_tier_roots(store_dir: Path) -> dict[str, Path]:
+    """Agent-owned tier (no auto-export to ltm/)."""
+    store_dir = store_dir.resolve()
+    return {"journal": journal_root(store_dir), "agent": agent_prism_root(store_dir)}

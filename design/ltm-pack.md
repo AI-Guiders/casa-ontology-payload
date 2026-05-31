@@ -37,11 +37,15 @@ NCA `model.pt` (~2 MiB/полка) чинит **известную раскла�
 
 ## Уровни поставки
 
-| Уровень | Состав | Назначение |
-|---------|--------|------------|
-| **A** | `ltm/` + `nca/` | runtime (pack → поле в RAM) |
-| **B** | + `field_state.json` | разработка, diff, legacy |
-| **C** | headwords + рецепт rebuild (будущее) | минимальный дистрибутив |
+См. § Store tiers в [`memory-hierarchy.md`](memory-hierarchy.md). Кратко:
+
+| Уровень | Canon name | Состав | Назначение |
+|---------|------------|--------|------------|
+| **A** | **Shipped** | `ltm/` + `nca/` | cold boot профиля (pack → RAM) |
+| **B** | **Runtime checkpoint** | + `field_state.json`, `agent_session.json` | resume после рестарта процесса; **не** в tar |
+| **C** | (rebuild recipe) | headwords + рецепт | минимальный дистрибутив (будущее) |
+
+Отдельно **Self tier**: `agent/`, `journal/` — не уровень A/B/C, не auto-export (ADR-0015).
 
 ## Команды
 
@@ -54,4 +58,6 @@ python tools/export_ltm_pack.py --store-dir … --compress   # .ltm.zst if zstan
 ## Round-trip
 
 Export → import воспроизводит те же `cells` на каждой решётке.  
-`field_version` и episodic-цилиндры import **не** трогает (только memory-lattices).
+Import **shipped** tier only: `prism_memory` + `prism_control` lattices из manifest.  
+**Runtime checkpoint** (`prism_hippo.episodes`, SN meta) — только через `field_state.json`, не через `import_pack`.  
+**Self tier** — `agent/`, `journal/`; см. ADR-0013/0014/0015.

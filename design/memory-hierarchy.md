@@ -10,8 +10,9 @@
 agent-store/{id}/              # e.g. sss-ru-lexicon (not corpus name)
 ├── MEMORY.md                 ← human map (generated)
 ├── memory_manifest.json      ← machine map (generated)
-├── field_state.json          ← live cylinder stack (lab / merge; optional in distro)
-├── ltm/                      ← compact memory pack (ship this + nca/)
+├── field_state.json          ← **runtime checkpoint** (prism_hippo queue, SN meta; not in profile tar)
+├── agent_session.json        ← runtime checkpoint (FPN WM)
+├── ltm/                      ← **shipped** profile pack (ship + nca/)
 │   ├── pack.manifest.json
 │   └── l2/L2_word_07.ltm
 ├── nca/                      ← canonical NCA registry (one model.pt per lattice)
@@ -19,10 +20,44 @@ agent-store/{id}/              # e.g. sss-ru-lexicon (not corpus name)
 │   ├── L2_word_07/model.pt
 │   └── train_shards_report.json
 ├── ingest_log.ndjson         ← optional: corpus sources (Afan, bukvar, …)
+├── journal/                  ← agent-owned prose (NOT in ltm/ export)
+│   ├── index.json
+│   └── math/entries.jsonl
+├── agent/                    ← agent-owned prism (lattices + nca; NOT in ltm/ export)
+│   ├── manifest.json
+│   ├── lattices/
+│   └── nca/
 └── _parallel_shards/         ← ingest worker artifacts (optional)
 ```
 
 Do **not** use `lab/nca_out_<corpus>_*/` for production — train in-place under `{store}/nca/` (`train_memory_nca_shards.py` default).
+
+## Store tiers (canon)
+
+Три имени на диске — **не** «new» и не смешивать с profile export.
+
+| Tier | Имя | Пути | Cold boot из `ltm/` | В profile tar | Flush после wake/tick/sleep |
+|------|-----|------|---------------------|---------------|----------------------------|
+| **Shipped** | profile pack | `ltm/`, `nca/` | **да** — memory + control + NCA | **да** | `export_ltm_pack` |
+| **Runtime** | checkpoint | `field_state.json`, `agent_session.json` | **нет** — hippo queue пуст до wake | **нет** | `save_runtime_state` |
+| **Self** | agent-owned | `agent/`, `journal/` | load если каталог есть | **нет** (opt-in backup) | `save_agent_prism`, journal CLI |
+
+```text
+  Shipped (ltm/ + nca/)     ──cold boot──►  prism_memory + prism_control + NCA paths
+         ▲                                      │
+         │ sleep / export_ltm_pack              │ T_wake: append_episode
+         │                                      ▼
+  Runtime checkpoint          ◄──save_runtime_state──  prism_hippo + SN meta
+  (field_state, session)
+
+  Self (agent/, journal/)     ◄── agent_remember ──  не в ltm/ без agent_promote
+```
+
+**Hippo:** wake пишет в **runtime checkpoint**; после **sleep** consolidated knowledge уходит в **shipped** (`prism_memory` → `ltm/`), episodic queue **prune** — не дублировать в profile tar как dump эпизодов.
+
+**Код:** константы `STORE_TIER_*` в `casa/prisms/shared/store_layout.py`; flush — `casa/prisms/shared/store_persist.py`.
+
+**Неявная vs явная память:** [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md) § Неявная vs явная — tick/hippo/поле vs `agent_remember`.
 
 ## Logical hierarchy
 

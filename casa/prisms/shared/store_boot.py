@@ -20,7 +20,7 @@ from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.stack import decode_lattice
 from casa.prisms.memory.lexicon_usage_axes import attach_axes_to_state, load_axes_jsonl
 from casa.prisms.memory.lexicon_shard import is_l2_word_lattice
-from casa.prisms.shared.store_layout import field_state_path, ltm_root, nca_root
+from casa.prisms.shared.store_layout import field_state_path, ltm_root, nca_root, agent_prism_root
 
 
 def boot_store(
@@ -29,7 +29,7 @@ def boot_store(
     prefer_field_state: bool = False,
     ltm_dir: Path | None = None,
 ) -> dict[str, Any]:
-    """Load runtime state: ltm pack required; optional merge from field_state."""
+    """Load agent store: **shipped** tier (ltm/) or resume **runtime checkpoint** (field_state)."""
     store_dir = store_dir.resolve()
     ltm = ltm_dir or ltm_root(store_dir)
     manifest_path = ltm / "pack.manifest.json"
@@ -71,6 +71,13 @@ def boot_store(
     lattices = memory_lattices(state)
     shard_count = sum(1 for k in lattices if is_l2_word_lattice(k))
     ctrl = control_lattices(state) if has_control_stack(state) else {}
+
+    from casa.prisms.memory.agent_prism import load_agent_prism
+
+    agent_load: dict[str, Any] | None = None
+    if agent_prism_root(store_dir).is_dir():
+        agent_load = load_agent_prism(store_dir, state)
+
     return {
         "source": source,
         "import": imp,
@@ -78,6 +85,7 @@ def boot_store(
         "control_lattice_count": len(ctrl),
         "l2_shard_count": shard_count,
         "field_version": state.get("field_version"),
+        "agent_prism": agent_load,
         "state": state,
     }
 
@@ -143,6 +151,8 @@ def main() -> None:
         "l2_shard_count": boot["l2_shard_count"],
         "field_version": boot["field_version"],
     }
+    if boot.get("agent_prism"):
+        out["agent_prism"] = boot["agent_prism"]
     if args.smoke:
         out["smoke"] = smoke_report(boot["state"], lattice_id=args.sample_lattice)
 

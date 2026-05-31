@@ -63,6 +63,7 @@ Hook в lab (roadmap): `agent_autonomous_tick.py --sleep-only` или кажды
 | **`prism_memory`** | Долговременная память | кора / DMN | SSS `L0..L3`, F0 stacks, медленно меняется |
 | **`prism_hippo`** | Быстрая эпизодическая | гиппокамп | стек **H0…H3** (специалисты), consolidate → memory — [`hippo-lattice-stack.md`](hippo-lattice-stack.md) |
 | **`prism_io`** (опц.) | Буфер ввода | сенсорный буfer | текущий utterance, не смешивать с LTM сразу |
+| **`prism_agent`** | **Личная память агента** | scratch LTM | `{store}/agent/` — решётки + NCA; **не** в profile `ltm/` export — [`CASA-ADR-0014-agent-prism.md`](CASA-ADR-0014-agent-prism.md) |
 
 **SN/CEN/FPN** — не отдельные призмы памяти, а **управление** поверх (как CU + шина между устройствами).
 

@@ -16,6 +16,7 @@ from typing import Any
 from casa.prisms.shared.field_write import load_field_state
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.lexicon_shard import LEGACY_L2, is_l2_word_lattice, l2_word_lattice_ids, nca_model_registry, shard_stats
+from casa.prisms.memory.agent_journal import journal_stats
 from casa.prisms.memory.nca_codec import tokens_from_lattice
 from casa.prisms.shared.store_layout import rel_to_repo
 from casa.prisms.shared.store_paths_v1 import manifest_layout_block
@@ -98,6 +99,7 @@ def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
         "prisms": ["prism_memory", "prism_hippo"],
         "lattice_stack": layers,
         "l2_network_ids": l2_word_lattice_ids(state),
+        "journal": journal_stats(store_dir),
         "disk": disk,
     }
 
@@ -129,6 +131,14 @@ def render_memory_md(manifest: dict[str, Any]) -> str:
         lines.append(f"{indent}{row['id']}  (tokens={row['token_count']}){nca}")
     lines.append("```")
     lines.append("")
+    journal = manifest.get("journal") or {}
+    if journal.get("entry_count"):
+        lines.append("## Agent journal (not in ltm/)")
+        lines.append("")
+        lines.append(f"- entries: **{journal.get('entry_count')}** across {journal.get('domain_count')} domain(s)")
+        for row in journal.get("domains") or []:
+            lines.append(f"- `{row.get('domain')}`: {row.get('entry_count')} entries")
+        lines.append("")
     sh = manifest.get("l2_sharding") or {}
     lines.append("## L2 sharding")
     lines.append("")
