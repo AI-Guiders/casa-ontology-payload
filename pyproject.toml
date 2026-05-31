@@ -6,11 +6,12 @@ requires-python = ">=3.12"
 
 # M2: canonical code under `casa/prisms/`; `tools/` keeps thin shims + CLIs.
 # `pythonpath` lets tests import both legacy module names and `casa.*`.
+[project.scripts]
+casa-cli = "casa.cli._run:main"
 
-[tool.pytest.ini_options]
-pythonpath = [".", "tools"]
+pythonpath = ["."]
 testpaths = ["tests"]
 addopts = "-q"
 
 [tool.pyright]
-extraPaths = [".", "tools"]
+extraPaths = ["."]

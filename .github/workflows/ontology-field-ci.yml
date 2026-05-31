@@ -22,9 +22,9 @@ jobs:
         run: pip install -r tools/requirements-dev.txt
       - name: No absolute paths (full tracked tree)
         run: python scripts/check_no_abs_paths.py --scope all
-      - name: Tools are casa shims (M2 layout)
+      - name: M4 layout (manifest + no shims)
         run: python scripts/check_tools_shims.py
-      - name: Unit tests (predictor ranking contract)
+      - name: Unit tests
         run: pytest
       - name: CI smoke train + bench
-        run: python tools/ci_smoke_bench.py --repo-root . --epochs 120 --seeds 5
+        run: python -m casa.cli ci_smoke_bench --repo-root . --epochs 120 --seeds 5

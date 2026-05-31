@@ -33,8 +33,8 @@
 - [x] **Пакет + prism folders.** `casa/prisms/*`, `casa/cli/*`; `tools/` = shims (M2).
 - [x] **M1 path aliases** + **M3 dual-write LTM** (`store_paths_v1`).
 - [x] **FieldBus v0** (`casa/field_bus/`).
-- [ ] **M4:** drop shims (`check_tools_shims.py`; needs `console_scripts` / import cleanup).
-- [ ] **Чистка legacy store paths on disk** (re-export ru-general).
+- [x] **M4:** shims removed; `python -m casa.cli`; strict import gate.
+- [x] **ru-general** re-exported with `ltm/memory/lexicon/` canonical paths.
 
 ---
 

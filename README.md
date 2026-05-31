@@ -12,7 +12,7 @@ cd casa-ontology-payload
 python scripts/download_corpora.py
 
 # Full cycle: init RU dev store + EN folk + all benches
-python tools/run_t9_demo_cycle_v0.py
+python -m casa.cli run_t9_demo_cycle_v0
 
 # Interactive C# console (after cycle green)
 dotnet run --project apps/Casa.T9.Console
@@ -24,15 +24,15 @@ Type `co` → see **EN: cow** and **RU: сова** candidates. `Esc` to quit.
 
 | Piece | Role |
 |-------|------|
-| `tools/init_ru_dev_store_v0.py` | Minimal RU lexicon (~90 headwords) → `sss-ru-lexicon-v0/` |
-| `tools/init_en_folk_store_v0.py` | EN folk lexicon → `sss-en-folk-v0/` |
-| `tools/run_t9_demo_cycle_v0.py` | Init + benches (ambiguous, T9, unified, linked) |
-| `tools/t9_runtime_v0.py` | Python stdio JSON server for C# UI |
+| `python -m casa.cli init_ru_dev_store_v0` | Minimal RU lexicon (~90 headwords) → `sss-ru-lexicon-v0/` |
+| `python -m casa.cli init_en_folk_store_v0` | EN folk lexicon → `sss-en-folk-v0/` |
+| `python -m casa.cli run_t9_demo_cycle_v0` | Init + benches (ambiguous, T9, unified, linked) |
+| `python -m casa.cli t9_runtime_v0` | Python stdio JSON server for C# UI |
 | `apps/Casa.T9.Console` | Interactive dual-column T9 demo |
 
 ## Python runtime protocol (stdio)
 
-1. Start: `python tools/t9_runtime_v0.py serve`
+1. Start: `python -m casa.cli t9_runtime_v0 serve`
 2. First line: `{"event":"ready","boot_ms":...}`
 3. Per keystroke: `{"op":"tick","prefix":"co"}\n`
 4. Response: `{"event":"tick","commitment":"ambiguous","branches":[...]}`
@@ -45,7 +45,7 @@ Env: `CASA_PYTHON` — path to python if not on PATH.
 T9 prefix rank uses **L2 votes on grid**; NCA not required for demo.
 
 ```powershell
-python tools/run_t9_demo_cycle_v0.py --train-nca --device cuda
+python -m casa.cli run_t9_demo_cycle_v0 --train-nca --device cuda
 ```
 
 ## Design

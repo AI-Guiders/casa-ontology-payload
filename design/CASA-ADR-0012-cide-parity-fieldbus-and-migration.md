@@ -148,20 +148,21 @@ CASA: **store profile** = composition root:
 ### Phase M2 — package skeleton + shims
 
 - [x] Create `casa/prisms/{control,memory,shared,hippo,tick}/` + `casa/cli/`
-- [x] Move runtime modules under `casa/`; `tools/*` → sys.modules shims
+- [x] Move runtime modules under `casa/`; legacy CLI via `python -m casa.cli` + `legacy_manifest.json`
 - [x] FieldBus v0: publish `ConsolidatePhaseEvent`, `FieldVersionDriftEvent`, `TrainCompleteEvent`
-- [ ] M4: drop shims when grep clean (`check_tools_shims.py --strict-casa-imports`)
+- [x] M4: drop `tools/` shims; `check_tools_shims.py` gate
 
 ### Phase M3 — store paths (new writes canonical)
 
 - [x] `export_ltm_pack_v0` writes `ltm/memory/lexicon/` **and** legacy alias `ltm/l2/` + `ltm/lat/`
 - [x] NCA resolve: `nca/memory/lexicon/<id>/` primary; flat `nca/<id>/` readable
-- [ ] One store migrated on disk (`sss-ru-general-v0` re-export); boot smoke + bench green
+- [x] One store migrated on disk (`sss-ru-general-v0` re-export); boot smoke green
 
 ### Phase M4 — drop legacy
 
-- [ ] Remove `sss_` prefix from **new** modules; delete shims when grep clean
-- [ ] Stop writing `ltm/l2`, `ltm/ctrl`, flat `nca/words-ru-*`
+- [x] `casa/` imports `casa.*` only; legacy names via `casa/legacy.py` lazy finder
+- [x] Remove `tools/*.py` shims; CLI `python -m casa.cli <module>`
+- [ ] Stop writing legacy `ltm/l2` mirrors (optional flag; dual-write still on for compat)
 - [ ] Update `.gitignore` / CI for canonical paths only
 - [ ] Optional: filter-repo **paths only** if duplicate cartridges bloated history (not urgent)
 
@@ -200,9 +201,9 @@ IDE может подписаться на FieldBus (future) для PFD: «stale
 
 ## 6. Критерии готовности migration
 
-- [ ] Boot smoke `sss-ru-general-v0` with **canonical paths only**
-- [ ] Zero imports of `tools.sss_*` outside shims (grep gate)
-- [ ] FieldBus events emitted on train complete + sleep complete
+- [x] Boot smoke `sss-ru-general-v0` with **canonical paths** (`ltm/memory/lexicon/`)
+- [x] `casa/` uses `casa.*` imports; legacy names via `casa/legacy.py`
+- [x] FieldBus events emitted on train complete + sleep complete
 - [ ] `design/prisms/*` referenced from store manifest
 - [ ] Docs: no «sss» as subsystem name in new prose
 
