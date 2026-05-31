@@ -4,13 +4,15 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from field_version_v0 import memory_field_version, train_field_version_for_lattice  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import l2_lexicon_lattice_ids, nca_model_registry  # type: ignore
+from sss_l2_shard_v0 import is_nca_trainable_lattice, l2_lexicon_lattice_ids, nca_model_registry  # type: ignore
 from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
 from store_layout_v0 import nca_lattice_dir, nca_train_registry_path, rel_to_repo  # type: ignore
 
@@ -51,6 +53,22 @@ def save_registry(store_dir: Path, reg: dict[str, Any]) -> None:
 def lattice_token_count(state: dict, lattice_id: str) -> int:
     lat = memory_lattices(state).get(lattice_id) or {}
     return len(tokens_from_lattice(lat))
+
+
+def lattice_train_fingerprint(lattice: dict) -> str:
+    """Stable hash of lattice token multiset — NCA train target; ignores control-only fv bumps."""
+    toks = tuple(sorted(tokens_from_lattice(lattice)))
+    payload = "\n".join(toks).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()[:24]
+
+
+def _lattice_for_train(state: dict, lattice_id: str) -> dict:
+    lat = memory_lattices(state).get(lattice_id)
+    if lat:
+        return lat
+    from control_cylinders_v0 import control_lattices  # type: ignore
+
+    return control_lattices(state).get(lattice_id) or {}
 
 
 def model_path_for_lattice(store_dir: Path, state: dict, lattice_id: str) -> Path | None:
@@ -101,21 +119,28 @@ def mark_lattice_trained(
     lattice_id: str,
     *,
     repair_ratio: float | None = None,
+    lattice: dict | None = None,
 ) -> dict[str, Any]:
     reg = load_registry(store_dir)
     model = model_path_for_lattice(store_dir, state, lattice_id)
+    lat = lattice if lattice is not None else _lattice_for_train(state, lattice_id)
+    is_memory = is_nca_trainable_lattice(lattice_id)
+    fv = train_field_version_for_lattice(state, lattice_id, is_memory=is_memory)
     entry: dict[str, Any] = {
         "last_trained_at": _utc_now(),
-        "field_version_at_train": int(state.get("field_version") or 0),
-        "token_count_at_train": lattice_token_count(state, lattice_id),
+        "field_version_at_train": fv,
+        "token_count_at_train": lattice_token_count(state, lattice_id) if is_memory else len(tokens_from_lattice(lat)),
         "model_path": rel_to_repo(model),
+        "train_fingerprint": lattice_train_fingerprint(lat),
     }
+    if is_memory:
+        entry["memory_field_version_at_train"] = memory_field_version(state)
     if repair_ratio is not None:
         entry["last_repair_ratio"] = round(float(repair_ratio), 3)
         entry["last_repair_at"] = _utc_now()
     reg.setdefault("lattices", {})[lattice_id] = entry
     reg["pending"] = [lid for lid in reg.get("pending") or [] if lid != lattice_id]
-    reg["field_version"] = int(state.get("field_version") or 0)
+    reg["field_version"] = memory_field_version(state)
     reg["store_id"] = store_dir.name
     save_registry(store_dir, reg)
     return entry
@@ -132,14 +157,25 @@ def sync_registry_from_store(store_dir: Path, state: dict) -> dict[str, Any]:
         cur = reg.get("lattices", {}).get(lid) or {}
         if cur.get("last_trained_at") and cur.get("token_count_at_train"):
             continue
+        lat = memory_lattices(state).get(lid) or {}
         reg.setdefault("lattices", {})[lid] = {
             "last_trained_at": cur.get("last_trained_at") or _utc_now(),
-            "field_version_at_train": int(cur.get("field_version_at_train") or state.get("field_version") or 0),
+            "field_version_at_train": int(
+                cur.get("memory_field_version_at_train")
+                or cur.get("field_version_at_train")
+                or memory_field_version(state)
+            ),
+            "memory_field_version_at_train": int(
+                cur.get("memory_field_version_at_train")
+                or cur.get("field_version_at_train")
+                or memory_field_version(state)
+            ),
             "token_count_at_train": lattice_token_count(state, lid),
             "model_path": rel_to_repo(model),
+            "train_fingerprint": cur.get("train_fingerprint") or lattice_train_fingerprint(lat),
             "synced_from_disk": True,
         }
-    reg["field_version"] = int(state.get("field_version") or 0)
+    reg["field_version"] = memory_field_version(state)
     reg["store_id"] = store_dir.name
     save_registry(store_dir, reg)
     return reg
@@ -157,7 +193,7 @@ def find_stale_shards(
     state = ensure_prisms(state)
     reg = load_registry(store_dir)
     pending = set(reg.get("pending") or []) if include_pending else set()
-    current_fv = int(state.get("field_version") or 0)
+    current_mfv = memory_field_version(state)
     rows: list[dict[str, Any]] = []
 
     for lid in l2_lexicon_lattice_ids(state):
@@ -175,12 +211,21 @@ def find_stale_shards(
         if lid in pending:
             reasons.append("pending_ingest")
 
-        trained_fv = int(meta.get("field_version_at_train") or -1)
+        trained_fv = int(
+            meta.get("memory_field_version_at_train") or meta.get("field_version_at_train") or -1
+        )
         trained_tok = int(meta.get("token_count_at_train") or -1)
-        if meta and current_fv > trained_fv:
-            reasons.append("field_version_drift")
+        trained_fp = meta.get("train_fingerprint")
+        cur_fp = lattice_train_fingerprint(lat)
+
         if meta and tok != trained_tok:
             reasons.append("token_count_drift")
+
+        if meta and trained_fp:
+            if cur_fp != trained_fp:
+                reasons.append("content_drift")
+        elif meta and current_mfv > trained_fv and tok != trained_tok:
+            reasons.append("field_version_drift")
 
         repair_ratio: float | None = None
         if repair_smoke and model is not None:
@@ -196,8 +241,12 @@ def find_stale_shards(
                 "lattice_id": lid,
                 "reasons": reasons,
                 "token_count": tok,
-                "field_version": current_fv,
+                "field_version": current_mfv,
+                "memory_field_version": current_mfv,
                 "field_version_at_train": meta.get("field_version_at_train"),
+                "memory_field_version_at_train": meta.get("memory_field_version_at_train"),
+                "train_fingerprint": trained_fp,
+                "current_fingerprint": cur_fp if trained_fp else None,
                 "token_count_at_train": meta.get("token_count_at_train"),
                 "last_trained_at": meta.get("last_trained_at"),
                 "model_path": rel_to_repo(model),

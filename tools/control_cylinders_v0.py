@@ -13,6 +13,7 @@ from control_stack_v0 import (  # type: ignore
     load_control_stack,
     migrate_legacy_grid_to_control,
 )
+from field_version_v0 import bump_control_field_version  # type: ignore
 from sss_cylinders_v0 import ensure_cylinders  # type: ignore
 
 
@@ -94,7 +95,7 @@ def migrate_control_stack(
         "stack": str(stack_path or DEFAULT_STACK),
         "lattice_ids": sorted(lattices.keys()),
     }
-    state["field_version"] = int(state.get("field_version") or 0) + 1
+    bump_control_field_version(state)
     normalize_prisms(state)
     return {
         "source": source,
