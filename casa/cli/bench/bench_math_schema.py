@@ -11,10 +11,10 @@ import argparse
 import json
 from pathlib import Path
 
-from casa.prisms.memory.f0_math_ingest_v0 import ingest_math_bundle
-from casa.prisms.memory.f0_stack_v0 import decode_f0_lattice, rank_cue_on_f0
-from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
-from casa.prisms.shared.store_boot_v0 import boot_store
+from casa.prisms.memory.f0_math_ingest import ingest_math_bundle
+from casa.prisms.memory.f0_stack import decode_f0_lattice, rank_cue_on_f0
+from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
+from casa.prisms.shared.store_boot import boot_store
 
 
 def run_bench(
@@ -24,17 +24,15 @@ def run_bench(
     *,
     lattice_id: str = "schema-math",
 ) -> dict:
+    ingest_math_bundle(state, bundle, lattice_id=lattice_id)
     lattices = memory_lattices(state)
-    if lattice_id not in lattices:
-        ingest_math_bundle(state, bundle, lattice_id=lattice_id)
-        lattices = memory_lattices(state)
 
     decoded = decode_f0_lattice(lattices[lattice_id], min_votes=1)
     rows: list[dict] = []
     passed = 0
     for item in cues:
         cue = str(item.get("cue") or "")
-        expect = str(item.get("expect_top") or "")
+        expect = str(item.get("expect_top") or item.get("expect") or "")
         min_score = int(item.get("min_score") or 1)
         ranked = rank_cue_on_f0(bundle, decoded, cue)
         top = ranked[0][0] if ranked else None
@@ -56,7 +54,7 @@ def run_bench(
 
     return {
         "schema_version": 1,
-        "bench": "math_schema_v0",
+        "bench": "math_schema",
         "lattice_id": lattice_id,
         "decoded_concepts": decoded.get("concept_ids"),
         "math_tokens": decoded.get("math_tokens"),

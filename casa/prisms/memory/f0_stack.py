@@ -11,12 +11,12 @@ import json
 from pathlib import Path
 from typing import Any
 
-from casa.prisms.shared.codec_grid_v0 import Grid
-from casa.prisms.memory.sss_stack_v0 import _place_token
+from casa.prisms.shared.codec_grid import Grid
+from casa.prisms.memory.stack import _place_token
 
 
 def load_f0_stack(path: Path | None = None) -> dict:
-    p = path or Path("design/f0-math-lattice-stack.v0.json")
+    p = path or Path("design/f0-math-lattice-stack.json")
     return json.loads(p.read_text(encoding="utf-8"))
 
 
@@ -123,7 +123,7 @@ def glyph_to_concept(bundle: dict) -> dict[str, str]:
 
 
 def _score_glyphs(cue: str, gmap: dict[str, str]) -> dict[str, int]:
-    """Longest-match glyph scoring (|| → math.two, not 2× math.one)."""
+    """Longest-match glyph scoring (|| → math.num.two, not 2× math.num.one)."""
     scores: dict[str, int] = {}
     rest = cue
     glyphs = sorted(gmap.keys(), key=len, reverse=True)
@@ -148,7 +148,7 @@ def rank_cue_on_f0(bundle: dict, decoded: dict, cue: str) -> list[tuple[str, int
     cl = cue.lower()
 
     if "+" in cue:
-        scores["math.add"] = scores.get("math.add", 0) + 10
+        scores["math.op.add"] = scores.get("math.op.add", 0) + 10
 
     for cid, words in (bundle.get("math_keywords") or {}).items():
         for w in words:

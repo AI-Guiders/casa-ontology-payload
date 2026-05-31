@@ -1,0 +1,8 @@
+[
+  { "id": "sticks_two", "cue": "||", "expect_top": "math.num.two", "min_score": 3 },
+  { "id": "sticks_one", "cue": "|", "expect_top": "math.num.one", "min_score": 3 },
+  { "id": "sticks_three", "cue": "|||", "expect_top": "math.num.three", "min_score": 3 },
+  { "id": "add_glyph", "cue": "| + |", "expect_top": "math.op.add", "min_score": 5 },
+  { "id": "add_keyword_ru", "cue": "сложить группы", "expect_top": "math.op.add", "min_score": 3 },
+  { "id": "cow_entity", "cue": "корова", "expect_top": "math.entity.cow", "min_score": 3 }
+]

@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "subsystem": "first_signal_math",
+  "title": "Первая сигнальность — логико-математический стек F0…F2",
+  "doc": "design/f0-math-logical-layer.md",
+  "parent_prism": "prism_memory",
+  "sibling_subsystems": {
+    "sss": "design/prisms/memory/stack.json",
+    "vis_roadmap": "design/experiment-l-concrete-to-abstract.md"
+  },
+  "axes": {
+    "x": "cell within lattice",
+    "y": "cell within lattice",
+    "f_level": "логический уровень (схема → экземпляр → величина)",
+    "z_note": "F-стек ортогонален z ССС (L0..L3); общий prism_memory, разные subsystem_id",
+    "T_wake": "compose, count, compare",
+    "T_sleep": "consolidate schema → стабильные M: / hub edges"
+  },
+  "concept_namespaces": {
+    "math": "схема, число, операция",
+    "math.num": "число / мощность (| → math.num.one)",
+    "math.dim": "размерность (count, length, …)",
+    "math.entity": "считаемый объект (cow — не unit)",
+    "math.category": "надтип для агрегации (livestock)",
+    "math.unit": "SI unit (m, kg) only",
+    "math.op": "схема оператора (+, −, ×)",
+    "lang": "имя на второй СС — мост, не дубликат логики",
+    "vis": "якорь картинки — Exp L, not hot path v0"
+  },
+  "lattices": [
+    {
+      "id": "schema-math",
+      "semantic_id": "memory.math.schema",
+      "legacy_id": "F0_schema",
+      "lattice_id": "schema-math",
+      "f_level": 0,
+      "token_prefix": ["M:", "M:sym:"],
+      "role": ["pure_symbol", "stick_count", "operators"],
+      "lab": ["M:sym:one", "M:sym:two", "M:op:add", "M:op:eq"],
+      "status": "v0_text",
+      "curriculum": "experiment-l L0"
+    },
+    {
+      "id": "compose-math",
+      "semantic_id": "memory.math.compose",
+      "legacy_id": "F1_compose",
+      "lattice_id": "compose-math",
+      "f_level": 1,
+      "token_prefix": ["M:inst:", "M:entity:", "M:qty:"],
+      "role": ["instance_slots", "homogeneous_merge", "working_memory"],
+      "lab": ["M:qty:10×entity:cow", "M:qty:2×entity:sheep", "M:entity:cow"],
+      "status": "design",
+      "note": "homogeneity по entity или lift к math.category.*"
+    },
+    {
+      "id": "cardinal-math",
+      "semantic_id": "memory.math.cardinal",
+      "legacy_id": "F2_quantity",
+      "lattice_id": "cardinal-math",
+      "f_level": 2,
+      "token_prefix": ["M:qty:"],
+      "role": ["bound_quantity", "cardinality_plus_unit"],
+      "lab": ["M:qty:2×entity:cow", "M:qty:12×category:livestock"],
+      "status": "design",
+      "note": "результат compose; не путать с lang.word.две"
+    }
+  ],
+  "f_bridges": [
+    {
+      "id": "f_bridge_F0_F1",
+      "from": "schema-math",
+      "to": "compose-math",
+      "kind": "instantiate",
+      "example": "M:sym:one → один слот M:inst:*"
+    },
+    {
+      "id": "f_bridge_F1_F2",
+      "from": "compose-math",
+      "to": "cardinal-math",
+      "kind": "aggregate",
+      "when": "same entity or lifted category",
+      "example": "10×entity:cow + 2×entity:sheep → 12×category:livestock"
+    },
+    {
+      "id": "f_bridge_F2_L2",
+      "from": "cardinal-math",
+      "to": "lexicon-ru",
+      "kind": "name",
+      "via": "concept_hub",
+      "note": "«2 коровы» — SN/CEN + lang, не прямой write в L2 без sleep"
+    },
+    {
+      "id": "f_bridge_L2_F1",
+      "from": "lexicon-ru",
+      "to": "compose-math",
+      "kind": "ground_word",
+      "example": "lang.word.cow → math.entity.cow"
+    },
+    {
+      "id": "f_bridge_F2_vis",
+      "from": "cardinal-math",
+      "to": "F0_vis",
+      "kind": "ground_image",
+      "status": "roadmap",
+      "doc": "experiment-l L2–L4"
+    }
+  ],
+  "hub": {
+    "id": "concept_hub_math_lang",
+    "edges": [
+      "E:math.entity.cow|lang.word.cow",
+      "E:math.num.two|lang.word.two",
+      "E:M:qty:12×category:livestock|lang.word.скот"
+    ],
+    "rule": "логика на F*; слова на L*; связь через E:, не слияние решёток"
+  },
+  "routing": {
+    "sn": ["active_subsystem", "active_f_lattice", "modality_gate"],
+    "cen": ["compose_instances", "count", "compare", "name_quantity"],
+    "homogeneity_rule": "same sort at chosen level (entity | category | dim+unit)"
+  },
+  "compose_strategies": {
+    "note": "Human numeracy evidence (Cowan 2011): retrieval correlates with achievement but is not prerequisite — deny fluency-oracle in bench.",
+    "kinds": ["retrieve", "decompose", "count_all"],
+    "default": "decompose",
+    "episode_field": "M:strategy",
+    "transfer_boundary": "deny → F0 oracle; allow-with-check → lab scenario metadata"
+  },
+  "text_only": {
+    "enabled": true,
+    "note": "Можно начать без vis: палочки как M:sym:*, корова как L2 + M:entity:cow"
+  },
+  "nca": {
+    "per_lattice": false,
+    "default": "shared DMN/windowed train on hub union when implemented",
+    "doc": "nca-train-defaults.json"
+  }
+}

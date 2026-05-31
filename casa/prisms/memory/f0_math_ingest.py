@@ -7,18 +7,18 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
+from casa.prisms.shared.prism_state import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 import argparse
 import json
 from pathlib import Path
 from typing import Any
 
 from casa.prisms.shared.lattice_names_v1 import SCHEMA_MATH
-from casa.prisms.memory.f0_stack_v0 import encode_f0_lattice, load_f0_stack
+from casa.prisms.memory.f0_stack import encode_f0_lattice, load_f0_stack
 from casa.prisms.shared.field_write import load_field_state, save_field_state
-from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
-from casa.prisms.shared.store_boot_v0 import boot_store
-from casa.prisms.shared.store_layout_v0 import field_state_path
+from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
+from casa.prisms.shared.store_boot import boot_store
+from casa.prisms.shared.store_layout import field_state_path
 
 
 def ingest_math_bundle(
@@ -37,7 +37,7 @@ def ingest_math_bundle(
     prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices
     state["f0"] = {
-        "stack": str(stack_path or Path("design/f0-math-lattice-stack.v0.json")),
+        "stack": str(stack_path or Path("design/f0-math-lattice-stack.json")),
         "bundle_id": bundle.get("bundle_id"),
         "active_lattice": lattice_id,
     }
