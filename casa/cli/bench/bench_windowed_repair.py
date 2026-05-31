@@ -13,20 +13,20 @@ from pathlib import Path
 
 import torch
 
-from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
-from field_planner_v0 import FieldPlannerV0  # type: ignore
-from layout_apply import _get_region_rect, mask_outside_region  # type: ignore
-from nca_train_util import damage_tensor_patches, grid_indices, scatter_grid_tensor  # type: ignore
-from repair_dmn_nca_windowed import repair_field_windowed  # type: ignore
-from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
-from train_dmn_nca_multibundle import _read_json, _threshold_grid_from_union_state  # type: ignore
-from train_dmn_nca_windowed import _tokens_for_bundle  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.field_planner_v0 import FieldPlannerV0
+from casa.prisms.shared.layout_apply import _get_region_rect, mask_outside_region
+from casa.prisms.shared.nca_train_util import damage_tensor_patches, grid_indices, scatter_grid_tensor
+from casa.cli.repair_dmn_nca_windowed import repair_field_windowed
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels
+from casa.cli.train_dmn_nca_multibundle import _read_json, _threshold_grid_from_union_state
+from casa.cli.train_dmn_nca_windowed import _tokens_for_bundle
 
 
 def _encode_bundle(bundle: dict, args: argparse.Namespace) -> dict:
     w, h = 64, 64
     if args.codec == "v3":
-        from codec_grid_v3 import encode_bundle_to_grid  # type: ignore
+        from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid
 
         return encode_bundle_to_grid(
             bundle,
@@ -38,7 +38,7 @@ def _encode_bundle(bundle: dict, args: argparse.Namespace) -> dict:
             edge_radius=args.edge_radius,
             concept_radius=args.concept_radius,
         )
-    from codec_grid_v0 import encode_bundle_to_grid  # type: ignore
+    from casa.prisms.shared.codec_grid_v0 import encode_bundle_to_grid
 
     return encode_bundle_to_grid(bundle, width=w, height=h, copies=args.copies)
 
@@ -137,7 +137,7 @@ def main() -> None:
 
     bundle = _read_json(args.bundle)
     if args.codec == "v3":
-        from codec_grid_v3 import tokens_for_bundle as _tok  # type: ignore
+        from casa.prisms.shared.codec_grid_v3 import tokens_for_bundle as _tok
 
         bundle_tokens = _tok(bundle, concept_mode=args.concept_mode)
     else:

@@ -12,12 +12,12 @@ import json
 import sys
 from pathlib import Path
 
-from boot_core_ltm_v0 import default_core_ltm_dir, merge_core_ltm  # type: ignore
-from input_modality_ingest_v0 import default_input_modality_bundle  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_stack_v0 import decode_lattice  # type: ignore
-from vk_decode_v0 import decode_branches, decode_events  # type: ignore
-from vk_layout_field_v0 import L0_VK_MAP_ID, compose_index_from_lattice  # type: ignore
+from casa.prisms.memory.boot_core_ltm_v0 import default_core_ltm_dir, merge_core_ltm
+from casa.prisms.memory.input_modality_ingest_v0 import default_input_modality_bundle
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_stack_v0 import decode_lattice
+from casa.prisms.memory.vk_decode_v0 import decode_branches, decode_events
+from casa.prisms.memory.vk_layout_field_v0 import L0_VK_MAP_ID, compose_index_from_lattice
 
 
 def run_bench(state: dict, items: list[dict], bundle: dict) -> dict:

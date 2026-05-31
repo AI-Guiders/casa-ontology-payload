@@ -7,10 +7,10 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import prism_hippo  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_segment_v0 import norm_word  # type: ignore
-from sss_stack_v0 import decode_lattice  # type: ignore
+from casa.prisms.shared.prism_state_v0 import prism_hippo
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_segment_v0 import norm_word
+from casa.prisms.memory.sss_stack_v0 import decode_lattice
 
 
 def _token_votes(lattice: dict, *, prefix: str) -> dict[str, int]:

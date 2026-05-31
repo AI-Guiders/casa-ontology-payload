@@ -9,9 +9,9 @@ ensure_import_paths()
 
 from typing import Any
 
-from critic_v0 import critic_validate  # type: ignore
-from predictor_v0 import predict  # type: ignore
-from sss_segment_v0 import norm_word  # type: ignore
+from casa.prisms.tick.critic_v0 import critic_validate
+from casa.prisms.tick.predictor_v0 import predict
+from casa.prisms.memory.sss_segment_v0 import norm_word
 
 
 def predict_tick(

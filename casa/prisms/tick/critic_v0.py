@@ -10,7 +10,7 @@ ensure_import_paths()
 import unicodedata
 from typing import Any
 
-from sss_segment_v0 import norm_word, verify_segment  # type: ignore
+from casa.prisms.memory.sss_segment_v0 import norm_word, verify_segment
 
 
 def _norm(s: str | None) -> str:

@@ -11,8 +11,8 @@ import argparse
 import json
 from pathlib import Path
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from prism_state_v0 import normalize_prisms  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.prism_state_v0 import normalize_prisms
 
 
 def main() -> None:

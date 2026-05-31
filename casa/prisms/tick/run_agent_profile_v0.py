@@ -14,10 +14,10 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from boot_core_ltm_v0 import core_ltm_from_profile, default_core_ltm_dir, merge_core_ltm  # type: ignore
-from boot_linked_stores_v0 import boot_linked_stores  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
-from store_layout_v0 import agent_store_dir  # type: ignore
+from casa.prisms.memory.boot_core_ltm_v0 import core_ltm_from_profile, default_core_ltm_dir, merge_core_ltm
+from casa.prisms.memory.boot_linked_stores_v0 import boot_linked_stores
+from casa.prisms.shared.store_boot_v0 import boot_store
+from casa.prisms.shared.store_layout_v0 import agent_store_dir
 
 
 def load_profile(path: Path) -> dict[str, Any]:

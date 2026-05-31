@@ -14,14 +14,14 @@ import time
 from pathlib import Path
 from typing import Any
 
-from bench_entity_hub_v0 import DEFAULT_CUES, run_bench as run_hub_bench  # type: ignore
-from boot_linked_stores_v0 import boot_linked_stores  # type: ignore
-from entity_hub_ingest_v0 import ingest_entity_hub  # type: ignore
-from hub_neighbors_v0 import hub_neighbors  # type: ignore
-from predictor_v0 import predict_t9  # type: ignore
-from sss_l2_shard_v0 import L2_CONCEPT_PREFIX, concept_votes_l2  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
-from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_GENERAL_V0, agent_store_dir  # type: ignore
+from casa.cli.bench.bench_entity_hub_v0 import DEFAULT_CUES, run_bench as run_hub_bench
+from casa.prisms.memory.boot_linked_stores_v0 import boot_linked_stores
+from casa.prisms.memory.entity_hub_ingest_v0 import ingest_entity_hub
+from casa.prisms.memory.hub_neighbors_v0 import hub_neighbors
+from casa.prisms.tick.predictor_v0 import predict_t9
+from casa.prisms.memory.sss_l2_shard_v0 import L2_CONCEPT_PREFIX, concept_votes_l2
+from casa.prisms.memory.sss_vocab_v0 import norm_word
+from casa.prisms.shared.store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_GENERAL_V0, agent_store_dir
 
 L2_CHECK_PAIRS = [
     ("cow", "en"),
@@ -59,7 +59,7 @@ def check_l2_presence(state: dict, pairs: list[tuple[str, str]]) -> dict[str, An
 
 
 def check_t9(state: dict, cues: list[dict]) -> dict[str, Any]:
-    from critic_v0 import critic_validate  # type: ignore
+    from casa.prisms.tick.critic_v0 import critic_validate
 
     rows: list[dict] = []
     passed = 0

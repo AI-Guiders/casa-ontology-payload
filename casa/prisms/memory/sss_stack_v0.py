@@ -11,13 +11,13 @@ import json
 from pathlib import Path
 from typing import Any
 
-from codec_grid_v0 import Grid, decode_grid  # type: ignore
-from codec_grid_v1 import _pick_cells_clustered  # type: ignore
-from lattice_names_v1 import ALPHABET_EN, ALPHABET_RU  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid, decode_grid
+from casa.prisms.shared.codec_grid_v1 import _pick_cells_clustered
+from casa.prisms.shared.lattice_names_v1 import ALPHABET_EN, ALPHABET_RU
 
 
 def load_stack(path: Path | None = None) -> dict:
-    from config_io_v0 import load_config  # type: ignore
+    from casa.prisms.shared.config_io_v0 import load_config
 
     p = path or Path("design/sss-lattice-stack.v0.toml")
     return load_config(p)

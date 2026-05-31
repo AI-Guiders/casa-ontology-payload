@@ -9,7 +9,7 @@ ensure_import_paths()
 
 from typing import Any
 
-from codec_grid_v0 import decode_grid  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import decode_grid
 
 
 def tokens_from_lattice(lattice: dict) -> list[str]:

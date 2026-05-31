@@ -12,8 +12,8 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Literal
 
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from vk_keyboard_v0 import (  # type: ignore
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.vk_keyboard_v0 import (
     CAPS_LOCK_KEY,
     SHIFT_KEYS,
     action_concept,
@@ -21,7 +21,7 @@ from vk_keyboard_v0 import (  # type: ignore
     layout_layer_id,
     modifier_key_ids,
 )
-from vk_layout_field_v0 import (  # type: ignore
+from casa.prisms.memory.vk_layout_field_v0 import (
     _LAYOUT_FILES,
     compose_index_from_state,
     ensure_vk_compose_index,
@@ -84,7 +84,7 @@ def resolve_decode_index(
             return compose, "compose"
         lat = memory_lattices(state).get("L0_vk_map")
         if lat:
-            from vk_layout_field_v0 import flat_index_from_lattice  # type: ignore
+            from casa.prisms.memory.vk_layout_field_v0 import flat_index_from_lattice
 
             flat = flat_index_from_lattice(lat)
             if flat:
@@ -96,7 +96,7 @@ def resolve_role_index(*, state: dict | None = None) -> dict[str, str]:
     if state is None:
         return {}
     state = ensure_prisms(state)
-    from vk_layout_field_v0 import role_index_from_state  # type: ignore
+    from casa.prisms.memory.vk_layout_field_v0 import role_index_from_state
 
     return role_index_from_state(state)
 
@@ -179,7 +179,7 @@ def main() -> None:
 
     state = None
     if args.source == "auto":
-        from boot_core_ltm_v0 import default_core_ltm_dir, merge_core_ltm  # type: ignore
+        from casa.prisms.memory.boot_core_ltm_v0 import default_core_ltm_dir, merge_core_ltm
 
         core = default_core_ltm_dir()
         if (core / "pack.manifest.json").is_file():

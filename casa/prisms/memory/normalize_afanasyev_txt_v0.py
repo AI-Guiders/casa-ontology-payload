@@ -26,7 +26,7 @@ from html import unescape
 from pathlib import Path
 from typing import Any
 
-from sss_text_tokenize_v0 import norm_text  # type: ignore
+from casa.prisms.memory.sss_text_tokenize_v0 import norm_text
 
 FB2_NS = "http://www.gribuser.ru/xml/fictionbook/2.1"
 

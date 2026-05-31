@@ -13,7 +13,7 @@ import re
 import unicodedata
 from pathlib import Path
 
-from sss_segment_v0 import norm_word  # type: ignore
+from casa.prisms.memory.sss_segment_v0 import norm_word
 
 # ASCII letters + apostrophe inside words (don't, king's)
 WORD_RE = re.compile(r"[a-z]+(?:'[a-z]+)?", re.IGNORECASE)

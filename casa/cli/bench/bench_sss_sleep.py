@@ -11,8 +11,8 @@ import argparse
 import json
 from pathlib import Path
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, episode_vote_for_cue, hippo_episodes  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, episode_vote_for_cue, hippo_episodes
 
 
 def main() -> None:

@@ -228,7 +228,7 @@ def main() -> int:
     p.add_argument("--apply", action="store_true", help="re-inject sampled records as fresh episodes")
     args = p.parse_args()
 
-    from field_write import load_field_state, save_field_state  # type: ignore
+    from casa.prisms.shared.field_write import load_field_state, save_field_state
 
     state = load_field_state(args.state)
     now = _now_tick(state)
@@ -241,7 +241,7 @@ def main() -> int:
     dirty = bool(args.archive)
 
     if args.apply and batch:
-        from sleep_replay_v0 import apply_replay_batch  # type: ignore
+        from casa.prisms.hippo.sleep_replay_v0 import apply_replay_batch
 
         apply_replay_batch(state, batch)
         mark_replayed(buffer, [r["episode_id"] for r in batch], now_tick=now)

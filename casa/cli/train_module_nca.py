@@ -20,10 +20,10 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
-from layout_apply import _get_region_rect, mask_outside_region  # type: ignore
-from module_masks import cell_indices_for_tokens, module_tokens_for_section  # type: ignore
-from nca_train_util import (  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.layout_apply import _get_region_rect, mask_outside_region
+from casa.prisms.shared.module_masks import cell_indices_for_tokens, module_tokens_for_section
+from casa.prisms.shared.nca_train_util import (
     add_device_args,
     configure_cuda,
     damage_tensor_patches,
@@ -35,8 +35,8 @@ from nca_train_util import (  # type: ignore
     resolve_train_device,
     scatter_grid_tensor,
 )
-from train_dmn_nca import UpdateRule, nca_rollout, nca_rollout_eval, sobel_kernels  # type: ignore
-from train_dmn_nca_multibundle import (  # type: ignore
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout, nca_rollout_eval, sobel_kernels
+from casa.cli.train_dmn_nca_multibundle import (
     BundleSpec,
     _grid_to_union_tensor,
     _read_json,
@@ -64,7 +64,7 @@ def _load_module_specs(
 ) -> list[ModuleTrainSpec]:
     bundle_dir = repo / modules_manifest["bundle_dir"]
     specs: list[ModuleTrainSpec] = []
-    from codec_grid_v3 import encode_bundle_to_grid  # type: ignore
+    from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid
 
     bundle_cache: dict[str, dict] = {}
     grid_cache: dict[str, dict] = {}
@@ -147,7 +147,7 @@ def main() -> None:
     extra = [repo / b for b in clusters_manifest.get("reference_bundles", []) if (repo / b).is_file()]
     train_paths = sorted(set(bundle_paths + extra), key=lambda p: p.name)
 
-    from codec_grid_v3 import encode_bundle_to_grid as enc_v3, tokens_for_bundle as tok_v3  # type: ignore
+    from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid as enc_v3, tokens_for_bundle as tok_v3
 
     device = resolve_train_device(args.device)
     configure_cuda(device)

@@ -15,12 +15,12 @@ import time
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from lexicon_cold_ingest_v0 import process_lexicon_misses  # type: ignore
-from nca_registry_v0 import find_stale_shards  # type: ignore
-from predictor_v0 import detect_lexicon_miss, l2_prefix_candidates, predict_t9  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from store_layout_v0 import field_state_path  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.memory.lexicon_cold_ingest_v0 import process_lexicon_misses
+from casa.prisms.shared.nca_registry_v0 import find_stale_shards
+from casa.prisms.tick.predictor_v0 import detect_lexicon_miss, l2_prefix_candidates, predict_t9
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.shared.store_layout_v0 import field_state_path
 
 
 def _run_py(root: Path, cmd: list[str]) -> dict[str, Any]:

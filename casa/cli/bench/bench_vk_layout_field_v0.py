@@ -12,10 +12,10 @@ import json
 import sys
 from pathlib import Path
 
-from boot_core_ltm_v0 import default_core_ltm_dir, merge_core_ltm  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from vk_decode_v0 import _json_index, decode_branches, resolve_decode_index  # type: ignore
-from vk_layout_field_v0 import compose_index_from_state  # type: ignore
+from casa.prisms.memory.boot_core_ltm_v0 import default_core_ltm_dir, merge_core_ltm
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.vk_decode_v0 import _json_index, decode_branches, resolve_decode_index
+from casa.prisms.memory.vk_layout_field_v0 import compose_index_from_state
 
 
 def run_bench(state: dict, items: list[dict]) -> dict:

@@ -17,10 +17,10 @@ from pathlib import Path
 
 import torch
 
-from bench_dmn_nca_union import _grid_to_union_tensor, _read_json, _threshold_grid_from_union_state  # type: ignore
-from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
-from layout_apply import _get_region_rect, damage_region_patches, mask_outside_region  # type: ignore
-from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
+from casa.cli.bench.bench_dmn_nca_union import _grid_to_union_tensor, _read_json, _threshold_grid_from_union_state
+from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.layout_apply import _get_region_rect, damage_region_patches, mask_outside_region
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels
 
 
 def main() -> None:
@@ -40,7 +40,7 @@ def main() -> None:
     p.add_argument("--out", type=Path, default=Path("lab/goal3_repair_demo.json"))
     args = p.parse_args()
 
-    from codec_grid_v3 import encode_bundle_to_grid, tokens_for_bundle  # type: ignore
+    from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid, tokens_for_bundle
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     bundle = _read_json(args.bundle)

@@ -12,8 +12,8 @@ import json
 import re
 from pathlib import Path
 
-from lexicon_headwords_v0 import EN_WORD_RE, RU_WORD_RE, read_headwords, write_headwords  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.lexicon_headwords_v0 import EN_WORD_RE, RU_WORD_RE, read_headwords, write_headwords
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 _CONCEPT_WORD_RE = re.compile(r"lang\.word\.([a-zа-яё0-9_\-]+)", re.IGNORECASE)
 _IDENTIFIER_RE = re.compile(r"\b[A-Za-z_][A-Za-z0-9_]{2,}\b")

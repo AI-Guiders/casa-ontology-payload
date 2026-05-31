@@ -11,8 +11,8 @@ import argparse
 import json
 from pathlib import Path
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import append_episode, ensure_prisms, save_state  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import append_episode, ensure_prisms, save_state
 
 
 def main() -> None:

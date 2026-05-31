@@ -13,10 +13,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from lexicon_headwords_v0 import collect_words_from_store, read_headwords, write_headwords  # type: ignore
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.lexicon_headwords_v0 import collect_words_from_store, read_headwords, write_headwords
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 REPO = Path(__file__).resolve().parent.parent
 DEFAULT_MODERN = REPO / "lab/corpus/ru-general-v0/headwords.v1.txt"

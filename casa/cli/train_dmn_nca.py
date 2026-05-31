@@ -28,9 +28,9 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from codec_grid_v0 import decode_grid, encode_bundle_to_grid, score_recovery  # type: ignore
-from layout_apply import _get_region_rect, damage_region, mask_outside_region  # type: ignore
-from nca_train_util import (  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import decode_grid, encode_bundle_to_grid, score_recovery
+from casa.prisms.shared.layout_apply import _get_region_rect, damage_region, mask_outside_region
+from casa.prisms.shared.nca_train_util import (
     add_device_args,
     configure_cuda,
     damage_tensor_patches,

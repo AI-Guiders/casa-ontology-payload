@@ -7,16 +7,16 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 
 import unicodedata
 import zlib
 from collections.abc import Iterable
 from typing import Any
 
-from lattice_names_v1 import lexicon_shard_id, parse_lexicon_shard  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_stack_v0 import decode_lattice, lattice_digest  # type: ignore
+from casa.prisms.shared.lattice_names_v1 import lexicon_shard_id, parse_lexicon_shard
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_stack_v0 import decode_lattice, lattice_digest
 
 LEGACY_L2 = "L2_word"
 L2_SHARD_PREFIX = "L2_word_"
@@ -541,7 +541,7 @@ def _shard_index_from_lattice_id(lattice_id: str) -> int | None:
 
 
 def shard_stats(state: dict) -> dict[str, Any]:
-    from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
+    from casa.prisms.memory.sss_nca_codec_v0 import tokens_from_lattice
 
     cfg = sharding_config(state)
     mode = str(cfg.get("mode") or DEFAULT_SHARD_MODE)

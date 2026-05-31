@@ -14,9 +14,9 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from layout_apply import _get_region_rect, mask_outside_region  # type: ignore
-from module_masks import cell_indices_for_tokens, module_tokens_for_section  # type: ignore
-from nca_train_util import (  # type: ignore
+from casa.prisms.shared.layout_apply import _get_region_rect, mask_outside_region
+from casa.prisms.shared.module_masks import cell_indices_for_tokens, module_tokens_for_section
+from casa.prisms.shared.nca_train_util import (
     configure_cuda,
     damage_tensor_patches,
     empty_cuda_cache,
@@ -26,9 +26,9 @@ from nca_train_util import (  # type: ignore
     resolve_train_device,
     scatter_grid_tensor,
 )
-from train_dmn_nca import UpdateRule, nca_rollout, nca_rollout_eval, sobel_kernels  # type: ignore
-from train_dmn_nca_multibundle import BundleSpec, _read_json, _threshold_grid_from_union_state  # type: ignore
-from train_module_nca import ModuleTrainSpec  # type: ignore
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout, nca_rollout_eval, sobel_kernels
+from casa.cli.train_dmn_nca_multibundle import BundleSpec, _read_json, _threshold_grid_from_union_state
+from casa.cli.train_module_nca import ModuleTrainSpec
 
 
 def expand_rule_for_vocab(
@@ -97,8 +97,8 @@ def finetune_after_import(
     seed: int = 7,
     device_name: str = "auto",
 ) -> FinetuneResult:
-    from codec_grid_v3 import encode_bundle_to_grid as enc_v3, tokens_for_bundle as tok_v3  # type: ignore
-    from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
+    from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid as enc_v3, tokens_for_bundle as tok_v3
+    from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
 
     modules_manifest = _read_json(repo / "manifests/kb-modules.v0.json")
     clusters_manifest = _read_json(repo / "manifests/kb-clusters.v0.json")

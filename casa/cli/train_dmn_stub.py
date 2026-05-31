@@ -24,8 +24,8 @@ import argparse
 import json
 from pathlib import Path
 
-from codec_grid_v0 import decode_grid, encode_bundle_to_grid, score_recovery  # type: ignore
-from layout_apply import damage_region, mask_outside_region, _get_region_rect  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import decode_grid, encode_bundle_to_grid, score_recovery
+from casa.prisms.shared.layout_apply import damage_region, mask_outside_region, _get_region_rect
 
 
 def _read_json(path: Path) -> dict:

@@ -12,7 +12,7 @@ import json
 import sys
 from pathlib import Path
 
-from grapheme_ingest_v0 import GRAPHEME_CYRL_PREFIX, GRAPHEME_LATN_PREFIX  # type: ignore
+from casa.prisms.memory.grapheme_ingest_v0 import GRAPHEME_CYRL_PREFIX, GRAPHEME_LATN_PREFIX
 
 
 def run_bench(manifest_path: Path, *, expect_latn: int = 26) -> dict:

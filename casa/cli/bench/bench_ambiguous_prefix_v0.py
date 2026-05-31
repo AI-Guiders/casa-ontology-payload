@@ -14,11 +14,11 @@ import time
 from pathlib import Path
 from typing import Any
 
-from ambiguous_prefix_v0 import ambiguous_tick, simulate_ambiguous_track  # type: ignore
-from boot_linked_stores_v0 import boot_linked_stores  # type: ignore
-from en_lexicon_v0 import read_headwords  # type: ignore
-from grapheme_ingest_v0 import bootstrap_linked_graphemes  # type: ignore
-from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_GENERAL_V0, agent_store_dir  # type: ignore
+from casa.prisms.tick.ambiguous_prefix_v0 import ambiguous_tick, simulate_ambiguous_track
+from casa.prisms.memory.boot_linked_stores_v0 import boot_linked_stores
+from casa.prisms.memory.en_lexicon_v0 import read_headwords
+from casa.prisms.memory.grapheme_ingest_v0 import bootstrap_linked_graphemes
+from casa.prisms.shared.store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_GENERAL_V0, agent_store_dir
 
 
 def evaluate_track(state: dict, track: dict, *, top_k: int) -> dict[str, Any]:

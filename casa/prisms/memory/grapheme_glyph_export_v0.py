@@ -17,11 +17,11 @@ from typing import Any, Literal
 from fontTools.ttLib import TTFont  # type: ignore
 from PIL import Image, ImageDraw, ImageFont  # type: ignore
 
-from grapheme_ingest_v0 import (  # type: ignore
+from casa.prisms.memory.grapheme_ingest_v0 import (
     concept_id_for_grapheme,
     derive_graphemes_from_words,
 )
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 Script = Literal["latn", "cyrl"]
 STYLE_CURSIVE = "cursive"

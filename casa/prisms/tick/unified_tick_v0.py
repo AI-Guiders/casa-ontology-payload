@@ -9,17 +9,17 @@ ensure_import_paths()
 
 from typing import Any, Literal
 
-from ambiguous_prefix_v0 import predict_ambiguous_prefix  # type: ignore
-from critic_v0 import critic_validate  # type: ignore
-from homoglyph_v0 import dual_script_readings  # type: ignore
-from hub_neighbors_v0 import hub_neighbors  # type: ignore
-from merge_preview_v0 import merge_preview_anchors, preview_words  # type: ignore
-from ortho_tick_v0 import ortho_tick  # type: ignore
-from predictor_v0 import predict_t9  # type: ignore
-from preview_critic_v0 import apply_preview_expectations  # type: ignore
-from script_detect_v0 import predict_script  # type: ignore
-from surface_error_v0 import classify_surface_error  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.tick.ambiguous_prefix_v0 import predict_ambiguous_prefix
+from casa.prisms.tick.critic_v0 import critic_validate
+from casa.prisms.memory.homoglyph_v0 import dual_script_readings
+from casa.prisms.memory.hub_neighbors_v0 import hub_neighbors
+from casa.prisms.memory.merge_preview_v0 import merge_preview_anchors, preview_words
+from casa.prisms.memory.ortho_tick_v0 import ortho_tick
+from casa.prisms.tick.predictor_v0 import predict_t9
+from casa.prisms.tick.preview_critic_v0 import apply_preview_expectations
+from casa.prisms.memory.script_detect_v0 import predict_script
+from casa.prisms.tick.surface_error_v0 import classify_surface_error
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 ScriptMode = Literal["ambiguous", "commit"]
 

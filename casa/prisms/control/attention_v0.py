@@ -108,7 +108,7 @@ def main() -> int:
         data = json.loads(args.trajectory.read_text(encoding="utf-8"))
         traj = data.get("trajectory") or []
     else:
-        from bench_predict_error_v0 import synthetic_trajectory  # type: ignore
+        from casa.cli.bench.bench_predict_error_v0 import synthetic_trajectory
 
         traj = synthetic_trajectory()
 

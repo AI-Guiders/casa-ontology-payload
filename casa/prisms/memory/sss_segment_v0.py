@@ -91,14 +91,14 @@ def segment_with_rule(rule_id: str, word: str) -> list[str]:
 
 def active_segment_rule(state: dict) -> str:
     """Reads R: votes on cylinder; None if field has no rule tokens yet."""
-    from sss_field_decode_v0 import active_rule_from_field  # type: ignore
+    from casa.prisms.memory.sss_field_decode_v0 import active_rule_from_field
 
     rid, _ = active_rule_from_field(state)
     return rid or ""
 
 
 def segment_hypothesis(state: dict, word: str) -> dict[str, Any]:
-    from sss_field_intuition_v0 import segment_field_intuition  # type: ignore
+    from casa.prisms.memory.sss_field_intuition_v0 import segment_field_intuition
 
     return segment_field_intuition(state, word)
 

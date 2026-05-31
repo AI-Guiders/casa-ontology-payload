@@ -14,18 +14,18 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from nca_registry_v0 import repair_smoke_ratio  # type: ignore
-from nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge  # type: ignore
-from nca_train_util import add_device_args, resolve_train_device  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import set_nca_model  # type: ignore
-from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
-from store_layout_v0 import nca_lattice_dir  # type: ignore
-from field_write import save_field_state  # type: ignore
-from vk_layout_field_v0 import VK_CORE_LATTICE_IDS  # type: ignore
-from input_modality_ingest_v0 import default_input_modality_bundle, ingest_input_modality  # type: ignore
-from store_layout_v0 import field_state_path  # type: ignore
-from vk_layout_field_v0 import L0_VK_MAP_ID, imprint_vk_layouts_on_field  # type: ignore
+from casa.prisms.shared.nca_registry_v0 import repair_smoke_ratio
+from casa.prisms.shared.nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge
+from casa.prisms.shared.nca_train_util import add_device_args, resolve_train_device
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import set_nca_model
+from casa.prisms.memory.sss_nca_codec_v0 import tokens_from_lattice
+from casa.prisms.shared.store_layout_v0 import nca_lattice_dir
+from casa.prisms.shared.field_write import save_field_state
+from casa.prisms.memory.vk_layout_field_v0 import VK_CORE_LATTICE_IDS
+from casa.prisms.memory.input_modality_ingest_v0 import default_input_modality_bundle, ingest_input_modality
+from casa.prisms.shared.store_layout_v0 import field_state_path
+from casa.prisms.memory.vk_layout_field_v0 import L0_VK_MAP_ID, imprint_vk_layouts_on_field
 
 CORE_VK_NCA_LATTICES = (L0_VK_MAP_ID, *VK_CORE_LATTICE_IDS)
 
@@ -113,7 +113,7 @@ def train_core_vk_nca(
     ep = epochs if epochs is not None else epoch_budget("sss_shard_incremental")
     dmg = damage_defaults()
     edge = field_edge("sss_lattice")
-    from nca_train_defaults_v0 import windowed_train_config  # type: ignore
+    from casa.prisms.shared.nca_train_defaults_v0 import windowed_train_config
 
     cfg = windowed_train_config(field_edge=edge)
     tw = tile_w if tile_w is not None else cfg.tile_w

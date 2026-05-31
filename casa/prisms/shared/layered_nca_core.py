@@ -18,8 +18,8 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 
-from layout_apply import Rect, _get_region_rect, _rect_from  # type: ignore
-from train_dmn_nca import UpdateRule, nca_rollout_eval, perceive, sobel_kernels  # type: ignore
+from casa.prisms.shared.layout_apply import Rect, _get_region_rect, _rect_from
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout_eval, perceive, sobel_kernels
 
 
 def _read_json(path: Path) -> dict:

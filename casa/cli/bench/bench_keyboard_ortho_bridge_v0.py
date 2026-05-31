@@ -12,15 +12,15 @@ import json
 import sys
 from pathlib import Path
 
-from boot_core_ltm_v0 import default_core_ltm_dir, merge_core_ltm  # type: ignore
-from boot_linked_stores_v0 import boot_linked_stores  # type: ignore
-from grapheme_ingest_v0 import bootstrap_linked_graphemes  # type: ignore
-from keyboard_ortho_bridge_v0 import bridge_edges_present, ingest_keyboard_ortho_bridge  # type: ignore
-from ortho_field_v0 import imprint_capitalize_bootstrap  # type: ignore
-from ortho_process_v0 import PROC_CAPITALIZE, PROC_UPPER, upper_word  # type: ignore
-from ortho_tick_v0 import ortho_tick  # type: ignore
-from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir  # type: ignore
-from vk_decode_v0 import decode_events  # type: ignore
+from casa.prisms.memory.boot_core_ltm_v0 import default_core_ltm_dir, merge_core_ltm
+from casa.prisms.memory.boot_linked_stores_v0 import boot_linked_stores
+from casa.prisms.memory.grapheme_ingest_v0 import bootstrap_linked_graphemes
+from casa.prisms.memory.keyboard_ortho_bridge_v0 import bridge_edges_present, ingest_keyboard_ortho_bridge
+from casa.prisms.memory.ortho_field_v0 import imprint_capitalize_bootstrap
+from casa.prisms.memory.ortho_process_v0 import PROC_CAPITALIZE, PROC_UPPER, upper_word
+from casa.prisms.memory.ortho_tick_v0 import ortho_tick
+from casa.prisms.shared.store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir
+from casa.prisms.memory.vk_decode_v0 import decode_events
 
 
 def run_bench(state: dict, items: list[dict]) -> dict:

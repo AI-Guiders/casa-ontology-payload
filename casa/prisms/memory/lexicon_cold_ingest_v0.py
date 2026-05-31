@@ -13,11 +13,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from predictor_v0 import l2_has_word  # type: ignore
-from ru_lexicon_v0 import ingest_ru_lex_batch, read_headwords  # type: ignore
-from sss_segment_v0 import norm_word  # type: ignore
-from store_layout_v0 import field_state_path  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.tick.predictor_v0 import l2_has_word
+from casa.prisms.memory.ru_lexicon_v0 import ingest_ru_lex_batch, read_headwords
+from casa.prisms.memory.sss_segment_v0 import norm_word
+from casa.prisms.shared.store_layout_v0 import field_state_path
 
 LEXICON_MISS_LOG = "lexicon_miss.ndjson"
 
@@ -68,7 +68,7 @@ def cold_ingest_lexicon(
         }
 
     if loc.startswith("en"):
-        from en_lexicon_v0 import ingest_en_lex_batch  # type: ignore
+        from casa.prisms.memory.en_lexicon_v0 import ingest_en_lex_batch
 
         stats = ingest_en_lex_batch(state, unique, copies=copies, configure=configure)
         ingested = int(stats.get("en_concepts_on_field") or 0)
@@ -121,7 +121,7 @@ def process_lexicon_misses(
     )
     result["skipped_not_in_dictionary"] = skipped
     if store_dir is not None and (ingest_report := result.get("shard_histogram")):
-        from nca_registry_v0 import merge_pending  # type: ignore
+        from casa.prisms.shared.nca_registry_v0 import merge_pending
 
         merge_pending(store_dir, list(ingest_report.keys()))
     return result

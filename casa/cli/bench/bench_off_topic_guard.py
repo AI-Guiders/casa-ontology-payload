@@ -20,9 +20,9 @@ def main() -> None:
     p.add_argument("--out", type=Path, default=None)
     args = p.parse_args()
 
-    from canonical import CANONICAL_FIELD_MIN_VOTES  # type: ignore
-    from sn_cen_infer import _run_from_field  # type: ignore
-    from sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict  # type: ignore
+    from casa.prisms.shared.canonical import CANONICAL_FIELD_MIN_VOTES
+    from casa.prisms.control.sn_cen_infer import _run_from_field
+    from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict
 
     store = args.store_dir.resolve()
     field_path = store / "field_state.json"

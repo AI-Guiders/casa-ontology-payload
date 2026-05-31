@@ -9,9 +9,9 @@ ensure_import_paths()
 
 from typing import Any
 
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_stack_v0 import decode_lattice  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_stack_v0 import decode_lattice
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 
 def _anchor_to_concept(anchor: str) -> str:

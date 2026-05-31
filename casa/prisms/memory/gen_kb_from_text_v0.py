@@ -11,9 +11,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-from sss_segment_candidates_v0 import segment_vowel_nuclei_from_signal  # type: ignore
-from sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text  # type: ignore
-from sss_vocab_v0 import punct_concept_id  # type: ignore
+from casa.prisms.memory.sss_segment_candidates_v0 import segment_vowel_nuclei_from_signal
+from casa.prisms.memory.sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text
+from casa.prisms.memory.sss_vocab_v0 import punct_concept_id
 
 
 def syllables_from_bukvar(bundle: dict) -> set[str]:

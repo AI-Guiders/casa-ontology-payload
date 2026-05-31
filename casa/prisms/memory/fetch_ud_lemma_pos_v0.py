@@ -14,7 +14,7 @@ import urllib.request
 from collections import Counter
 from pathlib import Path
 
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 UD_CORPORA = {
     "ru": [

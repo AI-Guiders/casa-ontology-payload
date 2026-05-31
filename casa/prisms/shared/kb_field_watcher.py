@@ -18,7 +18,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from kb_sync import (  # type: ignore
+from casa.prisms.shared.kb_sync import (
     _manifest_docs,
     _read_json,
     _resolve_kb_root,

@@ -13,11 +13,11 @@ import json
 from pathlib import Path
 from typing import Any
 
-from grapheme_ingest_v0 import L0_ID, merge_l0_lattices  # type: ignore
-from lexicon_usage_axes_v0 import attach_axes_to_state, axes_report, merge_locale_axes  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import is_l2_en_word_lattice, sharding_config  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.prisms.memory.grapheme_ingest_v0 import L0_ID, merge_l0_lattices
+from casa.prisms.memory.lexicon_usage_axes_v0 import attach_axes_to_state, axes_report, merge_locale_axes
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import is_l2_en_word_lattice, sharding_config
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 
 def _copy_lattice(lat: dict) -> dict:
@@ -117,7 +117,7 @@ def boot_linked_stores(
     )
     vk_boot: dict | None = None
     if merge_vk:
-        from boot_core_ltm_v0 import merge_core_ltm_stack  # type: ignore
+        from casa.prisms.memory.boot_core_ltm_v0 import merge_core_ltm_stack
 
         vk_boot = merge_core_ltm_stack(
             state,

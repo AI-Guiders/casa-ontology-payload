@@ -11,8 +11,8 @@ import argparse
 import json
 from pathlib import Path
 
-from bukvar_codec_v0 import decode_bukvar_layer, layer_digest  # type: ignore
-from field_write import load_field_state  # type: ignore
+from casa.prisms.memory.bukvar_codec_v0 import decode_bukvar_layer, layer_digest
+from casa.prisms.shared.field_write import load_field_state
 
 
 def main() -> None:

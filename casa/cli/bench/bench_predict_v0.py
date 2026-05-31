@@ -11,9 +11,9 @@ import argparse
 import json
 from pathlib import Path
 
-from critic_v0 import critic_validate  # type: ignore
-from predictor_v0 import predict  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.prisms.tick.critic_v0 import critic_validate
+from casa.prisms.tick.predictor_v0 import predict
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 
 def run_bench(

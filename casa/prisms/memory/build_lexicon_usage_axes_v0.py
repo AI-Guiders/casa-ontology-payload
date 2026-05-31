@@ -11,8 +11,8 @@ import argparse
 import json
 from pathlib import Path
 
-from lexicon_headwords_v0 import read_headwords  # type: ignore
-from lexicon_usage_axes_v0 import (  # type: ignore
+from casa.prisms.memory.lexicon_headwords_v0 import read_headwords
+from casa.prisms.memory.lexicon_usage_axes_v0 import (
     SOURCE_DETCORPUS,
     SOURCE_OPENSUB_EN,
     axes_report,
@@ -20,7 +20,7 @@ from lexicon_usage_axes_v0 import (  # type: ignore
     overlay_archaic_lemmas,
     write_axes_jsonl,
 )
-from store_layout_v0 import CORPUS_QUAD  # type: ignore
+from casa.prisms.shared.store_layout_v0 import CORPUS_QUAD
 
 REPO = Path(__file__).resolve().parent.parent
 DEFAULT_RU_FREQ = REPO / "lab/corpus/ru-general-v0/frequency.ipm.v1.jsonl"

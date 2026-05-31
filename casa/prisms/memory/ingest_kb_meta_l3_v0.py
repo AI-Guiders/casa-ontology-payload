@@ -12,11 +12,11 @@ import json
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from ortho_field_v0 import imprint_edge, imprint_l3_concept  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
-from store_layout_v0 import field_state_path  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.memory.ortho_field_v0 import imprint_edge, imprint_l3_concept
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.shared.store_boot_v0 import boot_store
+from casa.prisms.shared.store_layout_v0 import field_state_path
 
 
 def ingest_kb_meta_l3(state: dict, bundle: dict, *, copies: int = 5) -> dict[str, Any]:

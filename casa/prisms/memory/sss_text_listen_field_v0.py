@@ -13,13 +13,13 @@ import time
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state  # type: ignore
-from gen_kb_from_text_v0 import build_bundle_from_text  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, run_sleep, save_state  # type: ignore
-from sss_field_words_v0 import listen_word_field  # type: ignore
-from sss_text_stream_v0 import norm_text, scan_paragraphs_to_scenes, scan_stream  # type: ignore
-from sss_text_tokenize_v0 import extract_punctuation_unique  # type: ignore
-from sss_vocab_v0 import apply_story_compose, listen_punct, punct_votes_from_field, word_votes_from_field  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.gen_kb_from_text_v0 import build_bundle_from_text
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, run_sleep, save_state
+from casa.prisms.memory.sss_field_words_v0 import listen_word_field
+from casa.prisms.memory.sss_text_stream_v0 import norm_text, scan_paragraphs_to_scenes, scan_stream
+from casa.prisms.memory.sss_text_tokenize_v0 import extract_punctuation_unique
+from casa.prisms.memory.sss_vocab_v0 import apply_story_compose, listen_punct, punct_votes_from_field, word_votes_from_field
 
 
 def read_session_field(
@@ -49,7 +49,7 @@ def read_session_field(
         words = [str(w) for w in (sc.get("words") or []) if str(w).strip()]
         punct = [str(p) for p in (sc.get("punctuation") or []) if str(p).strip()]
 
-        from sss_vocab_v0 import _listen_scene_on_l3  # type: ignore
+        from casa.prisms.memory.sss_vocab_v0 import _listen_scene_on_l3
 
         _listen_scene_on_l3(state, sid, caption, words, copies=copies, punctuation=punct)
         heard_words: list[dict] = []

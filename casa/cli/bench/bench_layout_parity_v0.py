@@ -14,15 +14,15 @@ import time
 from pathlib import Path
 from typing import Any
 
-from boot_linked_stores_v0 import boot_linked_stores  # type: ignore
-from en_lexicon_v0 import ingest_en_lex_batch, read_headwords  # type: ignore
-from entity_hub_ingest_v0 import ingest_entity_hub  # type: ignore
-from grapheme_ingest_v0 import bootstrap_linked_graphemes  # type: ignore
-from layout_tick_v0 import layout_tick  # type: ignore
-from keyboard_ortho_bridge_v0 import ingest_keyboard_ortho_bridge  # type: ignore
-from ortho_field_v0 import imprint_capitalize_bootstrap  # type: ignore
-from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir  # type: ignore
-from vk_decode_v0 import decode_branches  # type: ignore
+from casa.prisms.memory.boot_linked_stores_v0 import boot_linked_stores
+from casa.prisms.memory.en_lexicon_v0 import ingest_en_lex_batch, read_headwords
+from casa.prisms.memory.entity_hub_ingest_v0 import ingest_entity_hub
+from casa.prisms.memory.grapheme_ingest_v0 import bootstrap_linked_graphemes
+from casa.prisms.memory.layout_tick_v0 import layout_tick
+from casa.prisms.memory.keyboard_ortho_bridge_v0 import ingest_keyboard_ortho_bridge
+from casa.prisms.memory.ortho_field_v0 import imprint_capitalize_bootstrap
+from casa.prisms.shared.store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir
+from casa.prisms.memory.vk_decode_v0 import decode_branches
 
 
 def evaluate_item(state: dict, item: dict, *, top_k: int) -> dict[str, Any]:

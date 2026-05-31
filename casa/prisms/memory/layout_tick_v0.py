@@ -9,8 +9,8 @@ ensure_import_paths()
 
 from typing import Any
 
-from unified_tick_v0 import unified_tick  # type: ignore
-from vk_decode_v0 import decode_branches  # type: ignore
+from casa.prisms.tick.unified_tick_v0 import unified_tick
+from casa.prisms.memory.vk_decode_v0 import decode_branches
 
 
 def infer_segment(grapheme: str) -> str:

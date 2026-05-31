@@ -11,7 +11,7 @@ from dataclasses import dataclass
 
 import torch
 
-from layout_apply import Rect  # type: ignore
+from casa.prisms.shared.layout_apply import Rect
 
 
 @dataclass(frozen=True)

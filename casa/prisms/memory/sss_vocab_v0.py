@@ -7,20 +7,20 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 import re
 import unicodedata
 from typing import Any
 
-from codec_grid_v0 import Grid  # type: ignore
-from sss_cylinders_v0 import append_episode, ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import (  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.memory.sss_cylinders_v0 import append_episode, ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import (
     LEGACY_L2,
     concept_votes_l2,
     route_l2_lattice,
     sharding_config,
 )
-from sss_stack_v0 import _place_token, apply_z_compose_v0, decode_lattice, load_stack  # type: ignore
+from casa.prisms.memory.sss_stack_v0 import _place_token, apply_z_compose_v0, decode_lattice, load_stack
 
 
 def norm_word(word: str) -> str:

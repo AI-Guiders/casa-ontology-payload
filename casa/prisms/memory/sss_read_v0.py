@@ -13,9 +13,9 @@ import time
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, run_sleep, save_state  # type: ignore
-from sss_vocab_v0 import apply_story_compose, listen_scene  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, run_sleep, save_state
+from casa.prisms.memory.sss_vocab_v0 import apply_story_compose, listen_scene
 
 
 def read_session(

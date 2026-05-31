@@ -13,9 +13,9 @@ import sys
 import time
 from pathlib import Path
 
-from pos_claims_ingest_v0 import ingest_pos_claims  # type: ignore
-from pos_lookup_v0 import word_pos  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.prisms.memory.pos_claims_ingest_v0 import ingest_pos_claims
+from casa.prisms.memory.pos_lookup_v0 import word_pos
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 
 def run_bench(state: dict, cues: list[dict]) -> dict:

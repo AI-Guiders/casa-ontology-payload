@@ -11,11 +11,11 @@ import re
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import is_l2_en_word_lattice, is_l2_word_lattice  # type: ignore
-from sss_stack_v0 import decode_lattice  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import is_l2_en_word_lattice, is_l2_word_lattice
+from casa.prisms.memory.sss_stack_v0 import decode_lattice
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 _L2_WORD_RE = re.compile(r"^W:(.+)$")
 _L2_CONCEPT_RE = re.compile(r"^lang\.word\.(.+)$")

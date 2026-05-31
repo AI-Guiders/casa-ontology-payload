@@ -7,7 +7,7 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 PROC_CAPITALIZE = "proc.grapheme.capitalize"
 PROC_LOWER = "proc.grapheme.lower"

@@ -18,10 +18,10 @@ from typing import Literal
 import torch
 import torch.nn as nn
 
-from field_planner_v0 import FieldPlannerV0  # type: ignore
-from field_window import crop_canvas_size, extract_window_crop, loss_mask_padded  # type: ignore
-from layout_apply import Rect  # type: ignore
-from nca_train_util import (  # type: ignore
+from casa.prisms.shared.field_planner_v0 import FieldPlannerV0
+from casa.prisms.shared.field_window import crop_canvas_size, extract_window_crop, loss_mask_padded
+from casa.prisms.shared.layout_apply import Rect
+from casa.prisms.shared.nca_train_util import (
     configure_cuda,
     damage_tensor_patches,
     empty_cuda_cache,
@@ -31,7 +31,7 @@ from nca_train_util import (  # type: ignore
     resolve_train_device,
     resolve_windows_per_batch,
 )
-from train_dmn_nca import UpdateRule, nca_rollout, sobel_kernels  # type: ignore
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout, sobel_kernels
 
 TrainMode = Literal["full", "windowed"]
 

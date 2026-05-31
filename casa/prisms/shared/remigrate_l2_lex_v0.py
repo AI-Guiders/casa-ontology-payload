@@ -14,9 +14,9 @@ import time
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import (  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import (
     LEX_PLAN_ALPHA,
     LEGACY_L2,
     SHARD_MODE_HASH,
@@ -31,8 +31,8 @@ from sss_l2_shard_v0 import (  # type: ignore
     sharding_config,
     shard_stats,
 )
-from sss_stack_v0 import decode_lattice  # type: ignore
-from sss_vocab_v0 import _strengthen_word_on_l2, norm_word  # type: ignore
+from casa.prisms.memory.sss_stack_v0 import decode_lattice
+from casa.prisms.memory.sss_vocab_v0 import _strengthen_word_on_l2, norm_word
 
 _L2_WORD_RE = re.compile(r"^W:(.+)$")
 _L2_CONCEPT_RE = re.compile(r"^lang\.word\.(.+)$")
@@ -78,7 +78,7 @@ def remigrate_lex(
     cfg["mode"] = mode
     if mode == SHARD_MODE_LEXICOGRAPHIC:
         if lex_plan == LEX_PLAN_ALPHA:
-            from sss_l2_shard_v0 import build_letter_ranges  # type: ignore
+            from casa.prisms.memory.sss_l2_shard_v0 import build_letter_ranges
 
             n = int(cfg.get("num_shards") or 64)
             cfg["letter_ranges"] = build_letter_ranges(n)

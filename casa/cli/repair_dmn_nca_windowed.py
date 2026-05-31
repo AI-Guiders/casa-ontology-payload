@@ -9,17 +9,17 @@ ensure_import_paths()
 
 import torch
 
-from field_planner_v0 import FieldPlannerV0  # type: ignore
-from field_window import (  # type: ignore
+from casa.prisms.shared.field_planner_v0 import FieldPlannerV0
+from casa.prisms.shared.field_window import (
     crop_canvas_size,
     crop_with_ghost,
     extract_window_crop,
     merge_weight_map,
     paste_crop_blended,
 )
-from layout_apply import Rect  # type: ignore
-from nca_train_util import damage_tensor_patches  # type: ignore
-from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
+from casa.prisms.shared.layout_apply import Rect
+from casa.prisms.shared.nca_train_util import damage_tensor_patches
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels
 
 
 def repair_field_windowed(

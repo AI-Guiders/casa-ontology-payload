@@ -13,8 +13,8 @@ import argparse
 import json
 from pathlib import Path
 
-from bench_dmn_nca_union import main as _bench_main  # type: ignore
-from layout_apply import _get_region_rect  # type: ignore
+from casa.cli.bench.bench_dmn_nca_union import main as _bench_main
+from casa.prisms.shared.layout_apply import _get_region_rect
 
 
 def _run_one(args_list: list[str]) -> dict:

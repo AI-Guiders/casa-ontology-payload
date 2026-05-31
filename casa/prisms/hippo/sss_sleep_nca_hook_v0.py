@@ -11,10 +11,10 @@ import argparse
 import json
 from pathlib import Path
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from gen_kb_from_text_v0 import build_bundle_from_text  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, run_sleep  # type: ignore
-from sss_text_tokenize_v0 import norm_text  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.memory.gen_kb_from_text_v0 import build_bundle_from_text
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, run_sleep
+from casa.prisms.memory.sss_text_tokenize_v0 import norm_text
 
 
 def main() -> None:

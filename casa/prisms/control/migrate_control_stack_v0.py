@@ -11,10 +11,10 @@ import argparse
 import json
 from pathlib import Path
 
-from control_cylinders_v0 import migrate_control_stack  # type: ignore
-from export_ltm_pack_v0 import export_pack  # type: ignore
-from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
+from casa.prisms.control.cylinders_v0 import migrate_control_stack
+from casa.prisms.shared.export_ltm_pack_v0 import export_pack
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
 
 
 def _read_json(path: Path) -> dict:
@@ -67,7 +67,7 @@ def main() -> None:
 
     if args.export_ltm:
         ltm_dir = store / "ltm"
-        from export_ltm_pack_v0 import control_lattice_ids  # type: ignore
+        from casa.prisms.shared.export_ltm_pack_v0 import control_lattice_ids
 
         manifest = export_pack(
             state,

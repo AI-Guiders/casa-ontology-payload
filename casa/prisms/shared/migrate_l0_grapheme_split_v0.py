@@ -12,10 +12,10 @@ import json
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from grapheme_ingest_v0 import migrate_legacy_l0_grapheme  # type: ignore
-from prism_state_v0 import normalize_prisms, prism_memory  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.memory.grapheme_ingest_v0 import migrate_legacy_l0_grapheme
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
 
 STACK_TOML = "design/sss-lattice-stack.v0.toml"
 DEFAULT_L0_CYRL = "L0_grapheme_cyrl"

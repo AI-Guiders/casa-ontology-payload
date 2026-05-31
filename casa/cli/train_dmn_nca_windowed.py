@@ -19,11 +19,11 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
-from field_planner_v0 import FieldPlannerV0  # type: ignore
-from field_window import Tile, crop_canvas_size, extract_window_crop, loss_mask_padded  # type: ignore
-from layout_apply import _get_region_rect, mask_outside_region  # type: ignore
-from nca_train_util import (  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.field_planner_v0 import FieldPlannerV0
+from casa.prisms.shared.field_window import Tile, crop_canvas_size, extract_window_crop, loss_mask_padded
+from casa.prisms.shared.layout_apply import _get_region_rect, mask_outside_region
+from casa.prisms.shared.nca_train_util import (
     add_device_args,
     configure_cuda,
     damage_tensor_patches,
@@ -35,15 +35,15 @@ from nca_train_util import (  # type: ignore
     resolve_windows_per_batch,
     scatter_grid_tensor,
 )
-from nca_train_defaults_v0 import (  # type: ignore
+from casa.prisms.shared.nca_train_defaults_v0 import (
     add_windowed_train_args,
     damage_defaults,
     epoch_budget,
     field_edge,
     nca_profile,
 )
-from train_dmn_nca import UpdateRule, nca_rollout, sobel_kernels  # type: ignore
-from train_dmn_nca_multibundle import (  # type: ignore
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout, sobel_kernels
+from casa.cli.train_dmn_nca_multibundle import (
     BundleSpec,
     _read_json,
     _threshold_grid_from_union_state,
@@ -119,22 +119,22 @@ def main() -> None:
 
     encode_bundle_to_grid = None
     if args.codec == "v3":
-        from codec_grid_v3 import encode_bundle_to_grid as _enc_v3, tokens_for_bundle as _tok_v3  # type: ignore
+        from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid as _enc_v3, tokens_for_bundle as _tok_v3
 
         def encode_bundle_to_grid(bundle: dict, **kw):  # type: ignore[no-redef]
             return _enc_v3(bundle, concept_mode=args.concept_mode, **kw)
 
         _tokens_for_bundle_fn = lambda b: _tok_v3(b, concept_mode=args.concept_mode)
     elif args.codec == "v2":
-        from codec_grid_v2 import encode_bundle_to_grid  # type: ignore
+        from casa.prisms.shared.codec_grid_v2 import encode_bundle_to_grid
 
         _tokens_for_bundle_fn = _tokens_for_bundle
     elif args.codec == "v1":
-        from codec_grid_v1 import encode_bundle_to_grid  # type: ignore
+        from casa.prisms.shared.codec_grid_v1 import encode_bundle_to_grid
 
         _tokens_for_bundle_fn = _tokens_for_bundle
     else:
-        from codec_grid_v0 import encode_bundle_to_grid  # type: ignore
+        from casa.prisms.shared.codec_grid_v0 import encode_bundle_to_grid
 
         _tokens_for_bundle_fn = _tokens_for_bundle
 
@@ -285,7 +285,7 @@ def main() -> None:
         empty_cuda_cache(device)
 
         if epoch % 100 == 0 or epoch == args.epochs - 1:
-            from repair_dmn_nca_windowed import repair_field_windowed  # type: ignore
+            from casa.cli.repair_dmn_nca_windowed import repair_field_windowed
 
             spec = specs[epoch % len(specs)]
             planner = planners[spec.path]

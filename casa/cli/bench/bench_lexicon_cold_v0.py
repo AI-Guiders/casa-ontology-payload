@@ -11,13 +11,13 @@ import argparse
 import json
 from pathlib import Path
 
-from lexicon_cold_ingest_v0 import (  # type: ignore
+from casa.prisms.memory.lexicon_cold_ingest_v0 import (
     LEXICON_MISS_LOG,
     log_cold_ingest,
     process_lexicon_misses,
 )
-from predictor_v0 import l2_has_word, predict_t9  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.prisms.tick.predictor_v0 import l2_has_word, predict_t9
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 
 def run_bench(

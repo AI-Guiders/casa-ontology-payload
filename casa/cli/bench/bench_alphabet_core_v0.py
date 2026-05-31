@@ -12,9 +12,9 @@ import json
 import sys
 from pathlib import Path
 
-from alphabet_core_v0 import merge_alphabet_l0_from_ltm, verify_alphabet_on_l0  # type: ignore
-from boot_core_ltm_v0 import default_alphabet_core_ltm_dir, merge_core_ltm_stack  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
+from casa.prisms.memory.alphabet_core_v0 import merge_alphabet_l0_from_ltm, verify_alphabet_on_l0
+from casa.prisms.memory.boot_core_ltm_v0 import default_alphabet_core_ltm_dir, merge_core_ltm_stack
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
 
 
 def main() -> None:

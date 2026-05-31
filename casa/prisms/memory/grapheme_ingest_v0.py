@@ -7,16 +7,16 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 
 from typing import Any, Iterable, Literal
 
-from codec_grid_v0 import Grid  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import L2_CONCEPT_PREFIX, l2_word_lattice_ids  # type: ignore
-from lattice_names_v1 import ALPHABET_EN, ALPHABET_RU, is_alphabet_lattice  # type: ignore
-from sss_stack_v0 import _place_token, decode_lattice, lattice_meta, load_stack  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import L2_CONCEPT_PREFIX, l2_word_lattice_ids
+from casa.prisms.shared.lattice_names_v1 import ALPHABET_EN, ALPHABET_RU, is_alphabet_lattice
+from casa.prisms.memory.sss_stack_v0 import _place_token, decode_lattice, lattice_meta, load_stack
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 Script = Literal["latn", "cyrl"]
 GRAPHEME_LATN_PREFIX = "grapheme.latn."
@@ -206,7 +206,7 @@ def reset_l0_script_lattice(state: dict, script: Script) -> dict[str, Any]:
 
 def strip_legacy_l0_monolith(state: dict, *, reimprint_alphabet: bool = True) -> dict[str, Any]:
     """Drop L0_grapheme monolith; reset cyrl/latn; optional immutable alphabet imprint."""
-    from alphabet_core_v0 import imprint_alphabet_on_l0  # type: ignore
+    from casa.prisms.memory.alphabet_core_v0 import imprint_alphabet_on_l0
 
     state = ensure_prisms(state)
     lattices = memory_lattices(state)

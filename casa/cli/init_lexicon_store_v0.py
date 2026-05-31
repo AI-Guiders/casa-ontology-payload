@@ -12,15 +12,15 @@ import json
 from pathlib import Path
 from typing import Any, Literal
 
-from en_lexicon_v0 import ingest_en_lex_batch  # type: ignore
-from export_ltm_pack_v0 import export_pack  # type: ignore
-from field_write import save_field_state  # type: ignore
-from boot_core_ltm_v0 import default_alphabet_core_ltm_dir, merge_core_ltm_stack  # type: ignore
-from grapheme_ingest_v0 import derive_graphemes_from_words, ingest_graphemes_batch  # type: ignore
-from lexicon_headwords_v0 import read_headwords  # type: ignore
-from ru_lexicon_v0 import ingest_ru_lex_batch  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from lexicon_usage_axes_v0 import (  # type: ignore
+from casa.prisms.memory.en_lexicon_v0 import ingest_en_lex_batch
+from casa.prisms.shared.export_ltm_pack_v0 import export_pack
+from casa.prisms.shared.field_write import save_field_state
+from casa.prisms.memory.boot_core_ltm_v0 import default_alphabet_core_ltm_dir, merge_core_ltm_stack
+from casa.prisms.memory.grapheme_ingest_v0 import derive_graphemes_from_words, ingest_graphemes_batch
+from casa.prisms.memory.lexicon_headwords_v0 import read_headwords
+from casa.prisms.memory.ru_lexicon_v0 import ingest_ru_lex_batch
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.lexicon_usage_axes_v0 import (
     SOURCE_DETCORPUS,
     SOURCE_OPENSUB_EN,
     attach_axes_to_state,
@@ -30,7 +30,7 @@ from lexicon_usage_axes_v0 import (  # type: ignore
     ru_general_frequency_path,
     write_axes_jsonl,
 )
-from store_layout_v0 import CORPUS_QUAD, agent_store_dir, field_state_path  # type: ignore
+from casa.prisms.shared.store_layout_v0 import CORPUS_QUAD, agent_store_dir, field_state_path
 
 Locale = Literal["en", "ru"]
 Tier = Literal["general", "tech"]

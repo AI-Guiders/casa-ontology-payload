@@ -11,11 +11,11 @@ import argparse
 import json
 from pathlib import Path
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, run_sleep, save_state  # type: ignore
-from sss_surface_v0 import surface_from_sss  # type: ignore
-from sss_wake_util import internal_target_from_cue, surface_matches_target  # type: ignore
-from sss_wake_v0 import wake_turn  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, run_sleep, save_state
+from casa.prisms.memory.sss_surface_v0 import surface_from_sss
+from casa.prisms.hippo.sss_wake_util import internal_target_from_cue, surface_matches_target
+from casa.prisms.hippo.sss_wake_v0 import wake_turn
 
 
 def main() -> None:

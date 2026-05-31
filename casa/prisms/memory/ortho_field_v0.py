@@ -9,9 +9,9 @@ ensure_import_paths()
 
 from typing import Any
 
-from codec_grid_v0 import Grid  # type: ignore
-from entity_hub_ingest_v0 import _ensure_l3_lattice  # type: ignore
-from ortho_process_v0 import (  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.memory.entity_hub_ingest_v0 import _ensure_l3_lattice
+from casa.prisms.memory.ortho_process_v0 import (
     PROC_CAPITALIZE,
     PROC_LOWER,
     PROC_LOWER_WORD,
@@ -19,8 +19,8 @@ from ortho_process_v0 import (  # type: ignore
     capitalize_grapheme,
     lower_grapheme,
 )
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_stack_v0 import _place_token, decode_lattice  # type: ignore
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_stack_v0 import _place_token, decode_lattice
 
 L3_ID = "L3_phrase"
 
@@ -127,7 +127,7 @@ def has_inverse_pair(state: dict, forward: str, inverse: str) -> bool:
 
 
 def _alphabet_samples_from_l0(state: dict) -> list[str]:
-    from grapheme_ingest_v0 import GRAPHEME_CYRL_PREFIX, GRAPHEME_LATN_PREFIX  # type: ignore
+    from casa.prisms.memory.grapheme_ingest_v0 import GRAPHEME_CYRL_PREFIX, GRAPHEME_LATN_PREFIX
 
     lat = memory_lattices(ensure_prisms(state)).get("L0_grapheme") or {}
     dec = decode_lattice(lat, min_votes=1)
@@ -214,7 +214,7 @@ def apply_from_field(state: dict, word: str, proc_id: str) -> str | None:
     """Apply word-level process only if imprinted on L3."""
     if not has_process(state, proc_id):
         return None
-    from ortho_process_v0 import apply_word_proc  # type: ignore
+    from casa.prisms.memory.ortho_process_v0 import apply_word_proc
 
     if proc_id == PROC_UPPER and not has_process(state, PROC_CAPITALIZE):
         return None

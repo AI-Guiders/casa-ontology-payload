@@ -7,16 +7,16 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 import argparse
 import json
 import time
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import (  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import (
     LEGACY_L2,
     SHARD_MODE_HASH,
     SHARD_MODE_LEXICOGRAPHIC,
@@ -28,8 +28,8 @@ from sss_l2_shard_v0 import (  # type: ignore
     sharding_config,
     shard_stats,
 )
-from sss_stack_v0 import decode_lattice  # type: ignore
-from sss_vocab_v0 import _strengthen_word_on_l2, norm_word  # type: ignore
+from casa.prisms.memory.sss_stack_v0 import decode_lattice
+from casa.prisms.memory.sss_vocab_v0 import _strengthen_word_on_l2, norm_word
 
 
 def legacy_word_votes(state: dict) -> dict[str, int]:

@@ -9,7 +9,7 @@ ensure_import_paths()
 
 from typing import Any
 
-from script_detect_v0 import infer_language, predict_script  # type: ignore
+from casa.prisms.memory.script_detect_v0 import infer_language, predict_script
 
 
 def script_tick(

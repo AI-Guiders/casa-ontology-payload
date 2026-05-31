@@ -12,9 +12,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Literal
 
-from prism_state_v0 import prism_memory  # type: ignore
-from codec_grid_v0 import Grid  # type: ignore
-from grapheme_ingest_v0 import (  # type: ignore
+from casa.prisms.shared.prism_state_v0 import prism_memory
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.memory.grapheme_ingest_v0 import (
     GRAPHEME_CYRL_PREFIX,
     GRAPHEME_LATN_PREFIX,
     L0_CYRL_ID,
@@ -24,9 +24,9 @@ from grapheme_ingest_v0 import (  # type: ignore
     l0_lattice_id,
     merge_l0_lattices,
 )
-from ltm_pack_v0 import lattice_subdir, write_ltm  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_stack_v0 import decode_lattice  # type: ignore
+from casa.prisms.shared.ltm_pack_v0 import lattice_subdir, write_ltm
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_stack_v0 import decode_lattice
 
 Script = Literal["latn", "cyrl"]
 
@@ -164,7 +164,7 @@ def export_alphabet_core_ltm(out_dir: Path, *, copies_cyrl: int = DEFAULT_COPIES
 
 def merge_alphabet_l0_from_ltm(state: dict, ltm_dir: Path, *, manifest: dict | None = None) -> dict[str, Any]:
     """Import alphabet L0 lattices; migrate legacy monolith if present."""
-    from import_ltm_pack_v0 import import_pack  # type: ignore
+    from casa.prisms.shared.import_ltm_pack_v0 import import_pack
 
     state = ensure_prisms(state)
     ltm_dir = ltm_dir.resolve()

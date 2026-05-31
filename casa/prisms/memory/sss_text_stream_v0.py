@@ -66,7 +66,7 @@ def scan_words_ordered(text: str, *, min_len: int = 1) -> list[str]:
 
 
 def scan_paragraphs_to_scenes(text: str, *, prefix: str = "p") -> list[dict]:
-    from sss_text_tokenize_v0 import split_paragraphs  # type: ignore
+    from casa.prisms.memory.sss_text_tokenize_v0 import split_paragraphs
 
     scenes: list[dict] = []
     for i, para in enumerate(split_paragraphs(text)):

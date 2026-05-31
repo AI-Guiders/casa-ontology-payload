@@ -13,10 +13,10 @@ import json
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state  # type: ignore
-from sss_surface_v0 import surface_from_sss  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, episode_vote_for_cue  # type: ignore
-from sss_wake_util import norm_text, surface_attempt_from_wake, surface_matches_target, top_surface  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_surface_v0 import surface_from_sss
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, episode_vote_for_cue
+from casa.prisms.hippo.sss_wake_util import norm_text, surface_attempt_from_wake, surface_matches_target, top_surface
 
 
 def _rank_of(concept_id: str, wake: dict) -> int | None:

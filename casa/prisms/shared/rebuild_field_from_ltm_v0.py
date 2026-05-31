@@ -13,14 +13,14 @@ import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 
-from boot_core_ltm_v0 import merge_alphabet_l0_from_ltm, default_alphabet_core_ltm_dir  # type: ignore
-from export_ltm_pack_v0 import export_pack  # type: ignore
-from field_write import save_field_state  # type: ignore
-from grapheme_ingest_v0 import migrate_legacy_l0_grapheme  # type: ignore
-from import_ltm_pack_v0 import import_ltm_dir_scan, import_pack  # type: ignore
-from predictor_v0 import l2_lexicon_digest  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from store_layout_v0 import field_state_path, ru_lexicon_store  # type: ignore
+from casa.prisms.memory.boot_core_ltm_v0 import merge_alphabet_l0_from_ltm, default_alphabet_core_ltm_dir
+from casa.prisms.shared.export_ltm_pack_v0 import export_pack
+from casa.prisms.shared.field_write import save_field_state
+from casa.prisms.memory.grapheme_ingest_v0 import migrate_legacy_l0_grapheme
+from casa.prisms.shared.import_ltm_pack_v0 import import_ltm_dir_scan, import_pack
+from casa.prisms.tick.predictor_v0 import l2_lexicon_digest
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.shared.store_layout_v0 import field_state_path, ru_lexicon_store
 
 
 def rebuild_store(

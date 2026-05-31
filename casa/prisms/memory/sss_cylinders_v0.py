@@ -13,7 +13,7 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
-from prism_state_v0 import (  # type: ignore
+from casa.prisms.shared.prism_state_v0 import (
     PRISM_HIPPO,
     PRISM_MEMORY,
     SCHEMA_CURRENT,
@@ -22,10 +22,10 @@ from prism_state_v0 import (  # type: ignore
     prism_memory,
     set_active_prism,
 )
-from codec_grid_v0 import Grid  # type: ignore
-from field_write import load_field_state, save_field_state  # type: ignore
-from lattice_names_v1 import ALPHABET_RU, ALPHABET_UK, ALPHABET_EN, EPISODIC_SURFACE, LEXICON_RU, PHRASES  # type: ignore
-from sss_stack_v0 import (  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.lattice_names_v1 import ALPHABET_RU, ALPHABET_UK, ALPHABET_EN, EPISODIC_SURFACE, LEXICON_RU, PHRASES
+from casa.prisms.memory.sss_stack_v0 import (
     _place_token,
     apply_z_compose_v0,
     decode_lattice,
@@ -298,7 +298,7 @@ def append_rule_episode(
 
 def _strengthen_rule(state: dict, rule_id: str, *, copies: int = 5) -> None:
     """Consolidate rule as R: token on memory L3 + hippo (intuition lives on field)."""
-    from sss_stack_v0 import _place_token  # type: ignore
+    from casa.prisms.memory.sss_stack_v0 import _place_token
 
     sss = state.setdefault("sss", {})
     # mirror for debug/bench only — not read on hot path
@@ -331,7 +331,7 @@ def _strengthen_rule(state: dict, rule_id: str, *, copies: int = 5) -> None:
     g = _place_token(g, rtok, rtok, copies=max(2, copies // 2), radius=4)
     h0["cells"] = g.cells
 
-    from sss_field_decode_v0 import rule_votes_from_field  # type: ignore
+    from casa.prisms.memory.sss_field_decode_v0 import rule_votes_from_field
 
     sss.setdefault("rules", {})[rule_id] = {
         **sss.get("rules", {}).get(rule_id, {}),
@@ -370,7 +370,7 @@ def run_sleep(
 ) -> dict:
     """T_sleep: merge hippo episodes → prism_memory; prune consolidated."""
     state = ensure_cylinders(state)
-    from sleep_replay_v0 import SleepReplayConfig, prepare_sleep_replay  # type: ignore
+    from casa.prisms.hippo.sleep_replay_v0 import SleepReplayConfig, prepare_sleep_replay
 
     replay_report = prepare_sleep_replay(
         state,
@@ -453,7 +453,7 @@ def run_sleep(
             nca_path = Path(str(raw))
     if nca_path is not None and nca_path.exists() and nca_lattice_id in lattices:
         try:
-            from sss_nca_repair_v0 import nca_regrow_lattice  # type: ignore
+            from casa.prisms.memory.sss_nca_repair_v0 import nca_regrow_lattice
 
             reg = nca_regrow_lattice(lattices[nca_lattice_id], nca_path, device="cpu")
             lattices[nca_lattice_id] = reg["lattice"]

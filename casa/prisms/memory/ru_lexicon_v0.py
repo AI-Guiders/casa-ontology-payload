@@ -9,16 +9,16 @@ ensure_import_paths()
 
 from typing import Any
 
-from predictor_v0 import _L2_PREFIX_INDEX_CACHE  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from sss_l2_shard_v0 import (  # type: ignore
+from casa.prisms.tick.predictor_v0 import _L2_PREFIX_INDEX_CACHE
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.sss_l2_shard_v0 import (
     DEFAULT_NUM_SHARDS,
     L2_CONCEPT_PREFIX,
     configure_lex_sharding,
     lattice_digest_l2_network,
     sharding_config,
 )
-from sss_vocab_v0 import _strengthen_word_on_l2, norm_word  # type: ignore
+from casa.prisms.memory.sss_vocab_v0 import _strengthen_word_on_l2, norm_word
 
 
 def configure_ru_store(state: dict, words: list[str], *, num_shards: int = DEFAULT_NUM_SHARDS) -> dict[str, Any]:

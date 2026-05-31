@@ -14,28 +14,28 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from field_write import load_field_state  # type: ignore
-from lattice_names_v1 import require_lattice  # type: ignore
-from layout_apply import Rect  # type: ignore
-from nca_train_core_v0 import NcaTrainerConfig, WindowedTrainConfig, run_nca_training  # type: ignore
-from nca_train_defaults_v0 import (  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.shared.lattice_names_v1 import require_lattice
+from casa.prisms.shared.layout_apply import Rect
+from casa.prisms.shared.nca_train_core_v0 import NcaTrainerConfig, WindowedTrainConfig, run_nca_training
+from casa.prisms.shared.nca_train_defaults_v0 import (
     add_windowed_train_args,
     damage_defaults,
     epoch_budget,
     field_edge,
     nca_profile,
 )
-from nca_train_util import (  # type: ignore
+from casa.prisms.shared.nca_train_util import (
     add_device_args,
     damage_tensor_patches,
     grid_indices,
     resolve_train_device,
     scatter_grid_tensor,
 )
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_nca_codec_v0 import lattice_as_grid, tokens_from_lattice  # type: ignore
-from store_layout_v0 import rel_to_repo  # type: ignore
-from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_nca_codec_v0 import lattice_as_grid, tokens_from_lattice
+from casa.prisms.shared.store_layout_v0 import rel_to_repo
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels
 
 
 def _read_json(path: Path) -> dict:
@@ -100,7 +100,7 @@ def main() -> None:
 
     state = ensure_prisms(load_field_state(args.store_dir / "field_state.json"))
     if args.prism == "control":
-        from control_cylinders_v0 import control_lattices  # type: ignore
+        from casa.prisms.control.cylinders_v0 import control_lattices
 
         lattices = control_lattices(state)
     else:

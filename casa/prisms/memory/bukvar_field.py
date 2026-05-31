@@ -12,14 +12,14 @@ import json
 import shutil
 from pathlib import Path
 
-from field_write import (  # type: ignore
+from casa.prisms.shared.field_write import (
     build_claims_nav,
     bundle_content_hash,
     load_field_state,
     new_field_state,
     save_field_state,
 )
-from bukvar_codec_v0 import encode_bukvar_bundle  # type: ignore
+from casa.prisms.memory.bukvar_codec_v0 import encode_bukvar_bundle
 
 
 def _read_json(path: Path) -> dict:

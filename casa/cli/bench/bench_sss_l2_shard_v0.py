@@ -11,11 +11,11 @@ import argparse
 import json
 from pathlib import Path
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from sss_surface_v0 import surface_from_sss  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from sss_l2_shard_v0 import resolve_l2_lattice_for_read, route_l2_lattice, shard_stats  # type: ignore
-from sss_vocab_v0 import listen_word  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.memory.sss_surface_v0 import surface_from_sss
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.sss_l2_shard_v0 import resolve_l2_lattice_for_read, route_l2_lattice, shard_stats
+from casa.prisms.memory.sss_vocab_v0 import listen_word
 
 
 def main() -> None:

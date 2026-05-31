@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_GENERAL_V0, agent_store_dir  # type: ignore
+from casa.prisms.shared.store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_GENERAL_V0, agent_store_dir
 
 
 def _run(cmd: list[str], *, cwd: Path, label: str) -> dict[str, Any]:

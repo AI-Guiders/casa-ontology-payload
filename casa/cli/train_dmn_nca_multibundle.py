@@ -21,9 +21,9 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
-from layout_apply import _get_region_rect, damage_region, damage_region_patches, mask_outside_region  # type: ignore
-from nca_train_util import (  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.layout_apply import _get_region_rect, damage_region, damage_region_patches, mask_outside_region
+from casa.prisms.shared.nca_train_util import (
     add_device_args,
     configure_cuda,
     damage_tensor_patches,
@@ -35,7 +35,7 @@ from nca_train_util import (  # type: ignore
     resolve_train_device,
     scatter_grid_tensor,
 )
-from train_dmn_nca import UpdateRule, nca_rollout, nca_rollout_eval, sobel_kernels  # type: ignore
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout, nca_rollout_eval, sobel_kernels
 
 
 def _read_json(path: Path) -> dict:
@@ -154,22 +154,22 @@ def main() -> None:
 
     encode_bundle_to_grid = None
     if args.codec == "v3":
-        from codec_grid_v3 import encode_bundle_to_grid as _enc_v3, tokens_for_bundle as _tok_v3  # type: ignore
+        from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid as _enc_v3, tokens_for_bundle as _tok_v3
 
         def encode_bundle_to_grid(bundle: dict, **kw):  # type: ignore[no-redef]
             return _enc_v3(bundle, concept_mode=args.concept_mode, **kw)
 
         _tokens_for_bundle_fn = lambda b: _tok_v3(b, concept_mode=args.concept_mode)
     elif args.codec == "v2":
-        from codec_grid_v2 import encode_bundle_to_grid  # type: ignore
+        from casa.prisms.shared.codec_grid_v2 import encode_bundle_to_grid
 
         _tokens_for_bundle_fn = _tokens_for_bundle
     elif args.codec == "v1":
-        from codec_grid_v1 import encode_bundle_to_grid  # type: ignore
+        from casa.prisms.shared.codec_grid_v1 import encode_bundle_to_grid
 
         _tokens_for_bundle_fn = _tokens_for_bundle
     else:
-        from codec_grid_v0 import encode_bundle_to_grid  # type: ignore
+        from casa.prisms.shared.codec_grid_v0 import encode_bundle_to_grid
 
         _tokens_for_bundle_fn = _tokens_for_bundle
 

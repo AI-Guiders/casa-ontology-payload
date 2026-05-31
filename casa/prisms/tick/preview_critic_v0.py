@@ -9,7 +9,7 @@ ensure_import_paths()
 
 from typing import Any
 
-from merge_preview_v0 import merge_preview_anchors, preview_words, preview_words_for_lang  # type: ignore
+from casa.prisms.memory.merge_preview_v0 import merge_preview_anchors, preview_words, preview_words_for_lang
 
 
 def apply_preview_expectations(

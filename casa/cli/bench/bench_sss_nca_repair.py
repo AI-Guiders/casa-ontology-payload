@@ -13,10 +13,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_nca_codec_v0 import word_tokens_from_lattice  # type: ignore
-from sss_nca_repair_v0 import nca_repair_state_lattice  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_nca_codec_v0 import word_tokens_from_lattice
+from casa.prisms.memory.sss_nca_repair_v0 import nca_repair_state_lattice
 
 
 def main() -> None:

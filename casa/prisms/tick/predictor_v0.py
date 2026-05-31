@@ -11,13 +11,13 @@ import math
 from dataclasses import dataclass
 from typing import Any
 
-from f0_math_ingest_v0 import ingest_math_bundle  # type: ignore
-from f0_stack_v0 import decode_f0_lattice, rank_cue_on_f0  # type: ignore
-from lattice_names_v1 import PHRASES  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import L2_CONCEPT_PREFIX, is_l2_word_lattice, lattice_digest_l2_network  # type: ignore
-from lexicon_usage_axes_v0 import T9Policy, filter_ranked_for_t9, lemma_axis  # type: ignore
-from sss_segment_v0 import format_segment, norm_word, segment_hypothesis, verify_segment  # type: ignore
+from casa.prisms.memory.f0_math_ingest_v0 import ingest_math_bundle
+from casa.prisms.memory.f0_stack_v0 import decode_f0_lattice, rank_cue_on_f0
+from casa.prisms.shared.lattice_names_v1 import PHRASES
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import L2_CONCEPT_PREFIX, is_l2_word_lattice, lattice_digest_l2_network
+from casa.prisms.memory.lexicon_usage_axes_v0 import T9Policy, filter_ranked_for_t9, lemma_axis
+from casa.prisms.memory.sss_segment_v0 import format_segment, norm_word, segment_hypothesis, verify_segment
 
 
 @dataclass(frozen=True)
@@ -417,7 +417,7 @@ def predict(
     if mod in ("t9", "prefix_word", "prefix"):
         return predict_t9(state, cue, top_k=top_k)
     if mod == "script":
-        from script_detect_v0 import predict_script  # type: ignore
+        from casa.prisms.memory.script_detect_v0 import predict_script
 
         return predict_script(state, cue)
     if mod == "schema":

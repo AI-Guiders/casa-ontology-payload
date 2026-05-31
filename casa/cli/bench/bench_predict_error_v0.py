@@ -17,7 +17,7 @@ import json
 import random
 from pathlib import Path
 
-import control_predict_v0 as pt
+from casa.prisms.control import predict_v0 as pt
 
 
 def synthetic_trajectory(n_ticks: int = 60, n_topics: int = 8, seed: int = 7) -> list[list[str]]:

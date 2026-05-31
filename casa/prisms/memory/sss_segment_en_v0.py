@@ -9,7 +9,7 @@ ensure_import_paths()
 
 from typing import Any
 
-from sss_segment_v0 import format_segment, norm_word  # type: ignore
+from casa.prisms.memory.sss_segment_v0 import format_segment, norm_word
 
 EN_VOWELS = frozenset("aeiou")
 

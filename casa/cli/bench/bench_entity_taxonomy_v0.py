@@ -13,10 +13,10 @@ import sys
 import time
 from pathlib import Path
 
-from entity_hub_ingest_v0 import ingest_entity_hub  # type: ignore
-from entity_taxonomy_ingest_v0 import ingest_entity_taxonomy  # type: ignore
-from entity_taxonomy_lookup_v0 import entity_type_for_word  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.prisms.memory.entity_hub_ingest_v0 import ingest_entity_hub
+from casa.prisms.memory.entity_taxonomy_ingest_v0 import ingest_entity_taxonomy
+from casa.prisms.memory.entity_taxonomy_lookup_v0 import entity_type_for_word
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 
 def run_bench(state: dict, cues: list[dict]) -> dict:

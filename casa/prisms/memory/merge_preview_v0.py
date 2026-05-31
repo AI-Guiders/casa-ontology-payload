@@ -10,10 +10,10 @@ ensure_import_paths()
 import math
 from typing import Any, Literal
 
-from entity_taxonomy_lookup_v0 import taxonomy_bonus  # type: ignore
-from hub_neighbors_v0 import neighbor_surfaces  # type: ignore
-from lexicon_usage_axes_v0 import T9Policy, lemma_axis, t9_allows_word  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.entity_taxonomy_lookup_v0 import taxonomy_bonus
+from casa.prisms.memory.hub_neighbors_v0 import neighbor_surfaces
+from casa.prisms.memory.lexicon_usage_axes_v0 import T9Policy, lemma_axis, t9_allows_word
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 
 def _branch_anchor_items(tb: dict[str, Any], *, max_word_len: int | None = None) -> list[dict[str, Any]]:

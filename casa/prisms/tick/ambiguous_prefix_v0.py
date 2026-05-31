@@ -9,11 +9,11 @@ ensure_import_paths()
 
 from typing import Any, Literal
 
-from grapheme_clusters_v0 import l2_basin  # type: ignore
-from homoglyph_v0 import dual_script_readings  # type: ignore
-from merge_preview_v0 import merge_preview_anchors  # type: ignore
-from predictor_v0 import l2_prefix_candidates  # type: ignore
-from preview_critic_v0 import apply_preview_expectations  # type: ignore
+from casa.prisms.memory.grapheme_clusters_v0 import l2_basin
+from casa.prisms.memory.homoglyph_v0 import dual_script_readings
+from casa.prisms.memory.merge_preview_v0 import merge_preview_anchors
+from casa.prisms.tick.predictor_v0 import l2_prefix_candidates
+from casa.prisms.tick.preview_critic_v0 import apply_preview_expectations
 
 Commitment = Literal["ambiguous", "resolved", "unknown"]
 

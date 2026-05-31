@@ -13,17 +13,17 @@ from pathlib import Path
 
 import torch
 
-from bench_dmn_nca_union import _threshold_grid_from_union_state  # type: ignore
-from canonical import CANONICAL_CONCEPT_MODE, CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD  # type: ignore
-from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
-from layout_apply import _get_region_rect, damage_region_patches, mask_outside_region  # type: ignore
-from layered_nca_core import (  # type: ignore
+from casa.cli.bench.bench_dmn_nca_union import _threshold_grid_from_union_state
+from casa.prisms.shared.canonical import CANONICAL_CONCEPT_MODE, CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD
+from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.layout_apply import _get_region_rect, damage_region_patches, mask_outside_region
+from casa.prisms.shared.layered_nca_core import (
     grid_to_layered_state,
     load_dmn_rule,
     run_piston_pipeline,
 )
-from sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict  # type: ignore
-from train_dmn_nca import UpdateRule  # type: ignore
+from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict
+from casa.cli.train_dmn_nca import UpdateRule
 
 
 def _read_json(path: Path) -> dict:
@@ -96,7 +96,7 @@ def main() -> None:
     if not dmn_path or not Path(dmn_path).is_file():
         raise SystemExit("dmn-model required (or --cluster with trained exp_e_clusters_v1)")
 
-    from codec_grid_v3 import encode_bundle_to_grid  # type: ignore
+    from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid
 
     full = encode_bundle_to_grid(bundle, width=64, height=64, copies=7, concept_mode=CANONICAL_CONCEPT_MODE)
     dmn_rect = _get_region_rect(layout_json, "dmn_ontology")

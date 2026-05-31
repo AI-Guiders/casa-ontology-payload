@@ -13,10 +13,10 @@ import sys
 import time
 from pathlib import Path
 
-from entity_hub_ingest_v0 import ingest_entity_hub  # type: ignore
-from hub_neighbors_v0 import hub_neighbors, neighbor_surfaces  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.prisms.memory.entity_hub_ingest_v0 import ingest_entity_hub
+from casa.prisms.memory.hub_neighbors_v0 import hub_neighbors, neighbor_surfaces
+from casa.prisms.memory.sss_vocab_v0 import norm_word
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 
 DEFAULT_CUES: list[dict] = [

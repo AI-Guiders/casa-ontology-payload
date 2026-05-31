@@ -13,8 +13,8 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
 
 
 def _merge_lattice_cells(target: dict, shard: dict) -> None:

@@ -12,11 +12,11 @@ import json
 import time
 from pathlib import Path
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import is_l2_word_lattice, lattice_digest_l2_network  # type: ignore
-from sss_stack_v0 import decode_lattice, lattice_digest, load_stack  # type: ignore
-from sss_wake_util import concept_to_surface, rank_for_cue  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import is_l2_word_lattice, lattice_digest_l2_network
+from casa.prisms.memory.sss_stack_v0 import decode_lattice, lattice_digest, load_stack
+from casa.prisms.hippo.sss_wake_util import concept_to_surface, rank_for_cue
 
 
 def surface_from_sss(

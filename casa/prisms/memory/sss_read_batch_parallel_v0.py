@@ -15,11 +15,11 @@ import time
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, save_state  # type: ignore
-from sss_merge_field_states_v0 import merge_field_states  # type: ignore
-from sss_read_batch_v0 import read_batch  # type: ignore
-from sss_text_tokenize_v0 import norm_text  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, save_state
+from casa.prisms.memory.sss_merge_field_states_v0 import merge_field_states
+from casa.prisms.memory.sss_read_batch_v0 import read_batch
+from casa.prisms.memory.sss_text_tokenize_v0 import norm_text
 
 
 def _worker_ingest(payload: dict[str, Any]) -> dict[str, Any]:
@@ -155,7 +155,7 @@ def main() -> None:
     sleep_report = None
     if args.sleep and args.bukvar.exists():
         bukvar = json.loads(args.bukvar.read_text(encoding="utf-8"))
-        from sss_cylinders_v0 import run_sleep  # type: ignore
+        from casa.prisms.memory.sss_cylinders_v0 import run_sleep
 
         sleep_report = run_sleep(merged, bukvar)
 

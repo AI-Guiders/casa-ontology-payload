@@ -14,9 +14,9 @@ ensure_import_paths()
 from dataclasses import dataclass
 from typing import Any
 
-import control_value_v0 as lv
-import replay_buffer_v0 as rb
-from sss_cylinders_v0 import append_episode, append_rule_episode  # type: ignore
+from casa.prisms.control import value_v0 as lv
+from casa.prisms.hippo import replay_buffer_v0 as rb
+from casa.prisms.memory.sss_cylinders_v0 import append_episode, append_rule_episode
 
 
 @dataclass(frozen=True, slots=True)

@@ -11,7 +11,7 @@ import argparse
 import json
 from pathlib import Path
 
-from sss_segment_en_v0 import (  # type: ignore
+from casa.prisms.memory.sss_segment_en_v0 import (
     format_segment,
     norm_word,
     segment_en_hypothesis,

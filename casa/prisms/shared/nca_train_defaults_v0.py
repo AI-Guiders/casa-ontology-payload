@@ -13,7 +13,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-from nca_train_core_v0 import WindowedTrainConfig  # type: ignore
+from casa.prisms.shared.nca_train_core_v0 import WindowedTrainConfig
 
 _DEFAULTS_PATH = Path(__file__).resolve().parent.parent / "design" / "nca-train-defaults.v0.json"
 

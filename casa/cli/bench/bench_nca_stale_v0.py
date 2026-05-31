@@ -12,9 +12,9 @@ import json
 from copy import deepcopy
 from pathlib import Path
 
-from lexicon_cold_ingest_v0 import process_lexicon_misses  # type: ignore
-from nca_registry_v0 import find_stale_shards, load_registry, merge_pending  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.prisms.memory.lexicon_cold_ingest_v0 import process_lexicon_misses
+from casa.prisms.shared.nca_registry_v0 import find_stale_shards, load_registry, merge_pending
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 
 def run_bench(state: dict, store_dir: Path, *, headwords: Path, min_tokens: int) -> dict:

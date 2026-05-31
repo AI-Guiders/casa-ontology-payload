@@ -13,10 +13,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-from control_cylinders_v0 import control_lattices, has_control_stack  # type: ignore
-from lattice_names_v1 import missing_control_lattices  # type: ignore
-from field_write import decode_field_grid, load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
+from casa.prisms.control.cylinders_v0 import control_lattices, has_control_stack
+from casa.prisms.shared.lattice_names_v1 import missing_control_lattices
+from casa.prisms.shared.field_write import decode_field_grid, load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
 
 
 def main() -> None:
@@ -50,7 +50,7 @@ def main() -> None:
     infer_detail = "skipped"
     control_ext = None
     if ok_stack and dmn_concepts > 0:
-        from control_tick_v0 import run_control_extensions  # type: ignore
+        from casa.prisms.control.tick_v0 import run_control_extensions
 
         cids = list(decoded.get("concept_ids") or []) if decoded else []
         control_ext = run_control_extensions(

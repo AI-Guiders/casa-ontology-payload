@@ -12,13 +12,13 @@ import json
 from pathlib import Path
 from typing import Any
 
-from prism_state_v0 import prism_control, prism_memory  # type: ignore
+from casa.prisms.shared.prism_state_v0 import prism_control, prism_memory
 
-from control_cylinders_v0 import ensure_control_cylinder  # type: ignore
-from field_write import load_field_state, save_field_state  # type: ignore
-from ltm_pack_v0 import read_ltm  # type: ignore
+from casa.prisms.control.cylinders_v0 import ensure_control_cylinder
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.ltm_pack_v0 import read_ltm
 from casa.prisms.shared.store_paths_v1 import ltm_scan_subdirs, resolve_ltm_file
-from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
+from casa.prisms.memory.sss_cylinders_v0 import ensure_cylinders, memory_lattices
 
 
 def _resolve_ltm_path(ltm_dir: Path, lid: str, entry: dict[str, Any]) -> Path:

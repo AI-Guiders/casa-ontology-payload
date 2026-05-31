@@ -11,7 +11,7 @@ import argparse
 import json
 from pathlib import Path
 
-from field_write import list_store_bundles, load_field_state, rebuild_union_field, save_field_state  # type: ignore
+from casa.prisms.shared.field_write import list_store_bundles, load_field_state, rebuild_union_field, save_field_state
 
 
 def main() -> None:

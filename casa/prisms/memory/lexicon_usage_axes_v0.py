@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 from typing import Any, Literal
 
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 Era = Literal["modern", "archaic", "dialect", "unknown"]
 UsageBand = Literal["active", "rare", "ultra_rare", "unused"]

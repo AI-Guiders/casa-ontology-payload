@@ -9,7 +9,7 @@ ensure_import_paths()
 
 from typing import Any
 
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 ERROR_AXES = frozenset(
     {

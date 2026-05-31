@@ -9,8 +9,8 @@ ensure_import_paths()
 
 from typing import Any
 
-from sss_segment_candidates_v0 import enumerate_field_candidates, score_candidate  # type: ignore
-from sss_segment_v0 import format_segment, norm_word, verify_segment, vowel_count  # type: ignore
+from casa.prisms.memory.sss_segment_candidates_v0 import enumerate_field_candidates, score_candidate
+from casa.prisms.memory.sss_segment_v0 import format_segment, norm_word, verify_segment, vowel_count
 
 
 def _hyp_from_parts(word: str, parts: list[str]) -> dict[str, Any]:

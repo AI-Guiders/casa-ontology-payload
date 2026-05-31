@@ -15,12 +15,12 @@ import time
 from pathlib import Path
 from typing import Any
 
-from field_write import save_field_state  # type: ignore
-from preflight_teacher_v0 import VALID_MODES, preflight_teacher_cue  # type: ignore
-from predictor_v0 import predict_t9  # type: ignore
-from surface_error_v0 import classify_surface_error, is_mixed_script  # type: ignore
-from prism_state_v0 import prism_hippo  # type: ignore
-from sss_cylinders_v0 import (  # type: ignore
+from casa.prisms.shared.field_write import save_field_state
+from casa.prisms.tick.preflight_teacher_v0 import VALID_MODES, preflight_teacher_cue
+from casa.prisms.tick.predictor_v0 import predict_t9
+from casa.prisms.tick.surface_error_v0 import classify_surface_error, is_mixed_script
+from casa.prisms.shared.prism_state_v0 import prism_hippo
+from casa.prisms.memory.sss_cylinders_v0 import (
     append_episode,
     append_hint_episode,
     append_question_episode,
@@ -29,8 +29,8 @@ from sss_cylinders_v0 import (  # type: ignore
     memory_lattices,
     run_sleep,
 )
-from sss_l2_shard_v0 import route_l2_lattice  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.prisms.memory.sss_l2_shard_v0 import route_l2_lattice
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 
 def _concept_token(concept_id: str) -> str:

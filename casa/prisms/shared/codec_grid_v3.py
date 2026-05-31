@@ -21,8 +21,8 @@ import argparse
 import json
 from pathlib import Path
 
-from codec_grid_v0 import Grid, _read_json, _stable_u64, decode_grid, score_recovery  # type: ignore
-from codec_grid_v2 import _anchor_for, _pick_cells_clustered  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid, _read_json, _stable_u64, decode_grid, score_recovery
+from casa.prisms.shared.codec_grid_v2 import _anchor_for, _pick_cells_clustered
 
 ConceptMode = str  # "independent" | "doc" | "section" | "doc_section"
 

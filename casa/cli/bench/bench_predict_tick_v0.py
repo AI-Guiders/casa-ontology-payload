@@ -11,8 +11,8 @@ import argparse
 import json
 from pathlib import Path
 
-from predict_tick_v0 import simulate_t9_type  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.prisms.tick.predict_tick_v0 import simulate_t9_type
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 
 def run_bench(state: dict, cues: list[dict], *, top_k: int = 8) -> dict:

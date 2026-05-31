@@ -12,15 +12,15 @@ import json
 from pathlib import Path
 from typing import Any
 
-from codec_grid_v0 import Grid  # type: ignore
-from entity_hub_ingest_v0 import _ensure_l3_lattice  # type: ignore
-from field_write import load_field_state, save_field_state  # type: ignore
-from lattice_names_v1 import PHRASES  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_stack_v0 import _place_token, decode_lattice  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
-from store_layout_v0 import field_state_path  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.memory.entity_hub_ingest_v0 import _ensure_l3_lattice
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.lattice_names_v1 import PHRASES
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_stack_v0 import _place_token, decode_lattice
+from casa.prisms.memory.sss_vocab_v0 import norm_word
+from casa.prisms.shared.store_boot_v0 import boot_store
+from casa.prisms.shared.store_layout_v0 import field_state_path
 
 
 def _surface_concept(word: str) -> str:

@@ -9,23 +9,23 @@ ensure_import_paths()
 
 from typing import Any, Literal
 
-from grapheme_ingest_v0 import (  # type: ignore
+from casa.prisms.memory.grapheme_ingest_v0 import (
     GRAPHEME_CYRL_PREFIX,
     GRAPHEME_LATN_PREFIX,
     L0_CYRL_ID,
     L0_ID_LEGACY,
     L0_LATN_ID,
 )
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import (  # type: ignore
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import (
     L2_CONCEPT_PREFIX,
     concept_votes_l2,
     is_l2_en_word_lattice,
     is_l2_word_lattice,
     l2_word_lattice_ids,
 )
-from sss_stack_v0 import decode_lattice  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.sss_stack_v0 import decode_lattice
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 Basin = Literal["en", "ru", "latn", "cyrl"]
 

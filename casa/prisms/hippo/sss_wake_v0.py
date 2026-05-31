@@ -12,10 +12,10 @@ import json
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import append_episode, ensure_prisms, save_state  # type: ignore
-from sss_surface_v0 import surface_from_sss  # type: ignore
-from sss_wake_util import needs_self_correction, surface_attempt_from_wake, surface_matches_target  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import append_episode, ensure_prisms, save_state
+from casa.prisms.memory.sss_surface_v0 import surface_from_sss
+from casa.prisms.hippo.sss_wake_util import needs_self_correction, surface_attempt_from_wake, surface_matches_target
 
 
 def _load_bundle(store: Path, bundle_path: Path | None) -> dict | None:
@@ -67,7 +67,7 @@ def wake_turn(
     report["surface_attempt"] = surface_attempt_from_wake(wake, lattice_id=lattice_id)
     report["target"] = correct
     if bundle and correct:
-        from sss_cylinders_v0 import concept_id_for_surface  # type: ignore
+        from casa.prisms.memory.sss_cylinders_v0 import concept_id_for_surface
 
         known = {str(c.get("concept_id")) for c in bundle.get("claims") or []}
         cid = concept_id_for_surface(bundle, correct, lattice_id=lattice_id)

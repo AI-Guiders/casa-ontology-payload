@@ -9,10 +9,10 @@ ensure_import_paths()
 
 from typing import Any
 
-from sss_field_decode_v0 import active_rule_from_field  # type: ignore
+from casa.prisms.memory.sss_field_decode_v0 import active_rule_from_field
 
 
 def segment_field_intuition(state: dict, word: str) -> dict[str, Any]:
-    from sss_field_hypotheses_v0 import compete_hypotheses  # type: ignore
+    from casa.prisms.memory.sss_field_hypotheses_v0 import compete_hypotheses
 
     return compete_hypotheses(state, word)

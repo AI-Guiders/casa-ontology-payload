@@ -17,10 +17,10 @@ import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 
-from agent_card import read_agent_card, resolve_checkpoint  # type: ignore
-from canonical import CANONICAL_CONCEPT_MODE, CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD  # type: ignore
-from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
-from field_write import (  # type: ignore
+from casa.prisms.shared.agent_card import read_agent_card, resolve_checkpoint
+from casa.prisms.shared.canonical import CANONICAL_CONCEPT_MODE, CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD
+from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.field_write import (
     apply_digest_only_update,
     apply_graph_patch,
     bundle_filename_from_ref,
@@ -94,11 +94,11 @@ def _resolve_bundle_name(delta: dict) -> str:
 
 def _quick_bench(bundle: dict, model_path: Path, *, layout: dict, device) -> dict:
     import torch
-    from bench_dmn_nca_union import _grid_to_union_tensor, _threshold_grid_from_union_state  # type: ignore
-    from layout_apply import _get_region_rect, damage_region_patches, mask_outside_region  # type: ignore
-    from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
+    from casa.cli.bench.bench_dmn_nca_union import _grid_to_union_tensor, _threshold_grid_from_union_state
+    from casa.prisms.shared.layout_apply import _get_region_rect, damage_region_patches, mask_outside_region
+    from casa.cli.train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels
 
-    from codec_grid_v3 import encode_bundle_to_grid  # type: ignore
+    from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid
 
     rect = _get_region_rect(layout, "dmn_ontology")
     full = encode_bundle_to_grid(bundle, width=64, height=64, copies=7, concept_mode=CANONICAL_CONCEPT_MODE)
@@ -156,7 +156,7 @@ def _run_finetune(
     if not init_path.is_file():
         return None
 
-    from module_finetune_util import finetune_after_import  # type: ignore
+    from casa.prisms.shared.module_finetune_util import finetune_after_import
 
     ft = finetune_after_import(
         repo=repo,

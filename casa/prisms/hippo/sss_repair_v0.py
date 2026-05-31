@@ -7,12 +7,12 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 import copy
 from typing import Any
 
-from codec_grid_v0 import Grid  # type: ignore
-from sss_stack_v0 import (  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.memory.sss_stack_v0 import (
     _place_token,
     apply_z_compose_v0,
     compose_sources,
@@ -219,7 +219,7 @@ def repair_sss_memory(
 
 
 def repair_field_state(state: dict, bundle: dict, stack: dict | None = None, **kwargs: Any) -> dict[str, Any]:
-    from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
+    from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
 
     state = ensure_prisms(state)
     lattices = memory_lattices(state)

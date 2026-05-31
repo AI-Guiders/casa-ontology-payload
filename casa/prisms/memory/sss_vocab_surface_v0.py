@@ -12,9 +12,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from sss_vocab_v0 import recall_words_for_scene  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.sss_vocab_v0 import recall_words_for_scene
 
 
 def surface_scene(state: dict, scene_id: str, *, top_k: int = 8) -> dict[str, Any]:

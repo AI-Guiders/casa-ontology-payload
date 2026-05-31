@@ -12,8 +12,8 @@ from dataclasses import dataclass, field
 
 import torch
 
-from field_window import Tile, tile_density, tiles_over_rect  # type: ignore
-from layout_apply import Rect  # type: ignore
+from casa.prisms.shared.field_window import Tile, tile_density, tiles_over_rect
+from casa.prisms.shared.layout_apply import Rect
 
 
 @dataclass

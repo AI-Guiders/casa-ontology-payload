@@ -7,21 +7,21 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 from typing import Any
 
-from codec_grid_v0 import Grid  # type: ignore
-from predictor_v0 import _L2_PREFIX_INDEX_CACHE  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import (  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.tick.predictor_v0 import _L2_PREFIX_INDEX_CACHE
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import (
     DEFAULT_EN_NUM_SHARDS,
     L2_CONCEPT_PREFIX,
     L2_EN_SHARD_PREFIX,
     lattice_digest_l2_network,
     route_en_l2_lattice,
 )
-from sss_stack_v0 import _place_token  # type: ignore
-from sss_vocab_v0 import norm_word, w_token  # type: ignore
+from casa.prisms.memory.sss_stack_v0 import _place_token
+from casa.prisms.memory.sss_vocab_v0 import norm_word, w_token
 
 
 def configure_en_store(state: dict, *, num_shards: int = DEFAULT_EN_NUM_SHARDS) -> dict[str, Any]:

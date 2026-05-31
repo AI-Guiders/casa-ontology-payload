@@ -13,7 +13,7 @@ import re
 from collections import Counter
 from pathlib import Path
 
-from sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text  # type: ignore
+from casa.prisms.memory.sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text
 
 _LATIN_IN_WORD = re.compile(r"[a-zA-Z]")
 _OLD_ORPHAN = re.compile(r"[ѣѢіІїЇєЄґҐ]")

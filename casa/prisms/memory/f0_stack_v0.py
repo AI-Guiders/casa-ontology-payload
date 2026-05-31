@@ -11,8 +11,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-from codec_grid_v0 import Grid  # type: ignore
-from sss_stack_v0 import _place_token  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.memory.sss_stack_v0 import _place_token
 
 
 def load_f0_stack(path: Path | None = None) -> dict:

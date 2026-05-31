@@ -12,13 +12,13 @@ import json
 from pathlib import Path
 from typing import Any
 
-from en_lexicon_v0 import ingest_en_lex_batch, read_headwords  # type: ignore
-from export_ltm_pack_v0 import export_pack  # type: ignore
-from field_write import save_field_state  # type: ignore
-from grapheme_ingest_v0 import derive_graphemes_from_words, ingest_graphemes_batch  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from lexicon_usage_axes_v0 import attach_en_frequency_axes  # type: ignore
-from store_layout_v0 import STORE_EN_FOLK_V0, agent_store_dir, field_state_path  # type: ignore
+from casa.prisms.memory.en_lexicon_v0 import ingest_en_lex_batch, read_headwords
+from casa.prisms.shared.export_ltm_pack_v0 import export_pack
+from casa.prisms.shared.field_write import save_field_state
+from casa.prisms.memory.grapheme_ingest_v0 import derive_graphemes_from_words, ingest_graphemes_batch
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.lexicon_usage_axes_v0 import attach_en_frequency_axes
+from casa.prisms.shared.store_layout_v0 import STORE_EN_FOLK_V0, agent_store_dir, field_state_path
 
 
 def init_en_folk_store(

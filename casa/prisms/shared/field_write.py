@@ -231,8 +231,8 @@ def apply_digest_only_update(
 
 
 def encode_dmn_grid(bundle: dict, *, layout: dict, concept_mode: str, width: int = 64, height: int = 64, copies: int = 7) -> dict:
-    from codec_grid_v3 import encode_bundle_to_grid  # type: ignore
-    from layout_apply import _get_region_rect, mask_outside_region  # type: ignore
+    from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid
+    from casa.prisms.shared.layout_apply import _get_region_rect, mask_outside_region
 
     full = encode_bundle_to_grid(bundle, width=width, height=height, copies=copies, concept_mode=concept_mode)
     rect = _get_region_rect(layout, "dmn_ontology")
@@ -333,12 +333,12 @@ def bundle_filename_from_ref(ref: str) -> str:
 
 
 def decode_field_grid(state: dict, *, min_votes: int | None = None) -> dict:
-    from canonical import CANONICAL_FIELD_MIN_VOTES  # type: ignore
-    from codec_grid_v0 import decode_grid  # type: ignore
+    from casa.prisms.shared.canonical import CANONICAL_FIELD_MIN_VOTES
+    from casa.prisms.shared.codec_grid_v0 import decode_grid
 
     try:
-        from control_cylinders_v0 import has_control_stack  # type: ignore
-        from control_stack_v0 import decode_control_dmn  # type: ignore
+        from casa.prisms.control.cylinders_v0 import has_control_stack
+        from casa.prisms.control.stack_v0 import decode_control_dmn
 
         if has_control_stack(state):
             mv = CANONICAL_FIELD_MIN_VOTES if min_votes is None else min_votes

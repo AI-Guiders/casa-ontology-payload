@@ -9,7 +9,7 @@ ensure_import_paths()
 
 from typing import Any
 
-from sss_segment_v0 import RULES, format_segment, segment_vowel_nuclei, verify_segment  # type: ignore
+from casa.prisms.memory.sss_segment_v0 import RULES, format_segment, segment_vowel_nuclei, verify_segment
 
 
 def reflect_on_segment(

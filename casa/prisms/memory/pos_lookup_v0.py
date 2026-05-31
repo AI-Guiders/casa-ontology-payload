@@ -9,9 +9,9 @@ ensure_import_paths()
 
 from typing import Any
 
-from hub_neighbors_v0 import _l3_edges, _anchor_to_concept  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.hub_neighbors_v0 import _l3_edges, _anchor_to_concept
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 
 def word_pos(state: dict, word: str, *, min_votes: int = 1) -> dict[str, Any]:

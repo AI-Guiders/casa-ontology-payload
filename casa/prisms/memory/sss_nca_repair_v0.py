@@ -7,7 +7,7 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 import copy
 from pathlib import Path
 from typing import Any
@@ -15,11 +15,11 @@ from typing import Any
 import numpy as np
 import torch
 
-from layout_apply import Rect  # type: ignore
-from nca_train_util import damage_tensor_patches, grid_indices, scatter_grid_tensor  # type: ignore
-from sss_damage_v0 import damage_lattice  # type: ignore
-from sss_nca_codec_v0 import grid_to_lattice_cells, lattice_as_grid, tokens_from_lattice, word_tokens_from_lattice  # type: ignore
-from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
+from casa.prisms.shared.layout_apply import Rect
+from casa.prisms.shared.nca_train_util import damage_tensor_patches, grid_indices, scatter_grid_tensor
+from casa.prisms.hippo.sss_damage_v0 import damage_lattice
+from casa.prisms.memory.sss_nca_codec_v0 import grid_to_lattice_cells, lattice_as_grid, tokens_from_lattice, word_tokens_from_lattice
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels
 
 
 def _load_model(path: Path) -> dict[str, Any]:
@@ -168,7 +168,7 @@ def nca_repair_state_lattice(
     seed: int = 42,
     device: str = "cpu",
 ) -> dict[str, Any]:
-    from sss_cylinders_v0 import memory_lattices  # type: ignore
+    from casa.prisms.memory.sss_cylinders_v0 import memory_lattices
 
     lattices = memory_lattices(state)
     lat = lattices.get(lattice_id)

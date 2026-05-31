@@ -13,21 +13,21 @@ import subprocess
 import sys
 from pathlib import Path
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from sss_l2_shard_v0 import (  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.sss_l2_shard_v0 import (
     is_nca_trainable_lattice,
     l2_lexicon_lattice_ids,
     set_nca_model,
     shard_stats,
 )
-from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
-from lattice_names_v1 import is_alphabet_lattice  # type: ignore
-from nca_registry_v0 import mark_lattice_trained, repair_smoke_ratio  # type: ignore
-from nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge  # type: ignore
-from nca_train_util import add_device_args  # type: ignore
-from store_layout_v0 import nca_lattice_dir, nca_root, rel_to_repo  # type: ignore
-from sss_cylinders_v0 import memory_lattices  # type: ignore
+from casa.prisms.memory.sss_nca_codec_v0 import tokens_from_lattice
+from casa.prisms.shared.lattice_names_v1 import is_alphabet_lattice
+from casa.prisms.shared.nca_registry_v0 import mark_lattice_trained, repair_smoke_ratio
+from casa.prisms.shared.nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge
+from casa.prisms.shared.nca_train_util import add_device_args
+from casa.prisms.shared.store_layout_v0 import nca_lattice_dir, nca_root, rel_to_repo
+from casa.prisms.memory.sss_cylinders_v0 import memory_lattices
 
 
 def main() -> None:
@@ -149,7 +149,7 @@ def main() -> None:
                 )
         results.append(row)
 
-    from field_write import save_field_state  # type: ignore
+    from casa.prisms.shared.field_write import save_field_state
 
     if not args.dry_run:
         save_field_state(args.store_dir / "field_state.json", state)

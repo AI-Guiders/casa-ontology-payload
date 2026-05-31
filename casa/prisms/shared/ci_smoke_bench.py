@@ -32,7 +32,7 @@ def main() -> None:
     args = p.parse_args()
 
     repo = args.repo_root.resolve()
-    tools = repo / "tools"
+    py = sys.executable
     bundles = [
         repo / "lab/ca-substrate-agent.bundle.v1.json",
         repo / "lab/casa-goals.bundle.v1.json",
@@ -44,7 +44,10 @@ def main() -> None:
 
     _run(
         [
-            str(tools / "train_dmn_nca_multibundle.py"),
+            py,
+            "-m",
+            "casa.cli",
+            "train_dmn_nca_multibundle",
             "--bundles",
             *[str(b) for b in bundles],
             "--codec",
@@ -64,7 +67,10 @@ def main() -> None:
 
     _run(
         [
-            str(tools / "bench_dmn_nca_union.py"),
+            py,
+            "-m",
+            "casa.cli",
+            "bench_dmn_nca_union",
             "--bundle",
             str(bundles[0]),
             "--model",

@@ -13,7 +13,7 @@ import argparse
 import json
 from pathlib import Path
 
-from bench_dmn_nca import main as _bench_main  # type: ignore
+from casa.cli.bench.bench_dmn_nca import main as _bench_main
 
 
 def _run_one(args_list: list[str]) -> dict:

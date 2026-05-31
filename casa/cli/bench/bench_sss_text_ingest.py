@@ -11,10 +11,10 @@ import argparse
 import json
 from pathlib import Path
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text  # type: ignore
-from sss_vocab_v0 import punct_votes_from_field, word_votes_from_field  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text
+from casa.prisms.memory.sss_vocab_v0 import punct_votes_from_field, word_votes_from_field
 
 
 def main() -> None:

@@ -8,7 +8,7 @@ from casa._paths import ensure_import_paths
 ensure_import_paths()
 
 from typing import Any
-from ortho_field_v0 import (  # type: ignore
+from casa.prisms.memory.ortho_field_v0 import (
     PROC_LOWER,
     PROC_LOWER_WORD,
     PROC_UPPER,
@@ -17,15 +17,15 @@ from ortho_field_v0 import (  # type: ignore
     has_process,
     l3_process_ids,
 )
-from ortho_process_v0 import (  # type: ignore
+from casa.prisms.memory.ortho_process_v0 import (
     PROC_SENTENCE_CASE,
     apply_word_proc,
     sentence_case_word,
     upper_word,
 )
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
-from ortho_critic_v0 import critic_ortho_surface, critic_ortho_undo  # type: ignore
+from casa.prisms.memory.ortho_critic_v0 import critic_ortho_surface, critic_ortho_undo
 
 
 def expect_display_for_context(context: str, canonical: str) -> str:

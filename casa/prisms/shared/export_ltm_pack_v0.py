@@ -12,13 +12,13 @@ import json
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state  # type: ignore
-from ltm_pack_v0 import lattice_subdir, write_ltm  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.shared.ltm_pack_v0 import lattice_subdir, write_ltm
 from casa.prisms.shared.store_paths_v1 import ltm_write_targets, manifest_layout_block, mirror_ltm_file
-from control_cylinders_v0 import control_lattices, has_control_stack  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import l2_en_word_lattice_ids, l2_lexicon_lattice_ids, l2_word_lattice_ids  # type: ignore
-from store_layout_v0 import nca_train_registry_path, rel_to_repo  # type: ignore
+from casa.prisms.control.cylinders_v0 import control_lattices, has_control_stack
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import l2_en_word_lattice_ids, l2_lexicon_lattice_ids, l2_word_lattice_ids
+from casa.prisms.shared.store_layout_v0 import nca_train_registry_path, rel_to_repo
 
 
 def _lattice_meta(lat: dict) -> dict[str, Any]:

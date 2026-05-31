@@ -13,12 +13,12 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-from alphabet_core_v0 import verify_alphabet_on_l0  # type: ignore
-from export_ltm_pack_v0 import export_pack  # type: ignore
-from field_write import load_field_state, save_field_state  # type: ignore
-from grapheme_ingest_v0 import L0_ID_LEGACY, strip_legacy_l0_monolith  # type: ignore
-from migrate_l0_grapheme_split_v0 import patch_state_metadata  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
+from casa.prisms.memory.alphabet_core_v0 import verify_alphabet_on_l0
+from casa.prisms.shared.export_ltm_pack_v0 import export_pack
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.memory.grapheme_ingest_v0 import L0_ID_LEGACY, strip_legacy_l0_monolith
+from casa.prisms.shared.migrate_l0_grapheme_split_v0 import patch_state_metadata
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
 
 
 def _prune_memory_manifest(store_dir: Path) -> list[str]:
@@ -42,7 +42,7 @@ def strip_store(store_dir: Path, *, compact: bool) -> dict[str, Any]:
     fs = store_dir / "field_state.json"
     state = ensure_prisms(load_field_state(fs))
     def _l2_words(st: dict) -> int:
-        from predictor_v0 import l2_lexicon_digest  # type: ignore
+        from casa.prisms.tick.predictor_v0 import l2_lexicon_digest
 
         sh = st.get("l2_sharding") or {}
         n = sh.get("indexed_words")

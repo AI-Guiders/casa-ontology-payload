@@ -7,7 +7,7 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from grapheme_ingest_v0 import GRAPHEME_CYRL_PREFIX, GRAPHEME_LATN_PREFIX  # type: ignore
+from casa.prisms.memory.grapheme_ingest_v0 import GRAPHEME_CYRL_PREFIX, GRAPHEME_LATN_PREFIX
 
 
 def is_cyrillic(ch: str) -> bool:

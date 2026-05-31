@@ -11,9 +11,9 @@ import argparse
 import json
 from pathlib import Path
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_stack_v0 import apply_z_compose_v0, decode_lattice, lattice_digest, load_stack  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_stack_v0 import apply_z_compose_v0, decode_lattice, lattice_digest, load_stack
 
 
 def main() -> None:

@@ -7,7 +7,7 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import PRISM_CONTROL, normalize_prisms, prism_control  # type: ignore
+from casa.prisms.shared.prism_state_v0 import PRISM_CONTROL, normalize_prisms, prism_control
 from pathlib import Path
 from typing import Any
 
@@ -17,9 +17,9 @@ from casa.prisms.control.stack_v0 import (  # type: ignore
     load_control_stack,
     migrate_legacy_grid_to_control,
 )
-from field_version_v0 import bump_control_field_version  # type: ignore
+from casa.prisms.shared.field_version_v0 import bump_control_field_version
 from casa.prisms.shared.lattice_names_v1 import CONTROL_DMN, has_control_lattice  # type: ignore
-from sss_cylinders_v0 import ensure_cylinders  # type: ignore
+from casa.prisms.memory.sss_cylinders_v0 import ensure_cylinders
 
 
 def has_control_stack(state: dict) -> bool:

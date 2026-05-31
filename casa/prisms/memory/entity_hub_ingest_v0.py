@@ -7,21 +7,21 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 import argparse
 import json
 from pathlib import Path
 from typing import Any
 
-from codec_grid_v0 import Grid  # type: ignore
-from field_write import load_field_state, save_field_state  # type: ignore
-from lattice_names_v1 import PHRASES  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import concept_votes_l2  # type: ignore
-from sss_stack_v0 import _place_token, decode_lattice, lattice_meta, load_stack  # type: ignore
-from sss_vocab_v0 import listen_word, norm_word  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
-from store_layout_v0 import field_state_path  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.lattice_names_v1 import PHRASES
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import concept_votes_l2
+from casa.prisms.memory.sss_stack_v0 import _place_token, decode_lattice, lattice_meta, load_stack
+from casa.prisms.memory.sss_vocab_v0 import listen_word, norm_word
+from casa.prisms.shared.store_boot_v0 import boot_store
+from casa.prisms.shared.store_layout_v0 import field_state_path
 
 
 def _surface_concept(word: str) -> str:

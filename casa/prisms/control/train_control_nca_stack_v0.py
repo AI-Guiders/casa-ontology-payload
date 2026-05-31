@@ -13,15 +13,15 @@ import subprocess
 import sys
 from pathlib import Path
 
-from control_cylinders_v0 import control_lattices, has_control_stack  # type: ignore
-from field_write import load_field_state, save_field_state  # type: ignore
-from nca_registry_v0 import mark_lattice_trained  # type: ignore
-from nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge  # type: ignore
-from nca_train_util import add_device_args  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from sss_l2_shard_v0 import set_nca_model  # type: ignore
-from lattice_names_v1 import CONTROL_NCA_TRAIN_STACK  # type: ignore
-from store_layout_v0 import nca_lattice_dir, rel_to_repo, repo_root  # type: ignore
+from casa.prisms.control.cylinders_v0 import control_lattices, has_control_stack
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.nca_registry_v0 import mark_lattice_trained
+from casa.prisms.shared.nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge
+from casa.prisms.shared.nca_train_util import add_device_args
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.sss_l2_shard_v0 import set_nca_model
+from casa.prisms.shared.lattice_names_v1 import CONTROL_NCA_TRAIN_STACK
+from casa.prisms.shared.store_layout_v0 import nca_lattice_dir, rel_to_repo, repo_root
 
 DEFAULT_STACK = CONTROL_NCA_TRAIN_STACK
 

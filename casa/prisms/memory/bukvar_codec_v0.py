@@ -15,9 +15,9 @@ ensure_import_paths()
 import json
 from pathlib import Path
 
-from codec_grid_v0 import Grid, _stable_u64, decode_grid  # type: ignore
-from codec_grid_v2 import _pick_cells_clustered  # type: ignore
-from layout_apply import Rect, _get_region_rect, mask_outside_region  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid, _stable_u64, decode_grid
+from casa.prisms.shared.codec_grid_v2 import _pick_cells_clustered
+from casa.prisms.shared.layout_apply import Rect, _get_region_rect, mask_outside_region
 
 
 def layer_region_id(concept_id: str) -> str:

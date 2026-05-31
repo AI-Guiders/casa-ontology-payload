@@ -12,7 +12,7 @@ import json
 import re
 from pathlib import Path
 
-from sss_text_tokenize_v0 import norm_text  # type: ignore
+from casa.prisms.memory.sss_text_tokenize_v0 import norm_text
 
 _REPLACEMENT = "\ufffd"
 _SIC = re.compile(r"\(\s*sic\s*\)|\[\s*sic\s*\]", re.IGNORECASE)

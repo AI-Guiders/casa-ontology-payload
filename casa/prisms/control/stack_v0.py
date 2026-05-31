@@ -10,8 +10,8 @@ ensure_import_paths()
 from pathlib import Path
 from typing import Any
 
-from codec_grid_v0 import Grid  # type: ignore
-from config_io_v0 import load_config  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.shared.config_io_v0 import load_config
 from casa.prisms.shared.lattice_names_v1 import (  # type: ignore
     CONTROL_ATTENTION,
     CONTROL_DMN,
@@ -21,7 +21,7 @@ from casa.prisms.shared.lattice_names_v1 import (  # type: ignore
     CONTROL_VALUE,
     CONTROL_WORKING_MEMORY,
 )
-from sss_stack_v0 import _place_token, decode_lattice, encode_lattice  # type: ignore
+from casa.prisms.memory.sss_stack_v0 import _place_token, decode_lattice, encode_lattice
 
 DEFAULT_STACK = Path("design/control-lattice-stack.v0.json")
 

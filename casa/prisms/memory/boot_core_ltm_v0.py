@@ -11,10 +11,10 @@ import json
 from pathlib import Path
 from typing import Any
 
-from alphabet_core_v0 import merge_alphabet_l0_from_ltm  # type: ignore
-from import_ltm_pack_v0 import import_pack  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from vk_layout_field_v0 import L0_VK_MAP_ID, compose_index_from_state  # type: ignore
+from casa.prisms.memory.alphabet_core_v0 import merge_alphabet_l0_from_ltm
+from casa.prisms.shared.import_ltm_pack_v0 import import_pack
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.vk_layout_field_v0 import L0_VK_MAP_ID, compose_index_from_state
 
 
 def _repo_root(root: Path | None) -> Path:

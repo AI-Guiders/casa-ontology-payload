@@ -14,11 +14,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from field_version_v0 import memory_field_version, train_field_version_for_lattice  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import is_nca_trainable_lattice, l2_lexicon_lattice_ids, nca_model_registry  # type: ignore
-from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
-from store_layout_v0 import nca_lattice_dir, nca_train_registry_path, rel_to_repo  # type: ignore
+from casa.prisms.shared.field_version_v0 import memory_field_version, train_field_version_for_lattice
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import is_nca_trainable_lattice, l2_lexicon_lattice_ids, nca_model_registry
+from casa.prisms.memory.sss_nca_codec_v0 import tokens_from_lattice
+from casa.prisms.shared.store_layout_v0 import nca_lattice_dir, nca_train_registry_path, rel_to_repo
 
 
 def _utc_now() -> str:
@@ -70,7 +70,7 @@ def _lattice_for_train(state: dict, lattice_id: str) -> dict:
     lat = memory_lattices(state).get(lattice_id)
     if lat:
         return lat
-    from control_cylinders_v0 import control_lattices  # type: ignore
+    from casa.prisms.control.cylinders_v0 import control_lattices
 
     return control_lattices(state).get(lattice_id) or {}
 
@@ -106,7 +106,7 @@ def clear_pending(store_dir: Path, lattice_ids: list[str]) -> None:
 
 
 def repair_smoke_ratio(lattice: dict, model_path: Path, *, seed: int = 42) -> float | None:
-    from sss_nca_repair_v0 import nca_repair_lattice  # type: ignore
+    from casa.prisms.memory.sss_nca_repair_v0 import nca_repair_lattice
 
     if not model_path.is_file():
         return None

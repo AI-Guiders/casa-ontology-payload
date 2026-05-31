@@ -13,20 +13,20 @@ import subprocess
 import sys
 from pathlib import Path
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from nca_registry_v0 import (  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.nca_registry_v0 import (
     find_stale_shards,
     mark_lattice_trained,
     merge_pending,
     repair_smoke_ratio,
     sync_registry_from_store,
 )
-from nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge  # type: ignore
-from nca_train_util import add_device_args, resolve_train_device  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import is_nca_trainable_lattice, set_nca_model  # type: ignore
-from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
-from store_layout_v0 import field_state_path, nca_lattice_dir, rel_to_repo  # type: ignore
+from casa.prisms.shared.nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge
+from casa.prisms.shared.nca_train_util import add_device_args, resolve_train_device
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_l2_shard_v0 import is_nca_trainable_lattice, set_nca_model
+from casa.prisms.memory.sss_nca_codec_v0 import tokens_from_lattice
+from casa.prisms.shared.store_layout_v0 import field_state_path, nca_lattice_dir, rel_to_repo
 from casa.field_bus import FieldVersionDriftEvent, TrainCompleteEvent, publish
 
 
@@ -50,7 +50,9 @@ def _train_one_shard(
     out.mkdir(parents=True, exist_ok=True)
     cmd = [
         sys.executable,
-        "tools/train_sss_nca_v0.py",
+        "-m",
+        "casa.cli",
+        "train_sss_nca_v0",
         "--store-dir",
         str(store_dir),
         "--lattice-id",

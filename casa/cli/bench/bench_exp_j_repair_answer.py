@@ -14,11 +14,11 @@ from pathlib import Path
 
 import torch
 
-from bench_answer_recall import _hit  # type: ignore
-from canonical import CANONICAL_CONCEPT_MODE, CANONICAL_FIELD_MIN_VOTES  # type: ignore
-from field_write import bundle_from_field_state, decode_field_grid, load_field_state  # type: ignore
-from sn_cen_infer import _load_dmn, _run_dmn_repair, _run_from_field  # type: ignore
-from sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict  # type: ignore
+from casa.cli.bench.bench_answer_recall import _hit
+from casa.prisms.shared.canonical import CANONICAL_CONCEPT_MODE, CANONICAL_FIELD_MIN_VOTES
+from casa.prisms.shared.field_write import bundle_from_field_state, decode_field_grid, load_field_state
+from casa.prisms.control.sn_cen_infer import _load_dmn, _run_dmn_repair, _run_from_field
+from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict
 
 
 def _read_json(path: Path) -> dict:

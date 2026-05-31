@@ -19,7 +19,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from sss_cylinders_v0 import (  # type: ignore
+from casa.prisms.memory.sss_cylinders_v0 import (
     append_episode,
     ensure_prisms,
     memory_lattices,

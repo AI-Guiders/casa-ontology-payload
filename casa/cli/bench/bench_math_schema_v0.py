@@ -11,10 +11,10 @@ import argparse
 import json
 from pathlib import Path
 
-from f0_math_ingest_v0 import ingest_math_bundle  # type: ignore
-from f0_stack_v0 import decode_f0_lattice, rank_cue_on_f0  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.prisms.memory.f0_math_ingest_v0 import ingest_math_bundle
+from casa.prisms.memory.f0_stack_v0 import decode_f0_lattice, rank_cue_on_f0
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 
 def run_bench(
@@ -84,7 +84,7 @@ def main() -> None:
     if args.boot_ltm_only:
         state = boot_store(args.store_dir, prefer_field_state=False)["state"]
     else:
-        from field_write import load_field_state  # type: ignore
+        from casa.prisms.shared.field_write import load_field_state
 
         state = ensure_prisms(load_field_state(args.store_dir / "field_state.json"))
 

@@ -16,17 +16,17 @@ import json
 import time
 from pathlib import Path
 
-from canonical import CANONICAL_FIELD_MIN_VOTES  # type: ignore
-from fpn_state import (  # type: ignore
+from casa.prisms.shared.canonical import CANONICAL_FIELD_MIN_VOTES
+from casa.prisms.control.fpn_state import (
     effective_user_query,
     fpn_after_cen,
     load_session,
     salience_mode_bias,
     save_session,
 )
-from control_tick_v0 import run_control_extensions  # type: ignore
-from sn_cen_infer import _run_from_field  # type: ignore
-from sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict  # type: ignore
+from casa.prisms.control.tick_v0 import run_control_extensions
+from casa.prisms.control.sn_cen_infer import _run_from_field
+from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict
 
 
 def run_tick(

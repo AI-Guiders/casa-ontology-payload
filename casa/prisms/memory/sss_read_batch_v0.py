@@ -13,11 +13,11 @@ import time
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, save_state  # type: ignore
-from sss_text_ingest_v0 import ingest_text  # type: ignore
-from sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text  # type: ignore
-from sss_vocab_v0 import punct_votes_from_field, word_votes_from_field  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, save_state
+from casa.prisms.memory.sss_text_ingest_v0 import ingest_text
+from casa.prisms.memory.sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text
+from casa.prisms.memory.sss_vocab_v0 import punct_votes_from_field, word_votes_from_field
 
 
 def _save_progress_sidecar(store_path: Path, prog: dict) -> None:
@@ -41,7 +41,7 @@ def read_batch(
     compact_save: bool = True,
     progress_sidecar: bool = True,
 ) -> dict[str, Any]:
-    from sss_text_listen_field_v0 import ingest_text_field  # type: ignore
+    from casa.prisms.memory.sss_text_listen_field_v0 import ingest_text_field
 
     ingest_fn = ingest_text_field if use_field else ingest_text
     files = sorted(corpus_dir.glob("*.txt"))
@@ -114,7 +114,7 @@ def read_batch(
 
     sleep_report = None
     if sleep_once and tales and bukvar_bundle:
-        from sss_cylinders_v0 import run_sleep  # type: ignore
+        from casa.prisms.memory.sss_cylinders_v0 import run_sleep
 
         sleep_report = run_sleep(state, bukvar_bundle)
 

@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from ortho_field_v0 import (  # type: ignore
+from casa.prisms.memory.ortho_field_v0 import (
     L3_ID,
     imprint_capitalize_bootstrap,
     imprint_edge,
@@ -20,13 +20,13 @@ from ortho_field_v0 import (  # type: ignore
     l3_process_edges,
     l3_process_ids,
 )
-from ortho_process_v0 import (  # type: ignore
+from casa.prisms.memory.ortho_process_v0 import (
     PROC_CAPITALIZE,
     PROC_LOWER,
     PROC_SENTENCE_CASE,
     PROC_UPPER,
 )
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
 
 # Cross-layer listen edges (L3): input modality ↔ ortho Process
 BRIDGE_EDGES: list[tuple[str, str, str]] = [
@@ -72,7 +72,7 @@ def ingest_keyboard_ortho_bridge(
     if ensure_ortho_bootstrap and PROC_CAPITALIZE not in l3_process_ids(state):
         ortho_rep = imprint_capitalize_bootstrap(state, copies=copies)
     if PROC_SENTENCE_CASE not in l3_process_ids(state):
-        from ortho_field_v0 import imprint_process  # type: ignore
+        from casa.prisms.memory.ortho_field_v0 import imprint_process
 
         imprint_process(state, PROC_SENTENCE_CASE, copies=max(2, copies - 1))
 

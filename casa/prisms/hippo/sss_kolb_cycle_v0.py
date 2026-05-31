@@ -20,18 +20,18 @@ import time
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import append_rule_episode, ensure_prisms, run_sleep, save_state  # type: ignore
-from sss_field_decode_v0 import rule_votes_from_field  # type: ignore
-from sss_hypothesis_v0 import hypothesis_turn  # type: ignore
-from sss_internal_repair_v0 import internal_reconcile  # type: ignore
-from sss_kolb_reflect_v0 import reflect_on_experiment, reflect_on_segment  # type: ignore
-from sss_segment_v0 import segment_vowel_nuclei  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import append_rule_episode, ensure_prisms, run_sleep, save_state
+from casa.prisms.memory.sss_field_decode_v0 import rule_votes_from_field
+from casa.prisms.hippo.sss_hypothesis_v0 import hypothesis_turn
+from casa.prisms.hippo.sss_internal_repair_v0 import internal_reconcile
+from casa.prisms.hippo.sss_kolb_reflect_v0 import reflect_on_experiment, reflect_on_segment
+from casa.prisms.memory.sss_segment_v0 import segment_vowel_nuclei
 
 
 def _eval_gold(word: str) -> str:
     """Human/lab metric only — agent never receives this."""
-    from sss_segment_v0 import format_segment  # type: ignore
+    from casa.prisms.memory.sss_segment_v0 import format_segment
 
     return format_segment(segment_vowel_nuclei(word))
 

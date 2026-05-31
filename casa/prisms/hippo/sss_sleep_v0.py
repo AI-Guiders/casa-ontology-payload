@@ -11,10 +11,10 @@ import argparse
 import json
 from pathlib import Path
 
-from field_write import load_field_state  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
 from casa.field_bus import ConsolidatePhaseEvent, publish
-from sleep_replay_v0 import PRODUCTION_SLEEP_REPLAY, SleepReplayConfig  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, hippo_episodes, run_sleep, save_state  # type: ignore
+from casa.prisms.hippo.sleep_replay_v0 import PRODUCTION_SLEEP_REPLAY, SleepReplayConfig
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, hippo_episodes, run_sleep, save_state
 
 
 def main() -> None:

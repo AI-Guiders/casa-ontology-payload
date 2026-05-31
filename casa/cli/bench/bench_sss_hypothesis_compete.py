@@ -11,10 +11,10 @@ import argparse
 import json
 from pathlib import Path
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from sss_field_hypotheses_v0 import compete_hypotheses, h_votes_for_word  # type: ignore
-from sss_segment_v0 import verify_segment  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.sss_field_hypotheses_v0 import compete_hypotheses, h_votes_for_word
+from casa.prisms.memory.sss_segment_v0 import verify_segment
 
 
 def main() -> None:

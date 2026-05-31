@@ -14,9 +14,9 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 
-from canonical import CANONICAL_CONCEPT_MODE  # type: ignore
-from layout_apply import _get_region_rect, damage_region_patches, mask_outside_region  # type: ignore
-from layered_nca_core import (  # type: ignore
+from casa.prisms.shared.canonical import CANONICAL_CONCEPT_MODE
+from casa.prisms.shared.layout_apply import _get_region_rect, damage_region_patches, mask_outside_region
+from casa.prisms.shared.layered_nca_core import (
     LayeredChannelLayout,
     build_digest_target,
     channel_mask_tensor,
@@ -27,7 +27,7 @@ from layered_nca_core import (  # type: ignore
     spatial_mask_tensor,
     _port_rect,
 )
-from train_dmn_nca import UpdateRule  # type: ignore
+from casa.cli.train_dmn_nca import UpdateRule
 
 
 def _read_json(path: Path) -> dict:
@@ -69,7 +69,7 @@ def main() -> None:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     bundle = _read_json(args.bundle)
     layout_json = _read_json(args.layout)
-    from codec_grid_v3 import encode_bundle_to_grid, tokens_for_bundle  # type: ignore
+    from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid, tokens_for_bundle
 
     full = encode_bundle_to_grid(bundle, width=64, height=64, copies=7, concept_mode=CANONICAL_CONCEPT_MODE)
     dmn_rect = _get_region_rect(layout_json, "dmn_ontology")

@@ -22,7 +22,7 @@ import json
 import random
 from pathlib import Path
 
-from codec_grid_v0 import Grid, _read_json, _stable_u64, decode_grid, score_recovery  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid, _read_json, _stable_u64, decode_grid, score_recovery
 
 
 def _anchor_for(key: str, width: int, height: int) -> tuple[int, int]:

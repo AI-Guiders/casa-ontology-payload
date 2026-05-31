@@ -10,7 +10,7 @@ ensure_import_paths()
 import copy
 from typing import Any
 
-from layout_apply import Rect, damage_region_patches  # type: ignore
+from casa.prisms.shared.layout_apply import Rect, damage_region_patches
 
 
 def damage_lattice(

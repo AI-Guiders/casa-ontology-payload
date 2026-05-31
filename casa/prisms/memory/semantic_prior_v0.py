@@ -9,8 +9,8 @@ ensure_import_paths()
 
 from typing import Any
 
-from entity_taxonomy_lookup_v0 import taxonomy_bonus  # type: ignore
-from pos_lookup_v0 import word_pos  # type: ignore
+from casa.prisms.memory.entity_taxonomy_lookup_v0 import taxonomy_bonus
+from casa.prisms.memory.pos_lookup_v0 import word_pos
 
 
 def preview_semantic_bonus(

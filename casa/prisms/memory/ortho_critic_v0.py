@@ -9,7 +9,7 @@ ensure_import_paths()
 
 from typing import Any
 
-from ortho_process_v0 import same_lexeme  # type: ignore
+from casa.prisms.memory.ortho_process_v0 import same_lexeme
 
 
 def critic_ortho_surface(

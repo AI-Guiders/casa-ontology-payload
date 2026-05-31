@@ -12,8 +12,8 @@ import random
 import re
 from dataclasses import dataclass
 
-from codec_grid_v3 import _section_key, tokens_for_bundle  # type: ignore
-from layout_apply import Rect, damage_region_patches  # type: ignore
+from casa.prisms.shared.codec_grid_v3 import _section_key, tokens_for_bundle
+from casa.prisms.shared.layout_apply import Rect, damage_region_patches
 
 
 def section_slug(section: str, *, max_len: int = 40) -> str:

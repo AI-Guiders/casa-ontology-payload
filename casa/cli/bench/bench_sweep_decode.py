@@ -13,15 +13,15 @@ from pathlib import Path
 
 import torch
 
-from bench_dmn_nca_union import (  # type: ignore
+from casa.cli.bench.bench_dmn_nca_union import (
     _grid_to_union_tensor,
     _read_json,
     _threshold_grid_from_union_state,
     _tokens_for_bundle,
 )
-from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
-from layout_apply import _get_region_rect, damage_region_patches, mask_outside_region  # type: ignore
-from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.layout_apply import _get_region_rect, damage_region_patches, mask_outside_region
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels
 
 
 def main() -> None:
@@ -49,12 +49,12 @@ def main() -> None:
     rect = _get_region_rect(layout, args.region)
 
     if args.codec == "v3":
-        from codec_grid_v3 import encode_bundle_to_grid as enc, tokens_for_bundle as tok  # type: ignore
+        from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid as enc, tokens_for_bundle as tok
 
         full = enc(bundle, width=64, height=64, copies=7, concept_mode=args.concept_mode)
         bundle_tokens = set(tok(bundle, concept_mode=args.concept_mode))
     else:
-        from codec_grid_v2 import encode_bundle_to_grid as enc  # type: ignore
+        from casa.prisms.shared.codec_grid_v2 import encode_bundle_to_grid as enc
 
         full = enc(bundle, width=64, height=64, copies=7)
         bundle_tokens = set(_tokens_for_bundle(bundle))

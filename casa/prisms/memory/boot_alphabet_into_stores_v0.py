@@ -11,13 +11,13 @@ import argparse
 import json
 from pathlib import Path
 
-from alphabet_core_v0 import verify_alphabet_on_l0  # type: ignore
-from boot_core_ltm_v0 import default_alphabet_core_ltm_dir, merge_alphabet_l0_from_ltm  # type: ignore
-from field_write import load_field_state, save_field_state  # type: ignore
-from store_layout_v0 import field_state_path  # type: ignore
-from grapheme_ingest_v0 import L0_CYRL_ID, L0_LATN_ID  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
+from casa.prisms.memory.alphabet_core_v0 import verify_alphabet_on_l0
+from casa.prisms.memory.boot_core_ltm_v0 import default_alphabet_core_ltm_dir, merge_alphabet_l0_from_ltm
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.store_layout_v0 import field_state_path
+from casa.prisms.memory.grapheme_ingest_v0 import L0_CYRL_ID, L0_LATN_ID
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_nca_codec_v0 import tokens_from_lattice
 
 
 def l0_token_count(state: dict) -> dict[str, int]:

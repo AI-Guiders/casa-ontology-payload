@@ -18,14 +18,14 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from critic_v0 import critic_validate  # type: ignore
-from field_write import load_field_state  # type: ignore
-from ingest_en_lex_dev_v0 import ingest_en_lex, read_headwords  # type: ignore
-from predictor_v0 import l2_prefix_candidates, predict_t9  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
-from sss_segment_v0 import norm_word  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
-from store_layout_v0 import field_state_path  # type: ignore
+from casa.prisms.tick.critic_v0 import critic_validate
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.ingest_en_lex_dev_v0 import ingest_en_lex, read_headwords
+from casa.prisms.tick.predictor_v0 import l2_prefix_candidates, predict_t9
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
+from casa.prisms.memory.sss_segment_v0 import norm_word
+from casa.prisms.shared.store_boot_v0 import boot_store
+from casa.prisms.shared.store_layout_v0 import field_state_path
 
 DEFAULT_SMOKE_CUES: list[dict[str, Any]] = [
     {"id": "co_cow", "cue": "co", "expect": "cow"},

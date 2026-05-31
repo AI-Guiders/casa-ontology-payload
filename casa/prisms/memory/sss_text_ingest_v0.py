@@ -20,12 +20,12 @@ import time
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state  # type: ignore
-from gen_kb_from_text_v0 import build_bundle_from_text  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, run_sleep, save_state  # type: ignore
-from sss_read_v0 import read_session  # type: ignore
-from sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text, paragraphs_to_scenes  # type: ignore
-from sss_vocab_v0 import punct_votes_from_field, word_votes_from_field  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.gen_kb_from_text_v0 import build_bundle_from_text
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, run_sleep, save_state
+from casa.prisms.memory.sss_read_v0 import read_session
+from casa.prisms.memory.sss_text_tokenize_v0 import extract_punctuation_unique, extract_words, norm_text, paragraphs_to_scenes
+from casa.prisms.memory.sss_vocab_v0 import punct_votes_from_field, word_votes_from_field
 
 
 def ingest_text(

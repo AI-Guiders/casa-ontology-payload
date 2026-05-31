@@ -13,10 +13,10 @@ import re
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state  # type: ignore
-from sss_cylinders_v0 import append_rule_episode, ensure_prisms, run_sleep, save_state  # type: ignore
-from sss_internal_repair_v0 import internal_reconcile  # type: ignore
-from sss_segment_v0 import format_segment, parse_segment, segment_hypothesis, verify_segment  # type: ignore
+from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.memory.sss_cylinders_v0 import append_rule_episode, ensure_prisms, run_sleep, save_state
+from casa.prisms.hippo.sss_internal_repair_v0 import internal_reconcile
+from casa.prisms.memory.sss_segment_v0 import format_segment, parse_segment, segment_hypothesis, verify_segment
 
 
 def parse_heard_segment(text: str) -> list[str] | None:

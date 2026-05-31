@@ -20,14 +20,14 @@ from pathlib import Path
 
 import torch
 
-from agent_card import read_agent_card, resolve_checkpoint  # type: ignore
-from bench_dmn_nca_union import _grid_to_union_tensor, _threshold_grid_from_union_state  # type: ignore
-from canonical import CANONICAL_CONCEPT_MODE, CANONICAL_FIELD_MIN_VOTES, CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD  # type: ignore
-from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
-from field_write import bundle_from_field_state, decode_field_grid, field_state_stale, load_field_state  # type: ignore
-from layout_apply import _get_region_rect, damage_region_patches, mask_outside_region  # type: ignore
-from sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict  # type: ignore
-from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
+from casa.prisms.shared.agent_card import read_agent_card, resolve_checkpoint
+from casa.cli.bench.bench_dmn_nca_union import _grid_to_union_tensor, _threshold_grid_from_union_state
+from casa.prisms.shared.canonical import CANONICAL_CONCEPT_MODE, CANONICAL_FIELD_MIN_VOTES, CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD
+from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.field_write import bundle_from_field_state, decode_field_grid, field_state_stale, load_field_state
+from casa.prisms.shared.layout_apply import _get_region_rect, damage_region_patches, mask_outside_region
+from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels
 
 
 def _read_json(path: Path) -> dict:
@@ -54,7 +54,7 @@ def _run_dmn_repair(
     steps: int,
     device: torch.device,
 ) -> tuple[dict, dict]:
-    from codec_grid_v3 import encode_bundle_to_grid  # type: ignore
+    from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid
 
     rect = _get_region_rect(layout, "dmn_ontology")
     full = encode_bundle_to_grid(bundle, width=64, height=64, copies=7, concept_mode=CANONICAL_CONCEPT_MODE)
@@ -102,8 +102,8 @@ def _layered_gate_digest(
     seed: int,
     device: torch.device,
 ) -> tuple[list[float], list[float]]:
-    from layered_nca_core import grid_to_layered_state, load_dmn_rule, run_piston_pipeline  # type: ignore
-    from codec_grid_v3 import encode_bundle_to_grid  # type: ignore
+    from casa.prisms.shared.layered_nca_core import grid_to_layered_state, load_dmn_rule, run_piston_pipeline
+    from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid
 
     rect = _get_region_rect(layout, "dmn_ontology")
     full = encode_bundle_to_grid(bundle, width=64, height=64, copies=7, concept_mode=CANONICAL_CONCEPT_MODE)
@@ -243,7 +243,7 @@ def main() -> None:
 
     wm = None
     if args.session:
-        from fpn_state import fpn_after_cen, load_session, salience_mode_bias, save_session  # type: ignore
+        from casa.prisms.control.fpn_state import fpn_after_cen, load_session, salience_mode_bias, save_session
 
         wm = load_session(store)
 
@@ -256,7 +256,7 @@ def main() -> None:
         wm_mode=wm.mode if wm else None,
         wm_salience_bias=wm_bias,
     )
-    from fpn_state import effective_user_query  # type: ignore
+    from casa.prisms.control.fpn_state import effective_user_query
 
     q = effective_user_query(wm, args.query) if wm else args.query
     task = cen_plan(gated, bundle=bundle, user_query=q, llm_enable=args.llm_enable)
@@ -267,7 +267,7 @@ def main() -> None:
     control_stack = False
     if args.from_field:
         try:
-            from control_cylinders_v0 import has_control_stack  # type: ignore
+            from casa.prisms.control.cylinders_v0 import has_control_stack
 
             control_stack = has_control_stack(state)
         except Exception:

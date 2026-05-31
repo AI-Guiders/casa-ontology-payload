@@ -9,9 +9,9 @@ ensure_import_paths()
 
 from typing import Any
 
-from sss_field_decode_v0 import grapheme_votes_for_word, segment_lattice_greedy, syllable_hits_from_field  # type: ignore
-from sss_segment_candidates_v0 import score_candidate, segment_vowel_nuclei_from_signal  # type: ignore
-from sss_segment_v0 import format_segment, norm_word  # type: ignore
+from casa.prisms.memory.sss_field_decode_v0 import grapheme_votes_for_word, segment_lattice_greedy, syllable_hits_from_field
+from casa.prisms.memory.sss_segment_candidates_v0 import score_candidate, segment_vowel_nuclei_from_signal
+from casa.prisms.memory.sss_segment_v0 import format_segment, norm_word
 
 
 def _compose_score(state: dict, surface: str, syllables: list[str]) -> float:

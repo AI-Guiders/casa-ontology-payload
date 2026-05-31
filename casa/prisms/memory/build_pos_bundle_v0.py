@@ -11,8 +11,8 @@ import argparse
 import json
 from pathlib import Path
 
-from lexicon_headwords_v0 import read_headwords  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.memory.lexicon_headwords_v0 import read_headwords
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 
 def build_pos_bundle(

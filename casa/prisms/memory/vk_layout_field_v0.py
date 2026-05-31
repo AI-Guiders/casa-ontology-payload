@@ -7,19 +7,19 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 import json
 from pathlib import Path
 from typing import Any, Literal
 
-from codec_grid_v0 import Grid  # type: ignore
-from grapheme_ingest_v0 import (  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.memory.grapheme_ingest_v0 import (
     ingest_graphemes_batch,
 )
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_stack_v0 import _grid_to_dict, _place_token, decode_lattice  # type: ignore
-from vk_grapheme_v0 import char_from_grapheme_concept, grapheme_concept_for_char  # type: ignore
-from vk_keyboard_v0 import (  # type: ignore
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_stack_v0 import _grid_to_dict, _place_token, decode_lattice
+from casa.prisms.memory.vk_grapheme_v0 import char_from_grapheme_concept, grapheme_concept_for_char
+from casa.prisms.memory.vk_keyboard_v0 import (
     action_concept,
     action_key_ids,
     all_catalog_key_ids,
@@ -131,7 +131,7 @@ def is_base_layout_id(layout_id: str) -> bool:
 
 
 def load_layout_json(layout_id: str) -> dict[str, Any]:
-    from config_io_v0 import load_config, resolve_config_path  # type: ignore
+    from casa.prisms.shared.config_io_v0 import load_config, resolve_config_path
 
     base_id = layout_id.split(BASE_LAYOUT_SUFFIX)[0] if BASE_LAYOUT_SUFFIX in layout_id else layout_id
     name = _LAYOUT_FILES.get(base_id)
@@ -328,7 +328,7 @@ def build_layout_lattice(
 
 def build_punct_lattice(script: str, chars: list[str], *, width: int = 32, height: int = 32) -> dict[str, Any]:
     """Punctuation/symbol glyphs + realizes→grapheme.* edges."""
-    from grapheme_ingest_v0 import l0_lattice_id  # type: ignore
+    from casa.prisms.memory.grapheme_ingest_v0 import l0_lattice_id
 
     grid = Grid.empty(width=width, height=height)
     alphabet_lattice = l0_lattice_id("cyrl" if script == "cyrl" else "latn")

@@ -9,8 +9,8 @@ ensure_import_paths()
 
 from typing import Any
 
-from surface_error_v0 import classify_surface_error, is_mixed_script  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
+from casa.prisms.tick.surface_error_v0 import classify_surface_error, is_mixed_script
+from casa.prisms.memory.sss_vocab_v0 import norm_word
 
 VALID_MODES = frozenset(
     {

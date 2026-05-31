@@ -11,7 +11,7 @@ import argparse
 import json
 from pathlib import Path
 
-from lexicon_headwords_v0 import tokenize_text, write_headwords  # type: ignore
+from casa.prisms.memory.lexicon_headwords_v0 import tokenize_text, write_headwords
 
 
 def extract_from_paths(

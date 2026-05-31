@@ -9,14 +9,14 @@ ensure_import_paths()
 
 from typing import Any
 
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_field_decode_v0 import (  # type: ignore
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_field_decode_v0 import (
     grapheme_votes_for_word,
     rule_votes_from_field,
     segment_lattice_greedy,
 )
-from sss_segment_v0 import RU_VOWELS, norm_word, vowel_count  # type: ignore
-from sss_stack_v0 import decode_lattice  # type: ignore
+from casa.prisms.memory.sss_segment_v0 import RU_VOWELS, norm_word, vowel_count
+from casa.prisms.memory.sss_stack_v0 import decode_lattice
 
 
 def _syllable_vote_map(state: dict) -> dict[str, int]:

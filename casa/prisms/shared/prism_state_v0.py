@@ -9,7 +9,7 @@ ensure_import_paths()
 
 from typing import Any
 
-from lattice_names_v1 import ALPHABET_RU, CONTROL_DMN  # type: ignore
+from casa.prisms.shared.lattice_names_v1 import ALPHABET_RU, CONTROL_DMN
 
 SCHEMA_LEGACY = "multi_cylinder_v1"
 SCHEMA_CURRENT = "multi_prism_v1"

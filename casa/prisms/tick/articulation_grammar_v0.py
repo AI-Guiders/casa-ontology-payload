@@ -10,7 +10,7 @@ ensure_import_paths()
 import re
 from typing import Any
 
-from articulation_realize_v0 import compose_answer_text, paste_ratio  # type: ignore
+from casa.prisms.tick.articulation_realize_v0 import compose_answer_text, paste_ratio
 
 
 def _intent_label(query: str) -> str:

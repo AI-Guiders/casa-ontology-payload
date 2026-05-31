@@ -7,17 +7,17 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 from typing import Any
 
-from codec_grid_v0 import Grid  # type: ignore
-from lattice_names_v1 import EPISODIC_SURFACE, PHRASES  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_field_decode_v0 import grapheme_votes_for_word, rule_votes_from_field, syllable_hits_from_field  # type: ignore
-from sss_field_decode_v0 import active_rule_from_field  # type: ignore
-from sss_segment_candidates_v0 import enumerate_field_candidates  # type: ignore
-from sss_segment_v0 import format_segment, norm_word, parse_segment, verify_segment, vowel_count  # type: ignore
-from sss_stack_v0 import _place_token  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.shared.lattice_names_v1 import EPISODIC_SURFACE, PHRASES
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_field_decode_v0 import grapheme_votes_for_word, rule_votes_from_field, syllable_hits_from_field
+from casa.prisms.memory.sss_field_decode_v0 import active_rule_from_field
+from casa.prisms.memory.sss_segment_candidates_v0 import enumerate_field_candidates
+from casa.prisms.memory.sss_segment_v0 import format_segment, norm_word, parse_segment, verify_segment, vowel_count
+from casa.prisms.memory.sss_stack_v0 import _place_token
 
 
 def h_token(word: str, segment: str) -> str:

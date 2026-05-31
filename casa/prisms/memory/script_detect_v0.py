@@ -9,8 +9,8 @@ ensure_import_paths()
 
 from typing import Any, Literal
 
-from grapheme_clusters_v0 import _grapheme_concept_map  # type: ignore
-from grapheme_ingest_v0 import GRAPHEME_CYRL_PREFIX, GRAPHEME_LATN_PREFIX  # type: ignore
+from casa.prisms.memory.grapheme_clusters_v0 import _grapheme_concept_map
+from casa.prisms.memory.grapheme_ingest_v0 import GRAPHEME_CYRL_PREFIX, GRAPHEME_LATN_PREFIX
 
 Script = Literal["latn", "cyrl"]
 Lang = Literal["en", "ru", "mixed", "unknown"]

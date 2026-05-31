@@ -10,9 +10,9 @@ ensure_import_paths()
 import re
 from dataclasses import dataclass, field
 
-from articulation_grammar_v0 import compose_answer_text  # type: ignore
-from embeddings_layout import salience_from_layout  # type: ignore
-from llm_hook import maybe_llm_probe  # type: ignore
+from casa.prisms.tick.articulation_grammar_v0 import compose_answer_text
+from casa.prisms.shared.embeddings_layout import salience_from_layout
+from casa.prisms.shared.llm_hook import maybe_llm_probe
 
 
 @dataclass(frozen=True)

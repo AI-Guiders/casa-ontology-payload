@@ -15,15 +15,15 @@ import time
 from pathlib import Path
 from typing import Any
 
-from bench_sleep_extract_remember_v0 import run_sleep_tick  # type: ignore
-from field_write import save_field_state  # type: ignore
-from predictor_v0 import predict_t9  # type: ignore
-from prism_state_v0 import prism_hippo, prism_memory  # type: ignore
-from sss_cylinders_v0 import memory_lattices  # type: ignore
-from sss_field_decode_v0 import rule_votes_from_field  # type: ignore
-from sss_l2_shard_v0 import concept_votes_l2  # type: ignore
-from sss_vocab_v0 import norm_word  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.cli.bench.bench_sleep_extract_remember_v0 import run_sleep_tick
+from casa.prisms.shared.field_write import save_field_state
+from casa.prisms.tick.predictor_v0 import predict_t9
+from casa.prisms.shared.prism_state_v0 import prism_hippo, prism_memory
+from casa.prisms.memory.sss_cylinders_v0 import memory_lattices
+from casa.prisms.memory.sss_field_decode_v0 import rule_votes_from_field
+from casa.prisms.memory.sss_l2_shard_v0 import concept_votes_l2
+from casa.prisms.memory.sss_vocab_v0 import norm_word
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 _L2_INDEX_CACHE = "__predictor_l2_prefix_index_v0__"
 

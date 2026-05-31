@@ -11,7 +11,7 @@ import argparse
 import json
 from pathlib import Path
 
-from lexicon_headwords_v0 import export_headwords_from_store  # type: ignore
+from casa.prisms.memory.lexicon_headwords_v0 import export_headwords_from_store
 
 
 def main() -> None:

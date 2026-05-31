@@ -12,10 +12,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from grapheme_ingest_v0 import L0_CYRL_ID, L0_LATN_ID  # type: ignore
-from ltm_pack_v0 import lattice_subdir, write_ltm  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from vk_layout_field_v0 import (  # type: ignore
+from casa.prisms.memory.grapheme_ingest_v0 import L0_CYRL_ID, L0_LATN_ID
+from casa.prisms.shared.ltm_pack_v0 import lattice_subdir, write_ltm
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.vk_layout_field_v0 import (
     L0_LAYOUT_JCUKEN_ID,
     L0_LAYOUT_QWERTY_ID,
     L0_PUNCT_CYRL_ID,

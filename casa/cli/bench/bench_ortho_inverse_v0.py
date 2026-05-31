@@ -14,10 +14,10 @@ import time
 from pathlib import Path
 from typing import Any
 
-from boot_linked_stores_v0 import boot_linked_stores  # type: ignore
-from en_lexicon_v0 import read_headwords  # type: ignore
-from grapheme_ingest_v0 import bootstrap_linked_graphemes  # type: ignore
-from ortho_field_v0 import (  # type: ignore
+from casa.prisms.memory.boot_linked_stores_v0 import boot_linked_stores
+from casa.prisms.memory.en_lexicon_v0 import read_headwords
+from casa.prisms.memory.grapheme_ingest_v0 import bootstrap_linked_graphemes
+from casa.prisms.memory.ortho_field_v0 import (
     PROC_LOWER,
     PROC_LOWER_WORD,
     PROC_UPPER,
@@ -27,8 +27,8 @@ from ortho_field_v0 import (  # type: ignore
     imprint_capitalize_bootstrap,
     l3_process_ids,
 )
-from ortho_tick_v0 import simulate_ortho_plain_surprise  # type: ignore
-from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir  # type: ignore
+from casa.prisms.memory.ortho_tick_v0 import simulate_ortho_plain_surprise
+from casa.prisms.shared.store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir
 
 
 def run_lab(state: dict, *, word: str = "мама") -> dict[str, Any]:

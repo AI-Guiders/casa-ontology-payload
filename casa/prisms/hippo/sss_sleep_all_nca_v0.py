@@ -7,15 +7,15 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 import argparse
 import json
 from pathlib import Path
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices, run_sleep  # type: ignore
-from sss_l2_shard_v0 import nca_model_registry  # type: ignore
-from sss_nca_repair_v0 import nca_regrow_lattice  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices, run_sleep
+from casa.prisms.memory.sss_l2_shard_v0 import nca_model_registry
+from casa.prisms.memory.sss_nca_repair_v0 import nca_regrow_lattice
 
 
 def regrow_all_nca(state: dict, *, device: str = "cpu") -> list[dict]:

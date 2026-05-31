@@ -13,10 +13,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-from alphabet_core_v0 import export_alphabet_core_ltm  # type: ignore
-from field_write import save_field_state  # type: ignore
-from import_ltm_pack_v0 import import_pack  # type: ignore
-from sss_cylinders_v0 import ensure_prisms  # type: ignore
+from casa.prisms.memory.alphabet_core_v0 import export_alphabet_core_ltm
+from casa.prisms.shared.field_write import save_field_state
+from casa.prisms.shared.import_ltm_pack_v0 import import_pack
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms
 
 
 def main() -> None:

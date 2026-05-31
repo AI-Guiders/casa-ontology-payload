@@ -19,10 +19,10 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from codec_grid_v0 import decode_grid, score_recovery  # type: ignore
-from layout_apply import _get_region_rect, damage_region, damage_region_patches, mask_outside_region  # type: ignore
-from canonical import CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD  # type: ignore
-from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.layout_apply import _get_region_rect, damage_region, damage_region_patches, mask_outside_region
+from casa.prisms.shared.canonical import CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD
+from casa.cli.train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels
 
 
 def _read_json(path: Path) -> dict:
@@ -124,22 +124,22 @@ def main() -> None:
     rect = _get_region_rect(layout, args.region)
 
     if args.codec == "v3":
-        from codec_grid_v3 import encode_bundle_to_grid as _enc_v3, tokens_for_bundle as _tok_v3  # type: ignore
+        from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid as _enc_v3, tokens_for_bundle as _tok_v3
 
         def encode_bundle_to_grid(bundle: dict, **kw):  # type: ignore[no-redef]
             return _enc_v3(bundle, concept_mode=args.concept_mode, **kw)
 
         bundle_tokens = set(_tok_v3(bundle, concept_mode=args.concept_mode))
     elif args.codec == "v2":
-        from codec_grid_v2 import encode_bundle_to_grid  # type: ignore
+        from casa.prisms.shared.codec_grid_v2 import encode_bundle_to_grid
 
         bundle_tokens = set(_tokens_for_bundle(bundle))
     elif args.codec == "v1":
-        from codec_grid_v1 import encode_bundle_to_grid  # type: ignore
+        from casa.prisms.shared.codec_grid_v1 import encode_bundle_to_grid
 
         bundle_tokens = set(_tokens_for_bundle(bundle))
     else:
-        from codec_grid_v0 import encode_bundle_to_grid  # type: ignore
+        from casa.prisms.shared.codec_grid_v0 import encode_bundle_to_grid
 
         bundle_tokens = set(_tokens_for_bundle(bundle))
 

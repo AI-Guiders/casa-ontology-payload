@@ -12,15 +12,15 @@ import json
 from pathlib import Path
 from typing import Any
 
-from field_write import load_field_state, save_field_state  # type: ignore
-from import_ltm_pack_v0 import import_pack  # type: ignore
-from sss_surface_v0 import surface_from_sss  # type: ignore
-from control_cylinders_v0 import control_lattices, has_control_stack  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_stack_v0 import decode_lattice  # type: ignore
-from lexicon_usage_axes_v0 import attach_axes_to_state, load_axes_jsonl  # type: ignore
-from sss_l2_shard_v0 import is_l2_word_lattice  # type: ignore
-from store_layout_v0 import field_state_path, ltm_root, nca_root  # type: ignore
+from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.import_ltm_pack_v0 import import_pack
+from casa.prisms.memory.sss_surface_v0 import surface_from_sss
+from casa.prisms.control.cylinders_v0 import control_lattices, has_control_stack
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_stack_v0 import decode_lattice
+from casa.prisms.memory.lexicon_usage_axes_v0 import attach_axes_to_state, load_axes_jsonl
+from casa.prisms.memory.sss_l2_shard_v0 import is_l2_word_lattice
+from casa.prisms.shared.store_layout_v0 import field_state_path, ltm_root, nca_root
 
 
 def boot_store(
@@ -83,7 +83,7 @@ def boot_store(
 
 
 def smoke_report(state: dict, *, lattice_id: str = "L2_word_00") -> dict[str, Any]:
-    from predict_tick_v0 import predict_tick  # type: ignore
+    from casa.prisms.tick.predict_tick_v0 import predict_tick
 
     lattices = memory_lattices(state)
     rep: dict[str, Any] = {"lattices": len(lattices)}

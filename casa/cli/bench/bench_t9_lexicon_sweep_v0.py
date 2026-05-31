@@ -14,11 +14,11 @@ import sys
 import time
 from pathlib import Path
 
-from lexicon_usage_axes_v0 import T9Policy  # type: ignore
-from predictor_v0 import _prefix_from_index, l2_prefix_index, l2_prefix_candidates  # type: ignore
-from sss_l2_shard_v0 import L2_CONCEPT_PREFIX, lattice_digest_l2_network  # type: ignore
-from sss_segment_v0 import norm_word  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.prisms.memory.lexicon_usage_axes_v0 import T9Policy
+from casa.prisms.tick.predictor_v0 import _prefix_from_index, l2_prefix_index, l2_prefix_candidates
+from casa.prisms.memory.sss_l2_shard_v0 import L2_CONCEPT_PREFIX, lattice_digest_l2_network
+from casa.prisms.memory.sss_segment_v0 import norm_word
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 
 def all_lexicon_words(state: dict) -> list[str]:

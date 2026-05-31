@@ -7,16 +7,16 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism  # type: ignore
+from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
 from typing import Any
 
-from codec_grid_v0 import Grid  # type: ignore
-from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_field_decode_v0 import grapheme_votes_for_word  # type: ignore
-from sss_segment_v0 import norm_word  # type: ignore
-from sss_stack_v0 import _place_token  # type: ignore
-from sss_vocab_v0 import listen_word, w_token  # type: ignore
-from sss_word_candidates_v0 import enumerate_word_candidates  # type: ignore
+from casa.prisms.shared.codec_grid_v0 import Grid
+from casa.prisms.memory.sss_cylinders_v0 import ensure_prisms, memory_lattices
+from casa.prisms.memory.sss_field_decode_v0 import grapheme_votes_for_word
+from casa.prisms.memory.sss_segment_v0 import norm_word
+from casa.prisms.memory.sss_stack_v0 import _place_token
+from casa.prisms.memory.sss_vocab_v0 import listen_word, w_token
+from casa.prisms.memory.sss_word_candidates_v0 import enumerate_word_candidates
 
 
 def q_token(word: str) -> str:

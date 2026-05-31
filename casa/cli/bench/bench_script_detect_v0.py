@@ -14,11 +14,11 @@ import time
 from pathlib import Path
 from typing import Any
 
-from boot_linked_stores_v0 import boot_linked_stores  # type: ignore
-from en_lexicon_v0 import read_headwords  # type: ignore
-from grapheme_ingest_v0 import bootstrap_linked_graphemes  # type: ignore
-from script_tick_v0 import script_tick, simulate_script_prefix  # type: ignore
-from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir  # type: ignore
+from casa.prisms.memory.boot_linked_stores_v0 import boot_linked_stores
+from casa.prisms.memory.en_lexicon_v0 import read_headwords
+from casa.prisms.memory.grapheme_ingest_v0 import bootstrap_linked_graphemes
+from casa.prisms.memory.script_tick_v0 import script_tick, simulate_script_prefix
+from casa.prisms.shared.store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir
 
 
 def evaluate_cue(state: dict, item: dict) -> dict[str, Any]:

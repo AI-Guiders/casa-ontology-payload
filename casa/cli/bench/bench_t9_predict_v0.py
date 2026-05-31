@@ -11,8 +11,8 @@ import argparse
 import json
 from pathlib import Path
 
-from bench_predict_v0 import run_bench  # type: ignore
-from store_boot_v0 import boot_store  # type: ignore
+from casa.cli.bench.bench_predict_v0 import run_bench
+from casa.prisms.shared.store_boot_v0 import boot_store
 
 
 def main() -> None:

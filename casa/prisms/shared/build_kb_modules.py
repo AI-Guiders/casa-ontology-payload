@@ -11,7 +11,7 @@ import argparse
 import json
 from pathlib import Path
 
-from module_masks import ModuleSpec, enumerate_sections, section_slug  # type: ignore
+from casa.prisms.shared.module_masks import ModuleSpec, enumerate_sections, section_slug
 
 
 def _read_json(path: Path) -> dict:
