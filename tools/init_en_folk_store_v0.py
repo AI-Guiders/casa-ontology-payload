@@ -13,6 +13,7 @@ from export_ltm_pack_v0 import export_pack  # type: ignore
 from field_write import save_field_state  # type: ignore
 from grapheme_ingest_v0 import derive_graphemes_from_words, ingest_graphemes_batch  # type: ignore
 from sss_cylinders_v0 import ensure_prisms  # type: ignore
+from lexicon_usage_axes_v0 import attach_en_frequency_axes  # type: ignore
 from store_layout_v0 import STORE_EN_FOLK_V0, agent_store_dir, field_state_path  # type: ignore
 
 
@@ -31,6 +32,9 @@ def init_en_folk_store(
     ingest_rep = ingest_en_lex_batch(state, words, copies=copies, configure=True)
     latn_chars = derive_graphemes_from_words(words, "latn")
     l0_rep = ingest_graphemes_batch(state, latn_chars, "latn", copies=max(3, copies))
+
+    root = Path(__file__).resolve().parent.parent
+    axes_rep = attach_en_frequency_axes(state, root=root, store_dir=store_dir)
 
     fs_path = field_state_path(store_dir)
     save_field_state(fs_path, state, compact=True)
@@ -66,6 +70,7 @@ def init_en_folk_store(
         "field_state": str(fs_path),
         "ltm_totals": manifest.get("totals"),
         "l2_sharding": state.get("l2_sharding"),
+        "lexicon_axes": axes_rep,
     }
 
 

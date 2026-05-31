@@ -16,6 +16,16 @@ from grapheme_ingest_v0 import derive_graphemes_from_words, ingest_graphemes_bat
 from lexicon_headwords_v0 import read_headwords  # type: ignore
 from ru_lexicon_v0 import ingest_ru_lex_batch  # type: ignore
 from sss_cylinders_v0 import ensure_prisms  # type: ignore
+from lexicon_usage_axes_v0 import (  # type: ignore
+    SOURCE_DETCORPUS,
+    SOURCE_OPENSUB_EN,
+    attach_axes_to_state,
+    attach_en_frequency_axes,
+    axes_report,
+    build_modern_axes_from_frequency_jsonl,
+    ru_general_frequency_path,
+    write_axes_jsonl,
+)
 from store_layout_v0 import CORPUS_QUAD, agent_store_dir, field_state_path  # type: ignore
 
 Locale = Literal["en", "ru"]
@@ -52,6 +62,19 @@ def init_lexicon_store(
     else:
         ingest_rep = ingest_ru_lex_batch(state, words, copies=copies, configure=True)
         on_field = int(ingest_rep.get("ru_concepts_on_field") or 0)
+
+    axes_rep: dict[str, Any] | None = None
+    if tier == "general":
+        if locale == "ru":
+            freq_path = ru_general_frequency_path(root=root)
+            if freq_path.is_file():
+                axes = build_modern_axes_from_frequency_jsonl(freq_path, source=SOURCE_DETCORPUS)
+                axes_path = store_dir / "lexicon_axes.v0.jsonl"
+                write_axes_jsonl(axes_path, axes)
+                attach_axes_to_state(state, axes)
+                axes_rep = axes_report(axes)
+        elif locale == "en":
+            axes_rep = attach_en_frequency_axes(state, root=root, store_dir=store_dir)
 
     fs_path = field_state_path(store_dir)
     save_field_state(fs_path, state, compact=True)
@@ -92,6 +115,7 @@ def init_lexicon_store(
         "field_state": str(fs_path),
         "ltm_totals": manifest.get("totals"),
         "l2_sharding": state.get("l2_sharding"),
+        "lexicon_axes": axes_rep,
     }
 
 

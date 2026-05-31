@@ -3,12 +3,14 @@
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
 from f0_math_ingest_v0 import ingest_math_bundle  # type: ignore
 from f0_stack_v0 import decode_f0_lattice, rank_cue_on_f0  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import L2_CONCEPT_PREFIX, lattice_digest_l2_network  # type: ignore
+from lexicon_usage_axes_v0 import T9Policy, filter_ranked_for_t9, lemma_axis  # type: ignore
 from sss_segment_v0 import format_segment, norm_word, segment_hypothesis, verify_segment  # type: ignore
 
 
@@ -56,13 +58,36 @@ def _confidence_from_ranked(ranked: list[tuple[str, Any]], *, top_k: int = 5) ->
     return round(top / max(1.0, top + rest), 3)
 
 
-def _t9_score(word: str, votes: int, prefix: str) -> float:
-    """Shorter completions win over long inflected forms (T9 disambiguation)."""
+def _freq_bonus(word: str, prefix: str, axes: dict[str, dict[str, Any]] | None) -> float:
+    """DetCorpus ipm/rank — ranking tie-break from 3+ grapheme prefix (homoglyph-safe)."""
+    p = norm_word(prefix)
+    if len(p) < 3 or not axes:
+        return 0.0
+    ax = lemma_axis(axes, word)
+    if not ax:
+        return 0.0
+    ipm = float(ax.get("ipm") or 0)
+    if ipm > 0:
+        return math.log1p(ipm) * 4.0
+    rank = int(ax.get("rank") or 0)
+    if rank > 0:
+        return max(0.0, 12.0 - math.log10(rank + 1) * 3.0)
+    return 0.0
+
+
+def _t9_score(
+    word: str,
+    votes: int,
+    prefix: str,
+    *,
+    axes: dict[str, dict[str, Any]] | None = None,
+) -> float:
+    """Field votes + length bias + lexicon ipm/rank (prefix ≥3)."""
     w, p = norm_word(word), norm_word(prefix)
     if not w.startswith(p):
         return float("-inf")
     remaining = len(w) - len(p)
-    return float(votes) * 10.0 - remaining * 25.0 - len(w) * 0.5
+    return float(votes) * 10.0 - remaining * 25.0 - len(w) * 0.5 + _freq_bonus(w, p, axes)
 
 
 def _prefix_bucket_key(prefix: str) -> str:
@@ -107,13 +132,14 @@ def _prefix_from_index(
     prefix: str,
     *,
     top_k: int = 8,
+    axes: dict[str, dict[str, Any]] | None = None,
 ) -> list[tuple[str, int]]:
     p = norm_word(prefix)
     if not p:
         return []
     bucket = _prefix_bucket_items(index, p)
     out = [(word, votes) for word, votes in bucket if word.startswith(p)]
-    out.sort(key=lambda x: (-_t9_score(x[0], x[1], p), len(x[0]), x[0]))
+    out.sort(key=lambda x: (-_t9_score(x[0], x[1], p, axes=axes), len(x[0]), x[0]))
     return out[:top_k]
 
 
@@ -122,6 +148,7 @@ def _prefix_from_digest(
     prefix: str,
     *,
     top_k: int = 8,
+    axes: dict[str, dict[str, Any]] | None = None,
 ) -> list[tuple[str, int]]:
     p = norm_word(prefix)
     if not p:
@@ -133,7 +160,7 @@ def _prefix_from_digest(
         word = cid[len(L2_CONCEPT_PREFIX) :]
         if word.startswith(p):
             out.append((word, int(votes)))
-    out.sort(key=lambda x: (-_t9_score(x[0], x[1], p), len(x[0]), x[0]))
+    out.sort(key=lambda x: (-_t9_score(x[0], x[1], p, axes=axes), len(x[0]), x[0]))
     return out[:top_k]
 
 
@@ -155,9 +182,22 @@ def l2_prefix_index(state: dict, *, force: bool = False) -> dict[str, list[tuple
     return index
 
 
-def l2_prefix_candidates(state: dict, prefix: str, *, top_k: int = 8) -> list[tuple[str, int]]:
+def l2_prefix_candidates(
+    state: dict,
+    prefix: str,
+    *,
+    top_k: int = 8,
+    t9_policy: T9Policy = "prod",
+) -> list[tuple[str, int]]:
     """Words from L2 network matching prefix — field-only (T9)."""
-    return _prefix_from_index(l2_prefix_index(state), prefix, top_k=top_k)
+    axes = state.get("lexicon_axes") or {}
+    raw = _prefix_from_index(
+        l2_prefix_index(state),
+        prefix,
+        top_k=max(top_k * 4, 32),
+        axes=axes or None,
+    )
+    return filter_ranked_for_t9(raw, axes, policy=t9_policy, top_k=top_k)
 
 
 def l2_has_word(state: dict, word: str) -> bool:
@@ -276,14 +316,16 @@ def predict_schema(
     }
 
 
-def predict_t9(state: dict, cue: str, *, top_k: int = 8) -> dict[str, Any]:
+def predict_t9(state: dict, cue: str, *, top_k: int = 8, t9_policy: T9Policy = "prod") -> dict[str, Any]:
     state = ensure_prisms(state)
     prefix = norm_word(cue)
-    ranked = l2_prefix_candidates(state, prefix, top_k=top_k)
+    ranked = l2_prefix_candidates(state, prefix, top_k=top_k, t9_policy=t9_policy)
+    axes = state.get("lexicon_axes") or {}
     anchors = word_anchors_from_ranked(ranked, cue=prefix)
     focus = focus_from_anchors(prefix, anchors)
     top = ranked[0][0] if ranked else None
     lexicon_miss = detect_lexicon_miss(prefix, ranked)
+    top_axis = lemma_axis(axes, top) if top and axes else None
     return {
         "schema_version": 1,
         "modality": "t9",
@@ -297,7 +339,12 @@ def predict_t9(state: dict, cue: str, *, top_k: int = 8) -> dict[str, Any]:
         "lexicon_miss": lexicon_miss,
         "lattice_ids": [lid for lid in memory_lattices(state) if lid.startswith("L2_word")],
         "nca_used": [],
-        "provenance": {"engine": "l2_prefix_index_votes"},
+        "provenance": {"engine": "l2_prefix_index_votes", "t9_policy": t9_policy},
+        "lexicon_filter": {
+            "policy": t9_policy,
+            "axes_loaded": bool(axes),
+            "top_lemma_axis": top_axis,
+        },
         "ranked": ranked,
     }
 

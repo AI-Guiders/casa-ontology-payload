@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from grapheme_ingest_v0 import L0_ID, merge_l0_lattices  # type: ignore
+from lexicon_usage_axes_v0 import attach_axes_to_state, axes_report, merge_locale_axes  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import is_l2_en_word_lattice, sharding_config  # type: ignore
 from store_boot_v0 import boot_store  # type: ignore
@@ -75,6 +76,21 @@ def merge_linked_states(
         int(base.get("field_version") or 0),
         int(en.get("field_version") or 0),
     )
+
+    ru_axes = ru_state.get("lexicon_axes") or {}
+    en_axes = en_state.get("lexicon_axes") or {}
+    if ru_axes or en_axes:
+        merged_axes = merge_locale_axes(ru_axes, en_axes)
+        attach_axes_to_state(base, merged_axes)
+        base["store"]["lexicon_axes_summary"] = {
+            **axes_report(merged_axes),
+            "schema": "lexicon_usage_axes_v0",
+            "locales": {
+                "ru": len(ru_axes),
+                "en": len(en_axes),
+            },
+        }
+
     return base
 
 

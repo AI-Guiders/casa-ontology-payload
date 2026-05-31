@@ -2,7 +2,12 @@
 
 **Канон:** [DetCorpus 50k lemmas](https://github.com/Digital-Pushkin-Lab/Russian-Word-Frequency-Lists-for-Children) (CC0-1.0), не сказки Афанасьева.
 
-Афанасьев → отдельно `ru-literary` / `sss-afan-v0` ingest ref.
+**Афан не в prod** — lab/archaic (`sss-ru-lexicon-v0`). Оси: `design/lexicon-usage-axes-v0.md`.
+
+```bash
+python tools/build_lexicon_usage_axes_v0.py --corpus ru-general
+# → lexicon_axes.v0.jsonl (era, usage_band, active_for_t9)
+```
 
 ## Сборка headwords
 
