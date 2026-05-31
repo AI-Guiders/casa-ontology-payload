@@ -40,6 +40,14 @@
       "size": { "width": 32, "height": 32 },
       "concept_prefix": "task.",
       "role": ["planner", "act"]
+    },
+    {
+      "id": "lattice_predict",
+      "z_ctrl": 4,
+      "size": { "width": 32, "height": 32 },
+      "concept_prefix": "predict.",
+      "role": ["forward_model", "rollout", "prediction_error"],
+      "doc": "tools/predict_tick_v0.py, design/CASA-ADR-0010-control-zone-predict-attention-value.md"
     }
   ],
   "control_bridges": [
@@ -48,6 +56,7 @@
     { "id": "port_P2b", "from": "lattice_fpn_wm", "to": "lattice_cen", "kind": "wm_gated", "channels": ["port.wm.*"] },
     { "id": "port_P3", "from": "lattice_cen", "to": "lattice_dmn", "kind": "task_query", "channels": ["port.task.*"] },
     { "id": "port_P4", "from": "lattice_cen", "to": "lattice_fpn_wm", "kind": "outcome", "channels": ["port.outcome.*"] },
-    { "id": "port_P5", "from": "lattice_fpn_wm", "to": "lattice_sn", "kind": "mode_bias", "channels": ["port.mode.*"], "optional": true }
+    { "id": "port_P5", "from": "lattice_fpn_wm", "to": "lattice_sn", "kind": "mode_bias", "channels": ["port.mode.*"], "optional": true },
+    { "id": "port_P8", "from": "lattice_predict", "to": "lattice_sn", "kind": "prediction_error", "channels": ["port.surprise.*"] }
   ]
 }
