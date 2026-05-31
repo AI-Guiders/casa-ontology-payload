@@ -9,7 +9,7 @@
 
 ```toml
 [workspace.casa_field]
-store_dir = "../casa-ontology-payload/lab/agent-stores/research-agent-lab-v0"
+store_dir = "../casa-ontology-payload/lab/agent-stores/research-agent-lab"
 ```
 
 Requires agent store populated (`import_knowledge_delta` in lab).

@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "title": "Agent store catalog v0",
+  "design": "design/agent-store-catalog.md",
+  "stores": [
+    {
+      "store_id": "sss-ru-lexicon",
+      "path": "sss-ru-lexicon",
+      "locale": "ru",
+      "tier": "archaic",
+      "corpus_id": "afanasyev-sharded",
+      "lifecycle": "lab",
+      "profile_roles": [],
+      "notes": "RU archaic/dialect (Afanasyev 1855). Lab only; prod ru_lexicon → sss-ru-general. Split: design/ru-lexicon-modern-archaic.md"
+    },
+    {
+      "store_id": "sss-ru-general",
+      "path": "sss-ru-general",
+      "locale": "ru",
+      "tier": "general",
+      "corpus_id": "detcorpus-50k-cc0",
+      "lifecycle": "lab",
+      "profile_roles": ["ru_lexicon"],
+      "supersedes": null,
+      "notes": "Modern RU (DetCorpus 50k). Merge excludes archaic-only Afan forms."
+    },
+    {
+      "store_id": "sss-ru-tech",
+      "path": "sss-ru-tech",
+      "locale": "ru",
+      "tier": "tech",
+      "corpus_id": "repo-scan",
+      "lifecycle": "lab",
+      "profile_roles": ["ru_tech"]
+    },
+    {
+      "store_id": "sss-en-folk",
+      "path": "sss-en-folk",
+      "locale": "en",
+      "tier": "general",
+      "corpus_id": "en-folk-gutenberg",
+      "lifecycle": "lab",
+      "profile_roles": ["en_lexicon"]
+    },
+    {
+      "store_id": "sss-en-general",
+      "path": "sss-en-general",
+      "locale": "en",
+      "tier": "general",
+      "corpus_id": "en-folk-gutenberg",
+      "lifecycle": "lab",
+      "profile_roles": ["en_lexicon"]
+    },
+    {
+      "store_id": "sss-en-tech",
+      "path": "sss-en-tech",
+      "locale": "en",
+      "tier": "tech",
+      "corpus_id": "repo-scan",
+      "lifecycle": "lab",
+      "profile_roles": ["en_command", "en_lexicon"]
+    },
+    {
+      "store_id": "control-lab",
+      "path": "control-lab",
+      "locale": null,
+      "tier": "control",
+      "corpus_id": "kb-math-l0",
+      "lifecycle": "lab",
+      "profile_roles": ["control_stack"],
+      "notes": "prism_control DMN/SN/FPN/CEN; see design/control-lattice-stack.md"
+    },
+    {
+      "store_id": "sss-afan",
+      "path": "sss-afan",
+      "locale": "ru",
+      "tier": "literary",
+      "corpus_id": "afanasyev-monolith",
+      "lifecycle": "ingest_ref",
+      "profile_roles": [],
+      "notes": "Read-only monolith; not for profile boot"
+    }
+  ]
+}

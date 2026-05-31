@@ -9,10 +9,10 @@ $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 $env:PYTHONUNBUFFERED = '1'
 
-$grammar = 'lab/agent-stores/language-agent-lab-v0/bundles/kb-russian-language-rules-v1.bundle.v1.json'
+$grammar = 'lab/agent-stores/language-agent-lab/bundles/kb-russian-language-rules-v1.bundle.v1.json'
 $bundles = @(
     $grammar,
-    'lab/agent-stores/language-agent-lab-v0/bundles/kb-regex-mre3-ru-chapter-map-v1.bundle.v1.json'
+    'lab/agent-stores/language-agent-lab/bundles/kb-regex-mre3-ru-chapter-map-v1.bundle.v1.json'
 )
 
 Write-Host '=== GPU windows_per_batch sweep (union bundles, short) ===' -ForegroundColor Cyan

@@ -6,8 +6,8 @@ Set-Location $Root
 . (Join-Path $PSScriptRoot '_kb_env.ps1')
 Require-AgentNotesKb
 
-$store = 'lab/agent-stores/language-agent-lab-v0'
-$card = 'lab/agent-cards/research-agent.v0.json'
+$store = 'lab/agent-stores/language-agent-lab'
+$card = 'lab/agent-cards/research-agent.json'
 
 Write-Host '=== Exp J0: sync grammar + literacy (language store) ===' -ForegroundColor Cyan
 & (Join-Path $Root 'scripts\run_exp_j_language_sync.ps1')

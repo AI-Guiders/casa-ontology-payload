@@ -41,7 +41,7 @@ def main() -> None:
             Path("lab/research-spec.bundle.v1.json"),
         ],
     )
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--damage", type=float, default=0.4)
     p.add_argument("--damage-patches", type=int, default=8)
     p.add_argument("--epochs", type=int, default=1000)

@@ -21,11 +21,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 JOBS: list[list[str]] = [
-    ["tools/fetch_ru_frequency_headwords_v0.py"],
-    ["tools/fetch_en_frequency_headwords_v0.py"],
-    ["tools/fetch_ud_lemma_pos_v0.py", "--locale", "ru"],
-    ["tools/fetch_ud_lemma_pos_v0.py", "--locale", "en"],
-    ["scripts/fetch_en_folk_gutenberg_v0.py"],
+    ["tools/fetch_ru_frequency_headwords.py"],
+    ["tools/fetch_en_frequency_headwords.py"],
+    ["tools/fetch_ud_lemma_pos.py", "--locale", "ru"],
+    ["tools/fetch_ud_lemma_pos.py", "--locale", "en"],
+    ["scripts/fetch_en_folk_gutenberg.py"],
 ]
 
 

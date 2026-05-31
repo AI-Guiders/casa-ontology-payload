@@ -1,14 +1,14 @@
 {
   "schema_version": 2,
   "grid": { "width": 64, "height": 64 },
-  "parent": "design/layout.v0.json",
-  "notes": "INTERIM: y-bands simulate SSS levels. Target: separate lattices per z_level + z_bridges (sss-lattice-stack.v0.json).",
+  "parent": "design/layout.json",
+  "notes": "INTERIM: y-bands simulate SSS levels. Target: separate lattices per z_level + z_bridges (prisms/memory/stack.json).",
   "status": "interim",
-  "superseded_by": "design/sss-lattice-stack.v0.json",
+  "superseded_by": "design/prisms/memory/stack.json",
   "subsystem": {
     "id": "sss",
     "title": "Second signal system (вторая сигнальная система)",
-    "doc": "design/second-signal-system-v0.md",
+    "doc": "design/second-signal-system.md",
     "dmn_layers": ["dmn_b0_grapheme", "dmn_b1_syllable", "dmn_b2_word", "dmn_b3_phrase"]
   },
   "regions": [

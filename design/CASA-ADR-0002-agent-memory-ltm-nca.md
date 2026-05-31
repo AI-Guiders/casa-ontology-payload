@@ -2,7 +2,7 @@
 
 **Статус:** принято (lab v0, 2026-05-30)  
 **Область:** SSS / agent store / поставка лексикона  
-**Связано:** [`ltm-pack-v0.md`](ltm-pack-v0.md), [`memory-hierarchy-v0.md`](memory-hierarchy-v0.md), [`l2-lattice-sharding-v0.md`](l2-lattice-sharding-v0.md), [`nca-train-defaults.v0.json`](nca-train-defaults.v0.json), канон KB (`agent-notes`, `kb-one-pager-structure-and-protocols-v1.md`)
+**Связано:** [`ltm-pack.md`](ltm-pack.md), [`memory-hierarchy.md`](memory-hierarchy.md), [`l2-lattice-sharding.md`](l2-lattice-sharding.md), [`nca-train-defaults.json`](nca-train-defaults.json), канон KB (`agent-notes`, `kb-one-pager-structure-and-protocols-v1.md`)
 
 ---
 
@@ -16,7 +16,7 @@
 |------------|------|
 | Слои **L0–L3** | что всегда в силе → оперативка по домену → архив/evidence → семантический роутинг |
 
-Semantic layer ids (prose): `memory.grapheme` … `memory.phrase` — [naming-memory-layers-v0.md](naming-memory-layers-v0.md); CIDE cross-ref [naming-layers-v1.md](../../cascade-ide/docs/design/naming-layers-v1.md) §6.
+Semantic layer ids (prose): `memory.grapheme` … `memory.phrase` — [naming-memory-layers.md](naming-memory-layers.md); CIDE cross-ref [naming-layers-v1.md](../../cascade-ide/docs/design/naming-layers-v1.md) §6.
 | **Домен** | ось темы (Git, язык, HCI, …) |
 | **Понятие** | `concept_id`, карточки, слоты |
 | **Факт** | `claims` (`claim`, `rule`, `concept`, …) |
@@ -24,7 +24,7 @@ Semantic layer ids (prose): `memory.grapheme` … `memory.phrase` — [naming-me
 
 Загрузка по контракту: **status → playbook → matrix → kb** — тяжёлое только по запросу.
 
-**Тот же принцип на поле:** не RAG по `field_state.json`, а **смыслы на решётках** + цикл listen → babble → correct → sleep. См. [`language-acquisition-loop-v0.md`](language-acquisition-loop-v0.md) § «Смысл, не RAG», контракт [`understanding-contract-v0.md`](understanding-contract-v0.md).
+**Тот же принцип на поле:** не RAG по `field_state.json`, а **смыслы на решётках** + цикл listen → babble → correct → sleep. См. [`language-acquisition-loop.md`](language-acquisition-loop.md) § «Смысл, не RAG», контракт [`understanding-contract.md`](understanding-contract.md).
 
 ### Как устроена память на поле (SSS)
 
@@ -73,17 +73,17 @@ repair выведенных правил     =  nca/rules/<rule_id>/    (пос�
 
 - Бинарник `.ltm` на решётку: словарь токенов один раз + sparse `(token_idx, x, y)`.
 - `pack.manifest.json`: `l2_sharding`, реестр `nca.models`, метаданные решёток.
-- Измерено на `sss-ru-lexicon-v0`: **~2,6 MiB** на весь L2 (65 решёток) против **~429 MiB** `field_state.json` при том же содержимом `cells`.
+- Измерено на `sss-ru-lexicon`: **~2,6 MiB** на весь L2 (65 решёток) против **~429 MiB** `field_state.json` при том же содержимом `cells`.
 
-Инструменты: `export_ltm_pack_v0.py`, `import_ltm_pack_v0.py` — см. [`ltm-pack-v0.md`](ltm-pack-v0.md).
+Инструменты: `export_ltm_pack.py`, `import_ltm_pack.py` — см. [`ltm-pack.md`](ltm-pack.md).
 
 ### 3. NCA — «иммунитет поля», не энциклопедия (v0)
 
 - Обучение: целевой тензор `[K,H,W]` с полки после listen/remigrate; loss — вернуть паттерн после damage.
 - Размер мал, потому что в весах **динамика CA**, а не 42k лемм.
-- Обучение по канону: [`nca-train-defaults.v0.json`](nca-train-defaults.v0.json), режим **windowed** по умолчанию для шардов L2.
+- Обучение по канону: [`nca-train-defaults.json`](nca-train-defaults.json), режим **windowed** по умолчанию для шардов L2.
 
-**v1 (roadmap, не отменяет v0):** **`NCA_rule`** — **тот же** damage→regrow, что lexicon repair, но на **patch правила** (`H2` / `L3` rule region / `F2`). Обучается **только** на snapshot после pass **Critic** (Predict → validate). Без validate — правило не получает regrow-weights. См. [`understanding-contract-v0.md`](understanding-contract-v0.md) § «Два NCA repair».
+**v1 (roadmap, не отменяет v0):** **`NCA_rule`** — **тот же** damage→regrow, что lexicon repair, но на **patch правила** (`H2` / `L3` rule region / `F2`). Обучается **только** на snapshot после pass **Critic** (Predict → validate). Без validate — правило не получает regrow-weights. См. [`understanding-contract.md`](understanding-contract.md) § «Два NCA repair».
 
 ```text
 nca/
@@ -95,11 +95,11 @@ nca/
 
 | Артефакт | Роль |
 |----------|------|
-| `{store}/nca_train_registry.v0.json` | `last_trained_at`, `field_version_at_train`, `token_count_at_train`, очередь `pending[]` |
-| `tools/nca_stale_shards_v0.py` | `--dry-run` / `--train` по stale; default **25** epochs (`sss_shard_incremental`) |
-| `tools/lexicon_cold_ingest_v0.py` | после ingest → `merge_pending(shard_histogram)` |
+| `{store}/nca_train_registry.json` | `last_trained_at`, `field_version_at_train`, `token_count_at_train`, очередь `pending[]` |
+| `tools/nca_stale_shards.py` | `--dry-run` / `--train` по stale; default **25** epochs (`sss_shard_incremental`) |
+| `tools/lexicon_cold_ingest.py` | после ingest → `merge_pending(shard_histogram)` |
 
-Причины stale: `missing_model`, `pending_ingest`, `field_version_drift`, `token_count_drift`, опционально `repair_smoke_fail`. Порог `min_tokens` (default 8) — как в `train_sss_nca_shards_v0.py`; для разреженных dev-store в bench — `--min-tokens 1`.
+Причины stale: `missing_model`, `pending_ingest`, `field_version_drift`, `token_count_drift`, опционально `repair_smoke_fail`. Порог `min_tokens` (default 8) — как в `train_memory_nca_shards.py`; для разреженных dev-store в bench — `--min-tokens 1`.
 
 ### 5. Выровнять дорожную карту с моделью KB
 
@@ -139,7 +139,7 @@ nca/
 ### Что не меняется
 
 - KB остаётся **источником правды** для фактов и графа.
-- Имя корпуса (Afan, bukvar) **не** задаёт структуру store (`sss-ru-lexicon-v0`, не `sss-afan-*` в layout).
+- Имя корпуса (Afan, bukvar) **не** задаёт структуру store (`sss-ru-lexicon`, не `sss-afan-*` в layout).
 
 ---
 
@@ -147,10 +147,10 @@ nca/
 
 - [x] Export L2 → `ltm/` ≤ 5 MiB при ~42k слов (факт: ~2,6 MiB).
 - [x] Round-trip `L2_word_00.cells` идентичен.
-- [x] NCA windowed по умолчанию; дефолты в `nca-train-defaults.v0.json`.
+- [x] NCA windowed по умолчанию; дефолты в `nca-train-defaults.json`.
 - [ ] Runtime: agent store стартует из `ltm/` + `nca/` без `field_state.json` на диске.
 - [ ] Документирован tier поставки в [`lab/agent-stores/INDEX.md`](../lab/agent-stores/INDEX.md) (частично).
-- [x] Incremental NCA: `nca_train_registry.v0.json` + `nca_stale_shards_v0.py` (bench: `bench_nca_stale_v0.py`).
+- [x] Incremental NCA: `nca_train_registry.json` + `nca_stale_shards.py` (bench: `bench_nca_stale.py`).
 
 ---
 
@@ -159,9 +159,9 @@ nca/
 | Документ | Роль |
 |----------|------|
 | `lab/kb/casa-adr-0001.payload.json` / ADR-0001 в agent-notes | трек CA-субстрата (отдельно) |
-| [`ltm-pack-v0.md`](ltm-pack-v0.md) | спецификация формата и команд |
+| [`ltm-pack.md`](ltm-pack.md) | спецификация формата и команд |
 | [`CASA-ADR-0007-agent-profile-store-packs.md`](CASA-ADR-0007-agent-profile-store-packs.md) | agent profile + export ltm (продукты) |
-| [`nca-train-core-v0.md`](nca-train-core-v0.md) | общий цикл обучения NCA |
+| [`nca-train-core.md`](nca-train-core.md) | общий цикл обучения NCA |
 | KB `kb-one-pager-structure-and-protocols-v1.md` | слои L0–L3, домены, роутинг |
 
 ---

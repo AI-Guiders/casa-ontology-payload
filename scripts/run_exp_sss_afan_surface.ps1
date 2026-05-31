@@ -6,7 +6,7 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-afan-v0'
+$store = 'lab/agent-stores/sss-afan'
 $bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $outDir = 'lab/exp_sss_v1'
 
@@ -14,7 +14,7 @@ Write-Host '=== Afan-II: held-out surface (mixed cases) ===' -ForegroundColor Cy
 python tools/bench_sss_heldout.py `
     --store-dir $store `
     --bundle $bundle `
-    --cases "$outDir/heldout_afan_v0.json" `
+    --cases "$outDir/heldout_afan.json" `
     --top-k 3 `
     --out "$outDir/report_afan_heldout.json"
 
@@ -27,8 +27,8 @@ python tools/bench_sss_heldout.py `
     --out "$outDir/report_afan_heldout_bukvar.json"
 
 Write-Host '=== Afan-II: sample surface surfaces ===' -ForegroundColor Cyan
-python tools/sss_surface_v0.py --store-dir $store --lattice L1_syllable --prompt "п а"
-python tools/sss_surface_v0.py --store-dir $store --lattice L1_syllable --prompt "г о"
-python tools/sss_surface_v0.py --store-dir $store --lattice L2_word --prompt "колобок"
+python tools/sss_surface.py --store-dir $store --lattice L1_syllable --prompt "п а"
+python tools/sss_surface.py --store-dir $store --lattice L1_syllable --prompt "г о"
+python tools/sss_surface.py --store-dir $store --lattice L2_word --prompt "колобок"
 
 Write-Host 'Done. Reports:' "$outDir/report_afan_heldout.json"

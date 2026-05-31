@@ -6,9 +6,9 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-full-v0'
+$store = 'lab/agent-stores/sss-full'
 $bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
-$stack = 'design/sss-lattice-stack.v0.json'
+$stack = 'design/prisms/memory/stack.json'
 
 Write-Host '=== generate full bukvar bundle ===' -ForegroundColor Cyan
 python tools/gen_kb_bukvar_ru_full.py --out $bundle

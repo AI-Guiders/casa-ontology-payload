@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import replay_buffer_v0 as rb
+import casa.prisms.hippo.replay_buffer as rb
 
 
 def _surface(ep_id: str, *, archived: int = 0, replayed=None, replays: int = 0, **over) -> dict:

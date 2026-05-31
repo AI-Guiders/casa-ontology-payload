@@ -6,7 +6,7 @@
 
 ## Tiers
 
-From `manifests/kb-bundle-tiers.v0.json` (baseline mix @ damage 0.4, threshold **0.85**):
+From `manifests/kb-bundle-tiers.json` (baseline mix @ damage 0.4, threshold **0.85**):
 
 | Tier | Train |
 |------|--------|
@@ -25,7 +25,7 @@ Bench: union model, all bundles @ 0.4 (global, same as E/F).
 - `tools/build_kb_bundle_tiers.py` — regenerate tiers from E bench  
 - `tools/train_tiered_cluster.py` — run both phases per cluster  
 - `tools/exp_g_tiered.py` — full experiment + report  
-- `scripts/run_tiered_g_v0.ps1`
+- `scripts/run_tiered_g.ps1`
 
 ## Output
 

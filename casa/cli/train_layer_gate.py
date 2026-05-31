@@ -55,7 +55,7 @@ def main() -> None:
     p.add_argument("--bundle", type=Path, required=True)
     p.add_argument("--dmn-model", type=Path, required=True)
     p.add_argument("--digest-model", type=Path, required=True)
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--damage-patches", type=int, default=8)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--gate-steps", type=int, default=12)

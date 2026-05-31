@@ -21,8 +21,8 @@ def main() -> None:
     p.add_argument("--max-paste-ratio", type=float, default=0.45)
     args = p.parse_args()
 
-    from casa.prisms.tick.articulation_grammar_v0 import compose_answer_text_sketch
-    from casa.prisms.tick.articulation_realize_v0 import compose_answer_text, paste_ratio
+    from casa.prisms.tick.articulation_grammar import compose_answer_text_sketch
+    from casa.prisms.tick.articulation_realize import compose_answer_text, paste_ratio
     from casa.prisms.shared.canonical import CANONICAL_FIELD_MIN_VOTES
     from casa.prisms.control.sn_cen_infer import _run_from_field
     from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict

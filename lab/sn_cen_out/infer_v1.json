@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "pipeline": "sn_cen_field_v2",
-  "bundle": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\language-agent-lab-v0\\bundles\\kb-russian-literacy-agent.bundle.v1.json",
-  "field_state": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\language-agent-lab-v0\\field_state.json",
+  "bundle": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\language-agent-lab\\bundles\\kb-russian-literacy-agent.bundle.v1.json",
+  "field_state": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\language-agent-lab\\field_state.json",
   "field": {
     "field_version": 28,
     "stale": false,
@@ -12,7 +12,7 @@
       "kb-russian-literacy-agent.bundle.v1.json"
     ]
   },
-  "dmn_model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\language-agent-lab-v0\\checkpoints\\model_hard.pt",
+  "dmn_model": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\language-agent-lab\\checkpoints\\model_hard.pt",
   "wall_ms": 8.32,
   "recovery": {
     "concepts": {

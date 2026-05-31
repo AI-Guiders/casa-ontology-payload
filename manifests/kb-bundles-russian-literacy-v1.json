@@ -14,5 +14,5 @@
   "union_train_bundles": [
     "lab/kb/kb-russian-literacy-agent.bundle.v1.json"
   ],
-  "notes": "Exp J0: read/write literacy before domain KB. Import into language-agent-lab-v0 with grammar union."
+  "notes": "Exp J0: read/write literacy before domain KB. Import into language-agent-lab with grammar union."
 }

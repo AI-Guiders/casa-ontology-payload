@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import control_value_v0 as lv
-import replay_buffer_v0 as rb
+import casa.prisms.control.value as lv
+import casa.prisms.hippo.replay_buffer as rb
 
 
 def test_committed_correction_beats_pending():

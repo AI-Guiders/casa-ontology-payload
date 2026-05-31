@@ -6,7 +6,7 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-segment-v0'
+$store = 'lab/agent-stores/sss-segment'
 $bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $heldout = 'lab/exp_sss_v1/segment_heldout_words.json'
 $train = 'lab/exp_sss_v1/segment_train_vstrecha.json'
@@ -16,7 +16,7 @@ python tools/gen_kb_bukvar_ru_full.py --out $bundle
 python tools/sss_field.py --store-dir $store --bundle $bundle --listen-passes 2 --init
 
 Write-Host '=== teach rule + sleep + held-out ===' -ForegroundColor Cyan
-python tools/run_segment_smoke_v0.py `
+python tools/run_segment_smoke.py `
     --store-dir $store `
     --bundle $bundle `
     --train $train `

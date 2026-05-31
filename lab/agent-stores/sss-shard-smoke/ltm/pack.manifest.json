@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "format": "ltm-pack",
+  "field_version": 130,
+  "updated_at": "2026-05-30T20:49:21.789229+00:00",
+  "lattices": {
+    "lattice_cen": {
+      "path": "ltm/ctrl/lattice_cen.ltm",
+      "compress": null,
+      "raw_bytes": 195,
+      "file_bytes": 195,
+      "vocab": 6,
+      "placements": 12,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_ctrl": 3,
+        "concept_prefix": "task.",
+        "subsystem": "control"
+      }
+    },
+    "lattice_dmn": {
+      "path": "ltm/ctrl/lattice_dmn.ltm",
+      "compress": null,
+      "raw_bytes": 29544,
+      "file_bytes": 29544,
+      "vocab": 728,
+      "placements": 1994,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_ctrl": 0,
+        "concept_prefix": "",
+        "subsystem": "control"
+      }
+    },
+    "lattice_fpn_wm": {
+      "path": "ltm/ctrl/lattice_fpn_wm.ltm",
+      "compress": null,
+      "raw_bytes": 172,
+      "file_bytes": 172,
+      "vocab": 5,
+      "placements": 12,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_ctrl": 2,
+        "concept_prefix": "wm.",
+        "subsystem": "control"
+      }
+    },
+    "lattice_sn": {
+      "path": "ltm/ctrl/lattice_sn.ltm",
+      "compress": null,
+      "raw_bytes": 188,
+      "file_bytes": 188,
+      "vocab": 6,
+      "placements": 12,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_ctrl": 1,
+        "concept_prefix": "salience.",
+        "subsystem": "control"
+      }
+    }
+  },
+  "l2_sharding": {
+    "enabled": true,
+    "num_shards": 64,
+    "legacy_lattice": "L2_word",
+    "shard_prefix": "L2_word_",
+    "word_index": {
+      "жили": "L2_word_28",
+      "были": "L2_word_33",
+      "старик": "L2_word_21",
+      "со": "L2_word_03",
+      "старухой": "L2_word_52",
+      "вот": "L2_word_41",
+      "и": "L2_word_30",
+      "говорит": "L2_word_47",
+      "старухе": "L2_word_38",
+      "испеки": "L2_word_30",
+      "ка": "L2_word_16",
+      "старушка": "L2_word_61",
+      "колобок": "L2_word_34",
+      "старуха": "L2_word_41",
+      "взяла": "L2_word_36",
+      "муку": "L2_word_50",
+      "да": "L2_word_26",
+      "испекла": "L2_word_14",
+      "положила": "L2_word_47",
+      "на": "L2_word_21",
+      "окошко": "L2_word_63",
+      "остудить": "L2_word_51",
+      "полежал": "L2_word_07",
+      "покатился": "L2_word_36",
+      "катится": "L2_word_48",
+      "по": "L2_word_60",
+      "дорожке": "L2_word_62",
+      "навстречу": "L2_word_27",
+      "зайцу": "L2_word_23",
+      "заяц": "L2_word_42",
+      "колобку": "L2_word_55",
+      "я": "L2_word_16",
+      "тебя": "L2_word_42",
+      "съем": "L2_word_14",
+      "а": "L2_word_44",
+      "запел": "L2_word_04",
+      "от": "L2_word_13",
+      "зайца": "L2_word_00",
+      "ушёл": "L2_word_61",
+      "дальше": "L2_word_17",
+      "волку": "L2_word_52",
+      "класс": "L2_word_34",
+      "волк": "L2_word_03"
+    }
+  },
+  "nca": null,
+  "totals": {
+    "lattice_count": 4,
+    "raw_bytes": 30099,
+    "file_bytes": 30099
+  }
+}

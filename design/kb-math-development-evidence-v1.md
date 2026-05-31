@@ -8,4 +8,4 @@
 
 Human numeracy / basic calculation (Cowan et al. 2011, …). **`transfer_boundary: deny`** → F0/oracle/bench without engineering bridge. Hypotheses only: retrieval fluency vs number sense, WM/oral-language covariates.
 
-**CASA neighbors:** [`f0-math-logical-layer-v0.md`](f0-math-logical-layer-v0.md), [`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md) (B0–B3 before F0 compose).
+**CASA neighbors:** [`f0-math-logical-layer.md`](f0-math-logical-layer.md), [`bukvar-text-modality.md`](bukvar-text-modality.md) (B0–B3 before F0 compose).

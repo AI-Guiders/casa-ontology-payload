@@ -814,7 +814,7 @@
     },
     {
       "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.113",
-      "text": "Store: language-agent-lab-v0 (union с grammar + literacy).",
+      "text": "Store: language-agent-lab (union с grammar + literacy).",
       "doc_path": "worlds/evidence-humanities-shelf/kb-russian-literacy-agent-v1.md",
       "section": "Русский для агента: читать запросы и писать ответы (literacy v1) / 17. Операционное использование",
       "claim_kind": "claim"
@@ -937,7 +937,7 @@
     },
     {
       "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.113",
-      "label": "Store: language-agent-lab-v0 (union с grammar + literacy)."
+      "label": "Store: language-agent-lab (union с grammar + literacy)."
     },
     {
       "concept_id": "ru.grammar.русский_для_агента_читать_запросы_и_.114",

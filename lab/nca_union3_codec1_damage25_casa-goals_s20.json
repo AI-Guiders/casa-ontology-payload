@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "bundle": "lab\\casa-goals.bundle.v1.json",
-  "layout": "design\\layout.v0.json",
+  "layout": "design\\layout.json",
   "region": "dmn_ontology",
   "damage": 0.25,
   "seeds": {

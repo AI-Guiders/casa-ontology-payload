@@ -1,7 +1,7 @@
 # Import knowledge delta v1 (online field write)
 
 **Status:** lab tool `tools/import_knowledge_delta.py`  
-**Related:** `design/knowledge-delta.v0.schema.json`, `design/agent-federation-v0.md`
+**Related:** `design/knowledge-delta.schema.json`, `design/agent-federation.md`
 
 ## Idea
 
@@ -32,12 +32,12 @@ cd Financial\software\open\casa-ontology-payload
 
 # Full bundle replace (sample delta)
 python tools/import_knowledge_delta.py `
-  --delta lab/agent-cards/sample-knowledge-delta.v0.json `
+  --delta lab/agent-cards/sample-knowledge-delta.json `
   --copy-checkpoint --bench
 
 # Patch delta (after first import populated store)
 python tools/import_knowledge_delta.py `
-  --delta lab/test-deltas/patch-import-concept.v0.json `
+  --delta lab/test-deltas/patch-import-concept.json `
   --bench
 ```
 

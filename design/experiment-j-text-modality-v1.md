@@ -20,7 +20,7 @@ Russian queries → **answer_blocks** (claim text from field/KB), not only navig
 
 ## Store
 
-`lab/agent-stores/language-agent-lab-v0`
+`lab/agent-stores/language-agent-lab`
 
 ## Smoke
 
@@ -29,11 +29,11 @@ $env:AGENT_NOTES_KB = '../agent-notes/knowledge'
 .\scripts\run_exp_j_language_sync.ps1
 
 python tools/sn_cen_infer.py --from-field --query "согласно приказу" `
-  --store-dir lab/agent-stores/language-agent-lab-v0
+  --store-dir lab/agent-stores/language-agent-lab
 
 python tools/bench_answer_recall.py `
   --queries lab/exp_j_ru_queries.jsonl `
-  --store-dir lab/agent-stores/language-agent-lab-v0 `
+  --store-dir lab/agent-stores/language-agent-lab `
   --out lab/exp_j_ru_v1/report.json
 ```
 
@@ -51,7 +51,7 @@ python tools/bench_answer_recall.py `
 | full grammar | `nca_out_exp_j_ru_grammar_full_v1/model.pt`, `exp_j_ru_v1/curve_grammar_s20.json` |
 | full union | `nca_out_exp_j_ru_union_full_v1/model.pt`, `curve_union_s20.json` |
 
-Checkpoint: `language-agent-lab-v0/checkpoints/model_hard.pt`
+Checkpoint: `language-agent-lab/checkpoints/model_hard.pt`
 
 ## FPN + autonomous T (v0)
 
@@ -79,7 +79,7 @@ Checkpoint: `language-agent-lab-v0/checkpoints/model_hard.pt`
 .\scripts\run_exp_j_train_windowed.ps1 -Union -Epochs 1200   # union full (batched)
 ```
 
-Канон: [`windowed-field-and-planner-v0.md`](windowed-field-and-planner-v0.md), ablation: [`experiment-j-windows-ablation-v1.md`](experiment-j-windows-ablation-v1.md).  
+Канон: [`windowed-field-and-planner.md`](windowed-field-and-planner.md), ablation: [`experiment-j-windows-ablation-v1.md`](experiment-j-windows-ablation-v1.md).  
 Выход grammar: `nca_out_exp_j_ru_windowed_v1/`; union: `nca_out_exp_j_ru_union_windowed_v1/`, `curve_union_windowed_s20.json`, `compare_grammar_full_vs_union_windowed.json`.
 
 ## Data scale (2026-05-29)

@@ -6,9 +6,9 @@ Set-Location $Root
 . (Join-Path $PSScriptRoot '_kb_env.ps1')
 Require-AgentNotesKb
 
-$manifest = 'manifests/kb-bundles-csharp-lab-v0.json'
-$store = 'lab/agent-stores/code-agent-lab-v0'
-$card = 'lab/agent-cards/research-agent.v0.json'
+$manifest = 'manifests/kb-bundles-csharp-lab.json'
+$store = 'lab/agent-stores/code-agent-lab'
+$card = 'lab/agent-cards/research-agent.json'
 $doc = 'kb-csharp-guess-number-canonical'
 
 Write-Host '=== Exp K: sync csharp lab KB ===' -ForegroundColor Cyan

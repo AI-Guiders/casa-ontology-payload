@@ -98,11 +98,11 @@ def finetune_after_import(
     device_name: str = "auto",
 ) -> FinetuneResult:
     from casa.prisms.shared.codec_grid_v3 import encode_bundle_to_grid as enc_v3, tokens_for_bundle as tok_v3
-    from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+    from casa.prisms.shared.codec_grid import decode_grid, score_recovery
 
-    modules_manifest = _read_json(repo / "manifests/kb-modules.v0.json")
-    clusters_manifest = _read_json(repo / "manifests/kb-clusters.v0.json")
-    layout = _read_json(repo / "design/layout.v0.json")
+    modules_manifest = _read_json(repo / "manifests/kb-modules.json")
+    clusters_manifest = _read_json(repo / "manifests/kb-clusters.json")
+    layout = _read_json(repo / "design/layout.json")
     rect = _get_region_rect(layout, "dmn_ontology")
     concept_mode = modules_manifest.get("concept_mode", "section")
 

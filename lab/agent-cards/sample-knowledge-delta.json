@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "type": "knowledge_delta",
+  "source_agent_id": "research-agent-lab",
+  "target_cluster": "research",
+  "bundle": {
+    "path": "lab/kb-perdoc/research-ml.bundle.v1.json",
+    "action": "replace"
+  },
+  "digest": {
+    "summary": "Example delta: research-ml bundle with hard tier after module finetune",
+    "added_concept_ids": [],
+    "added_edges": [],
+    "modules_activated": ["research/research-ml/1-core-hypothesis"],
+    "tier": "hard"
+  },
+  "requires": [
+    "casa-goals.bundle.v1.json",
+    "lab/ca-substrate-agent.bundle.v1.json"
+  ],
+  "provides": ["research-ml.bundle.v1.json"],
+  "checkpoint_hard": "lab/exp_g_tiered_v1/research/model.pt",
+  "epistemic": {
+    "confidence": 0.85,
+    "source_doc_paths": [
+      "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md"
+    ],
+    "conflicts_with": []
+  }
+}

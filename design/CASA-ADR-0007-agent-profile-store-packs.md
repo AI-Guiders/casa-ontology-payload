@@ -3,7 +3,7 @@
 **Статус:** accepted (design + lab path)  
 **Дата:** 2026-05-30  
 **Область:** поставка агента, agent store, runtime boot, продуктовые профили  
-**Связано:** [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`ltm-pack-v0.md`](ltm-pack-v0.md), [`CASA-ADR-0006-t9-predictive-text.md`](CASA-ADR-0006-t9-predictive-text.md), [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md), [`agent-existence-north-star-v0.md`](agent-existence-north-star-v0.md)  
+**Связано:** [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`ltm-pack.md`](ltm-pack.md), [`CASA-ADR-0006-t9-predictive-text.md`](CASA-ADR-0006-t9-predictive-text.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`agent-existence-north-star.md`](agent-existence-north-star.md)  
 **KB canon (deployment):** `ca-substrate-agent/kb-casa-deployment-tracks-v1.md` — **`Autonomous.Standalone`** · **`Autonomous.Integrated.CascadeIDE`** (не A/B); одна автономия, разные instance.
 
 ---
@@ -21,12 +21,12 @@
 | Кирпич | Где |
 |--------|-----|
 | **Store-pack unit** | `{store}/ltm/` + `{store}/nca/` — ADR-0002 |
-| **Export / import** | `export_ltm_pack_v0.py`, `import_ltm_pack_v0.py` — см. [`ltm-pack-v0.md`](ltm-pack-v0.md) |
-| **Boot** | `store_boot_v0.py`, `boot_linked_stores_v0.py` |
-| **Modality router** | `unified_tick_v0.py` (script → T9 → ortho) |
-| **Act (demo)** | `t9_runtime_v0.py`, `apps/Casa.T9.Console` |
+| **Export / import** | `export_ltm_pack.py`, `import_ltm_pack.py` — см. [`ltm-pack.md`](ltm-pack.md) |
+| **Boot** | `store_boot.py`, `boot_linked_stores.py` |
+| **Modality router** | `unified_tick.py` (script → T9 → ortho) |
+| **Act (demo)** | `t9_runtime.py`, `apps/Casa.T9.Console` |
 
-**Не хватает:** формального **agent profile** (рецепт «какие stores + boot + act») и тонкой обёртки **`run_agent_profile_v0.py`**.
+**Не хватает:** формального **agent profile** (рецепт «какие stores + boot + act») и тонкой обёртки **`run_agent_profile.py`**.
 
 ---
 
@@ -43,8 +43,8 @@
 | Слой | Меняется между продуктами? | Пример |
 |------|----------------------------|--------|
 | **Core** | **нет** (версия runtime) | `casa-ontology-payload` tools |
-| **Agent store** | **да** | `lab/agent-stores/sss-ru-lexicon-v0` |
-| **Profile** | **да** | `bilingual-t9-console-v0.json` |
+| **Agent store** | **да** | `lab/agent-stores/sss-ru-lexicon` |
+| **Profile** | **да** | `bilingual-t9-console.json` |
 
 **Цилиндры** (`prism_memory`, `prism_hippo`, `prism_io`) и **SN/DMN/CEN** — **архитектура core**, не отдельный store «Dev-мозг».
 
@@ -53,8 +53,8 @@
 **Поставка памяти** = каталог agent store после export:
 
 ```bash
-python tools/export_ltm_pack_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0
-python tools/export_ltm_pack_v0.py --store-dir lab/agent-stores/sss-en-folk-v0
+python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-ru-lexicon
+python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-en-folk
 # опционально: --compress  → .ltm.zst
 ```
 
@@ -76,20 +76,20 @@ python tools/export_ltm_pack_v0.py --store-dir lab/agent-stores/sss-en-folk-v0
 - git history, checkpoints вне `nca/`
 - сырой corpus (Afan txt, Gutenberg) — только **результат ingest** в `ltm/`
 
-**tar.gz** — опциональная **транспортная обёртка** для release/CDN; канонический контракт — `ltm/` + `nca/` в store dir, собранные через `export_ltm_pack_v0.py`.
+**tar.gz** — опциональная **транспортная обёртка** для release/CDN; канонический контракт — `ltm/` + `nca/` в store dir, собранные через `export_ltm_pack.py`.
 
 ### 3. Agent profile v0 (рецепт продукта)
 
-Файлы: `lab/agent-profiles/*.v0.json`
+Файлы: `lab/agent-profiles/*.json`
 
 ```json
 {
   "schema_version": 1,
-  "profile_id": "bilingual-t9-console-v0",
+  "profile_id": "bilingual-t9-console",
   "title": "Bilingual T9 (RU+EN) — console demo",
   "stores": [
-    { "role": "ru", "store_dir": "lab/agent-stores/sss-ru-lexicon-v0" },
-    { "role": "en", "store_dir": "lab/agent-stores/sss-en-folk-v0" }
+    { "role": "ru", "store_dir": "lab/agent-stores/sss-ru-lexicon" },
+    { "role": "en", "store_dir": "lab/agent-stores/sss-en-folk" }
   ],
   "boot": { "mode": "linked" },
   "export_before_ship": true,
@@ -97,7 +97,7 @@ python tools/export_ltm_pack_v0.py --store-dir lab/agent-stores/sss-en-folk-v0
   "claims_nav_enabled": false,
   "act": {
     "kind": "stdio",
-    "entry": "tools/t9_runtime_v0.py"
+    "entry": "tools/t9_runtime.py"
   }
 }
 ```
@@ -105,7 +105,7 @@ python tools/export_ltm_pack_v0.py --store-dir lab/agent-stores/sss-en-folk-v0
 | Поле | Смысл |
 |------|--------|
 | `stores[].store_dir` | путь к agent store (после export в нём есть `ltm/`) |
-| `export_before_ship` | напоминание: перед release прогнать `export_ltm_pack_v0.py` |
+| `export_before_ship` | напоминание: перед release прогнать `export_ltm_pack.py` |
 | `boot.mode` | `single` \| `linked` |
 | `modalities` | SN/router: что разрешено на hot path |
 | `act` | куда уходит результат (stdio / MCP / IDE) — **продукт для пользователя** |
@@ -116,18 +116,18 @@ python tools/export_ltm_pack_v0.py --store-dir lab/agent-stores/sss-en-folk-v0
 **Сейчас (lab):**
 
 ```bash
-python tools/export_ltm_pack_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0
-python tools/boot_linked_stores_v0.py \
-  --ru-store lab/agent-stores/sss-ru-lexicon-v0 \
-  --en-store lab/agent-stores/sss-en-folk-v0
-python tools/run_t9_demo_cycle_v0.py
-python tools/store_boot_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0 --smoke
+python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-ru-lexicon
+python tools/boot_linked_stores.py \
+  --ru-store lab/agent-stores/sss-ru-lexicon \
+  --en-store lab/agent-stores/sss-en-folk
+python tools/run_t9_demo_cycle.py
+python tools/store_boot.py --store-dir lab/agent-stores/sss-ru-lexicon --smoke
 ```
 
 **Целевой:**
 
 ```text
-  run_agent_profile_v0.py --profile bilingual-t9-console.v0.json
+  run_agent_profile.py --profile bilingual-t9-console.json
        │
        ├─► (optional) export_ltm_pack для каждого store
        ├─► boot_store / boot_linked_stores → runtime state
@@ -137,10 +137,10 @@ python tools/store_boot_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0 --s
 
 | Tool | Статус |
 |------|--------|
-| `export_ltm_pack_v0.py` | **есть** — канон export |
-| `import_ltm_pack_v0.py` | **есть** — round-trip / merge |
-| `store_boot_v0.py` | **есть** — boot из `ltm/` |
-| `run_agent_profile_v0.py` | roadmap — обёртка над boot + act |
+| `export_ltm_pack.py` | **есть** — канон export |
+| `import_ltm_pack.py` | **есть** — round-trip / merge |
+| `store_boot.py` | **есть** — boot из `ltm/` |
+| `run_agent_profile.py` | roadmap — обёртка над boot + act |
 
 ### 5. Продукт ≠ новый цилиндр
 
@@ -151,7 +151,7 @@ python tools/store_boot_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0 --s
 | **Math L0 tutor** | F0 bundle store | schema | bench / future UI |
 | **Language child (full)** | RU lexicon + listen mass tier | listen, surface, T9 | autonomous loop |
 
-**Lazy lexicon** (MCP dictionary, web cold ingest) — **расширение store** на sleep, не отдельный продукт-core. См. work-note [`cursor-session-f4a4bba6-casa-lab-arc-v0.md`](../../../knowledge/work/cursor-session-f4a4bba6-casa-lab-arc-v0.md).
+**Lazy lexicon** (MCP dictionary, web cold ingest) — **расширение store** на sleep, не отдельный продукт-core. См. work-note [`cursor-session-f4a4bba6-casa-lab-arc.md`](../../../knowledge/work/cursor-session-f4a4bba6-casa-lab-arc.md).
 
 ### 6. Tier поставки (наследие ADR-0002 + profile)
 
@@ -172,7 +172,7 @@ python tools/store_boot_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0 --s
 | Один fat `field_state.json` в поставке | 400 MiB, ломает смысл ltm-pack |
 | «Dev cylinder» в SN/DMN | домен = store/domain band, не новый organ |
 | RAG tarball с markdown | против UC; KB = cold ingest, not hot act |
-| Новый `pack_*.py` вместо export | `export_ltm_pack_v0.py` уже канон — не дублировать |
+| Новый `pack_*.py` вместо export | `export_ltm_pack.py` уже канон — не дублировать |
 
 ---
 
@@ -180,13 +180,13 @@ python tools/store_boot_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0 --s
 
 ### Сразу можно (без нового кода)
 
-- Export store через **`export_ltm_pack_v0.py`**
+- Export store через **`export_ltm_pack.py`**
 - Boot linked/single через существующие tools
 - Комбинировать продукты сменой profile + store dirs
 
 ### Roadmap (lab)
 
-- [ ] `run_agent_profile_v0.py` — thin wrapper
+- [ ] `run_agent_profile.py` — thin wrapper
 - [ ] CI: smoke profile после export ltm
 - [ ] Публикация stores отдельно от core (GitHub releases; tar — опционально)
 
@@ -198,7 +198,7 @@ python tools/store_boot_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0 --s
 
 ## Проверка
 
-- [ ] Profile `bilingual-t9-console-v0` → `run_t9_demo_cycle_v0` green после export + linked boot
+- [ ] Profile `bilingual-t9-console` → `run_t9_demo_cycle` green после export + linked boot
 - [ ] Boot **только** из `ltm/` (+ optional `nca/`) без `field_state.json`
 - [ ] Два profile на **одном** core runtime без пересборки Python
 
@@ -208,8 +208,8 @@ python tools/store_boot_v0.py --store-dir lab/agent-stores/sss-ru-lexicon-v0 --s
 
 | Документ | Роль |
 |----------|------|
-| [`ltm-pack-v0.md`](ltm-pack-v0.md) | export/import команды |
+| [`ltm-pack.md`](ltm-pack.md) | export/import команды |
 | [`lab/agent-profiles/`](../lab/agent-profiles/) | profile JSON v0 |
 | [`lab/agent-stores/INDEX.md`](../lab/agent-stores/INDEX.md) | store roles |
 | [`CASA-ADR-0006`](CASA-ADR-0006-t9-predictive-text.md) | первый product modality |
-| [`casa-glossary-v0.md`](casa-glossary-v0.md) § surface / predict / act |
+| [`casa-glossary.md`](casa-glossary.md) § surface / predict / act |

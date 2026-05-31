@@ -21,7 +21,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from casa.prisms.shared.codec_grid_v0 import decode_grid, encode_bundle_to_grid, score_recovery
+from casa.prisms.shared.codec_grid import decode_grid, encode_bundle_to_grid, score_recovery
 from casa.prisms.shared.layout_apply import _get_region_rect, damage_region, mask_outside_region
 from casa.cli.train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels
 
@@ -85,7 +85,7 @@ def _mean_std(xs: list[float]) -> dict:
 def main() -> None:
     p = argparse.ArgumentParser(description="Benchmark baseline vs NCA for DMN recovery")
     p.add_argument("--bundle", type=Path, required=True)
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--region", default="dmn_ontology")
     p.add_argument("--damage", type=float, default=0.25)
     p.add_argument("--copies", type=int, default=7)

@@ -4,7 +4,7 @@ $ErrorActionPreference = 'Stop'
 Require-AgentNotesKb
 Set-Location (Split-Path -Parent $PSScriptRoot)
 
-$store = 'lab/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab'
 $manifest = 'manifests/kb-bundles-russian-language.json'
 
 if ($args -contains '--once') {

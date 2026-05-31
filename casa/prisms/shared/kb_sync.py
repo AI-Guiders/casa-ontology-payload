@@ -215,7 +215,7 @@ def main() -> None:
     p.add_argument("--per-doc-graph", action="store_true", help="Extract graph per doc (default for kb_sync)")
     p.add_argument("--import-to", type=Path, default=None, help="Agent store dir → run import_knowledge_delta")
     p.add_argument("--store-dir", type=Path, default=None, help="Alias for --import-to")
-    p.add_argument("--agent-card", type=Path, default=Path("lab/agent-cards/research-agent.v0.json"))
+    p.add_argument("--agent-card", type=Path, default=Path("lab/agent-cards/research-agent.json"))
     p.add_argument("--tier", default="easy", choices=("easy", "hard"))
     p.add_argument("--bench", action="store_true")
     args = p.parse_args()

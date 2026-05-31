@@ -49,8 +49,8 @@ def _resolve_model(
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Experiment H — dual-checkpoint tiered bench")
-    p.add_argument("--clusters", type=Path, default=Path("manifests/kb-clusters.v0.json"))
-    p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.v0.json"))
+    p.add_argument("--clusters", type=Path, default=Path("manifests/kb-clusters.json"))
+    p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.json"))
     p.add_argument("--g-root", type=Path, default=Path("lab/exp_g_tiered_v1"))
     p.add_argument("--e-fallback", type=Path, default=Path("lab/exp_e_clusters_v1"))
     p.add_argument("--repo-root", type=Path, default=Path("."))

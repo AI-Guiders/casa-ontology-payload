@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AI-Guiders/casa-ontology-payload/agent-card.schema.json",
+  "title": "CASA Agent Card v0",
+  "description": "Portable manifest for an agent DMN memory + tiered checkpoints.",
+  "type": "object",
+  "required": ["schema_version", "agent_id", "cluster", "bundles", "checkpoints", "decode"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "agent_id": { "type": "string", "minLength": 1 },
+    "title": { "type": "string" },
+    "cluster": { "type": "string", "enum": ["goals", "research", "ops"] },
+    "l0_hash": {
+      "type": "string",
+      "description": "SHA-256 of immutable L0 pack (epistemics, integrity) the agent must honor."
+    },
+    "bundle_dir": { "type": "string", "default": "lab/kb-perdoc" },
+    "bundles": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Bundle filenames owned by this agent (per-doc graphs)."
+    },
+    "reference_bundles": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Shared union vocab bundles (cluster train pool)."
+    },
+    "tier_manifest": {
+      "type": "string",
+      "default": "manifests/kb-bundle-tiers.json"
+    },
+    "modules_manifest": {
+      "type": "string",
+      "default": "manifests/kb-modules.json"
+    },
+    "checkpoints": {
+      "type": "object",
+      "required": ["model_phase1"],
+      "properties": {
+        "model_phase1": {
+          "type": "string",
+          "description": "Full-field cluster DMN (easy tier infer)."
+        },
+        "model_hard": {
+          "type": "string",
+          "description": "After module finetune (hard tier infer). Falls back to model_phase1 if absent."
+        }
+      }
+    },
+    "train_policy": {
+      "type": "string",
+      "enum": ["tiered_g_v1", "dual_checkpoint_infer_v1"],
+      "default": "dual_checkpoint_infer_v1"
+    },
+    "codec": { "const": "v3" },
+    "concept_mode": { "const": "section" },
+    "layout": { "type": "string", "default": "design/layout.json" },
+    "decode": {
+      "type": "object",
+      "required": ["threshold", "min_votes"],
+      "properties": {
+        "threshold": { "type": "number", "default": 0.35 },
+        "min_votes": { "type": "integer", "default": 2 },
+        "steps": { "type": "integer", "default": 48 }
+      }
+    },
+    "cen_runtime": {
+      "type": "object",
+      "description": "Optional hook for CEN (LLM/tools); not part of DMN weights.",
+      "properties": {
+        "digest_port": { "const": "p1_dmn_to_sn" },
+        "task_band": { "type": "string", "default": "task.*" }
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "schema_version": 5,
   "title": "CASA lattice id map — v1 kebab canonical; legacy alias for migrate-only",
-  "doc": "design/naming-memory-layers-v0.md",
+  "doc": "design/naming-memory-layers.md",
   "legacy_to_v1": {
     "L0_grapheme_cyrl": "alphabet-ru",
     "L0_grapheme_latn": "alphabet-en",

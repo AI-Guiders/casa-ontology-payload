@@ -211,7 +211,7 @@
 
 ## 17. Операционное использование
 
-- Store: `language-agent-lab-v0` (union с grammar + literacy).
+- Store: `language-agent-lab` (union с grammar + literacy).
 - Sync: `manifests/kb-bundles-russian-literacy-v1.json`, скрипт `run_exp_j0_literacy_sync.ps1`.
 - Перед Exp K emit: прогнать paraphrase bench; code-agent опирается на digest после literacy-маршрута (будущий P3).
 

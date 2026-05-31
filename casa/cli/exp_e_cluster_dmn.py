@@ -24,7 +24,7 @@ def _run(cmd: list[str], cwd: Path) -> None:
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Experiment E — cluster DMN models")
-    p.add_argument("--manifest", type=Path, default=Path("manifests/kb-clusters.v0.json"))
+    p.add_argument("--manifest", type=Path, default=Path("manifests/kb-clusters.json"))
     p.add_argument("--repo-root", type=Path, default=Path("."))
     p.add_argument("--epochs", type=int, default=800)
     p.add_argument("--seeds", type=int, default=20)

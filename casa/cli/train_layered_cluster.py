@@ -24,7 +24,7 @@ def _run(cmd: list[str], cwd: Path) -> None:
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Train layered digest+gate per cluster")
-    p.add_argument("--manifest", type=Path, default=Path("manifests/kb-clusters.v0.json"))
+    p.add_argument("--manifest", type=Path, default=Path("manifests/kb-clusters.json"))
     p.add_argument("--cluster-root", type=Path, default=Path("lab/exp_e_clusters_v1"))
     p.add_argument("--repo-root", type=Path, default=Path("."))
     p.add_argument("--digest-epochs", type=int, default=250)

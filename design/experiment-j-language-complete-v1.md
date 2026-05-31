@@ -55,7 +55,7 @@
 
 ### ✅ Phase B — literacy + grammar write (2026-05-29)
 
-- `tools/articulation_grammar_v0.py` → поле **`answer_text`** в `cen_plan` / `sn_cen_infer`
+- `tools/articulation_grammar.py` → поле **`answer_text`** в `cen_plan` / `sn_cen_infer`
 - Bench: `tools/bench_write_sketch.py`, `run_exp_j_language_write_bench.ps1`
 - **write@sketch:** literacy 15/15 **1.0**; grammar 20 queries — см. `report_write_grammar.json`
 - Не путать с «генерацией романа» — пересказ условия + правило из claims
@@ -69,19 +69,19 @@
 ### ✅ Phase D — train (2026-05-29); curve — fix script
 
 - `run_exp_j_train_language_windowed.ps1` — **600 ep ~40 min**, grammar+literacy union (**253** tokens)
-- Модель: `nca_out_exp_j_ru_language_windowed_v1/model.pt` (~0,5 MB) → `language-agent-lab-v0/checkpoints/model_hard.pt`
+- Модель: `nca_out_exp_j_ru_language_windowed_v1/model.pt` (~0,5 MB) → `language-agent-lab/checkpoints/model_hard.pt`
 - Repair probe (grammar): **mix_windowed ≈ 0.74** (≥ 0.7)
 - `bench_curve` в скрипте упал (`--bundles` vs `--bundle`) — починить отдельно
 - FPN session: удержание «о чём правим текст» 3+ тика
 
 ### ⏸ Phase E — следующая ось (после выпуска J)
 
-- [Exp L: concrete → abstract + букварь](experiment-l-concrete-to-abstract-v0.md) — схемы (палочки), `V:` vision, корова/овца/пчела
+- [Exp L: concrete → abstract + букварь](experiment-l-concrete-to-abstract.md) — схемы (палочки), `V:` vision, корова/овца/пчела
 - Exp K C#, emit — **после** J + начального L0–L1
 
 ## Store (единственный фокус)
 
-`lab/agent-stores/language-agent-lab-v0`
+`lab/agent-stores/language-agent-lab`
 
 Union bundles (целевой минимум):
 
@@ -89,7 +89,7 @@ Union bundles (целевой минимум):
 - `kb-russian-literacy-agent-v1`
 - (опц.) `kb-regex-mre3-ru-chapter-map-v1` — только если нужен regex-трек
 
-**Не синкать в language store:** `kb-csharp-console-grade8` (остаётся в `code-agent-lab-v0` до Phase E).
+**Не синкать в language store:** `kb-csharp-console-grade8` (остаётся в `code-agent-lab` до Phase E).
 
 ## Еженедельный smoke (язык)
 
@@ -120,7 +120,7 @@ $env:AGENT_NOTES_KB = '../agent-notes/knowledge'
 | grammar write | write@sketch | **1.0** |
 | paraphrase | answer@1 | **0.70** (после code-guard; было ~0.95 до жёсткого фильтра) |
 
-**Свободная речь:** hot path `articulation_realize_v0` (слоты + шаблоны, без вставки claim); legacy `compose_answer_text_sketch` — только bench. См. [`articulation-realize-v0.md`](articulation-realize-v0.md). Болтовня / слабый match → dialogue KB + `soft_miss`, без подмены C#.
+**Свободная речь:** hot path `articulation_realize` (слоты + шаблоны, без вставки claim); legacy `compose_answer_text_sketch` — только bench. См. [`articulation-realize.md`](articulation-realize.md). Болтовня / слабый match → dialogue KB + `soft_miss`, без подмены C#.
 
 Артефакты: `lab/exp_j_ru_v1/report_oral_exam.json`, `report_off_topic_guard.json`.
 
@@ -132,5 +132,5 @@ $env:AGENT_NOTES_KB = '../agent-notes/knowledge'
 |-----|------|
 | [`experiment-j0-russian-literacy-v1.md`](experiment-j0-russian-literacy-v1.md) | J0 детали |
 | [`experiment-j-text-modality-v1.md`](experiment-j-text-modality-v1.md) | J field, NCA, scripts |
-| [`experiment-k-code-emit-v0.md`](experiment-k-code-emit-v0.md) | paused |
-| [`experiment-l-concrete-to-abstract-v0.md`](experiment-l-concrete-to-abstract-v0.md) | next: схемы + картинки букваря |
+| [`experiment-k-code-emit.md`](experiment-k-code-emit.md) | paused |
+| [`experiment-l-concrete-to-abstract.md`](experiment-l-concrete-to-abstract.md) | next: схемы + картинки букваря |

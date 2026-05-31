@@ -7,7 +7,7 @@ $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
 Write-Host '=== normalize Afanasyev vol.1 (first 30 tales) ===' -ForegroundColor Cyan
-python tools/normalize_afanasyev_txt_v0.py `
+python tools/normalize_afanasyev_txt.py `
     --download-libru `
     --volumes 1 `
     --limit 30 `

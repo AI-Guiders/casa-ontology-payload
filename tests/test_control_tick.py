@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import control_tick_v0 as ct
+import casa.prisms.control.tick as ct
 
 
 def test_predict_surprise_on_digest_change() -> None:

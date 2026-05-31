@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bench write@sketch: связный answer_text (articulation_grammar_v0) без LLM."""
+"""Bench write@sketch: связный answer_text (articulation_grammar) без LLM."""
 
 from __future__ import annotations
 

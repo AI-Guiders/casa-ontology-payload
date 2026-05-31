@@ -3,15 +3,15 @@
 Train a Neural Cellular Automaton (NCA) to recover a symbolic token grid in the DMN region.
 
 Task:
-- Encode bundle -> token grid (codec_grid_v0).
+- Encode bundle -> token grid (codec_grid).
 - Apply DMN-only mask (outside region cleared).
 - Apply damage inside DMN (drop fraction of cells).
 - NCA evolves state for T steps and should reconstruct original grid.
 
 Evaluation:
 - Threshold token channels -> recovered grid tokens.
-- Decode tokens by voting (codec_grid_v0.decode_grid) -> concept_ids + edges
-- Score recovery with PR/F1 (codec_grid_v0.score_recovery)
+- Decode tokens by voting (codec_grid.decode_grid) -> concept_ids + edges
+- Score recovery with PR/F1 (codec_grid.score_recovery)
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from casa.prisms.shared.codec_grid_v0 import decode_grid, encode_bundle_to_grid, score_recovery
+from casa.prisms.shared.codec_grid import decode_grid, encode_bundle_to_grid, score_recovery
 from casa.prisms.shared.layout_apply import _get_region_rect, damage_region, mask_outside_region
 from casa.prisms.shared.nca_train_util import (
     add_device_args,
@@ -146,7 +146,7 @@ def _grid_to_tensor(grid: dict, token_ids: list[str], device: torch.device) -> t
 def main() -> None:
     p = argparse.ArgumentParser(description="Train DMN NCA to recover ontology token grid")
     p.add_argument("--bundle", type=Path, required=True)
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--region", default="dmn_ontology")
     p.add_argument("--damage", type=float, default=0.25)
     p.add_argument("--damage-seed", type=int, default=42)

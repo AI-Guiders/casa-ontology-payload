@@ -19,7 +19,7 @@ from pathlib import Path
 
 from casa.prisms.shared.agent_card import read_agent_card, resolve_checkpoint
 from casa.prisms.shared.canonical import CANONICAL_CONCEPT_MODE, CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD
-from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.codec_grid import decode_grid, score_recovery
 from casa.prisms.shared.field_write import (
     apply_digest_only_update,
     apply_graph_patch,
@@ -180,10 +180,10 @@ def _run_finetune(
 def main() -> None:
     p = argparse.ArgumentParser(description="Import knowledge_delta → union field write")
     p.add_argument("--delta", type=Path, required=True)
-    p.add_argument("--agent-card", type=Path, default=Path("lab/agent-cards/research-agent.v0.json"))
-    p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/research-agent-lab-v0"))
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
-    p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.v0.json"))
+    p.add_argument("--agent-card", type=Path, default=Path("lab/agent-cards/research-agent.json"))
+    p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/research-agent-lab"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
+    p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.json"))
     p.add_argument("--concept-mode", default=CANONICAL_CONCEPT_MODE)
     p.add_argument("--force", action="store_true", help="Ignore L0 epistemic conflicts")
     p.add_argument("--copy-checkpoint", action="store_true", help="Copy delta checkpoint_hard into store")

@@ -21,7 +21,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.codec_grid import decode_grid, score_recovery
 from casa.prisms.shared.layout_apply import _get_region_rect, damage_region, damage_region_patches, mask_outside_region
 from casa.prisms.shared.nca_train_util import (
     add_device_args,
@@ -112,7 +112,7 @@ class BundleSpec:
 def main() -> None:
     p = argparse.ArgumentParser(description="Train DMN NCA on multiple bundles with unified token space")
     p.add_argument("--bundles", nargs="+", type=Path, required=True, help="List of bundle JSON paths")
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--region", default="dmn_ontology")
     p.add_argument("--damage", type=float, default=0.25)
     p.add_argument("--damage-mode", choices=["drop", "patches"], default="patches")
@@ -169,7 +169,7 @@ def main() -> None:
 
         _tokens_for_bundle_fn = _tokens_for_bundle
     else:
-        from casa.prisms.shared.codec_grid_v0 import encode_bundle_to_grid
+        from casa.prisms.shared.codec_grid import encode_bundle_to_grid
 
         _tokens_for_bundle_fn = _tokens_for_bundle
 

@@ -442,7 +442,7 @@ class Program
 
 ## 22. Операционное использование в CASA / Exp K
 
-- Store: `code-agent-lab-v0`; bundle stem `kb-csharp-console-grade8-v1`.
+- Store: `code-agent-lab`; bundle stem `kb-csharp-console-grade8-v1`.
 - Recall (K0): запросы про `Console`, `TryParse`, `while`, `Random`, «напиши сумму двух чисел».
 - Emit (K2+): digest из top claims + эталон ближайшей задачи; не смешивать с `kb-dotnet-fundamentals-v1` без запроса.
 - Профессиональный стиль кода — [`code-writing-principles-v1.md`](../software-authoring/code-writing-principles-v1.md) — **после** того как программа компилируется.

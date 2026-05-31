@@ -5,7 +5,7 @@
 **KB canon:** `work/projects/door-to-singularity/ca-substrate-agent/kb-casa-lattice-naming-v1.md` (agent-notes)  
 **Machine map:** [`lattice-id-map.v1.json`](lattice-id-map.v1.json)  
 **Code:** `tools/lattice_names_v1.py`  
-**Related:** [`alphabet-core-immutable-v0.md`](alphabet-core-immutable-v0.md)
+**Related:** [`alphabet-core-immutable.md`](alphabet-core-immutable.md)
 
 ---
 
@@ -16,7 +16,7 @@
 | Источник | Что брать |
 |----------|-----------|
 | **KB (канон)** | `work/projects/door-to-singularity/ca-substrate-agent/kb-casa-lattice-naming-v1.md` (agent-notes MCP) |
-| **Design (этот репо)** | [`language-acquisition-loop-v0.md`](language-acquisition-loop-v0.md), [`infancy-corpus-phases-v0.md`](infancy-corpus-phases-v0.md), [`agent-store-catalog-v0.md`](agent-store-catalog-v0.md) |
+| **Design (этот репо)** | [`language-acquisition-loop.md`](language-acquisition-loop.md), [`infancy-corpus-phases.md`](infancy-corpus-phases.md), [`agent-store-catalog.md`](agent-store-catalog.md) |
 | **Lab v0** | ru/en stores — **первые корпуса**, не модель «только два языка» |
 
 **Правило для агента:** вопросы про имена решёток → **KB canon**, затем этот mirror + `lattice_names_v1.py`.
@@ -63,7 +63,7 @@ phrases (hub, multilingual)
 
 **Lab v0:** только `alphabet-ru` + `alphabet-en` (legacy `L0_grapheme_cyrl` / `_latn`). `alphabet-uk` — при добавлении UK corpus.
 
-**Store:** `sss-{locale}-{tier}-v{N}` — один store на язык+tier ([`agent-store-catalog-v0.md`](agent-store-catalog-v0.md)).
+**Store:** `sss-{locale}-{tier}-v{N}` — один store на язык+tier ([`agent-store-catalog.md`](agent-store-catalog.md)).
 
 **Hub `phrases`:** entity/POS/taxonomy — общий каркас; леммы на **words-{locale}**.
 
@@ -137,10 +137,10 @@ Map: `lattice-id-map.v1.json`. **`L0_grapheme_cyrl` → `alphabet-ru`**, не `a
 
 ```bash
 # dry-run
-python tools/migrate_lattice_ids_v1.py --store-dir lab/agent-stores/sss-ru-general-v0 --dry-run
+python tools/migrate_lattice_ids_v1.py --store-dir lab/agent-stores/sss-ru-general --dry-run
 
 # apply (ltm + manifest + nca paths; без NCA retrain)
-python tools/migrate_lattice_ids_v1.py --store-dir lab/agent-stores/sss-ru-general-v0 --compact
+python tools/migrate_lattice_ids_v1.py --store-dir lab/agent-stores/sss-ru-general --compact
 
 # только ltm/manifest, без field_state (400 MiB JSON)
 python tools/migrate_lattice_ids_v1.py --store-dir … --skip-field-state

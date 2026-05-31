@@ -13,8 +13,8 @@ from pathlib import Path
 
 import torch
 
-from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
-from casa.prisms.shared.field_planner_v0 import FieldPlannerV0
+from casa.prisms.shared.codec_grid import decode_grid, score_recovery
+from casa.prisms.shared.field_planner import FieldPlannerV0
 from casa.prisms.shared.layout_apply import _get_region_rect, mask_outside_region
 from casa.prisms.shared.nca_train_util import damage_tensor_patches, grid_indices, scatter_grid_tensor
 from casa.cli.repair_dmn_nca_windowed import repair_field_windowed
@@ -38,7 +38,7 @@ def _encode_bundle(bundle: dict, args: argparse.Namespace) -> dict:
             edge_radius=args.edge_radius,
             concept_radius=args.concept_radius,
         )
-    from casa.prisms.shared.codec_grid_v0 import encode_bundle_to_grid
+    from casa.prisms.shared.codec_grid import encode_bundle_to_grid
 
     return encode_bundle_to_grid(bundle, width=w, height=h, copies=args.copies)
 
@@ -103,7 +103,7 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--bundle", type=Path, required=True)
     p.add_argument("--model", type=Path, required=True)
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--region", default="dmn_ontology")
     p.add_argument("--codec", default="v3")
     p.add_argument("--concept-mode", default="section")

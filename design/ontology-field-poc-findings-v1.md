@@ -11,7 +11,7 @@
 ## 2) Постановка
 
 - **Вход:** bundle = graph (md-узлы + edges) + claims (`concept_id`, text, `doc_path`, `section`).
-- **Поле:** дискретные токены в DMN-регионе (см. `layout.v0.json`).
+- **Поле:** дискретные токены в DMN-регионе (см. `layout.json`).
 - **Повреждение:** patch-дыры внутри DMN (прямоугольные патчи; severity ∝ число патчей).
 - **Восстановление:** локальное правило NCA (48 шагов), затем `decode_grid` (голосование ≥ `min_votes`).
 - **Метрики:** Precision / Recall / F1 отдельно по `concept_id` и по `edges`.
@@ -60,7 +60,7 @@
 1. DMN-кодек: **v3 + `section`** + edges как v2.  
 2. Damage: **patches**; severity от доли площади DMN.  
 3. Embeddings (HCI-стиль) — **поверх** layout, не вместо.  
-4. Регионы DMN/CEN/SN — без изменений контракта (`casa-layout-v0.md`).
+4. Регионы DMN/CEN/SN — без изменений контракта (`casa-layout.md`).
 
 ## 7) Шпаргалка команд
 

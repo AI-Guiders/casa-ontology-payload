@@ -2,7 +2,7 @@
 
 **Статус:** draft (обсуждение, 2026-05-30)  
 **Область:** ССС / букварь / motor / babble / grapheme production  
-**Связано:** [`CASA-ADR-0004-listen-modality-bukvar-sound.md`](CASA-ADR-0004-listen-modality-bukvar-sound.md), [`CASA-ADR-0003-emergent-forms-tags-predictor.md`](CASA-ADR-0003-emergent-forms-tags-predictor.md), [`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md), [`second-signal-system-v0.md`](second-signal-system-v0.md)
+**Связано:** [`CASA-ADR-0004-listen-modality-bukvar-sound.md`](CASA-ADR-0004-listen-modality-bukvar-sound.md), [`CASA-ADR-0003-emergent-forms-tags-predictor.md`](CASA-ADR-0003-emergent-forms-tags-predictor.md), [`bukvar-text-modality.md`](bukvar-text-modality.md), [`second-signal-system.md`](second-signal-system.md)
 
 ---
 
@@ -69,7 +69,7 @@ stroke.down.long
 
 **Reference** для critic v0:
 
-- PNG из [`grapheme-glyphs/`](../lab/exp_bilingual_v0/grapheme-glyphs/) (ScriptS cursive)
+- PNG из [`grapheme-glyphs/`](../lab/exp_bilingual/grapheme-glyphs/) (ScriptS cursive)
 - или упрощённый **prototype** на grid (occupancy mask L0 cell)
 
 Teacher: human overlay «вот так», surprise → Extract mint `proc.stroke.*` или `E: stroke | part_of | grapheme`.
@@ -164,7 +164,7 @@ Roadmap B3 (draft):
 
 ```text
   phrase_ingest / scene cue  →  L3_phrase activation
-  predict_phrase_v0          →  word sequence + punctuation anchors
+  predict_phrase          →  word sequence + punctuation anchors
   write W3                   →  line layout critic
   listen B3                  →  «услышал фразу» → L3 (после B1/B2 стабильны)
 ```

@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$store = 'lab/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab'
 $outDir = 'lab/nca_out_exp_j_ru_v1'
 $bundles = @(
   "$store/bundles/kb-russian-language-rules-v1.bundle.v1.json",

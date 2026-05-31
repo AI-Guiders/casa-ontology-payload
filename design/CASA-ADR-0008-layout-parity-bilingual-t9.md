@@ -1,10 +1,10 @@
 # CASA-ADR-0008: layout-parity bilingual T9 (раскладочный паритет)
 
-**Статус:** accepted (design + lab path; `vk_decode_v0` — roadmap)  
+**Статус:** accepted (design + lab path; `vk_decode` — roadmap)  
 **Дата:** 2026-05-30  
 **Область:** bilingual T9, input modality, unified tick, act/preview  
 **Источник идеи:** product pitch Orion (Orion / Google Web AI), 2026-05  
-**Связано:** [`CASA-ADR-0006-t9-predictive-text.md`](CASA-ADR-0006-t9-predictive-text.md), [`CASA-ADR-0003-emergent-forms-tags-predictor.md`](CASA-ADR-0003-emergent-forms-tags-predictor.md), [`CASA-ADR-0007-agent-profile-store-packs.md`](CASA-ADR-0007-agent-profile-store-packs.md), [`homoglyph_v0.py`](../tools/homoglyph_v0.py), [`unified_tick_v0.py`](../tools/unified_tick_v0.py)
+**Связано:** [`CASA-ADR-0006-t9-predictive-text.md`](CASA-ADR-0006-t9-predictive-text.md), [`CASA-ADR-0003-emergent-forms-tags-predictor.md`](CASA-ADR-0003-emergent-forms-tags-predictor.md), [`CASA-ADR-0007-agent-profile-store-packs.md`](CASA-ADR-0007-agent-profile-store-packs.md), [`homoglyph.py`](../tools/homoglyph.py), [`unified_tick.py`](../tools/unified_tick.py)
 
 ---
 
@@ -21,9 +21,9 @@
 | Кирпич | Роль |
 |--------|------|
 | Linked RU+EN boot | два semantic layer на одном runtime |
-| `homoglyph_v0` | один **visual** glyph → latn **и** cyrl (`co` \| `со`) |
-| `unified_tick_v0` | dual branch T9 + argmax по votes |
-| `bench_ambiguous_prefix_v0` | homoglyph fork green |
+| `homoglyph` | один **visual** glyph → latn **и** cyrl (`co` \| `со`) |
+| `unified_tick` | dual branch T9 + argmax по votes |
+| `bench_ambiguous_prefix` | homoglyph fork green |
 
 **Homoglyphs ≠ layout parity.** Homoglyph — два Unicode, **одинаково выглядящие**. Layout mismatch — **одни физические клавиши**, разная транскодировка в Unicode (QWERTY `/attach` vs ЙЦУКЕН `.феее`).
 
@@ -91,14 +91,14 @@
        └─► decode(jcuken_ru)  → ".феее..."   (пример layout mismatch)
 ```
 
-**Память (v0):** compose на поле — `vk.physical.*` + `E:|layout.*|grapheme.*` на `L0_vk_map`, буквы на `L0_grapheme`. Ship: core ltm. Decode hot path: boot → field RAM → `vk_decode_v0` (не C# LTM parse).
+**Память (v0):** compose на поле — `vk.physical.*` + `E:|layout.*|grapheme.*` на `L0_vk_map`, буквы на `L0_grapheme`. Ship: core ltm. Decode hot path: boot → field RAM → `vk_decode` (не C# LTM parse).
 
 ```text
 listen: keyboard-layouts/*.json → vk_layout_ingest → L0_vk_map + L0_grapheme
 hot:    PhysicalKeyEvent[] → compose index (edges) → grapheme string
 ```
 
-См. [`input-modality-vk-layout-v0.md`](input-modality-vk-layout-v0.md).
+См. [`input-modality-vk-layout.md`](input-modality-vk-layout.md).
 
 Таблицы decode — **данные на поле** + JSON-канон для ingest, не OS API.
 
@@ -136,7 +136,7 @@ Segment classifier v0 — эвристика (prefix `/`, ratio latn/cyrl пос
 
 Orion: «0.7 ms infer» — **целевой SLO act-runtime** (NativeAOT + prefix index), не обязательство Python lab (~50 ms/word сегодня).
 
-**Profile:** [`bilingual-t9-console.v0.json`](../lab/agent-profiles/bilingual-t9-console.v0.json) + будущий `bilingual-layout-parity.v0.json` с `input: physical_key`.
+**Profile:** [`bilingual-t9-console.json`](../lab/agent-profiles/bilingual-t9-console.json) + будущий `bilingual-layout-parity.json` с `input: physical_key`.
 
 ### 5. Связь с homoglyph (ADR-0003)
 
@@ -168,12 +168,12 @@ Orion: «0.7 ms infer» — **целевой SLO act-runtime** (NativeAOT + pref
 
 ### Roadmap lab
 
-- [x] `design/keyboard-layouts/qwerty-us.v0.json`, `jcuken-ru.v0.json`
-- [x] `L0_vk_map` core ltm + `tools/vk_layout_ingest_v0.py`
-- [x] `tools/vk_decode_v0.py` — field-first, JSON fallback
-- [x] `tools/bench_layout_parity_v0.py`, `bench_vk_layout_field_v0.py`
+- [x] `design/keyboard-layouts/qwerty-us.json`, `jcuken-ru.json`
+- [x] `L0_vk_map` core ltm + `tools/vk_layout_ingest.py`
+- [x] `tools/vk_decode.py` — field-first, JSON fallback
+- [x] `tools/bench_layout_parity.py`, `bench_vk_layout_field.py`
 - [x] Compose decode: vk.physical → layout → grapheme (edges on field)
-- [x] Agent docs: `input-modality-vk-layout-v0.md`, `kb-input-modality-vk.v1.json`
+- [x] Agent docs: `input-modality-vk-layout.md`, `kb-input-modality-vk.v1.json`
 - [ ] C# act: PhysicalKeyEvent only → CASA runtime IPC (no prod LTM parse)
 - [ ] Act adapter sketch: map platform → `key_id` (document only in ADR until IDE contour)
 
@@ -198,8 +198,8 @@ Orion: «0.7 ms infer» — **целевой SLO act-runtime** (NativeAOT + pref
 
 | Документ | Роль |
 |----------|------|
-| [`lab/exp_bilingual_v0/README.md`](../lab/exp_bilingual_v0/README.md) | homoglyph + unified tick benches |
-| [`knowledge/work/cursor-session-f4a4bba6-casa-lab-arc-v0.md`](../../../knowledge/work/cursor-session-f4a4bba6-casa-lab-arc-v0.md) | Orion pitch, product arc |
+| [`lab/exp_bilingual/README.md`](../lab/exp_bilingual/README.md) | homoglyph + unified tick benches |
+| [`knowledge/work/cursor-session-f4a4bba6-casa-lab-arc.md`](../../../knowledge/work/cursor-session-f4a4bba6-casa-lab-arc.md) | Orion pitch, product arc |
 | [W3C UI Events — KeyboardEvent.code](https://www.w3.org/TR/uievents/#key-key-values) | рекомендуемый neutral key_id |
 
 ---

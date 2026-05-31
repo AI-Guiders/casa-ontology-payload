@@ -6,7 +6,7 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-full-v0'
+$store = 'lab/agent-stores/sss-full'
 $bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 
 Write-Host '=== ensure full alphabet store ===' -ForegroundColor Cyan

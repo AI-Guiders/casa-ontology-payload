@@ -11,7 +11,7 @@ import argparse
 import json
 from pathlib import Path
 
-from casa.prisms.memory.bukvar_codec_v0 import decode_bukvar_layer, layer_digest
+from casa.prisms.memory.bukvar_codec import decode_bukvar_layer, layer_digest
 from casa.prisms.shared.field_write import load_field_state
 
 

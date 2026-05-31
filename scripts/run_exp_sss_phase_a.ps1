@@ -6,7 +6,7 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-phase-a-v0'
+$store = 'lab/agent-stores/sss-phase-a'
 $bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $corpus = 'lab/text/corpus'
 $exp = 'lab/exp_sss_v1'
@@ -23,7 +23,7 @@ python tools/bench_sss_vocab_growth.py `
     --out "$exp/report_phase_a_growth.json"
 
 Write-Host '=== batch read corpus ===' -ForegroundColor Cyan
-python tools/sss_read_batch_v0.py `
+python tools/sss_read_batch.py `
     --store-dir $store `
     --corpus-dir $corpus `
     --bukvar $bukvar `
@@ -31,7 +31,7 @@ python tools/sss_read_batch_v0.py `
     --out "$exp/report_phase_a_batch.json"
 
 Write-Host '=== babble scene p1 ===' -ForegroundColor Cyan
-python tools/sss_vocab_surface_v0.py `
+python tools/sss_vocab_surface.py `
     --store-dir $store `
     --scene-id p1 `
     --caption 'kolobok opening'

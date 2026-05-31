@@ -39,7 +39,7 @@ def _run_one(args_list: list[str]) -> dict:
 def main() -> None:
     p = argparse.ArgumentParser(description="Benchmark baseline vs NCA across damage levels")
     p.add_argument("--bundle", type=Path, required=True)
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--region", default="dmn_ontology")
     p.add_argument("--damages", default="0.10,0.20,0.30,0.40,0.50,0.60")
     p.add_argument("--seeds", type=int, default=20)

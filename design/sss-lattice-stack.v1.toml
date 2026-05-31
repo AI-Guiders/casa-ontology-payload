@@ -5,7 +5,7 @@ schema_version = 2
 subsystem = "sss"
 title = "SSS lattice stack — v1 ids"
 doc = "design/lattice-naming-v1.md"
-replaces = "design/sss-lattice-stack.v0.toml"
+replaces = "design/sss-lattice-stack.toml"
 
 [axes]
 x = "cell within lattice"

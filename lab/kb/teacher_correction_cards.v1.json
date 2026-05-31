@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "canon": "teacher-correction-protocol-v0",
+  "canon": "teacher-correction-protocol",
   "kb": "kb-casa-teacher-sleep-lab-norm-v1",
   "cards": [
     {
@@ -9,7 +9,7 @@
       "when": "Any surface → teacher correction before Extract",
       "check": "Classify: script | phonotactic | prefix_incomplete | lexical | morph | ortho",
       "on_fail": "Do not append_episode; fix cue or add scene",
-      "refs": ["teacher-correction-protocol-v0"]
+      "refs": ["teacher-correction-protocol"]
     },
     {
       "id": "preflight.no_oracle_on_prefix",
@@ -17,7 +17,7 @@
       "when": "cue is strict prefix of multiple lemmas (e.g. кор) and correct is single full word",
       "check": "commitment_length(cue) < word_length(correct) AND fork_count(prefix) >= 3",
       "on_fail": "Use teacher_rule_only OR lexical_ask with scene; never strengthen oracle lemma",
-      "refs": ["teacher-correction-protocol-v0", "kb-casa-teacher-sleep-lab-norm-v1"],
+      "refs": ["teacher-correction-protocol", "kb-casa-teacher-sleep-lab-norm-v1"],
       "example_bad": { "cue": "кор", "correct": "корова" },
       "example_ok": { "cue": "кор", "mode": "teacher_rule_only", "surface_attempt": "кoro" }
     },
@@ -27,7 +27,7 @@
       "when": "surface could be adjective/noun/other on same stem",
       "check": "If target POS != inferred intent, require scene + morph_surface",
       "on_fail": "Do not map коровий → корова",
-      "refs": ["teacher-correction-protocol-v0"],
+      "refs": ["teacher-correction-protocol"],
       "example_bad": { "intent": "коровий", "correct": "корова" },
       "example_ok": { "scene": "коровий суп", "correct": "коровий", "correction_kind": "morph_surface" }
     },
@@ -37,7 +37,7 @@
       "when": "T9/preview uses entity.cow ↔ корова",
       "check": "entity edge does not select teacher correct on ambiguous prefix",
       "on_fail": "Separate L3 ingest from episodic teacher",
-      "refs": ["teacher-correction-protocol-v0"]
+      "refs": ["teacher-correction-protocol"]
     },
     {
       "id": "critic.script_before_lexical",
@@ -45,7 +45,7 @@
       "when": "mixed_script(surface)",
       "check": "append_rule_episode first; no surface until script clean",
       "on_pass": "teacher_rule_only sleep; fork stable on prefix",
-      "refs": ["teacher-correction-protocol-v0", "infancy-corpus-phases-v0"]
+      "refs": ["teacher-correction-protocol", "infancy-corpus-phases"]
     },
     {
       "id": "critic.lexical_ask_without_scene",
@@ -53,7 +53,7 @@
       "when": "lexical ambiguity (короб|корова|корм) without scene",
       "check": "teacher move = lexical_ask, not ortho/morph recast",
       "on_pass": "hippo question episode; sleep pending until answer",
-      "refs": ["teacher-correction-protocol-v0"]
+      "refs": ["teacher-correction-protocol"]
     },
     {
       "id": "critic.surface_only_after_commitment",
@@ -61,7 +61,7 @@
       "when": "surface episode with correct lemma",
       "check": "scene + correction_kind; babble and correct share committed intent",
       "on_pass": "append_episode + sleep strengthen",
-      "refs": ["teacher-correction-protocol-v0", "understanding-contract-v0"]
+      "refs": ["teacher-correction-protocol", "understanding-contract"]
     },
     {
       "id": "transfer.pedagogy_not_casa_spec",
@@ -77,14 +77,14 @@
       "when": "mode=teacher_lexical_ask",
       "check": "append_question_episode; sleep leaves pending; no surface merge",
       "on_pass": "hippo_pending_count >= 1 after run_sleep",
-      "refs": ["teacher-correction-protocol-v0", "preflight_teacher_v0"]
+      "refs": ["teacher-correction-protocol", "preflight_teacher"]
     },
     {
       "id": "mode.teacher_contextual_surface",
       "priority": "L1",
       "when": "mode=teacher_contextual_surface",
       "check": "scene + correction_kind ortho|morph; preflight ok; strengthen target only",
-      "refs": ["teacher-correction-protocol-v0", "surface_error_v0"]
+      "refs": ["teacher-correction-protocol", "surface_error"]
     }
   ]
 }

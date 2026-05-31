@@ -1,4 +1,4 @@
-# Exp J phase B: write@sketch (articulation_grammar_v0) + grammar recall.
+# Exp J phase B: write@sketch (articulation_grammar) + grammar recall.
 $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
@@ -6,7 +6,7 @@ Set-Location $Root
 . (Join-Path $PSScriptRoot '_kb_env.ps1')
 Require-AgentNotesKb
 
-$store = 'lab/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab'
 
 Write-Host '=== sync language store (grammar + literacy) ===' -ForegroundColor Cyan
 & (Join-Path $Root 'scripts\run_exp_j0_literacy_sync.ps1')

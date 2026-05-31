@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "bundle": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\kb-perdoc\\ontology-poc-findings.bundle.v1.json",
-  "layout": "design\\layout.v0.json",
+  "layout": "design\\layout.json",
   "region": "dmn_ontology",
   "damage": 0.4,
   "codec": "v3",

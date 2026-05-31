@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import unittest
 
-from lattice_names_v1 import (  # type: ignore
+from casa.prisms.shared.lattice_names_v1 import (
     CONTROL_DMN,
     CONTROL_STACK,
     EPISODIC_SURFACE,

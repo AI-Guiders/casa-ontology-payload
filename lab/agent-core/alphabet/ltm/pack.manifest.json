@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "format": "ltm-pack",
+  "kind": "core_ltm_alphabet",
+  "immutable": true,
+  "decode_mode": "digest",
+  "field_version": 1,
+  "updated_at": "2026-05-30T21:25:55.618092+00:00",
+  "lattices": {
+    "L0_grapheme_cyrl": {
+      "path": "ltm/l0/L0_grapheme_cyrl.ltm",
+      "compress": null,
+      "raw_bytes": 2330,
+      "file_bytes": 2330,
+      "vocab": 66,
+      "placements": 363,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "grapheme.cyrl.",
+        "script": "cyrl",
+        "immutable": true,
+        "kind": "core_ltm_alphabet",
+        "alphabet_ru_n": 33
+      }
+    },
+    "L0_grapheme_latn": {
+      "path": "ltm/l0/L0_grapheme_latn.ltm",
+      "compress": null,
+      "raw_bytes": 1580,
+      "file_bytes": 1580,
+      "vocab": 52,
+      "placements": 234,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "grapheme.latn.",
+        "script": "latn",
+        "immutable": true,
+        "kind": "core_ltm_alphabet",
+        "alphabet_en_n": 26
+      }
+    }
+  },
+  "totals": {
+    "lattice_count": 2,
+    "ru_graphemes": 33,
+    "en_graphemes": 26,
+    "raw_bytes": 3910,
+    "file_bytes": 3910
+  },
+  "imprint": {
+    "lattices": [
+      "L0_grapheme_cyrl",
+      "L0_grapheme_latn"
+    ],
+    "latn": {
+      "script": "latn",
+      "lattice_id": "L0_grapheme_latn",
+      "graphemes_requested": 26,
+      "graphemes_on_field": 26,
+      "sample": [
+        "grapheme.latn.a",
+        "grapheme.latn.b",
+        "grapheme.latn.c",
+        "grapheme.latn.d",
+        "grapheme.latn.e",
+        "grapheme.latn.f",
+        "grapheme.latn.g",
+        "grapheme.latn.h"
+      ],
+      "field_version": 1
+    },
+    "cyrl": {
+      "script": "cyrl",
+      "lattice_id": "L0_grapheme_cyrl",
+      "graphemes_requested": 33,
+      "graphemes_on_field": 33,
+      "sample": [
+        "grapheme.cyrl.а",
+        "grapheme.cyrl.б",
+        "grapheme.cyrl.в",
+        "grapheme.cyrl.г",
+        "grapheme.cyrl.д",
+        "grapheme.cyrl.е",
+        "grapheme.cyrl.ё",
+        "grapheme.cyrl.ж"
+      ],
+      "field_version": 2
+    },
+    "verify": {
+      "ru_on_field": 33,
+      "ru_lattice": "L0_grapheme_cyrl",
+      "ru_expected": 33,
+      "ru_missing": [],
+      "en_on_field": 26,
+      "en_lattice": "L0_grapheme_latn",
+      "en_expected": 26,
+      "en_missing": [],
+      "pass": true
+    }
+  },
+  "verify": {
+    "ru_on_field": 33,
+    "ru_lattice": "L0_grapheme_cyrl",
+    "ru_expected": 33,
+    "ru_missing": [],
+    "en_on_field": 26,
+    "en_lattice": "L0_grapheme_latn",
+    "en_expected": 26,
+    "en_missing": [],
+    "pass": true
+  }
+}

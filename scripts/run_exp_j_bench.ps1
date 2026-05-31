@@ -2,7 +2,7 @@
 $ErrorActionPreference = 'Stop'
 Set-Location (Split-Path -Parent $PSScriptRoot)
 
-$store = 'lab/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab'
 $model = 'lab/nca_out_exp_j_ru_v1/model.pt'
 if (-not (Test-Path $model)) { $model = "$store/checkpoints/model_hard.pt" }
 

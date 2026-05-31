@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build manifests/kb-modules.v0.json from kb-clusters + kb-perdoc bundles."""
+"""Build manifests/kb-modules.json from kb-clusters + kb-perdoc bundles."""
 
 from __future__ import annotations
 
@@ -20,9 +20,9 @@ def _read_json(path: Path) -> dict:
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Generate kb-modules manifest")
-    p.add_argument("--clusters", type=Path, default=Path("manifests/kb-clusters.v0.json"))
+    p.add_argument("--clusters", type=Path, default=Path("manifests/kb-clusters.json"))
     p.add_argument("--repo-root", type=Path, default=Path("."))
-    p.add_argument("--out", type=Path, default=Path("manifests/kb-modules.v0.json"))
+    p.add_argument("--out", type=Path, default=Path("manifests/kb-modules.json"))
     args = p.parse_args()
 
     repo = args.repo_root.resolve()

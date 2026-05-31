@@ -6,7 +6,7 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-hypothesis-v0'
+$store = 'lab/agent-stores/sss-hypothesis'
 $bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 
 Write-Host '=== init ===' -ForegroundColor Cyan
@@ -17,7 +17,7 @@ Write-Host '=== compete (no rule yet) ===' -ForegroundColor Cyan
 python tools/bench_sss_hypothesis_compete.py --store-dir $store --out lab/exp_sss_v1/report_hypothesis_compete_before.json
 
 Write-Host '=== Kolb internal reconcile + sleep ===' -ForegroundColor Cyan
-python tools/sss_kolb_cycle_v0.py --store-dir $store --session lab/exp_sss_v1/kolb_segment_session.json --bundle $bundle --out lab/exp_sss_v1/report_hypothesis_compete_kolb.json
+python tools/sss_kolb_cycle.py --store-dir $store --session lab/exp_sss_v1/kolb_segment_session.json --bundle $bundle --out lab/exp_sss_v1/report_hypothesis_compete_kolb.json
 
 Write-Host '=== compete after rule on field ===' -ForegroundColor Cyan
 python tools/bench_sss_hypothesis_compete.py --store-dir $store --out lab/exp_sss_v1/report_hypothesis_compete_after.json

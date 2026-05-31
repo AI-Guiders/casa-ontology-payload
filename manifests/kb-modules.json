@@ -1,0 +1,441 @@
+{
+  "schema_version": 1,
+  "module_id_scheme": "{cluster}/{bundle_stem}/{section_slug}",
+  "section_key_scheme": "{doc_path}|{section}",
+  "clusters_manifest": "manifests/kb-clusters.json",
+  "bundle_dir": "lab/kb-perdoc",
+  "concept_mode": "section",
+  "codec": "v3",
+  "module_count": 53,
+  "modules_by_cluster": {
+    "goals": 18,
+    "research": 22,
+    "ops": 13
+  },
+  "modules": [
+    {
+      "id": "goals/casa-goals/provenance",
+      "cluster": "goals",
+      "bundle": "casa-goals.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md|Provenance"
+    },
+    {
+      "id": "goals/casa-goals/provenance-для-агента",
+      "cluster": "goals",
+      "bundle": "casa-goals.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Для агента",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md|Provenance / Для агента"
+    },
+    {
+      "id": "goals/casa-goals/provenance-следующие-шаги-инженерия",
+      "cluster": "goals",
+      "bundle": "casa-goals.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Следующие шаги (инженерия)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md|Provenance / Следующие шаги (инженерия)"
+    },
+    {
+      "id": "goals/casa-goals/provenance-три-цели-нормативно-це-4a912d",
+      "cluster": "goals",
+      "bundle": "casa-goals.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Три цели (нормативно) / Цель 1 — CA как субстрат модели и вычислительная локальность",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md|Provenance / Три цели (нормативно) / Цель 1 — CA как субстрат модели и вычислительная локальность"
+    },
+    {
+      "id": "goals/casa-goals/provenance-три-цели-нормативно-це-28efc8",
+      "cluster": "goals",
+      "bundle": "casa-goals.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Три цели (нормативно) / Цель 2 — дорожка к AiNet: обмен знаниями (в т.ч. из KB)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md|Provenance / Три цели (нормативно) / Цель 2 — дорожка к AiNet: обмен знаниями (в т.ч. из KB)"
+    },
+    {
+      "id": "goals/casa-goals/provenance-три-цели-нормативно-це-b85d27",
+      "cluster": "goals",
+      "bundle": "casa-goals.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Три цели (нормативно) / Цель 3 — имитационное обучение с правом на ошибку и исправлением",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md|Provenance / Три цели (нормативно) / Цель 3 — имитационное обучение с правом на ошибку и исправлением"
+    },
+    {
+      "id": "goals/casa-goals/provenance-что-casa-не-обещает",
+      "cluster": "goals",
+      "bundle": "casa-goals.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md",
+      "section": "Provenance / Что CASA не обещает",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md|Provenance / Что CASA не обещает"
+    },
+    {
+      "id": "goals/casa-adr-0001/casa-adr-0001-ca-substrate-agent--6cbb8a",
+      "cluster": "goals",
+      "bundle": "casa-adr-0001.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Consequences / Positive",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md|CASA-ADR-0001: CA substrate agent track / Consequences / Positive"
+    },
+    {
+      "id": "goals/casa-adr-0001/casa-adr-0001-ca-substrate-agent--a8fc94",
+      "cluster": "goals",
+      "bundle": "casa-adr-0001.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Consequences / Scope boundary",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md|CASA-ADR-0001: CA substrate agent track / Consequences / Scope boundary"
+    },
+    {
+      "id": "goals/casa-adr-0001/casa-adr-0001-ca-substrate-agent--96b73d",
+      "cluster": "goals",
+      "bundle": "casa-adr-0001.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Consequences / Trade-offs",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md|CASA-ADR-0001: CA substrate agent track / Consequences / Trade-offs"
+    },
+    {
+      "id": "goals/casa-adr-0001/casa-adr-0001-ca-substrate-agent--4a3c9e",
+      "cluster": "goals",
+      "bundle": "casa-adr-0001.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Context",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md|CASA-ADR-0001: CA substrate agent track / Context"
+    },
+    {
+      "id": "goals/casa-adr-0001/casa-adr-0001-ca-substrate-agent--4e603c",
+      "cluster": "goals",
+      "bundle": "casa-adr-0001.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Decision",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md|CASA-ADR-0001: CA substrate agent track / Decision"
+    },
+    {
+      "id": "goals/casa-adr-0001/casa-adr-0001-ca-substrate-agent--355ccf",
+      "cluster": "goals",
+      "bundle": "casa-adr-0001.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md",
+      "section": "CASA-ADR-0001: CA substrate agent track / Links",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/CASA-ADR-0001.md|CASA-ADR-0001: CA substrate agent track / Links"
+    },
+    {
+      "id": "goals/ontology-poc-findings/provenance",
+      "cluster": "goals",
+      "bundle": "ontology-poc-findings.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md|Provenance"
+    },
+    {
+      "id": "goals/ontology-poc-findings/provenance-experiments-a-b-c-2026-05-28",
+      "cluster": "goals",
+      "bundle": "ontology-poc-findings.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Experiments A→B→C (2026-05-28)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md|Provenance / Experiments A→B→C (2026-05-28)"
+    },
+    {
+      "id": "goals/ontology-poc-findings/provenance-артефакты-вне-kb",
+      "cluster": "goals",
+      "bundle": "ontology-poc-findings.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Артефакты (вне KB)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md|Provenance / Артефакты (вне KB)"
+    },
+    {
+      "id": "goals/ontology-poc-findings/provenance-рекомендации-для-v1-ca-805d1b",
+      "cluster": "goals",
+      "bundle": "ontology-poc-findings.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Рекомендации для v1 CASA («смысл в поле»)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md|Provenance / Рекомендации для v1 CASA («смысл в поле»)"
+    },
+    {
+      "id": "goals/ontology-poc-findings/provenance-что-доказал-poc-кратко",
+      "cluster": "goals",
+      "bundle": "ontology-poc-findings.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md",
+      "section": "Provenance / Что доказал PoC (кратко)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/ontology-in-field-poc-findings-v1.md|Provenance / Что доказал PoC (кратко)"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-2-target-outcom-8d400f",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.1 Task success",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 2) Target outcomes (success metrics) / 2.1 Task success"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-2-target-outcom-ceeb50",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.2 Stability horizon",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 2) Target outcomes (success metrics) / 2.2 Stability horizon"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-2-target-outcom-d4d69f",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.3 Adversarial resistance",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 2) Target outcomes (success metrics) / 2.3 Adversarial resistance"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-2-target-outcom-7030b5",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.4 Interpretability score",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 2) Target outcomes (success metrics) / 2.4 Interpretability score"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-2-target-outcom-33ce74",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 2) Target outcomes (success metrics) / 2.5 Compute cost",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 2) Target outcomes (success metrics) / 2.5 Compute cost"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-3-minimal-prototype",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 3) Minimal prototype (v0)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 3) Minimal prototype (v0)"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-4-reference-arc-7a5c44",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 4) Reference architecture (v1)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 4) Reference architecture (v1)"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-5-1-baselines",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.1 Baselines",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 5.1 Baselines"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-5-2-scenario-families",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.2 Scenario families",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 5.2 Scenario families"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-5-3-ablations",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 5.3 Ablations",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 5.3 Ablations"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-6-risk-register-v1",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 6) Risk register (v1)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 6) Risk register (v1)"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-7-roadmap-v3-2451bb",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v0 (minimum viability)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 7) Roadmap v0 -> v3 / v0 (minimum viability)"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-7-roadmap-v3-cfa95d",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v1 (research-spec aligned prototype)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 7) Roadmap v0 -> v3 / v1 (research-spec aligned prototype)"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-7-roadmap-v3-58a305",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v2 (robustness and scaling slice)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 7) Roadmap v0 -> v3 / v2 (robustness and scaling slice)"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-7-roadmap-v3-75996a",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 7) Roadmap v0 -> v3 / v3 (agentic capability slice)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 7) Roadmap v0 -> v3 / v3 (agentic capability slice)"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-8-deliverables--7d522d",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 8) Deliverables checklist",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 8) Deliverables checklist"
+    },
+    {
+      "id": "research/research-ml/1-core-hypothesis-9-scope-boundar-8381e2",
+      "cluster": "research",
+      "bundle": "research-ml.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md",
+      "section": "1) Core hypothesis / 9) Scope boundary with ETCC",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-ml-ca-substrate-agent-v1.md|1) Core hypothesis / 9) Scope boundary with ETCC"
+    },
+    {
+      "id": "research/research-tda-flow/tda-и-flow-machines-casa-ainet-stub-v1",
+      "cluster": "research",
+      "bundle": "research-tda-flow.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md",
+      "section": "TDA и Flow Machines (CASA × AINET) — stub v1",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-tda-flow-machines-casa-ainet-note-v1.md|TDA и Flow Machines (CASA × AINET) — stub v1"
+    },
+    {
+      "id": "research/research-training/обучение-на-ка-субстрате-зачем-вв-dd7a7d",
+      "cluster": "research",
+      "bundle": "research-training.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / Гипотеза: педагогика развития как ориентир протокола",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md|Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / Гипотеза: педагогика развития как ориентир протокола"
+    },
+    {
+      "id": "research/research-training/обучение-на-ка-субстрате-зачем-вв-12f557",
+      "cluster": "research",
+      "bundle": "research-training.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / См. также",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md|Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / См. также"
+    },
+    {
+      "id": "research/research-training/обучение-на-ка-субстрате-зачем-вв-80395d",
+      "cluster": "research",
+      "bundle": "research-training.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md",
+      "section": "Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / Что сознательно не утверждаем здесь",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/research-training-developmental-pedagogy-v1.md|Обучение на КА-субстрате: зачем вводить «педагогику развития» (черновик v1) / Что сознательно не утверждаем здесь"
+    },
+    {
+      "id": "ops/playbook-tda-flow/casa-ainet-tda-и-поток-динамики-o-8c2681",
+      "cluster": "ops",
+      "bundle": "playbook-tda-flow.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 1. Когда открывать этот playbook",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md|CASA × AINET — TDA и поток динамики: operational playbook v1 / 1. Когда открывать этот playbook"
+    },
+    {
+      "id": "ops/playbook-tda-flow/casa-ainet-tda-и-поток-динамики-o-76c00c",
+      "cluster": "ops",
+      "bundle": "playbook-tda-flow.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 3. Мини-чеклист перед первым прототипом TDA на поле",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md|CASA × AINET — TDA и поток динамики: operational playbook v1 / 3. Мини-чеклист перед первым прототипом TDA на поле"
+    },
+    {
+      "id": "ops/playbook-tda-flow/casa-ainet-tda-и-поток-динамики-o-fc9401",
+      "cluster": "ops",
+      "bundle": "playbook-tda-flow.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md",
+      "section": "CASA × AINET — TDA и поток динамики: operational playbook v1 / 4. Мини-чеклист для «продолжения потока» (мотив FM)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/playbook-casa-tda-flow-ainet-operational-v1.md|CASA × AINET — TDA и поток динамики: operational playbook v1 / 4. Мини-чеклист для «продолжения потока» (мотив FM)"
+    },
+    {
+      "id": "ops/kb-distill-nca/distill-growing-neural-cellular-a-769a40",
+      "cluster": "ops",
+      "bundle": "kb-distill-nca.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 1. Постановка: зачем CA и что такое «рост из семени»",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md|Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 1. Постановка: зачем CA и что такое «рост из семени»"
+    },
+    {
+      "id": "ops/kb-distill-nca/distill-growing-neural-cellular-a-8e4ccd",
+      "cluster": "ops",
+      "bundle": "kb-distill-nca.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 2. Архитектура Neural CA / 2.1. Состояние клетки",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md|Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 2. Архитектура Neural CA / 2.1. Состояние клетки"
+    },
+    {
+      "id": "ops/kb-distill-nca/distill-growing-neural-cellular-a-4114b0",
+      "cluster": "ops",
+      "bundle": "kb-distill-nca.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 2. Архитектура Neural CA / 2.2. Этапы одного шага обновления",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md|Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 2. Архитектура Neural CA / 2.2. Этапы одного шага обновления"
+    },
+    {
+      "id": "ops/kb-distill-nca/distill-growing-neural-cellular-a-c9a43d",
+      "cluster": "ops",
+      "bundle": "kb-distill-nca.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 1 — Learning to Grow",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md|Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 1 — Learning to Grow"
+    },
+    {
+      "id": "ops/kb-distill-nca/distill-growing-neural-cellular-a-12e319",
+      "cluster": "ops",
+      "bundle": "kb-distill-nca.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 2 — What Persists Exists (пул состояний)",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md|Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 2 — What Persists Exists (пул состояний)"
+    },
+    {
+      "id": "ops/kb-distill-nca/distill-growing-neural-cellular-a-68e8d9",
+      "cluster": "ops",
+      "bundle": "kb-distill-nca.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 3 — Learning to Regenerate",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md|Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 3 — Learning to Regenerate"
+    },
+    {
+      "id": "ops/kb-distill-nca/distill-growing-neural-cellular-a-860936",
+      "cluster": "ops",
+      "bundle": "kb-distill-nca.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 4 — Поворот чувственного поля",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md|Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 3. Обучение и четыре эксперимента (логика, не гиперпараметры) / Эксперимент 4 — Поворот чувственного поля"
+    },
+    {
+      "id": "ops/kb-distill-nca/distill-growing-neural-cellular-a-5c8914",
+      "cluster": "ops",
+      "bundle": "kb-distill-nca.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 5. Практические якоря для воспроизведения",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md|Distill — *Growing Neural Cellular Automata*: fundamentals v1 / 5. Практические якоря для воспроизведения"
+    },
+    {
+      "id": "ops/kb-distill-nca/distill-growing-neural-cellular-a-770bee",
+      "cluster": "ops",
+      "bundle": "kb-distill-nca.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / Provenance",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md|Distill — *Growing Neural Cellular Automata*: fundamentals v1 / Provenance"
+    },
+    {
+      "id": "ops/kb-distill-nca/distill-growing-neural-cellular-a-32a28a",
+      "cluster": "ops",
+      "bundle": "kb-distill-nca.bundle.v1.json",
+      "doc_path": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md",
+      "section": "Distill — *Growing Neural Cellular Automata*: fundamentals v1 / Связные материалы в каноне",
+      "section_key": "work/projects/door-to-singularity/ca-substrate-agent/kb-distill-growing-neural-ca-fundamentals-v1.md|Distill — *Growing Neural Cellular Automata*: fundamentals v1 / Связные материалы в каноне"
+    }
+  ]
+}

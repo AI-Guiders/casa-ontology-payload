@@ -31,11 +31,11 @@ CI_SCOPE_GLOBS = (
     "tests/**",
     "scripts/check_no_abs_paths.py",
     "design/CASA-ADR-*.md",
-    "lab/agent-stores/sss-ru-general-v0/nca_train_registry.v0.json",
-    "lab/agent-stores/sss-ru-general-v0/ltm/pack.manifest.json",
-    "lab/agent-stores/sss-ru-general-v0/memory_manifest.json",
-    "lab/agent-stores/sss-ru-lexicon-v0/nca_train_registry.v0.json",
-    "lab/agent-stores/sss-en-folk-v0/nca_train_registry.v0.json",
+    "lab/agent-stores/sss-ru-general/nca_train_registry.json",
+    "lab/agent-stores/sss-ru-general/ltm/pack.manifest.json",
+    "lab/agent-stores/sss-ru-general/memory_manifest.json",
+    "lab/agent-stores/sss-ru-lexicon/nca_train_registry.json",
+    "lab/agent-stores/sss-en-folk/nca_train_registry.json",
 )
 
 

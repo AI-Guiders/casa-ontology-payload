@@ -3,7 +3,7 @@
 **Статус:** accepted (lab green на prefix + letter loop; context L3 — roadmap)  
 **Дата:** 2026-05-30  
 **Область:** ССС / B2 слово / predictor / critic / unified tick  
-**Связано:** [`predictor-v0.md`](predictor-v0.md), [`experiment-t9-predictive-words-v0.md`](experiment-t9-predictive-words-v0.md), [`CASA-ADR-0003-emergent-forms-tags-predictor.md`](CASA-ADR-0003-emergent-forms-tags-predictor.md), [`understanding-contract-v0.md`](understanding-contract-v0.md), [`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md)
+**Связано:** [`predictor.md`](predictor.md), [`experiment-t9-predictive-words.md`](experiment-t9-predictive-words.md), [`CASA-ADR-0003-emergent-forms-tags-predictor.md`](CASA-ADR-0003-emergent-forms-tags-predictor.md), [`understanding-contract.md`](understanding-contract.md), [`bukvar-text-modality.md`](bukvar-text-modality.md)
 
 ---
 
@@ -17,7 +17,7 @@
 
 ### Почему отдельный ADR
 
-T9 размазан по `predictor-v0.md` и `experiment-t9-predictive-words-v0.md`, но **архитектурные решения** (anchors vs hypothesis, focus, ambiguity, место в unified tick, claims off) нигде не были собраны в одном каноническом месте. Этот ADR — **источник истины** для T9; experiment-doc — bench и cues.
+T9 размазан по `predictor.md` и `experiment-t9-predictive-words.md`, но **архитектурные решения** (anchors vs hypothesis, focus, ambiguity, место в unified tick, claims off) нигде не были собраны в одном каноническом месте. Этот ADR — **источник истины** для T9; experiment-doc — bench и cues.
 
 ### Где в лестнице букваря
 
@@ -45,7 +45,7 @@ predict(state, cue="мам", modality="t9", top_k=8)
 | `hypothesis` | **derivative** | `anchors[0].word` — для bench/log, **не** источник истины |
 | `ranked` | debug/bench | `(word, votes)*` из L2 prefix index |
 
-Реализация: [`predictor_v0.predict_t9`](../tools/predictor_v0.py), engine `l2_prefix_index_votes`.
+Реализация: [`predictor.predict_t9`](../tools/predictor.py), engine `l2_prefix_index_votes`.
 
 ### 2. Маппинг «телефонный T9 → CASA»
 
@@ -57,14 +57,14 @@ predict(state, cue="мам", modality="t9", top_k=8)
 | следующая буква | новый cue → сужение set; final → critic → `focus` |
 | завершил слово | `observation == expect` → critic pass |
 
-**Цифры 2–9 в v0 не нужны** — достаточно Unicode prefix по lexicon в цилиндре (`sss-ru-lexicon-v0`, bilingual stores).
+**Цифры 2–9 в v0 не нужны** — достаточно Unicode prefix по lexicon в цилиндре (`sss-ru-lexicon`, bilingual stores).
 
 ### 3. Три режима cue (v0 + roadmap)
 
 | режим | cue | expect | engine | lab |
 |-------|-----|--------|--------|-----|
-| **prefix** | `мам`, `прика` | одно слово top-1 / `expect` | `predict_t9` | **green** — `bench_t9_predict_v0` |
-| **letter loop** | `м`→`ма`→…→`мама` | target ∈ anchors, final pass | `simulate_t9_type` | **green** — `predict_tick_v0` |
+| **prefix** | `мам`, `прика` | одно слово top-1 / `expect` | `predict_t9` | **green** — `bench_t9_predict` |
+| **letter loop** | `м`→`ма`→…→`мама` | target ∈ anchors, final pass | `simulate_t9_type` | **green** — `predict_tick` |
 | **ambiguous prefix** | `ма`, `рос` | `expect_in` — множество допустимых | `predict_t9` + critic `expect_in` | **green** — manual cues |
 | **context** | `согласно пр` | `приказу` (L3 + `R:`) | L3 phrase + rule votes | **roadmap** — experiment doc |
 | **segment** | целое слово internal | `встре\|ча` | modality **`segment`**, не `t9` | отдельный bench |
@@ -80,7 +80,7 @@ predict(state, cue="мам", modality="t9", top_k=8)
   tick N  cue "мама"  → observation "мама", critic pass → focus
 ```
 
-Контракт: [`predict_tick_v0.simulate_t9_type`](../tools/predict_tick_v0.py).
+Контракт: [`predict_tick.simulate_t9_type`](../tools/predict_tick.py).
 
 | Фаза prefix | pass criterion |
 |-------------|----------------|
@@ -100,7 +100,7 @@ predict(state, cue="мам", modality="t9", top_k=8)
 
 **Claims nav off** на всех T9 bench — ответ только из **field/L2**, не grep KB.
 
-Focus подставляется critic-ом при pass, если predict не выставил (`critic_v0`).
+Focus подставляется critic-ом при pass, если predict не выставил (`critic`).
 
 ### 6. Связь с ADR-0003 (emergent)
 
@@ -110,7 +110,7 @@ Focus подставляется critic-ом при pass, если predict не 
 
 ### 7. Unified tick — T9 не изолирован
 
-[`unified_tick_v0.py`](../tools/unified_tick_v0.py):
+[`unified_tick.py`](../tools/unified_tick.py):
 
 ```text
   script (commit | ambiguous dual branch)
@@ -160,12 +160,12 @@ T9 **не** выбирает script; получает уже нормализо�
 | Artifact | Статус |
 |----------|--------|
 | `predict_t9` / `predict_tick` | **есть** |
-| `bench_t9_predict_v0.py` | **есть** |
-| `bench_t9_lexicon_sweep_v0.py` | **есть** |
-| `bench_en_t9_smoke_v0.py` | **есть** (EN store) |
-| `lab/exp_t9_v0/t9_manual_cues.v1.json` | **есть** |
-| `unified_tick_v0` + bench | **есть** |
-| `run_t9_demo_cycle_v0` + `t9_runtime_v0` + C# console | **есть** |
+| `bench_t9_predict.py` | **есть** |
+| `bench_t9_lexicon_sweep.py` | **есть** |
+| `bench_en_t9_smoke.py` | **есть** (EN store) |
+| `lab/exp_t9/t9_manual_cues.v1.json` | **есть** |
+| `unified_tick` + bench | **есть** |
+| `run_t9_demo_cycle` + `t9_runtime` + C# console | **есть** |
 | context L3 (`согласно пр` → `приказу`) | **нет bench** |
 | `t9_segment_cues` / segment as T9 | **нет** — use `segment` modality |
 
@@ -199,5 +199,5 @@ T9 **не** выбирает script; получает уже нормализо�
 - **ADR-0004** — listen B1 может сужать T9 anchors (macro).
 - **ADR-0005** — write W2 **после** T9 word known (dictation macro).
 - **ADR-0008** — layout-parity bilingual T9 (PhysicalKeyEvent, без WinAPI в core).
-- [`experiment-t9-predictive-words-v0.md`](experiment-t9-predictive-words-v0.md) — cues, metrics, smoke commands.
-- [`predictor-v0.md`](predictor-v0.md) — полный контракт Predictor (T9 — один из modalities).
+- [`experiment-t9-predictive-words.md`](experiment-t9-predictive-words.md) — cues, metrics, smoke commands.
+- [`predictor.md`](predictor.md) — полный контракт Predictor (T9 — один из modalities).

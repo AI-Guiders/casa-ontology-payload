@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import bench_predict_error_v0 as bench
-import control_predict_v0 as pt
+import casa.cli.bench.bench_predict_error as bench
+import casa.prisms.control.predict as pt
 
 
 def test_fit_and_predict_next_simple():

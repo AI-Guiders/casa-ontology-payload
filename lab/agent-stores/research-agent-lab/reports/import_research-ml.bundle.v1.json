@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "pipeline": "import_knowledge_delta_v1",
+  "timestamp": "2026-05-29T00:15:41.369701+00:00",
+  "delta": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\test-deltas\\patch-import-concept.json",
+  "source_agent_id": "research-agent-lab",
+  "target_cluster": "research",
+  "bundle": "research-ml.bundle.v1.json",
+  "action": "patch",
+  "store_dir": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\research-agent-lab",
+  "field_state": "<repo> Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\research-agent-lab\\field_state.json",
+  "concept_count": 4,
+  "digest": {
+    "summary": "Lab patch: add import-path concept to research-ml field",
+    "added_concept_ids": [
+      "casa.lab.import_knowledge_delta"
+    ],
+    "added_edges": [],
+    "modules_activated": [
+      "research/research-ml/5-metrics-compute-cost"
+    ],
+    "tier": "hard"
+  },
+  "checkpoint_copied": null,
+  "finetune": null,
+  "bench": null,
+  "requires_ok": true
+}

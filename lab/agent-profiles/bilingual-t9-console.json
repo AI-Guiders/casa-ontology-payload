@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "profile_id": "bilingual-t9-console",
+  "title": "Bilingual T9 (RU+EN) — console demo",
+  "stores": [
+    {
+      "role": "ru",
+      "store_dir": "lab/agent-stores/sss-ru-general",
+      "notes": "modern DetCorpus; lexicon_axes prod filter. Afan/archaic lab-only."
+    },
+    {
+      "role": "en",
+      "store_dir": "lab/agent-stores/sss-en-folk"
+    }
+  ],
+  "boot": {
+    "mode": "linked"
+  },
+  "export_before_ship": true,
+  "modalities": ["script", "ambiguous_prefix", "t9"],
+  "claims_nav_enabled": false,
+  "act": {
+    "kind": "stdio",
+    "entry": "tools/t9_runtime.py",
+    "dotnet_ui": "apps/Casa.T9.Console"
+  }
+}

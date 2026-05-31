@@ -63,7 +63,7 @@ def main() -> None:
     p.add_argument("--ollama-host", default="http://localhost:11434")
     p.add_argument("--skip-qwen", action="store_true")
     p.add_argument("--query", default="import knowledge delta")
-    p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/research-agent-lab-v0"))
+    p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/research-agent-lab"))
     p.add_argument("--out", type=Path, default=Path("lab/latency_bench_v1/report.json"))
     args = p.parse_args()
 

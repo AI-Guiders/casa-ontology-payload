@@ -6,9 +6,9 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-afan-v0'
+$store = 'lab/agent-stores/sss-afan'
 $bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
-$stack = 'design/sss-lattice-stack.v0.json'
+$stack = 'design/prisms/memory/stack.json'
 $corpus = 'lab/text/corpus/afanasyev'
 $outDir = 'lab/exp_sss_v1'
 
@@ -20,7 +20,7 @@ python tools/bench_sss_lattice.py `
     --out "$outDir/report_afan_lattice.json"
 
 Write-Host '=== Afan-I: corpus word + punct coverage (624 tales) ===' -ForegroundColor Cyan
-python tools/bench_sss_corpus_coverage_v0.py `
+python tools/bench_sss_corpus_coverage.py `
     --store-dir $store `
     --corpus-dir $corpus `
     --out "$outDir/report_afan_corpus_coverage.json"

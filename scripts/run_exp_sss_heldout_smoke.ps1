@@ -6,11 +6,11 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-heldout-v0'
+$store = 'lab/agent-stores/sss-heldout'
 $bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $train = 'lab/exp_sss_v1/train_ma_only.json'
 $heldout = 'lab/exp_sss_v1/heldout_syllables.json'
-$stack = 'design/sss-lattice-stack.v0.json'
+$stack = 'design/prisms/memory/stack.json'
 
 Write-Host '=== generate bundle + init ===' -ForegroundColor Cyan
 python tools/gen_kb_bukvar_ru_full.py --out $bundle
@@ -24,10 +24,10 @@ python tools/bench_sss_heldout.py `
     --out lab/exp_sss_v1/report_heldout_before.json
 
 Write-Host '=== train: only ma (auto-episode if wrong) ===' -ForegroundColor Cyan
-python tools/sss_wake_batch_v0.py --store-dir $store --episodes $train --bundle $bundle --auto
+python tools/sss_wake_batch.py --store-dir $store --episodes $train --bundle $bundle --auto
 
 Write-Host '=== sleep ===' -ForegroundColor Cyan
-python tools/sss_sleep_v0.py --store-dir $store --bundle $bundle
+python tools/sss_sleep.py --store-dir $store --bundle $bundle
 
 Write-Host '=== held-out AFTER train+sleep ===' -ForegroundColor Cyan
 python tools/bench_sss_heldout.py `

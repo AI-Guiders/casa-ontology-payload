@@ -2,7 +2,7 @@
 
 **Статус:** принято (design, 2026-05-30)  
 **Область:** SSS / bilingual / букварь / predictive cognition  
-**Связано:** [`understanding-contract-v0.md`](understanding-contract-v0.md), [`predictor-v0.md`](predictor-v0.md), [`experiment-bilingual-entity-v0.md`](experiment-bilingual-entity-v0.md), [`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md), [`CASA-ADR-0004-listen-modality-bukvar-sound.md`](CASA-ADR-0004-listen-modality-bukvar-sound.md), [`agent-existence-north-star-v0.md`](agent-existence-north-star-v0.md)
+**Связано:** [`understanding-contract.md`](understanding-contract.md), [`predictor.md`](predictor.md), [`experiment-bilingual-entity.md`](experiment-bilingual-entity.md), [`bukvar-text-modality.md`](bukvar-text-modality.md), [`CASA-ADR-0004-listen-modality-bukvar-sound.md`](CASA-ADR-0004-listen-modality-bukvar-sound.md), [`agent-existence-north-star.md`](agent-existence-north-star.md)
 
 ---
 
@@ -118,7 +118,7 @@ grapheme.cyrl.ve  — particular на RU store L0
 
 ### 5. Связь с entity hub (bilingual)
 
-Паттерн ADR-0003 **совпадает** с [`experiment-bilingual-entity-v0.md`](experiment-bilingual-entity-v0.md):
+Паттерн ADR-0003 **совпадает** с [`experiment-bilingual-entity.md`](experiment-bilingual-entity.md):
 
 ```text
   entity.cow  ← Form
@@ -133,7 +133,7 @@ Tags по script — **тот же hub-паттерн** на уровне бук
 
 | Тип | Пример | Lab |
 |-----|--------|-----|
-| Homoglyph (один glyph, два code point) | `a/а`, `c/с`, `e/е`, `o/о`, `p/р`, `x/х`, `y/у` | `homoglyph_v0` → dual read |
+| Homoglyph (один glyph, два code point) | `a/а`, `c/с`, `e/е`, `o/о`, `p/р`, `x/х`, `y/у` | `homoglyph` → dual read |
 | Confusable (разный glyph, cross-talk) | `b` vs `в`, `n` vs `н`, `B` vs `В` | `grapheme_clusters` cross-talk bench |
 
 **Commit vs pre-commit:** `script_detect` — язык уже выбран (unambiguous cue). `ambiguous_prefix` — `co` → cow | сова, пока буква не отсечёт ветку (`w` → EN; RU — кириллица `сов`).
@@ -193,7 +193,7 @@ Critic: `norm_word(surface) == norm_word(canonical)`; ortho-bench — верны
 
 Оба **emergent** — не в ingest tags; учатся из episodic correct.
 
-**Petля (lab v0 — `ortho_tick_v0.py`):**
+**Petля (lab v0 — `ortho_tick.py`):**
 
 ```text
   cue + context
@@ -214,7 +214,7 @@ Critic: `norm_word(surface) == norm_word(canonical)`; ortho-bench — верны
   ACT (naive) ──► sees МАМА vs мама → inverse Lower from field
 ```
 
-Инструмент: `bench_ortho_inverse_v0.py` — hot-path через `simulate_ortho_plain_surprise`, **без** явного `extract_inverse_after_surprise()` в bench.
+Инструмент: `bench_ortho_inverse.py` — hot-path через `simulate_ortho_plain_surprise`, **без** явного `extract_inverse_after_surprise()` в bench.
 
 **Связь с Predictor:** Predictor активирует **и** lexeme, **и** (когда выучено) applicable `P:` / `R:` в контексте — «что будет, если применить capitalize здесь». Это не отдельный IdeaGenerator; Apply = compose/babble под digest с Process-токенами.
 
@@ -232,7 +232,7 @@ Lower(word)      ≡ map Lower  ≡ inverse Upper
 1. `derive_inverse_grapheme_proc`: на алфавите L0 проверить `lower(capitalize(ch))==ch`
 2. Extract → `P:proc.grapheme.lower`, `E:capitalize|inverse|lower`, `proc.word.lower` + fold
 
-Инструмент: `bench_ortho_inverse_v0.py` — **7/7** (Lower отсутствует → surprise → Extract → undo).
+Инструмент: `bench_ortho_inverse.py` — **7/7** (Lower отсутствует → surprise → Extract → undo).
 
 ---
 
@@ -258,7 +258,7 @@ Lower(word)      ≡ map Lower  ≡ inverse Upper
 
 ### Roadmap v1
 
-- `bench_grapheme_clusters_v0`: B-context vs В-context activation separation.
+- `bench_grapheme_clusters`: B-context vs В-context activation separation.
 - Extract ortho rules после episodic correct.
 - `meta.tag.*` / `form.letter.*` — **имена** после consolidate, optional teacher label.
 
@@ -270,7 +270,7 @@ Lower(word)      ≡ map Lower  ≡ inverse Upper
 
 ### Что не меняется
 
-- Predictor API: `anchors[]`, `focus` после Critic ([`predictor-v0.md`](predictor-v0.md)).
+- Predictor API: `anchors[]`, `focus` после Critic ([`predictor.md`](predictor.md)).
 - KB остаётся cold path; design `#Latin` — vocabulary для команды, не runtime field.
 
 ---
@@ -279,8 +279,8 @@ Lower(word)      ≡ map Lower  ≡ inverse Upper
 
 - [ ] Ingest EN/RU grapheme **без** поля `tags` в bundle/ltm manifest.
 - [ ] Linked boot: Latin B и Cyrillic В не в одном `concept_id`.
-- [ ] Документирован predict vs extract в [`understanding-contract-v0.md`](understanding-contract-v0.md) (ссылка на ADR).
-- [x] `bench_ortho_inverse_v0.py` — Lower emerges after surprise, not bootstrap.
+- [ ] Документирован predict vs extract в [`understanding-contract.md`](understanding-contract.md) (ссылка на ADR).
+- [x] `bench_ortho_inverse.py` — Lower emerges after surprise, not bootstrap.
 
 ---
 

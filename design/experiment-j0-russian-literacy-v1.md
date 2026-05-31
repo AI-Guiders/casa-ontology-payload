@@ -2,7 +2,7 @@
 
 **Status:** phase 1 read ✅; phase 2 write ✅ (`answer_text`, write@sketch 1.0 literacy)  
 **Date:** 2026-05-29  
-**Focus:** **закончить язык** (J + J0). Exp K (C#) — **on hold**, см. [`experiment-k-code-emit-v0.md`](experiment-k-code-emit-v0.md).
+**Focus:** **закончить язык** (J + J0). Exp K (C#) — **on hold**, см. [`experiment-k-code-emit.md`](experiment-k-code-emit.md).
 
 ## North star
 
@@ -27,7 +27,7 @@ J  field     →  union store, answer@k, NCA repair (опционально уг
 
 ## Store
 
-`lab/agent-stores/language-agent-lab-v0` — **union**: grammar + MRE3 (опц.) + **literacy**.
+`lab/agent-stores/language-agent-lab` — **union**: grammar + MRE3 (опц.) + **literacy**.
 
 ## Metrics
 

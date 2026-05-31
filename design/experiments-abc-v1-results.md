@@ -92,9 +92,9 @@ Per-doc graphs **help per bundle** (6 wins vs 0), but union vocab + shared DMN s
 
 **Hypothesis:** within a cluster, train with **module-local** damage + spatial loss on `(doc_path, section)` parcels.
 
-**Run:** `python tools/build_kb_modules.py` → `manifests/kb-modules.v0.json` · `scripts/run_modules_v0.ps1`
+**Run:** `python tools/build_kb_modules.py` → `manifests/kb-modules.json` · `scripts/run_modules.ps1`
 
-See `design/modules-fmri-analogy-v0.md` · output `lab/exp_f_modules_v1/report.json`
+See `design/modules-fmri-analogy.md` · output `lab/exp_f_modules_v1/report.json`
 
 ---
 
@@ -102,9 +102,9 @@ See `design/modules-fmri-analogy-v0.md` · output `lab/exp_f_modules_v1/report.j
 
 **Policy:** baseline_mix ≥ 0.85 → cluster DMN only; else cluster + module finetune.
 
-**Run:** `scripts/run_tiered_g_v0.ps1` → `lab/exp_g_tiered_v1/report.json`
+**Run:** `scripts/run_tiered_g.ps1` → `lab/exp_g_tiered_v1/report.json`
 
-See `design/experiment-g-tiered-v1.md` · `manifests/kb-bundle-tiers.v0.json`
+See `design/experiment-g-tiered-v1.md` · `manifests/kb-bundle-tiers.json`
 
 ---
 

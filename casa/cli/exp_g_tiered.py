@@ -24,9 +24,9 @@ def _run(cmd: list[str], cwd: Path) -> None:
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Experiment G — tiered bundle training")
-    p.add_argument("--clusters", type=Path, default=Path("manifests/kb-clusters.v0.json"))
-    p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.v0.json"))
-    p.add_argument("--modules", type=Path, default=Path("manifests/kb-modules.v0.json"))
+    p.add_argument("--clusters", type=Path, default=Path("manifests/kb-clusters.json"))
+    p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.json"))
+    p.add_argument("--modules", type=Path, default=Path("manifests/kb-modules.json"))
     p.add_argument("--repo-root", type=Path, default=Path("."))
     p.add_argument("--phase1-epochs", type=int, default=600)
     p.add_argument("--phase2-epochs", type=int, default=200)

@@ -6,7 +6,7 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-phases-abc-v0'
+$store = 'lab/agent-stores/sss-phases-abc'
 $bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $corpus = 'lab/text/corpus'
 $exp = 'lab/exp_sss_v1'
@@ -22,7 +22,7 @@ python tools/bench_sss_vocab_growth.py `
     --bukvar $bukvar `
     --out "$exp/report_abc_phase_a_growth.json"
 
-python tools/sss_read_batch_v0.py `
+python tools/sss_read_batch.py `
     --store-dir $store `
     --corpus-dir $corpus `
     --bukvar $bukvar `
@@ -30,7 +30,7 @@ python tools/sss_read_batch_v0.py `
     --out "$exp/report_abc_phase_a_batch.json"
 
 Write-Host '========== PHASE B: char scan + W: field competition ==========' -ForegroundColor Green
-python tools/sss_read_batch_v0.py `
+python tools/sss_read_batch.py `
     --store-dir $store `
     --corpus-dir $corpus `
     --bukvar $bukvar `
@@ -39,7 +39,7 @@ python tools/sss_read_batch_v0.py `
     --no-sleep `
     --out "$exp/report_abc_phase_b_field_batch.json"
 
-python tools/sss_text_listen_field_v0.py `
+python tools/sss_text_listen_field.py `
     --store-dir $store `
     --text lab/text/kolobok-excerpt.txt `
     --bukvar $bukvar `
@@ -54,7 +54,7 @@ python tools/bench_sss_nca_repair.py `
     --out "$exp/report_abc_phase_c_nca_repair.json"
 
 Write-Host '=== set NCA model on state, sleep with regrow ===' -ForegroundColor Cyan
-python tools/sss_sleep_nca_hook_v0.py `
+python tools/sss_sleep_nca_hook.py `
     --store-dir $store `
     --model "$ncaOut/model.pt" `
     --bukvar $bukvar `

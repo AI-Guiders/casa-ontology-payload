@@ -1,7 +1,0 @@
-[
-  { "id": "one_stick", "cue": "|", "expect_top": "math.one", "min_score": 1 },
-  { "id": "two_sticks", "cue": "||", "expect_top": "math.two", "min_score": 1 },
-  { "id": "three_sticks", "cue": "|||", "expect_top": "math.three", "min_score": 1 },
-  { "id": "add_glyphs", "cue": "| + |", "expect_top": "math.add", "min_score": 1 },
-  { "id": "add_keyword_ru", "cue": "сложить палочки", "expect_top": "math.add", "min_score": 1 }
-]

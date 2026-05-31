@@ -1294,7 +1294,7 @@
     },
     {
       "concept_id": "lang.ru.kb_csharp_console_grade8_v1.c_консольные_программы_уровень_8_класс_v.180",
-      "text": "Store: code-agent-lab-v0; bundle stem kb-csharp-console-grade8-v1.",
+      "text": "Store: code-agent-lab; bundle stem kb-csharp-console-grade8-v1.",
       "doc_path": "worlds/software-dotnet-csharp/kb-csharp-console-grade8-v1.md",
       "section": "C# — консольные программы, уровень «8 класс» (v1) / 22. Операционное использование в CASA / Exp K",
       "claim_kind": "claim"
@@ -2040,7 +2040,7 @@
     },
     {
       "concept_id": "lang.ru.kb_csharp_console_grade8_v1.c_консольные_программы_уровень_8_класс_v.180",
-      "label": "Store: code-agent-lab-v0; bundle stem kb-csharp-console-grade8-v1."
+      "label": "Store: code-agent-lab; bundle stem kb-csharp-console-grade8-v1."
     },
     {
       "concept_id": "lang.ru.kb_csharp_console_grade8_v1.c_консольные_программы_уровень_8_класс_v.181",

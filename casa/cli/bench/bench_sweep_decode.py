@@ -19,7 +19,7 @@ from casa.cli.bench.bench_dmn_nca_union import (
     _threshold_grid_from_union_state,
     _tokens_for_bundle,
 )
-from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.codec_grid import decode_grid, score_recovery
 from casa.prisms.shared.layout_apply import _get_region_rect, damage_region_patches, mask_outside_region
 from casa.cli.train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels
 
@@ -28,7 +28,7 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Sweep decode threshold / min_votes")
     p.add_argument("--bundle", type=Path, required=True)
     p.add_argument("--model", type=Path, required=True)
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--region", default="dmn_ontology")
     p.add_argument("--damage", type=float, default=0.4)
     p.add_argument("--damage-patches", type=int, default=8)

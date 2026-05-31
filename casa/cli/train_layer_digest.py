@@ -38,7 +38,7 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Train digest phase on layered field")
     p.add_argument("--bundle", type=Path, required=True)
     p.add_argument("--dmn-model", type=Path, required=True)
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--damage-patches", type=int, default=8)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--digest-steps", type=int, default=16)

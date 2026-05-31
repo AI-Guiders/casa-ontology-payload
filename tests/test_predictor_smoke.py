@@ -8,9 +8,9 @@ from __future__ import annotations
 
 import math
 
-from sss_l2_shard_v0 import L2_CONCEPT_PREFIX  # type: ignore
+from casa.prisms.memory.lexicon_shard import L2_CONCEPT_PREFIX
 
-from predictor_v0 import (  # type: ignore
+from casa.prisms.tick.predictor import (
     DEFAULT_T9_WEIGHTS,
     T9Weights,
     _prefix_from_index,

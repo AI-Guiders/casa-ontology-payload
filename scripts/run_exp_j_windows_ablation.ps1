@@ -11,8 +11,8 @@ Set-Location $Root
 $env:PYTHONUNBUFFERED = '1'
 
 $bundles = @(
-    'lab/agent-stores/language-agent-lab-v0/bundles/kb-russian-language-rules-v1.bundle.v1.json',
-    'lab/agent-stores/language-agent-lab-v0/bundles/kb-regex-mre3-ru-chapter-map-v1.bundle.v1.json'
+    'lab/agent-stores/language-agent-lab/bundles/kb-russian-language-rules-v1.bundle.v1.json',
+    'lab/agent-stores/language-agent-lab/bundles/kb-regex-mre3-ru-chapter-map-v1.bundle.v1.json'
 )
 $reportDir = 'lab/exp_j_ru_v1'
 $rows = @()

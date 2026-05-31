@@ -15,18 +15,18 @@ dotnet publish apps/Casa.Lexicon.Build/Casa.Lexicon.Build.csproj -c Release -r w
 
 | Команда | Назначение |
 |---------|------------|
-| `quad` | Все 4 корпуса: en-general (sss-en-folk-v0), ru-general (sss-afan-v0), en/ru-tech (scan repo) |
+| `quad` | Все 4 корпуса: en-general (sss-en-folk), ru-general (sss-afan), en/ru-tech (scan repo) |
 | `export-store` | Один store → headwords file |
 | `tech` | Только tech-корпус по locale |
 
 ```powershell
 .\publish\casa-lexicon-build.exe quad --root .
-.\publish\casa-lexicon-build.exe export-store --store-id sss-afan-v0 --out lab/corpus/ru-general-v0/headwords.v1.txt
+.\publish\casa-lexicon-build.exe export-store --store-id sss-afan --out lab/corpus/ru-general/headwords.v1.txt
 ```
 
-Полный пайплайн (headwords + init + NCA): `scripts/run_lexicon_corpus_quad_v0.ps1`
+Полный пайплайн (headwords + init + NCA): `scripts/run_lexicon_corpus_quad.ps1`
 
 ## Источники
 
-- **en-general:** `sss-en-folk-v0` (~6700 слов), не Gutenberg-only
-- **ru-general:** `sss-afan-v0` monolith (~42k), **не** junction `sss-ru-lexicon-v0` → sharded smoke
+- **en-general:** `sss-en-folk` (~6700 слов), не Gutenberg-only
+- **ru-general:** `sss-afan` monolith (~42k), **не** junction `sss-ru-lexicon` → sharded smoke

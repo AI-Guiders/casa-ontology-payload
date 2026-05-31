@@ -41,13 +41,13 @@ MCP: `casa_field_infer`.
 
 | Тема | Документ |
 |------|----------|
-| **Существование агента** (Kay, duck test, без квалиа) | [`agent-existence-north-star-v0.md`](agent-existence-north-star-v0.md) |
-| **Cosmos analogy** (DMN / SN / CEN / articulation) | [`casa-cosmos-mapping-v0.md`](casa-cosmos-mapping-v0.md) |
+| **Существование агента** (Kay, duck test, без квалиа) | [`agent-existence-north-star.md`](agent-existence-north-star.md) |
+| **Cosmos analogy** (DMN / SN / CEN / articulation) | [`casa-cosmos-mapping.md`](casa-cosmos-mapping.md) |
 
 ## Smoke
 
 ```powershell
 cd Financial\software\open\casa-ontology-payload
 .\scripts\run_substrate_v2_smoke.ps1
-.\scripts\run_kb_watcher_v0.ps1 --once
+.\scripts\run_kb_watcher.ps1 --once
 ```

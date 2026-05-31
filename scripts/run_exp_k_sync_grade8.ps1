@@ -7,8 +7,8 @@ Set-Location $Root
 Require-AgentNotesKb
 
 $manifest = 'manifests/kb-bundles-csharp-grade8-v1.json'
-$store = 'lab/agent-stores/code-agent-lab-v0'
-$card = 'lab/agent-cards/research-agent.v0.json'
+$store = 'lab/agent-stores/code-agent-lab'
+$card = 'lab/agent-cards/research-agent.json'
 
 function Sync-Doc {
     param([string]$MdAbs, [string]$DocPath, [string]$OutBundle)

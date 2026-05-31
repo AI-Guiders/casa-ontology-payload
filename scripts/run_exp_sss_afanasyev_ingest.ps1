@@ -6,17 +6,17 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-afan-v0'
+$store = 'lab/agent-stores/sss-afan'
 $bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $corpus = 'lab/text/corpus/afanasyev'
 $exp = 'lab/exp_sss_v1'
 
 Write-Host '=== sanitize corpus (OCR/editorial) ===' -ForegroundColor Cyan
-python tools/sanitize_afanasyev_corpus_v0.py --corpus-dir $corpus `
+python tools/sanitize_afanasyev_corpus.py --corpus-dir $corpus `
     --out "$exp/report_afanasyev_sanitize.json"
 
 Write-Host '=== audit after sanitize ===' -ForegroundColor Cyan
-python tools/audit_afanasyev_corpus_v0.py --corpus-dir $corpus `
+python tools/audit_afanasyev_corpus.py --corpus-dir $corpus `
     --out "$exp/report_afanasyev_audit_after_sanitize.json"
 
 Write-Host '=== init bukvar store ===' -ForegroundColor Cyan
@@ -24,7 +24,7 @@ python tools/gen_kb_bukvar_ru_full.py --out $bukvar
 python tools/sss_field.py --store-dir $store --bundle $bukvar --listen-passes 2 --init
 
 Write-Host '=== batch ingest 624 tales (field + punct, listen x1) ===' -ForegroundColor Cyan
-python tools/sss_read_batch_v0.py `
+python tools/sss_read_batch.py `
     --store-dir $store `
     --corpus-dir $corpus `
     --bukvar $bukvar `

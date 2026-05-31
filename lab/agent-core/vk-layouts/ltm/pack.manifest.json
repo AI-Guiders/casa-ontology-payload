@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "format": "ltm-pack",
+  "kind": "core_ltm_keyboard_layouts_v1",
+  "immutable": true,
+  "decode_mode": "compose",
+  "field_version": 1,
+  "updated_at": "2026-05-30T21:38:40.121780+00:00",
+  "lattices": {
+    "L0_vk_physical": {
+      "path": "ltm/l0/L0_vk_physical.ltm",
+      "compress": null,
+      "raw_bytes": 12156,
+      "file_bytes": 12156,
+      "vocab": 280,
+      "placements": 831,
+      "width": 48,
+      "height": 48,
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "vk.",
+        "immutable": true,
+        "kind": "core_ltm_keyboard_layouts_v1",
+        "role": "physical_catalog",
+        "role_edge_count": 35,
+        "zone_edge_count": 196,
+        "physical_key_count": 99
+      }
+    },
+    "L0_layout_qwerty_us": {
+      "path": "ltm/l0/L0_layout_qwerty_us.ltm",
+      "compress": null,
+      "raw_bytes": 7324,
+      "file_bytes": 7324,
+      "vocab": 148,
+      "placements": 248,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "layout.",
+        "immutable": true,
+        "kind": "core_ltm_keyboard_layouts_v1",
+        "layout_id": "qwerty_us",
+        "locale": "en",
+        "lang_concept": "lang.en",
+        "alphabet_lattice": "L0_grapheme_latn",
+        "punct_lattice": "L0_punct_latn",
+        "edge_count": 95,
+        "physical_key_count": 48
+      }
+    },
+    "L0_layout_jcuken_ru": {
+      "path": "ltm/l0/L0_layout_jcuken_ru.ltm",
+      "compress": null,
+      "raw_bytes": 7392,
+      "file_bytes": 7392,
+      "vocab": 148,
+      "placements": 248,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "layout.",
+        "immutable": true,
+        "kind": "core_ltm_keyboard_layouts_v1",
+        "layout_id": "jcuken_ru",
+        "locale": "ru",
+        "lang_concept": "lang.ru",
+        "alphabet_lattice": "L0_grapheme_cyrl",
+        "punct_lattice": "L0_punct_cyrl",
+        "edge_count": 95,
+        "physical_key_count": 48
+      }
+    },
+    "L0_punct_latn": {
+      "path": "ltm/l0/L0_punct_latn.ltm",
+      "compress": null,
+      "raw_bytes": 4343,
+      "file_bytes": 4343,
+      "vocab": 99,
+      "placements": 198,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "punct.latn.",
+        "immutable": true,
+        "kind": "core_ltm_keyboard_layouts_v1",
+        "script": "latn",
+        "glyph_count": 33,
+        "alphabet_lattice": "L0_grapheme_latn"
+      }
+    },
+    "L0_punct_cyrl": {
+      "path": "ltm/l0/L0_punct_cyrl.ltm",
+      "compress": null,
+      "raw_bytes": 2517,
+      "file_bytes": 2517,
+      "vocab": 57,
+      "placements": 114,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "punct.cyrl.",
+        "immutable": true,
+        "kind": "core_ltm_keyboard_layouts_v1",
+        "script": "cyrl",
+        "glyph_count": 19,
+        "alphabet_lattice": "L0_grapheme_cyrl"
+      }
+    }
+  },
+  "totals": {
+    "lattice_count": 5,
+    "mapping_count": 190,
+    "raw_bytes": 33732,
+    "file_bytes": 33732
+  },
+  "imprint": {
+    "lattice_ids": [
+      "L0_vk_physical",
+      "L0_layout_qwerty_us",
+      "L0_layout_jcuken_ru",
+      "L0_punct_latn",
+      "L0_punct_cyrl"
+    ],
+    "mapping_count": 190,
+    "layout_ids": [
+      "qwerty_us",
+      "jcuken_ru"
+    ],
+    "graphemes": {
+      "latn": {
+        "script": "latn",
+        "lattice_id": "L0_grapheme_latn",
+        "graphemes_requested": 70,
+        "graphemes_on_field": 70,
+        "sample": [
+          "grapheme.latn. ",
+          "grapheme.latn.!",
+          "grapheme.latn.\"",
+          "grapheme.latn.#",
+          "grapheme.latn.$",
+          "grapheme.latn.%",
+          "grapheme.latn.&",
+          "grapheme.latn.'"
+        ],
+        "field_version": 1
+      },
+      "cyrl": {
+        "script": "cyrl",
+        "lattice_id": "L0_grapheme_cyrl",
+        "graphemes_requested": 33,
+        "graphemes_on_field": 33,
+        "sample": [
+          "grapheme.cyrl.а",
+          "grapheme.cyrl.б",
+          "grapheme.cyrl.в",
+          "grapheme.cyrl.г",
+          "grapheme.cyrl.д",
+          "grapheme.cyrl.е",
+          "grapheme.cyrl.ж",
+          "grapheme.cyrl.з"
+        ],
+        "field_version": 2
+      }
+    },
+    "punct_latn_n": 33,
+    "punct_cyrl_n": 19,
+    "immutable": true,
+    "decode_mode": "compose",
+    "verify": {
+      "missing_lattices": [],
+      "mapping_count": 190,
+      "qwerty_ok": true,
+      "jcuken_ok": true,
+      "physical_ok": true,
+      "punct_latn_ok": true,
+      "punct_cyrl_ok": true,
+      "pass": true
+    }
+  },
+  "verify": {
+    "missing_lattices": [],
+    "mapping_count": 190,
+    "qwerty_ok": true,
+    "jcuken_ok": true,
+    "physical_ok": true,
+    "punct_latn_ok": true,
+    "punct_cyrl_ok": true,
+    "pass": true
+  },
+  "locale_map": {
+    "qwerty_us": {
+      "lang": "lang.en",
+      "alphabet": "L0_grapheme_latn",
+      "punct": "L0_punct_latn"
+    },
+    "jcuken_ru": {
+      "lang": "lang.ru",
+      "alphabet": "L0_grapheme_cyrl",
+      "punct": "L0_punct_cyrl"
+    }
+  }
+}

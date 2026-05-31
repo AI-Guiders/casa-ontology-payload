@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SSS lab store: layered sign memory in cylinder (codec sss_v0 / bukvar_v0 scaffold)."""
+"""SSS lab store: layered sign memory in cylinder (codec sss / bukvar scaffold)."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from casa.prisms.shared.field_write import (
     new_field_state,
     save_field_state,
 )
-from casa.prisms.memory.bukvar_codec_v0 import encode_bukvar_bundle
+from casa.prisms.memory.bukvar_codec import encode_bukvar_bundle
 
 
 def _read_json(path: Path) -> dict:
@@ -32,7 +32,7 @@ def rebuild_bukvar_store(
     bundle_name: str,
     layout: dict,
     *,
-    agent_id: str = "bukvar-lab-v0",
+    agent_id: str = "bukvar-lab",
     listen_passes: int = 1,
 ) -> dict:
     store_dir.mkdir(parents=True, exist_ok=True)
@@ -65,7 +65,7 @@ def rebuild_bukvar_store(
         "cells": grid["cells"],
         "source_bundle": bundle_name,
         "source_bundles": [bundle_name],
-        "codec": "sss_v0",
+        "codec": "sss",
         "subsystem": "sss",
         "layout": "design/layout.v1.json",
         "union": False,

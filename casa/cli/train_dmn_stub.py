@@ -24,7 +24,7 @@ import argparse
 import json
 from pathlib import Path
 
-from casa.prisms.shared.codec_grid_v0 import decode_grid, encode_bundle_to_grid, score_recovery
+from casa.prisms.shared.codec_grid import decode_grid, encode_bundle_to_grid, score_recovery
 from casa.prisms.shared.layout_apply import damage_region, mask_outside_region, _get_region_rect
 
 
@@ -62,7 +62,7 @@ def run_once(
 def main() -> None:
     p = argparse.ArgumentParser(description="DMN-only recovery experiment scaffold")
     p.add_argument("--bundle", type=Path, required=True)
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--region", default="dmn_ontology")
     p.add_argument("--width", type=int, default=64)
     p.add_argument("--height", type=int, default=64)

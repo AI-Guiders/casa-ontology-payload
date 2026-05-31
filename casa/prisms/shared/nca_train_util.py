@@ -53,7 +53,7 @@ def configure_cuda(device: torch.device) -> None:
 
 def _default_cuda_batch() -> int:
     try:
-        from casa.prisms.shared.nca_train_defaults_v0 import cuda_batch_size_full
+        from casa.prisms.shared.nca_train_defaults import cuda_batch_size_full
 
         return cuda_batch_size_full()
     except Exception:
@@ -79,7 +79,7 @@ def resolve_windows_per_batch(
         monolith_batch = _default_cuda_batch()
     if max_windows is None:
         try:
-            from casa.prisms.shared.nca_train_defaults_v0 import load_nca_train_defaults
+            from casa.prisms.shared.nca_train_defaults import load_nca_train_defaults
 
             max_windows = int(load_nca_train_defaults()["windowed"]["max_windows_per_batch"])
         except Exception:

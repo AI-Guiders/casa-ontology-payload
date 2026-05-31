@@ -23,7 +23,7 @@ import torch
 from casa.prisms.shared.agent_card import read_agent_card, resolve_checkpoint
 from casa.cli.bench.bench_dmn_nca_union import _grid_to_union_tensor, _threshold_grid_from_union_state
 from casa.prisms.shared.canonical import CANONICAL_CONCEPT_MODE, CANONICAL_FIELD_MIN_VOTES, CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD
-from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.codec_grid import decode_grid, score_recovery
 from casa.prisms.shared.field_write import bundle_from_field_state, decode_field_grid, field_state_stale, load_field_state
 from casa.prisms.shared.layout_apply import _get_region_rect, damage_region_patches, mask_outside_region
 from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict
@@ -145,10 +145,10 @@ def main() -> None:
     p.add_argument("--bundle", type=Path, default=None, help="Bundle JSON (optional with --from-field)")
     p.add_argument("--from-field", action="store_true", help="Hot path: decode field_state, skip NCA")
     p.add_argument("--field-state", type=Path, default=None)
-    p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/research-agent-lab-v0"))
-    p.add_argument("--agent-card", type=Path, default=Path("lab/agent-cards/research-agent.v0.json"))
-    p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.v0.json"))
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/research-agent-lab"))
+    p.add_argument("--agent-card", type=Path, default=Path("lab/agent-cards/research-agent.json"))
+    p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--dmn-model", type=Path, default=None)
     p.add_argument("--layered", action="store_true", help="Use layered digest/gate channel means")
     p.add_argument("--cluster-root", type=Path, default=Path("lab/exp_e_clusters_v1"))
@@ -267,14 +267,14 @@ def main() -> None:
     control_stack = False
     if args.from_field:
         try:
-            from casa.prisms.control.cylinders_v0 import has_control_stack
+            from casa.prisms.control.cylinders import has_control_stack
 
             control_stack = has_control_stack(state)
         except Exception:
             control_stack = False
 
     pipeline = (
-        "sn_cen_control_stack_v0"
+        "sn_cen_control_stack"
         if args.from_field and control_stack
         else ("sn_cen_field_v2" if args.from_field else "sn_cen_v2")
     )

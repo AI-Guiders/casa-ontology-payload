@@ -6,11 +6,11 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$srcStore = 'lab/agent-stores/sss-afan-v0'
-$store = 'lab/agent-stores/sss-afan-iii-v0'
+$srcStore = 'lab/agent-stores/sss-afan'
+$store = 'lab/agent-stores/sss-afan-iii'
 $bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $exp = 'lab/exp_sss_v1'
-$ncaOut = 'lab/nca_out_afan_l1_v0'
+$ncaOut = 'lab/nca_out_afan_l1'
 $lattice = 'L1_syllable'
 
 Write-Host '=== Afan-III: copy golden store (once) ===' -ForegroundColor Cyan
@@ -24,7 +24,7 @@ if (-not (Test-Path $dst)) {
 }
 
 Write-Host '=== wake: record episodes (volk, kolobok, pa) ===' -ForegroundColor Cyan
-python tools/sss_wake_batch_v0.py `
+python tools/sss_wake_batch.py `
     --store-dir $store `
     --episodes "$exp/afan_wake_episodes.json" `
     --bundle $bukvar `
@@ -38,7 +38,7 @@ python tools/bench_sss_sleep.py `
     | Tee-Object -FilePath "$exp/report_afan_iii_sleep_before.json"
 
 Write-Host '=== T_sleep: consolidate hippo → memory ===' -ForegroundColor Cyan
-python tools/sss_sleep_v0.py `
+python tools/sss_sleep.py `
     --store-dir $store `
     --bundle $bukvar `
     | Tee-Object -FilePath "$exp/report_afan_iii_sleep_run.json"
@@ -51,7 +51,7 @@ python tools/bench_sss_sleep.py `
     | Tee-Object -FilePath "$exp/report_afan_iii_sleep_after.json"
 
 Write-Host "=== NCA train $lattice (~924 tokens, not full L2) ===" -ForegroundColor Cyan
-python tools/train_sss_nca_v0.py `
+python tools/train_sss_nca.py `
     --store-dir $store `
     --lattice-id $lattice `
     --epochs 150 `
@@ -67,7 +67,7 @@ python tools/bench_sss_nca_repair.py `
     --out "$exp/report_afan_iii_nca_repair.json"
 
 Write-Host '=== sleep + NCA regrow on L1 ===' -ForegroundColor Cyan
-python tools/sss_sleep_nca_hook_v0.py `
+python tools/sss_sleep_nca_hook.py `
     --store-dir $store `
     --model "$ncaOut/model.pt" `
     --lattice-id $lattice `
@@ -76,6 +76,6 @@ python tools/sss_sleep_nca_hook_v0.py `
     | Tee-Object -FilePath "$exp/report_afan_iii_sleep_nca.json"
 
 Write-Host '=== babble spot-check after sleep ===' -ForegroundColor Cyan
-python tools/sss_surface_v0.py --store-dir $store --lattice L2_word --prompt-file "$exp/afan_cue_volk.txt"
+python tools/sss_surface.py --store-dir $store --lattice L2_word --prompt-file "$exp/afan_cue_volk.txt"
 
 Write-Host 'Done. Working store:' $store '(golden' $srcStore 'untouched)'

@@ -2,7 +2,7 @@
 $ErrorActionPreference = 'Stop'
 Set-Location (Split-Path -Parent $PSScriptRoot)
 
-$store = 'lab/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab'
 $goal = 'согласно приказу как правильно'
 
 python tools/agent_autonomous_tick.py `

@@ -4,7 +4,7 @@
 **Дата:** 2026-05-31  
 **Область:** control lattice stack (DMN/SN/FPN/CEN), predictive coding, sparse routing, prioritization  
 **Вдохновение:** NVIDIA Cosmos (WFM: Predict / Transfer / Reason + Tokenizer / Guardrail) + крупномасштабные сети мозга (DMN, SN, **DAN/VAN**, лимбическая оценка, forward-model) — но **инженерно и эффективнее**, на одном CA-субстрате  
-**Связано:** [`control-lattice-stack-v0.md`](control-lattice-stack-v0.md), [`casa-cosmos-mapping-v0.md`](casa-cosmos-mapping-v0.md), [`fpn-control-region-v0.md`](fpn-control-region-v0.md), [`understanding-contract-v0.md`](understanding-contract-v0.md), [`CASA-ADR-0009-experience-replay-retention.md`](CASA-ADR-0009-experience-replay-retention.md), [`modules-fmri-analogy-v0.md`](modules-fmri-analogy-v0.md), [`surface_error_v0.py`](../tools/surface_error_v0.py)
+**Связано:** [`control-lattice-stack.md`](control-lattice-stack.md), [`casa-cosmos-mapping.md`](casa-cosmos-mapping.md), [`fpn-control-region.md`](fpn-control-region.md), [`understanding-contract.md`](understanding-contract.md), [`CASA-ADR-0009-experience-replay-retention.md`](CASA-ADR-0009-experience-replay-retention.md), [`modules-fmri-analogy.md`](modules-fmri-analogy.md), [`surface_error.py`](../tools/surface_error.py)
 
 ---
 
@@ -18,8 +18,8 @@ DMN(что знаем) ─P1─► SN(что релевантно) ─P2a─► 
 
 Два зафиксированных в каноне пробела:
 
-1. **«Predict — нет».** [`fpn-control-region-v0.md`](fpn-control-region-v0.md) и [`casa-cosmos-mapping-v0.md`](casa-cosmos-mapping-v0.md) приравнивают Cosmos **Predict** к DMN+repair. Но DMN = «что знаем» (состояние мира), а Cosmos Predict = **rollout следующего состояния**. [`understanding-contract-v0.md`](understanding-contract-v0.md) настаивает: понимание — **постоянная внутренняя симуляция** («если сделаю X — ожидаю Y» → сравнить с реальностью → surprise). Сейчас это неявная петля, **не орган**.
-2. **SN перегружен.** SN делает и **детект salience** (bottom-up), и **роутинг/gate**. В мозге это разные сети: **VAN** (реориентирование на стимул) vs **DAN** (top-down прожектор внимания по цели). Слияние мешает **разрежённой** активации (только нужные модули/шарды), хотя [`modules-fmri-analogy-v0.md`](modules-fmri-analogy-v0.md) уже намекает на «restrict rollout to active modules».
+1. **«Predict — нет».** [`fpn-control-region.md`](fpn-control-region.md) и [`casa-cosmos-mapping.md`](casa-cosmos-mapping.md) приравнивают Cosmos **Predict** к DMN+repair. Но DMN = «что знаем» (состояние мира), а Cosmos Predict = **rollout следующего состояния**. [`understanding-contract.md`](understanding-contract.md) настаивает: понимание — **постоянная внутренняя симуляция** («если сделаю X — ожидаю Y» → сравнить с реальностью → surprise). Сейчас это неявная петля, **не орган**.
+2. **SN перегружен.** SN делает и **детект salience** (bottom-up), и **роутинг/gate**. В мозге это разные сети: **VAN** (реориентирование на стимул) vs **DAN** (top-down прожектор внимания по цели). Слияние мешает **разрежённой** активации (только нужные модули/шарды), хотя [`modules-fmri-analogy.md`](modules-fmri-analogy.md) уже намекает на «restrict rollout to active modules».
 
 Плюс приоритизация (что усиливать, что реплеить на sleep) сейчас **слепая** (recency/FIFO) — нет органа ценности.
 
@@ -68,13 +68,13 @@ DMN(что знаем) ─P1─► SN(что релевантно) ─P2a─► 
 | **prediction error → surprise** | целевой сигнал для Extract/consolidation вместо эвристик; per-lattice repair сохраняется |
 | **+1 решётка, не resize** | новый орган не перекраивает LTM/layout, как доказано на 64× L2 shards |
 
-### Cosmos-паритет (обновление `casa-cosmos-mapping-v0`)
+### Cosmos-паритет (обновление `casa-cosmos-mapping`)
 
 | Cosmos | Было (v0) | Станет |
 |--------|-----------|--------|
 | Predict | = DMN | **`lattice_predict`** (rollout), DMN = world-state |
 | Reason | SN+CEN | SN(salience)+**DAN**(attention)+CEN(plan) |
-| Tokenizer | (неявно codec) | `codec_grid_v0` как явный токенайзер поля |
+| Tokenizer | (неявно codec) | `codec_grid` как явный токенайзер поля |
 | Guardrail | — | **`lattice_value`** + Critic + integrity-core |
 
 ---
@@ -87,7 +87,7 @@ DMN(что знаем) ─P1─► SN(что релевантно) ─P2a─► 
 | Расширять SN до внимания | перегруз одного органа; нет sparse spotlight; против fMRI-разделения |
 | Внешний LLM как Predict | против UC (внешняя RAM, latency); Predict должен быть на поле |
 | Один скаляр «понимание/важность» | смешивает surprise (predict) и value (limbic) — разные сигналы |
-| Сразу мутировать `control-lattice-stack.v0.json` | сломает `init_control_lab`/bench до готового runtime; ниже — поэтапный план |
+| Сразу мутировать `control-lattice-stack.json` | сломает `init_control_lab`/bench до готового runtime; ниже — поэтапный план |
 
 ---
 
@@ -95,11 +95,11 @@ DMN(что знаем) ─P1─► SN(что релевантно) ─P2a─► 
 
 ### Поэтапно (каждый шаг — green перед следующим)
 
-- [x] **R1 (design):** этот ADR; [`casa-cosmos-mapping-v0.md`](casa-cosmos-mapping-v0.md) (Predict→lattice_predict); [`control-lattice-stack-v0.md`](control-lattice-stack-v0.md) + JSON (7 lattice_id + P6–P9).
-- [x] **R2 (value brick):** value-взвешенный replay в [`replay_buffer_v0.py`](../tools/replay_buffer_v0.py) (`value_weight`, тег value) + тесты — **первый кирпич `lattice_value`** без нового органа.
-- [x] **R3 (predict):** `lattice_predict` (z_ctrl 4) + мост P8 в `control-lattice-stack.v0.json`; digest-уровневый [`lattice_predict_v0.py`](../tools/lattice_predict_v0.py) (fit/predict_next/rollout/prediction_error/surprise) + [`bench_predict_error_v0.py`](../tools/bench_predict_error_v0.py) (predicted vs no-rollout baseline) + `tests/test_lattice_predict.py`. Field-rollout (`train_sss_nca_v0 --lattice-id lattice_predict`) — следующий шаг того же кирпича.
-- [x] **R4 (attention split):** `lattice_dan` + P6/P7 в stack; digest [`lattice_dan_v0.py`](../tools/lattice_dan_v0.py) (spotlight/sparse_mask) + `tests/test_lattice_dan.py`. Field sparse rollout + SN сужение — следующий шаг.
-- [x] **R5 (value organ):** `lattice_value` + P9 в stack; digest [`lattice_value_v0.py`](../tools/lattice_value_v0.py) (surprise/correction/task → scalar) + `tests/test_lattice_value.py`. Hook в sleep-порядок на поле — следующий шаг.
+- [x] **R1 (design):** этот ADR; [`casa-cosmos-mapping.md`](casa-cosmos-mapping.md) (Predict→lattice_predict); [`control-lattice-stack.md`](control-lattice-stack.md) + JSON (7 lattice_id + P6–P9).
+- [x] **R2 (value brick):** value-взвешенный replay в [`replay_buffer.py`](../tools/replay_buffer.py) (`value_weight`, тег value) + тесты — **первый кирпич `lattice_value`** без нового органа.
+- [x] **R3 (predict):** `lattice_predict` (z_ctrl 4) + мост P8 в `control-lattice-stack.json`; digest-уровневый [`lattice_predict.py`](../tools/lattice_predict.py) (fit/predict_next/rollout/prediction_error/surprise) + [`bench_predict_error.py`](../tools/bench_predict_error.py) (predicted vs no-rollout baseline) + `tests/test_lattice_predict.py`. Field-rollout (`train_memory_nca --lattice-id lattice_predict`) — следующий шаг того же кирпича.
+- [x] **R4 (attention split):** `lattice_dan` + P6/P7 в stack; digest [`lattice_dan.py`](../tools/lattice_dan.py) (spotlight/sparse_mask) + `tests/test_lattice_dan.py`. Field sparse rollout + SN сужение — следующий шаг.
+- [x] **R5 (value organ):** `lattice_value` + P9 в stack; digest [`lattice_value.py`](../tools/lattice_value.py) (surprise/correction/task → scalar) + `tests/test_lattice_value.py`. Hook в sleep-порядок на поле — следующий шаг.
 
 ### Не меняется
 
@@ -115,7 +115,7 @@ DMN(что знаем) ─P1─► SN(что релевантно) ─P2a─► 
 
 ## Проверка (критерии)
 
-- [x] R3: `bench_predict_error_v0` — predicted next-digest ближе к observed, чем baseline (no-rollout) (digest-уровень; green в `tests/test_lattice_predict.py`)
+- [x] R3: `bench_predict_error` — predicted next-digest ближе к observed, чем baseline (no-rollout) (digest-уровень; green в `tests/test_lattice_predict.py`)
 - [x] R4: DAN spotlight даёт sparse_ratio < 0.85 и predict-under-mask error < 0.5 на synthetic walk (`tests/test_lattice_dan.py`)
 - [x] R2/R5: value_weight меняет порядок реплея (high-value раньше) при сохранении дефолтного поведения (`tests/test_lattice_value.py`, `tests/test_replay_buffer.py`)
 - [ ] R5 field: high-value коррекции консолидируются/реплеятся раньше low-value под интерференцией (retention@N, ADR-0009)
@@ -126,9 +126,9 @@ DMN(что знаем) ─P1─► SN(что релевантно) ─P2a─► 
 
 | Документ | Роль |
 |----------|------|
-| [`control-lattice-stack-v0.md`](control-lattice-stack-v0.md) | базовый стек DMN/SN/FPN/CEN + bridges |
-| [`casa-cosmos-mapping-v0.md`](casa-cosmos-mapping-v0.md) | Predict/Transfer/Reason ↔ CASA (обновить по R1) |
-| [`understanding-contract-v0.md`](understanding-contract-v0.md) | predict-петля как инвариант понимания |
+| [`control-lattice-stack.md`](control-lattice-stack.md) | базовый стек DMN/SN/FPN/CEN + bridges |
+| [`casa-cosmos-mapping.md`](casa-cosmos-mapping.md) | Predict/Transfer/Reason ↔ CASA (обновить по R1) |
+| [`understanding-contract.md`](understanding-contract.md) | predict-петля как инвариант понимания |
 | [`CASA-ADR-0009-experience-replay-retention.md`](CASA-ADR-0009-experience-replay-retention.md) | value→приоритет replay/sleep |
 
 ---

@@ -5,7 +5,7 @@ Structural rename only — **no NCA retrain**. Weights in model.pt stay valid; p
 
 Map: design/lattice-id-map.v1.json (migrate-only; runtime uses v1 ids directly).
 
-**Do not run while `train_sss_nca_shards_v0.py` / CUDA train is active** — race on nca/ dirs.
+**Do not run while `train_memory_nca_shards.py` / CUDA train is active** — race on nca/ dirs.
 
 Touches: ltm/*.ltm, pack.manifest.json, nca/<id>/ dirs, nca_train_registry, field_state.json.
 """
@@ -25,10 +25,10 @@ from pathlib import Path
 from typing import Any
 
 from casa.prisms.shared.field_write import load_field_state, save_field_state
-from casa.prisms.shared.ltm_pack_v0 import lattice_subdir
-from casa.prisms.shared.prism_state_v0 import normalize_prisms, prism_control, prism_hippo, prism_memory
-from casa.prisms.memory.sss_cylinders_v0 import memory_lattices
-from casa.prisms.shared.store_layout_v0 import field_state_path, ltm_root, nca_root, nca_train_registry_path
+from casa.prisms.shared.ltm_pack import lattice_subdir
+from casa.prisms.shared.prism_state import normalize_prisms, prism_control, prism_hippo, prism_memory
+from casa.prisms.memory.memory_prisms import memory_lattices
+from casa.prisms.shared.store_layout import field_state_path, ltm_root, nca_root, nca_train_registry_path
 
 _MAP_PATH = REPO_ROOT / "design" / "lattice-id-map.v1.json"
 

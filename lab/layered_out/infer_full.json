@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "pipeline": "layered_piston_v0",
+  "pipeline": "layered_piston",
   "bundle": "lab\\ca-substrate-agent.bundle.v1.json",
   "dmn_model": "lab\\nca_out_v3_section\\model.pt",
   "digest_model": "lab\\layered_out\\digest_model.pt",

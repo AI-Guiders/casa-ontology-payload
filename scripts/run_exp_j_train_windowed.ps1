@@ -10,7 +10,7 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$store = 'lab/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab'
 $grammar = "$store/bundles/kb-russian-language-rules-v1.bundle.v1.json"
 $mre3 = "$store/bundles/kb-regex-mre3-ru-chapter-map-v1.bundle.v1.json"
 

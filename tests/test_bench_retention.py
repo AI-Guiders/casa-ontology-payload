@@ -1,8 +1,8 @@
-"""Gate for bench_retention_v0 (CASA-ADR-0009 UC v0.3)."""
+"""Gate for bench_retention (CASA-ADR-0009 UC v0.3)."""
 
 from __future__ import annotations
 
-import bench_retention_v0 as br
+import casa.cli.bench.bench_retention as br
 
 
 def test_replay_beats_ablation_on_synthetic_scenario() -> None:

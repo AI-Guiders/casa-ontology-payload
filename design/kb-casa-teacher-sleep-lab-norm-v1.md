@@ -3,7 +3,7 @@
 **Date:** 2026-05-31  
 **Status:** canon (CASA operational; agent-notes primary)  
 **KB path:** `work/projects/door-to-singularity/ca-substrate-agent/kb-casa-teacher-sleep-lab-norm-v1.md`  
-**Spec:** [`teacher-correction-protocol-v0.md`](teacher-correction-protocol-v0.md)  
+**Spec:** [`teacher-correction-protocol.md`](teacher-correction-protocol.md)  
 **Machine cards:** `lab/kb/teacher_correction_cards.v1.json`
 
 ---
@@ -14,7 +14,7 @@
 
 **CASA** — инженерный контракт: `surface` → **critic** (ось ошибки) → **teacher** → Extract → **sleep**; `correction_kind`, scene, T9 fork, hippo episodes. Нормы ниже — **только** из контракта и lab (prefix ambiguity, mixed script, entity hub ≠ teacher).
 
-Сравнение с «как ребёнок» в [`language-acquisition-loop-v0.md`](language-acquisition-loop-v0.md) — **метафора north star**, не импорт теории. Evidence (human L1, отдельный мир): agent-notes `worlds/cognition-language-acquisition/kb-language-acquisition-scientific-evidence-v1.md` (+ per-paper evidence cards).
+Сравнение с «как ребёнок» в [`language-acquisition-loop.md`](language-acquisition-loop.md) — **метафора north star**, не импорт теории. Evidence (human L1, отдельный мир): agent-notes `worlds/cognition-language-acquisition/kb-language-acquisition-scientific-evidence-v1.md` (+ per-paper evidence cards).
 
 ---
 
@@ -28,7 +28,7 @@
 4. **Entity hub ≠ teacher:** `entity.cow ↔ корова` — cold L3; **не** license «корова» на каждый `кор*`.
 5. **Sleep merge:** только с `correction_kind`; rule-only на mixed script **без** lemma strengthen.
 
-Сомнение → [`teacher-correction-protocol-v0.md`](teacher-correction-protocol-v0.md), не «угадай по здравому смыслу».
+Сомнение → [`teacher-correction-protocol.md`](teacher-correction-protocol.md), не «угадай по здравому смыслу».
 
 ---
 
@@ -49,7 +49,7 @@
 
 ## Фазы (CASA, не возраст ребёнка)
 
-См. [`infancy-corpus-phases-v0.md`](infancy-corpus-phases-v0.md):
+См. [`infancy-corpus-phases.md`](infancy-corpus-phases.md):
 
 ```text
 0 wiring → 1 phonotactics → 2 listen mass → 3 surface→correct → 4 sleep → 5 T9 prod

@@ -195,7 +195,7 @@ def _normalize_concept_id(
         if tl.startswith("цель 3"):
             return "casa.goal.imitation_with_error_and_fix"
         if tl.startswith("v0:"):
-            return "casa.roadmap.v0.substrate_calibration"
+            return "casa.roadmap.substrate_calibration"
         if tl.startswith("v1:"):
             return "casa.roadmap.v1.meaning_in_field"
         if tl.startswith("v2:"):

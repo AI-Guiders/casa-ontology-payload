@@ -6,7 +6,7 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-text-v0'
+$store = 'lab/agent-stores/sss-text'
 $bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $tale = 'lab/text/kolobok-excerpt.txt'
 $dynamic = 'lab/kb/kb-kolobok-excerpt-dynamic.payload.json'
@@ -19,7 +19,7 @@ Write-Host '=== coverage BEFORE tale ===' -ForegroundColor Cyan
 python tools/bench_sss_text_ingest.py --store-dir $store --text $tale --out lab/exp_sss_v1/report_text_ingest_before.json
 
 Write-Host '=== ingest kolobok excerpt ===' -ForegroundColor Cyan
-python tools/sss_text_ingest_v0.py `
+python tools/sss_text_ingest.py `
     --store-dir $store `
     --text $tale `
     --bukvar $bukvar `

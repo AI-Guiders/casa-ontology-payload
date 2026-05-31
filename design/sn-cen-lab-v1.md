@@ -43,9 +43,9 @@ After `import_knowledge_delta`, SN/CEN reads `field_state.json` directly — no 
 
 ```powershell
 python tools/sn_cen_infer.py --from-field --query "import knowledge delta"
-python tools/sn_cen_infer.py --from-field --store-dir lab/agent-stores/research-agent-lab-v0
+python tools/sn_cen_infer.py --from-field --store-dir lab/agent-stores/research-agent-lab
 ```
 
 Typical `wall_ms` < 50 ms (decode + SN + CEN only).
 
-See also: `design/cen-sn-runtime-v0.md`, `design/layout.v0.json` (regions + ports).
+See also: `design/cen-sn-runtime.md`, `design/layout.json` (regions + ports).

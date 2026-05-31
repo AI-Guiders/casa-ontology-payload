@@ -20,7 +20,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.codec_grid import decode_grid, score_recovery
 from casa.prisms.shared.layout_apply import _get_region_rect, mask_outside_region
 from casa.prisms.shared.module_masks import cell_indices_for_tokens, module_tokens_for_section
 from casa.prisms.shared.nca_train_util import (
@@ -102,11 +102,11 @@ def _load_module_specs(
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Train DMN NCA with module-local supervision")
-    p.add_argument("--modules", type=Path, default=Path("manifests/kb-modules.v0.json"))
-    p.add_argument("--clusters", type=Path, default=Path("manifests/kb-clusters.v0.json"))
+    p.add_argument("--modules", type=Path, default=Path("manifests/kb-modules.json"))
+    p.add_argument("--clusters", type=Path, default=Path("manifests/kb-clusters.json"))
     p.add_argument("--cluster", required=True, help="Cluster id (goals, research, ops)")
     p.add_argument("--repo-root", type=Path, default=Path("."))
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--region", default="dmn_ontology")
     p.add_argument("--damage-patches", type=int, default=6)
     p.add_argument("--patch-w", type=int, default=8)
@@ -129,7 +129,7 @@ def main() -> None:
     p.add_argument("--out-dir", type=Path, required=True)
     p.add_argument("--save-model", action="store_true")
     p.add_argument("--init-model", type=Path, default=None, help="Load weights from prior cluster train (phase 1)")
-    p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.v0.json"))
+    p.add_argument("--tiers", type=Path, default=Path("manifests/kb-bundle-tiers.json"))
     p.add_argument("--hard-only", action="store_true", help="Train only modules on hard-tier bundles")
     args = p.parse_args()
 
@@ -331,7 +331,7 @@ def main() -> None:
                 "fire_rate_train": args.fire_rate,
                 "state_dict": rule.state_dict(),
                 "cluster": args.cluster,
-                "train_mode": "module_masked_v0",
+                "train_mode": "module_masked",
                 "bundles": [str(b) for b in train_paths],
                 "module_count": len(module_specs),
             },
@@ -362,9 +362,9 @@ def main() -> None:
 
     out = {
         "schema_version": 1,
-        "experiment": "F_module_train_v0",
+        "experiment": "F_module_train",
         "cluster": args.cluster,
-        "train_mode": "module_masked_v0",
+        "train_mode": "module_masked",
         "module_count": len(module_specs),
         "layout": str(args.layout),
         "region": args.region,

@@ -2,7 +2,7 @@
 
 **Статус:** draft (обсуждение, 2026-05-30)  
 **Область:** ССС / букварь / listen / acoustic cue / unified tick  
-**Связано:** [`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md), [`second-signal-system-v0.md`](second-signal-system-v0.md), [`CASA-ADR-0003-emergent-forms-tags-predictor.md`](CASA-ADR-0003-emergent-forms-tags-predictor.md), [`predictor-v0.md`](predictor-v0.md), [`understanding-contract-v0.md`](understanding-contract-v0.md)
+**Связано:** [`bukvar-text-modality.md`](bukvar-text-modality.md), [`second-signal-system.md`](second-signal-system.md), [`CASA-ADR-0003-emergent-forms-tags-predictor.md`](CASA-ADR-0003-emergent-forms-tags-predictor.md), [`predictor.md`](predictor.md), [`understanding-contract.md`](understanding-contract.md)
 
 ---
 
@@ -10,7 +10,7 @@
 
 ### Лестница уже есть в design, hot path — нет
 
-[`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md) фиксирует порядок **B0→B3**:
+[`bukvar-text-modality.md`](bukvar-text-modality.md) фиксирует порядок **B0→B3**:
 
 ```text
 B0  буква / звуковой якорь     grapheme.*
@@ -52,7 +52,7 @@ Lab v0 сильнее покрывает **глаза** (L0 grapheme, script, or
   B2: «мама» (слово)    →   focus lang.word.*     →   match + hub
 ```
 
-Тот же **tick-router**, что T9 / script / ortho / unified ([`unified_tick_v0.py`](../tools/unified_tick_v0.py) roadmap):
+Тот же **tick-router**, что T9 / script / ortho / unified ([`unified_tick.py`](../tools/unified_tick.py) roadmap):
 
 ```text
   listen B0/B1  →  (optional script)  →  T9/word  →  ortho  →  hub
@@ -93,7 +93,7 @@ Listen **не заменяет** буквы: **структура цилиндр
 
 Mass **не противоречит** букварю: букварь — **как устроена память**, mass — **как устроен мир вокруг**. Ребёнок слышит «мама» тысячу раз **и** потом всё равно проходит слог/букву в лепете — у нас то же: L2 activation из фона + B0/B1 bridges из опыта/correct.
 
-См. «утроба» в [`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md).
+См. «утроба» в [`bukvar-text-modality.md`](bukvar-text-modality.md).
 
 ### 1c. Listen mass — технический pipeline (мультики, подкасты, корпус)
 
@@ -116,7 +116,7 @@ Mass **не противоречит** букварю: букварь — **ка
 |------|-----------|---------|
 | **Медиа** | `store/audio/` (gitignore), torrents, локальный диск | **нет** |
 | **Manifest** | `store/listen_mass/manifest.ndjson` | указатели, не bytes |
-| **Encode** | `listen_word` / `listen_scene` ([`sss_vocab_v0.py`](../tools/sss_vocab_v0.py)) | **да** — `W:`, `L3:` scene links |
+| **Encode** | `listen_word` / `listen_scene` ([`vocab.py`](../tools/vocab.py)) | **да** — `W:`, `L3:` scene links |
 
 **v0:** digest и predict **не** читают waveform. Клип `wav` — для человека, replay lab и episodic `T:audio.{clip_id}`; активация слова — как при «услышал смысл» через **токены**, не FFT.
 
@@ -182,7 +182,7 @@ ASR и субтитры — **OCR для уха**: переводят медиа
 #### Layout store (listen mass)
 
 ```text
-sss-ru-lexicon-v0/              # или sss-listen-mass-v0/
+sss-ru-lexicon/              # или sss-listen-mass/
 ├── ltm/                        # ship после export_ltm_pack
 ├── nca/
 ├── audio/                      # .gitignore — сырые клипы
@@ -224,10 +224,10 @@ T:voice.masha              |  speaker_of |  …
 
 | Tool | Роль |
 |------|------|
-| `listen_mass_ingest_v0.py` | manifest.ndjson → `listen_scene` / checkpoint / `field_version` |
-| `srt_to_listen_manifest_v0.py` | `.srt` → manifest (+ optional ffmpeg slice) |
-| `bench_listen_coverage_v0.py` | после mass: headword / scene activation counts |
-| `lab/exp_listen_v0/` | один эпизод + cues для controlled tick |
+| `listen_mass_ingest.py` | manifest.ndjson → `listen_scene` / checkpoint / `field_version` |
+| `srt_to_listen_manifest.py` | `.srt` → manifest (+ optional ffmpeg slice) |
+| `bench_listen_coverage.py` | после mass: headword / scene activation counts |
+| `lab/exp_listen/` | один эпизод + cues для controlled tick |
 
 **Минимальный v0 без wav:** субтитры → manifest → `listen_mass_ingest` — encode работает **сегодня** через существующий `listen_scene`.
 
@@ -241,7 +241,7 @@ T:voice.masha              |  speaker_of |  …
 | B1 | `L1_syllable` | `syllable.ма` | «ма», «мам» |
 | B2 | `L2_word_*` | `lang.word.мама` | полное слово (audio или symbolic) |
 
-**Z-bridge** (уже в stack): compose слог из grapheme, слово из слогов — тот же паттерн, что z-мосты в [`sss-multi-lattice-z-v0.md`](sss-multi-lattice-z-v0.md).
+**Z-bridge** (уже в stack): compose слог из grapheme, слово из слогов — тот же паттерн, что z-мосты в [`sss-multi-lattice-z.md`](sss-multi-lattice-z.md).
 
 **Не в bootstrap:** `phoneme.*`, `#Syllable`, IPA-strings как истина.
 
@@ -268,7 +268,7 @@ T:voice.masha              |  speaker_of |  …
 
 **Mass до controlled:** сначала encode фонового корпуса (слова и фразы в потоке); lab ticks B0/B1 — на symbolic или вырезках, не вместо «утробы».
 
-Параллель: PNG cursive ([`grapheme-glyphs/`](../lab/exp_bilingual_v0/grapheme-glyphs/)) — **глаз**; audio manifest — **ухо**; один `concept_id`, два visual/acoustic particular.
+Параллель: PNG cursive ([`grapheme-glyphs/`](../lab/exp_bilingual/grapheme-glyphs/)) — **глаз**; audio manifest — **ухо**; один `concept_id`, два visual/acoustic particular.
 
 ### 5. Bilingual
 
@@ -287,7 +287,7 @@ T:voice.masha              |  speaker_of |  …
 | Q5 | Связь listen B0 с ScriptS PNG | optional `E: grapheme.* \| cursive_glyph \| file.png` — visual particular, не tag |
 | Q6 | Mass = только слоги или целые клипы? | **целые клипы и фразы**; слоги — для controlled lab/correct |
 | Q7 | ASR в pipeline? | **только cold ingest**; manifest = текст сцен, не live decode |
-| Q8 | Отдельный store для mass? | optional `sss-listen-mass-v0`; merge в lexicon через export/import ltm |
+| Q8 | Отдельный store для mass? | optional `sss-listen-mass`; merge в lexicon через export/import ltm |
 
 ---
 
@@ -311,23 +311,23 @@ T:voice.masha              |  speaker_of |  …
 
 ### Design
 
-- Расширить [`predictor-v0.md`](predictor-v0.md) таблицу модальностей: `listen` (B0/B1/B2 cues).
-- [`unified_tick_v0.py`](../tools/unified_tick_v0.py): slot `listen` перед T9 (roadmap); T9 канон — ADR-0006.
-- [`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md): ссылка на этот ADR как решение по **teacher** и **TTS**.
+- Расширить [`predictor.md`](predictor.md) таблицу модальностей: `listen` (B0/B1/B2 cues).
+- [`unified_tick.py`](../tools/unified_tick.py): slot `listen` перед T9 (roadmap); T9 канон — ADR-0006.
+- [`bukvar-text-modality.md`](bukvar-text-modality.md): ссылка на этот ADR как решение по **teacher** и **TTS**.
 
 ### Lab (когда пойдём в код)
 
 **Controlled tick:**
 
-- `listen_tick_v0.py` — symbolic cue, без Kokoro.
-- `bench_listen_bukvar_v0.py` — «ма» → `мама` in anchors.
+- `listen_tick.py` — symbolic cue, без Kokoro.
+- `bench_listen_bukvar.py` — «ма» → `мама` in anchors.
 
 **Listen mass (cold path):**
 
-- `listen_mass_ingest_v0.py` — manifest → `listen_scene` batch.
-- `srt_to_listen_manifest_v0.py` — субтитры мультиков → manifest.
-- `bench_listen_coverage_v0.py` — coverage после mass corpus.
-- `lab/exp_listen_v0/` — manifest + optional `audio/` + controlled cues.
+- `listen_mass_ingest.py` — manifest → `listen_scene` batch.
+- `srt_to_listen_manifest.py` — субтитры мультиков → manifest.
+- `bench_listen_coverage.py` — coverage после mass corpus.
+- `lab/exp_listen/` — manifest + optional `audio/` + controlled cues.
 
 ### Не делаем в draft
 
@@ -339,7 +339,7 @@ T:voice.masha              |  speaker_of |  …
 
 ### B3 listen — тот же gap, что и write W3
 
-Lab v0 целится в B0/B1/B2 (буква → слог → слово). **Предложение / фраза целиком** на listen — как write W3: `L3_phrase` и `ru.dialog.*` в design есть, **bench нет**. См. ADR-0005 §5b и `bukvar-text-modality-v0.md` (B3 gap).
+Lab v0 целится в B0/B1/B2 (буква → слог → слово). **Предложение / фраза целиком** на listen — как write W3: `L3_phrase` и `ru.dialog.*` в design есть, **bench нет**. См. ADR-0005 §5b и `bukvar-text-modality.md` (B3 gap).
 
 ---
 

@@ -334,11 +334,11 @@ def bundle_filename_from_ref(ref: str) -> str:
 
 def decode_field_grid(state: dict, *, min_votes: int | None = None) -> dict:
     from casa.prisms.shared.canonical import CANONICAL_FIELD_MIN_VOTES
-    from casa.prisms.shared.codec_grid_v0 import decode_grid
+    from casa.prisms.shared.codec_grid import decode_grid
 
     try:
-        from casa.prisms.control.cylinders_v0 import has_control_stack
-        from casa.prisms.control.stack_v0 import decode_control_dmn
+        from casa.prisms.control.cylinders import has_control_stack
+        from casa.prisms.control.stack import decode_control_dmn
 
         if has_control_stack(state):
             mv = CANONICAL_FIELD_MIN_VOTES if min_votes is None else min_votes

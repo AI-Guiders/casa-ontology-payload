@@ -9,7 +9,7 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$store = 'lab/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab'
 $grammar = "$store/bundles/kb-russian-language-rules-v1.bundle.v1.json"
 $literacy = "$store/bundles/kb-russian-literacy-agent.bundle.v1.json"
 $bundles = @($grammar, $literacy)

@@ -24,7 +24,7 @@ from casa.prisms.control.fpn_state import (
     salience_mode_bias,
     save_session,
 )
-from casa.prisms.control.tick_v0 import run_control_extensions
+from casa.prisms.control.tick import run_control_extensions
 from casa.prisms.control.sn_cen_infer import _run_from_field
 from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict
 
@@ -67,7 +67,7 @@ def run_tick(
 
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/language-agent-lab-v0"))
+    p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/language-agent-lab"))
     p.add_argument("--query", default=None, help="External query; if omitted uses WM goal or probe")
     p.add_argument("--ticks", type=int, default=1, help="Macro ticks T to run in sequence")
     p.add_argument("--goal", default=None, help="Seed WM goal before first tick")

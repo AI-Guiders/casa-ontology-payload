@@ -30,7 +30,7 @@ def main() -> None:
     p.add_argument("--queries", type=Path, required=True)
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--model", type=Path, default=None, help="NCA model.pt for repair path")
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--damage-patches", type=int, default=8)
     p.add_argument("--dmn-steps", type=int, default=48)
     p.add_argument("--seed", type=int, default=42)

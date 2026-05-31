@@ -3,22 +3,22 @@ $ErrorActionPreference = "Stop"
 $repo = Split-Path -Parent $PSScriptRoot
 Set-Location $repo
 
-$store = "lab/agent-stores/research-agent-lab-v0"
+$store = "lab/agent-stores/research-agent-lab"
 $bundle = "lab/kb-perdoc/research-ml.bundle.v1.json"
 
 Write-Host "== import (union field) =="
 python tools/import_knowledge_delta.py `
-  --delta lab/agent-cards/sample-knowledge-delta.v0.json `
+  --delta lab/agent-cards/sample-knowledge-delta.json `
   --store-dir $store 2>$null
 if ($LASTEXITCODE -ne 0) {
   python tools/import_knowledge_delta.py `
-    --delta lab/test-deltas/patch-import-concept.v0.json `
+    --delta lab/test-deltas/patch-import-concept.json `
     --store-dir $store
 }
 
 Write-Host "== digest_only =="
 python tools/import_knowledge_delta.py `
-  --delta lab/test-deltas/digest-only-research-ml.v0.json `
+  --delta lab/test-deltas/digest-only-research-ml.json `
   --store-dir $store
 
 Write-Host "== from-field SN/CEN v2 =="

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import replay_buffer_v0 as rb
-from sss_cylinders_v0 import append_episode, ensure_prisms, run_sleep  # type: ignore
+import casa.prisms.hippo.replay_buffer as rb
+from casa.prisms.memory.memory_prisms import append_episode, ensure_prisms, run_sleep
 
 
 def _mini_state() -> dict:

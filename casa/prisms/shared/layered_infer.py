@@ -15,7 +15,7 @@ import torch
 
 from casa.cli.bench.bench_dmn_nca_union import _threshold_grid_from_union_state
 from casa.prisms.shared.canonical import CANONICAL_CONCEPT_MODE, CANONICAL_MIN_VOTES, CANONICAL_THRESHOLD
-from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
+from casa.prisms.shared.codec_grid import decode_grid, score_recovery
 from casa.prisms.shared.layout_apply import _get_region_rect, damage_region_patches, mask_outside_region
 from casa.prisms.shared.layered_nca_core import (
     grid_to_layered_state,
@@ -53,9 +53,9 @@ def main() -> None:
     p.add_argument("--digest-model", type=Path, default=None)
     p.add_argument("--gate-model", type=Path, default=None)
     p.add_argument("--cluster", default=None, help="Cluster id; auto-resolve checkpoints")
-    p.add_argument("--cluster-manifest", type=Path, default=Path("manifests/kb-clusters.v0.json"))
+    p.add_argument("--cluster-manifest", type=Path, default=Path("manifests/kb-clusters.json"))
     p.add_argument("--cluster-root", type=Path, default=Path("lab/exp_e_clusters_v1"))
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--damage-patches", type=int, default=8)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--dmn-steps", type=int, default=48)

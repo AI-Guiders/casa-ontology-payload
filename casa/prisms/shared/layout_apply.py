@@ -3,8 +3,8 @@
 layout_apply: helpers for applying region-based CASA layout to a token grid.
 
 Given:
-- a bundle (concepts+edges) -> token grid (codec_grid_v0)
-- a layout (design/layout.v0.json)
+- a bundle (concepts+edges) -> token grid (codec_grid)
+- a layout (design/layout.json)
 
 We can:
 - mask tokens outside a region (e.g. DMN only)

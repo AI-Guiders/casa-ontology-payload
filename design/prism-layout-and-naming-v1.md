@@ -2,14 +2,14 @@
 
 **Статус:** proposed (структура репо + namespace; **физические id и paths store — legacy alias** до миграции)  
 **Дата:** 2026-05-31  
-**Связано:** [naming-memory-layers-v0.md](naming-memory-layers-v0.md), [CASA-ADR-0011-sensory-modalities-audio-video-v0.md](CASA-ADR-0011-sensory-modalities-audio-video-v0.md), CIDE [naming-layers-v1.md](../../cascade-ide/docs/design/naming-layers-v1.md) §6
+**Связано:** [naming-memory-layers.md](naming-memory-layers.md), [CASA-ADR-0011-sensory-modalities-audio-video.md](CASA-ADR-0011-sensory-modalities-audio-video.md), CIDE [naming-layers-v1.md](../../cascade-ide/docs/design/naming-layers-v1.md) §6
 
 ---
 
 ## Зачем
 
 1. **Плоский `tools/`** — ~200 скриптов; `sss_*`, `lattice_*`, control и sensory смешаны → через полгода не найти, где auditory NCA.
-2. **`sss` в именах** — временный scaffold ([`second-signal-system-v0.md`](second-signal-system-v0.md)); в prose и новом коде — **semantic namespace**, не «SSS как префикс файла».
+2. **`sss` в именах** — временный scaffold ([`second-signal-system.md`](second-signal-system.md)); в prose и новом коде — **semantic namespace**, не «SSS как префикс файла».
 3. **Призмы — разные жанры:** control ≠ memory ≠ spatial; у каждой свой stack JSON, свой подкаталог, свои `lattice_*` id.
 
 **Правило:** в `field_state` / store paths **legacy id сохраняем** (`L2_word_07`, `ltm/l2/`); новая иерархия — **рядом**, с manifest alias (как CIDE `memory.lexicon` ↔ `L2_word_07`).
@@ -36,21 +36,21 @@
 
 ```text
 design/prisms/                          # machine-readable stacks (SSOT)
-  control/stack.v0.json
-  memory/stack.v0.json                  # бывш. sss-lattice-stack
-  auditory/stack.v0.json
-  visual/stack.v0.json
-  spatial/stack.v0.json
-  hippo/stack.v0.json
-  math/stack.v0.json                    # F0…F2 logical
-  hippo/stack.v0.json                   # episodic H*
+  control/stack.json
+  memory/stack.json                  # бывш. sss-lattice-stack
+  auditory/stack.json
+  visual/stack.json
+  spatial/stack.json
+  hippo/stack.json
+  math/stack.json                    # F0…F2 logical
+  hippo/stack.json                   # episodic H*
 
 casa/                                   # P2: пакет (сейчас — roadmap; код ещё в tools/)
   prisms/
     control/
       lattices/                         # digest bricks, predict, dan, value
       bridges/                          # P1…P13 encode/decode helpers
-      migrate_control_stack_v0.py       # → migrate.py (alias)
+      migrate_control_stack.py       # → migrate.py (alias)
     memory/                             # бывш. sss_* (2-я СС)
       sign/                             # memory.grapheme (L0)
       lexicon/                          # memory.lexicon shards (L2)
@@ -121,18 +121,18 @@ Prose: **«shard `memory.lexicon` (`words-ru-07`)»** — не «sss L2»; **«`
 
 | Legacy module | Semantic home | Примечание |
 |---------------|---------------|------------|
-| `sss_cylinders_v0.py` | `casa.prisms.memory.prisms` | `ensure_prisms()` |
-| `sss_surface_v0.py` | `casa.prisms.memory.surface` | 2-я СС output |
-| `sss_l2_shard_v0.py` | `casa.prisms.memory.lexicon.shard` | |
-| `sss_wake_v0.py` / `sss_sleep_v0.py` | `casa.prisms.hippo` + `shared.tick` | |
-| `train_sss_nca_v0.py` | `casa.prisms.shared.nca_train` | prism-agnostic trainer |
-| store `sss-*-v0` | **profile id** (ok) | имя store = dataset, не subsystem |
+| `memory_prisms.py` | `casa.prisms.memory.prisms` | `ensure_prisms()` |
+| `surface.py` | `casa.prisms.memory.surface` | 2-я СС output |
+| `lexicon_shard.py` | `casa.prisms.memory.lexicon.shard` | |
+| `wake.py` / `sleep.py` | `casa.prisms.hippo` + `shared.tick` | |
+| `train_memory_nca.py` | `casa.prisms.shared.nca_train` | prism-agnostic trainer |
+| store `sss-*` | **profile id** | имя store = dataset, не subsystem |
 
 **Не переименовывать одним коммитом:** shim `tools/sss_foo.py` → `from casa.prisms.memory.foo import main` до green CI.
 
 ---
 
-## `design/prisms/*/stack.v0.json`
+## `design/prisms/*/stack.json`
 
 Каждый файл:
 

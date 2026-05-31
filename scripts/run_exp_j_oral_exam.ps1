@@ -6,7 +6,7 @@ $env:PYTHONIOENCODING = 'utf-8'
 . (Join-Path $PSScriptRoot '_kb_env.ps1')
 Require-AgentNotesKb
 
-$store = 'lab/agent-stores/language-agent-lab-v0'
+$store = 'lab/agent-stores/language-agent-lab'
 $out = 'lab/exp_j_ru_v1'
 
 python tools/bench_off_topic_guard.py --queries "$out/queries_off_topic.jsonl" --store-dir $store --out "$out/report_off_topic_guard.json"

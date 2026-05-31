@@ -9,7 +9,7 @@ ensure_import_paths()
 
 import torch
 
-from casa.prisms.shared.field_planner_v0 import FieldPlannerV0
+from casa.prisms.shared.field_planner import FieldPlannerV0
 from casa.prisms.shared.field_window import (
     crop_canvas_size,
     crop_with_ghost,

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import bench_predict_error_v0 as bench
-import control_attention_v0 as dan
+import casa.cli.bench.bench_predict_error as bench
+import casa.prisms.control.attention as dan
 
 
 def test_spotlight_includes_goal_in_universe():

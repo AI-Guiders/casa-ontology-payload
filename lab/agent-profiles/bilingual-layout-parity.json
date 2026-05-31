@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "profile_id": "bilingual-layout-parity",
+  "title": "Bilingual layout-parity T9 (physical keys)",
+  "stores": [
+    {
+      "role": "ru",
+      "store_dir": "lab/agent-stores/sss-ru-lexicon"
+    },
+    {
+      "role": "en",
+      "store_dir": "lab/agent-stores/sss-en-folk"
+    }
+  ],
+  "core_ltm": {
+    "ltm_dir": "lab/agent-core/vk-layouts/ltm",
+    "immutable": true
+  },
+  "boot": {
+    "mode": "linked"
+  },
+  "input": "physical_key",
+  "modalities": ["layout_decode", "script", "t9"],
+  "export_before_ship": true,
+  "act": {
+    "kind": "cide_stdio",
+    "entry": "tools/cide_act_bridge.py",
+    "dotnet_ui": "apps/Casa.T9.Console",
+    "preview": "chip"
+  }
+}

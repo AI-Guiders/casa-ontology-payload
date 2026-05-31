@@ -2,7 +2,7 @@
 
 **Статус:** accepted (design); **migration — после** fv=6 train + post_train green  
 **Дата:** 2026-05-31  
-**Связано:** [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md), [`CASA-ADR-0011-sensory-modalities-audio-video-v0.md`](CASA-ADR-0011-sensory-modalities-audio-video-v0.md), [`von-neumann-casa-mapping-v0.md`](von-neumann-casa-mapping-v0.md), CIDE [ADR 0099 DataBus](../../cascade-ide/docs/adr/0099-ide-databus-typed-events-and-projections.md), [ADR 0148 AEE](../../cascade-ide/docs/adr/0148-agent-execution-environment-verification-ladder-and-native-tooling.md), [naming-layers-v1](../../cascade-ide/docs/design/naming-layers-v1.md)
+**Связано:** [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md), [`CASA-ADR-0011-sensory-modalities-audio-video.md`](CASA-ADR-0011-sensory-modalities-audio-video.md), [`von-neumann-casa-mapping.md`](von-neumann-casa-mapping.md), CIDE [ADR 0099 DataBus](../../cascade-ide/docs/adr/0099-ide-databus-typed-events-and-projections.md), [ADR 0148 AEE](../../cascade-ide/docs/adr/0148-agent-execution-environment-verification-ladder-and-native-tooling.md), [naming-layers-v1](../../cascade-ide/docs/design/naming-layers-v1.md)
 
 ---
 
@@ -11,7 +11,7 @@
 1. **Целевой стек призм** согласован (memory, control, sensory, hippo, spatial) — см. [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md), [`design/prisms/`](prisms/).
 2. **Legacy** (`tools/sss_*`, flat `nca/words-ru-*`, `ltm/l2/`, `cyl_*`) мешает масштабированию.
 3. **CIDE** переходит на semantic naming и уже имеет: **DataBus**, **composition** (CDS/CCU), **Orchestrator**, **verification ladder**, **чёткие слои** (agent → AEE → substrate → bus).
-4. **CASA** уже имеет von Neumann mapping ([`von-neumann-casa-mapping-v0.md`](von-neumann-casa-mapping-v0.md)); нужно **явно** переложить CIDE-паттерны, не копировать IDE-бинарник.
+4. **CASA** уже имеет von Neumann mapping ([`von-neumann-casa-mapping.md`](von-neumann-casa-mapping.md)); нужно **явно** переложить CIDE-паттерны, не копировать IDE-бинарник.
 
 **Решение:** принять CIDE **архитектурные роли**, реализовать **FieldBus + prism composition + TickOrchestrator**; после post_train — **миграция paths + shims**, затем снятие legacy.
 
@@ -35,7 +35,7 @@
                               concept hub (E: edges)
 ```
 
-**Паттерн внутри каждой призмы:** `stack.v0.json` → lattices → NCA → LTM; `z_bridge` внутри; `x_bridge` между призмами.
+**Паттерн внутри каждой призмы:** `stack.json` → lattices → NCA → LTM; `z_bridge` внутри; `x_bridge` между призмами.
 
 **Два такта:** `T_wake` (perceive → control → act → hippo) / `T_sleep` (consolidate, replay, repair).
 
@@ -50,8 +50,8 @@
 | **IDataBus** (0099) | typed domain events, pub/sub | **FieldBus** — события тика/поля | `casa/field_bus/` |
 | **CCU / channel DTO** (0097) | свёртка в снимок канала | **Digest projection** per lattice | `lattice_*_v0.digest()` |
 | **Composition / CDS** (0036) | intent → surface frame | **Store profile composition** — какие призмы смонтированы | `store_manifest.json`, `design/prisms/` |
-| **Agent Orchestrator** (0148) | step: tools + verify policy | **TickOrchestrator** — wake/sleep step | `agent_autonomous_tick_v0.py` → `casa/tick/orchestrator.py` |
-| **Verification Ladder** | diagnose → build → test | **Understanding ladder** (UC): extract → remember → use | [`understanding-contract-v0.md`](understanding-contract-v0.md) |
+| **Agent Orchestrator** (0148) | step: tools + verify policy | **TickOrchestrator** — wake/sleep step | `agent_autonomous_tick.py` → `casa/tick/orchestrator.py` |
+| **Verification Ladder** | diagnose → build → test | **Understanding ladder** (UC): extract → remember → use | [`understanding-contract.md`](understanding-contract.md) |
 | **AEE / native tools** | Roslyn, MSBuild in-proc | **Codec adapters** (wav, frame, KB ingest) — **вне** NCA hot path | `casa/prisms/*/codec/` |
 | **Substrate** (Roslyn, git) | источник истины среды | **field_state + LTM** — источник истины агента | `lab/agent-stores/` |
 | **Semantic ids** (naming-layers) | `verify_rung.build.affected` | `memory.lexicon`, `control.predict`, `sensory.spatial.*` | manifest aliases |
@@ -88,10 +88,10 @@ CASA: **store profile** = composition root:
 
 ```json
 {
-  "profile_id": "sss-ru-general-v0",
+  "profile_id": "sss-ru-general",
   "prism_composition": {
-    "prism_control": { "stack": "design/prisms/control/stack.v0.json", "enabled": true },
-    "prism_memory": { "stack": "design/prisms/memory/stack.v0.json", "enabled": true },
+    "prism_control": { "stack": "design/prisms/control/stack.json", "enabled": true },
+    "prism_memory": { "stack": "design/prisms/memory/stack.json", "enabled": true },
     "prism_auditory": { "enabled": false },
     "prism_visual": { "enabled": false },
     "prism_spatial": { "enabled": false },
@@ -136,33 +136,33 @@ CASA: **store profile** = composition root:
 ### Phase M0 — design committed (можно до train end)
 
 - [x] ADR-0011, ADR-0012, `prism-layout-and-naming-v1.md`
-- [x] `design/prisms/{control,memory,auditory,visual,spatial}/stack.v0.json`
+- [x] `design/prisms/{control,memory,auditory,visual,spatial}/stack.json`
 - [ ] Commit design-only (logical commit, no store break)
 
 ### Phase M1 — aliases, no break
 
 - [x] `memory_manifest.json`: block `prism_layout_version`, `path_aliases` (`ltm/l2` ↔ `ltm/memory/lexicon`, …)
-- [x] `store_layout_v0` / `store_paths_v1.py`: resolve **both** legacy and canonical nca/ltm paths
+- [x] `store_layout` / `store_paths_v1.py`: resolve **both** legacy and canonical nca/ltm paths
 - [x] `tools/README.md` → map legacy → `casa/prisms/*`
 
 ### Phase M2 — package skeleton + shims
 
 - [x] Create `casa/prisms/{control,memory,shared,hippo,tick}/` + `casa/cli/`
-- [x] Move runtime modules under `casa/`; legacy CLI via `python -m casa.cli` + `legacy_manifest.json`
+- [x] Move runtime modules under `casa/`; CLI via `python -m casa.cli` + `cli_modules.json`
 - [x] FieldBus v0: publish `ConsolidatePhaseEvent`, `FieldVersionDriftEvent`, `TrainCompleteEvent`
 - [x] M4: drop `tools/` shims; `check_tools_shims.py` gate
 
 ### Phase M3 — store paths (new writes canonical)
 
-- [x] `export_ltm_pack_v0` writes `ltm/memory/lexicon/` **and** legacy alias `ltm/l2/` + `ltm/lat/`
+- [x] `export_ltm_pack` writes `ltm/memory/lexicon/` **and** legacy alias `ltm/l2/` + `ltm/lat/`
 - [x] NCA resolve: `nca/memory/lexicon/<id>/` primary; flat `nca/<id>/` readable
-- [x] One store migrated on disk (`sss-ru-general-v0` re-export); boot smoke green
+- [x] One store migrated on disk (`sss-ru-general` re-export); boot smoke green
 
 ### Phase M4 — drop legacy
 
-- [x] `casa/` imports `casa.*` only; legacy names via `casa/legacy.py` lazy finder
+- [x] `casa/` imports `casa.*` only; CLI via `casa/cli/cli_modules.json` + `registry.py`
 - [x] Remove `tools/*.py` shims; CLI `python -m casa.cli <module>`
-- [ ] Stop writing legacy `ltm/l2` mirrors (optional flag; dual-write still on for compat)
+- [x] Stop writing legacy `ltm/l2` mirrors (canonical-only export)
 - [ ] Update `.gitignore` / CI for canonical paths only
 - [ ] Optional: filter-repo **paths only** if duplicate cartridges bloated history (not urgent)
 
@@ -174,7 +174,7 @@ CASA: **store profile** = composition root:
 
 | Topic | CIDE | CASA | Sync |
 |-------|------|------|------|
-| Semantic layers | naming-layers-v1 §6 | naming-memory-layers-v0 + sensory.* | manual cross-ref |
+| Semantic layers | naming-layers-v1 §6 | naming-memory-layers + sensory.* | manual cross-ref |
 | Events on bus | `AgentEnvironment*` | `FieldBus.*` | **разные** enum; optional bridge MCP for IDE panel |
 | Store path | — | `lab/agent-stores/` | CIDE loads agent cartridge by profile id |
 | Verify epoch | git snapshot stale | `field_version` drift / stale shards | **аналогичная идея**, разный механизм |
@@ -201,8 +201,8 @@ IDE может подписаться на FieldBus (future) для PFD: «stale
 
 ## 6. Критерии готовности migration
 
-- [x] Boot smoke `sss-ru-general-v0` with **canonical paths** (`ltm/memory/lexicon/`)
-- [x] `casa/` uses `casa.*` imports; legacy names via `casa/legacy.py`
+- [x] Boot smoke `sss-ru-general` with **canonical paths** (`ltm/memory/lexicon/`, `ltm/memory/math/`)
+- [x] `casa/` uses `casa.*` imports; no `sss_*` modules or legacy finder
 - [x] FieldBus events emitted on train complete + sleep complete
 - [ ] `design/prisms/*` referenced from store manifest
 - [ ] Docs: no «sss» as subsystem name in new prose

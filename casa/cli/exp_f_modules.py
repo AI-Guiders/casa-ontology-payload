@@ -24,8 +24,8 @@ def _run(cmd: list[str], cwd: Path) -> None:
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Experiment F — module-masked cluster DMN")
-    p.add_argument("--clusters", type=Path, default=Path("manifests/kb-clusters.v0.json"))
-    p.add_argument("--modules", type=Path, default=Path("manifests/kb-modules.v0.json"))
+    p.add_argument("--clusters", type=Path, default=Path("manifests/kb-clusters.json"))
+    p.add_argument("--modules", type=Path, default=Path("manifests/kb-modules.json"))
     p.add_argument("--repo-root", type=Path, default=Path("."))
     p.add_argument("--epochs", type=int, default=600)
     p.add_argument("--seeds", type=int, default=15)
@@ -122,7 +122,7 @@ def main() -> None:
             {
                 "cluster": cid,
                 "model": str(model.relative_to(repo)),
-                "train_mode": "module_masked_v0",
+                "train_mode": "module_masked",
                 "module_count": len(mods),
                 "bundles": [b.name for b in paths],
                 "mean_delta_mix": sum(deltas) / len(deltas) if deltas else 0.0,

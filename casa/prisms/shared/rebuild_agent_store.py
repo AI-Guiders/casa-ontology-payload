@@ -17,7 +17,7 @@ from casa.prisms.shared.field_write import list_store_bundles, load_field_state,
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--store-dir", type=Path, required=True)
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--concept-mode", default="section")
     args = p.parse_args()
 

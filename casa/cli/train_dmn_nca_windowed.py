@@ -19,8 +19,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from casa.prisms.shared.codec_grid_v0 import decode_grid, score_recovery
-from casa.prisms.shared.field_planner_v0 import FieldPlannerV0
+from casa.prisms.shared.codec_grid import decode_grid, score_recovery
+from casa.prisms.shared.field_planner import FieldPlannerV0
 from casa.prisms.shared.field_window import Tile, crop_canvas_size, extract_window_crop, loss_mask_padded
 from casa.prisms.shared.layout_apply import _get_region_rect, mask_outside_region
 from casa.prisms.shared.nca_train_util import (
@@ -35,7 +35,7 @@ from casa.prisms.shared.nca_train_util import (
     resolve_windows_per_batch,
     scatter_grid_tensor,
 )
-from casa.prisms.shared.nca_train_defaults_v0 import (
+from casa.prisms.shared.nca_train_defaults import (
     add_windowed_train_args,
     damage_defaults,
     epoch_budget,
@@ -58,7 +58,7 @@ def main() -> None:
 
     p = argparse.ArgumentParser(description="Windowed DMN NCA train (multibundle)")
     p.add_argument("--bundles", nargs="+", type=Path, required=True)
-    p.add_argument("--layout", type=Path, default=Path("design/layout.v0.json"))
+    p.add_argument("--layout", type=Path, default=Path("design/layout.json"))
     p.add_argument("--region", default="dmn_ontology")
     add_windowed_train_args(p, field_edge=_fe, windowed_default=True)
     p.add_argument(
@@ -134,7 +134,7 @@ def main() -> None:
 
         _tokens_for_bundle_fn = _tokens_for_bundle
     else:
-        from casa.prisms.shared.codec_grid_v0 import encode_bundle_to_grid
+        from casa.prisms.shared.codec_grid import encode_bundle_to_grid
 
         _tokens_for_bundle_fn = _tokens_for_bundle
 

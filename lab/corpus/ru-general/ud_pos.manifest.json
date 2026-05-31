@@ -1,0 +1,11 @@
+{
+  "locale": "ru",
+  "source": "Universal Dependencies",
+  "corpus_urls": [
+    "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-GSD/master/ru_gsd-ud-train.conllu",
+    "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-GSD/master/ru_gsd-ud-dev.conllu",
+    "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-GSD/master/ru_gsd-ud-test.conllu"
+  ],
+  "lemma_count": 16280,
+  "out": "lab/corpus/ru-general/ud_lemma_pos.v1.json"
+}
