@@ -247,18 +247,18 @@ def migrate_legacy_grid_to_control(
 
 def decode_control_dmn(state: dict, *, min_votes: int = 1) -> dict:
     from control_cylinders_v0 import control_lattices, has_control_stack  # type: ignore
+    from lattice_names_v1 import resolve_store_lattice_id  # type: ignore
 
     if not has_control_stack(state):
         raise ValueError("no prism_control lattices")
     lattices = control_lattices(state)
-    lat = lattices.get("lattice_dmn")
-    if not lat:
-        raise KeyError("lattice_dmn")
+    dmn_key = resolve_store_lattice_id("lattice_dmn", lattices)
+    lat = lattices[dmn_key]
     decoded = decode_lattice(lat, min_votes=min_votes)
     vote: dict[str, int] = {}
     for cell in lat.get("cells") or []:
         for t in cell:
             vote[t] = vote.get(t, 0) + 1
     decoded["present_token_list"] = sorted([t for t, v in vote.items() if v >= min_votes])
-    decoded["lattice_id"] = "lattice_dmn"
+    decoded["lattice_id"] = dmn_key
     return decoded

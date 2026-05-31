@@ -94,8 +94,34 @@ def nca_root(store_dir: Path) -> Path:
     return store_dir / "nca"
 
 
+def canonical_lattice_id(lattice_id: str) -> str:
+    """v1 kebab id (canonical for new writes)."""
+    from lattice_names_v1 import legacy_to_v1  # type: ignore
+
+    return legacy_to_v1(str(lattice_id))
+
+
+def resolve_nca_lattice_dir(store_dir: Path, lattice_id: str) -> Path:
+    """Prefer existing nca/ dir (legacy or v1); default target path = canonical v1."""
+    from lattice_names_v1 import legacy_to_v1, v1_to_legacy  # type: ignore
+
+    lid = str(lattice_id)
+    v1 = legacy_to_v1(lid)
+    legacy = v1_to_legacy(v1)
+    candidates: list[str] = []
+    for cid in (v1, lid, legacy):
+        if cid and cid not in candidates:
+            candidates.append(cid)
+    root = nca_root(store_dir)
+    for cid in candidates:
+        path = root / cid.replace("/", "_")
+        if path.is_dir():
+            return path
+    return root / v1.replace("/", "_")
+
+
 def nca_lattice_dir(store_dir: Path, lattice_id: str) -> Path:
-    return nca_root(store_dir) / lattice_id.replace("/", "_")
+    return resolve_nca_lattice_dir(store_dir, lattice_id)
 
 
 def field_state_path(store_dir: Path) -> Path:

@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 
 from control_cylinders_v0 import control_lattices, has_control_stack  # type: ignore
+from lattice_names_v1 import missing_control_lattices  # type: ignore
 from field_write import decode_field_grid, load_field_state  # type: ignore
 from sss_cylinders_v0 import ensure_prisms  # type: ignore
 
@@ -33,16 +34,7 @@ def main() -> None:
     state = ensure_prisms(load_field_state(fs))
     ok_stack = has_control_stack(state)
     lats = control_lattices(state) if ok_stack else {}
-    expected = {
-        "lattice_dmn",
-        "lattice_sn",
-        "lattice_fpn_wm",
-        "lattice_cen",
-        "lattice_predict",
-        "lattice_dan",
-        "lattice_value",
-    }
-    missing = expected - set(lats.keys())
+    missing = missing_control_lattices(lats)
 
     decoded = None
     dmn_concepts = 0

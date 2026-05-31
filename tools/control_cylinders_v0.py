@@ -14,13 +14,14 @@ from control_stack_v0 import (  # type: ignore
     migrate_legacy_grid_to_control,
 )
 from field_version_v0 import bump_control_field_version  # type: ignore
+from lattice_names_v1 import has_control_lattice, legacy_to_v1  # type: ignore
 from sss_cylinders_v0 import ensure_cylinders  # type: ignore
 
 
 def has_control_stack(state: dict) -> bool:
     normalize_prisms(state)
     lats = prism_control(state).get("lattices") or {}
-    return bool(lats.get("lattice_dmn"))
+    return has_control_lattice(lats)
 
 
 def control_lattices(state: dict) -> dict[str, dict]:
@@ -48,7 +49,7 @@ def ensure_control_cylinder(state: dict, *, stack_path: str | Path | None = None
     ctrl["subsystem"] = "control"
     ctrl["stack"] = stack_ref
     ctrl["lattices"] = lattices
-    ctrl["active_lattice"] = "lattice_dmn"
+    ctrl["active_lattice"] = legacy_to_v1("lattice_dmn")
     state.setdefault("control", {})["stack_version"] = int(stack.get("schema_version") or 1)
     return state
 

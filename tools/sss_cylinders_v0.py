@@ -20,6 +20,7 @@ from prism_state_v0 import (  # type: ignore
 )
 from codec_grid_v0 import Grid  # type: ignore
 from field_write import load_field_state, save_field_state  # type: ignore
+from lattice_names_v1 import episodic_surface_lattice_id  # type: ignore
 from sss_stack_v0 import (  # type: ignore
     _place_token,
     apply_z_compose_v0,
@@ -48,7 +49,9 @@ def ensure_cylinders(state: dict) -> dict:
     normalize_prisms(state)
     hip = prism_hippo(state)
     hip.setdefault("subsystem", "episodic")
-    hip.setdefault("lattices", {}).setdefault("H0_episode", empty_hippo_lattice())
+    hip.setdefault("lattices", {})
+    surf_key = episodic_surface_lattice_id(hip["lattices"])
+    hip["lattices"].setdefault(surf_key, empty_hippo_lattice())
     hip.setdefault("episodes", list(hip.get("episodes") or []))
 
     mem = prism_memory(state)
@@ -128,9 +131,15 @@ def concept_id_for_surface(bundle: dict, surface: str, *, lattice_id: str) -> st
     return None
 
 
+def _episodic_surface_lattice(hippo: dict) -> dict:
+    lats = hippo.setdefault("lattices", {})
+    key = episodic_surface_lattice_id(lats)
+    return lats.setdefault(key, empty_hippo_lattice())
+
+
 def _register_episode_on_h0(state: dict, ep: dict, *, token_suffix: str = "") -> None:
     hippo = prism_hippo(state)
-    h0 = hippo["lattices"]["H0_episode"]
+    h0 = _episodic_surface_lattice(hippo)
     g = Grid(
         width=int(h0["width"]),
         height=int(h0["height"]),
@@ -270,7 +279,7 @@ def append_rule_episode(
     hippo = prism_hippo(state)
     hippo.setdefault("episodes", []).append(ep)
 
-    h0 = hippo["lattices"]["H0_episode"]
+    h0 = _episodic_surface_lattice(hippo)
     g = Grid(
         width=int(h0["width"]),
         height=int(h0["height"]),
@@ -314,7 +323,7 @@ def _strengthen_rule(state: dict, rule_id: str, *, copies: int = 5) -> None:
         lat["cells"] = g.cells
 
     hippo = prism_hippo(state)
-    h0 = hippo["lattices"]["H0_episode"]
+    h0 = _episodic_surface_lattice(hippo)
     g = Grid(
         width=int(h0["width"]),
         height=int(h0["height"]),

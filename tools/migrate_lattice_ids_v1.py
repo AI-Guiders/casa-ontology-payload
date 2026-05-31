@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Rename legacy lattice ids (L0_grapheme_*, L2_word_*) → v1 (alphabet-*, words-*).
+"""Rename legacy lattice ids (L*, F*, H*, lattice_*) → v1 kebab canonical.
 
 Structural rename only — **no NCA retrain**. Weights in model.pt stay valid; paths update.
+
+Map: design/lattice-id-map.v1.json. Boot resolves legacy + v1 via store_layout.resolve_nca_lattice_dir.
 
 **Do not run while `train_sss_nca_shards_v0.py` / CUDA train is active** — race on nca/ dirs.
 
@@ -45,6 +47,8 @@ def build_rename_map(ids: set[str]) -> dict[str, str]:
         new = _v1_id(lid)
         if new != lid:
             mapping[lid] = new
+    if "H1_surface" in ids and "H0_episode" in mapping:
+        del mapping["H0_episode"]
     return mapping
 
 
@@ -86,6 +90,7 @@ def discover_lattice_ids(store_dir: Path) -> set[str]:
         state = normalize_prisms(load_field_state(fs_path))
         found.update(memory_lattices(state).keys())
         found.update(prism_control(state).get("lattices", {}).keys())
+        found.update(prism_hippo(state).get("lattices", {}).keys())
         sh = state.get("l2_sharding") or {}
         for key in ("legacy_lattice",):
             if sh.get(key):

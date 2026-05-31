@@ -158,6 +158,44 @@ def resolve_store_lattice_id(lattice_id: str, lattices: dict[str, Any]) -> str:
     raise KeyError(f"Lattice {lid!r} (v1={v1!r}) not in store")
 
 
+CONTROL_STACK_LEGACY = (
+    "lattice_dmn",
+    "lattice_sn",
+    "lattice_fpn_wm",
+    "lattice_cen",
+    "lattice_predict",
+    "lattice_dan",
+    "lattice_value",
+)
+
+
+def control_stack_v1_ids() -> tuple[str, ...]:
+    return tuple(legacy_to_v1(x) for x in CONTROL_STACK_LEGACY)
+
+
+def missing_control_lattices(lattices: dict[str, Any]) -> list[str]:
+    """Return canonical v1 ids missing from prism_control.lattices."""
+    present = set(lattices.keys())
+    missing: list[str] = []
+    for leg in CONTROL_STACK_LEGACY:
+        v1 = legacy_to_v1(leg)
+        if v1 not in present and leg not in present:
+            missing.append(v1)
+    return sorted(missing)
+
+
+def has_control_lattice(lattices: dict[str, Any], legacy_id: str = "lattice_dmn") -> bool:
+    v1 = legacy_to_v1(legacy_id)
+    return v1 in lattices or legacy_id in lattices
+
+
+def episodic_surface_lattice_id(lattices: dict[str, Any]) -> str:
+    for key in ("episodic-surface", "H1_surface", "H0_episode"):
+        if key in lattices:
+            return key
+    return "episodic-surface"
+
+
 def parse_words_shard(lattice_id: str) -> tuple[str, int] | None:
     lid = str(lattice_id)
     m = WORDS_V1_RE.fullmatch(lid)
