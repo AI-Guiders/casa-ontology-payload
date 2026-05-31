@@ -1,6 +1,7 @@
 # Experiment J: sync modern Russian KB bundles (no pre-revolutionary orthography).
 $ErrorActionPreference = 'Stop'
-$env:AGENT_NOTES_KB = 'D:\experiments\agent-notes\knowledge'
+. (Join-Path $PSScriptRoot '_kb_env.ps1')
+Require-AgentNotesKb
 $repo = Split-Path -Parent $PSScriptRoot
 Set-Location $repo
 

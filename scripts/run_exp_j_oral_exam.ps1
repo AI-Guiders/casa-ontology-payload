@@ -3,7 +3,8 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 $env:PYTHONIOENCODING = 'utf-8'
-if (-not $env:AGENT_NOTES_KB) { $env:AGENT_NOTES_KB = 'D:\experiments\agent-notes\knowledge' }
+. (Join-Path $PSScriptRoot '_kb_env.ps1')
+Require-AgentNotesKb
 
 $store = 'lab/agent-stores/language-agent-lab-v0'
 $out = 'lab/exp_j_ru_v1'

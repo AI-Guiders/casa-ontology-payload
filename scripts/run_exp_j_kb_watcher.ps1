@@ -1,8 +1,9 @@
 # KB watcher for modern RU language store.
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot '_kb_env.ps1')
+Require-AgentNotesKb
 Set-Location (Split-Path -Parent $PSScriptRoot)
 
-$env:AGENT_NOTES_KB = 'D:\experiments\agent-notes\knowledge'
 $store = 'lab/agent-stores/language-agent-lab-v0'
 $manifest = 'manifests/kb-bundles-russian-language.json'
 

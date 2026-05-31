@@ -3,9 +3,8 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-if (-not $env:AGENT_NOTES_KB) {
-    $env:AGENT_NOTES_KB = 'D:\experiments\agent-notes\knowledge'
-}
+. (Join-Path $PSScriptRoot '_kb_env.ps1')
+Require-AgentNotesKb
 
 $store = 'lab/agent-stores/language-agent-lab-v0'
 $card = 'lab/agent-cards/research-agent.v0.json'

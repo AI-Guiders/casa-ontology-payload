@@ -1,9 +1,10 @@
 # E: cluster DMN + per-cluster digest/gate + infer samples
 $ErrorActionPreference = "Stop"
+. (Join-Path $PSScriptRoot '_kb_env.ps1')
+Require-AgentNotesKb
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$env:AGENT_NOTES_KB = "d:\Experiments\agent-notes\knowledge"
 python tools/build_kb_bundles.py --per-doc-graph --kb-root $env:AGENT_NOTES_KB
 
 Write-Host "=== Experiment E: cluster DMN ===" -ForegroundColor Cyan

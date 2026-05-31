@@ -3,9 +3,8 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-if (-not $env:AGENT_NOTES_KB) {
-    $env:AGENT_NOTES_KB = 'D:\experiments\agent-notes\knowledge'
-}
+. (Join-Path $PSScriptRoot '_kb_env.ps1')
+Require-AgentNotesKb
 
 $manifest = 'manifests/kb-bundles-csharp-grade8-v1.json'
 $store = 'lab/agent-stores/code-agent-lab-v0'

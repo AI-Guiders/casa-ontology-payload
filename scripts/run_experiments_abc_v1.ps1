@@ -5,7 +5,8 @@ Set-Location $Root
 
 python -m pip install -q -r tools/requirements.txt
 
-$env:AGENT_NOTES_KB = "d:\Experiments\agent-notes\knowledge"
+. (Join-Path $PSScriptRoot '_kb_env.ps1')
+Require-AgentNotesKb
 python tools/build_kb_bundles.py --kb-root $env:AGENT_NOTES_KB
 
 Write-Host "=== Experiment A: KB scale ===" -ForegroundColor Cyan

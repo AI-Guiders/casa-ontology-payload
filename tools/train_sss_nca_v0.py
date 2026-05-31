@@ -30,6 +30,7 @@ from nca_train_util import (  # type: ignore
 )
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_nca_codec_v0 import lattice_as_grid, tokens_from_lattice  # type: ignore
+from store_layout_v0 import rel_to_repo  # type: ignore
 from train_dmn_nca import UpdateRule, nca_rollout_eval, sobel_kernels  # type: ignore
 
 
@@ -181,7 +182,7 @@ def main() -> None:
     report = {
         "schema_version": 1,
         "lattice_id": lattice_key,
-        "store": str(args.store_dir),
+        "store": rel_to_repo(args.store_dir) or args.store_dir.name,
         "token_count": token_count,
         "grid_size": [w, h],
         "epochs": args.epochs,
