@@ -1,0 +1,81 @@
+[
+  {
+    "id": "sleep_mixed_script_kor_v1",
+    "mode": "teacher_rule_only",
+    "correction_kind": "script_rule",
+    "cue": "кор",
+    "surface_attempt": "кoro",
+    "expect_lang": "ru",
+    "rule_id": "script.no_mixed_alphabet",
+    "rule_hint": "One word — one alphabet. Finish in Cyrillic; do not guess lemma on bare prefix.",
+    "note": "Meta correction only. Valid continuations include короб, коробка, коровий, корова — teacher must not oracle one noun.",
+    "use": {
+      "prefix": "кор",
+      "min_fork": 5,
+      "watch_lemmas_stable": ["корова", "короб", "коровий", "коробка"],
+      "expect_rule_id": "script.no_mixed_alphabet"
+    }
+  },
+  {
+    "id": "sleep_ortho_in_scene_v1",
+    "mode": "teacher_contextual_surface",
+    "correction_kind": "ortho_surface",
+    "scene": "описали коробку на столе",
+    "cue": "коробк",
+    "surface_attempt": "коробк",
+    "correct": "коробка",
+    "expect_lang": "ru",
+    "use": {
+      "prefix": "короб",
+      "min_fork": 3,
+      "expect_strengthen": "коробка",
+      "min_grid_delta": 1,
+      "watch_lemmas_stable": ["корова", "коровий"]
+    }
+  },
+  {
+    "id": "sleep_morph_koroviy_v1",
+    "mode": "teacher_contextual_surface",
+    "correction_kind": "morph_surface",
+    "scene": "коровий суп на плите",
+    "cue": "коров",
+    "surface_attempt": "коров",
+    "correct": "коровий",
+    "structure_tag": "adj",
+    "expect_lang": "ru",
+    "use": {
+      "prefix": "коров",
+      "min_fork": 3,
+      "expect_strengthen": "коровий",
+      "min_grid_delta": 1,
+      "watch_lemmas_stable": ["корова", "короб"]
+    }
+  },
+  {
+    "id": "sleep_lexical_ask_kor_v1",
+    "mode": "teacher_lexical_ask",
+    "correction_kind": "lexical_ask",
+    "scene": "на столе контейнер или животное",
+    "cue": "кор",
+    "surface_attempt": "кор",
+    "question": "Ты про короб или про корову?",
+    "options": ["короб", "корова"],
+    "expect_lang": "ru",
+    "use": {
+      "prefix": "кор",
+      "min_fork": 5,
+      "expect_pending": true,
+      "watch_lemmas_stable": ["корова", "короб", "коровий", "коробка"]
+    }
+  },
+  {
+    "id": "sleep_oracle_bad_kor_korova_v1",
+    "mode": "teacher_contextual_surface",
+    "correction_kind": "ortho_surface",
+    "cue": "кор",
+    "surface_attempt": "кор",
+    "correct": "корова",
+    "expect_preflight_fail": true,
+    "note": "Negative control — preflight must reject oracle without scene."
+  }
+]

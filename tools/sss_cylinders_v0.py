@@ -99,11 +99,14 @@ def concept_id_for_surface(bundle: dict, surface: str, *, lattice_id: str) -> st
         "L0_grapheme_cyrl": "grapheme.cyrl.",
         "L0_grapheme_latn": "grapheme.latn.",
         "L0_grapheme": "grapheme.",
+        "alphabet-ru": "grapheme.cyrl.",
+        "alphabet-en": "grapheme.latn.",
+        "alphabet-uk": "grapheme.cyrl.",
         "L1_syllable": "syllable.",
         "L2_word": "lang.word.",
     }
     prefix = prefix_map.get(lattice_id, "")
-    if not prefix and lattice_id.startswith("L2_word_"):
+    if not prefix and (lattice_id.startswith("L2_word_") or lattice_id.startswith("words-")):
         prefix = "lang.word."
     for c in bundle.get("claims") or []:
         cid = str(c.get("concept_id") or "")
@@ -125,6 +128,24 @@ def concept_id_for_surface(bundle: dict, surface: str, *, lattice_id: str) -> st
     return None
 
 
+def _register_episode_on_h0(state: dict, ep: dict, *, token_suffix: str = "") -> None:
+    hippo = prism_hippo(state)
+    h0 = hippo["lattices"]["H0_episode"]
+    g = Grid(
+        width=int(h0["width"]),
+        height=int(h0["height"]),
+        cells=[list(x) for x in h0["cells"]],
+    )
+    cue = str(ep.get("cue") or "")[:20]
+    tail = str(ep.get("correct") or ep.get("question") or "")[:20]
+    tok = f"T:{ep['id']}|{cue}|{tail}{token_suffix}"
+    g = _place_token(g, tok, tok, copies=2, radius=3)
+    h0["cells"] = g.cells
+    set_active_prism(state, PRISM_HIPPO)
+    state["sn"] = {**(state.get("sn") or {}), "mode": "wake"}
+    state["field_version"] = int(state.get("field_version") or 0) + 1
+
+
 def append_episode(
     state: dict,
     *,
@@ -134,6 +155,11 @@ def append_episode(
     lattice_id: str,
     concept_id: str | None = None,
     bundle: dict | None = None,
+    scene: str = "",
+    correction_kind: str | None = None,
+    pending: bool = False,
+    structure_tag: str | None = None,
+    min_recurrence: int = 1,
 ) -> dict:
     state = ensure_cylinders(state)
     if bundle and not concept_id:
@@ -148,23 +174,72 @@ def append_episode(
         "concept_id": concept_id,
         "consolidated": False,
         "kind": "surface",
+        "scene": (scene or "").strip()[:240],
+        "correction_kind": correction_kind,
+        "pending": bool(pending),
+        "structure_tag": (structure_tag or "").strip()[:64] or None,
+        "recurrence_seen": 0,
+        "min_recurrence": max(1, int(min_recurrence)),
     }
     hippo = prism_hippo(state)
     hippo.setdefault("episodes", []).append(ep)
+    _register_episode_on_h0(state, ep)
+    return ep
 
-    h0 = hippo["lattices"]["H0_episode"]
-    g = Grid(
-        width=int(h0["width"]),
-        height=int(h0["height"]),
-        cells=[list(x) for x in h0["cells"]],
-    )
-    tok = f"T:{ep['id']}|{ep['cue'][:20]}|{ep['correct'][:20]}"
-    g = _place_token(g, tok, tok, copies=2, radius=3)
-    h0["cells"] = g.cells
 
-    set_active_prism(state, PRISM_HIPPO)
-    state["sn"] = {**(state.get("sn") or {}), "mode": "wake"}
-    state["field_version"] = int(state.get("field_version") or 0) + 1
+def append_question_episode(
+    state: dict,
+    *,
+    cue: str,
+    surface_attempt: str,
+    question: str,
+    scene: str = "",
+    options: list[str] | None = None,
+    correction_kind: str = "lexical_ask",
+) -> dict:
+    """Lexical ask — pending until child answers; no lemma strengthen on first sleep."""
+    state = ensure_cylinders(state)
+    ep = {
+        "id": _now_id(),
+        "kind": "question",
+        "cue": cue.strip()[:120],
+        "surface_attempt": surface_attempt.strip()[:120],
+        "question": question.strip()[:240],
+        "scene": (scene or "").strip()[:240],
+        "options": [str(o).strip()[:64] for o in (options or [])][:8],
+        "correction_kind": correction_kind,
+        "consolidated": False,
+        "pending": True,
+    }
+    hippo = prism_hippo(state)
+    hippo.setdefault("episodes", []).append(ep)
+    _register_episode_on_h0(state, ep, token_suffix="|Q")
+    return ep
+
+
+def append_hint_episode(
+    state: dict,
+    *,
+    cue: str,
+    surface_attempt: str,
+    hint: str,
+    correction_kind: str = "wait_prefix",
+) -> dict:
+    """Prefix incomplete — hippo hint only, no sleep lemma merge."""
+    state = ensure_cylinders(state)
+    ep = {
+        "id": _now_id(),
+        "kind": "hint",
+        "cue": cue.strip()[:120],
+        "surface_attempt": surface_attempt.strip()[:120],
+        "hint": hint.strip()[:240],
+        "correction_kind": correction_kind,
+        "consolidated": False,
+        "pending": True,
+    }
+    hippo = prism_hippo(state)
+    hippo.setdefault("episodes", []).append(ep)
+    _register_episode_on_h0(state, ep, token_suffix="|H")
     return ep
 
 
@@ -295,6 +370,9 @@ def run_sleep(
     for ep in episodes:
         if ep.get("consolidated"):
             continue
+        if ep.get("pending") or ep.get("kind") in ("question", "hint"):
+            pending.append(ep)
+            continue
         if ep.get("kind") == "rule" and ep.get("rule_id"):
             rid = str(ep["rule_id"])
             _strengthen_rule(state, rid, copies=strength + 1)
@@ -315,6 +393,12 @@ def run_sleep(
         cid = ep.get("concept_id")
         if not cid and bundle:
             cid = concept_id_for_surface(bundle, str(ep.get("correct") or ""), lattice_id=lid)
+        min_rec = max(1, int(ep.get("min_recurrence") or 1))
+        seen = int(ep.get("recurrence_seen") or 0) + 1
+        ep = {**ep, "recurrence_seen": seen}
+        if seen < min_rec:
+            pending.append(ep)
+            continue
         if cid and _strengthen_concept(lattices, lid, str(cid), copies=strength):
             ep = {**ep, "consolidated": True, "merged_concept_id": cid}
             merged.append(
@@ -325,6 +409,8 @@ def run_sleep(
                     "concept_id": cid,
                     "cue": ep.get("cue"),
                     "correct": ep.get("correct"),
+                    "correction_kind": ep.get("correction_kind"),
+                    "scene": ep.get("scene"),
                 }
             )
         else:
