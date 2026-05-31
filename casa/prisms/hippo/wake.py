@@ -13,9 +13,16 @@ from pathlib import Path
 from typing import Any
 
 from casa.prisms.shared.field_write import load_field_state
-from casa.prisms.memory.memory_prisms import append_episode, ensure_prisms, save_state
+from casa.prisms.memory.memory_prisms import append_episode, ensure_prisms
+from casa.prisms.shared.prism_state import prism_hippo
+from casa.prisms.shared.store_persist import save_runtime_state
 from casa.prisms.memory.surface import surface_from_sss
-from casa.prisms.hippo.wake_util import needs_self_correction, surface_attempt_from_wake, surface_matches_target
+from casa.prisms.hippo.wake_util import (
+    classify_surface_target,
+    needs_self_correction,
+    surface_attempt_from_wake,
+    surface_matches_target,
+)
 
 
 def _load_bundle(store: Path, bundle_path: Path | None) -> dict | None:
@@ -57,7 +64,11 @@ def wake_turn(
         correct = external
         report["self_correct"] = False
         report["internal_target"] = None
-        report["matched"] = surface_matches_target(wake, correct, lattice_id=lattice_id)
+        match = classify_surface_target(wake, correct, lattice_id=lattice_id)
+        report["lexeme_match"] = match["lexeme_match"]
+        report["display_match"] = match["display_match"]
+        report["ortho_mismatch"] = match["ortho_mismatch"]
+        report["matched"] = match["display_match"]
     else:
         report["matched"] = None
         report["episode"] = None
@@ -77,6 +88,7 @@ def wake_turn(
 
     need_episode = force_episode or (not report["matched"] and auto)
     if need_episode:
+        correction_kind = "ortho_surface" if report.get("ortho_mismatch") else None
         ep = append_episode(
             state,
             cue=cue,
@@ -84,6 +96,7 @@ def wake_turn(
             correct=correct,
             lattice_id=lattice_id,
             bundle=bundle,
+            correction_kind=correction_kind,
         )
         report["episode"] = ep
         report["auto_episode"] = auto and not report["matched"] and not self_correct
@@ -134,7 +147,7 @@ def main() -> None:
         force_episode=args.force_episode,
         self_correct=args.self_correct,
     )
-    save_state(path, state)
+    save_runtime_state(store, state)
     print(json.dumps(report, ensure_ascii=False, indent=2))
 
 

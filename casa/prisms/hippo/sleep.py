@@ -14,7 +14,8 @@ from pathlib import Path
 from casa.prisms.shared.field_write import load_field_state
 from casa.field_bus import ConsolidatePhaseEvent, publish
 from casa.prisms.hippo.sleep_replay import PRODUCTION_SLEEP_REPLAY, SleepReplayConfig
-from casa.prisms.memory.memory_prisms import ensure_prisms, hippo_episodes, run_sleep, save_state
+from casa.prisms.memory.memory_prisms import ensure_prisms, hippo_episodes, run_sleep
+from casa.prisms.shared.store_persist import save_runtime_state
 
 
 def main() -> None:
@@ -55,7 +56,7 @@ def main() -> None:
         replay_k=args.replay_k,
         replay_value_weight=args.replay_value_weight,
     )
-    save_state(path, state)
+    save_runtime_state(store, state)
     shards = int((report or {}).get("merged_episodes") or (report or {}).get("episodes_merged") or 0)
     publish(
         ConsolidatePhaseEvent(

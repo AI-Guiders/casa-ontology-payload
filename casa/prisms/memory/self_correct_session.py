@@ -12,7 +12,8 @@ import json
 from pathlib import Path
 
 from casa.prisms.shared.field_write import load_field_state
-from casa.prisms.memory.memory_prisms import ensure_prisms, run_sleep, save_state
+from casa.prisms.memory.memory_prisms import ensure_prisms, run_sleep
+from casa.prisms.shared.store_persist import save_runtime_state
 from casa.prisms.memory.surface import surface_from_sss
 from casa.prisms.hippo.wake_util import internal_target_from_cue, surface_matches_target
 from casa.prisms.hippo.wake import wake_turn
@@ -64,7 +65,7 @@ def main() -> None:
                 }
             )
 
-    save_state(path, state)
+    save_runtime_state(store, state)
     print(
         json.dumps(
             {

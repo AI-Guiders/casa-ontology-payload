@@ -17,6 +17,18 @@ def norm_text(text: str) -> str:
     return re.sub(r"\s+", "", t)
 
 
+def norm_lexeme(text: str) -> str:
+    """Lexeme key — case- and whitespace-insensitive; punctuation ignored."""
+    t = unicodedata.normalize("NFC", (text or "").strip().lower())
+    t = re.sub(r"[^\w\u0400-\u04ff]+", "", t, flags=re.UNICODE)
+    return t
+
+
+def display_text(text: str) -> str:
+    """Surface form for ortho compare — NFC, case preserved."""
+    return unicodedata.normalize("NFC", (text or "").strip())
+
+
 def concept_to_surface(concept_id: str) -> str:
     cid = concept_id or ""
     for prefix in ("lang.word.", "syllable.", "grapheme."):
@@ -63,21 +75,85 @@ def parse_surfaces_from_text(wake: dict, *, limit: int = 4) -> list[str]:
     return [p for p in parts if p][:limit]
 
 
-def surface_matches_target(wake: dict, target: str, *, lattice_id: str | None = None) -> bool:
-    want = norm_text(target)
-    if not want:
-        return False
+def surface_display_from_wake(wake: dict, *, lattice_id: str | None = None) -> str:
+    """Best-effort display string (preserves case from babble text)."""
+    parsed = parse_surfaces_from_text(wake, limit=1)
+    if parsed:
+        return parsed[0]
     top = top_surface(wake)
-    if top and norm_text(str(top["surface"])) == want:
-        return True
-    for surf in parse_surfaces_from_text(wake):
-        if norm_text(surf) == want:
-            return True
-    if lattice_id == "L0_grapheme" and want:
-        joined = norm_text("".join(parse_surfaces_from_text(wake, limit=8)))
-        if joined.startswith(want) or want in joined:
-            return True
-    return False
+    if top:
+        return str(top["surface"])
+    if lattice_id == "L0_grapheme":
+        joined = "".join(parse_surfaces_from_text(wake, limit=8))
+        return joined[:80]
+    heard = cue_from_wake(wake)
+    return heard[:80] if heard else ""
+
+
+def surface_candidates_from_wake(wake: dict, *, lattice_id: str | None = None) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+
+    def add(raw: str) -> None:
+        d = display_text(raw)
+        if d and d not in seen:
+            seen.add(d)
+            out.append(d)
+
+    for surf in parse_surfaces_from_text(wake, limit=8):
+        add(surf)
+    top = top_surface(wake)
+    if top:
+        add(str(top["surface"]))
+    if lattice_id == "L0_grapheme":
+        joined = "".join(parse_surfaces_from_text(wake, limit=8))
+        if joined:
+            add(joined[:80])
+    primary = surface_display_from_wake(wake, lattice_id=lattice_id)
+    if primary:
+        add(primary)
+    return out
+
+
+def classify_surface_target(
+    wake: dict,
+    target: str,
+    *,
+    lattice_id: str | None = None,
+) -> dict[str, bool]:
+    """Lexeme (norm) vs display (ortho) — ADR-0003 Process layer."""
+    want_display = display_text(target)
+    want_lexeme = norm_lexeme(target)
+    if not want_lexeme and not want_display:
+        return {"lexeme_match": False, "display_match": False, "ortho_mismatch": False}
+
+    candidates = surface_candidates_from_wake(wake, lattice_id=lattice_id)
+    if not candidates and lattice_id == "L0_grapheme" and want_lexeme:
+        joined = norm_lexeme("".join(parse_surfaces_from_text(wake, limit=8)))
+        lexeme_match = bool(joined) and (joined == want_lexeme or want_lexeme in joined)
+        display_match = any(display_text(c) == want_display for c in candidates)
+        return {
+            "lexeme_match": lexeme_match,
+            "display_match": display_match,
+            "ortho_mismatch": lexeme_match and not display_match,
+        }
+
+    lexeme_match = any(norm_lexeme(c) == want_lexeme for c in candidates)
+    if not lexeme_match and lattice_id == "L0_grapheme" and want_lexeme:
+        joined = norm_lexeme("".join(parse_surfaces_from_text(wake, limit=8)))
+        lexeme_match = bool(joined) and (joined.startswith(want_lexeme) or want_lexeme in joined)
+
+    display_match = any(display_text(c) == want_display for c in candidates)
+    return {
+        "lexeme_match": lexeme_match,
+        "display_match": display_match,
+        "ortho_mismatch": lexeme_match and not display_match,
+    }
+
+
+def surface_matches_target(wake: dict, target: str, *, lattice_id: str | None = None) -> bool:
+    """Full match — same lexeme **and** same display (ortho-aware)."""
+    return classify_surface_target(wake, target, lattice_id=lattice_id)["display_match"]
 
 
 def cue_joined_for_lattice(cue: str, *, lattice_id: str) -> str:
@@ -152,13 +228,4 @@ def needs_self_correction(
 
 
 def surface_attempt_from_wake(wake: dict, *, lattice_id: str | None = None) -> str:
-    top = top_surface(wake)
-    if top:
-        return str(top["surface"])
-    parsed = parse_surfaces_from_text(wake, limit=1)
-    if parsed:
-        return parsed[0]
-    if lattice_id == "L0_grapheme":
-        joined = "".join(parse_surfaces_from_text(wake, limit=8))
-        return joined[:80]
-    return cue_from_wake(wake)[:80]
+    return surface_display_from_wake(wake, lattice_id=lattice_id)[:120]
