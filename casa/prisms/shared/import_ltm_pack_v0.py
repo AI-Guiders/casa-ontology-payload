@@ -17,24 +17,12 @@ from prism_state_v0 import prism_control, prism_memory  # type: ignore
 from control_cylinders_v0 import ensure_control_cylinder  # type: ignore
 from field_write import load_field_state, save_field_state  # type: ignore
 from ltm_pack_v0 import read_ltm  # type: ignore
+from casa.prisms.shared.store_paths_v1 import ltm_scan_subdirs, resolve_ltm_file
 from sss_cylinders_v0 import ensure_cylinders, memory_lattices  # type: ignore
 
 
 def _resolve_ltm_path(ltm_dir: Path, lid: str, entry: dict[str, Any]) -> Path:
-    p = entry.get("path")
-    if p:
-        cand = Path(p)
-        if cand.is_file():
-            return cand
-        cand = ltm_dir.parent / p
-        if cand.is_file():
-            return cand
-    for ext in ("", ".zst", ".gz"):
-        for sub in ("l2", "l1", "l0", "l3", "h0", "ctrl", "lat"):
-            cand = ltm_dir / sub / f"{lid}.ltm{ext}"
-            if cand.is_file():
-                return cand
-    raise FileNotFoundError(f"no .ltm for {lid!r}")
+    return resolve_ltm_file(ltm_dir, lid, entry)
 
 
 def _ltm_lattice_id(path: Path) -> str:
@@ -46,15 +34,12 @@ def _ltm_lattice_id(path: Path) -> str:
 
 
 def import_ltm_dir_scan(state: dict, ltm_dir: Path) -> dict[str, Any]:
-    """Load every *.ltm under ltm/{l0,l1,l2,l3,h0} — even if missing from pack.manifest."""
+    """Load every *.ltm under ltm/ (canonical + legacy tiers)."""
     state = ensure_cylinders(state)
     state = ensure_control_cylinder(state)
     mem_lattices = memory_lattices(state)
     loaded: list[str] = []
-    for sub in ("l0", "l1", "l2", "l3", "h0"):
-        subdir = ltm_dir / sub
-        if not subdir.is_dir():
-            continue
+    for subdir in ltm_scan_subdirs(ltm_dir):
         for path in sorted(subdir.glob("*.ltm*")):
             if not path.is_file():
                 continue

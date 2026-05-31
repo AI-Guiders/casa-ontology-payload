@@ -99,8 +99,10 @@ def nca_root(store_dir: Path) -> Path:
 
 
 def nca_lattice_dir(store_dir: Path, lattice_id: str) -> Path:
-    """Per-lattice NCA weights: nca/<lattice_id>/ (v1 kebab id only)."""
-    return nca_root(store_dir) / str(lattice_id).replace("/", "_")
+    """Primary write target for per-lattice NCA weights (canonical layout v1)."""
+    from casa.prisms.shared.store_paths_v1 import resolve_nca_lattice_dir as _resolve
+
+    return _resolve(store_dir, lattice_id)
 
 
 def resolve_nca_lattice_dir(store_dir: Path, lattice_id: str) -> Path:

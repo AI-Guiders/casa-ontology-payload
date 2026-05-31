@@ -18,6 +18,7 @@ from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import LEGACY_L2, is_l2_word_lattice, l2_word_lattice_ids, nca_model_registry, shard_stats  # type: ignore
 from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
 from store_layout_v0 import rel_to_repo  # type: ignore
+from casa.prisms.shared.store_paths_v1 import manifest_layout_block
 
 
 def _dir_size(path: Path) -> int:
@@ -87,6 +88,7 @@ def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
     return {
         "schema_version": 1,
         "kind": "sss_memory_manifest",
+        **manifest_layout_block(),
         "store_id": store_dir.name,
         "store_path": rel_to_repo(store_dir),
         "generated_at": datetime.now(timezone.utc).isoformat(),

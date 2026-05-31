@@ -12,7 +12,7 @@ Touches: ltm/*.ltm, pack.manifest.json, nca/<id>/ dirs, nca_train_registry, fiel
 
 from __future__ import annotations
 
-from casa._paths import ensure_import_paths
+from casa._paths import REPO_ROOT, ensure_import_paths
 
 ensure_import_paths()
 
@@ -30,7 +30,7 @@ from prism_state_v0 import normalize_prisms, prism_control, prism_hippo, prism_m
 from sss_cylinders_v0 import memory_lattices  # type: ignore
 from store_layout_v0 import field_state_path, ltm_root, nca_root, nca_train_registry_path  # type: ignore
 
-_MAP_PATH = Path(__file__).resolve().parent.parent / "design" / "lattice-id-map.v1.json"
+_MAP_PATH = REPO_ROOT / "design" / "lattice-id-map.v1.json"
 
 _LTM_SUFFIXES = (".ltm.zst", ".ltm.gz", ".ltm")
 
