@@ -63,9 +63,15 @@ def main() -> None:
     _dmg = damage_defaults()
     _fe = field_edge("sss_lattice")
 
-    p = argparse.ArgumentParser(description="Train SSS NCA on memory lattice")
+    p = argparse.ArgumentParser(description="Train SSS NCA on memory or control lattice")
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--lattice-id", default="L2_word")
+    p.add_argument(
+        "--prism",
+        choices=("memory", "control"),
+        default="memory",
+        help="memory=prism_memory lattices; control=prism_control (lattice_predict, …)",
+    )
     p.add_argument("--damage-patches", type=int, default=_dmg["damage_patches"])
     p.add_argument("--patch-w", type=int, default=_dmg["patch_w"])
     p.add_argument("--patch-h", type=int, default=_dmg["patch_h"])
@@ -88,7 +94,12 @@ def main() -> None:
     device = resolve_train_device(args.device)
 
     state = ensure_prisms(load_field_state(args.store_dir / "field_state.json"))
-    lattices = memory_lattices(state)
+    if args.prism == "control":
+        from control_cylinders_v0 import control_lattices  # type: ignore
+
+        lattices = control_lattices(state)
+    else:
+        lattices = memory_lattices(state)
     try:
         lattice_key = resolve_store_lattice_id(args.lattice_id, lattices)
     except KeyError as exc:
