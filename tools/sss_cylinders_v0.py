@@ -357,9 +357,18 @@ def run_sleep(
     strength: int = 4,
     nca_model_path: Path | None = None,
     nca_lattice_id: str = "L2_word",
+    replay_k: int = 0,
+    replay_value_weight: float = 0.0,
 ) -> dict:
     """T_sleep: merge hippo episodes → prism_memory; prune consolidated."""
     state = ensure_cylinders(state)
+    from sleep_replay_v0 import SleepReplayConfig, prepare_sleep_replay  # type: ignore
+
+    replay_report = prepare_sleep_replay(
+        state,
+        SleepReplayConfig(replay_k=replay_k, value_weight=replay_value_weight),
+        bundle=bundle,
+    )
     stack = load_stack(stack_path)
     lattices = memory_lattices(state)
     hippo = prism_hippo(state)
@@ -452,6 +461,7 @@ def run_sleep(
         "z_compose": compose.get("count"),
         "items": merged,
         "nca": nca_report,
+        "replay": replay_report,
     }
     set_active_prism(state, PRISM_MEMORY)
     state["sn"] = {**(state.get("sn") or {}), "mode": "wake"}

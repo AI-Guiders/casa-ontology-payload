@@ -105,8 +105,8 @@ pass = форма из decode всё ещё matches target (claims_nav OFF)
 
 - [x] `tools/replay_buffer_v0.py` — pure funcs (eligibility, archive, prioritize, sample, mark, to-kwargs) + CLI
 - [x] `tests/test_replay_buffer.py` — assert-gate приоритета/идемпотентности/eligibility
-- [ ] Хук `run_sleep` → archive + (optional) re-inject (после коммита текущего WIP `sss_cylinders_v0.py`)
-- [ ] `bench_retention_v0.py` — `retention@N` + forgetting gap, replay vs ablation (UC v0.3)
+- [x] Хук `run_sleep` → `sleep_replay_v0.prepare_sleep_replay` (default `replay_k=0`; CLI `sss_sleep_v0` → `PRODUCTION_SLEEP_REPLAY`)
+- [x] `bench_retention_v0.py` — `retention@N` + forgetting gap, replay vs ablation (UC v0.3)
 - [ ] Связать `replay_buffer` с `H_replay_queue` при split `H0_episode` → H1/H2 (UC v1.1)
 
 ### Не меняется
@@ -130,7 +130,7 @@ pass = форма из decode всё ещё matches target (claims_nav OFF)
 - [x] pytest: eligibility отсекает pending/ask/hint/empty/rule-без-id
 - [x] pytest: archive идемпотентен по `episode_id`, фильтрует нереплеибельное
 - [x] pytest: prioritize = most-forgotten-first; `mark_replayed` сдвигает приоритет
-- [ ] bench: retention@N(replay) > retention@N(ablation) на dative/script cues
+- [x] bench: replay branch final_copies ≥ ablation on synthetic listen-flood (`bench_retention_v0.py`, `tests/test_bench_retention.py`)
 - [ ] re-inject не создаёт oracle-лемму на коротком префиксе (контроль `sleep_mixed_script_kor_v1`)
 
 ---

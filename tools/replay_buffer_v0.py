@@ -38,7 +38,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 # correction_kind values that must never be auto-replayed: replaying them
 # would re-assert a lemma the teacher deliberately did NOT commit (oracle on a
@@ -93,7 +93,13 @@ def _record_from_merged(item: dict, *, now_tick: int) -> dict:
     }
 
 
-def archive_records(buffer: list[dict], merged_items: list[dict], *, now_tick: int) -> list[dict]:
+def archive_records(
+    buffer: list[dict],
+    merged_items: list[dict],
+    *,
+    now_tick: int,
+    tag_value: Callable[[dict], float] | None = None,
+) -> list[dict]:
     """Append merged sleep items into the buffer, idempotent by episode_id.
 
     Returns the same list (mutated) for convenience.
@@ -106,6 +112,8 @@ def archive_records(buffer: list[dict], merged_items: list[dict], *, now_tick: i
         rec = _record_from_merged(item, now_tick=now_tick)
         if not eligible_for_replay(rec):
             continue
+        if tag_value is not None:
+            tag_value(rec)
         buffer.append(rec)
         known.add(ep_id)
     return buffer
@@ -207,37 +215,6 @@ def _now_tick(state: dict) -> int:
     return int((state.get("consolidation") or {}).get("last_sleep_tick") or state.get("field_version") or 0)
 
 
-def _cli_apply(state: dict, batch: list[dict]) -> int:
-    """Re-inject sampled records as fresh episodes. Imports are lazy on purpose."""
-    from sss_cylinders_v0 import append_episode, append_rule_episode  # type: ignore
-
-    applied = 0
-    for rec in batch:
-        kwargs = to_replay_episode_kwargs(rec)
-        if kwargs.pop("kind") == "rule":
-            append_rule_episode(
-                state,
-                word=kwargs["word"],
-                attempt=kwargs["attempt"],
-                correct=kwargs["correct"],
-                rule_id=kwargs["rule_id"],
-                rule_hint=kwargs["rule_hint"],
-            )
-        else:
-            append_episode(
-                state,
-                cue=kwargs["cue"],
-                surface_attempt=kwargs["surface_attempt"],
-                correct=kwargs["correct"],
-                lattice_id=kwargs["lattice_id"],
-                concept_id=kwargs["concept_id"],
-                scene=kwargs["scene"],
-                correction_kind=kwargs["correction_kind"],
-            )
-        applied += 1
-    return applied
-
-
 def main() -> int:
     p = argparse.ArgumentParser(description="CASA correction replay buffer")
     p.add_argument("--state", required=True, type=Path, help="field_state.json")
@@ -260,7 +237,9 @@ def main() -> int:
     dirty = bool(args.archive)
 
     if args.apply and batch:
-        _cli_apply(state, batch)
+        from sleep_replay_v0 import apply_replay_batch  # type: ignore
+
+        apply_replay_batch(state, batch)
         mark_replayed(buffer, [r["episode_id"] for r in batch], now_tick=now)
         dirty = True
 
