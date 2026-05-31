@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Smoke: cyl_control lattices + sn_cen infer from field."""
+"""Smoke: prism_control lattices + sn_cen infer from field."""
 
 from __future__ import annotations
 

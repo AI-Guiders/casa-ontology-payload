@@ -34,7 +34,7 @@
 Правильное разделение:
 
 ```text
-  [ACT / cyl_io]     платформенный адаптер (опционально)
+  [ACT / prism_io]     платформенный адаптер (опционально)
         │            Win / macOS / Linux / WASM / Web
         ▼
   [CORE]             layout-neutral PhysicalKeyEvent[]

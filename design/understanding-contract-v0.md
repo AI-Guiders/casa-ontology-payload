@@ -169,7 +169,7 @@ critic_pass(unit) →
   EXTRACT (wake)     REMEMBER (sleep)      USE (act)
   ─────────────      ────────────────      ─────────
   среда → структура  hippo → memory       digest → babble
-  на cyl_hippo       field_version++       без claim.text
+  на prism_hippo       field_version++       без claim.text
                      ltm delta (opt.)
 ```
 
@@ -179,7 +179,7 @@ critic_pass(unit) →
 
 **Вход:** utterance среды — текст учителя, dialogue, корпус, (roadmap) vis.
 
-**Выход:** один или несколько **`UnderstandingUnit`** на **cyl_hippo** (не в markdown-KB как источник истины).
+**Выход:** один или несколько **`UnderstandingUnit`** на **prism_hippo** (не в markdown-KB как источник истины).
 
 | Тип смысла | hippo lattice | Токены на grid | Пример |
 |------------|---------------|----------------|--------|
@@ -204,7 +204,7 @@ understand_extract(state, event) → UnderstandingUnit[]
 
 **Вход:** очередь непроконсолидированных `UnderstandingUnit` (`H_replay_queue`).
 
-**Выход:** изменения **cyl_memory** (+ опционально finetune NCA на затронутых tiles):
+**Выход:** изменения **prism_memory** (+ опционально finetune NCA на затронутых tiles):
 
 | Источник | Мост | Действие |
 |----------|------|----------|

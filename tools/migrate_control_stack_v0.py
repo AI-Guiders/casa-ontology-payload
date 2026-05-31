@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Migrate agent store / field_state to control lattice stack (cyl_control)."""
+"""Migrate agent store / field_state to control lattice stack (prism_control)."""
 
 from __future__ import annotations
 

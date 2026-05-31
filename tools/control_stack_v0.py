@@ -249,7 +249,7 @@ def decode_control_dmn(state: dict, *, min_votes: int = 1) -> dict:
     from control_cylinders_v0 import control_lattices, has_control_stack  # type: ignore
 
     if not has_control_stack(state):
-        raise ValueError("no cyl_control lattices")
+        raise ValueError("no prism_control lattices")
     lattices = control_lattices(state)
     lat = lattices.get("lattice_dmn")
     if not lat:

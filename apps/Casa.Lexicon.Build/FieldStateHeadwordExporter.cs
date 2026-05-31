@@ -127,13 +127,13 @@ internal static partial class FieldStateHeadwordExporter
 
     private static void HandlePropertyName(string name, ParseState st)
     {
-        if (name == "cylinders")
+        if (name == "cylinders" || name == "prisms")
         {
             st.InCylinders = true;
             return;
         }
 
-        if (st.InCylinders && name == "cyl_memory")
+        if (st.InCylinders && (name == "cyl_memory" || name == "prism_memory"))
         {
             st.InCylMemory = true;
             return;

@@ -9,7 +9,7 @@ $env:PYTHONIOENCODING = 'utf-8'
 $store = 'lab/agent-stores/control-lab-v0'
 $bundle = 'lab/exp_l_v0/kb-math-concrete-schemas-l0.bundle.v1.json'
 
-Write-Host '=== Init control-lab (bundle -> cyl_control + ltm) ===' -ForegroundColor Green
+Write-Host '=== Init control-lab (bundle -> prism_control + ltm) ===' -ForegroundColor Green
 python tools/init_control_lab_v0.py --store-dir $store --bundle $bundle
 
 Write-Host '=== Bench ===' -ForegroundColor Cyan

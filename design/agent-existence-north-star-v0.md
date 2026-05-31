@@ -52,7 +52,7 @@
 2. **Rich medium** — сначала IDE + KB + MCP (лабораторное тело), позже embodiment / Physical AI (Cosmos-аналог).
 3. **Consciousness — open outcome, not design requirement** — не обещаем и не требуем «сознание»; не блокируем работу из-за hard problem.
 4. **FPN на поле** (layout B) — удержание задачи между тиками, не только один вызов `cen_plan`.
-5. **Время** — не магия: накопление структуры в поле, FPN, эпизоды; **sleep** = `T_consolidate` (hippo → cyl_memory). См. [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md).
+5. **Время** — не магия: накопление структуры в поле, FPN, эпизоды; **sleep** = `T_consolidate` (hippo → prism_memory). См. [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md).
 
 ```text
 T=0..∞  perceive → DMN → SN → FPN → CEN → act → P4 feedback → …

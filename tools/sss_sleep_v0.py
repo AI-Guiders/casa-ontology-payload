@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""T_sleep: consolidate cyl_hippo → cyl_memory."""
+"""T_sleep: consolidate prism_hippo → prism_memory."""
 
 from __future__ import annotations
 

@@ -68,7 +68,7 @@
       "corpus_id": "kb-math-l0",
       "lifecycle": "lab",
       "profile_roles": ["control_stack"],
-      "notes": "cyl_control DMN/SN/FPN/CEN; see design/control-lattice-stack-v0.md"
+      "notes": "prism_control DMN/SN/FPN/CEN; see design/control-lattice-stack-v0.md"
     },
     {
       "store_id": "sss-afan-v0",

@@ -47,7 +47,7 @@
 | **CIDE Safety / IOP** | Cascade IDE, coexistence | **автономия агента в IDE**: read-only → confirm → bounded autonomous | **SL1…SL3** (Safety Level) | код/UI: `safetyLevel` `"L1"`…`"L3"` — в prose **SL2** |
 | **CASA z (2-я СС)** | `casa-ontology-payload`, store | решётки знаков на цилиндре | **T0…T3** (APLF) | `L0_*`, `L2_word_*`, `L3_phrase` |
 | **Bukvar** | listen curriculum | B0→B3 педагогика | **B0…B3** | → T0…T3 |
-| **Hippo episodic** | `cyl_hippo` | surprise до sleep | **H1…H3** | `H1_surface`, … |
+| **Hippo episodic** | `prism_hippo` | surprise до sleep | **H1…H3** | `H1_surface`, … |
 | **Math (1-я СС)** | F-stack | schema → compose → quantity | **F0…F2** | `F0_schema`, … |
 | **Infancy** | corpus phases | timeline взросления | **фаза 0…5** | не z_level |
 | **Exp L** | Experiment L | урок concrete→abstract | **Exp L0…L4** | не lattice L3 |
@@ -109,7 +109,7 @@ North star CASA ([`agent-existence-north-star-v0.md`](agent-existence-north-star
 |------|----------|--------|
 | **Semantic (роль)** | доки, KB, разговор с человеком | **T2 лексема**, **T3 связка/hub** |
 | **Profile gloss (домен)** | когда домен ясен | **слой слова**, **слог**, **схема** (math) |
-| **Anatomical (физика CASA)** | layout, cylinder, stack | **решётка** `L2_word_07`, **цилиндр** `cyl_memory`, **z_bridge** T1→T2 |
+| **Anatomical (физика CASA)** | layout, cylinder, stack | **решётка** `L2_word_07`, **цилиндр** `prism_memory`, **z_bridge** T1→T2 |
 | **ID (immutable)** | код, manifest, пути | `L2_word_07`, `L3_phrase` |
 
 **Правило одной строки:** CASA смысл → **T2**; KB глубина → **K2**; кокpit понимание → **SA2**; IDE автономия → **SL2**; literal решётка → `` `L2_word_07` ``.
@@ -259,7 +259,7 @@ North star CASA ([`agent-existence-north-star-v0.md`](agent-existence-north-star
 
 ## Hippo (episodic) — отдельная ось, не T0–T3
 
-Цилиндр **`cyl_hippo`**, не z_level долговременной памяти:
+Цилиндр **`prism_hippo`**, не z_level долговременной памяти:
 
 | ID | Имя RU | EN | Кристаллизует на sleep в… |
 |----|--------|-----|---------------------------|

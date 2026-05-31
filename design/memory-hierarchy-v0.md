@@ -28,13 +28,13 @@ Do **not** use `lab/nca_out_<corpus>_*/` for production — train in-place under
 
 ```text
 cylinders
-├── cyl_memory (SSS)
+├── prism_memory (SSS)
 │   ├── L0_grapheme          [1 lattice, 1 NCA]
 │   ├── L1_syllable          [1 lattice, 1 NCA]
 │   ├── L2_word              [legacy monolith — read-only after migrate]
 │   ├── L2_word_00 … _63     [64 shards, 1 NCA each]
 │   └── L3_phrase
-└── cyl_hippo (episodic)
+└── prism_hippo (episodic)
     ├── H1_surface … H3_scene   # design/hippo-lattice-stack-v0.md
     └── H0_episode (legacy → H1)
 ```

@@ -46,7 +46,7 @@
 | **Agent store** | **да** | `lab/agent-stores/sss-ru-lexicon-v0` |
 | **Profile** | **да** | `bilingual-t9-console-v0.json` |
 
-**Цилиндры** (`cyl_memory`, `cyl_hippo`, `cyl_io`) и **SN/DMN/CEN** — **архитектура core**, не отдельный store «Dev-мозг».
+**Цилиндры** (`prism_memory`, `prism_hippo`, `prism_io`) и **SN/DMN/CEN** — **архитектура core**, не отдельный store «Dev-мозг».
 
 ### 2. Store-pack — канон export (не ручной tar)
 

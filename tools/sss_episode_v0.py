@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Record teacher correction → cyl_hippo episode (T_wake)."""
+"""Record teacher correction → prism_hippo episode (T_wake)."""
 
 from __future__ import annotations
 

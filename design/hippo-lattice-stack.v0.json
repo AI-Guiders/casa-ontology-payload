@@ -3,7 +3,7 @@
   "subsystem": "hippo",
   "title": "Episodic cylinder — lattice stack (специалисты гиппокампа)",
   "doc": "design/hippo-lattice-stack-v0.md",
-  "parent_cylinder": "cyl_hippo",
+  "parent_prism": "prism_hippo",
   "legacy_monolith": "H0_episode",
   "axes": {
     "x": "cell within hippo lattice",
@@ -11,7 +11,7 @@
     "h_level": "which hippo lattice (H0..H3); episodic specialist",
     "t": "CA micro-steps (optional on hippo — mostly fast write)",
     "T_wake": "online: babble, listen, episode append",
-    "T_sleep": "consolidate hippo → cyl_memory"
+    "T_sleep": "consolidate hippo → prism_memory"
   },
   "lattices": [
     {
@@ -51,7 +51,7 @@
       "episode_kind": "scene",
       "role": ["dialogue_turn", "cue_context", "phrase_binding"],
       "status": "roadmap",
-      "note": "Связь с L3_phrase в cyl_memory"
+      "note": "Связь с L3_phrase в prism_memory"
     }
   ],
   "h_bridges": [
@@ -109,11 +109,11 @@
     "kind": "scheduler",
     "not_a_lattice": true,
     "role": ["sleep_replay_order", "nca_finetune_windows"],
-    "targets": "cyl_memory lattices",
+    "targets": "prism_memory lattices",
     "note": "Очередь «что прогнать» на T_sleep; не дословное хранение LTM"
   },
   "routing": {
-    "sn": ["active_cylinder", "active_hippo_lattice", "episode_kind_route"],
+    "sn": ["active_prism", "active_hippo_lattice", "episode_kind_route"],
     "episode_kind_to_lattice": {
       "surface": "H1_surface",
       "rule": "H2_rule",

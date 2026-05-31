@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CLI: T_repair on cyl_memory after damage."""
+"""CLI: T_repair on prism_memory after damage."""
 
 from __future__ import annotations
 

@@ -14,7 +14,7 @@ NVIDIA Cosmos World Foundation Models expose **Predict / Transfer / Reason** plu
 | Cosmos | CASA organ | lattice_id | Bridge / tool |
 |--------|------------|------------|---------------|
 | **Predict** (rollout next state) | forward-model digest + field rollout | **`lattice_predict`** | P8 → SN (prediction error); [`lattice_predict_v0.py`](../tools/lattice_predict_v0.py) |
-| **Transfer** (adapt world model) | listen / ingest / sleep consolidate | `cyl_memory` L0–L3 + `run_sleep` | z_bridge compose; ADR-0002 ltm/nca ship |
+| **Transfer** (adapt world model) | listen / ingest / sleep consolidate | `prism_memory` L0–L3 + `run_sleep` | z_bridge compose; ADR-0002 ltm/nca ship |
 | **Reason** (plan → act) | salience + attention + planner | **`lattice_sn`** + **`lattice_dan`** + **`lattice_fpn_wm`** + **`lattice_cen`** | P2a/P6/P7/P2b/P3/P4 |
 | **Tokenizer** | field codec (tokens on grid) | (memory lattices) | [`codec_grid_v0.py`](../tools/codec_grid_v0.py), `.ltm` vocab+placements |
 | **Guardrail** | critic + value + integrity | **`lattice_value`** + Critic + POST | P9 → SN/sleep/replay; [`surface_error_v0.py`](../tools/surface_error_v0.py), [`replay_buffer_v0.py`](../tools/replay_buffer_v0.py) |

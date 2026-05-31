@@ -3,7 +3,7 @@
   "subsystem": "first_signal_math",
   "title": "Первая сигнальность — логико-математический стек F0…F2",
   "doc": "design/f0-math-logical-layer-v0.md",
-  "parent_cylinder": "cyl_memory",
+  "parent_prism": "prism_memory",
   "sibling_subsystems": {
     "sss": "design/sss-lattice-stack.v0.json",
     "vis_roadmap": "design/experiment-l-concrete-to-abstract-v0.md"
@@ -12,7 +12,7 @@
     "x": "cell within lattice",
     "y": "cell within lattice",
     "f_level": "логический уровень (схема → экземпляр → величина)",
-    "z_note": "F-стек ортогонален z ССС (L0..L3); общий cyl_memory, разные subsystem_id",
+    "z_note": "F-стек ортогонален z ССС (L0..L3); общий prism_memory, разные subsystem_id",
     "T_wake": "compose, count, compare",
     "T_sleep": "consolidate schema → стабильные M: / hub edges"
   },

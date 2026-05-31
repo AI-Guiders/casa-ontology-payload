@@ -99,7 +99,7 @@ flowchart LR
     B -->|pass| C[act / preview]
     B -->|surprise| D[Extract]
   end
-  subgraph hippo [cyl_hippo]
+  subgraph hippo [prism_hippo]
     D --> E[UnderstandingUnit]
   end
   subgraph sleep [Sleep T_sleep]

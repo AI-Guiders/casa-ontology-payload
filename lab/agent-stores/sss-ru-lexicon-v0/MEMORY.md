@@ -1,25 +1,23 @@
-# Memory map: `sss-ru-lexicon-v0` (tier: **archaic**)
+# Memory map: `sss-ru-lexicon-v0`
 
-Lab store: Afanasyev dialect L2. Prod modern RU → `sss-ru-general-v0`. Split: `design/ru-lexicon-modern-archaic-v0.md`.
-
-Generated: 2026-05-30T09:09:06.697789+00:00
-field_version: **710685**
+Generated: 2026-05-31T06:40:38.491473+00:00
+field_version: **8**
 
 ## Disk
 
 | Path | Size |
 |------|------|
-| `field_state.json` | 408.7 MiB |
-| store total | 408.7 MiB |
-| `nca/` | 0 B |
+| `field_state.json` | 409.8 MiB |
+| store total | 546.9 MiB |
+| `nca/` | 131.9 MiB |
 | `_parallel_shards/` | 0 B |
 
-## Hierarchy (cyl_memory)
+## Hierarchy (prism_memory)
 
 ```text
-cyl_memory
-  L0_grapheme_cyrl  (alphabet ru, 33)
-  L0_grapheme_latn  (alphabet en, 26)
+prism_memory
+  L0_grapheme_cyrl  (tokens=66)
+  L0_grapheme_latn  (tokens=52)
     L1_syllable  (tokens=924)
       L2_word  (tokens=0)
       L2_word_00  (tokens=1310)

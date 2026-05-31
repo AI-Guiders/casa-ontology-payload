@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Attach cyl_control (seeded stack) to every agent store with field_state.json."""
+"""Attach prism_control (seeded stack) to every agent store with field_state.json."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ def main() -> None:
     p.add_argument("--stores-root", type=Path, default=STORES_ROOT)
     p.add_argument("--copies", type=int, default=4)
     p.add_argument("--export-ltm", action="store_true", default=True)
-    p.add_argument("--force", action="store_true", help="Re-migrate even if cyl_control exists")
+    p.add_argument("--force", action="store_true", help="Re-migrate even if prism_control exists")
     args = p.parse_args()
 
     root = args.stores_root.resolve()

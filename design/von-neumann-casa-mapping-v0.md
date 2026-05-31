@@ -106,7 +106,7 @@ T (агент):
 
 ## Несколько цилиндров
 
-PoC — один буфер. Целевое: **`cyl_memory`** (LTM, SSS) + **`cyl_hippo`** (эпизоды, быстрая запись, **consolidate** → memory). Опционально **`cyl_io`** — буфер listen. SN: `active_cylinder`. Канон: [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md).
+PoC — один буфер. Целевое: **`prism_memory`** (LTM, SSS) + **`prism_hippo`** (эпизоды, быстрая запись, **consolidate** → memory). Опционально **`prism_io`** — буфер listen. SN: `active_prism`. Канон: [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md).
 
 ## Lab сегодня
 

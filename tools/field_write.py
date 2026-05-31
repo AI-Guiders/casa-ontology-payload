@@ -344,7 +344,7 @@ def decode_field_grid(state: dict, *, min_votes: int | None = None) -> dict:
 
     grid = state.get("grid")
     if not grid or "cells" not in grid:
-        raise ValueError("field_state has no grid and no cyl_control.lattice_dmn")
+        raise ValueError("field_state has no grid and no prism_control.lattice_dmn")
     mv = CANONICAL_FIELD_MIN_VOTES if min_votes is None else min_votes
     decoded = decode_grid(grid, min_votes=mv)
     vote: dict[str, int] = {}

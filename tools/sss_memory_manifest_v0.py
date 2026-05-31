@@ -112,7 +112,7 @@ def render_memory_md(manifest: dict[str, Any]) -> str:
         f"| `nca/` | {_fmt_bytes(manifest['disk']['nca_dir'])} |",
         f"| `_parallel_shards/` | {_fmt_bytes(manifest['disk']['parallel_shards_dir'])} |",
         "",
-        "## Hierarchy (cyl_memory)",
+        "## Hierarchy (prism_memory)",
         "",
         "```text",
         "prism_memory",

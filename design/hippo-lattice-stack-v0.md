@@ -4,7 +4,7 @@
 **Дата:** 2026-05-30  
 **Родитель:** [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md)  
 **Машиночитаемо:** [`hippo-lattice-stack.v0.json`](hippo-lattice-stack.v0.json)  
-**Сосед:** [`sss-lattice-stack.v0.json`](sss-lattice-stack.v0.json) (cyl_memory)
+**Сосед:** [`sss-lattice-stack.v0.json`](sss-lattice-stack.v0.json) (prism_memory)
 
 ## Зачем дробить
 
@@ -17,11 +17,11 @@
 - (roadmap) диалоговые сцены;
 - (roadmap) сырой listen до эпизода.
 
-У них **разный sleep-target** в `cyl_memory` и разная «химия» записи. Один 32×32 буфер на всё → interference и неясный consolidate.
+У них **разный sleep-target** в `prism_memory` и разная «химия» записи. Один 32×32 буфер на всё → interference и неясный consolidate.
 
 ## Идея
 
-**cyl_hippo** — не один organ, а **стек episodic-решёток** (ось `h_level`), по аналогии с L0…L3 в memory:
+**prism_hippo** — не один organ, а **стек episodic-решёток** (ось `h_level`), по аналогии с L0…L3 в memory:
 
 ```text
         h_level (специалисты гиппокампа)
@@ -31,7 +31,7 @@
     H1 surface├──── h_bridge ────┤  T: → L1 / L2_word_XX
     H0 io     ├──────────────────┘  raw listen (roadmap)
               │
-    T_sleep: h_bridge_* → cyl_memory ; prune ; (опц.) NCA_repair finetune на полках;
+    T_sleep: h_bridge_* → prism_memory ; prune ; (опц.) NCA_repair finetune на полках;
              critic-pass → NCA_rule train (regrow validated rule patch; та же math, что repair)
 ```
 
@@ -71,7 +71,7 @@
 
 | Поле | Смысл |
 |------|--------|
-| `active_cylinder` | `cyl_memory` \| `cyl_hippo` |
+| `active_prism` | `prism_memory` \| `prism_hippo` |
 | `active_hippo_lattice` | `H1_surface` … |
 | `episode_kind` | surface \| rule \| scene → lattice по таблице в JSON |
 
@@ -82,12 +82,12 @@ CEN при wrong babble не выбирает «куда в LTM», а **куда
 ```text
 T_wake:
   listen     → H0_io (roadmap) или сразу memory ingest (массовый корпус)
-  babble     → read cyl_memory (+ cue из hippo completion — roadmap)
+  babble     → read prism_memory (+ cue из hippo completion — roadmap)
   wrong      → append → H1_surface | H2_rule | H3_scene
   right      → редко прямой tweak memory (исключение)
 
 T_sleep:
-  для каждого h_bridge: merge episodes → cyl_memory
+  для каждого h_bridge: merge episodes → prism_memory
   H_replay_queue → windowed NCA finetune на memory (roadmap v2)
   prune consolidated; field_version++ на memory
   NCA regrow per lattice (как sss_sleep_all_nca_v0)
@@ -100,7 +100,7 @@ T_sleep:
 
 | Tier | Содержимое |
 |------|------------|
-| A (prod) | `ltm/` + `nca/` — только **cyl_memory** |
+| A (prod) | `ltm/` + `nca/` — только **prism_memory** |
 | B | + episodic pack **`etm/`** (future): компактные H1…H3 как `.ltm`, очередь episodes в manifest |
 | C | episodic не шиппится — только wake experience on device |
 
@@ -126,7 +126,7 @@ T_sleep:
 
 | Документ | Роль |
 |----------|------|
-| [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md) | cyl_hippo vs cyl_memory, sleep |
+| [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md) | prism_hippo vs prism_memory, sleep |
 | [`language-acquisition-loop-v0.md`](language-acquisition-loop-v0.md) | listen → babble → correct |
 | [`understanding-contract-v0.md`](understanding-contract-v0.md) | Extract → Remember → Use; bench ablation |
 | [`l2-lattice-sharding-v0.md`](l2-lattice-sharding-v0.md) | куда consolidate слова |

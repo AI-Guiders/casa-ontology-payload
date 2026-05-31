@@ -20,7 +20,7 @@
 **Термин:** в JSON — `prisms` / `prism_control` (и т.д.). Геометрия — **призма** (квадратное основание × стек уровней z), не цилиндр; см. [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md) § геометрия.
 
 ```text
-  cyl_memory (lexicon)              cyl_control (CU / WM)
+  prism_memory (lexicon)              prism_control (CU / WM)
   ────────────────────              ─────────────────────
   L0_grapheme                       lattice_dmn_digest
        │ z_bridge compose                │ P1 digest
@@ -33,7 +33,7 @@
                                         └ P4 outcome → FPN
 ```
 
-**SN/CEN/FPN не «четвёртый язык»** — отдельный подсистемный стек **`cyl_control`**, связанный **портами** с `cyl_memory` (см. multi-cylinder: CU поверх цилиндров).
+**SN/CEN/FPN не «четвёртый язык»** — отдельный подсистемный стек **`prism_control`**, связанный **портами** с `prism_memory` (см. multi-cylinder: CU поверх призм).
 
 ---
 
@@ -152,7 +152,7 @@ Windowed train: tile 16×16, stride 8, ghost 2, `max_windows_per_batch` — **п
 | Шаг | Статус |
 |-----|--------|
 | `control-lattice-stack.v0.json` | ✅ |
-| `cyl_control` в `field_state` + `ltm/ctrl/*.ltm` | ✅ `migrate_control_stack_v0`, `init_control_lab_v0` |
+| `prism_control` в `field_state` + `ltm/ctrl/*.ltm` | ✅ `migrate_control_stack_v0`, `init_control_lab_v0` |
 | `decode_field_grid` → `lattice_dmn` | ✅ |
 | `sn_cen_infer --from-field` + `--session` | ✅ pipeline `sn_cen_control_stack_v0` |
 | Tick P1–P4 на поле (замена `layered_infer`) | roadmap |
@@ -175,7 +175,7 @@ Control lattices ship в **agent store** рядом с lexicon:
 {store}/nca/lattice_sn/model.pt
 ```
 
-Profile **не** подключает отдельный store для FPN — boot поднимает `cyl_memory` + **`cyl_control`** из одного store pack (roadmap).
+Profile **не** подключает отдельный store для FPN — boot поднимает `prism_memory` + **`prism_control`** из одного store pack (roadmap).
 
 ---
 

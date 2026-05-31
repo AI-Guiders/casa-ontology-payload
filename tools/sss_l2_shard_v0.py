@@ -401,7 +401,7 @@ def empty_l2_lattice(*, width: int = DEFAULT_LATTICE_SIZE, height: int = DEFAULT
 
 
 def ensure_l2_lattice(state: dict, lattice_id: str) -> dict:
-    """Create shard lattice if missing; sync cyl_memory + sss.lattices."""
+    """Create shard lattice if missing; sync prism_memory + sss.lattices."""
     state = ensure_prisms(state)
     lattices = memory_lattices(state)
     if lattice_id not in lattices:

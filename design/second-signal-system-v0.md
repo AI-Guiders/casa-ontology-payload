@@ -13,7 +13,7 @@
 
 ## Две подсистемы на одном цилиндре
 
-> **Расширение:** несколько цилиндров — `cyl_memory` + `cyl_hippo` (стек H0…H3, консолидация). См. [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md), [`hippo-lattice-stack-v0.md`](hippo-lattice-stack-v0.md).
+> **Расширение:** несколько цилиндров — `prism_memory` + `prism_hippo` (стек H0…H3, консолидация). См. [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md), [`hippo-lattice-stack-v0.md`](hippo-lattice-stack-v0.md).
 
 ```text
 ┌─────────────────────────────────────────────────────────┐

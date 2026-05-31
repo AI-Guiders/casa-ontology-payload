@@ -131,7 +131,7 @@ nca/
 ### Минусы / долг
 
 - Рантайм должен уметь **грузить `ltm/`** без обязательного `field_state.json` (сейчас import пишет в state — нужен loader в hot path).
-- Episodic (`cyl_hippo`), `field_version`, sleep-история — **вне** v0 pack; отдельный контур или tier B.
+- Episodic (`prism_hippo`), `field_version`, sleep-история — **вне** v0 pack; отдельный контур или tier B.
 - Прямой **bundle → ltm** ещё не реализован (ADR фиксирует направление).
 
 ### Что не меняется

@@ -3,9 +3,9 @@
   "kind": "sss_memory_manifest",
   "store_id": "sss-ru-lexicon-v0",
   "store_path": "lab/agent-stores/sss-ru-lexicon-v0",
-  "generated_at": "2026-05-30T09:09:06.697789+00:00",
-  "field_version": 710685,
-  "schema": "multi_cylinder_v1",
+  "generated_at": "2026-05-31T06:40:38.491473+00:00",
+  "field_version": 8,
+  "schema": "multi_prism_v1",
   "l2_sharding": {
     "enabled": true,
     "mode": "lexicographic",
@@ -1268,11 +1268,33 @@
       }
     ]
   },
-  "cylinders": [
-    "cyl_memory",
-    "cyl_hippo"
+  "prisms": [
+    "prism_memory",
+    "prism_hippo"
   ],
   "lattice_stack": [
+    {
+      "id": "L0_grapheme_cyrl",
+      "z_level": 0,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 66,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L0_grapheme_latn",
+      "z_level": 0,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 52,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
     {
       "id": "L1_syllable",
       "z_level": 1,
@@ -2079,12 +2101,12 @@
     "L2_word_63"
   ],
   "disk": {
-    "field_state_json": 428524681,
-    "field_state_human": "408.7 MiB",
-    "store_total": 428553445,
-    "store_total_human": "408.7 MiB",
-    "nca_dir": 0,
+    "field_state_json": 429730851,
+    "field_state_human": "409.8 MiB",
+    "store_total": 573491707,
+    "store_total_human": "546.9 MiB",
+    "nca_dir": 138340106,
     "parallel_shards_dir": 0,
-    "examples_exp_reports": 525725
+    "examples_exp_reports": 613239
   }
 }

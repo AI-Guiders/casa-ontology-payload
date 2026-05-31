@@ -32,7 +32,7 @@
 |----------------------------|----------------------|
 | Похожие волны на одних клетках | Co-activation на L0→L2; windowed NCA сближает соседние токены на tile |
 | «Первичный бульон», нет понятия «ветер» | Particular `W:ветер`, `W:ветяр` на L2; **Form** = hub после Extract/sleep |
-| DMN резонирует в тишине потока | `T_consolidate`, digest, hippo→cyl_memory; не tabula rasa на запрос |
+| DMN резонирует в тишине потока | `T_consolidate`, digest, hippo→prism_memory; не tabula rasa на запрос |
 | Грамматика = русла на решётке | `R:context.*`, ortho после mismatch; не § grammar в hot path |
 | RU/BY диалект = одна мелодия | **Цель:** merge по co-activation; **v0:** `era`/`archaic` в sidecar + lab store |
 | SN замечает одинаковые маркеры окружения | Salience + episodic; bench кластеров — roadmap |

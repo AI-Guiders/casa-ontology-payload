@@ -43,7 +43,7 @@ def damage_memory_lattices(
     count: int = 4,
     seed: int = 1,
 ) -> dict[str, Any]:
-    """Damage selected lattices in cyl_memory. Returns report."""
+    """Damage selected lattices in prism_memory. Returns report."""
     lids = targets or list(lattices.keys())
     report: dict[str, Any] = {"lattices": {}, "seed": seed}
     for i, lid in enumerate(lids):

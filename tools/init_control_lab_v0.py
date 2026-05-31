@@ -61,7 +61,7 @@ def init_control_lab(
             [
                 f"# {store_dir.name}",
                 "",
-                "Control lattice stack lab (DMN/SN/FPN/CEN on `cyl_control`).",
+                "Control lattice stack lab (DMN/SN/FPN/CEN on `prism_control`).",
                 "",
                 "Init:",
                 "```bash",
@@ -80,7 +80,7 @@ def init_control_lab(
 
 def main() -> None:
     root = Path(__file__).resolve().parent.parent
-    p = argparse.ArgumentParser(description="Init control-lab store with cyl_control")
+    p = argparse.ArgumentParser(description="Init control-lab store with prism_control")
     p.add_argument(
         "--store-dir",
         type=Path,

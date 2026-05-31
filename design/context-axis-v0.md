@@ -31,7 +31,7 @@ CASA **не** строит полную грамматику сверху. Ко�
 | **Homoglyph fork** | pre-commit latn/cyrl | `co` → merged preview (freq RU + EN homoglyph) |
 | **Phrase / collocation** | L3 + `R:` (roadmap) | `согласно пр` → `приказу` |
 | **Entity frame** | L3 `entity.*` | cow ↔ корова |
-| **Episodic** | cyl_hippo | «в прошлом тике печатали IDE» |
+| **Episodic** | prism_hippo | «в прошлом тике печатали IDE» |
 | **Domain tier** | store profile | tech vs general lexicon |
 | **Lexicon usage** | `lexicon_axes` on state | `era`, `usage_band`, `active_for_t9` — см. [`lexicon-usage-axes-v0.md`](lexicon-usage-axes-v0.md) |
 

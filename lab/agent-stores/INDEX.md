@@ -12,7 +12,7 @@ Structure names describe **role**, not ingest corpus.
 | [sss-afan-v0](sss-afan-v0/) | **ingest ref** Afan 624 monolith | ~467 MiB | read-only; corpus source only |
 | [sss-shard-smoke-v0](sss-shard-smoke-v0/) | kolobok smoke | ~1.8 MiB | dev |
 | [sss-afan-iii-v0](sss-afan-iii-v0/) | sleep experiments (legacy) | optional | |
-| [control-lab-v0](control-lab-v0/) | **control stack** DMN/SN/FPN/CEN | `cyl_control` + `ltm/ctrl/` | `run_control_stack_migrate_v0.ps1` |
+| [control-lab-v0](control-lab-v0/) | **control stack** DMN/SN/FPN/CEN | `prism_control` + `ltm/ctrl/` | `run_control_stack_migrate_v0.ps1` |
 
 ### Control lattice stack
 
