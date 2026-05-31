@@ -1,51 +1,43 @@
 # Open-source readiness & tech-debt — строгий ревью (трекинг)
 
 **Статус:** living note (не ADR; журнал находок и остатка)  
-**Дата:** 2026-05-31  
+**Дата:** 2026-05-31 (обновлено)  
 **Контекст:** стек открыт на GitHub. Это список того, что ревью отметило как риск публичной MIT-репы, что **уже сделано**, и что **осталось**.  
 **Связано:** [`CASA-ADR-0009-experience-replay-retention.md`](CASA-ADR-0009-experience-replay-retention.md), [`../THIRD-PARTY-NOTICES.md`](../THIRD-PARTY-NOTICES.md), [`../scripts/check_no_abs_paths.py`](../scripts/check_no_abs_paths.py)
 
 ---
 
-## Сделано (закоммичено)
+## Сделано (закоммичено / в рабочем дереве)
 
 | Тема | Что | Почему критично |
 |------|-----|------------------|
-| **Лицензия** | `LICENSE` holder = AI-Guiders; добавлен `THIRD-PARTY-NOTICES.md` | MIT без holder и без notices — юридически дыра при публикации |
-| **Сторонние данные** | corpora untracked; `scripts/download_corpora.py`; манифесты относительные; provenance | CC BY-SA 4.0 корпуса в MIT-репе без пометки = нарушение copyleft |
-| **Predictor** | именованный `T9Weights`; удалён мёртвый `nca_repair` | magic numbers → читаемый конфиг |
-| **t9 runtime** | полный `raw` payload за `--debug` | hot-path stdio не тащит лишнее по умолчанию |
-| **Naming collision** | `agent_autonomous_tick.py` → `agent_sn_cen_tick.py` | различить SN→CEN tick и wake/sleep tick |
-| **Scratch artifacts** | `lab/_bench_*` выкинуты из tracking | регенерируемый мусор не в git |
-| **Тесты** | `tests/test_predictor_smoke.py` + pytest в CI; `pyproject.toml` | детерминированный assert-gate ранжирования T9 |
-| **Guard** | `scripts/check_no_abs_paths.py` | pre-publish защита от утечки абсолютных путей |
-| **Replay (ADR-0009)** | `replay_buffer_v0` (pure) + `sleep_replay_v0` (wire) + bench/tests | борьба с забыванием коррекций |
+| **Лицензия** | `LICENSE` holder = AI-Guiders; `THIRD-PARTY-NOTICES.md` | MIT без holder и notices — юридическая дыра |
+| **Download-only data** | corpora derived + Gutenberg → gitignore; `download_corpora.py` + `fetch_en_folk_gutenberg_v0.py` | CC BY-SA / PD тексты не в MIT-дереве |
+| **UD sidecar** | `ud_lemma_pos.v1.json` download-only; пояснение про SA в notices | разделение code (MIT) vs data |
+| **Folk / Afan** | Grimm/Jacobs PG + Afanasyev задокументированы в notices | прозрачность источников |
+| **Abs-paths** | `train_sss_nca_v0` → `rel_to_repo`; gitignore report/logs/exp artifacts; `sanitize_abs_paths_in_tree.py`; ps1 → `AGENT_NOTES_KB` env | утечка machine paths |
+| **CI guard** | `check_no_abs_paths.py --scope all` в workflow | gate на весь tracked tree |
+| **README** | License + `download_corpora` в quick start | onboarding |
+| **Predictor / replay / prism** | (ранее) T9Weights, ADR-0009, terminology | см. историю коммитов |
 
 ---
 
-## Осталось (приоритезировано)
+## Осталось
 
-### P0 — до публичного анонса
+### P1 — история git
 
-- [ ] **Массовая санитация абсолютных путей.** `check_no_abs_paths.py` ловит ~1190 вхождений абсолютных путей в machine-specific roots. Разделить:
-  - *безопасно* — текст в design/доках и логах: автозамена на repo-relative / `<repo>`;
-  - *осторожно* — store-манифесты (`pack.manifest.json`, `nca_train_registry.v0.json`): пути читаются на boot → менять **с валидацией `store_boot_v0`**, не текстовой заменой.
-  - Превратить guard в CI-gate (fail при новом абсолютном пути в tracked).
+- [x] **Переписать git-историю от data-блобов.** `git filter-repo --invert-paths` по `scripts/filter_repo_drop_paths.txt` (32 пути: conllu, Gutenberg, headwords, frequency, ud_lemma_pos, lexicon_axes). После `--force-with-lease` push clone не тащит старые объекты.
 
-### P1 — гигиена истории и структуры
+### P2 — структура
 
-- [ ] **Переписать git-историю от data-блобов.** Ранее трекались крупные `.conllu` (UD). Удалить из истории (`git filter-repo`) — **деструктивно, нужен явный аппрув пользователя и согласование с remote**. До тех пор клон тащит тяжёлые объекты.
-- [ ] **Пакет вместо плоского `tools/`.** Десятки модулей с `sys.path`-зависимостью. Перевести в `casa/…` подпакеты (predictor, sss, nca, bench), оставив тонкие shim-точки входа. Высокий риск (трогает импорты везде) → отдельной веткой, после стабилизации lattice-naming v1.
-
-### P2 — единообразие
-
-- [ ] **Чистка суффиксов `_v0` / `_v1`.** Версия в имени файла — анти-паттерн; версионировать содержимым/ADR. Делать массово только вместе с пакетным рефактором (P1), иначе мердж-боль с активным WIP.
+- [ ] **Пакет вместо плоского `tools/`.** Отдельной веткой после стабилизации.
+- [ ] **Чистка суффиксов `_v0` / `_v1`.** Вместе с P1 package refactor.
 
 ---
 
-## Наблюдение про WIP (2026-05-31)
+## Наблюдение про CC BY-SA (UD)
 
-На момент ревью в submodule **большой незакоммиченный WIP** пользователя: миграция lattice-id v1, teacher-correction protocol, wake/sleep, `bench_sleep_extract_remember`, выходы NCA-шардов (`lab/agent-stores/**`). Это **не** сторонняя активность — фоновых процессов нет. Рекомендация: зафиксировать WIP логическими коммитами (миграция / протокол / bench / store-выходы отдельно), чтобы ценная работа не висела вне git. Пакетный рефактор (P1) и `_v0`-чистку (P2) делать **после** этого коммита.
+Pipeline **не редактирует** treebank — только строит lemma→UPOS индекс. Юридически спорно, является ли это «производным» SA-объектом; **download-only** снимает вопрос смешения с MIT-кодом в git. При редистрибуции sidecar — соблюдать UD attribution.
 
 ---
 
@@ -53,4 +45,5 @@
 
 | Дата | Изменение |
 |------|-----------|
-| 2026-05-31 | Создан журнал: сделанное в ревью + остаток (abs-paths, history rewrite, package, `_v0`) |
+| 2026-05-31 | Создан журнал |
+| 2026-05-31 | P0 license + download-only + abs-path cleanup; P0 abs-path mass scan закрыт через gitignore + sanitize |

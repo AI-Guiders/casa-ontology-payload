@@ -94,7 +94,7 @@ Union bundles (целевой минимум):
 ## Еженедельный smoke (язык)
 
 ```powershell
-$env:AGENT_NOTES_KB = 'D:\experiments\agent-notes\knowledge'
+$env:AGENT_NOTES_KB = '../agent-notes/knowledge'
 .\scripts\run_exp_j0_literacy_sync.ps1
 .\scripts\run_exp_j_language_sync.ps1
 # когда будет:

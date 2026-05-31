@@ -12,8 +12,9 @@ python tools/build_lexicon_usage_axes_v0.py --corpus ru-general
 ## Сборка headwords
 
 ```bash
-python tools/fetch_ru_frequency_headwords_v0.py
-# → headwords.v1.txt + frequency.ipm.v1.jsonl + source/detcorpus_50000.csv
+python scripts/download_corpora.py
+# or: python tools/fetch_ru_frequency_headwords_v0.py
+# → headwords.v1.txt + frequency.ipm.v1.jsonl (gitignored, not in repo)
 ```
 
 ## Store + GPU

@@ -1,7 +1,7 @@
 # Experiment J: text modality + Russian KB (v1)
 
 **Status:** phase 1 done; phase 2 + FPN v0 (2026-05-28)  
-**KB root:** `D:\experiments\agent-notes\knowledge` (`AGENT_NOTES_KB`)
+**KB root:** `../agent-notes/knowledge (`AGENT_NOTES_KB`)
 
 ## Goal
 
@@ -25,7 +25,7 @@ Russian queries → **answer_blocks** (claim text from field/KB), not only navig
 ## Smoke
 
 ```powershell
-$env:AGENT_NOTES_KB = 'D:\experiments\agent-notes\knowledge'
+$env:AGENT_NOTES_KB = '../agent-notes/knowledge'
 .\scripts\run_exp_j_language_sync.ps1
 
 python tools/sn_cen_infer.py --from-field --query "согласно приказу" `

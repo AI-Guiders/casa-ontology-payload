@@ -42,7 +42,7 @@ J  field     →  union store, answer@k, NCA repair (опционально уг
 ## Smoke
 
 ```powershell
-$env:AGENT_NOTES_KB = 'D:\experiments\agent-notes\knowledge'
+$env:AGENT_NOTES_KB = '../agent-notes/knowledge'
 .\scripts\run_exp_j0_literacy_sync.ps1
 ```
 

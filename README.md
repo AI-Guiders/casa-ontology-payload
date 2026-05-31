@@ -8,6 +8,9 @@ Not an LLM autocomplete — `anchors[]` from L2 lexicon + `unified_tick` (script
 ```powershell
 cd casa-ontology-payload
 
+# Download third-party corpora (headwords, UD POS sidecars, EN folk texts)
+python scripts/download_corpora.py
+
 # Full cycle: init RU dev store + EN folk + all benches
 python tools/run_t9_demo_cycle_v0.py
 
@@ -51,3 +54,8 @@ python tools/run_t9_demo_cycle_v0.py --train-nca --device cuda
 - Homoglyphs: `design/CASA-ADR-0003-emergent-forms-tags-predictor.md` § homoglyph vs confusable
 
 **Status:** research preview, not production keyboard.
+
+## License
+
+- **Code:** [MIT](LICENSE) (Copyright AI-Guiders).
+- **Data:** not shipped in git. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) and run `python scripts/download_corpora.py` after clone.

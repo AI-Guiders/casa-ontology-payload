@@ -3,7 +3,9 @@
 **Канон:** [hermitdave/FrequencyWords en_50k](https://github.com/hermitdave/FrequencyWords) (OpenSubtitles-derived, MIT).
 
 ```bash
-python tools/fetch_en_frequency_headwords_v0.py
+python scripts/download_corpora.py
+# or: python tools/fetch_en_frequency_headwords_v0.py
+```
 python tools/build_lexicon_usage_axes_v0.py --corpus en-general
 python tools/build_lexicon_usage_axes_v0.py --corpus en-general \
   --copy-to-store lab/agent-stores/sss-en-folk-v0
