@@ -2,521 +2,521 @@
   "schema_version": 1,
   "kind": "nca_train_registry_v0",
   "store_id": "sss-ru-general-v0",
-  "updated_at": "2026-05-31T07:22:10.930684+00:00",
+  "updated_at": "2026-05-31T16:55:57.962246+00:00",
   "field_version": 6,
   "pending": [],
   "lattices": {
     "words-ru-00": {
-      "last_trained_at": "2026-05-31T06:01:47.578014+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:37:54.126572+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1560,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-00/model.pt",
-      "last_repair_ratio": 2.478,
-      "last_repair_at": "2026-05-31T06:01:47.580117+00:00"
+      "last_repair_ratio": 2.338,
+      "last_repair_at": "2026-05-31T15:37:54.129581+00:00"
     },
     "words-ru-01": {
-      "last_trained_at": "2026-05-31T06:04:48.028942+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:38:52.183335+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-01/model.pt",
-      "last_repair_ratio": 2.516,
-      "last_repair_at": "2026-05-31T06:04:48.031327+00:00"
+      "last_repair_ratio": 2.376,
+      "last_repair_at": "2026-05-31T15:38:52.186336+00:00"
     },
     "words-ru-02": {
-      "last_trained_at": "2026-05-31T06:07:43.657839+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:40:01.029487+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-02/model.pt",
-      "last_repair_ratio": 2.613,
-      "last_repair_at": "2026-05-31T06:07:43.660381+00:00"
+      "last_repair_ratio": 2.342,
+      "last_repair_at": "2026-05-31T15:40:01.031530+00:00"
     },
     "words-ru-03": {
-      "last_trained_at": "2026-05-31T06:10:41.683085+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:41:03.689439+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-03/model.pt",
-      "last_repair_ratio": 2.489,
-      "last_repair_at": "2026-05-31T06:10:41.685197+00:00"
+      "last_repair_ratio": 2.318,
+      "last_repair_at": "2026-05-31T15:41:03.692437+00:00"
     },
     "words-ru-04": {
-      "last_trained_at": "2026-05-31T06:13:57.000144+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:42:37.422038+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-04/model.pt",
-      "last_repair_ratio": 2.52,
-      "last_repair_at": "2026-05-31T06:13:57.002801+00:00"
+      "last_repair_ratio": 2.356,
+      "last_repair_at": "2026-05-31T15:42:37.424354+00:00"
     },
     "words-ru-05": {
-      "last_trained_at": "2026-05-31T06:15:28.010794+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:43:41.267360+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-05/model.pt",
       "last_repair_ratio": 2.401,
-      "last_repair_at": "2026-05-31T06:15:28.013946+00:00"
+      "last_repair_at": "2026-05-31T15:43:41.269607+00:00"
     },
     "words-ru-06": {
-      "last_trained_at": "2026-05-31T06:16:31.329808+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:44:42.742735+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-06/model.pt",
       "last_repair_ratio": 2.36,
-      "last_repair_at": "2026-05-31T06:16:31.332513+00:00"
+      "last_repair_at": "2026-05-31T15:44:42.745663+00:00"
     },
     "words-ru-07": {
-      "last_trained_at": "2026-05-31T06:17:36.133298+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:45:46.121582+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-07/model.pt",
       "last_repair_ratio": 2.385,
-      "last_repair_at": "2026-05-31T06:17:36.135295+00:00"
+      "last_repair_at": "2026-05-31T15:45:46.123025+00:00"
     },
     "words-ru-08": {
-      "last_trained_at": "2026-05-31T06:18:37.324376+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:46:51.331723+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-08/model.pt",
       "last_repair_ratio": 2.367,
-      "last_repair_at": "2026-05-31T06:18:37.327376+00:00"
+      "last_repair_at": "2026-05-31T15:46:51.335714+00:00"
     },
     "words-ru-09": {
-      "last_trained_at": "2026-05-31T06:19:45.472222+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:47:53.802375+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-09/model.pt",
       "last_repair_ratio": 2.356,
-      "last_repair_at": "2026-05-31T06:19:45.474242+00:00"
+      "last_repair_at": "2026-05-31T15:47:53.805890+00:00"
     },
     "words-ru-10": {
-      "last_trained_at": "2026-05-31T06:20:47.494411+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:49:01.365722+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-10/model.pt",
       "last_repair_ratio": 2.335,
-      "last_repair_at": "2026-05-31T06:20:47.497632+00:00"
+      "last_repair_at": "2026-05-31T15:49:01.368761+00:00"
     },
     "words-ru-11": {
-      "last_trained_at": "2026-05-31T06:21:50.060692+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:50:04.857170+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-11/model.pt",
       "last_repair_ratio": 2.388,
-      "last_repair_at": "2026-05-31T06:21:50.062693+00:00"
+      "last_repair_at": "2026-05-31T15:50:04.858950+00:00"
     },
     "words-ru-12": {
-      "last_trained_at": "2026-05-31T06:22:48.043702+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:51:16.378217+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-12/model.pt",
       "last_repair_ratio": 2.397,
-      "last_repair_at": "2026-05-31T06:22:48.046721+00:00"
+      "last_repair_at": "2026-05-31T15:51:16.380736+00:00"
     },
     "words-ru-13": {
-      "last_trained_at": "2026-05-31T06:23:51.644349+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:52:18.151795+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-13/model.pt",
       "last_repair_ratio": 2.388,
-      "last_repair_at": "2026-05-31T06:23:51.647003+00:00"
+      "last_repair_at": "2026-05-31T15:52:18.154803+00:00"
     },
     "words-ru-14": {
-      "last_trained_at": "2026-05-31T06:25:00.725252+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:53:28.544699+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-14/model.pt",
       "last_repair_ratio": 2.376,
-      "last_repair_at": "2026-05-31T06:25:00.727351+00:00"
+      "last_repair_at": "2026-05-31T15:53:28.547752+00:00"
     },
     "words-ru-15": {
-      "last_trained_at": "2026-05-31T06:26:04.332394+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:54:33.490023+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-15/model.pt",
       "last_repair_ratio": 2.424,
-      "last_repair_at": "2026-05-31T06:26:04.334392+00:00"
+      "last_repair_at": "2026-05-31T15:54:33.492677+00:00"
     },
     "words-ru-16": {
-      "last_trained_at": "2026-05-31T06:27:07.663030+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:55:42.072390+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-16/model.pt",
       "last_repair_ratio": 2.361,
-      "last_repair_at": "2026-05-31T06:27:07.665536+00:00"
+      "last_repair_at": "2026-05-31T15:55:42.074581+00:00"
     },
     "words-ru-17": {
-      "last_trained_at": "2026-05-31T06:28:12.393248+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:56:51.364890+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-17/model.pt",
       "last_repair_ratio": 2.312,
-      "last_repair_at": "2026-05-31T06:28:12.395256+00:00"
+      "last_repair_at": "2026-05-31T15:56:51.367387+00:00"
     },
     "words-ru-18": {
-      "last_trained_at": "2026-05-31T06:29:15.430771+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:58:00.444869+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-18/model.pt",
       "last_repair_ratio": 2.307,
-      "last_repair_at": "2026-05-31T06:29:15.433566+00:00"
+      "last_repair_at": "2026-05-31T15:58:00.447160+00:00"
     },
     "words-ru-19": {
-      "last_trained_at": "2026-05-31T06:30:18.199075+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T15:59:06.992201+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-19/model.pt",
       "last_repair_ratio": 2.417,
-      "last_repair_at": "2026-05-31T06:30:18.201577+00:00"
+      "last_repair_at": "2026-05-31T15:59:06.994203+00:00"
     },
     "words-ru-20": {
-      "last_trained_at": "2026-05-31T06:31:20.680079+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:00:08.977290+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-20/model.pt",
       "last_repair_ratio": 2.3,
-      "last_repair_at": "2026-05-31T06:31:20.682821+00:00"
+      "last_repair_at": "2026-05-31T16:00:08.979410+00:00"
     },
     "words-ru-21": {
-      "last_trained_at": "2026-05-31T06:32:24.139675+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:01:12.201541+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1560,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-21/model.pt",
       "last_repair_ratio": 2.4,
-      "last_repair_at": "2026-05-31T06:32:24.143074+00:00"
+      "last_repair_at": "2026-05-31T16:01:12.203746+00:00"
     },
     "words-ru-22": {
-      "last_trained_at": "2026-05-31T06:33:35.837054+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:03:17.940826+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-22/model.pt",
       "last_repair_ratio": 2.335,
-      "last_repair_at": "2026-05-31T06:33:35.838087+00:00"
+      "last_repair_at": "2026-05-31T16:03:17.942836+00:00"
     },
     "words-ru-23": {
-      "last_trained_at": "2026-05-31T06:34:43.453559+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:04:53.752257+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-23/model.pt",
       "last_repair_ratio": 2.352,
-      "last_repair_at": "2026-05-31T06:34:43.455562+00:00"
+      "last_repair_at": "2026-05-31T16:04:53.754537+00:00"
     },
     "words-ru-24": {
-      "last_trained_at": "2026-05-31T06:35:44.800807+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:06:01.569059+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-24/model.pt",
       "last_repair_ratio": 2.401,
-      "last_repair_at": "2026-05-31T06:35:44.802813+00:00"
+      "last_repair_at": "2026-05-31T16:06:01.572620+00:00"
     },
     "words-ru-25": {
-      "last_trained_at": "2026-05-31T06:36:52.056945+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:07:33.607084+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-25/model.pt",
       "last_repair_ratio": 2.369,
-      "last_repair_at": "2026-05-31T06:36:52.059959+00:00"
+      "last_repair_at": "2026-05-31T16:07:33.609090+00:00"
     },
     "words-ru-26": {
-      "last_trained_at": "2026-05-31T06:37:53.615462+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:08:40.615766+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-26/model.pt",
       "last_repair_ratio": 2.309,
-      "last_repair_at": "2026-05-31T06:37:53.618104+00:00"
+      "last_repair_at": "2026-05-31T16:08:40.617996+00:00"
     },
     "words-ru-27": {
-      "last_trained_at": "2026-05-31T06:39:00.008347+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:09:46.645849+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-27/model.pt",
       "last_repair_ratio": 2.382,
-      "last_repair_at": "2026-05-31T06:39:00.041124+00:00"
+      "last_repair_at": "2026-05-31T16:09:46.648365+00:00"
     },
     "words-ru-28": {
-      "last_trained_at": "2026-05-31T06:40:25.900406+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:11:18.987627+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-28/model.pt",
       "last_repair_ratio": 2.388,
-      "last_repair_at": "2026-05-31T06:40:25.901413+00:00"
+      "last_repair_at": "2026-05-31T16:11:18.991888+00:00"
     },
     "words-ru-29": {
-      "last_trained_at": "2026-05-31T06:42:04.019132+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:12:30.465585+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-29/model.pt",
       "last_repair_ratio": 2.382,
-      "last_repair_at": "2026-05-31T06:42:04.022160+00:00"
+      "last_repair_at": "2026-05-31T16:12:30.469331+00:00"
     },
     "words-ru-30": {
-      "last_trained_at": "2026-05-31T06:43:10.981360+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:13:38.125557+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-30/model.pt",
       "last_repair_ratio": 2.282,
-      "last_repair_at": "2026-05-31T06:43:10.984894+00:00"
+      "last_repair_at": "2026-05-31T16:13:38.129577+00:00"
     },
     "words-ru-31": {
-      "last_trained_at": "2026-05-31T06:44:23.386172+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:15:03.395211+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-31/model.pt",
       "last_repair_ratio": 2.329,
-      "last_repair_at": "2026-05-31T06:44:23.388831+00:00"
+      "last_repair_at": "2026-05-31T16:15:03.397274+00:00"
     },
     "words-ru-32": {
-      "last_trained_at": "2026-05-31T06:45:36.453189+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:16:17.213530+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-32/model.pt",
       "last_repair_ratio": 2.306,
-      "last_repair_at": "2026-05-31T06:45:36.456704+00:00"
+      "last_repair_at": "2026-05-31T16:16:17.216245+00:00"
     },
     "words-ru-33": {
-      "last_trained_at": "2026-05-31T06:46:49.262539+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:17:33.057912+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-33/model.pt",
       "last_repair_ratio": 2.335,
-      "last_repair_at": "2026-05-31T06:46:49.265135+00:00"
+      "last_repair_at": "2026-05-31T16:17:33.061392+00:00"
     },
     "words-ru-34": {
-      "last_trained_at": "2026-05-31T06:48:00.168787+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:18:45.257466+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-34/model.pt",
       "last_repair_ratio": 2.378,
-      "last_repair_at": "2026-05-31T06:48:00.171443+00:00"
+      "last_repair_at": "2026-05-31T16:18:45.260862+00:00"
     },
     "words-ru-35": {
-      "last_trained_at": "2026-05-31T06:49:12.473857+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:19:58.104806+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-35/model.pt",
       "last_repair_ratio": 2.314,
-      "last_repair_at": "2026-05-31T06:49:12.476855+00:00"
+      "last_repair_at": "2026-05-31T16:19:58.107499+00:00"
     },
     "words-ru-36": {
-      "last_trained_at": "2026-05-31T06:50:18.293917+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:21:19.701431+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-36/model.pt",
       "last_repair_ratio": 2.334,
-      "last_repair_at": "2026-05-31T06:50:18.297188+00:00"
+      "last_repair_at": "2026-05-31T16:21:19.704488+00:00"
     },
     "words-ru-37": {
-      "last_trained_at": "2026-05-31T06:51:37.715947+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:22:30.663106+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-37/model.pt",
       "last_repair_ratio": 2.342,
-      "last_repair_at": "2026-05-31T06:51:37.718450+00:00"
+      "last_repair_at": "2026-05-31T16:22:30.665112+00:00"
     },
     "words-ru-38": {
-      "last_trained_at": "2026-05-31T06:52:41.769798+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:24:19.986576+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-38/model.pt",
       "last_repair_ratio": 2.373,
-      "last_repair_at": "2026-05-31T06:52:41.772434+00:00"
+      "last_repair_at": "2026-05-31T16:24:19.989739+00:00"
     },
     "words-ru-39": {
-      "last_trained_at": "2026-05-31T06:53:50.857492+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:25:27.029112+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-39/model.pt",
       "last_repair_ratio": 2.315,
-      "last_repair_at": "2026-05-31T06:53:50.860004+00:00"
+      "last_repair_at": "2026-05-31T16:25:27.032113+00:00"
     },
     "words-ru-40": {
-      "last_trained_at": "2026-05-31T06:54:58.910480+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:26:36.459120+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-40/model.pt",
       "last_repair_ratio": 2.365,
-      "last_repair_at": "2026-05-31T06:54:58.938828+00:00"
+      "last_repair_at": "2026-05-31T16:26:36.461339+00:00"
     },
     "words-ru-41": {
-      "last_trained_at": "2026-05-31T06:56:10.063090+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:27:43.200595+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-41/model.pt",
       "last_repair_ratio": 2.411,
-      "last_repair_at": "2026-05-31T06:56:10.066113+00:00"
+      "last_repair_at": "2026-05-31T16:27:43.202595+00:00"
     },
     "words-ru-42": {
-      "last_trained_at": "2026-05-31T06:57:21.420894+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:28:51.335441+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1560,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-42/model.pt",
       "last_repair_ratio": 2.382,
-      "last_repair_at": "2026-05-31T06:57:21.424049+00:00"
+      "last_repair_at": "2026-05-31T16:28:51.337441+00:00"
     },
     "words-ru-43": {
-      "last_trained_at": "2026-05-31T06:58:30.642115+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:29:55.184633+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-43/model.pt",
       "last_repair_ratio": 2.312,
-      "last_repair_at": "2026-05-31T06:58:30.644180+00:00"
+      "last_repair_at": "2026-05-31T16:29:55.186777+00:00"
     },
     "words-ru-44": {
-      "last_trained_at": "2026-05-31T06:59:31.153071+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:31:07.798911+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-44/model.pt",
       "last_repair_ratio": 2.312,
-      "last_repair_at": "2026-05-31T06:59:31.155180+00:00"
+      "last_repair_at": "2026-05-31T16:31:07.801945+00:00"
     },
     "words-ru-45": {
-      "last_trained_at": "2026-05-31T07:00:36.006897+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:32:45.561422+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-45/model.pt",
       "last_repair_ratio": 2.312,
-      "last_repair_at": "2026-05-31T07:00:36.008911+00:00"
+      "last_repair_at": "2026-05-31T16:32:45.566236+00:00"
     },
     "words-ru-46": {
-      "last_trained_at": "2026-05-31T07:01:34.573248+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:34:30.093655+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-46/model.pt",
       "last_repair_ratio": 2.346,
-      "last_repair_at": "2026-05-31T07:01:34.575251+00:00"
+      "last_repair_at": "2026-05-31T16:34:30.096179+00:00"
     },
     "words-ru-47": {
-      "last_trained_at": "2026-05-31T07:02:33.044867+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:35:39.542097+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-47/model.pt",
       "last_repair_ratio": 2.346,
-      "last_repair_at": "2026-05-31T07:02:33.047010+00:00"
+      "last_repair_at": "2026-05-31T16:35:39.544609+00:00"
     },
     "words-ru-48": {
-      "last_trained_at": "2026-05-31T07:03:34.981468+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:36:53.121203+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-48/model.pt",
       "last_repair_ratio": 2.41,
-      "last_repair_at": "2026-05-31T07:03:34.984954+00:00"
+      "last_repair_at": "2026-05-31T16:36:53.122206+00:00"
     },
     "words-ru-49": {
-      "last_trained_at": "2026-05-31T07:04:35.753613+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:38:07.409487+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-49/model.pt",
       "last_repair_ratio": 2.385,
-      "last_repair_at": "2026-05-31T07:04:35.755612+00:00"
+      "last_repair_at": "2026-05-31T16:38:07.412516+00:00"
     },
     "words-ru-50": {
-      "last_trained_at": "2026-05-31T07:05:38.727823+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:39:19.180747+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-50/model.pt",
       "last_repair_ratio": 2.375,
-      "last_repair_at": "2026-05-31T07:05:38.729824+00:00"
+      "last_repair_at": "2026-05-31T16:39:19.183111+00:00"
     },
     "words-ru-51": {
-      "last_trained_at": "2026-05-31T07:06:39.046772+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:40:34.563513+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-51/model.pt",
       "last_repair_ratio": 2.406,
-      "last_repair_at": "2026-05-31T07:06:39.048772+00:00"
+      "last_repair_at": "2026-05-31T16:40:34.566541+00:00"
     },
     "words-ru-52": {
-      "last_trained_at": "2026-05-31T07:07:36.965650+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:41:48.351592+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-52/model.pt",
       "last_repair_ratio": 2.316,
-      "last_repair_at": "2026-05-31T07:07:36.967770+00:00"
+      "last_repair_at": "2026-05-31T16:41:48.354383+00:00"
     },
     "words-ru-53": {
-      "last_trained_at": "2026-05-31T07:08:38.664395+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:43:14.119883+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-53/model.pt",
       "last_repair_ratio": 2.375,
-      "last_repair_at": "2026-05-31T07:08:38.666404+00:00"
+      "last_repair_at": "2026-05-31T16:43:14.122383+00:00"
     },
     "words-ru-54": {
-      "last_trained_at": "2026-05-31T07:09:36.488391+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:44:39.138033+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-54/model.pt",
       "last_repair_ratio": 2.344,
-      "last_repair_at": "2026-05-31T07:09:36.491403+00:00"
+      "last_repair_at": "2026-05-31T16:44:39.142908+00:00"
     },
     "words-ru-55": {
-      "last_trained_at": "2026-05-31T07:10:38.098260+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:46:04.474953+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-55/model.pt",
       "last_repair_ratio": 2.392,
-      "last_repair_at": "2026-05-31T07:10:38.101261+00:00"
+      "last_repair_at": "2026-05-31T16:46:04.477996+00:00"
     },
     "words-ru-56": {
-      "last_trained_at": "2026-05-31T07:11:41.048356+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:47:20.509126+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-56/model.pt",
       "last_repair_ratio": 2.417,
-      "last_repair_at": "2026-05-31T07:11:41.050453+00:00"
+      "last_repair_at": "2026-05-31T16:47:20.512510+00:00"
     },
     "words-ru-57": {
-      "last_trained_at": "2026-05-31T07:12:40.734763+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:49:01.608259+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-57/model.pt",
       "last_repair_ratio": 2.373,
-      "last_repair_at": "2026-05-31T07:12:40.737255+00:00"
+      "last_repair_at": "2026-05-31T16:49:01.611149+00:00"
     },
     "words-ru-58": {
-      "last_trained_at": "2026-05-31T07:13:42.220819+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:50:17.652832+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-58/model.pt",
       "last_repair_ratio": 2.289,
-      "last_repair_at": "2026-05-31T07:13:42.223818+00:00"
+      "last_repair_at": "2026-05-31T16:50:17.654343+00:00"
     },
     "words-ru-59": {
-      "last_trained_at": "2026-05-31T07:14:44.252997+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:51:21.722801+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-59/model.pt",
       "last_repair_ratio": 2.306,
-      "last_repair_at": "2026-05-31T07:14:44.255996+00:00"
+      "last_repair_at": "2026-05-31T16:51:21.725810+00:00"
     },
     "words-ru-60": {
-      "last_trained_at": "2026-05-31T07:15:41.019907+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:52:35.541726+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-60/model.pt",
       "last_repair_ratio": 2.32,
-      "last_repair_at": "2026-05-31T07:15:41.023444+00:00"
+      "last_repair_at": "2026-05-31T16:52:35.544391+00:00"
     },
     "words-ru-61": {
-      "last_trained_at": "2026-05-31T07:16:36.904073+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:53:40.427230+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-61/model.pt",
       "last_repair_ratio": 2.319,
-      "last_repair_at": "2026-05-31T07:16:36.906590+00:00"
+      "last_repair_at": "2026-05-31T16:53:40.430664+00:00"
     },
     "words-ru-62": {
-      "last_trained_at": "2026-05-31T07:17:37.613660+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:54:52.091360+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-62/model.pt",
       "last_repair_ratio": 2.385,
-      "last_repair_at": "2026-05-31T07:17:37.617180+00:00"
+      "last_repair_at": "2026-05-31T16:54:52.094870+00:00"
     },
     "words-ru-63": {
-      "last_trained_at": "2026-05-31T07:18:40.887326+00:00",
-      "field_version_at_train": 5,
+      "last_trained_at": "2026-05-31T16:55:57.960236+00:00",
+      "field_version_at_train": 6,
       "token_count_at_train": 1562,
       "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-63/model.pt",
       "last_repair_ratio": 2.405,
-      "last_repair_at": "2026-05-31T07:18:40.890416+00:00"
+      "last_repair_at": "2026-05-31T16:55:57.962246+00:00"
     },
     "lattice_predict": {
       "last_trained_at": "2026-05-31T07:21:43.287427+00:00",

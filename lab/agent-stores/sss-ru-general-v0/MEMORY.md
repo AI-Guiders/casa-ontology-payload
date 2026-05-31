@@ -1,14 +1,14 @@
 # Memory map: `sss-ru-general-v0`
 
-Generated: 2026-05-31T07:22:26.669523+00:00
+Generated: 2026-05-31T16:57:19.547927+00:00
 field_version: **6**
 
 ## Disk
 
 | Path | Size |
 |------|------|
-| `field_state.json` | 26.0 MiB |
-| store total | 238.8 MiB |
+| `field_state.json` | 44.7 MiB |
+| store total | 249.9 MiB |
 | `nca/` | 157.7 MiB |
 | `_parallel_shards/` | 0 B |
 
@@ -18,11 +18,11 @@ field_version: **6**
 prism_memory
   alphabet-en  (tokens=52)
   alphabet-ru  (tokens=66)
-      words-ru-00  (tokens=1560)
-      words-ru-01  (tokens=1562)
-      words-ru-02  (tokens=1562)
-      words-ru-03  (tokens=1562)
-      words-ru-04  (tokens=1562)
+      words-ru-00  (tokens=1560) + NCA
+      words-ru-01  (tokens=1562) + NCA
+      words-ru-02  (tokens=1562) + NCA
+      words-ru-03  (tokens=1562) + NCA
+      words-ru-04  (tokens=1562) + NCA
       words-ru-05  (tokens=1562) + NCA
       words-ru-06  (tokens=1562) + NCA
       words-ru-07  (tokens=1562) + NCA

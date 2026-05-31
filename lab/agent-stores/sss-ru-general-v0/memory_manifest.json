@@ -3,7 +3,7 @@
   "kind": "sss_memory_manifest",
   "store_id": "sss-ru-general-v0",
   "store_path": "lab/agent-stores/sss-ru-general-v0",
-  "generated_at": "2026-05-31T07:22:26.669523+00:00",
+  "generated_at": "2026-05-31T16:57:19.547927+00:00",
   "field_version": 6,
   "schema": "multi_prism_v1",
   "l2_sharding": {
@@ -1175,8 +1175,8 @@
       "height": 32,
       "token_count": 1560,
       "word_concepts": 780,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-00/model.pt",
+      "nca_bytes": 2457551
     },
     {
       "id": "words-ru-01",
@@ -1186,8 +1186,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-01/model.pt",
+      "nca_bytes": 2460175
     },
     {
       "id": "words-ru-02",
@@ -1197,8 +1197,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-02/model.pt",
+      "nca_bytes": 2462863
     },
     {
       "id": "words-ru-03",
@@ -1208,8 +1208,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-03/model.pt",
+      "nca_bytes": 2463567
     },
     {
       "id": "words-ru-04",
@@ -1219,8 +1219,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-04/model.pt",
+      "nca_bytes": 2460175
     },
     {
       "id": "words-ru-05",
@@ -1940,11 +1940,11 @@
     "words-ru-63"
   ],
   "disk": {
-    "field_state_json": 27264876,
-    "field_state_human": "26.0 MiB",
-    "store_total": 250392176,
-    "store_total_human": "238.8 MiB",
-    "nca_dir": 165411293,
+    "field_state_json": 46828982,
+    "field_state_human": "44.7 MiB",
+    "store_total": 261999462,
+    "store_total_human": "249.9 MiB",
+    "nca_dir": 165363297,
     "parallel_shards_dir": 0,
     "examples_exp_reports": 613239
   }
