@@ -117,6 +117,12 @@
 | **Homonymy** | разные `math.entity.*`; disambiguation SN + контекст |
 | **Sleep** | стабильные схемы F0 → hub; эфемерный F1 может очищаться после consolidate (как hippo → memory) |
 
+### Самопамять агента (вне картриджа)
+
+**Один контур:** `agent_remember` / `agent_recall` — любое содержимое, которое агент посчитал нужным сохранить; кодирование (prose / поле / JSON) — внутри ядра. ADR: [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md). Низкоуровневые `journal/` и `prism_agent` — implementation tier, не отдельные «режимы» для агента.
+
+Promote self → profile — **явный** шаг. См. также [`CASA-ADR-0013-agent-journal.md`](CASA-ADR-0013-agent-journal.md), [`CASA-ADR-0014-agent-prism.md`](CASA-ADR-0014-agent-prism.md).
+
 ## Мосты `f_bridge_*`
 
 | Мост | Направление | Действие |
@@ -183,6 +189,7 @@ Vis и webcam **не блокируют** проектирование F-сло�
 | [`experiment-l-concrete-to-abstract.md`](experiment-l-concrete-to-abstract.md) | куррикулум L0–L4, vis |
 | [`second-signal-system.md`](second-signal-system.md) | граница 1-й / 2-й СС |
 | [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md) | поставка памяти |
+| [`CASA-ADR-0013-agent-journal.md`](CASA-ADR-0013-agent-journal.md) | журнал агента вне ltm/ |
 | [`bukvar-text-modality.md`](bukvar-text-modality.md) | порядок: язык → потом картинки |
 | [`kb-math-development-evidence-v1.md`](kb-math-development-evidence-v1.md) | human numeracy evidence (agent-notes; deny → F0 oracle) |
 

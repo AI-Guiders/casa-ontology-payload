@@ -35,6 +35,25 @@ def classify_operand(text: str) -> str:
     return "other"
 
 
+def _filter_spurious_infix(infix: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Drop pipe-bitwise false positives inside stick equations (||| parsed as | | |)."""
+    has_arith = any(
+        ix.get("op") in "+-=" and "pipe_run" in (ix.get("left_kind"), ix.get("right_kind"))
+        for ix in infix
+    )
+    out: list[dict[str, Any]] = []
+    for ix in infix:
+        op = str(ix.get("op") or "")
+        left = str(ix.get("left") or "")
+        right = str(ix.get("right") or "")
+        if op == "|" and left == "|" and right == "|":
+            continue
+        if has_arith and op == "|" and ix.get("left_kind") == "pipe_run" and ix.get("right_kind") == "pipe_run":
+            continue
+        out.append(ix)
+    return out
+
+
 def analyze_cue(cue: str) -> dict[str, Any]:
     """Surface syntax of cue — operand kinds, infix ops, glyph runs (not semantics)."""
     cue = cue.strip()
@@ -51,6 +70,7 @@ def analyze_cue(cue: str) -> dict[str, Any]:
                 "right_kind": classify_operand(right),
             }
         )
+    infix = _filter_spurious_infix(infix)
 
     glyph_run: dict[str, Any] | None = None
     compact = cue.replace(" ", "")
@@ -148,15 +168,151 @@ def _sense_applies(analysis: dict[str, Any], glyph: str, when_rules: list[dict[s
     return any(_glyph_relevant(analysis, glyph, w) for w in when_rules if _match_when(analysis, w))
 
 
-def detect_reading_contexts(cue: str, *, bundle: dict | None = None) -> dict[str, float]:
+def _infix_matches_context_when(ix: dict[str, Any], when: dict[str, Any]) -> bool:
+    if str(when.get("shape") or "") != "infix":
+        return False
+    if str(when.get("op") or "") != str(ix.get("op") or ""):
+        return False
+    operand = when.get("operand")
+    exclude = when.get("exclude_operand")
+    for side in ("left_kind", "right_kind"):
+        kind = str(ix.get(side) or "")
+        if operand and not _operand_matches(kind, str(operand)):
+            continue
+        if exclude and _operand_matches(kind, str(exclude)):
+            continue
+        return True
+    return False
+
+
+def _contexts_for_infix(ix: dict[str, Any], bundle: dict) -> list[str]:
+    out: list[str] = []
+    for ctx in bundle.get("reading_contexts") or []:
+        cid = str(ctx.get("id") or "")
+        if not cid:
+            continue
+        when = _normalize_when(ctx.get("when"))
+        if _infix_matches_context_when(ix, when):
+            out.append(cid)
+    return out
+
+
+def _sense_binds_op(
+    op: str,
+    context_id: str,
+    bundle: dict,
+    decoded: dict,
+    *,
+    concept_in_context: Any,
+    grapheme_for_glyph: Any,
+) -> bool:
+    for sense in bundle.get("symbol_senses") or []:
+        if str(sense.get("glyph") or "") != op:
+            continue
+        ctx = str(sense.get("context") or sense.get("context_id") or "")
+        if ctx != context_id:
+            continue
+        if str(sense.get("concept_id") or "").startswith("math."):
+            return True
+    grapheme = grapheme_for_glyph(op) if grapheme_for_glyph else None
+    sym = grapheme if grapheme and str(grapheme).startswith(("grapheme.", "punct.", "vk.")) else op
+    return bool(concept_in_context(decoded, sym, context_id))
+
+
+def unbound_operators(
+    cue: str,
+    bundle: dict,
+    decoded: dict,
+    *,
+    concept_in_context: Any,
+    grapheme_for_glyph: Any,
+) -> list[dict[str, Any]]:
+    """Infix operators in an active reading frame with no field/bundle denotes binding."""
+    analysis = analyze_cue(cue)
+    bundle = bundle or {}
+    seen: set[tuple[str, str]] = set()
+    out: list[dict[str, Any]] = []
+    for ix in analysis.get("infix") or []:
+        op = str(ix.get("op") or "")
+        if op not in "+-=&":
+            continue
+        if op == "|":
+            continue
+        contexts = _contexts_for_infix(ix, bundle)
+        if not contexts and "pipe_run" in (ix.get("left_kind"), ix.get("right_kind")):
+            contexts = ["math.ctx.arithmetic"]
+        for ctx in contexts:
+            key = (op, ctx)
+            if key in seen:
+                continue
+            seen.add(key)
+            if _sense_binds_op(op, ctx, bundle, decoded, concept_in_context=concept_in_context, grapheme_for_glyph=grapheme_for_glyph):
+                continue
+            grapheme = grapheme_for_glyph(op) if grapheme_for_glyph else None
+            out.append(
+                {
+                    "op": op,
+                    "context": ctx,
+                    "grapheme": grapheme or op,
+                    "left_kind": ix.get("left_kind"),
+                    "right_kind": ix.get("right_kind"),
+                }
+            )
+    return out
+
+
+def score_field_infix_operators(
+    cue: str,
+    bundle: dict,
+    decoded: dict,
+    contexts: dict[str, float],
+    *,
+    concept_in_context: Any,
+    grapheme_for_glyph: Any,
+) -> dict[str, int]:
+    """Boost math.op.* from E:denotes on field for infix operator glyphs in cue."""
+    scores: dict[str, int] = {}
+    for ix in analyze_cue(cue).get("infix") or []:
+        op = str(ix.get("op") or "")
+        if len(op) != 1 or op == "|":
+            continue
+        ctxs = _contexts_for_infix(ix, bundle)
+        if not ctxs and "pipe_run" in (ix.get("left_kind"), ix.get("right_kind")):
+            ctxs = ["math.ctx.arithmetic"]
+        for ctx in ctxs:
+            weight = max(float(contexts.get(ctx, 0)), 10.0)
+            grapheme = grapheme_for_glyph(op) if grapheme_for_glyph else None
+            sym = grapheme if grapheme and str(grapheme).startswith(("grapheme.", "punct.", "vk.")) else op
+            bound = concept_in_context(decoded, sym, ctx)
+            if bound:
+                scores[str(bound)] = scores.get(str(bound), 0) + int(weight * 1.5)
+    return scores
+
+
+def detect_reading_contexts(
+    cue: str,
+    *,
+    bundle: dict | None = None,
+    unbound: list[dict[str, Any]] | None = None,
+) -> dict[str, float]:
     """Score reading frames from bundle rules (specific beats default)."""
     analysis = analyze_cue(cue)
+    unbound_ops = {str(u.get("op") or "") for u in (unbound or [])}
+    has_infix = bool(analysis.get("infix"))
     scores: dict[str, float] = {}
     for ctx in bundle.get("reading_contexts") or [] if bundle else []:
         cid = str(ctx.get("id") or "")
         if not cid:
             continue
         when = _normalize_when(ctx.get("when"))
+        if str(when.get("shape") or "") == "contains" and has_infix:
+            glyph = str(when.get("glyph") or "")
+            if glyph == "=" and any(str(ix.get("op") or "") in "+-" for ix in analysis.get("infix") or []):
+                continue
+            if glyph in "+-=" and any(str(ix.get("op") or "") == glyph for ix in analysis.get("infix") or []):
+                continue
+        if str(when.get("shape") or "") == "contains" and has_infix and unbound_ops:
+            continue
         if not _match_when(analysis, when):
             continue
         weight = float(ctx.get("weight") or 10)
@@ -193,11 +349,15 @@ def score_contextual_senses(
     *,
     concept_in_context: Any,
     grapheme_for_glyph: Any,
+    unbound: list[dict[str, Any]] | None = None,
 ) -> dict[str, int]:
     """Map active frames + symbol_senses → concept scores (field-backed)."""
     analysis = analyze_cue(cue)
     scores: dict[str, int] = {}
     senses = bundle.get("symbol_senses") or []
+    unbound_ops = {str(u.get("op") or "") for u in (unbound or [])}
+    has_infix = bool(analysis.get("infix"))
+    has_arith_infix = any(str(ix.get("op") or "") in "+-" for ix in analysis.get("infix") or [])
 
     for sense in senses:
         glyph = str(sense.get("glyph") or "")
@@ -213,6 +373,12 @@ def score_contextual_senses(
         else:
             rules = _active_when_rules(bundle, context, analysis)
         if not rules or not _sense_applies(analysis, glyph, rules):
+            continue
+        if unbound_ops and any(str(w.get("shape") or "") == "contains" for w in rules):
+            continue
+        if has_arith_infix and glyph == "=" and any(str(w.get("shape") or "") == "contains" for w in rules):
+            continue
+        if glyph in unbound_ops:
             continue
 
         run_rule = next((w for w in rules if str(w.get("shape") or "") == "glyph_run"), None)

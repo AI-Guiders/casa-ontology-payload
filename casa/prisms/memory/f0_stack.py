@@ -18,6 +18,8 @@ from casa.prisms.memory.f0_reading import (
     analyze_cue,
     detect_reading_contexts,
     score_contextual_senses,
+    score_field_infix_operators,
+    unbound_operators,
 )
 
 _SYMBOL_PREFIXES = ("grapheme.", "punct.", "vk.")
@@ -220,19 +222,46 @@ def f0_digest(decoded: dict, *, prefix: str = "math.") -> list[tuple[str, int]]:
     return out
 
 
-def rank_cue_on_f0(bundle: dict, decoded: dict, cue: str) -> list[tuple[str, int]]:
-    """Rank math.* — reading frames from bundle rules, not hardcoded examples."""
+_MATH_OP_GLYPH: dict[str, str] = {
+    "math.op.add": "+",
+    "math.op.sub": "-",
+    "math.op.eq": "=",
+    "math.op.concat": "+",
+    "math.op.or": "|",
+}
+
+
+def analyze_f0_cue_ranking(bundle: dict, decoded: dict, cue: str) -> dict[str, Any]:
+    """Rank math.* plus unbound-operator coverage for schema predict."""
     bundle = augment_bundle_symbol_links(bundle)
     cue = cue.strip()
-    scores: dict[str, int] = {}
-    contexts = detect_reading_contexts(cue, bundle=bundle)
+    unbound = unbound_operators(
+        cue,
+        bundle,
+        decoded,
+        concept_in_context=concept_in_context,
+        grapheme_for_glyph=_grapheme_for_glyph,
+    )
+    contexts = detect_reading_contexts(cue, bundle=bundle, unbound=unbound)
     cl = cue.lower()
+    scores: dict[str, int] = {}
 
     scores.update(
         score_contextual_senses(
             bundle,
             decoded,
             cue,
+            contexts,
+            concept_in_context=concept_in_context,
+            grapheme_for_glyph=_grapheme_for_glyph,
+            unbound=unbound,
+        )
+    )
+    scores.update(
+        score_field_infix_operators(
+            cue,
+            bundle,
+            decoded,
             contexts,
             concept_in_context=concept_in_context,
             grapheme_for_glyph=_grapheme_for_glyph,
@@ -261,7 +290,100 @@ def rank_cue_on_f0(bundle: dict, decoded: dict, cue: str) -> list[tuple[str, int
             continue
         scores[cid] = scores.get(cid, 0) + min(v, 5)
 
-    return sorted(scores.items(), key=lambda x: (-x[1], x[0]))
+    ranked = sorted(scores.items(), key=lambda x: (-x[1], x[0]))
+    return {
+        "ranked": ranked,
+        "unbound_operators": unbound,
+        "contexts": contexts,
+        "coverage_gaps": [f"unbound:{u['op']}@{u['context']}" for u in unbound],
+    }
+
+
+def rank_cue_on_f0(bundle: dict, decoded: dict, cue: str) -> list[tuple[str, int]]:
+    """Rank math.* — reading frames from bundle rules, not hardcoded examples."""
+    return analyze_f0_cue_ranking(bundle, decoded, cue)["ranked"]
+
+
+def strengthen_denotes_edge(
+    lattices: dict[str, dict],
+    lattice_id: str,
+    symbol_key: str,
+    context_id: str,
+    concept_id: str,
+    *,
+    copies: int = 4,
+) -> bool:
+    """Mint or reinforce E:symbol@ctx|denotes|concept on F0 lattice (Extract after teacher)."""
+    if lattice_id not in lattices or not concept_id.startswith("math."):
+        return False
+    lat = lattices[lattice_id]
+    g = Grid(
+        width=int(lat["width"]),
+        height=int(lat["height"]),
+        cells=[list(x) for x in lat["cells"]],
+    )
+    sym_key = contextual_symbol_key(symbol_key, context_id)
+    for src, rel, dst in (
+        (symbol_key, "in_context", context_id),
+        (sym_key, "denotes", concept_id),
+    ):
+        tok = f"E:{src}|{rel}|{dst}"
+        g = _place_token(g, tok, tok, copies=copies, radius=4)
+    c_tok = f"C:{concept_id}"
+    g = _place_token(g, c_tok, c_tok, copies=max(2, copies // 2), radius=3)
+    lat["cells"] = g.cells
+    return True
+
+
+def mint_operator_denotes_from_episode(
+    lattices: dict[str, dict],
+    *,
+    lattice_id: str,
+    cue: str,
+    concept_id: str,
+    bundle: dict,
+    copies: int = 4,
+) -> dict[str, Any] | None:
+    """Sleep Extract: teacher math.op.* → contextual denotes for the operator glyph."""
+    cid = str(concept_id or "")
+    if not cid.startswith("math.op."):
+        return None
+    if lattice_id not in lattices:
+        return None
+    decoded = decode_f0_lattice(lattices[lattice_id], min_votes=1)
+    glyph = _MATH_OP_GLYPH.get(cid)
+    if not glyph:
+        return None
+    unbound = unbound_operators(
+        cue,
+        bundle,
+        decoded,
+        concept_in_context=concept_in_context,
+        grapheme_for_glyph=_grapheme_for_glyph,
+    )
+    target = next((u for u in unbound if u.get("op") == glyph), None)
+    if target is None:
+        analysis = analyze_cue(cue)
+        if glyph not in {str(ix.get("op") or "") for ix in analysis.get("infix") or []}:
+            return None
+        context = "math.ctx.arithmetic"
+        grapheme = _grapheme_for_glyph(glyph) or glyph
+    else:
+        context = str(target.get("context") or "math.ctx.arithmetic")
+        grapheme = str(target.get("grapheme") or _grapheme_for_glyph(glyph) or glyph)
+    sym = grapheme if grapheme.startswith(_SYMBOL_PREFIXES) else grapheme
+    if concept_in_context(decoded, sym, context) == cid:
+        return {"skipped": True, "concept_id": cid, "glyph": glyph, "context": context}
+    ok = strengthen_denotes_edge(lattices, lattice_id, sym, context, cid, copies=copies)
+    if not ok:
+        return None
+    return {
+        "concept_id": cid,
+        "glyph": glyph,
+        "grapheme": sym,
+        "context": context,
+        "edge": f"E:{contextual_symbol_key(sym, context)}|denotes|{cid}",
+    }
 
 
 def glyph_to_concept(bundle: dict) -> dict[str, str]:

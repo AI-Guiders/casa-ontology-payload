@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from casa.prisms.memory.f0_math_ingest import ingest_math_bundle
-from casa.prisms.memory.f0_stack import decode_f0_lattice, rank_cue_on_f0
+from casa.prisms.memory.f0_stack import decode_f0_lattice, analyze_f0_cue_ranking
 from casa.prisms.shared.lattice_names_v1 import PHRASES
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.lexicon_shard import L2_CONCEPT_PREFIX, is_l2_word_lattice, lattice_digest_l2_network
@@ -335,10 +335,15 @@ def predict_schema(
         ingest_math_bundle(state, bundle, lattice_id=lattice_id)
         lattices = memory_lattices(state)
     decoded = decode_f0_lattice(lattices[lattice_id], min_votes=1)
-    ranked = rank_cue_on_f0(bundle, decoded, cue)[:top_k]
+    analysis = analyze_f0_cue_ranking(bundle, decoded, cue)
+    ranked = analysis["ranked"][:top_k]
+    unbound = analysis.get("unbound_operators") or []
     anchors = schema_anchors_from_ranked(ranked)
     focus = focus_schema_from_anchors(cue, anchors)
     top = ranked[0][0] if ranked else None
+    if unbound:
+        top = None
+        focus = None
     return {
         "schema_version": 1,
         "modality": "schema",
@@ -347,14 +352,17 @@ def predict_schema(
         "focus": focus,
         "hypothesis": top,
         "hypothesis_tokens": [top] if top else [],
+        "unbound_operators": unbound,
+        "coverage_gaps": analysis.get("coverage_gaps") or [],
         "digest": {
             "concept_ids": decoded.get("concept_ids") or [],
             "math_tokens": decoded.get("math_tokens") or [],
+            "reading_contexts": analysis.get("contexts") or {},
         },
-        "confidence": _confidence_from_ranked(ranked),
+        "confidence": 0.0 if unbound else _confidence_from_ranked(ranked),
         "lattice_ids": [lattice_id],
         "nca_used": [],
-        "provenance": {"engine": "rank_cue_on_f0"},
+        "provenance": {"engine": "analyze_f0_cue_ranking"},
         "ranked": ranked,
     }
 

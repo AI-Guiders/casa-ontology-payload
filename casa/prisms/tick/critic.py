@@ -70,8 +70,14 @@ def critic_validate(
                 ok = _norm(hyp) == _norm(target)
                 detail = f"focus hyp={hyp!r} target={target!r}"
         elif modality == "schema":
-            ok = _norm(str(hyp)) == _norm(str(target))
-            detail = f"schema focus concept={hyp!r} target={target!r}"
+            unbound = prediction.get("unbound_operators") or []
+            if unbound:
+                ops = ",".join(str(u.get("op") or "?") for u in unbound)
+                ok = False
+                detail = f"unbound_operators={ops!r}"
+            else:
+                ok = _norm(str(hyp)) == _norm(str(target))
+                detail = f"schema focus concept={hyp!r} target={target!r}"
         else:
             ok = hyp == target or _norm(str(hyp)) == _norm(str(target))
             detail = f"hyp={hyp!r} target={target!r}"
@@ -89,6 +95,14 @@ def critic_validate(
         ver = digest.get("verify") or {}
         ok = bool(ver.get("ok"))
         details.append({"name": "verify_internal", "pass": ok, "detail": ver})
+        all_ok = all_ok and ok
+
+    if "coverage" in checks:
+        gaps = prediction.get("coverage_gaps") or []
+        unbound = prediction.get("unbound_operators") or []
+        ok = not gaps and not unbound
+        detail = gaps or [f"unbound:{u.get('op')}" for u in unbound]
+        details.append({"name": "coverage", "pass": ok, "detail": detail})
         all_ok = all_ok and ok
 
     verdict = "pass" if all_ok else "fail"

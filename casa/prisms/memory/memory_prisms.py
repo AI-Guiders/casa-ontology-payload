@@ -416,20 +416,33 @@ def run_sleep(
         if seen < min_rec:
             pending.append(ep)
             continue
+        extract_rep = None
+        if cid and str(cid).startswith("math.op.") and bundle:
+            from casa.prisms.memory.f0_stack import mint_operator_denotes_from_episode
+
+            extract_rep = mint_operator_denotes_from_episode(
+                lattices,
+                lattice_id=lid,
+                cue=str(ep.get("cue") or ""),
+                concept_id=str(cid),
+                bundle=bundle,
+                copies=strength,
+            )
         if cid and _strengthen_concept(lattices, lid, str(cid), copies=strength):
             ep = {**ep, "consolidated": True, "merged_concept_id": cid}
-            merged.append(
-                {
-                    "episode_id": ep.get("id"),
-                    "kind": "surface",
-                    "lattice_id": lid,
-                    "concept_id": cid,
-                    "cue": ep.get("cue"),
-                    "correct": ep.get("correct"),
-                    "correction_kind": ep.get("correction_kind"),
-                    "scene": ep.get("scene"),
-                }
-            )
+            item = {
+                "episode_id": ep.get("id"),
+                "kind": "surface",
+                "lattice_id": lid,
+                "concept_id": cid,
+                "cue": ep.get("cue"),
+                "correct": ep.get("correct"),
+                "correction_kind": ep.get("correction_kind"),
+                "scene": ep.get("scene"),
+            }
+            if extract_rep:
+                item["extract"] = extract_rep
+            merged.append(item)
         else:
             pending.append(ep)
 
@@ -489,4 +502,7 @@ def episode_vote_for_cue(state: dict, bundle: dict, cue: str, lattice_id: str, c
 
 
 def save_state(path: Path, state: dict, *, compact: bool = False) -> None:
-    save_field_state(path, state, compact=compact)
+    """Legacy alias — persists full runtime (field + agent tier when present)."""
+    from casa.prisms.shared.store_persist import save_runtime_state
+
+    save_runtime_state(path.parent, state, compact=compact, force=True)
