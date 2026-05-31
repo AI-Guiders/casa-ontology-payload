@@ -22,7 +22,7 @@ from nca_train_util import add_device_args, resolve_train_device  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import is_nca_trainable_lattice, set_nca_model  # type: ignore
 from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
-from store_layout_v0 import field_state_path, nca_lattice_dir  # type: ignore
+from store_layout_v0 import field_state_path, nca_lattice_dir, rel_to_repo  # type: ignore
 
 
 def _train_one_shard(
@@ -151,12 +151,12 @@ def main() -> None:
                 max_windows_per_batch=args.max_windows_per_batch,
                 damage_patches=args.damage_patches,
             )
-            set_nca_model(state, lid, str(model.resolve()))
+            set_nca_model(state, lid, rel_to_repo(model) or str(model))
             ratio = repair_smoke_ratio(lat, model)
             trained.append(
                 {
                     "lattice_id": lid,
-                    "model_path": str(model),
+                    "model_path": rel_to_repo(model),
                     "repair_ratio": ratio,
                     **mark_lattice_trained(store, state, lid, repair_ratio=ratio),
                 }

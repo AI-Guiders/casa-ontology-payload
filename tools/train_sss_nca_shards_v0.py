@@ -22,7 +22,7 @@ from lattice_names_v1 import is_alphabet_lattice  # type: ignore
 from nca_registry_v0 import mark_lattice_trained, repair_smoke_ratio  # type: ignore
 from nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoch_budget, field_edge  # type: ignore
 from nca_train_util import add_device_args  # type: ignore
-from store_layout_v0 import nca_lattice_dir, nca_root  # type: ignore
+from store_layout_v0 import nca_lattice_dir, nca_root, rel_to_repo  # type: ignore
 from sss_cylinders_v0 import memory_lattices  # type: ignore
 
 
@@ -131,8 +131,10 @@ def main() -> None:
                 import shutil
 
                 shutil.copy2(model, store_nca / "model.pt")
-            set_nca_model(state, lid, str((store_nca / "model.pt").resolve()))
+            model_rel = rel_to_repo(store_nca / "model.pt")
+            set_nca_model(state, lid, model_rel or str(store_nca / "model.pt"))
             row["trained"] = (store_nca / "model.pt").is_file()
+            row["model_path"] = model_rel
             if row["trained"]:
                 ratio = repair_smoke_ratio(lat, store_nca / "model.pt")
                 row["registry"] = mark_lattice_trained(
