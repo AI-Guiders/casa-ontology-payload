@@ -27,6 +27,7 @@ from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import is_nca_trainable_lattice, set_nca_model  # type: ignore
 from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
 from store_layout_v0 import field_state_path, nca_lattice_dir, rel_to_repo  # type: ignore
+from casa.field_bus import FieldVersionDriftEvent, TrainCompleteEvent, publish
 
 
 def _train_one_shard(
@@ -128,6 +129,16 @@ def main() -> None:
         min_recovery=args.min_recovery,
         min_tokens=args.min_tokens,
     )
+    if stale:
+        publish(
+            FieldVersionDriftEvent(
+                store_id=store.name,
+                old_fv=int(state.get("field_version") or 0),
+                new_fv=int(state.get("field_version") or 0),
+                stale_count=len(stale),
+                stale_lattice_ids=tuple(str(r["lattice_id"]) for r in stale),
+            )
+        )
     if args.max_shards > 0:
         stale = stale[: args.max_shards]
 
@@ -164,6 +175,14 @@ def main() -> None:
                     "repair_ratio": ratio,
                     **mark_lattice_trained(store, state, lid, repair_ratio=ratio),
                 }
+            )
+            publish(
+                TrainCompleteEvent(
+                    store_id=store.name,
+                    lattice_id=lid,
+                    field_version=int(state.get("field_version") or 0),
+                    model_path=rel_to_repo(model),
+                )
             )
         save_field_state(fs_path, state)
 

@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 from field_write import load_field_state  # type: ignore
+from casa.field_bus import ConsolidatePhaseEvent, publish
 from sleep_replay_v0 import PRODUCTION_SLEEP_REPLAY, SleepReplayConfig  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, hippo_episodes, run_sleep, save_state  # type: ignore
 
@@ -55,6 +56,16 @@ def main() -> None:
         replay_value_weight=args.replay_value_weight,
     )
     save_state(path, state)
+    shards = int((report or {}).get("merged_episodes") or (report or {}).get("episodes_merged") or 0)
+    publish(
+        ConsolidatePhaseEvent(
+            store_id=store.name,
+            phase="sleep",
+            field_version=int(state.get("field_version") or 0),
+            shards_trained=shards,
+            detail={"episodes_before": before, "report_keys": sorted((report or {}).keys())},
+        )
+    )
     print(
         json.dumps(
             {
