@@ -21,18 +21,17 @@
 
 ```bash
 python tools/bench_bilingual_linked_v0.py \
-  --ru-store lab/agent-stores/sss-ru-lexicon-v0 \
+  --ru-store lab/agent-stores/sss-ru-general-v0 \
   --en-store lab/agent-stores/sss-en-folk-v0 \
   --bundle lab/exp_bilingual_v0/kb-entity-surfaces-dev.v1.json
 
-python tools/bench_unified_tick_v0.py \
-  --cues lab/exp_bilingual_v0/unified_tick_cues.v1.json
+.\scripts\run_bit9_gate_v0.ps1          # smoke + T9 sweep 1000×RU + 1000×EN
+.\scripts\run_bit9_gate_v0.ps1 -SmokeOnly   # integration + merged preview cues
 
-python tools/bench_ambiguous_prefix_v0.py \
-  --cues lab/exp_bilingual_v0/ambiguous_prefix_cues.v1.json
-
-python tools/run_t9_demo_cycle_v0.py
-dotnet run --project apps/Casa.T9.Console
+python tools/bench_t9_lexicon_sweep_v0.py \
+  --store-dir lab/agent-stores/sss-ru-general-v0 --sample 1000 --t9-policy lab \
+  --min-full-rate 0.99 --min-prefix-rate 0.15 \
+  --out lab/exp_bilingual_v0/reports/bit9_ru_sweep_1000.json
 ```
 
 **Критерий «технически ок»:** linked L2+T9+hub+cross green; unified 3/3; RU boot `ltm_only` + EN field/ltm.
@@ -50,7 +49,7 @@ dotnet run --project apps/Casa.T9.Console
 | `ru-general` | бытовой RU | **DetCorpus 50k** (CC0), `fetch_ru_frequency_headwords_v0.py` | канон 2026-05-30 |
 | `ru-literary` | книжный слой | Afan 624 txt (уже есть) | in-repo |
 | `ru-tech` | IDE/KB | scan + seed | in-repo |
-| `en-general` | EN | `sss-en-folk-v0` + Gutenberg | in-repo |
+| `en-general` | EN | **OpenSubtitles 50k** (MIT), `fetch_en_frequency_headwords_v0.py` | hermitdave/FrequencyWords |
 | `en-tech` | EN commands | scan + seed | in-repo |
 
 Headwords: `casa-lexicon-build quad` (Native AOT) или внешний `.txt` → `init_lexicon_store_v0.py`.
@@ -122,9 +121,10 @@ Sleep: stale shards → **CUDA** NCA только для изменённых п
 ## Чеклист исполнения
 
 - [x] BiT9 linked bench green (2026-05-30)
-- [ ] unified + ambiguous benches в CI-скрипт
-- [ ] ru-general headwords **вне Афан** + init store
+- [x] unified + ambiguous benches — `scripts/run_bit9_gate_v0.ps1` on `sss-ru-general-v0` (2026-05-30)
+- [x] ru-general headwords **вне Афан** + init store
 - [ ] quad stores OR обновить prod RU store с новым списком
 - [ ] GPU NCA на новых stores
-- [ ] entity/POS bundles + ingest sleep
+- [x] entity/POS/taxonomy bundles + sleep ingest — `run_sleep_semantic_ingest_v0.ps1`, UD POS 3790+ claims (2026-05-31)
+- [x] parallel tracks gate — `run_bit9_parallel_tracks_v0.ps1` (A scale + C2 POS/taxonomy + semantic prior bench)
 - [ ] `run_agent_profile` + prod pack

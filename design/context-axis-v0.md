@@ -28,11 +28,12 @@ CASA **не** строит полную грамматику сверху. Ко�
 | **Script / alphabet** | L0 basins latn/cyrl | `а` vs `a` |
 | **Intent segment** | router v0 | `prose` \| `command` \| `toml` |
 | **Layout branch** | L1 decode qwerty/jcuken | `/attach` vs `.феее` |
-| **Homoglyph fork** | pre-commit latn/cyrl | `co` → cow \| сова |
+| **Homoglyph fork** | pre-commit latn/cyrl | `co` → merged preview (freq RU + EN homoglyph) |
 | **Phrase / collocation** | L3 + `R:` (roadmap) | `согласно пр` → `приказу` |
 | **Entity frame** | L3 `entity.*` | cow ↔ корова |
 | **Episodic** | cyl_hippo | «в прошлом тике печатали IDE» |
 | **Domain tier** | store profile | tech vs general lexicon |
+| **Lexicon usage** | `lexicon_axes` on state | `era`, `usage_band`, `active_for_t9` — см. [`lexicon-usage-axes-v0.md`](lexicon-usage-axes-v0.md) |
 
 **Контекст** — **композиция** этих сигналов на тике, не одно поле в JSON.
 

@@ -3,7 +3,7 @@
 **Status:** north star (предшествует [`language-acquisition-loop-v0.md`](language-acquisition-loop-v0.md))  
 **Date:** 2026-05-28  
 **Подсистема в цилиндре:** [**вторая сигнальная система (ССС)**](second-signal-system-v0.md) — не «Bukvar Encode», отдельный контур знаков.  
-**See also:** [`experiment-l-concrete-to-abstract-v0.md`](experiment-l-concrete-to-abstract-v0.md) (L4 = картинка+слово **после** этого), [`experiment-j-text-modality-v1.md`](experiment-j-text-modality-v1.md)
+**See also:** [`infancy-corpus-phases-v0.md`](infancy-corpus-phases-v0.md) (фазы взросления, корпуса, не белый шум), [`experiment-l-concrete-to-abstract-v0.md`](experiment-l-concrete-to-abstract-v0.md) (L4 = картинка+слово **после** этого), [`experiment-j-text-modality-v1.md`](experiment-j-text-modality-v1.md)
 
 > «Букварь» здесь — **педагогическое** сравнение для нас. В архитектуре — **ССС**: знаки о знаках, свой слой памяти в DMN.
 

@@ -32,7 +32,7 @@
 | Ось | Код | Примеры | Зачем |
 |-----|-----|---------|--------|
 | **locale** | `ru` \| `en` \| `multi` | ru, en | Алфавит / L2 shard family |
-| **tier** | `general` \| `tech` \| `literary` \| `listen` \| `dev` | general, literary (afan) | Роль словаря, не «весь язык» |
+| **tier** | `general` \| `archaic` \| `tech` \| `literary` \| `listen` \| `dev` | general (DetCorpus), archaic (Afan dialect) | Роль словаря, не «весь язык»; `literary` → archaic в v0 |
 | **layer_pack** | `lex` \| `lex+entity` \| `lex+vk` \| `full` | lex+entity для BiT9 | Что в ltm кроме L2 |
 | **corpus_id** | строка | `detcorpus-50k-cc0`, `afan-v1`, `en-folk-gutenberg` | Откуда headwords (аудит) |
 | **lifecycle** | `lab` \| `staging` \| `prod` | prod | Можно ли в profile release |
@@ -53,7 +53,7 @@ sss-{locale}-{tier}[-{qualifier}]-v{N}
 | Компонент | Пример |
 |-----------|--------|
 | locale | `ru`, `en` |
-| tier | `general`, `tech`, `literary`, `folk` |
+| tier | `general`, `archaic`, `tech`, `literary` (legacy), `folk` |
 | qualifier | опционально `sharded`, `console` (избегать имён корпуса в prod!) |
 | N | `v0`, `v1` |
 
@@ -66,9 +66,9 @@ sss-{locale}-{tier}[-{qualifier}]-v{N}
 |----------|--------|------|-----------|
 | `sss-en-general-v0` | en | general | en-folk / gutenberg |
 | `sss-en-tech-v0` | en | tech | repo-scan |
-| `sss-ru-general-v0` | ru | general | detcorpus-50k-cc0 |
+| `sss-ru-general-v0` | ru | general | detcorpus-50k-cc0 (modern prod) |
 | `sss-ru-tech-v0` | ru | tech | repo-scan |
-| `sss-ru-literary-v0` | ru | literary | afanasyev-624 (будущее переименование sharded) |
+| `sss-ru-lexicon-v0` | ru | archaic | afanasyev-sharded (lab, не prod T9) |
 
 ---
 
@@ -105,7 +105,7 @@ sss-{locale}-{tier}[-{qualifier}]-v{N}
 
 | role | Обычно store tier |
 |------|-------------------|
-| `ru_lexicon` | ru / general (+ literary merge опционально) |
+| `ru_lexicon` | ru / **general** (modern); archaic — отдельный store, не merge в prod |
 | `en_lexicon` | en / general |
 | `en_command` | en / tech |
 | `ru_tech` | ru / tech |
@@ -120,10 +120,10 @@ sss-{locale}-{tier}[-{qualifier}]-v{N}
 
 1. **Merge headwords** (union + `norm_word`) → один `headwords.merged.v1.txt`
 2. **Один** `init` + **один** remigrate + **один** NCA train (CUDA)
-3. В `catalog`: `corpus_id: "merged:detcorpus+afan+tech-seed"`
-4. Literary/Afan — вклад в merged или отдельный tier store только для lab сравнения
+3. В `catalog`: `corpus_id: "merged:detcorpus+tech-seed"` (без archaic по умолчанию)
+4. Afan/archaic — **отдельный tier store**; см. [`ru-lexicon-modern-archaic-v0.md`](ru-lexicon-modern-archaic-v0.md)
 
-Пересечение лемм → **усиление votes**, не второй store (см. `norm_word` + один `lang.word.*`).
+Пересечение modern∩archaic лемм → при осознанном merge только **overlap** усиливает votes; **archaic-only** (напр. `абазвався`) в prod не попадает.
 
 ---
 
@@ -134,7 +134,7 @@ sss-{locale}-{tier}[-{qualifier}]-v{N}
 | BiT9 semantic v1 | `bilingual-t9-console-v0` | `ru_lexicon` + `en_lexicon` |
 | BiT9 layout-parity | `bilingual-layout-parity-v0` (future) | + `vk_core`, segment prose/command |
 | IDE code | `dev-ide-complete-v0` | `en_command`, `ru_tech`, … |
-| Bukvar / listen | listen profile | RU + hippo tier, не lexicon quad |
+| Bukvar / listen | listen profile | RU + hippo tier, не lexicon quad; фазы 0–2 → [`infancy-corpus-phases-v0.md`](infancy-corpus-phases-v0.md) |
 
 Новый продукт = **новый profile** или новая строка в catalog, **не** новый SN.
 

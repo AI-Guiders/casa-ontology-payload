@@ -3,6 +3,7 @@
 **Status:** north star (переформулировка после realize v0)  
 **Date:** 2026-05-28  
 **Предшествует этому:** [`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md) — буква → слог → слово, массовый listen в цилиндр  
+**Companion:** [`infancy-corpus-phases-v0.md`](infancy-corpus-phases-v0.md) — фазы 0–5, корпуса, белый шум vs сказка  
 **Supersedes framing in:** [`articulation-explain-concept-v0.md`](articulation-explain-concept-v0.md) (карточки «для ответа пользователю» — не цель)
 
 ## Ошибка предыдущего шага
