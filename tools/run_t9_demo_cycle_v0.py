@@ -11,7 +11,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir  # type: ignore
+from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_GENERAL_V0, agent_store_dir  # type: ignore
 
 
 def _run(cmd: list[str], *, cwd: Path, label: str) -> dict[str, Any]:
@@ -39,20 +39,28 @@ def main() -> int:
     p.add_argument("--device", type=str, default="cpu")
     args = p.parse_args()
 
-    ru_store = agent_store_dir(STORE_RU_LEXICON_V0, root=root)
+    ru_store = agent_store_dir(STORE_RU_GENERAL_V0, root=root)
     en_store = agent_store_dir(STORE_EN_FOLK_V0, root=root)
     steps: list[dict[str, Any]] = []
 
-    if not args.skip_init or not (ru_store / "ltm").is_dir():
+    ru_ready = (ru_store / "field_state.json").is_file() or (ru_store / "ltm").is_dir()
+    if not args.skip_init and not ru_ready:
         steps.append(
             _run(
-                [py, "tools/init_ru_dev_store_v0.py"],
+                [
+                    py,
+                    "tools/init_lexicon_store_v0.py",
+                    "--corpus-id",
+                    "ru-general",
+                    "--store-dir",
+                    str(ru_store),
+                ],
                 cwd=root,
-                label="init_ru_dev_store",
+                label="init_ru_general_store",
             )
         )
     else:
-        steps.append({"label": "init_ru_dev_store", "ok": True, "skipped": True})
+        steps.append({"label": "init_ru_general_store", "ok": True, "skipped": True})
 
     if not args.skip_init or not (en_store / "ltm").is_dir():
         steps.append(

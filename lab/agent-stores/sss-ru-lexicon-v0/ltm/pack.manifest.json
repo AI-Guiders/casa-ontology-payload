@@ -1,21 +1,43 @@
 {
   "schema_version": 1,
   "format": "ltm-pack-v0",
-  "field_version": 2,
-  "updated_at": "2026-05-30T21:59:51.621057+00:00",
+  "field_version": 8,
+  "updated_at": "2026-05-30T22:09:26.496671+00:00",
   "lattices": {
-    "L1_syllable": {
-      "path": "lab\\agent-stores\\sss-ru-lexicon-v0\\ltm\\l1\\L1_syllable.ltm",
+    "L0_grapheme_cyrl": {
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-lexicon-v0\\ltm\\l0\\L0_grapheme_cyrl.ltm",
       "compress": null,
-      "raw_bytes": 143716,
-      "file_bytes": 143716,
-      "vocab": 924,
-      "placements": 29178,
+      "raw_bytes": 2330,
+      "file_bytes": 2330,
+      "vocab": 66,
+      "placements": 363,
       "width": 32,
       "height": 32,
       "meta": {
-        "z_level": 1,
-        "concept_prefix": "syllable."
+        "z_level": 0,
+        "concept_prefix": "grapheme.cyrl.",
+        "script": "cyrl",
+        "immutable": true,
+        "kind": "core_ltm_alphabet_v0",
+        "alphabet_ru_n": 33
+      }
+    },
+    "L0_grapheme_latn": {
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-lexicon-v0\\ltm\\l0\\L0_grapheme_latn.ltm",
+      "compress": null,
+      "raw_bytes": 1580,
+      "file_bytes": 1580,
+      "vocab": 52,
+      "placements": 234,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "grapheme.latn.",
+        "script": "latn",
+        "immutable": true,
+        "kind": "core_ltm_alphabet_v0",
+        "alphabet_en_n": 26
       }
     }
   },
@@ -42817,9 +42839,9 @@
   },
   "nca": null,
   "totals": {
-    "lattice_count": 1,
-    "raw_bytes": 143716,
-    "file_bytes": 143716
+    "lattice_count": 2,
+    "raw_bytes": 3910,
+    "file_bytes": 3910
   },
   "nca_train_registry": {
     "schema_version": 1,

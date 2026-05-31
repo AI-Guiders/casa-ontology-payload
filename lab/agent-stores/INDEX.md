@@ -7,7 +7,7 @@ Structure names describe **role**, not ingest corpus.
 
 | Store | Role | field_state | Notes |
 |-------|------|-------------|--------|
-| [sss-ru-lexicon-v0](sss-ru-lexicon-v0/) | **production** RU headword lexicon (sharded L2 + NCA) | see `MEMORY.md` | `nca/` under store; `lex_plan: corpus_quantile` |
+| [sss-ru-lexicon-v0](sss-ru-lexicon-v0/) | **archaic** RU (Afanasyev dialect L2 + NCA) | see `MEMORY.md` | lab only; prod → `sss-ru-general-v0` (modern) |
 | [sss-en-folk-v0](sss-en-folk-v0/) | **EN folk** lexicon (Grimm + Jacobs) | `field_state` + `ltm/` | `L2_en_word_*` shards; hub links via linked boot |
 | [sss-afan-v0](sss-afan-v0/) | **ingest ref** Afan 624 monolith | ~467 MiB | read-only; corpus source only |
 | [sss-shard-smoke-v0](sss-shard-smoke-v0/) | kolobok smoke | ~1.8 MiB | dev |

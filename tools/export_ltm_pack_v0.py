@@ -99,7 +99,7 @@ def main() -> None:
     if args.layer in ("L1", "all") and "L1_syllable" in lattices:
         targets.append("L1_syllable")
     if args.layer in ("L0", "all"):
-        for lid in ("L0_grapheme_cyrl", "L0_grapheme_latn", "L0_grapheme"):
+        for lid in ("L0_grapheme_cyrl", "L0_grapheme_latn"):
             if lid in lattices:
                 targets.append(lid)
     if args.layer in ("L3", "all") and "L3_phrase" in lattices:

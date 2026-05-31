@@ -1274,17 +1274,6 @@
   ],
   "lattice_stack": [
     {
-      "id": "L0_grapheme",
-      "z_level": 0,
-      "role": "core",
-      "width": 32,
-      "height": 32,
-      "token_count": 509,
-      "word_concepts": 0,
-      "nca_model": null,
-      "nca_bytes": 0
-    },
-    {
       "id": "L1_syllable",
       "z_level": 1,
       "role": "core",

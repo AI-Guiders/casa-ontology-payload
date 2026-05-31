@@ -1,0 +1,624 @@
+{
+  "store": "lab\\agent-stores\\sss-ru-general-v0",
+  "layer": "all",
+  "results": [
+    {
+      "lattice_id": "L2_word",
+      "token_count": 0,
+      "trained": false,
+      "skipped": true,
+      "reason": "min_tokens"
+    },
+    {
+      "lattice_id": "L1_syllable",
+      "token_count": 0,
+      "trained": false,
+      "skipped": true,
+      "reason": "min_tokens"
+    },
+    {
+      "lattice_id": "L0_grapheme",
+      "token_count": 0,
+      "trained": false,
+      "skipped": true,
+      "reason": "min_tokens"
+    }
+  ],
+  "shard_stats": {
+    "enabled": true,
+    "mode": "lexicographic",
+    "lex_plan": "alpha",
+    "num_shards": 64,
+    "legacy_lattice": "L2_word",
+    "indexed_words": 0,
+    "attested_initial_letters": [],
+    "initial_letter_counts": null,
+    "letter_ranges": [
+      {
+        "shard": 0,
+        "plan": "alpha",
+        "letter_lo": 0,
+        "letter_hi_excl": 0,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 1,
+        "plan": "alpha",
+        "letter_lo": 0,
+        "letter_hi_excl": 1,
+        "first_lo": "а",
+        "first_hi": "а",
+        "label": "а"
+      },
+      {
+        "shard": 2,
+        "plan": "alpha",
+        "letter_lo": 1,
+        "letter_hi_excl": 1,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 3,
+        "plan": "alpha",
+        "letter_lo": 1,
+        "letter_hi_excl": 2,
+        "first_lo": "б",
+        "first_hi": "б",
+        "label": "б"
+      },
+      {
+        "shard": 4,
+        "plan": "alpha",
+        "letter_lo": 2,
+        "letter_hi_excl": 2,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 5,
+        "plan": "alpha",
+        "letter_lo": 2,
+        "letter_hi_excl": 3,
+        "first_lo": "в",
+        "first_hi": "в",
+        "label": "в"
+      },
+      {
+        "shard": 6,
+        "plan": "alpha",
+        "letter_lo": 3,
+        "letter_hi_excl": 3,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 7,
+        "plan": "alpha",
+        "letter_lo": 3,
+        "letter_hi_excl": 4,
+        "first_lo": "г",
+        "first_hi": "г",
+        "label": "г"
+      },
+      {
+        "shard": 8,
+        "plan": "alpha",
+        "letter_lo": 4,
+        "letter_hi_excl": 4,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 9,
+        "plan": "alpha",
+        "letter_lo": 4,
+        "letter_hi_excl": 5,
+        "first_lo": "д",
+        "first_hi": "д",
+        "label": "д"
+      },
+      {
+        "shard": 10,
+        "plan": "alpha",
+        "letter_lo": 5,
+        "letter_hi_excl": 5,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 11,
+        "plan": "alpha",
+        "letter_lo": 5,
+        "letter_hi_excl": 6,
+        "first_lo": "е",
+        "first_hi": "е",
+        "label": "е"
+      },
+      {
+        "shard": 12,
+        "plan": "alpha",
+        "letter_lo": 6,
+        "letter_hi_excl": 6,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 13,
+        "plan": "alpha",
+        "letter_lo": 6,
+        "letter_hi_excl": 7,
+        "first_lo": "ё",
+        "first_hi": "ё",
+        "label": "ё"
+      },
+      {
+        "shard": 14,
+        "plan": "alpha",
+        "letter_lo": 7,
+        "letter_hi_excl": 7,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 15,
+        "plan": "alpha",
+        "letter_lo": 7,
+        "letter_hi_excl": 8,
+        "first_lo": "ж",
+        "first_hi": "ж",
+        "label": "ж"
+      },
+      {
+        "shard": 16,
+        "plan": "alpha",
+        "letter_lo": 8,
+        "letter_hi_excl": 9,
+        "first_lo": "з",
+        "first_hi": "з",
+        "label": "з"
+      },
+      {
+        "shard": 17,
+        "plan": "alpha",
+        "letter_lo": 9,
+        "letter_hi_excl": 9,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 18,
+        "plan": "alpha",
+        "letter_lo": 9,
+        "letter_hi_excl": 10,
+        "first_lo": "и",
+        "first_hi": "и",
+        "label": "и"
+      },
+      {
+        "shard": 19,
+        "plan": "alpha",
+        "letter_lo": 10,
+        "letter_hi_excl": 10,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 20,
+        "plan": "alpha",
+        "letter_lo": 10,
+        "letter_hi_excl": 11,
+        "first_lo": "й",
+        "first_hi": "й",
+        "label": "й"
+      },
+      {
+        "shard": 21,
+        "plan": "alpha",
+        "letter_lo": 11,
+        "letter_hi_excl": 11,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 22,
+        "plan": "alpha",
+        "letter_lo": 11,
+        "letter_hi_excl": 12,
+        "first_lo": "к",
+        "first_hi": "к",
+        "label": "к"
+      },
+      {
+        "shard": 23,
+        "plan": "alpha",
+        "letter_lo": 12,
+        "letter_hi_excl": 12,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 24,
+        "plan": "alpha",
+        "letter_lo": 12,
+        "letter_hi_excl": 13,
+        "first_lo": "л",
+        "first_hi": "л",
+        "label": "л"
+      },
+      {
+        "shard": 25,
+        "plan": "alpha",
+        "letter_lo": 13,
+        "letter_hi_excl": 13,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 26,
+        "plan": "alpha",
+        "letter_lo": 13,
+        "letter_hi_excl": 14,
+        "first_lo": "м",
+        "first_hi": "м",
+        "label": "м"
+      },
+      {
+        "shard": 27,
+        "plan": "alpha",
+        "letter_lo": 14,
+        "letter_hi_excl": 14,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 28,
+        "plan": "alpha",
+        "letter_lo": 14,
+        "letter_hi_excl": 15,
+        "first_lo": "н",
+        "first_hi": "н",
+        "label": "н"
+      },
+      {
+        "shard": 29,
+        "plan": "alpha",
+        "letter_lo": 15,
+        "letter_hi_excl": 15,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 30,
+        "plan": "alpha",
+        "letter_lo": 15,
+        "letter_hi_excl": 16,
+        "first_lo": "о",
+        "first_hi": "о",
+        "label": "о"
+      },
+      {
+        "shard": 31,
+        "plan": "alpha",
+        "letter_lo": 16,
+        "letter_hi_excl": 17,
+        "first_lo": "п",
+        "first_hi": "п",
+        "label": "п"
+      },
+      {
+        "shard": 32,
+        "plan": "alpha",
+        "letter_lo": 17,
+        "letter_hi_excl": 17,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 33,
+        "plan": "alpha",
+        "letter_lo": 17,
+        "letter_hi_excl": 18,
+        "first_lo": "р",
+        "first_hi": "р",
+        "label": "р"
+      },
+      {
+        "shard": 34,
+        "plan": "alpha",
+        "letter_lo": 18,
+        "letter_hi_excl": 18,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 35,
+        "plan": "alpha",
+        "letter_lo": 18,
+        "letter_hi_excl": 19,
+        "first_lo": "с",
+        "first_hi": "с",
+        "label": "с"
+      },
+      {
+        "shard": 36,
+        "plan": "alpha",
+        "letter_lo": 19,
+        "letter_hi_excl": 19,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 37,
+        "plan": "alpha",
+        "letter_lo": 19,
+        "letter_hi_excl": 20,
+        "first_lo": "т",
+        "first_hi": "т",
+        "label": "т"
+      },
+      {
+        "shard": 38,
+        "plan": "alpha",
+        "letter_lo": 20,
+        "letter_hi_excl": 20,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 39,
+        "plan": "alpha",
+        "letter_lo": 20,
+        "letter_hi_excl": 21,
+        "first_lo": "у",
+        "first_hi": "у",
+        "label": "у"
+      },
+      {
+        "shard": 40,
+        "plan": "alpha",
+        "letter_lo": 21,
+        "letter_hi_excl": 21,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 41,
+        "plan": "alpha",
+        "letter_lo": 21,
+        "letter_hi_excl": 22,
+        "first_lo": "ф",
+        "first_hi": "ф",
+        "label": "ф"
+      },
+      {
+        "shard": 42,
+        "plan": "alpha",
+        "letter_lo": 22,
+        "letter_hi_excl": 22,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 43,
+        "plan": "alpha",
+        "letter_lo": 22,
+        "letter_hi_excl": 23,
+        "first_lo": "х",
+        "first_hi": "х",
+        "label": "х"
+      },
+      {
+        "shard": 44,
+        "plan": "alpha",
+        "letter_lo": 23,
+        "letter_hi_excl": 23,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 45,
+        "plan": "alpha",
+        "letter_lo": 23,
+        "letter_hi_excl": 24,
+        "first_lo": "ц",
+        "first_hi": "ц",
+        "label": "ц"
+      },
+      {
+        "shard": 46,
+        "plan": "alpha",
+        "letter_lo": 24,
+        "letter_hi_excl": 24,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 47,
+        "plan": "alpha",
+        "letter_lo": 24,
+        "letter_hi_excl": 25,
+        "first_lo": "ч",
+        "first_hi": "ч",
+        "label": "ч"
+      },
+      {
+        "shard": 48,
+        "plan": "alpha",
+        "letter_lo": 25,
+        "letter_hi_excl": 26,
+        "first_lo": "ш",
+        "first_hi": "ш",
+        "label": "ш"
+      },
+      {
+        "shard": 49,
+        "plan": "alpha",
+        "letter_lo": 26,
+        "letter_hi_excl": 26,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 50,
+        "plan": "alpha",
+        "letter_lo": 26,
+        "letter_hi_excl": 27,
+        "first_lo": "щ",
+        "first_hi": "щ",
+        "label": "щ"
+      },
+      {
+        "shard": 51,
+        "plan": "alpha",
+        "letter_lo": 27,
+        "letter_hi_excl": 27,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 52,
+        "plan": "alpha",
+        "letter_lo": 27,
+        "letter_hi_excl": 28,
+        "first_lo": "ъ",
+        "first_hi": "ъ",
+        "label": "ъ"
+      },
+      {
+        "shard": 53,
+        "plan": "alpha",
+        "letter_lo": 28,
+        "letter_hi_excl": 28,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 54,
+        "plan": "alpha",
+        "letter_lo": 28,
+        "letter_hi_excl": 29,
+        "first_lo": "ы",
+        "first_hi": "ы",
+        "label": "ы"
+      },
+      {
+        "shard": 55,
+        "plan": "alpha",
+        "letter_lo": 29,
+        "letter_hi_excl": 29,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 56,
+        "plan": "alpha",
+        "letter_lo": 29,
+        "letter_hi_excl": 30,
+        "first_lo": "ь",
+        "first_hi": "ь",
+        "label": "ь"
+      },
+      {
+        "shard": 57,
+        "plan": "alpha",
+        "letter_lo": 30,
+        "letter_hi_excl": 30,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 58,
+        "plan": "alpha",
+        "letter_lo": 30,
+        "letter_hi_excl": 31,
+        "first_lo": "э",
+        "first_hi": "э",
+        "label": "э"
+      },
+      {
+        "shard": 59,
+        "plan": "alpha",
+        "letter_lo": 31,
+        "letter_hi_excl": 31,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 60,
+        "plan": "alpha",
+        "letter_lo": 31,
+        "letter_hi_excl": 32,
+        "first_lo": "ю",
+        "first_hi": "ю",
+        "label": "ю"
+      },
+      {
+        "shard": 61,
+        "plan": "alpha",
+        "letter_lo": 32,
+        "letter_hi_excl": 32,
+        "first_lo": "{",
+        "first_hi": "{",
+        "label": "∅"
+      },
+      {
+        "shard": 62,
+        "plan": "alpha",
+        "letter_lo": 32,
+        "letter_hi_excl": 33,
+        "first_lo": "я",
+        "first_hi": "я",
+        "label": "я"
+      },
+      {
+        "shard": 63,
+        "plan": "alpha",
+        "letter_lo": 33,
+        "letter_hi_excl": 34,
+        "first_lo": "{",
+        "first_hi": "~",
+        "label": "прочее"
+      }
+    ],
+    "lattices": [
+      {
+        "lattice_id": "L2_word",
+        "token_count": 0,
+        "word_concepts": 0
+      }
+    ]
+  },
+  "trained": 0,
+  "skipped": 3
+}

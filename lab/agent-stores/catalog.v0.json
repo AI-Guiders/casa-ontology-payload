@@ -7,11 +7,11 @@
       "store_id": "sss-ru-lexicon-v0",
       "path": "sss-ru-lexicon-v0",
       "locale": "ru",
-      "tier": "literary",
+      "tier": "archaic",
       "corpus_id": "afanasyev-sharded",
       "lifecycle": "lab",
-      "profile_roles": ["ru_lexicon"],
-      "notes": "RU literary lexicon (Afanasyev ingest, sharded L2). Prefer sss-ru-general-v0 for frequency general tier."
+      "profile_roles": [],
+      "notes": "RU archaic/dialect (Afanasyev 1855). Lab only; prod ru_lexicon → sss-ru-general-v0. Split: design/ru-lexicon-modern-archaic-v0.md"
     },
     {
       "store_id": "sss-ru-general-v0",
@@ -21,7 +21,8 @@
       "corpus_id": "detcorpus-50k-cc0",
       "lifecycle": "lab",
       "profile_roles": ["ru_lexicon"],
-      "supersedes": null
+      "supersedes": null,
+      "notes": "Modern RU (DetCorpus 50k). Merge excludes archaic-only Afan forms."
     },
     {
       "store_id": "sss-ru-tech-v0",

@@ -5,7 +5,8 @@
   "stores": [
     {
       "role": "ru",
-      "store_dir": "lab/agent-stores/sss-ru-lexicon-v0"
+      "store_dir": "lab/agent-stores/sss-ru-general-v0",
+      "notes": "modern DetCorpus; lexicon_axes prod filter. Afan/archaic lab-only."
     },
     {
       "role": "en",

@@ -1,4 +1,6 @@
-# Memory map: `sss-ru-lexicon-v0`
+# Memory map: `sss-ru-lexicon-v0` (tier: **archaic**)
+
+Lab store: Afanasyev dialect L2. Prod modern RU → `sss-ru-general-v0`. Split: `design/ru-lexicon-modern-archaic-v0.md`.
 
 Generated: 2026-05-30T09:09:06.697789+00:00
 field_version: **710685**
@@ -16,7 +18,8 @@ field_version: **710685**
 
 ```text
 cyl_memory
-  L0_grapheme  (tokens=509)
+  L0_grapheme_cyrl  (alphabet ru, 33)
+  L0_grapheme_latn  (alphabet en, 26)
     L1_syllable  (tokens=924)
       L2_word  (tokens=0)
       L2_word_00  (tokens=1310)

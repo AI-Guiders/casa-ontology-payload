@@ -17,7 +17,7 @@ from hub_neighbors_v0 import hub_neighbors  # type: ignore
 from predictor_v0 import predict_t9  # type: ignore
 from sss_l2_shard_v0 import L2_CONCEPT_PREFIX, concept_votes_l2  # type: ignore
 from sss_vocab_v0 import norm_word  # type: ignore
-from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_LEXICON_V0, agent_store_dir  # type: ignore
+from store_layout_v0 import STORE_EN_FOLK_V0, STORE_RU_GENERAL_V0, agent_store_dir  # type: ignore
 
 L2_CHECK_PAIRS = [
     ("cow", "en"),
@@ -107,7 +107,7 @@ def check_hub_links(state: dict, samples: list[tuple[str, str]]) -> dict[str, An
 def main() -> None:
     root = Path(__file__).resolve().parent.parent
     p = argparse.ArgumentParser(description="Bench linked RU+EN stores + entity hub")
-    p.add_argument("--ru-store", type=Path, default=agent_store_dir(STORE_RU_LEXICON_V0, root=root))
+    p.add_argument("--ru-store", type=Path, default=agent_store_dir(STORE_RU_GENERAL_V0, root=root))
     p.add_argument("--en-store", type=Path, default=agent_store_dir(STORE_EN_FOLK_V0, root=root))
     p.add_argument(
         "--bundle",
@@ -161,7 +161,8 @@ def main() -> None:
     text = json.dumps(report, ensure_ascii=False, indent=2)
     if args.out:
         args.out.write_text(text + "\n", encoding="utf-8")
-    print(text)
+    else:
+        print(text)
 
     print(
         f"\nSUMMARY: linked ok={all_ok} "

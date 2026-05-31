@@ -46,6 +46,11 @@ def empty_hippo_lattice(*, width: int = 32, height: int = 32) -> dict:
 def ensure_cylinders(state: dict) -> dict:
     """Ensure prism blocks (legacy name ensure_cylinders). Reads old cyl_* on load."""
     normalize_prisms(state)
+    hip = prism_hippo(state)
+    hip.setdefault("subsystem", "episodic")
+    hip.setdefault("lattices", {}).setdefault("H0_episode", empty_hippo_lattice())
+    hip.setdefault("episodes", list(hip.get("episodes") or []))
+
     mem = prism_memory(state)
     if mem.get("lattices"):
         return state
@@ -56,10 +61,6 @@ def ensure_cylinders(state: dict) -> dict:
     mem["stack"] = sss.get("stack") or "design/sss-lattice-stack.v0.toml"
     mem["lattices"] = lattices
     mem["active_lattice"] = sss.get("active_lattice") or "L0_grapheme_cyrl"
-    hip = prism_hippo(state)
-    hip.setdefault("subsystem", "episodic")
-    hip.setdefault("lattices", {"H0_episode": empty_hippo_lattice()})
-    hip.setdefault("episodes", list(hip.get("episodes") or []))
     state["sn"] = {
         **(state.get("sn") or {}),
         "active_lattice": mem["active_lattice"],

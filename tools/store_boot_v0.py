@@ -14,6 +14,7 @@ from sss_surface_v0 import surface_from_sss  # type: ignore
 from control_cylinders_v0 import control_lattices, has_control_stack  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_stack_v0 import decode_lattice  # type: ignore
+from lexicon_usage_axes_v0 import attach_axes_to_state, load_axes_jsonl  # type: ignore
 from store_layout_v0 import field_state_path, ltm_root, nca_root  # type: ignore
 
 
@@ -53,6 +54,10 @@ def boot_store(
     state["store"]["store_id"] = store_dir.name
     state["store"]["ltm_dir"] = str(ltm)
     state["store"]["nca_root"] = str(nca_root(store_dir))
+
+    axes_path = store_dir / "lexicon_axes.v0.jsonl"
+    if axes_path.is_file():
+        attach_axes_to_state(state, load_axes_jsonl(axes_path))
 
     nca_manifest = manifest.get("nca") or {}
     if nca_manifest:

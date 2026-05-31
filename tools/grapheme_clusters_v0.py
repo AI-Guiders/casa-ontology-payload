@@ -8,7 +8,9 @@ from typing import Any, Literal
 from grapheme_ingest_v0 import (  # type: ignore
     GRAPHEME_CYRL_PREFIX,
     GRAPHEME_LATN_PREFIX,
-    L0_ID,
+    L0_CYRL_ID,
+    L0_ID_LEGACY,
+    L0_LATN_ID,
 )
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import (  # type: ignore
@@ -25,19 +27,28 @@ Basin = Literal["en", "ru", "latn", "cyrl"]
 
 def _grapheme_concept_map(state: dict) -> dict[str, tuple[int, str]]:
     """char/suffix -> (votes, full concept_id) for all grapheme concepts on L0."""
-    lat = memory_lattices(ensure_prisms(state)).get(L0_ID) or {}
-    dec = decode_lattice(lat, min_votes=1)
+    lattices = memory_lattices(ensure_prisms(state))
     out: dict[str, tuple[int, str]] = {}
-    for c in dec.get("concepts") or []:
-        cid = str(c.get("concept_id") or "")
-        votes = int(c.get("votes") or 0)
-        if cid.startswith(GRAPHEME_LATN_PREFIX):
-            out[cid[len(GRAPHEME_LATN_PREFIX) :]] = (votes, cid)
-        elif cid.startswith(GRAPHEME_CYRL_PREFIX):
-            out[cid[len(GRAPHEME_CYRL_PREFIX) :]] = (votes, cid)
-        elif cid.startswith("grapheme.") and len(cid) > len("grapheme."):
-            key = cid[len("grapheme.") :]
-            out[key] = (votes, cid)
+    for lid in (L0_LATN_ID, L0_CYRL_ID, L0_ID_LEGACY):
+        lat = lattices.get(lid) or {}
+        if not lat.get("cells"):
+            continue
+        dec = decode_lattice(lat, min_votes=1)
+        for c in dec.get("concepts") or []:
+            cid = str(c.get("concept_id") or "")
+            votes = int(c.get("votes") or 0)
+            key: str | None = None
+            if cid.startswith(GRAPHEME_LATN_PREFIX):
+                key = cid[len(GRAPHEME_LATN_PREFIX) :]
+            elif cid.startswith(GRAPHEME_CYRL_PREFIX):
+                key = cid[len(GRAPHEME_CYRL_PREFIX) :]
+            elif cid.startswith("grapheme.") and len(cid) > len("grapheme."):
+                key = cid[len("grapheme.") :]
+            if not key:
+                continue
+            prev = out.get(key)
+            if prev is None or votes > prev[0]:
+                out[key] = (votes, cid)
     return out
 
 

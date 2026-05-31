@@ -189,6 +189,36 @@ def _route_legacy_l0_token(tok: str) -> Script | None:
     return None
 
 
+def reset_l0_script_lattice(state: dict, script: Script) -> dict[str, Any]:
+    """Clear one script L0 lattice (empty cells, keep dimensions)."""
+    state = ensure_prisms(state)
+    lat = ensure_l0_lattice(state, script)
+    w, h = int(lat.get("width") or 32), int(lat.get("height") or 32)
+    lat["cells"] = [[] for _ in range(w * h)]
+    lattices = memory_lattices(state)
+    lattices[l0_lattice_id(script)] = lat
+    prism_memory(state)["lattices"] = lattices
+    state.setdefault("sss", {})["lattices"] = lattices
+    return lat
+
+
+def strip_legacy_l0_monolith(state: dict, *, reimprint_alphabet: bool = True) -> dict[str, Any]:
+    """Drop L0_grapheme monolith; reset cyrl/latn; optional immutable alphabet imprint."""
+    from alphabet_core_v0 import imprint_alphabet_on_l0  # type: ignore
+
+    state = ensure_prisms(state)
+    lattices = memory_lattices(state)
+    leg = lattices.pop(L0_ID_LEGACY, None)
+    report: dict[str, Any] = {"removed_legacy": leg is not None}
+    for script in ("cyrl", "latn"):
+        reset_l0_script_lattice(state, script)  # type: ignore[arg-type]
+    if reimprint_alphabet:
+        report["alphabet"] = imprint_alphabet_on_l0(state)
+    state["field_version"] = int(state.get("field_version") or 0) + 1
+    report["l0_lattices"] = sorted(k for k in memory_lattices(state) if k.startswith("L0_grapheme"))
+    return report
+
+
 def migrate_legacy_l0_grapheme(state: dict, *, default_script: Script = "cyrl") -> dict[str, Any]:
     """Split monolith L0_grapheme → L0_grapheme_cyrl + L0_grapheme_latn (idempotent)."""
     state = ensure_prisms(state)

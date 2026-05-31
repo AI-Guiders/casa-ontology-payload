@@ -10,7 +10,7 @@ from typing import Literal
 # Lab data root (stores, profiles, corpus, experiments). Formerly `examples/`.
 LAB_DATA_DIR = "lab"
 
-# Production Russian headword lexicon (SSS L0–L3 + sharded L2).
+# Lab archaic Afan lexicon (not prod T9). Prod modern → STORE_RU_GENERAL_V0.
 STORE_RU_LEXICON_V0 = "sss-ru-lexicon-v0"
 
 # English folk-tale lexicon (separate store; L2_en_word_* shards).
@@ -77,7 +77,12 @@ def agent_store_dir(store_id: str, *, root: Path | None = None) -> Path:
 
 
 def ru_lexicon_store(*, root: Path | None = None) -> Path:
+    """Legacy name: archaic Afan store (lab). Prefer ru_general_store() for prod."""
     return agent_store_dir(STORE_RU_LEXICON_V0, root=root)
+
+
+def ru_general_store(*, root: Path | None = None) -> Path:
+    return agent_store_dir(STORE_RU_GENERAL_V0, root=root)
 
 
 def en_folk_store(*, root: Path | None = None) -> Path:
