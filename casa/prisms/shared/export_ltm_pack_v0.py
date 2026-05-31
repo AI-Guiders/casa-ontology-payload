@@ -14,6 +14,7 @@ from typing import Any
 
 from field_write import load_field_state  # type: ignore
 from ltm_pack_v0 import lattice_subdir, write_ltm  # type: ignore
+from casa.prisms.shared.store_paths_v1 import ltm_write_targets, manifest_layout_block, mirror_ltm_file
 from control_cylinders_v0 import control_lattices, has_control_stack  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import l2_en_word_lattice_ids, l2_lexicon_lattice_ids, l2_word_lattice_ids  # type: ignore
@@ -77,13 +78,15 @@ def export_pack(
         lat = merged.get(lid)
         if not lat:
             continue
-        sub = lattice_subdir(lid)
-        path = out_dir / sub / f"{lid}.ltm"
-        info = write_ltm(path, lat, compress=compress)
+        primary, aliases = ltm_write_targets(out_dir, lid)
+        info = write_ltm(primary, lat, compress=compress)
+        written = Path(info["path"])
+        for alias in aliases:
+            mirror_ltm_file(written, alias)
         try:
-            store_rel = path.relative_to(out_dir.parent).as_posix()
+            store_rel = primary.relative_to(out_dir.parent).as_posix()
         except ValueError:
-            store_rel = rel_to_repo(path)
+            store_rel = rel_to_repo(primary)
         rows[lid] = {**info, "path": store_rel, "meta": _lattice_meta(lat)}
         total_raw += int(info["raw_bytes"])
         total_file += int(info["file_bytes"])
@@ -91,6 +94,7 @@ def export_pack(
     manifest = {
         "schema_version": 1,
         "format": "ltm-pack-v0",
+        **manifest_layout_block(),
         "field_version": state.get("field_version"),
         "updated_at": state.get("updated_at"),
         "lattices": rows,
