@@ -1,0 +1,375 @@
+{
+  "before": {
+    "schema_version": 1,
+    "cue": "|||| - | = |||",
+    "modality": "schema",
+    "predict": {
+      "schema_version": 1,
+      "modality": "schema",
+      "cue": "|||| - | = |||",
+      "anchors": [
+        {
+          "token": "C:math.category.livestock",
+          "concept_id": "math.category.livestock",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 1
+        },
+        {
+          "token": "C:math.dim.count",
+          "concept_id": "math.dim.count",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 2
+        },
+        {
+          "token": "C:math.dim.length",
+          "concept_id": "math.dim.length",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 3
+        },
+        {
+          "token": "C:math.entity.cow",
+          "concept_id": "math.entity.cow",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 4
+        },
+        {
+          "token": "C:math.entity.sheep",
+          "concept_id": "math.entity.sheep",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 5
+        },
+        {
+          "token": "C:math.entity.stick",
+          "concept_id": "math.entity.stick",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 6
+        },
+        {
+          "token": "C:math.num.one",
+          "concept_id": "math.num.one",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 7
+        },
+        {
+          "token": "C:math.num.three",
+          "concept_id": "math.num.three",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 8
+        }
+      ],
+      "focus": null,
+      "hypothesis": null,
+      "hypothesis_tokens": [],
+      "unbound_operators": [
+        {
+          "op": "-",
+          "context": "math.ctx.arithmetic",
+          "grapheme": "grapheme.latn.-",
+          "left_kind": "pipe_run",
+          "right_kind": "pipe_run"
+        }
+      ],
+      "coverage_gaps": [
+        "unbound:-@math.ctx.arithmetic"
+      ],
+      "digest": {
+        "concept_ids": [
+          "math.ctx.arithmetic",
+          "math.ctx.bitwise",
+          "math.ctx.cardinal",
+          "math.ctx.string",
+          "math.category.livestock",
+          "math.dim.count",
+          "math.dim.length",
+          "math.entity.cow",
+          "math.entity.sheep",
+          "math.entity.stick",
+          "math.num.one",
+          "math.num.three",
+          "math.num.two",
+          "math.op.add",
+          "math.op.concat",
+          "math.op.eq",
+          "math.op.or",
+          "math.unit.m",
+          "grapheme.latn.+",
+          "grapheme.latn.=",
+          "grapheme.latn.|"
+        ],
+        "math_tokens": [
+          "M:sym:one",
+          "M:sym:two",
+          "M:op:add",
+          "M:sym:three",
+          "M:entity:cow",
+          "M:entity:stick",
+          "M:op:concat",
+          "M:op:eq",
+          "M:category:livestock",
+          "M:entity:sheep"
+        ],
+        "reading_contexts": {
+          "math.ctx.arithmetic": 1.0
+        }
+      },
+      "confidence": 0.0,
+      "lattice_ids": [
+        "schema-math"
+      ],
+      "nca_used": [],
+      "provenance": {
+        "engine": "analyze_f0_cue_ranking"
+      },
+      "ranked": [
+        [
+          "math.category.livestock",
+          5
+        ],
+        [
+          "math.dim.count",
+          5
+        ],
+        [
+          "math.dim.length",
+          5
+        ],
+        [
+          "math.entity.cow",
+          5
+        ],
+        [
+          "math.entity.sheep",
+          5
+        ],
+        [
+          "math.entity.stick",
+          5
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ]
+      ]
+    },
+    "critic": {
+      "schema_version": 1,
+      "verdict": "fail",
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "match",
+          "pass": false,
+          "detail": "unbound_operators='-'"
+        }
+      ],
+      "focus": null,
+      "clarify": true,
+      "unit_candidate": null
+    },
+    "clarify": true,
+    "focus": null,
+    "verdict": "fail"
+  },
+  "sleep_extract": {
+    "concept_id": "math.op.sub",
+    "glyph": "-",
+    "grapheme": "grapheme.latn.-",
+    "context": "math.ctx.arithmetic",
+    "edge": "E:grapheme.latn.-@math.ctx.arithmetic|denotes|math.op.sub"
+  },
+  "after": {
+    "schema_version": 1,
+    "cue": "|||| - | = |||",
+    "modality": "schema",
+    "predict": {
+      "schema_version": 1,
+      "modality": "schema",
+      "cue": "|||| - | = |||",
+      "anchors": [
+        {
+          "token": "C:math.category.livestock",
+          "concept_id": "math.category.livestock",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 1
+        },
+        {
+          "token": "C:math.dim.count",
+          "concept_id": "math.dim.count",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 2
+        },
+        {
+          "token": "C:math.dim.length",
+          "concept_id": "math.dim.length",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 3
+        },
+        {
+          "token": "C:math.entity.cow",
+          "concept_id": "math.entity.cow",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 4
+        },
+        {
+          "token": "C:math.entity.sheep",
+          "concept_id": "math.entity.sheep",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 5
+        },
+        {
+          "token": "C:math.entity.stick",
+          "concept_id": "math.entity.stick",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 6
+        },
+        {
+          "token": "C:math.num.one",
+          "concept_id": "math.num.one",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 7
+        },
+        {
+          "token": "C:math.num.three",
+          "concept_id": "math.num.three",
+          "votes": 5,
+          "activation": 1.0,
+          "rank": 8
+        }
+      ],
+      "focus": null,
+      "hypothesis": null,
+      "hypothesis_tokens": [],
+      "unbound_operators": [
+        {
+          "op": "-",
+          "context": "math.ctx.arithmetic",
+          "grapheme": "grapheme.latn.-",
+          "left_kind": "pipe_run",
+          "right_kind": "pipe_run"
+        }
+      ],
+      "coverage_gaps": [
+        "unbound:-@math.ctx.arithmetic"
+      ],
+      "digest": {
+        "concept_ids": [
+          "math.ctx.arithmetic",
+          "math.ctx.bitwise",
+          "math.ctx.cardinal",
+          "math.ctx.string",
+          "math.category.livestock",
+          "math.dim.count",
+          "math.dim.length",
+          "math.entity.cow",
+          "math.entity.sheep",
+          "math.entity.stick",
+          "math.num.one",
+          "math.num.three",
+          "math.num.two",
+          "math.op.add",
+          "math.op.concat",
+          "math.op.eq",
+          "math.op.or",
+          "math.unit.m",
+          "grapheme.latn.+",
+          "grapheme.latn.=",
+          "grapheme.latn.|"
+        ],
+        "math_tokens": [
+          "M:sym:one",
+          "M:sym:two",
+          "M:op:add",
+          "M:sym:three",
+          "M:entity:cow",
+          "M:entity:stick",
+          "M:op:concat",
+          "M:op:eq",
+          "M:category:livestock",
+          "M:entity:sheep"
+        ],
+        "reading_contexts": {
+          "math.ctx.arithmetic": 1.0
+        }
+      },
+      "confidence": 0.0,
+      "lattice_ids": [
+        "schema-math"
+      ],
+      "nca_used": [],
+      "provenance": {
+        "engine": "analyze_f0_cue_ranking"
+      },
+      "ranked": [
+        [
+          "math.category.livestock",
+          5
+        ],
+        [
+          "math.dim.count",
+          5
+        ],
+        [
+          "math.dim.length",
+          5
+        ],
+        [
+          "math.entity.cow",
+          5
+        ],
+        [
+          "math.entity.sheep",
+          5
+        ],
+        [
+          "math.entity.stick",
+          5
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ]
+      ]
+    },
+    "critic": {
+      "schema_version": 1,
+      "verdict": "fail",
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "match",
+          "pass": false,
+          "detail": "unbound_operators='-'"
+        }
+      ],
+      "focus": null,
+      "clarify": true,
+      "unit_candidate": null
+    },
+    "clarify": true,
+    "focus": null,
+    "verdict": "fail"
+  }
+}

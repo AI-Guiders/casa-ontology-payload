@@ -61,6 +61,56 @@
       "profile_roles": ["en_command", "en_lexicon"]
     },
     {
+      "store_id": "math-l0-lab",
+      "path": "math-l0-lab",
+      "locale": null,
+      "tier": "math",
+      "corpus_id": "kb-math-l0",
+      "lifecycle": "lab",
+      "profile_roles": [],
+      "notes": "F0 schema-math only; emergent ops / sticks / bench_schema_predict. Not lexicon."
+    },
+    {
+      "store_id": "language-agent-lab",
+      "path": "language-agent-lab",
+      "locale": "ru",
+      "tier": "agent",
+      "corpus_id": "exp-j-grammar",
+      "lifecycle": "lab",
+      "profile_roles": [],
+      "notes": "Agent learning: journal, ortho teacher, learning tick default for agent_sn_cen_tick"
+    },
+    {
+      "store_id": "code-agent-lab",
+      "path": "code-agent-lab",
+      "locale": null,
+      "tier": "code",
+      "corpus_id": "repo-scan",
+      "lifecycle": "lab",
+      "profile_roles": [],
+      "notes": "IDE autocomplete / schema on symbols (ADR-0007)"
+    },
+    {
+      "store_id": "bukvar-lab",
+      "path": "bukvar-lab",
+      "locale": "ru",
+      "tier": "listen",
+      "corpus_id": "bukvar-kb",
+      "lifecycle": "lab",
+      "profile_roles": [],
+      "notes": "Bukvar / listen modality phases"
+    },
+    {
+      "store_id": "research-agent-lab",
+      "path": "research-agent-lab",
+      "locale": null,
+      "tier": "research",
+      "corpus_id": "research-ml",
+      "lifecycle": "lab",
+      "profile_roles": [],
+      "notes": "Research ML bundles import lab"
+    },
+    {
       "store_id": "control-lab",
       "path": "control-lab",
       "locale": null,

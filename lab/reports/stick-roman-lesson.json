@@ -1,0 +1,1229 @@
+{
+  "store": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general",
+  "bundle_id": "kb-math-concrete-schemas-l0",
+  "stick_truth": [
+    {
+      "kind": "infix",
+      "op": "+",
+      "left": 3,
+      "right": 2,
+      "value": 5,
+      "display": "|||||",
+      "open": false,
+      "correct_full": "|||+||=|||||",
+      "cue": "||| + || = |||||"
+    },
+    {
+      "kind": "infix",
+      "op": "+",
+      "left": 1,
+      "right": 1,
+      "value": 2,
+      "display": "||",
+      "open": false,
+      "correct_full": "|+|=||",
+      "cue": "| + | = ||"
+    },
+    {
+      "kind": "infix",
+      "op": "-",
+      "left": 4,
+      "right": 1,
+      "value": 3,
+      "display": "|||",
+      "open": false,
+      "correct_full": "||||-|=|||",
+      "cue": "|||| - | = |||"
+    },
+    {
+      "kind": "infix",
+      "op": "+",
+      "left": 3,
+      "right": 4,
+      "value": 7,
+      "display": "|||||||",
+      "open": true,
+      "correct_full": "||| + |||| = |||||||",
+      "cue": "||| + |||| = ?"
+    },
+    {
+      "kind": "infix",
+      "op": "-",
+      "left": 5,
+      "right": 1,
+      "value": 4,
+      "display": "||||",
+      "open": true,
+      "correct_full": "||||| - | = ||||",
+      "cue": "||||| - | = ?"
+    }
+  ],
+  "roman_truth": [
+    {
+      "kind": "infix",
+      "left": 3,
+      "right": 2,
+      "value": 5,
+      "display": "V",
+      "tally": "|||||",
+      "open": false,
+      "cue": "III + II = V"
+    },
+    {
+      "kind": "infix",
+      "left": 1,
+      "right": 1,
+      "value": 2,
+      "display": "II",
+      "tally": "||",
+      "open": false,
+      "cue": "I + I = II"
+    },
+    {
+      "kind": "infix",
+      "left": 4,
+      "right": 1,
+      "value": 3,
+      "display": "III",
+      "tally": "|||",
+      "open": false,
+      "cue": "IV - I = III"
+    },
+    {
+      "kind": "infix",
+      "left": 3,
+      "right": 4,
+      "value": 7,
+      "display": "VII",
+      "tally": "|||||||",
+      "open": true,
+      "cue": "III + IV = ?"
+    },
+    {
+      "kind": "infix",
+      "left": 5,
+      "right": 1,
+      "value": 4,
+      "display": "IV",
+      "tally": "||||",
+      "open": true,
+      "cue": "V - I = ?"
+    }
+  ],
+  "before": {
+    "pipe": [
+      {
+        "cue": "||| + || = |||||",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            17
+          ],
+          [
+            "math.op.eq",
+            17
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "| + | = ||",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            17
+          ],
+          [
+            "math.op.eq",
+            17
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "|||| - | = |||",
+        "expect": "math.op.add",
+        "verdict": "fail",
+        "hypothesis": "math.op.eq",
+        "top3": [
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "||| + |||| = ?",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            17
+          ],
+          [
+            "math.op.eq",
+            17
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "||||| - | = ?",
+        "expect": "math.op.add",
+        "verdict": "fail",
+        "hypothesis": "math.op.eq",
+        "top3": [
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "||| + ||",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            17
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "| + |",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            17
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "||||",
+        "expect": null,
+        "verdict": "fail",
+        "hypothesis": "math.num.one",
+        "top3": [
+          [
+            "math.num.one",
+            9
+          ],
+          [
+            "math.num.three",
+            9
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "|||||",
+        "expect": null,
+        "verdict": "fail",
+        "hypothesis": "math.num.three",
+        "top3": [
+          [
+            "math.num.three",
+            9
+          ],
+          [
+            "math.num.two",
+            9
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "|||||||",
+        "expect": null,
+        "verdict": "fail",
+        "hypothesis": "math.num.three",
+        "top3": [
+          [
+            "math.num.three",
+            13
+          ],
+          [
+            "math.num.one",
+            9
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      }
+    ],
+    "roman": [
+      {
+        "cue": "III + II = V",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            14
+          ],
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "I + I = II",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            14
+          ],
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "IV - I = III",
+        "expect": "math.op.add",
+        "verdict": "fail",
+        "hypothesis": "math.op.eq",
+        "top3": [
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "III + IV = ?",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            14
+          ],
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "V - I = ?",
+        "expect": "math.op.add",
+        "verdict": "fail",
+        "hypothesis": "math.op.eq",
+        "top3": [
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "III + II",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            6
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "I + I",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            6
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "V",
+        "expect": null,
+        "verdict": "fail",
+        "hypothesis": "math.category.livestock",
+        "top3": [
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ],
+          [
+            "math.dim.length",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "VII",
+        "expect": null,
+        "verdict": "fail",
+        "hypothesis": "math.category.livestock",
+        "top3": [
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ],
+          [
+            "math.dim.length",
+            5
+          ]
+        ]
+      }
+    ]
+  },
+  "teacher": {
+    "pipe": [
+      {
+        "cue": "||| + || = |||||",
+        "correct": "|||||",
+        "concept_id": "math.op.add",
+        "id": "ep-7366035"
+      },
+      {
+        "cue": "| + | = ||",
+        "correct": "||",
+        "concept_id": "math.op.add",
+        "id": "ep-7366035"
+      },
+      {
+        "cue": "|||| - | = |||",
+        "correct": "|||",
+        "concept_id": "math.op.add",
+        "id": "ep-7366036"
+      },
+      {
+        "cue": "||| + |||| = ?",
+        "correct": "|||||||",
+        "concept_id": "math.op.add",
+        "id": "ep-7366036"
+      },
+      {
+        "cue": "||||| - | = ?",
+        "correct": "||||",
+        "concept_id": "math.op.add",
+        "id": "ep-7366036"
+      }
+    ],
+    "roman": [
+      {
+        "cue": "III + II = V",
+        "correct": "V",
+        "concept_id": "math.op.add",
+        "id": "ep-7366036"
+      },
+      {
+        "cue": "I + I = II",
+        "correct": "II",
+        "concept_id": "math.op.add",
+        "id": "ep-7366036"
+      },
+      {
+        "cue": "IV - I = III",
+        "correct": "III",
+        "concept_id": "math.op.add",
+        "id": "ep-7366036"
+      },
+      {
+        "cue": "III + IV = ?",
+        "correct": "VII",
+        "concept_id": "math.op.add",
+        "id": "ep-7366036"
+      },
+      {
+        "cue": "V - I = ?",
+        "correct": "IV",
+        "concept_id": "math.op.add",
+        "id": "ep-7366037"
+      }
+    ],
+    "hippo_pending": 10
+  },
+  "sleep": {
+    "merged": 10,
+    "pending": 0,
+    "items": [
+      {
+        "episode_id": "ep-7366035",
+        "kind": "surface",
+        "lattice_id": "schema-math",
+        "concept_id": "math.op.add",
+        "cue": "||| + || = |||||",
+        "correct": "|||||",
+        "correction_kind": "stick_rule",
+        "scene": "stick_teacher"
+      },
+      {
+        "episode_id": "ep-7366035",
+        "kind": "surface",
+        "lattice_id": "schema-math",
+        "concept_id": "math.op.add",
+        "cue": "| + | = ||",
+        "correct": "||",
+        "correction_kind": "stick_rule",
+        "scene": "stick_teacher"
+      },
+      {
+        "episode_id": "ep-7366036",
+        "kind": "surface",
+        "lattice_id": "schema-math",
+        "concept_id": "math.op.add",
+        "cue": "|||| - | = |||",
+        "correct": "|||",
+        "correction_kind": "stick_rule",
+        "scene": "stick_teacher"
+      },
+      {
+        "episode_id": "ep-7366036",
+        "kind": "surface",
+        "lattice_id": "schema-math",
+        "concept_id": "math.op.add",
+        "cue": "||| + |||| = ?",
+        "correct": "|||||||",
+        "correction_kind": "stick_rule",
+        "scene": "stick_teacher"
+      },
+      {
+        "episode_id": "ep-7366036",
+        "kind": "surface",
+        "lattice_id": "schema-math",
+        "concept_id": "math.op.add",
+        "cue": "||||| - | = ?",
+        "correct": "||||",
+        "correction_kind": "stick_rule",
+        "scene": "stick_teacher"
+      },
+      {
+        "episode_id": "ep-7366036",
+        "kind": "surface",
+        "lattice_id": "schema-math",
+        "concept_id": "math.op.add",
+        "cue": "III + II = V",
+        "correct": "V",
+        "correction_kind": "roman_rule",
+        "scene": "roman_teacher"
+      },
+      {
+        "episode_id": "ep-7366036",
+        "kind": "surface",
+        "lattice_id": "schema-math",
+        "concept_id": "math.op.add",
+        "cue": "I + I = II",
+        "correct": "II",
+        "correction_kind": "roman_rule",
+        "scene": "roman_teacher"
+      },
+      {
+        "episode_id": "ep-7366036",
+        "kind": "surface",
+        "lattice_id": "schema-math",
+        "concept_id": "math.op.add",
+        "cue": "IV - I = III",
+        "correct": "III",
+        "correction_kind": "roman_rule",
+        "scene": "roman_teacher"
+      },
+      {
+        "episode_id": "ep-7366036",
+        "kind": "surface",
+        "lattice_id": "schema-math",
+        "concept_id": "math.op.add",
+        "cue": "III + IV = ?",
+        "correct": "VII",
+        "correction_kind": "roman_rule",
+        "scene": "roman_teacher"
+      },
+      {
+        "episode_id": "ep-7366037",
+        "kind": "surface",
+        "lattice_id": "schema-math",
+        "concept_id": "math.op.add",
+        "cue": "V - I = ?",
+        "correct": "IV",
+        "correction_kind": "roman_rule",
+        "scene": "roman_teacher"
+      }
+    ],
+    "z_compose": {
+      "composed": [],
+      "count": 0
+    }
+  },
+  "after": {
+    "pipe": [
+      {
+        "cue": "||| + || = |||||",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            17
+          ],
+          [
+            "math.op.eq",
+            17
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "| + | = ||",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            17
+          ],
+          [
+            "math.op.eq",
+            17
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "|||| - | = |||",
+        "expect": "math.op.add",
+        "verdict": "fail",
+        "hypothesis": "math.op.eq",
+        "top3": [
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "||| + |||| = ?",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            17
+          ],
+          [
+            "math.op.eq",
+            17
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "||||| - | = ?",
+        "expect": "math.op.add",
+        "verdict": "fail",
+        "hypothesis": "math.op.eq",
+        "top3": [
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "||| + ||",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            17
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "| + |",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            17
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "||||",
+        "expect": null,
+        "verdict": "fail",
+        "hypothesis": "math.num.one",
+        "top3": [
+          [
+            "math.num.one",
+            9
+          ],
+          [
+            "math.num.three",
+            9
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "|||||",
+        "expect": null,
+        "verdict": "fail",
+        "hypothesis": "math.num.three",
+        "top3": [
+          [
+            "math.num.three",
+            9
+          ],
+          [
+            "math.num.two",
+            9
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "|||||||",
+        "expect": null,
+        "verdict": "fail",
+        "hypothesis": "math.num.three",
+        "top3": [
+          [
+            "math.num.three",
+            13
+          ],
+          [
+            "math.num.one",
+            9
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      }
+    ],
+    "roman": [
+      {
+        "cue": "III + II = V",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            14
+          ],
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "I + I = II",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            14
+          ],
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "IV - I = III",
+        "expect": "math.op.add",
+        "verdict": "fail",
+        "hypothesis": "math.op.eq",
+        "top3": [
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "III + IV = ?",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            14
+          ],
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "V - I = ?",
+        "expect": "math.op.add",
+        "verdict": "fail",
+        "hypothesis": "math.op.eq",
+        "top3": [
+          [
+            "math.op.eq",
+            14
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "III + II",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            6
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "I + I",
+        "expect": "math.op.add",
+        "verdict": "provisional",
+        "hypothesis": "math.op.add",
+        "top3": [
+          [
+            "math.op.add",
+            6
+          ],
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "V",
+        "expect": null,
+        "verdict": "fail",
+        "hypothesis": "math.category.livestock",
+        "top3": [
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ],
+          [
+            "math.dim.length",
+            5
+          ]
+        ]
+      },
+      {
+        "cue": "VII",
+        "expect": null,
+        "verdict": "fail",
+        "hypothesis": "math.category.livestock",
+        "top3": [
+          [
+            "math.category.livestock",
+            5
+          ],
+          [
+            "math.dim.count",
+            5
+          ],
+          [
+            "math.dim.length",
+            5
+          ]
+        ]
+      }
+    ]
+  },
+  "result_rank": {
+    "|||||": [
+      [
+        "math.num.three",
+        9
+      ],
+      [
+        "math.num.two",
+        9
+      ],
+      [
+        "math.category.livestock",
+        5
+      ],
+      [
+        "math.dim.count",
+        5
+      ],
+      [
+        "math.dim.length",
+        5
+      ]
+    ],
+    "||": [
+      [
+        "math.num.two",
+        9
+      ],
+      [
+        "math.category.livestock",
+        5
+      ],
+      [
+        "math.dim.count",
+        5
+      ],
+      [
+        "math.dim.length",
+        5
+      ],
+      [
+        "math.entity.cow",
+        5
+      ]
+    ],
+    "|||": [
+      [
+        "math.num.three",
+        9
+      ],
+      [
+        "math.category.livestock",
+        5
+      ],
+      [
+        "math.dim.count",
+        5
+      ],
+      [
+        "math.dim.length",
+        5
+      ],
+      [
+        "math.entity.cow",
+        5
+      ]
+    ],
+    "|||||||": [
+      [
+        "math.num.three",
+        13
+      ],
+      [
+        "math.num.one",
+        9
+      ],
+      [
+        "math.category.livestock",
+        5
+      ],
+      [
+        "math.dim.count",
+        5
+      ],
+      [
+        "math.dim.length",
+        5
+      ]
+    ],
+    "V": [
+      [
+        "math.category.livestock",
+        5
+      ],
+      [
+        "math.dim.count",
+        5
+      ],
+      [
+        "math.dim.length",
+        5
+      ],
+      [
+        "math.entity.cow",
+        5
+      ],
+      [
+        "math.entity.sheep",
+        5
+      ]
+    ],
+    "II": [
+      [
+        "math.category.livestock",
+        5
+      ],
+      [
+        "math.dim.count",
+        5
+      ],
+      [
+        "math.dim.length",
+        5
+      ],
+      [
+        "math.entity.cow",
+        5
+      ],
+      [
+        "math.entity.sheep",
+        5
+      ]
+    ],
+    "VII": [
+      [
+        "math.category.livestock",
+        5
+      ],
+      [
+        "math.dim.count",
+        5
+      ],
+      [
+        "math.dim.length",
+        5
+      ],
+      [
+        "math.entity.cow",
+        5
+      ],
+      [
+        "math.entity.sheep",
+        5
+      ]
+    ]
+  },
+  "votes": {
+    "math.op.add@| + |": 5,
+    "math.op.add@III + II": 5
+  },
+  "glyph_map_keys": [
+    "+",
+    "=",
+    "|",
+    "||",
+    "|||"
+  ]
+}

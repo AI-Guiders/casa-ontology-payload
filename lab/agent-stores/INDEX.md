@@ -1,9 +1,38 @@
 # Agent stores index
 
-**Каталог (оси locale / tier / corpus):** [`catalog.json`](catalog.json) — см. [`design/agent-store-catalog.md`](../../design/agent-store-catalog.md).  
+**Каталог (оси locale / tier / corpus):** [`catalog.json`](catalog.json) · **lab roles:** [`catalog-lab-roles.md`](catalog-lab-roles.md) — см. [`design/agent-store-catalog.md`](../../design/agent-store-catalog.md).  
 **Контекст (ось + цепочка вывода):** [`design/context-axis.md`](../../design/context-axis.md).
 
 Structure names describe **role**, not ingest corpus.
+
+## Lab stores (role-first — prefer over `sss-*` for new work)
+
+| Store | Role | Default for |
+|-------|------|-------------|
+| [math-l0-lab](math-l0-lab/) | F0 / sticks / emergent ops | `bench_math_schema`, teacher `-` mint |
+| [language-agent-lab](language-agent-lab/) | agent dialogue + journal | `agent_sn_cen_tick`, ortho «не кричи» |
+| [control-lab](control-lab/) | prism_control stack | `bench_control_stack` |
+| [code-agent-lab](code-agent-lab/) | IDE/code T9 | ADR-0007 autocomplete lab |
+| [bukvar-lab](bukvar-lab/) | listen / bukvar | infancy phase 1–2 |
+| [research-agent-lab](research-agent-lab/) | research bundles | ML import smoke |
+
+**Migrate** misplaced runtime off prod lexicon:
+
+```bash
+python -m casa.cli migrate_agent_lab_stores
+```
+
+Init F0 lab only:
+
+```bash
+python -m casa.cli init_math_l0_lab
+python -m casa.cli bench_schema_predict --store-dir lab/agent-stores/math-l0-lab \
+  --bundle lab/exp_l/kb-math-concrete-schemas-l0.bundle.v1.json
+```
+
+**Do not** run stick/emergent teacher on `sss-ru-general` — prod DetCorpus T9 cartridge.
+
+## Lexicon / corpus stores (`sss-*` legacy folder names)
 
 | Store | Role | field_state | Notes |
 |-------|------|-------------|--------|
@@ -60,24 +89,28 @@ Full pipeline: `scripts/run_sss_ru_lexicon.ps1`
 
 ## Exp L0 smoke (ltm boot + F0 math)
 
+**Store:** `math-l0-lab` (canonical). Legacy alias: `sss-ru-lexicon` still works for old scripts.
+
 ```bash
+python -m casa.cli init_math_l0_lab
+
 # Boot from ltm/ only (~1.5 s, no 600 MiB field_state)
-python tools/store_boot.py --store-dir lab/agent-stores/sss-ru-lexicon --smoke
+python -m casa.cli store_boot --store-dir lab/agent-stores/math-l0-lab --smoke
 
 # F0_schema ingest + schema@1 bench (field-only, no claim.text)
-python tools/bench_math_schema.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+python -m casa.cli bench_math_schema \
+  --store-dir lab/agent-stores/math-l0-lab \
   --bundle lab/exp_l/kb-math-concrete-schemas-l0.bundle.v1.json \
   --cues lab/exp_l/math_schema_cues.v1.json
 
 # Exp L0 predict loop: schema modality + critic (UC v0.6)
-python tools/bench_schema_predict.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+python -m casa.cli bench_schema_predict \
+  --store-dir lab/agent-stores/math-l0-lab \
   --bundle lab/exp_l/kb-math-concrete-schemas-l0.bundle.v1.json \
   --cues lab/exp_l/schema_predict_cues.v1.json
 
-# Persist F0 on field_state (optional; run from repo root)
-python tools/f0_math_ingest.py --store-dir lab/agent-stores/sss-ru-lexicon \
+# Persist F0 on field_state (optional)
+python -m casa.cli f0_math_ingest --store-dir lab/agent-stores/math-l0-lab \
   --bundle lab/exp_l/kb-math-concrete-schemas-l0.bundle.v1.json --boot-ltm-only --write
 ```
 

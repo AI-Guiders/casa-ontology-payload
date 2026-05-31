@@ -1,0 +1,1 @@
+{"id": "j-8d052d95f522", "ts": "2026-05-31T20:48:04Z", "kind": "law", "text": "two sticks plus two sticks is four sticks", "concepts": ["math.op.add"], "tokens": ["M:qty:2×entity:stick"], "tags": []}

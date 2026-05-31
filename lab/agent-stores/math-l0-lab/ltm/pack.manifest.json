@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "format": "ltm-pack",
+  "prism_layout_version": 1,
+  "field_version": 1,
+  "updated_at": "2026-05-31T22:52:04.336573+00:00",
+  "lattices": {
+    "schema-math": {
+      "path": "ltm/memory/math/schema-math.ltm",
+      "compress": null,
+      "raw_bytes": 3236,
+      "file_bytes": 3236,
+      "vocab": 71,
+      "placements": 228,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "f_level": 0,
+        "subsystem_id": "first_signal_math",
+        "token_prefix": [
+          "M:",
+          "M:sym:"
+        ]
+      }
+    }
+  },
+  "l2_sharding": null,
+  "nca": null,
+  "totals": {
+    "lattice_count": 1,
+    "raw_bytes": 3236,
+    "file_bytes": 3236
+  }
+}

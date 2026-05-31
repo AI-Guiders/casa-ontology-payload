@@ -1,0 +1,580 @@
+{
+  "store": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general",
+  "ticks": [
+    {
+      "tick": 1,
+      "query": "два плюс два",
+      "wall_ms": 52.14,
+      "decode_ms": 22.5,
+      "decode_source": "memory_field",
+      "field_version": 11,
+      "recovery_concepts_f1": null,
+      "sn_mode": "execute",
+      "cen": {
+        "intent": "query",
+        "action": "answer_from_memory",
+        "concepts": [
+          "math.unit.stick",
+          "math.unit.cow",
+          "math.op.add"
+        ],
+        "edges": [
+          "E:M:op:add|schema_of|math.op.add",
+          "E:M:op:eq|schema_of|math.op.eq",
+          "E:M:sym:one|schema_of|math.card.one",
+          "E:M:sym:three|schema_of|math.card.three",
+          "E:M:sym:two|schema_of|math.card.two",
+          "E:math.card.one|successor|math.card.two",
+          "E:math.card.two|names|lang.word.two",
+          "E:math.card.two|successor|math.card.three"
+        ],
+        "targets": [],
+        "task_band": {
+          "task.intent.query": 1.0,
+          "task.intent.probe": 0.0,
+          "task.action.open_kb": 0.0,
+          "task.action.open_code": 0.0,
+          "task.confidence": 1.0
+        },
+        "query_to_dmn": "clarify:два плюс два",
+        "confidence": 1.0,
+        "notes": "no direct concept match; SN probe mode",
+        "llm_probe": null,
+        "answer_blocks": [],
+        "answer_text": "Понял: ответ по запросу - «два плюс два». Точного куска в памяти нет, но могу помочь иначе: правило русского, перефраз учебной задачи или короткая бытовая формулировка..",
+        "fpn": {
+          "mode": "kb_query",
+          "goal": "math schema two sticks",
+          "subgoal": "answer_from_memory",
+          "tick": 1,
+          "user_query": "два плюс два",
+          "last_concepts": [
+            "math.card.one",
+            "math.card.three",
+            "math.card.two",
+            "math.dom.cardinal",
+            "math.dom.matrix",
+            "math.op.add",
+            "math.op.eq",
+            "math.unit.cow",
+            "math.unit.stick"
+          ],
+          "last_action": "answer_from_memory"
+        }
+      },
+      "control": {
+        "predicted": [],
+        "surprise": [
+          "math.card.one",
+          "math.card.three",
+          "math.card.two",
+          "math.dom.cardinal",
+          "math.dom.matrix",
+          "math.op.add",
+          "math.op.eq",
+          "math.unit.cow",
+          "math.unit.stick"
+        ],
+        "prediction_error": 1.0,
+        "dan_mask": [
+          "math schema two sticks",
+          "math.card.one",
+          "math.card.three",
+          "math.card.two",
+          "math.dom.cardinal",
+          "math.dom.matrix",
+          "math.op.add",
+          "math.op.eq",
+          "math.unit.cow",
+          "math.unit.stick"
+        ],
+        "sparse_ratio": 1.0,
+        "masked_digest": [
+          "math.card.one",
+          "math.card.three",
+          "math.card.two",
+          "math.dom.cardinal",
+          "math.dom.matrix",
+          "math.op.add",
+          "math.op.eq",
+          "math.unit.cow",
+          "math.unit.stick"
+        ],
+        "value": 1.65
+      },
+      "act_rollout": {
+        "skipped": true,
+        "reason": "no_nca_model",
+        "lattice_id": "schema-math",
+        "decoded": {
+          "min_votes": 1,
+          "concept_ids": [
+            "math.card.one",
+            "math.card.three",
+            "math.card.two",
+            "math.dom.cardinal",
+            "math.dom.matrix",
+            "math.op.add",
+            "math.op.eq",
+            "math.unit.cow",
+            "math.unit.stick"
+          ],
+          "concepts": [
+            {
+              "concept_id": "math.card.one",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.card.three",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.card.two",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.dom.cardinal",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.dom.matrix",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.op.add",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.op.eq",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.unit.cow",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.unit.stick",
+              "votes": 5
+            }
+          ],
+          "edges": [
+            "M:op:add|schema_of|math.op.add",
+            "M:op:eq|schema_of|math.op.eq",
+            "M:sym:one|schema_of|math.card.one",
+            "M:sym:three|schema_of|math.card.three",
+            "M:sym:two|schema_of|math.card.two",
+            "math.card.one|successor|math.card.two",
+            "math.card.two|names|lang.word.two",
+            "math.card.two|successor|math.card.three",
+            "math.dom.cardinal|admits_unit|math.unit.cow",
+            "math.dom.cardinal|admits_unit|math.unit.stick",
+            "math.op.add|combines|math.unit.cow",
+            "math.op.add|domain|math.dom.cardinal",
+            "math.op.add|domain|math.dom.matrix"
+          ],
+          "seen_tokens": 29
+        }
+      },
+      "hippo_episode": {
+        "id": "ep-6062173",
+        "cue": "два плюс два",
+        "surface_attempt": "?",
+        "correct": "math.card.one, math.card.three, math.card.two, math.dom.cardinal, math.dom.matrix, math.op.add, math.op.eq, math.unit.co",
+        "lattice_id": "schema-math",
+        "concept_id": null,
+        "consolidated": false,
+        "kind": "surface",
+        "scene": "predict_surprise",
+        "correction_kind": null,
+        "pending": false,
+        "structure_tag": "predict_mismatch",
+        "recurrence_seen": 0,
+        "min_recurrence": 1
+      },
+      "agent_remember": {
+        "remembered": true,
+        "journal_id": "j-083a7ee7c838",
+        "scope": "self",
+        "kind": "observation",
+        "field_placements": 0
+      },
+      "sleep": {
+        "merged": 0,
+        "pending": 1,
+        "z_compose": 0,
+        "items": [],
+        "nca": null,
+        "replay": {
+          "now_tick": 10,
+          "archived_new": 0,
+          "buffer_size": 0,
+          "replayed": 0,
+          "replay_k": 0,
+          "value_weight": 0.0,
+          "episode_ids": []
+        }
+      },
+      "kolb": null,
+      "learning_cycle": {
+        "extract": {
+          "field_decode": true,
+          "act_rollout": false
+        },
+        "remember": {
+          "hippo_episode": true,
+          "sleep": true
+        },
+        "use": {
+          "sn_cen": true,
+          "explicit_remember": true
+        }
+      }
+    },
+    {
+      "tick": 2,
+      "query": "два плюс два",
+      "wall_ms": 59.56,
+      "decode_ms": 15.94,
+      "decode_source": "memory_field",
+      "field_version": 11,
+      "recovery_concepts_f1": null,
+      "sn_mode": "execute",
+      "cen": {
+        "intent": "query",
+        "action": "answer_from_memory",
+        "concepts": [
+          "math.unit.stick",
+          "math.unit.cow",
+          "math.op.eq"
+        ],
+        "edges": [
+          "E:M:op:add|schema_of|math.op.add",
+          "E:M:op:eq|schema_of|math.op.eq",
+          "E:M:sym:one|schema_of|math.card.one",
+          "E:M:sym:three|schema_of|math.card.three",
+          "E:M:sym:two|schema_of|math.card.two",
+          "E:math.card.one|successor|math.card.two",
+          "E:math.card.two|names|lang.word.two",
+          "E:math.card.two|successor|math.card.three"
+        ],
+        "targets": [],
+        "task_band": {
+          "task.intent.query": 1.0,
+          "task.intent.probe": 0.0,
+          "task.action.open_kb": 0.0,
+          "task.action.open_code": 0.0,
+          "task.confidence": 1.0
+        },
+        "query_to_dmn": "clarify:два плюс два",
+        "confidence": 1.0,
+        "notes": "no direct concept match; SN probe mode",
+        "llm_probe": null,
+        "answer_blocks": [],
+        "answer_text": "Понял: ответ по запросу - «два плюс два». Точного куска в памяти нет, но могу помочь иначе: правило русского, перефраз учебной задачи или короткая бытовая формулировка..",
+        "fpn": {
+          "mode": "kb_query",
+          "goal": "math schema two sticks",
+          "subgoal": "answer_from_memory",
+          "tick": 2,
+          "user_query": "два плюс два",
+          "last_concepts": [
+            "math.card.one",
+            "math.card.three",
+            "math.card.two",
+            "math.dom.cardinal",
+            "math.dom.matrix",
+            "math.op.add",
+            "math.op.eq",
+            "math.unit.cow",
+            "math.unit.stick"
+          ],
+          "last_action": "answer_from_memory"
+        }
+      },
+      "control": {
+        "predicted": [],
+        "surprise": [
+          "math.card.one",
+          "math.card.three",
+          "math.card.two",
+          "math.dom.cardinal",
+          "math.dom.matrix",
+          "math.op.add",
+          "math.op.eq",
+          "math.unit.cow",
+          "math.unit.stick"
+        ],
+        "prediction_error": 1.0,
+        "dan_mask": [
+          "math schema two sticks",
+          "math.card.one",
+          "math.card.three",
+          "math.card.two",
+          "math.dom.cardinal",
+          "math.dom.matrix",
+          "math.op.add",
+          "math.op.eq",
+          "math.unit.cow",
+          "math.unit.stick"
+        ],
+        "sparse_ratio": 1.0,
+        "masked_digest": [
+          "math.card.one",
+          "math.card.three",
+          "math.card.two",
+          "math.dom.cardinal",
+          "math.dom.matrix",
+          "math.op.add",
+          "math.op.eq",
+          "math.unit.cow",
+          "math.unit.stick"
+        ],
+        "value": 1.65
+      },
+      "act_rollout": {
+        "skipped": true,
+        "reason": "no_nca_model",
+        "lattice_id": "schema-math",
+        "decoded": {
+          "min_votes": 1,
+          "concept_ids": [
+            "math.card.one",
+            "math.card.three",
+            "math.card.two",
+            "math.dom.cardinal",
+            "math.dom.matrix",
+            "math.op.add",
+            "math.op.eq",
+            "math.unit.cow",
+            "math.unit.stick"
+          ],
+          "concepts": [
+            {
+              "concept_id": "math.card.one",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.card.three",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.card.two",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.dom.cardinal",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.dom.matrix",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.op.add",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.op.eq",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.unit.cow",
+              "votes": 5
+            },
+            {
+              "concept_id": "math.unit.stick",
+              "votes": 5
+            }
+          ],
+          "edges": [
+            "M:op:add|schema_of|math.op.add",
+            "M:op:eq|schema_of|math.op.eq",
+            "M:sym:one|schema_of|math.card.one",
+            "M:sym:three|schema_of|math.card.three",
+            "M:sym:two|schema_of|math.card.two",
+            "math.card.one|successor|math.card.two",
+            "math.card.two|names|lang.word.two",
+            "math.card.two|successor|math.card.three",
+            "math.dom.cardinal|admits_unit|math.unit.cow",
+            "math.dom.cardinal|admits_unit|math.unit.stick",
+            "math.op.add|combines|math.unit.cow",
+            "math.op.add|domain|math.dom.cardinal",
+            "math.op.add|domain|math.dom.matrix"
+          ],
+          "seen_tokens": 29
+        }
+      },
+      "hippo_episode": {
+        "id": "ep-6062213",
+        "cue": "два плюс два",
+        "surface_attempt": "?",
+        "correct": "math.card.one, math.card.three, math.card.two, math.dom.cardinal, math.dom.matrix, math.op.add, math.op.eq, math.unit.co",
+        "lattice_id": "schema-math",
+        "concept_id": null,
+        "consolidated": false,
+        "kind": "surface",
+        "scene": "predict_surprise",
+        "correction_kind": null,
+        "pending": false,
+        "structure_tag": "predict_mismatch",
+        "recurrence_seen": 0,
+        "min_recurrence": 1
+      },
+      "agent_remember": {
+        "remembered": true,
+        "journal_id": "j-2839826c1a94",
+        "scope": "self",
+        "kind": "observation",
+        "field_placements": 0
+      },
+      "sleep": {
+        "merged": 0,
+        "pending": 1,
+        "z_compose": 0,
+        "items": [],
+        "nca": null,
+        "replay": {
+          "now_tick": 10,
+          "archived_new": 0,
+          "buffer_size": 0,
+          "replayed": 0,
+          "replay_k": 0,
+          "value_weight": 0.0,
+          "episode_ids": []
+        }
+      },
+      "kolb": null,
+      "learning_cycle": {
+        "extract": {
+          "field_decode": true,
+          "act_rollout": false
+        },
+        "remember": {
+          "hippo_episode": true,
+          "sleep": true
+        },
+        "use": {
+          "sn_cen": true,
+          "explicit_remember": true
+        }
+      }
+    }
+  ],
+  "persist": {
+    "saved": true,
+    "tier": "runtime",
+    "field_state": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general\\field_state.json",
+    "field_version": 11,
+    "compact": true,
+    "self_tier": {
+      "self": false
+    }
+  },
+  "hippo": {
+    "before": 0,
+    "after": 1,
+    "episodes": [
+      {
+        "id": "ep-6062213",
+        "cue": "два плюс два",
+        "surface_attempt": "?",
+        "correct": "math.card.one, math.card.three, math.card.two, math.dom.cardinal, math.dom.matrix, math.op.add, math.op.eq, math.unit.co",
+        "lattice_id": "schema-math",
+        "concept_id": null,
+        "consolidated": false,
+        "kind": "surface",
+        "scene": "predict_surprise",
+        "correction_kind": null,
+        "pending": false,
+        "structure_tag": "predict_mismatch",
+        "recurrence_seen": 1,
+        "min_recurrence": 1
+      }
+    ]
+  },
+  "journal_self": [
+    {
+      "id": "j-083a7ee7c838",
+      "ts": "2026-05-31T22:21:02Z",
+      "kind": "observation",
+      "text": "predict mismatch: expected ?; surprise math.card.one, math.card.three, math.card.two, math.dom.cardinal, math.dom.matrix",
+      "concepts": [
+        "math.card.one",
+        "math.card.three",
+        "math.card.two",
+        "math.dom.cardinal",
+        "math.dom.matrix",
+        "math.op.add",
+        "math.op.eq",
+        "math.unit.cow"
+      ],
+      "tokens": [],
+      "tags": [
+        "implicit",
+        "surprise"
+      ],
+      "meta": {
+        "scope": "self",
+        "data": {
+          "prediction_error": 1.0,
+          "value": 1.65
+        }
+      }
+    },
+    {
+      "id": "j-2839826c1a94",
+      "ts": "2026-05-31T22:21:02Z",
+      "kind": "observation",
+      "text": "predict mismatch: expected ?; surprise math.card.one, math.card.three, math.card.two, math.dom.cardinal, math.dom.matrix",
+      "concepts": [
+        "math.card.one",
+        "math.card.three",
+        "math.card.two",
+        "math.dom.cardinal",
+        "math.dom.matrix",
+        "math.op.add",
+        "math.op.eq",
+        "math.unit.cow"
+      ],
+      "tokens": [],
+      "tags": [
+        "implicit",
+        "surprise"
+      ],
+      "meta": {
+        "scope": "self",
+        "data": {
+          "prediction_error": 1.0,
+          "value": 1.65
+        }
+      }
+    }
+  ],
+  "field_version": 11,
+  "sn": {
+    "active_lattice": "alphabet-ru",
+    "mode": "wake",
+    "active_prism": "prism_memory",
+    "active_subsystem": "first_signal_math",
+    "active_f_lattice": "schema-math",
+    "last_tick": 2,
+    "last_sn_mode": "execute",
+    "kolb_phase": null
+  },
+  "consolidation_last_sleep": {
+    "merged": 0,
+    "pending": 1,
+    "z_compose": 0,
+    "items": [],
+    "nca": null,
+    "replay": {
+      "now_tick": 10,
+      "archived_new": 0,
+      "buffer_size": 0,
+      "replayed": 0,
+      "replay_k": 0,
+      "value_weight": 0.0,
+      "episode_ids": []
+    }
+  }
+}

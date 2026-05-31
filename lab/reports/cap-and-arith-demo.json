@@ -1,0 +1,77 @@
+{
+  "parts": {
+    "capitalization": {
+      "hippo_predict_mismatch_count": 2,
+      "hippo_cues": [
+        "Два плюс два",
+        "Два плюс два"
+      ],
+      "hippo_recurrence": [
+        4,
+        2
+      ],
+      "tick2_deduped": true,
+      "journal_new_lines": 1,
+      "tick2_journal_skipped": true,
+      "recall_by_dva": 1,
+      "recall_by_cue_tag": 1,
+      "sample_journal": "cue «два плюс два»; predict mismatch: expected ?; surprise math.card.one, math.card.three, math.card"
+    },
+    "arithmetic": {
+      "predict_verdicts": [
+        {
+          "cue": "1+2",
+          "verdict": "fail",
+          "hypothesis": "math.card.one"
+        },
+        {
+          "cue": "||",
+          "verdict": "fail",
+          "hypothesis": "math.card.one"
+        },
+        {
+          "cue": "| + |",
+          "verdict": "fail",
+          "hypothesis": "math.card.one"
+        }
+      ],
+      "teacher_episodes": [
+        {
+          "cue": "1+2",
+          "concept_id": "math.op.add",
+          "id": "ep-6411505"
+        },
+        {
+          "cue": "2+2",
+          "concept_id": "math.op.add",
+          "id": "ep-6411505"
+        }
+      ],
+      "sleep_merged": 2,
+      "sleep_pending": 2,
+      "sleep_items": [
+        {
+          "episode_id": "ep-6411505",
+          "kind": "surface",
+          "lattice_id": "schema-math",
+          "concept_id": "math.op.add",
+          "cue": "1+2",
+          "correct": "math.op.add",
+          "correction_kind": "script_rule",
+          "scene": "arithmetic_teacher"
+        },
+        {
+          "episode_id": "ep-6411505",
+          "kind": "surface",
+          "lattice_id": "schema-math",
+          "concept_id": "math.op.add",
+          "cue": "2+2",
+          "correct": "math.op.add",
+          "correction_kind": "script_rule",
+          "scene": "arithmetic_teacher"
+        }
+      ],
+      "hippo_pending_after": 2
+    }
+  }
+}

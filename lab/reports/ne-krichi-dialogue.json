@@ -1,0 +1,57 @@
+{
+  "dialogue": [
+    {
+      "role": "agent",
+      "surface": "МАМА!"
+    },
+    {
+      "role": "user",
+      "text": "не кричи"
+    },
+    {
+      "role": "agent",
+      "surface": "Мама"
+    }
+  ],
+  "form": {
+    "lexeme": "мама",
+    "norm_all_same": false
+  },
+  "wake_util_bug": {
+    "matches_target_Mama": true,
+    "matches_target_mama_lower": true,
+    "note": "norm_text hides ALL-CAPS vs sentence-case — ortho needs display-level critic"
+  },
+  "hippo_episode": {
+    "id": "ep-6635580",
+    "cue": "не кричи",
+    "surface_attempt": "МАМА",
+    "correct": "Мама",
+    "correction_kind": "ortho_surface",
+    "concept_id": "lang.word.мама"
+  },
+  "agent_remember": {
+    "journal_id": "j-550dfe72addd",
+    "kind": "law"
+  },
+  "sleep": {
+    "merged": 1,
+    "items": [
+      {
+        "episode_id": "ep-6635580",
+        "kind": "surface",
+        "lattice_id": "schema-math",
+        "concept_id": "lang.word.мама",
+        "cue": "не кричи",
+        "correct": "Мама",
+        "correction_kind": "ortho_surface",
+        "scene": "register:do_not_shout"
+      }
+    ]
+  },
+  "recall": {
+    "by_ne_krichi": 1,
+    "by_cue_tag": 1,
+    "sample": "если кричишь (МАМА!) — услышишь «не кричи»; говори Мама"
+  }
+}
