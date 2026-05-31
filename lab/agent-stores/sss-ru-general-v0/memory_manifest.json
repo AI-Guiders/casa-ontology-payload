@@ -1,9 +1,19 @@
 {
   "schema_version": 1,
   "kind": "sss_memory_manifest",
+  "prism_layout_version": 1,
+  "path_aliases": {
+    "ltm/l0": "ltm/memory/grapheme",
+    "ltm/l1": "ltm/memory/syllable",
+    "ltm/l2": "ltm/memory/lexicon",
+    "ltm/l3": "ltm/memory/phrase",
+    "ltm/h0": "ltm/memory/math",
+    "ltm/lat": "ltm/memory/lexicon",
+    "ltm/ctrl": "ltm/control"
+  },
   "store_id": "sss-ru-general-v0",
-  "store_path": "lab/agent-stores/sss-ru-general-v0",
-  "generated_at": "2026-05-31T16:59:52.624166+00:00",
+  "store_path": "D:/Experiments/Personal Cursor Folder/Financial/software/open/casa-ontology-payload/lab/agent-stores/sss-ru-general-v0",
+  "generated_at": "2026-05-31T19:26:56.376362+00:00",
   "field_version": 7,
   "schema": "multi_prism_v1",
   "l2_sharding": {
@@ -11,7 +21,7 @@
     "mode": "lexicographic",
     "lex_plan": "corpus_quantile",
     "num_shards": 64,
-    "legacy_lattice": "words-ru",
+    "legacy_lattice": "lexicon-ru",
     "indexed_words": 49981,
     "attested_initial_letters": [
       "а",
@@ -814,327 +824,327 @@
     ],
     "lattices": [
       {
-        "lattice_id": "words-ru",
+        "lattice_id": "lexicon-ru",
         "token_count": 0,
         "word_concepts": 0
       },
       {
-        "lattice_id": "words-ru-00",
+        "lattice_id": "lexicon-ru-00",
         "token_count": 1560,
         "word_concepts": 780
       },
       {
-        "lattice_id": "words-ru-01",
+        "lattice_id": "lexicon-ru-01",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-02",
+        "lattice_id": "lexicon-ru-02",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-03",
+        "lattice_id": "lexicon-ru-03",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-04",
+        "lattice_id": "lexicon-ru-04",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-05",
+        "lattice_id": "lexicon-ru-05",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-06",
+        "lattice_id": "lexicon-ru-06",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-07",
+        "lattice_id": "lexicon-ru-07",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-08",
+        "lattice_id": "lexicon-ru-08",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-09",
+        "lattice_id": "lexicon-ru-09",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-10",
+        "lattice_id": "lexicon-ru-10",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-11",
+        "lattice_id": "lexicon-ru-11",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-12",
+        "lattice_id": "lexicon-ru-12",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-13",
+        "lattice_id": "lexicon-ru-13",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-14",
+        "lattice_id": "lexicon-ru-14",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-15",
+        "lattice_id": "lexicon-ru-15",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-16",
+        "lattice_id": "lexicon-ru-16",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-17",
+        "lattice_id": "lexicon-ru-17",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-18",
+        "lattice_id": "lexicon-ru-18",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-19",
+        "lattice_id": "lexicon-ru-19",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-20",
+        "lattice_id": "lexicon-ru-20",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-21",
+        "lattice_id": "lexicon-ru-21",
         "token_count": 1560,
         "word_concepts": 780
       },
       {
-        "lattice_id": "words-ru-22",
+        "lattice_id": "lexicon-ru-22",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-23",
+        "lattice_id": "lexicon-ru-23",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-24",
+        "lattice_id": "lexicon-ru-24",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-25",
+        "lattice_id": "lexicon-ru-25",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-26",
+        "lattice_id": "lexicon-ru-26",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-27",
+        "lattice_id": "lexicon-ru-27",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-28",
+        "lattice_id": "lexicon-ru-28",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-29",
+        "lattice_id": "lexicon-ru-29",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-30",
+        "lattice_id": "lexicon-ru-30",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-31",
+        "lattice_id": "lexicon-ru-31",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-32",
+        "lattice_id": "lexicon-ru-32",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-33",
+        "lattice_id": "lexicon-ru-33",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-34",
+        "lattice_id": "lexicon-ru-34",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-35",
+        "lattice_id": "lexicon-ru-35",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-36",
+        "lattice_id": "lexicon-ru-36",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-37",
+        "lattice_id": "lexicon-ru-37",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-38",
+        "lattice_id": "lexicon-ru-38",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-39",
+        "lattice_id": "lexicon-ru-39",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-40",
+        "lattice_id": "lexicon-ru-40",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-41",
+        "lattice_id": "lexicon-ru-41",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-42",
+        "lattice_id": "lexicon-ru-42",
         "token_count": 1560,
         "word_concepts": 780
       },
       {
-        "lattice_id": "words-ru-43",
+        "lattice_id": "lexicon-ru-43",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-44",
+        "lattice_id": "lexicon-ru-44",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-45",
+        "lattice_id": "lexicon-ru-45",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-46",
+        "lattice_id": "lexicon-ru-46",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-47",
+        "lattice_id": "lexicon-ru-47",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-48",
+        "lattice_id": "lexicon-ru-48",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-49",
+        "lattice_id": "lexicon-ru-49",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-50",
+        "lattice_id": "lexicon-ru-50",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-51",
+        "lattice_id": "lexicon-ru-51",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-52",
+        "lattice_id": "lexicon-ru-52",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-53",
+        "lattice_id": "lexicon-ru-53",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-54",
+        "lattice_id": "lexicon-ru-54",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-55",
+        "lattice_id": "lexicon-ru-55",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-56",
+        "lattice_id": "lexicon-ru-56",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-57",
+        "lattice_id": "lexicon-ru-57",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-58",
+        "lattice_id": "lexicon-ru-58",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-59",
+        "lattice_id": "lexicon-ru-59",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-60",
+        "lattice_id": "lexicon-ru-60",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-61",
+        "lattice_id": "lexicon-ru-61",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-62",
+        "lattice_id": "lexicon-ru-62",
         "token_count": 1562,
         "word_concepts": 781
       },
       {
-        "lattice_id": "words-ru-63",
+        "lattice_id": "lexicon-ru-63",
         "token_count": 1562,
         "word_concepts": 781
       }
@@ -1168,783 +1178,783 @@
       "nca_bytes": 0
     },
     {
-      "id": "words-ru-00",
+      "id": "lexicon-ru-00",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1560,
       "word_concepts": 780,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-00/model.pt",
-      "nca_bytes": 2457551
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-01",
+      "id": "lexicon-ru-01",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-01/model.pt",
-      "nca_bytes": 2460175
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-02",
+      "id": "lexicon-ru-02",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-02/model.pt",
-      "nca_bytes": 2462863
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-03",
+      "id": "lexicon-ru-03",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-03/model.pt",
-      "nca_bytes": 2463567
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-04",
+      "id": "lexicon-ru-04",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-04/model.pt",
-      "nca_bytes": 2460175
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-05",
+      "id": "lexicon-ru-05",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-05/model.pt",
-      "nca_bytes": 2460431
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-06",
+      "id": "lexicon-ru-06",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-06/model.pt",
-      "nca_bytes": 2461839
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-07",
+      "id": "lexicon-ru-07",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-07/model.pt",
-      "nca_bytes": 2465103
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-08",
+      "id": "lexicon-ru-08",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-08/model.pt",
-      "nca_bytes": 2466703
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-09",
+      "id": "lexicon-ru-09",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-09/model.pt",
-      "nca_bytes": 2460239
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-10",
+      "id": "lexicon-ru-10",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-10/model.pt",
-      "nca_bytes": 2461071
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-11",
+      "id": "lexicon-ru-11",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-11/model.pt",
-      "nca_bytes": 2460559
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-12",
+      "id": "lexicon-ru-12",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-12/model.pt",
-      "nca_bytes": 2462927
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-13",
+      "id": "lexicon-ru-13",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-13/model.pt",
-      "nca_bytes": 2460495
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-14",
+      "id": "lexicon-ru-14",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-14/model.pt",
-      "nca_bytes": 2459599
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-15",
+      "id": "lexicon-ru-15",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-15/model.pt",
-      "nca_bytes": 2466319
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-16",
+      "id": "lexicon-ru-16",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-16/model.pt",
-      "nca_bytes": 2466511
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-17",
+      "id": "lexicon-ru-17",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-17/model.pt",
-      "nca_bytes": 2460751
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-18",
+      "id": "lexicon-ru-18",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-18/model.pt",
-      "nca_bytes": 2464335
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-19",
+      "id": "lexicon-ru-19",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-19/model.pt",
-      "nca_bytes": 2461519
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-20",
+      "id": "lexicon-ru-20",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-20/model.pt",
-      "nca_bytes": 2460047
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-21",
+      "id": "lexicon-ru-21",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1560,
       "word_concepts": 780,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-21/model.pt",
-      "nca_bytes": 2458447
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-22",
+      "id": "lexicon-ru-22",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-22/model.pt",
-      "nca_bytes": 2463759
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-23",
+      "id": "lexicon-ru-23",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-23/model.pt",
-      "nca_bytes": 2461071
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-24",
+      "id": "lexicon-ru-24",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-24/model.pt",
-      "nca_bytes": 2458063
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-25",
+      "id": "lexicon-ru-25",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-25/model.pt",
-      "nca_bytes": 2458319
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-26",
+      "id": "lexicon-ru-26",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-26/model.pt",
-      "nca_bytes": 2460751
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-27",
+      "id": "lexicon-ru-27",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-27/model.pt",
-      "nca_bytes": 2462415
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-28",
+      "id": "lexicon-ru-28",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-28/model.pt",
-      "nca_bytes": 2459919
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-29",
+      "id": "lexicon-ru-29",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-29/model.pt",
-      "nca_bytes": 2464719
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-30",
+      "id": "lexicon-ru-30",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-30/model.pt",
-      "nca_bytes": 2467599
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-31",
+      "id": "lexicon-ru-31",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-31/model.pt",
-      "nca_bytes": 2470095
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-32",
+      "id": "lexicon-ru-32",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-32/model.pt",
-      "nca_bytes": 2461519
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-33",
+      "id": "lexicon-ru-33",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-33/model.pt",
-      "nca_bytes": 2465679
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-34",
+      "id": "lexicon-ru-34",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-34/model.pt",
-      "nca_bytes": 2462863
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-35",
+      "id": "lexicon-ru-35",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-35/model.pt",
-      "nca_bytes": 2466255
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-36",
+      "id": "lexicon-ru-36",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-36/model.pt",
-      "nca_bytes": 2460879
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-37",
+      "id": "lexicon-ru-37",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-37/model.pt",
-      "nca_bytes": 2468495
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-38",
+      "id": "lexicon-ru-38",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-38/model.pt",
-      "nca_bytes": 2462799
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-39",
+      "id": "lexicon-ru-39",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-39/model.pt",
-      "nca_bytes": 2467855
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-40",
+      "id": "lexicon-ru-40",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-40/model.pt",
-      "nca_bytes": 2465743
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-41",
+      "id": "lexicon-ru-41",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-41/model.pt",
-      "nca_bytes": 2465743
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-42",
+      "id": "lexicon-ru-42",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1560,
       "word_concepts": 780,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-42/model.pt",
-      "nca_bytes": 2466575
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-43",
+      "id": "lexicon-ru-43",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-43/model.pt",
-      "nca_bytes": 2469263
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-44",
+      "id": "lexicon-ru-44",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-44/model.pt",
-      "nca_bytes": 2469711
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-45",
+      "id": "lexicon-ru-45",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-45/model.pt",
-      "nca_bytes": 2463311
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-46",
+      "id": "lexicon-ru-46",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-46/model.pt",
-      "nca_bytes": 2469711
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-47",
+      "id": "lexicon-ru-47",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-47/model.pt",
-      "nca_bytes": 2462223
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-48",
+      "id": "lexicon-ru-48",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-48/model.pt",
-      "nca_bytes": 2460111
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-49",
+      "id": "lexicon-ru-49",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-49/model.pt",
-      "nca_bytes": 2462671
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-50",
+      "id": "lexicon-ru-50",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-50/model.pt",
-      "nca_bytes": 2461839
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-51",
+      "id": "lexicon-ru-51",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-51/model.pt",
-      "nca_bytes": 2462735
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-52",
+      "id": "lexicon-ru-52",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-52/model.pt",
-      "nca_bytes": 2464271
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-53",
+      "id": "lexicon-ru-53",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-53/model.pt",
-      "nca_bytes": 2462735
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-54",
+      "id": "lexicon-ru-54",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-54/model.pt",
-      "nca_bytes": 2460047
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-55",
+      "id": "lexicon-ru-55",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-55/model.pt",
-      "nca_bytes": 2459791
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-56",
+      "id": "lexicon-ru-56",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-56/model.pt",
-      "nca_bytes": 2461007
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-57",
+      "id": "lexicon-ru-57",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-57/model.pt",
-      "nca_bytes": 2462351
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-58",
+      "id": "lexicon-ru-58",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-58/model.pt",
-      "nca_bytes": 2461199
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-59",
+      "id": "lexicon-ru-59",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-59/model.pt",
-      "nca_bytes": 2459215
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-60",
+      "id": "lexicon-ru-60",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-60/model.pt",
-      "nca_bytes": 2459535
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-61",
+      "id": "lexicon-ru-61",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-61/model.pt",
-      "nca_bytes": 2460111
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-62",
+      "id": "lexicon-ru-62",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-62/model.pt",
-      "nca_bytes": 2458639
+      "nca_model": null,
+      "nca_bytes": 0
     },
     {
-      "id": "words-ru-63",
+      "id": "lexicon-ru-63",
       "z_level": 2,
       "role": "L2_shard",
       "width": 32,
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-63/model.pt",
-      "nca_bytes": 2458959
+      "nca_model": null,
+      "nca_bytes": 0
     }
   ],
   "l2_network_ids": [
-    "words-ru",
-    "words-ru-00",
-    "words-ru-01",
-    "words-ru-02",
-    "words-ru-03",
-    "words-ru-04",
-    "words-ru-05",
-    "words-ru-06",
-    "words-ru-07",
-    "words-ru-08",
-    "words-ru-09",
-    "words-ru-10",
-    "words-ru-11",
-    "words-ru-12",
-    "words-ru-13",
-    "words-ru-14",
-    "words-ru-15",
-    "words-ru-16",
-    "words-ru-17",
-    "words-ru-18",
-    "words-ru-19",
-    "words-ru-20",
-    "words-ru-21",
-    "words-ru-22",
-    "words-ru-23",
-    "words-ru-24",
-    "words-ru-25",
-    "words-ru-26",
-    "words-ru-27",
-    "words-ru-28",
-    "words-ru-29",
-    "words-ru-30",
-    "words-ru-31",
-    "words-ru-32",
-    "words-ru-33",
-    "words-ru-34",
-    "words-ru-35",
-    "words-ru-36",
-    "words-ru-37",
-    "words-ru-38",
-    "words-ru-39",
-    "words-ru-40",
-    "words-ru-41",
-    "words-ru-42",
-    "words-ru-43",
-    "words-ru-44",
-    "words-ru-45",
-    "words-ru-46",
-    "words-ru-47",
-    "words-ru-48",
-    "words-ru-49",
-    "words-ru-50",
-    "words-ru-51",
-    "words-ru-52",
-    "words-ru-53",
-    "words-ru-54",
-    "words-ru-55",
-    "words-ru-56",
-    "words-ru-57",
-    "words-ru-58",
-    "words-ru-59",
-    "words-ru-60",
-    "words-ru-61",
-    "words-ru-62",
-    "words-ru-63"
+    "lexicon-ru",
+    "lexicon-ru-00",
+    "lexicon-ru-01",
+    "lexicon-ru-02",
+    "lexicon-ru-03",
+    "lexicon-ru-04",
+    "lexicon-ru-05",
+    "lexicon-ru-06",
+    "lexicon-ru-07",
+    "lexicon-ru-08",
+    "lexicon-ru-09",
+    "lexicon-ru-10",
+    "lexicon-ru-11",
+    "lexicon-ru-12",
+    "lexicon-ru-13",
+    "lexicon-ru-14",
+    "lexicon-ru-15",
+    "lexicon-ru-16",
+    "lexicon-ru-17",
+    "lexicon-ru-18",
+    "lexicon-ru-19",
+    "lexicon-ru-20",
+    "lexicon-ru-21",
+    "lexicon-ru-22",
+    "lexicon-ru-23",
+    "lexicon-ru-24",
+    "lexicon-ru-25",
+    "lexicon-ru-26",
+    "lexicon-ru-27",
+    "lexicon-ru-28",
+    "lexicon-ru-29",
+    "lexicon-ru-30",
+    "lexicon-ru-31",
+    "lexicon-ru-32",
+    "lexicon-ru-33",
+    "lexicon-ru-34",
+    "lexicon-ru-35",
+    "lexicon-ru-36",
+    "lexicon-ru-37",
+    "lexicon-ru-38",
+    "lexicon-ru-39",
+    "lexicon-ru-40",
+    "lexicon-ru-41",
+    "lexicon-ru-42",
+    "lexicon-ru-43",
+    "lexicon-ru-44",
+    "lexicon-ru-45",
+    "lexicon-ru-46",
+    "lexicon-ru-47",
+    "lexicon-ru-48",
+    "lexicon-ru-49",
+    "lexicon-ru-50",
+    "lexicon-ru-51",
+    "lexicon-ru-52",
+    "lexicon-ru-53",
+    "lexicon-ru-54",
+    "lexicon-ru-55",
+    "lexicon-ru-56",
+    "lexicon-ru-57",
+    "lexicon-ru-58",
+    "lexicon-ru-59",
+    "lexicon-ru-60",
+    "lexicon-ru-61",
+    "lexicon-ru-62",
+    "lexicon-ru-63"
   ],
   "disk": {
-    "field_state_json": 27259592,
-    "field_state_human": "26.0 MiB",
-    "store_total": 242430138,
-    "store_total_human": "231.2 MiB",
-    "nca_dir": 165363018,
+    "field_state_json": 27360008,
+    "field_state_human": "26.1 MiB",
+    "store_total": 250134707,
+    "store_total_human": "238.5 MiB",
+    "nca_dir": 165363152,
     "parallel_shards_dir": 0,
     "examples_exp_reports": 613239
   }

@@ -1,14 +1,14 @@
 # Memory map: `sss-ru-general-v0`
 
-Generated: 2026-05-31T16:59:52.624166+00:00
+Generated: 2026-05-31T19:26:56.376362+00:00
 field_version: **7**
 
 ## Disk
 
 | Path | Size |
 |------|------|
-| `field_state.json` | 26.0 MiB |
-| store total | 231.2 MiB |
+| `field_state.json` | 26.1 MiB |
+| store total | 238.5 MiB |
 | `nca/` | 157.7 MiB |
 | `_parallel_shards/` | 0 B |
 
@@ -18,70 +18,70 @@ field_version: **7**
 prism_memory
   alphabet-en  (tokens=52)
   alphabet-ru  (tokens=66)
-      words-ru-00  (tokens=1560) + NCA
-      words-ru-01  (tokens=1562) + NCA
-      words-ru-02  (tokens=1562) + NCA
-      words-ru-03  (tokens=1562) + NCA
-      words-ru-04  (tokens=1562) + NCA
-      words-ru-05  (tokens=1562) + NCA
-      words-ru-06  (tokens=1562) + NCA
-      words-ru-07  (tokens=1562) + NCA
-      words-ru-08  (tokens=1562) + NCA
-      words-ru-09  (tokens=1562) + NCA
-      words-ru-10  (tokens=1562) + NCA
-      words-ru-11  (tokens=1562) + NCA
-      words-ru-12  (tokens=1562) + NCA
-      words-ru-13  (tokens=1562) + NCA
-      words-ru-14  (tokens=1562) + NCA
-      words-ru-15  (tokens=1562) + NCA
-      words-ru-16  (tokens=1562) + NCA
-      words-ru-17  (tokens=1562) + NCA
-      words-ru-18  (tokens=1562) + NCA
-      words-ru-19  (tokens=1562) + NCA
-      words-ru-20  (tokens=1562) + NCA
-      words-ru-21  (tokens=1560) + NCA
-      words-ru-22  (tokens=1562) + NCA
-      words-ru-23  (tokens=1562) + NCA
-      words-ru-24  (tokens=1562) + NCA
-      words-ru-25  (tokens=1562) + NCA
-      words-ru-26  (tokens=1562) + NCA
-      words-ru-27  (tokens=1562) + NCA
-      words-ru-28  (tokens=1562) + NCA
-      words-ru-29  (tokens=1562) + NCA
-      words-ru-30  (tokens=1562) + NCA
-      words-ru-31  (tokens=1562) + NCA
-      words-ru-32  (tokens=1562) + NCA
-      words-ru-33  (tokens=1562) + NCA
-      words-ru-34  (tokens=1562) + NCA
-      words-ru-35  (tokens=1562) + NCA
-      words-ru-36  (tokens=1562) + NCA
-      words-ru-37  (tokens=1562) + NCA
-      words-ru-38  (tokens=1562) + NCA
-      words-ru-39  (tokens=1562) + NCA
-      words-ru-40  (tokens=1562) + NCA
-      words-ru-41  (tokens=1562) + NCA
-      words-ru-42  (tokens=1560) + NCA
-      words-ru-43  (tokens=1562) + NCA
-      words-ru-44  (tokens=1562) + NCA
-      words-ru-45  (tokens=1562) + NCA
-      words-ru-46  (tokens=1562) + NCA
-      words-ru-47  (tokens=1562) + NCA
-      words-ru-48  (tokens=1562) + NCA
-      words-ru-49  (tokens=1562) + NCA
-      words-ru-50  (tokens=1562) + NCA
-      words-ru-51  (tokens=1562) + NCA
-      words-ru-52  (tokens=1562) + NCA
-      words-ru-53  (tokens=1562) + NCA
-      words-ru-54  (tokens=1562) + NCA
-      words-ru-55  (tokens=1562) + NCA
-      words-ru-56  (tokens=1562) + NCA
-      words-ru-57  (tokens=1562) + NCA
-      words-ru-58  (tokens=1562) + NCA
-      words-ru-59  (tokens=1562) + NCA
-      words-ru-60  (tokens=1562) + NCA
-      words-ru-61  (tokens=1562) + NCA
-      words-ru-62  (tokens=1562) + NCA
-      words-ru-63  (tokens=1562) + NCA
+      lexicon-ru-00  (tokens=1560)
+      lexicon-ru-01  (tokens=1562)
+      lexicon-ru-02  (tokens=1562)
+      lexicon-ru-03  (tokens=1562)
+      lexicon-ru-04  (tokens=1562)
+      lexicon-ru-05  (tokens=1562)
+      lexicon-ru-06  (tokens=1562)
+      lexicon-ru-07  (tokens=1562)
+      lexicon-ru-08  (tokens=1562)
+      lexicon-ru-09  (tokens=1562)
+      lexicon-ru-10  (tokens=1562)
+      lexicon-ru-11  (tokens=1562)
+      lexicon-ru-12  (tokens=1562)
+      lexicon-ru-13  (tokens=1562)
+      lexicon-ru-14  (tokens=1562)
+      lexicon-ru-15  (tokens=1562)
+      lexicon-ru-16  (tokens=1562)
+      lexicon-ru-17  (tokens=1562)
+      lexicon-ru-18  (tokens=1562)
+      lexicon-ru-19  (tokens=1562)
+      lexicon-ru-20  (tokens=1562)
+      lexicon-ru-21  (tokens=1560)
+      lexicon-ru-22  (tokens=1562)
+      lexicon-ru-23  (tokens=1562)
+      lexicon-ru-24  (tokens=1562)
+      lexicon-ru-25  (tokens=1562)
+      lexicon-ru-26  (tokens=1562)
+      lexicon-ru-27  (tokens=1562)
+      lexicon-ru-28  (tokens=1562)
+      lexicon-ru-29  (tokens=1562)
+      lexicon-ru-30  (tokens=1562)
+      lexicon-ru-31  (tokens=1562)
+      lexicon-ru-32  (tokens=1562)
+      lexicon-ru-33  (tokens=1562)
+      lexicon-ru-34  (tokens=1562)
+      lexicon-ru-35  (tokens=1562)
+      lexicon-ru-36  (tokens=1562)
+      lexicon-ru-37  (tokens=1562)
+      lexicon-ru-38  (tokens=1562)
+      lexicon-ru-39  (tokens=1562)
+      lexicon-ru-40  (tokens=1562)
+      lexicon-ru-41  (tokens=1562)
+      lexicon-ru-42  (tokens=1560)
+      lexicon-ru-43  (tokens=1562)
+      lexicon-ru-44  (tokens=1562)
+      lexicon-ru-45  (tokens=1562)
+      lexicon-ru-46  (tokens=1562)
+      lexicon-ru-47  (tokens=1562)
+      lexicon-ru-48  (tokens=1562)
+      lexicon-ru-49  (tokens=1562)
+      lexicon-ru-50  (tokens=1562)
+      lexicon-ru-51  (tokens=1562)
+      lexicon-ru-52  (tokens=1562)
+      lexicon-ru-53  (tokens=1562)
+      lexicon-ru-54  (tokens=1562)
+      lexicon-ru-55  (tokens=1562)
+      lexicon-ru-56  (tokens=1562)
+      lexicon-ru-57  (tokens=1562)
+      lexicon-ru-58  (tokens=1562)
+      lexicon-ru-59  (tokens=1562)
+      lexicon-ru-60  (tokens=1562)
+      lexicon-ru-61  (tokens=1562)
+      lexicon-ru-62  (tokens=1562)
+      lexicon-ru-63  (tokens=1562)
 ```
 
 ## L2 sharding

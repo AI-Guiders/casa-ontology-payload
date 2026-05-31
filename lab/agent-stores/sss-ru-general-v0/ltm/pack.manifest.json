@@ -1,11 +1,162 @@
 {
   "schema_version": 1,
   "format": "ltm-pack-v0",
+  "prism_layout_version": 1,
+  "path_aliases": {
+    "ltm/l0": "ltm/memory/grapheme",
+    "ltm/l1": "ltm/memory/syllable",
+    "ltm/l2": "ltm/memory/lexicon",
+    "ltm/l3": "ltm/memory/phrase",
+    "ltm/h0": "ltm/memory/math",
+    "ltm/lat": "ltm/memory/lexicon",
+    "ltm/ctrl": "ltm/control"
+  },
   "field_version": 7,
-  "updated_at": "2026-05-31T16:59:41.903322+00:00",
+  "updated_at": "2026-05-31T18:00:39.098622+00:00",
   "lattices": {
+    "alphabet-en": {
+      "path": "ltm/memory/grapheme/alphabet-en.ltm",
+      "compress": null,
+      "raw_bytes": 1580,
+      "file_bytes": 1580,
+      "vocab": 52,
+      "placements": 234,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "grapheme.latn.",
+        "script": "latn",
+        "immutable": true,
+        "kind": "core_ltm_alphabet_v0",
+        "alphabet_en_n": 26
+      }
+    },
+    "alphabet-ru": {
+      "path": "ltm/memory/grapheme/alphabet-ru.ltm",
+      "compress": null,
+      "raw_bytes": 2330,
+      "file_bytes": 2330,
+      "vocab": 66,
+      "placements": 363,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "grapheme.cyrl.",
+        "script": "cyrl",
+        "immutable": true,
+        "kind": "core_ltm_alphabet_v0",
+        "alphabet_ru_n": 33
+      }
+    },
+    "control-attention": {
+      "path": "ltm/control/control-attention.ltm",
+      "compress": null,
+      "raw_bytes": 166,
+      "file_bytes": 166,
+      "vocab": 5,
+      "placements": 10,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_ctrl": 5,
+        "concept_prefix": "dan.",
+        "subsystem": "control"
+      }
+    },
+    "control-dmn": {
+      "path": "ltm/control/control-dmn.ltm",
+      "compress": null,
+      "raw_bytes": 95,
+      "file_bytes": 95,
+      "vocab": 2,
+      "placements": 4,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_ctrl": 0,
+        "concept_prefix": "",
+        "subsystem": "control"
+      }
+    },
+    "control-executive": {
+      "path": "ltm/control/control-executive.ltm",
+      "compress": null,
+      "raw_bytes": 195,
+      "file_bytes": 195,
+      "vocab": 6,
+      "placements": 12,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_ctrl": 3,
+        "concept_prefix": "task.",
+        "subsystem": "control"
+      }
+    },
+    "control-predict": {
+      "path": "ltm/control/control-predict.ltm",
+      "compress": null,
+      "raw_bytes": 107,
+      "file_bytes": 107,
+      "vocab": 3,
+      "placements": 6,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_ctrl": 4,
+        "concept_prefix": "predict.",
+        "subsystem": "control"
+      }
+    },
+    "control-salience": {
+      "path": "ltm/control/control-salience.ltm",
+      "compress": null,
+      "raw_bytes": 268,
+      "file_bytes": 268,
+      "vocab": 8,
+      "placements": 16,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_ctrl": 1,
+        "concept_prefix": "salience.",
+        "subsystem": "control"
+      }
+    },
+    "control-value": {
+      "path": "ltm/control/control-value.ltm",
+      "compress": null,
+      "raw_bytes": 103,
+      "file_bytes": 103,
+      "vocab": 3,
+      "placements": 6,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_ctrl": 6,
+        "concept_prefix": "value.",
+        "subsystem": "control"
+      }
+    },
+    "control-working-memory": {
+      "path": "ltm/control/control-working-memory.ltm",
+      "compress": null,
+      "raw_bytes": 176,
+      "file_bytes": 176,
+      "vocab": 5,
+      "placements": 13,
+      "width": 32,
+      "height": 32,
+      "meta": {
+        "z_ctrl": 2,
+        "concept_prefix": "wm.",
+        "subsystem": "control"
+      }
+    },
     "lexicon-ru-00": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-00.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-00.ltm",
       "compress": null,
       "raw_bytes": 56338,
       "file_bytes": 56338,
@@ -20,7 +171,7 @@
       }
     },
     "lexicon-ru-01": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-01.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-01.ltm",
       "compress": null,
       "raw_bytes": 55900,
       "file_bytes": 55900,
@@ -35,7 +186,7 @@
       }
     },
     "lexicon-ru-02": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-02.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-02.ltm",
       "compress": null,
       "raw_bytes": 58550,
       "file_bytes": 58550,
@@ -50,7 +201,7 @@
       }
     },
     "lexicon-ru-03": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-03.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-03.ltm",
       "compress": null,
       "raw_bytes": 59260,
       "file_bytes": 59260,
@@ -65,7 +216,7 @@
       }
     },
     "lexicon-ru-04": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-04.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-04.ltm",
       "compress": null,
       "raw_bytes": 55876,
       "file_bytes": 55876,
@@ -80,7 +231,7 @@
       }
     },
     "lexicon-ru-05": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-05.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-05.ltm",
       "compress": null,
       "raw_bytes": 56106,
       "file_bytes": 56106,
@@ -95,7 +246,7 @@
       }
     },
     "lexicon-ru-06": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-06.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-06.ltm",
       "compress": null,
       "raw_bytes": 57564,
       "file_bytes": 57564,
@@ -110,7 +261,7 @@
       }
     },
     "lexicon-ru-07": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-07.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-07.ltm",
       "compress": null,
       "raw_bytes": 60802,
       "file_bytes": 60802,
@@ -125,7 +276,7 @@
       }
     },
     "lexicon-ru-08": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-08.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-08.ltm",
       "compress": null,
       "raw_bytes": 62402,
       "file_bytes": 62402,
@@ -140,7 +291,7 @@
       }
     },
     "lexicon-ru-09": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-09.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-09.ltm",
       "compress": null,
       "raw_bytes": 55968,
       "file_bytes": 55968,
@@ -155,7 +306,7 @@
       }
     },
     "lexicon-ru-10": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-10.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-10.ltm",
       "compress": null,
       "raw_bytes": 56792,
       "file_bytes": 56792,
@@ -170,7 +321,7 @@
       }
     },
     "lexicon-ru-11": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-11.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-11.ltm",
       "compress": null,
       "raw_bytes": 56240,
       "file_bytes": 56240,
@@ -185,7 +336,7 @@
       }
     },
     "lexicon-ru-12": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-12.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-12.ltm",
       "compress": null,
       "raw_bytes": 58606,
       "file_bytes": 58606,
@@ -200,7 +351,7 @@
       }
     },
     "lexicon-ru-13": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-13.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-13.ltm",
       "compress": null,
       "raw_bytes": 56182,
       "file_bytes": 56182,
@@ -215,7 +366,7 @@
       }
     },
     "lexicon-ru-14": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-14.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-14.ltm",
       "compress": null,
       "raw_bytes": 55320,
       "file_bytes": 55320,
@@ -230,7 +381,7 @@
       }
     },
     "lexicon-ru-15": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-15.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-15.ltm",
       "compress": null,
       "raw_bytes": 62030,
       "file_bytes": 62030,
@@ -245,7 +396,7 @@
       }
     },
     "lexicon-ru-16": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-16.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-16.ltm",
       "compress": null,
       "raw_bytes": 62206,
       "file_bytes": 62206,
@@ -260,7 +411,7 @@
       }
     },
     "lexicon-ru-17": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-17.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-17.ltm",
       "compress": null,
       "raw_bytes": 56454,
       "file_bytes": 56454,
@@ -275,7 +426,7 @@
       }
     },
     "lexicon-ru-18": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-18.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-18.ltm",
       "compress": null,
       "raw_bytes": 60048,
       "file_bytes": 60048,
@@ -290,7 +441,7 @@
       }
     },
     "lexicon-ru-19": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-19.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-19.ltm",
       "compress": null,
       "raw_bytes": 57252,
       "file_bytes": 57252,
@@ -305,7 +456,7 @@
       }
     },
     "lexicon-ru-20": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-20.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-20.ltm",
       "compress": null,
       "raw_bytes": 55752,
       "file_bytes": 55752,
@@ -320,7 +471,7 @@
       }
     },
     "lexicon-ru-21": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-21.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-21.ltm",
       "compress": null,
       "raw_bytes": 57194,
       "file_bytes": 57194,
@@ -335,7 +486,7 @@
       }
     },
     "lexicon-ru-22": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-22.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-22.ltm",
       "compress": null,
       "raw_bytes": 59508,
       "file_bytes": 59508,
@@ -350,7 +501,7 @@
       }
     },
     "lexicon-ru-23": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-23.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-23.ltm",
       "compress": null,
       "raw_bytes": 56794,
       "file_bytes": 56794,
@@ -365,7 +516,7 @@
       }
     },
     "lexicon-ru-24": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-24.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-24.ltm",
       "compress": null,
       "raw_bytes": 53766,
       "file_bytes": 53766,
@@ -380,7 +531,7 @@
       }
     },
     "lexicon-ru-25": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-25.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-25.ltm",
       "compress": null,
       "raw_bytes": 54014,
       "file_bytes": 54014,
@@ -395,7 +546,7 @@
       }
     },
     "lexicon-ru-26": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-26.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-26.ltm",
       "compress": null,
       "raw_bytes": 56454,
       "file_bytes": 56454,
@@ -410,7 +561,7 @@
       }
     },
     "lexicon-ru-27": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-27.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-27.ltm",
       "compress": null,
       "raw_bytes": 58138,
       "file_bytes": 58138,
@@ -425,7 +576,7 @@
       }
     },
     "lexicon-ru-28": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-28.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-28.ltm",
       "compress": null,
       "raw_bytes": 55628,
       "file_bytes": 55628,
@@ -440,7 +591,7 @@
       }
     },
     "lexicon-ru-29": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-29.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-29.ltm",
       "compress": null,
       "raw_bytes": 60410,
       "file_bytes": 60410,
@@ -455,7 +606,7 @@
       }
     },
     "lexicon-ru-30": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-30.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-30.ltm",
       "compress": null,
       "raw_bytes": 63274,
       "file_bytes": 63274,
@@ -470,7 +621,7 @@
       }
     },
     "lexicon-ru-31": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-31.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-31.ltm",
       "compress": null,
       "raw_bytes": 65784,
       "file_bytes": 65784,
@@ -485,7 +636,7 @@
       }
     },
     "lexicon-ru-32": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-32.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-32.ltm",
       "compress": null,
       "raw_bytes": 57242,
       "file_bytes": 57242,
@@ -500,7 +651,7 @@
       }
     },
     "lexicon-ru-33": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-33.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-33.ltm",
       "compress": null,
       "raw_bytes": 61410,
       "file_bytes": 61410,
@@ -515,7 +666,7 @@
       }
     },
     "lexicon-ru-34": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-34.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-34.ltm",
       "compress": null,
       "raw_bytes": 58554,
       "file_bytes": 58554,
@@ -530,7 +681,7 @@
       }
     },
     "lexicon-ru-35": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-35.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-35.ltm",
       "compress": null,
       "raw_bytes": 61988,
       "file_bytes": 61988,
@@ -545,7 +696,7 @@
       }
     },
     "lexicon-ru-36": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-36.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-36.ltm",
       "compress": null,
       "raw_bytes": 56608,
       "file_bytes": 56608,
@@ -560,7 +711,7 @@
       }
     },
     "lexicon-ru-37": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-37.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-37.ltm",
       "compress": null,
       "raw_bytes": 64170,
       "file_bytes": 64170,
@@ -575,7 +726,7 @@
       }
     },
     "lexicon-ru-38": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-38.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-38.ltm",
       "compress": null,
       "raw_bytes": 58490,
       "file_bytes": 58490,
@@ -590,7 +741,7 @@
       }
     },
     "lexicon-ru-39": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-39.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-39.ltm",
       "compress": null,
       "raw_bytes": 63572,
       "file_bytes": 63572,
@@ -605,7 +756,7 @@
       }
     },
     "lexicon-ru-40": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-40.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-40.ltm",
       "compress": null,
       "raw_bytes": 61462,
       "file_bytes": 61462,
@@ -620,7 +771,7 @@
       }
     },
     "lexicon-ru-41": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-41.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-41.ltm",
       "compress": null,
       "raw_bytes": 61442,
       "file_bytes": 61442,
@@ -635,7 +786,7 @@
       }
     },
     "lexicon-ru-42": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-42.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-42.ltm",
       "compress": null,
       "raw_bytes": 65338,
       "file_bytes": 65338,
@@ -650,7 +801,7 @@
       }
     },
     "lexicon-ru-43": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-43.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-43.ltm",
       "compress": null,
       "raw_bytes": 64998,
       "file_bytes": 64998,
@@ -665,7 +816,7 @@
       }
     },
     "lexicon-ru-44": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-44.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-44.ltm",
       "compress": null,
       "raw_bytes": 65416,
       "file_bytes": 65416,
@@ -680,7 +831,7 @@
       }
     },
     "lexicon-ru-45": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-45.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-45.ltm",
       "compress": null,
       "raw_bytes": 58994,
       "file_bytes": 58994,
@@ -695,7 +846,7 @@
       }
     },
     "lexicon-ru-46": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-46.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-46.ltm",
       "compress": null,
       "raw_bytes": 65420,
       "file_bytes": 65420,
@@ -710,7 +861,7 @@
       }
     },
     "lexicon-ru-47": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-47.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-47.ltm",
       "compress": null,
       "raw_bytes": 57920,
       "file_bytes": 57920,
@@ -725,7 +876,7 @@
       }
     },
     "lexicon-ru-48": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-48.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-48.ltm",
       "compress": null,
       "raw_bytes": 55840,
       "file_bytes": 55840,
@@ -740,7 +891,7 @@
       }
     },
     "lexicon-ru-49": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-49.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-49.ltm",
       "compress": null,
       "raw_bytes": 58390,
       "file_bytes": 58390,
@@ -755,7 +906,7 @@
       }
     },
     "lexicon-ru-50": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-50.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-50.ltm",
       "compress": null,
       "raw_bytes": 57512,
       "file_bytes": 57512,
@@ -770,7 +921,7 @@
       }
     },
     "lexicon-ru-51": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-51.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-51.ltm",
       "compress": null,
       "raw_bytes": 58458,
       "file_bytes": 58458,
@@ -785,7 +936,7 @@
       }
     },
     "lexicon-ru-52": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-52.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-52.ltm",
       "compress": null,
       "raw_bytes": 59966,
       "file_bytes": 59966,
@@ -800,7 +951,7 @@
       }
     },
     "lexicon-ru-53": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-53.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-53.ltm",
       "compress": null,
       "raw_bytes": 58418,
       "file_bytes": 58418,
@@ -815,7 +966,7 @@
       }
     },
     "lexicon-ru-54": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-54.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-54.ltm",
       "compress": null,
       "raw_bytes": 55738,
       "file_bytes": 55738,
@@ -830,7 +981,7 @@
       }
     },
     "lexicon-ru-55": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-55.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-55.ltm",
       "compress": null,
       "raw_bytes": 55512,
       "file_bytes": 55512,
@@ -845,7 +996,7 @@
       }
     },
     "lexicon-ru-56": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-56.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-56.ltm",
       "compress": null,
       "raw_bytes": 56730,
       "file_bytes": 56730,
@@ -860,7 +1011,7 @@
       }
     },
     "lexicon-ru-57": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-57.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-57.ltm",
       "compress": null,
       "raw_bytes": 58030,
       "file_bytes": 58030,
@@ -875,7 +1026,7 @@
       }
     },
     "lexicon-ru-58": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-58.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-58.ltm",
       "compress": null,
       "raw_bytes": 56926,
       "file_bytes": 56926,
@@ -890,7 +1041,7 @@
       }
     },
     "lexicon-ru-59": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-59.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-59.ltm",
       "compress": null,
       "raw_bytes": 54916,
       "file_bytes": 54916,
@@ -905,7 +1056,7 @@
       }
     },
     "lexicon-ru-60": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-60.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-60.ltm",
       "compress": null,
       "raw_bytes": 55268,
       "file_bytes": 55268,
@@ -920,7 +1071,7 @@
       }
     },
     "lexicon-ru-61": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-61.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-61.ltm",
       "compress": null,
       "raw_bytes": 55842,
       "file_bytes": 55842,
@@ -935,7 +1086,7 @@
       }
     },
     "lexicon-ru-62": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-62.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-62.ltm",
       "compress": null,
       "raw_bytes": 54352,
       "file_bytes": 54352,
@@ -950,7 +1101,7 @@
       }
     },
     "lexicon-ru-63": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\ltm\\lat\\lexicon-ru-63.ltm",
+      "path": "ltm/memory/lexicon/lexicon-ru-63.ltm",
       "compress": null,
       "raw_bytes": 54692,
       "file_bytes": 54692,
@@ -51792,622 +51943,618 @@
   },
   "nca": {
     "models": {
-      "words-ru-52": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-52/model.pt",
-      "words-ru-53": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-53/model.pt",
-      "words-ru-54": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-54/model.pt",
-      "words-ru-55": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-55/model.pt",
-      "words-ru-56": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-56/model.pt",
-      "words-ru-57": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-57/model.pt",
-      "words-ru-58": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-58/model.pt",
-      "words-ru-59": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-59/model.pt",
-      "words-ru-60": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-60/model.pt",
-      "words-ru-61": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-61/model.pt",
-      "words-ru-62": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-62/model.pt",
-      "words-ru-63": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-63/model.pt",
-      "words-ru-05": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-05/model.pt",
-      "words-ru-06": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-06/model.pt",
-      "words-ru-07": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-07/model.pt",
-      "words-ru-08": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-08/model.pt",
-      "words-ru-09": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-09/model.pt",
-      "words-ru-10": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-10/model.pt",
-      "words-ru-11": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-11/model.pt",
-      "words-ru-12": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-12/model.pt",
-      "words-ru-13": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-13/model.pt",
-      "words-ru-14": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-14/model.pt",
-      "words-ru-15": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-15/model.pt",
-      "words-ru-16": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-16/model.pt",
-      "words-ru-17": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-17/model.pt",
-      "words-ru-18": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-18/model.pt",
-      "words-ru-19": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-19/model.pt",
-      "words-ru-20": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-20/model.pt",
-      "words-ru-21": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-21/model.pt",
-      "words-ru-22": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-22/model.pt",
-      "words-ru-23": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-23/model.pt",
-      "words-ru-24": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-24/model.pt",
-      "words-ru-25": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-25/model.pt",
-      "words-ru-26": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-26/model.pt",
-      "words-ru-27": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-27/model.pt",
-      "words-ru-28": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-28/model.pt",
-      "words-ru-29": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-29/model.pt",
-      "words-ru-30": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-30/model.pt",
-      "words-ru-31": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-31/model.pt",
-      "words-ru-32": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-32/model.pt",
-      "words-ru-33": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-33/model.pt",
-      "words-ru-34": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-34/model.pt",
-      "words-ru-35": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-35/model.pt",
-      "words-ru-36": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-36/model.pt",
-      "words-ru-37": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-37/model.pt",
-      "words-ru-38": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-38/model.pt",
-      "words-ru-39": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-39/model.pt",
-      "words-ru-40": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-40/model.pt",
-      "words-ru-41": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-41/model.pt",
-      "words-ru-42": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-42/model.pt",
-      "words-ru-43": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-43/model.pt",
-      "words-ru-44": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-44/model.pt",
-      "words-ru-45": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-45/model.pt",
-      "words-ru-46": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-46/model.pt",
-      "words-ru-47": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-47/model.pt",
-      "words-ru-48": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-48/model.pt",
-      "words-ru-49": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-49/model.pt",
-      "words-ru-50": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-50/model.pt",
-      "words-ru-51": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-51/model.pt",
-      "lattice_predict": "lab/agent-stores/sss-ru-general-v0/nca/lattice_predict/model.pt",
-      "lattice_dan": "lab/agent-stores/sss-ru-general-v0/nca/lattice_dan/model.pt",
-      "lattice_value": "lab/agent-stores/sss-ru-general-v0/nca/lattice_value/model.pt",
-      "words-ru-00": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-00/model.pt",
-      "words-ru-01": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-01/model.pt",
-      "words-ru-02": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-02/model.pt",
-      "words-ru-03": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-03/model.pt",
-      "words-ru-04": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-04/model.pt"
+      "words-ru-52": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-52/model.pt",
+      "words-ru-53": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-53/model.pt",
+      "words-ru-54": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-54/model.pt",
+      "words-ru-55": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-55/model.pt",
+      "words-ru-56": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-56/model.pt",
+      "words-ru-57": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-57/model.pt",
+      "words-ru-58": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-58/model.pt",
+      "words-ru-59": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-59/model.pt",
+      "words-ru-60": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-60/model.pt",
+      "words-ru-61": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-61/model.pt",
+      "words-ru-62": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-62/model.pt",
+      "words-ru-63": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-63/model.pt",
+      "words-ru-05": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-05/model.pt",
+      "words-ru-06": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-06/model.pt",
+      "words-ru-07": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-07/model.pt",
+      "words-ru-08": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-08/model.pt",
+      "words-ru-09": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-09/model.pt",
+      "words-ru-10": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-10/model.pt",
+      "words-ru-11": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-11/model.pt",
+      "words-ru-12": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-12/model.pt",
+      "words-ru-13": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-13/model.pt",
+      "words-ru-14": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-14/model.pt",
+      "words-ru-15": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-15/model.pt",
+      "words-ru-16": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-16/model.pt",
+      "words-ru-17": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-17/model.pt",
+      "words-ru-18": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-18/model.pt",
+      "words-ru-19": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-19/model.pt",
+      "words-ru-20": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-20/model.pt",
+      "words-ru-21": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-21/model.pt",
+      "words-ru-22": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-22/model.pt",
+      "words-ru-23": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-23/model.pt",
+      "words-ru-24": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-24/model.pt",
+      "words-ru-25": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-25/model.pt",
+      "words-ru-26": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-26/model.pt",
+      "words-ru-27": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-27/model.pt",
+      "words-ru-28": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-28/model.pt",
+      "words-ru-29": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-29/model.pt",
+      "words-ru-30": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-30/model.pt",
+      "words-ru-31": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-31/model.pt",
+      "words-ru-32": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-32/model.pt",
+      "words-ru-33": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-33/model.pt",
+      "words-ru-34": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-34/model.pt",
+      "words-ru-35": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-35/model.pt",
+      "words-ru-36": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-36/model.pt",
+      "words-ru-37": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-37/model.pt",
+      "words-ru-38": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-38/model.pt",
+      "words-ru-39": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-39/model.pt",
+      "words-ru-40": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-40/model.pt",
+      "words-ru-41": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-41/model.pt",
+      "words-ru-42": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-42/model.pt",
+      "words-ru-43": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-43/model.pt",
+      "words-ru-44": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-44/model.pt",
+      "words-ru-45": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-45/model.pt",
+      "words-ru-46": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-46/model.pt",
+      "words-ru-47": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-47/model.pt",
+      "words-ru-48": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-48/model.pt",
+      "words-ru-49": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-49/model.pt",
+      "words-ru-50": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-50/model.pt",
+      "words-ru-51": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-51/model.pt",
+      "lattice_predict": "lab/agent-stores/sss-ru-general-v0/nca/control-predict/model.pt",
+      "lattice_dan": "lab/agent-stores/sss-ru-general-v0/nca/control-attention/model.pt",
+      "lattice_value": "lab/agent-stores/sss-ru-general-v0/nca/control-value/model.pt",
+      "words-ru-00": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-00/model.pt",
+      "words-ru-01": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-01/model.pt",
+      "words-ru-02": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-02/model.pt",
+      "words-ru-03": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-03/model.pt",
+      "words-ru-04": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-04/model.pt"
     }
   },
   "totals": {
-    "lattice_count": 64,
-    "raw_bytes": 3746226,
-    "file_bytes": 3746226
+    "lattice_count": 73,
+    "raw_bytes": 3751246,
+    "file_bytes": 3751246
   },
   "nca_train_registry": {
     "schema_version": 1,
     "kind": "nca_train_registry_v0",
     "store_id": "sss-ru-general-v0",
-    "updated_at": "2026-05-31T16:59:41.887790+00:00",
+    "updated_at": "2026-05-31T18:00:26.360945+00:00",
     "field_version": 7,
     "pending": [],
     "lattices": {
-      "words-ru-00": {
+      "lexicon-ru-00": {
         "last_trained_at": "2026-05-31T15:37:54.126572+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1560,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-00/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-00/model.pt",
         "last_repair_ratio": 2.338,
         "last_repair_at": "2026-05-31T15:37:54.129581+00:00"
       },
-      "words-ru-01": {
+      "lexicon-ru-01": {
         "last_trained_at": "2026-05-31T15:38:52.183335+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-01/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-01/model.pt",
         "last_repair_ratio": 2.376,
         "last_repair_at": "2026-05-31T15:38:52.186336+00:00"
       },
-      "words-ru-02": {
+      "lexicon-ru-02": {
         "last_trained_at": "2026-05-31T15:40:01.029487+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-02/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-02/model.pt",
         "last_repair_ratio": 2.342,
         "last_repair_at": "2026-05-31T15:40:01.031530+00:00"
       },
-      "words-ru-03": {
+      "lexicon-ru-03": {
         "last_trained_at": "2026-05-31T15:41:03.689439+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-03/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-03/model.pt",
         "last_repair_ratio": 2.318,
         "last_repair_at": "2026-05-31T15:41:03.692437+00:00"
       },
-      "words-ru-04": {
+      "lexicon-ru-04": {
         "last_trained_at": "2026-05-31T15:42:37.422038+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-04/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-04/model.pt",
         "last_repair_ratio": 2.356,
         "last_repair_at": "2026-05-31T15:42:37.424354+00:00"
       },
-      "words-ru-05": {
+      "lexicon-ru-05": {
         "last_trained_at": "2026-05-31T15:43:41.267360+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-05/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-05/model.pt",
         "last_repair_ratio": 2.401,
         "last_repair_at": "2026-05-31T15:43:41.269607+00:00"
       },
-      "words-ru-06": {
+      "lexicon-ru-06": {
         "last_trained_at": "2026-05-31T15:44:42.742735+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-06/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-06/model.pt",
         "last_repair_ratio": 2.36,
         "last_repair_at": "2026-05-31T15:44:42.745663+00:00"
       },
-      "words-ru-07": {
+      "lexicon-ru-07": {
         "last_trained_at": "2026-05-31T15:45:46.121582+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-07/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-07/model.pt",
         "last_repair_ratio": 2.385,
         "last_repair_at": "2026-05-31T15:45:46.123025+00:00"
       },
-      "words-ru-08": {
+      "lexicon-ru-08": {
         "last_trained_at": "2026-05-31T15:46:51.331723+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-08/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-08/model.pt",
         "last_repair_ratio": 2.367,
         "last_repair_at": "2026-05-31T15:46:51.335714+00:00"
       },
-      "words-ru-09": {
+      "lexicon-ru-09": {
         "last_trained_at": "2026-05-31T15:47:53.802375+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-09/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-09/model.pt",
         "last_repair_ratio": 2.356,
         "last_repair_at": "2026-05-31T15:47:53.805890+00:00"
       },
-      "words-ru-10": {
+      "lexicon-ru-10": {
         "last_trained_at": "2026-05-31T15:49:01.365722+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-10/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-10/model.pt",
         "last_repair_ratio": 2.335,
         "last_repair_at": "2026-05-31T15:49:01.368761+00:00"
       },
-      "words-ru-11": {
+      "lexicon-ru-11": {
         "last_trained_at": "2026-05-31T15:50:04.857170+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-11/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-11/model.pt",
         "last_repair_ratio": 2.388,
         "last_repair_at": "2026-05-31T15:50:04.858950+00:00"
       },
-      "words-ru-12": {
+      "lexicon-ru-12": {
         "last_trained_at": "2026-05-31T15:51:16.378217+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-12/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-12/model.pt",
         "last_repair_ratio": 2.397,
         "last_repair_at": "2026-05-31T15:51:16.380736+00:00"
       },
-      "words-ru-13": {
+      "lexicon-ru-13": {
         "last_trained_at": "2026-05-31T15:52:18.151795+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-13/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-13/model.pt",
         "last_repair_ratio": 2.388,
         "last_repair_at": "2026-05-31T15:52:18.154803+00:00"
       },
-      "words-ru-14": {
+      "lexicon-ru-14": {
         "last_trained_at": "2026-05-31T15:53:28.544699+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-14/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-14/model.pt",
         "last_repair_ratio": 2.376,
         "last_repair_at": "2026-05-31T15:53:28.547752+00:00"
       },
-      "words-ru-15": {
+      "lexicon-ru-15": {
         "last_trained_at": "2026-05-31T15:54:33.490023+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-15/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-15/model.pt",
         "last_repair_ratio": 2.424,
         "last_repair_at": "2026-05-31T15:54:33.492677+00:00"
       },
-      "words-ru-16": {
+      "lexicon-ru-16": {
         "last_trained_at": "2026-05-31T15:55:42.072390+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-16/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-16/model.pt",
         "last_repair_ratio": 2.361,
         "last_repair_at": "2026-05-31T15:55:42.074581+00:00"
       },
-      "words-ru-17": {
+      "lexicon-ru-17": {
         "last_trained_at": "2026-05-31T15:56:51.364890+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-17/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-17/model.pt",
         "last_repair_ratio": 2.312,
         "last_repair_at": "2026-05-31T15:56:51.367387+00:00"
       },
-      "words-ru-18": {
+      "lexicon-ru-18": {
         "last_trained_at": "2026-05-31T15:58:00.444869+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-18/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-18/model.pt",
         "last_repair_ratio": 2.307,
         "last_repair_at": "2026-05-31T15:58:00.447160+00:00"
       },
-      "words-ru-19": {
+      "lexicon-ru-19": {
         "last_trained_at": "2026-05-31T15:59:06.992201+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-19/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-19/model.pt",
         "last_repair_ratio": 2.417,
         "last_repair_at": "2026-05-31T15:59:06.994203+00:00"
       },
-      "words-ru-20": {
+      "lexicon-ru-20": {
         "last_trained_at": "2026-05-31T16:00:08.977290+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-20/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-20/model.pt",
         "last_repair_ratio": 2.3,
         "last_repair_at": "2026-05-31T16:00:08.979410+00:00"
       },
-      "words-ru-21": {
+      "lexicon-ru-21": {
         "last_trained_at": "2026-05-31T16:01:12.201541+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1560,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-21/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-21/model.pt",
         "last_repair_ratio": 2.4,
         "last_repair_at": "2026-05-31T16:01:12.203746+00:00"
       },
-      "words-ru-22": {
+      "lexicon-ru-22": {
         "last_trained_at": "2026-05-31T16:03:17.940826+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-22/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-22/model.pt",
         "last_repair_ratio": 2.335,
         "last_repair_at": "2026-05-31T16:03:17.942836+00:00"
       },
-      "words-ru-23": {
+      "lexicon-ru-23": {
         "last_trained_at": "2026-05-31T16:04:53.752257+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-23/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-23/model.pt",
         "last_repair_ratio": 2.352,
         "last_repair_at": "2026-05-31T16:04:53.754537+00:00"
       },
-      "words-ru-24": {
+      "lexicon-ru-24": {
         "last_trained_at": "2026-05-31T16:06:01.569059+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-24/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-24/model.pt",
         "last_repair_ratio": 2.401,
         "last_repair_at": "2026-05-31T16:06:01.572620+00:00"
       },
-      "words-ru-25": {
+      "lexicon-ru-25": {
         "last_trained_at": "2026-05-31T16:07:33.607084+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-25/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-25/model.pt",
         "last_repair_ratio": 2.369,
         "last_repair_at": "2026-05-31T16:07:33.609090+00:00"
       },
-      "words-ru-26": {
+      "lexicon-ru-26": {
         "last_trained_at": "2026-05-31T16:08:40.615766+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-26/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-26/model.pt",
         "last_repair_ratio": 2.309,
         "last_repair_at": "2026-05-31T16:08:40.617996+00:00"
       },
-      "words-ru-27": {
+      "lexicon-ru-27": {
         "last_trained_at": "2026-05-31T16:09:46.645849+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-27/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-27/model.pt",
         "last_repair_ratio": 2.382,
         "last_repair_at": "2026-05-31T16:09:46.648365+00:00"
       },
-      "words-ru-28": {
+      "lexicon-ru-28": {
         "last_trained_at": "2026-05-31T16:11:18.987627+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-28/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-28/model.pt",
         "last_repair_ratio": 2.388,
         "last_repair_at": "2026-05-31T16:11:18.991888+00:00"
       },
-      "words-ru-29": {
+      "lexicon-ru-29": {
         "last_trained_at": "2026-05-31T16:12:30.465585+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-29/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-29/model.pt",
         "last_repair_ratio": 2.382,
         "last_repair_at": "2026-05-31T16:12:30.469331+00:00"
       },
-      "words-ru-30": {
+      "lexicon-ru-30": {
         "last_trained_at": "2026-05-31T16:13:38.125557+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-30/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-30/model.pt",
         "last_repair_ratio": 2.282,
         "last_repair_at": "2026-05-31T16:13:38.129577+00:00"
       },
-      "words-ru-31": {
+      "lexicon-ru-31": {
         "last_trained_at": "2026-05-31T16:15:03.395211+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-31/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-31/model.pt",
         "last_repair_ratio": 2.329,
         "last_repair_at": "2026-05-31T16:15:03.397274+00:00"
       },
-      "words-ru-32": {
+      "lexicon-ru-32": {
         "last_trained_at": "2026-05-31T16:16:17.213530+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-32/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-32/model.pt",
         "last_repair_ratio": 2.306,
         "last_repair_at": "2026-05-31T16:16:17.216245+00:00"
       },
-      "words-ru-33": {
+      "lexicon-ru-33": {
         "last_trained_at": "2026-05-31T16:17:33.057912+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-33/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-33/model.pt",
         "last_repair_ratio": 2.335,
         "last_repair_at": "2026-05-31T16:17:33.061392+00:00"
       },
-      "words-ru-34": {
+      "lexicon-ru-34": {
         "last_trained_at": "2026-05-31T16:18:45.257466+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-34/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-34/model.pt",
         "last_repair_ratio": 2.378,
         "last_repair_at": "2026-05-31T16:18:45.260862+00:00"
       },
-      "words-ru-35": {
+      "lexicon-ru-35": {
         "last_trained_at": "2026-05-31T16:19:58.104806+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-35/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-35/model.pt",
         "last_repair_ratio": 2.314,
         "last_repair_at": "2026-05-31T16:19:58.107499+00:00"
       },
-      "words-ru-36": {
+      "lexicon-ru-36": {
         "last_trained_at": "2026-05-31T16:21:19.701431+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-36/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-36/model.pt",
         "last_repair_ratio": 2.334,
         "last_repair_at": "2026-05-31T16:21:19.704488+00:00"
       },
-      "words-ru-37": {
+      "lexicon-ru-37": {
         "last_trained_at": "2026-05-31T16:22:30.663106+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-37/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-37/model.pt",
         "last_repair_ratio": 2.342,
         "last_repair_at": "2026-05-31T16:22:30.665112+00:00"
       },
-      "words-ru-38": {
+      "lexicon-ru-38": {
         "last_trained_at": "2026-05-31T16:24:19.986576+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-38/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-38/model.pt",
         "last_repair_ratio": 2.373,
         "last_repair_at": "2026-05-31T16:24:19.989739+00:00"
       },
-      "words-ru-39": {
+      "lexicon-ru-39": {
         "last_trained_at": "2026-05-31T16:25:27.029112+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-39/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-39/model.pt",
         "last_repair_ratio": 2.315,
         "last_repair_at": "2026-05-31T16:25:27.032113+00:00"
       },
-      "words-ru-40": {
+      "lexicon-ru-40": {
         "last_trained_at": "2026-05-31T16:26:36.459120+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-40/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-40/model.pt",
         "last_repair_ratio": 2.365,
         "last_repair_at": "2026-05-31T16:26:36.461339+00:00"
       },
-      "words-ru-41": {
+      "lexicon-ru-41": {
         "last_trained_at": "2026-05-31T16:27:43.200595+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-41/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-41/model.pt",
         "last_repair_ratio": 2.411,
         "last_repair_at": "2026-05-31T16:27:43.202595+00:00"
       },
-      "words-ru-42": {
+      "lexicon-ru-42": {
         "last_trained_at": "2026-05-31T16:28:51.335441+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1560,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-42/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-42/model.pt",
         "last_repair_ratio": 2.382,
         "last_repair_at": "2026-05-31T16:28:51.337441+00:00"
       },
-      "words-ru-43": {
+      "lexicon-ru-43": {
         "last_trained_at": "2026-05-31T16:29:55.184633+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-43/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-43/model.pt",
         "last_repair_ratio": 2.312,
         "last_repair_at": "2026-05-31T16:29:55.186777+00:00"
       },
-      "words-ru-44": {
+      "lexicon-ru-44": {
         "last_trained_at": "2026-05-31T16:31:07.798911+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-44/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-44/model.pt",
         "last_repair_ratio": 2.312,
         "last_repair_at": "2026-05-31T16:31:07.801945+00:00"
       },
-      "words-ru-45": {
+      "lexicon-ru-45": {
         "last_trained_at": "2026-05-31T16:32:45.561422+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-45/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-45/model.pt",
         "last_repair_ratio": 2.312,
         "last_repair_at": "2026-05-31T16:32:45.566236+00:00"
       },
-      "words-ru-46": {
+      "lexicon-ru-46": {
         "last_trained_at": "2026-05-31T16:34:30.093655+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-46/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-46/model.pt",
         "last_repair_ratio": 2.346,
         "last_repair_at": "2026-05-31T16:34:30.096179+00:00"
       },
-      "words-ru-47": {
+      "lexicon-ru-47": {
         "last_trained_at": "2026-05-31T16:35:39.542097+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-47/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-47/model.pt",
         "last_repair_ratio": 2.346,
         "last_repair_at": "2026-05-31T16:35:39.544609+00:00"
       },
-      "words-ru-48": {
+      "lexicon-ru-48": {
         "last_trained_at": "2026-05-31T16:36:53.121203+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-48/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-48/model.pt",
         "last_repair_ratio": 2.41,
         "last_repair_at": "2026-05-31T16:36:53.122206+00:00"
       },
-      "words-ru-49": {
+      "lexicon-ru-49": {
         "last_trained_at": "2026-05-31T16:38:07.409487+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-49/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-49/model.pt",
         "last_repair_ratio": 2.385,
         "last_repair_at": "2026-05-31T16:38:07.412516+00:00"
       },
-      "words-ru-50": {
+      "lexicon-ru-50": {
         "last_trained_at": "2026-05-31T16:39:19.180747+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-50/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-50/model.pt",
         "last_repair_ratio": 2.375,
         "last_repair_at": "2026-05-31T16:39:19.183111+00:00"
       },
-      "words-ru-51": {
+      "lexicon-ru-51": {
         "last_trained_at": "2026-05-31T16:40:34.563513+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-51/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-51/model.pt",
         "last_repair_ratio": 2.406,
         "last_repair_at": "2026-05-31T16:40:34.566541+00:00"
       },
-      "words-ru-52": {
+      "lexicon-ru-52": {
         "last_trained_at": "2026-05-31T16:41:48.351592+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-52/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-52/model.pt",
         "last_repair_ratio": 2.316,
         "last_repair_at": "2026-05-31T16:41:48.354383+00:00"
       },
-      "words-ru-53": {
+      "lexicon-ru-53": {
         "last_trained_at": "2026-05-31T16:43:14.119883+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-53/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-53/model.pt",
         "last_repair_ratio": 2.375,
         "last_repair_at": "2026-05-31T16:43:14.122383+00:00"
       },
-      "words-ru-54": {
+      "lexicon-ru-54": {
         "last_trained_at": "2026-05-31T16:44:39.138033+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-54/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-54/model.pt",
         "last_repair_ratio": 2.344,
         "last_repair_at": "2026-05-31T16:44:39.142908+00:00"
       },
-      "words-ru-55": {
+      "lexicon-ru-55": {
         "last_trained_at": "2026-05-31T16:46:04.474953+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-55/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-55/model.pt",
         "last_repair_ratio": 2.392,
         "last_repair_at": "2026-05-31T16:46:04.477996+00:00"
       },
-      "words-ru-56": {
+      "lexicon-ru-56": {
         "last_trained_at": "2026-05-31T16:47:20.509126+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-56/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-56/model.pt",
         "last_repair_ratio": 2.417,
         "last_repair_at": "2026-05-31T16:47:20.512510+00:00"
       },
-      "words-ru-57": {
+      "lexicon-ru-57": {
         "last_trained_at": "2026-05-31T16:49:01.608259+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-57/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-57/model.pt",
         "last_repair_ratio": 2.373,
         "last_repair_at": "2026-05-31T16:49:01.611149+00:00"
       },
-      "words-ru-58": {
+      "lexicon-ru-58": {
         "last_trained_at": "2026-05-31T16:50:17.652832+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-58/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-58/model.pt",
         "last_repair_ratio": 2.289,
         "last_repair_at": "2026-05-31T16:50:17.654343+00:00"
       },
-      "words-ru-59": {
+      "lexicon-ru-59": {
         "last_trained_at": "2026-05-31T16:51:21.722801+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-59/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-59/model.pt",
         "last_repair_ratio": 2.306,
         "last_repair_at": "2026-05-31T16:51:21.725810+00:00"
       },
-      "words-ru-60": {
+      "lexicon-ru-60": {
         "last_trained_at": "2026-05-31T16:52:35.541726+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-60/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-60/model.pt",
         "last_repair_ratio": 2.32,
         "last_repair_at": "2026-05-31T16:52:35.544391+00:00"
       },
-      "words-ru-61": {
+      "lexicon-ru-61": {
         "last_trained_at": "2026-05-31T16:53:40.427230+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-61/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-61/model.pt",
         "last_repair_ratio": 2.319,
         "last_repair_at": "2026-05-31T16:53:40.430664+00:00"
       },
-      "words-ru-62": {
+      "lexicon-ru-62": {
         "last_trained_at": "2026-05-31T16:54:52.091360+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-62/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-62/model.pt",
         "last_repair_ratio": 2.385,
         "last_repair_at": "2026-05-31T16:54:52.094870+00:00"
       },
-      "words-ru-63": {
+      "lexicon-ru-63": {
         "last_trained_at": "2026-05-31T16:55:57.960236+00:00",
         "field_version_at_train": 6,
         "token_count_at_train": 1562,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-63/model.pt",
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lexicon-ru-63/model.pt",
         "last_repair_ratio": 2.405,
         "last_repair_at": "2026-05-31T16:55:57.962246+00:00"
       },
-      "lattice_predict": {
+      "control-predict": {
         "last_trained_at": "2026-05-31T16:59:23.742786+00:00",
         "field_version_at_train": 7,
         "token_count_at_train": 0,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_predict/model.pt"
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/control-predict/model.pt"
       },
-      "lattice_dan": {
+      "control-attention": {
         "last_trained_at": "2026-05-31T16:59:32.938379+00:00",
         "field_version_at_train": 7,
         "token_count_at_train": 0,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_dan/model.pt"
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/control-attention/model.pt"
       },
-      "lattice_value": {
+      "control-value": {
         "last_trained_at": "2026-05-31T16:59:41.887264+00:00",
         "field_version_at_train": 7,
         "token_count_at_train": 0,
-        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/lattice_value/model.pt"
+        "model_path": "lab/agent-stores/sss-ru-general-v0/nca/control-value/model.pt"
       }
     }
-  },
-  "lattice_naming": {
-    "version": 1,
-    "migrated_at": "2026-05-31T18:00:25.875734+00:00"
   }
 }
