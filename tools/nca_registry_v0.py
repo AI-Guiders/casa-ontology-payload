@@ -12,7 +12,7 @@ from typing import Any
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import l2_lexicon_lattice_ids, nca_model_registry  # type: ignore
 from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
-from store_layout_v0 import nca_lattice_dir, nca_train_registry_path  # type: ignore
+from store_layout_v0 import nca_lattice_dir, nca_train_registry_path, rel_to_repo  # type: ignore
 
 
 def _utc_now() -> str:
@@ -108,7 +108,7 @@ def mark_lattice_trained(
         "last_trained_at": _utc_now(),
         "field_version_at_train": int(state.get("field_version") or 0),
         "token_count_at_train": lattice_token_count(state, lattice_id),
-        "model_path": str(model) if model else None,
+        "model_path": rel_to_repo(model),
     }
     if repair_ratio is not None:
         entry["last_repair_ratio"] = round(float(repair_ratio), 3)
@@ -136,7 +136,7 @@ def sync_registry_from_store(store_dir: Path, state: dict) -> dict[str, Any]:
             "last_trained_at": cur.get("last_trained_at") or _utc_now(),
             "field_version_at_train": int(cur.get("field_version_at_train") or state.get("field_version") or 0),
             "token_count_at_train": lattice_token_count(state, lid),
-            "model_path": str(model),
+            "model_path": rel_to_repo(model),
             "synced_from_disk": True,
         }
     reg["field_version"] = int(state.get("field_version") or 0)
@@ -200,7 +200,7 @@ def find_stale_shards(
                 "field_version_at_train": meta.get("field_version_at_train"),
                 "token_count_at_train": meta.get("token_count_at_train"),
                 "last_trained_at": meta.get("last_trained_at"),
-                "model_path": str(model) if model else None,
+                "model_path": rel_to_repo(model),
                 "repair_ratio": repair_ratio,
             }
         )

@@ -13,12 +13,34 @@ from ltm_pack_v0 import lattice_subdir, write_ltm  # type: ignore
 from control_cylinders_v0 import control_lattices, has_control_stack  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import l2_en_word_lattice_ids, l2_lexicon_lattice_ids, l2_word_lattice_ids  # type: ignore
-from store_layout_v0 import nca_train_registry_path  # type: ignore
+from store_layout_v0 import nca_train_registry_path, rel_to_repo  # type: ignore
 
 
 def _lattice_meta(lat: dict) -> dict[str, Any]:
     skip = {"width", "height", "cells"}
     return {k: v for k, v in lat.items() if k not in skip}
+
+
+def _rel_nca_block(nca: dict | None) -> dict | None:
+    """Copy the state NCA block with model paths rewritten repo-relative."""
+    if not nca:
+        return nca
+    out = dict(nca)
+    models = nca.get("models")
+    if isinstance(models, dict):
+        out["models"] = {lid: rel_to_repo(p) for lid, p in models.items()}
+    return out
+
+
+def _rel_registry(reg: dict) -> dict:
+    """Copy a train registry with model paths rewritten repo-relative."""
+    out = dict(reg)
+    lattices = reg.get("lattices")
+    if isinstance(lattices, dict):
+        out["lattices"] = {
+            lid: {**e, "model_path": rel_to_repo(e.get("model_path"))} for lid, e in lattices.items()
+        }
+    return out
 
 
 def control_lattice_ids(state: dict) -> list[str]:
@@ -38,6 +60,7 @@ def export_pack(
     state = ensure_prisms(state)
     mem = memory_lattices(state)
     ctrl = control_lattices(state) if has_control_stack(state) else {}
+    nca_block = _rel_nca_block(state.get("nca"))
     merged = {**mem, **ctrl}
     ids = lattice_ids or sorted(merged.keys())
     rows: dict[str, Any] = {}
@@ -51,7 +74,11 @@ def export_pack(
         sub = lattice_subdir(lid)
         path = out_dir / sub / f"{lid}.ltm"
         info = write_ltm(path, lat, compress=compress)
-        rows[lid] = {**info, "meta": _lattice_meta(lat)}
+        try:
+            store_rel = path.relative_to(out_dir.parent).as_posix()
+        except ValueError:
+            store_rel = rel_to_repo(path)
+        rows[lid] = {**info, "path": store_rel, "meta": _lattice_meta(lat)}
         total_raw += int(info["raw_bytes"])
         total_file += int(info["file_bytes"])
 
@@ -62,7 +89,7 @@ def export_pack(
         "updated_at": state.get("updated_at"),
         "lattices": rows,
         "l2_sharding": state.get("l2_sharding"),
-        "nca": state.get("nca"),
+        "nca": nca_block,
         "totals": {
             "lattice_count": len(rows),
             "raw_bytes": total_raw,
@@ -72,7 +99,9 @@ def export_pack(
     if store_dir is not None:
         reg_path = nca_train_registry_path(store_dir)
         if reg_path.is_file():
-            manifest["nca_train_registry"] = json.loads(reg_path.read_text(encoding="utf-8"))
+            manifest["nca_train_registry"] = _rel_registry(
+                json.loads(reg_path.read_text(encoding="utf-8"))
+            )
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "pack.manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2),

@@ -8,7 +8,7 @@
   "updated_at": "2026-05-30T21:38:40.121780+00:00",
   "lattices": {
     "L0_vk_physical": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-core\\vk-layouts-v0\\ltm\\l0\\L0_vk_physical.ltm",
+      "path": "ltm/l0/L0_vk_physical.ltm",
       "compress": null,
       "raw_bytes": 12156,
       "file_bytes": 12156,
@@ -28,7 +28,7 @@
       }
     },
     "L0_layout_qwerty_us": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-core\\vk-layouts-v0\\ltm\\l0\\L0_layout_qwerty_us.ltm",
+      "path": "ltm/l0/L0_layout_qwerty_us.ltm",
       "compress": null,
       "raw_bytes": 7324,
       "file_bytes": 7324,
@@ -51,7 +51,7 @@
       }
     },
     "L0_layout_jcuken_ru": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-core\\vk-layouts-v0\\ltm\\l0\\L0_layout_jcuken_ru.ltm",
+      "path": "ltm/l0/L0_layout_jcuken_ru.ltm",
       "compress": null,
       "raw_bytes": 7392,
       "file_bytes": 7392,
@@ -74,7 +74,7 @@
       }
     },
     "L0_punct_latn": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-core\\vk-layouts-v0\\ltm\\l0\\L0_punct_latn.ltm",
+      "path": "ltm/l0/L0_punct_latn.ltm",
       "compress": null,
       "raw_bytes": 4343,
       "file_bytes": 4343,
@@ -93,7 +93,7 @@
       }
     },
     "L0_punct_cyrl": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-core\\vk-layouts-v0\\ltm\\l0\\L0_punct_cyrl.ltm",
+      "path": "ltm/l0/L0_punct_cyrl.ltm",
       "compress": null,
       "raw_bytes": 2517,
       "file_bytes": 2517,

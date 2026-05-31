@@ -5,7 +5,7 @@
   "updated_at": "2026-05-30T20:49:21.537628+00:00",
   "lattices": {
     "lattice_cen": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\ltm\\ctrl\\lattice_cen.ltm",
+      "path": "ltm/ctrl/lattice_cen.ltm",
       "compress": null,
       "raw_bytes": 195,
       "file_bytes": 195,
@@ -20,7 +20,7 @@
       }
     },
     "lattice_dmn": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\ltm\\ctrl\\lattice_dmn.ltm",
+      "path": "ltm/ctrl/lattice_dmn.ltm",
       "compress": null,
       "raw_bytes": 57,
       "file_bytes": 57,
@@ -35,7 +35,7 @@
       }
     },
     "lattice_fpn_wm": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\ltm\\ctrl\\lattice_fpn_wm.ltm",
+      "path": "ltm/ctrl/lattice_fpn_wm.ltm",
       "compress": null,
       "raw_bytes": 172,
       "file_bytes": 172,
@@ -50,7 +50,7 @@
       }
     },
     "lattice_sn": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\ltm\\ctrl\\lattice_sn.ltm",
+      "path": "ltm/ctrl/lattice_sn.ltm",
       "compress": null,
       "raw_bytes": 188,
       "file_bytes": 188,
@@ -7364,22 +7364,22 @@
   },
   "nca": {
     "models": {
-      "L2_en_word_00": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_00\\model.pt",
-      "L2_en_word_01": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_01\\model.pt",
-      "L2_en_word_02": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_02\\model.pt",
-      "L2_en_word_03": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_03\\model.pt",
-      "L2_en_word_04": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_04\\model.pt",
-      "L2_en_word_05": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_05\\model.pt",
-      "L2_en_word_06": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_06\\model.pt",
-      "L2_en_word_07": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_07\\model.pt",
-      "L2_en_word_08": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_08\\model.pt",
-      "L2_en_word_09": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_09\\model.pt",
-      "L2_en_word_10": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_10\\model.pt",
-      "L2_en_word_11": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_11\\model.pt",
-      "L2_en_word_12": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_12\\model.pt",
-      "L2_en_word_13": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_13\\model.pt",
-      "L2_en_word_14": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_14\\model.pt",
-      "L2_en_word_15": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_15\\model.pt"
+      "L2_en_word_00": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_00/model.pt",
+      "L2_en_word_01": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_01/model.pt",
+      "L2_en_word_02": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_02/model.pt",
+      "L2_en_word_03": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_03/model.pt",
+      "L2_en_word_04": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_04/model.pt",
+      "L2_en_word_05": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_05/model.pt",
+      "L2_en_word_06": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_06/model.pt",
+      "L2_en_word_07": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_07/model.pt",
+      "L2_en_word_08": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_08/model.pt",
+      "L2_en_word_09": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_09/model.pt",
+      "L2_en_word_10": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_10/model.pt",
+      "L2_en_word_11": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_11/model.pt",
+      "L2_en_word_12": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_12/model.pt",
+      "L2_en_word_13": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_13/model.pt",
+      "L2_en_word_14": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_14/model.pt",
+      "L2_en_word_15": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_15/model.pt"
     }
   },
   "totals": {
@@ -7399,7 +7399,7 @@
         "last_trained_at": "2026-05-30T18:18:36.274672+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 832,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_00\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_00/model.pt",
         "last_repair_ratio": 2.377,
         "last_repair_at": "2026-05-30T18:18:36.275680+00:00"
       },
@@ -7407,7 +7407,7 @@
         "last_trained_at": "2026-05-30T18:18:54.687786+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 830,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_01\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_01/model.pt",
         "last_repair_ratio": 2.371,
         "last_repair_at": "2026-05-30T18:18:54.688789+00:00"
       },
@@ -7415,7 +7415,7 @@
         "last_trained_at": "2026-05-30T18:19:12.698405+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 810,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_02\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_02/model.pt",
         "last_repair_ratio": 2.37,
         "last_repair_at": "2026-05-30T18:19:12.698405+00:00"
       },
@@ -7423,7 +7423,7 @@
         "last_trained_at": "2026-05-30T18:19:32.070775+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 868,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_03\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_03/model.pt",
         "last_repair_ratio": 2.242,
         "last_repair_at": "2026-05-30T18:19:32.071783+00:00"
       },
@@ -7431,7 +7431,7 @@
         "last_trained_at": "2026-05-30T18:19:51.556945+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 860,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_04\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_04/model.pt",
         "last_repair_ratio": 2.3,
         "last_repair_at": "2026-05-30T18:19:51.556945+00:00"
       },
@@ -7439,7 +7439,7 @@
         "last_trained_at": "2026-05-30T18:20:11.906471+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 850,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_05\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_05/model.pt",
         "last_repair_ratio": 2.334,
         "last_repair_at": "2026-05-30T18:20:11.907708+00:00"
       },
@@ -7447,7 +7447,7 @@
         "last_trained_at": "2026-05-30T18:20:32.977400+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 890,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_06\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_06/model.pt",
         "last_repair_ratio": 2.375,
         "last_repair_at": "2026-05-30T18:20:32.978408+00:00"
       },
@@ -7455,7 +7455,7 @@
         "last_trained_at": "2026-05-30T18:20:54.750579+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 932,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_07\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_07/model.pt",
         "last_repair_ratio": 2.438,
         "last_repair_at": "2026-05-30T18:20:54.751577+00:00"
       },
@@ -7463,7 +7463,7 @@
         "last_trained_at": "2026-05-30T18:21:14.512269+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 810,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_08\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_08/model.pt",
         "last_repair_ratio": 2.402,
         "last_repair_at": "2026-05-30T18:21:14.512269+00:00"
       },
@@ -7471,7 +7471,7 @@
         "last_trained_at": "2026-05-30T18:21:34.681064+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 854,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_09\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_09/model.pt",
         "last_repair_ratio": 2.403,
         "last_repair_at": "2026-05-30T18:21:34.682063+00:00"
       },
@@ -7479,7 +7479,7 @@
         "last_trained_at": "2026-05-30T18:21:55.225016+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 852,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_10\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_10/model.pt",
         "last_repair_ratio": 2.289,
         "last_repair_at": "2026-05-30T18:21:55.225016+00:00"
       },
@@ -7487,7 +7487,7 @@
         "last_trained_at": "2026-05-30T18:22:14.825345+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 780,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_11\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_11/model.pt",
         "last_repair_ratio": 2.308,
         "last_repair_at": "2026-05-30T18:22:14.825345+00:00"
       },
@@ -7495,7 +7495,7 @@
         "last_trained_at": "2026-05-30T18:22:34.812653+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 790,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_12\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_12/model.pt",
         "last_repair_ratio": 2.38,
         "last_repair_at": "2026-05-30T18:22:34.814165+00:00"
       },
@@ -7503,7 +7503,7 @@
         "last_trained_at": "2026-05-30T18:22:54.811335+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 810,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_13\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_13/model.pt",
         "last_repair_ratio": 2.358,
         "last_repair_at": "2026-05-30T18:22:54.811335+00:00"
       },
@@ -7511,7 +7511,7 @@
         "last_trained_at": "2026-05-30T18:23:14.951967+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 792,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_14\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_14/model.pt",
         "last_repair_ratio": 2.323,
         "last_repair_at": "2026-05-30T18:23:14.951967+00:00"
       },
@@ -7519,7 +7519,7 @@
         "last_trained_at": "2026-05-30T18:23:35.837720+00:00",
         "field_version_at_train": 1,
         "token_count_at_train": 848,
-        "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk-v0\\nca\\L2_en_word_15\\model.pt",
+        "model_path": "lab/agent-stores/sss-en-folk-v0/nca/L2_en_word_15/model.pt",
         "last_repair_ratio": 2.38,
         "last_repair_at": "2026-05-30T18:23:35.838724+00:00"
       }

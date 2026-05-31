@@ -5,7 +5,7 @@
   "updated_at": "2026-05-30T20:49:14.005481+00:00",
   "lattices": {
     "lattice_cen": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-afan-test\\ltm\\ctrl\\lattice_cen.ltm",
+      "path": "ltm/ctrl/lattice_cen.ltm",
       "compress": null,
       "raw_bytes": 195,
       "file_bytes": 195,
@@ -20,7 +20,7 @@
       }
     },
     "lattice_dmn": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-afan-test\\ltm\\ctrl\\lattice_dmn.ltm",
+      "path": "ltm/ctrl/lattice_dmn.ltm",
       "compress": null,
       "raw_bytes": 29544,
       "file_bytes": 29544,
@@ -35,7 +35,7 @@
       }
     },
     "lattice_fpn_wm": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-afan-test\\ltm\\ctrl\\lattice_fpn_wm.ltm",
+      "path": "ltm/ctrl/lattice_fpn_wm.ltm",
       "compress": null,
       "raw_bytes": 172,
       "file_bytes": 172,
@@ -50,7 +50,7 @@
       }
     },
     "lattice_sn": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-afan-test\\ltm\\ctrl\\lattice_sn.ltm",
+      "path": "ltm/ctrl/lattice_sn.ltm",
       "compress": null,
       "raw_bytes": 188,
       "file_bytes": 188,

@@ -109,3 +109,23 @@ def ltm_root(store_dir: Path) -> Path:
 
 def nca_train_registry_path(store_dir: Path) -> Path:
     return store_dir / "nca_train_registry.v0.json"
+
+
+def repo_root() -> Path:
+    """Repository root (tools/ lives directly under it)."""
+    return Path(__file__).resolve().parents[1]
+
+
+def rel_to_repo(path: Path | str | None) -> str | None:
+    """Repo-relative POSIX path for manifests/registries (never leak absolute paths).
+
+    Falls back to the path as-is when it lies outside the repo (e.g. an external
+    out-dir); callers store this for bookkeeping only, not for loading.
+    """
+    if path is None:
+        return None
+    p = Path(path)
+    try:
+        return p.resolve().relative_to(repo_root()).as_posix()
+    except ValueError:
+        return p.as_posix()

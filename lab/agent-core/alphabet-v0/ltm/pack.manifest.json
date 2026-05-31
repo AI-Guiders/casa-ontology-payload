@@ -8,7 +8,7 @@
   "updated_at": "2026-05-30T21:25:55.618092+00:00",
   "lattices": {
     "L0_grapheme_cyrl": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-core\\alphabet-v0\\ltm\\l0\\L0_grapheme_cyrl.ltm",
+      "path": "ltm/l0/L0_grapheme_cyrl.ltm",
       "compress": null,
       "raw_bytes": 2330,
       "file_bytes": 2330,
@@ -26,7 +26,7 @@
       }
     },
     "L0_grapheme_latn": {
-      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-core\\alphabet-v0\\ltm\\l0\\L0_grapheme_latn.ltm",
+      "path": "ltm/l0/L0_grapheme_latn.ltm",
       "compress": null,
       "raw_bytes": 1580,
       "file_bytes": 1580,

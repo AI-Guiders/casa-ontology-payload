@@ -2,273 +2,521 @@
   "schema_version": 1,
   "kind": "nca_train_registry_v0",
   "store_id": "sss-ru-general-v0",
-  "updated_at": "2026-05-31T00:13:54.521307+00:00",
+  "updated_at": "2026-05-31T01:32:48.258348+00:00",
   "field_version": 2,
   "pending": [],
   "lattices": {
-    "L2_word_00": {
+    "words-ru-00": {
       "last_trained_at": "2026-05-30T22:34:58.923582+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1560,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_00\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-00/model.pt",
       "last_repair_ratio": 2.478,
       "last_repair_at": "2026-05-30T22:34:58.924586+00:00"
     },
-    "L2_word_01": {
+    "words-ru-01": {
       "last_trained_at": "2026-05-30T22:37:41.401136+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_01\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-01/model.pt",
       "last_repair_ratio": 2.516,
       "last_repair_at": "2026-05-30T22:37:41.402136+00:00"
     },
-    "L2_word_02": {
+    "words-ru-02": {
       "last_trained_at": "2026-05-30T22:40:35.964176+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_02\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-02/model.pt",
       "last_repair_ratio": 2.613,
       "last_repair_at": "2026-05-30T22:40:35.965178+00:00"
     },
-    "L2_word_03": {
+    "words-ru-03": {
       "last_trained_at": "2026-05-30T22:43:40.247392+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_03\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-03/model.pt",
       "last_repair_ratio": 2.489,
       "last_repair_at": "2026-05-30T22:43:40.248394+00:00"
     },
-    "L2_word_04": {
+    "words-ru-04": {
       "last_trained_at": "2026-05-30T22:46:42.162329+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_04\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-04/model.pt",
       "last_repair_ratio": 2.52,
       "last_repair_at": "2026-05-30T22:46:42.163604+00:00"
     },
-    "L2_word_05": {
+    "words-ru-05": {
       "last_trained_at": "2026-05-30T22:49:39.792859+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_05\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-05/model.pt",
       "last_repair_ratio": 2.563,
       "last_repair_at": "2026-05-30T22:49:39.793860+00:00"
     },
-    "L2_word_06": {
+    "words-ru-06": {
       "last_trained_at": "2026-05-30T22:52:38.143105+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_06\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-06/model.pt",
       "last_repair_ratio": 2.497,
       "last_repair_at": "2026-05-30T22:52:38.144175+00:00"
     },
-    "L2_word_07": {
+    "words-ru-07": {
       "last_trained_at": "2026-05-30T22:56:35.529588+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_07\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-07/model.pt",
       "last_repair_ratio": 2.52,
       "last_repair_at": "2026-05-30T22:56:35.530492+00:00"
     },
-    "L2_word_08": {
+    "words-ru-08": {
       "last_trained_at": "2026-05-30T22:59:34.939703+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_08\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-08/model.pt",
       "last_repair_ratio": 2.499,
       "last_repair_at": "2026-05-30T22:59:34.940702+00:00"
     },
-    "L2_word_09": {
+    "words-ru-09": {
       "last_trained_at": "2026-05-30T23:02:31.975705+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_09\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-09/model.pt",
       "last_repair_ratio": 2.543,
       "last_repair_at": "2026-05-30T23:02:31.976710+00:00"
     },
-    "L2_word_10": {
+    "words-ru-10": {
       "last_trained_at": "2026-05-30T23:05:53.875304+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_10\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-10/model.pt",
       "last_repair_ratio": 2.536,
       "last_repair_at": "2026-05-30T23:05:53.876601+00:00"
     },
-    "L2_word_11": {
+    "words-ru-11": {
       "last_trained_at": "2026-05-30T23:09:03.774335+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_11\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-11/model.pt",
       "last_repair_ratio": 2.526,
       "last_repair_at": "2026-05-30T23:09:03.774844+00:00"
     },
-    "L2_word_12": {
+    "words-ru-12": {
       "last_trained_at": "2026-05-30T23:11:55.863920+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_12\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-12/model.pt",
       "last_repair_ratio": 2.536,
       "last_repair_at": "2026-05-30T23:11:55.864921+00:00"
     },
-    "L2_word_13": {
+    "words-ru-13": {
       "last_trained_at": "2026-05-30T23:14:53.896170+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_13\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-13/model.pt",
       "last_repair_ratio": 2.603,
       "last_repair_at": "2026-05-30T23:14:53.897169+00:00"
     },
-    "L2_word_14": {
+    "words-ru-14": {
       "last_trained_at": "2026-05-30T23:17:32.568728+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_14\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-14/model.pt",
       "last_repair_ratio": 2.533,
       "last_repair_at": "2026-05-30T23:17:32.569737+00:00"
     },
-    "L2_word_15": {
+    "words-ru-15": {
       "last_trained_at": "2026-05-30T23:20:03.533879+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_15\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-15/model.pt",
       "last_repair_ratio": 2.571,
       "last_repair_at": "2026-05-30T23:20:03.535893+00:00"
     },
-    "L2_word_16": {
+    "words-ru-16": {
       "last_trained_at": "2026-05-30T23:22:21.828404+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_16\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-16/model.pt",
       "last_repair_ratio": 2.53,
       "last_repair_at": "2026-05-30T23:22:21.830413+00:00"
     },
-    "L2_word_17": {
+    "words-ru-17": {
       "last_trained_at": "2026-05-30T23:25:21.901220+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_17\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-17/model.pt",
       "last_repair_ratio": 2.499,
       "last_repair_at": "2026-05-30T23:25:21.902229+00:00"
     },
-    "L2_word_18": {
+    "words-ru-18": {
       "last_trained_at": "2026-05-30T23:28:29.864067+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_18\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-18/model.pt",
       "last_repair_ratio": 2.457,
       "last_repair_at": "2026-05-30T23:28:29.865081+00:00"
     },
-    "L2_word_19": {
+    "words-ru-19": {
       "last_trained_at": "2026-05-30T23:31:24.736416+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_19\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-19/model.pt",
       "last_repair_ratio": 2.567,
       "last_repair_at": "2026-05-30T23:31:24.738439+00:00"
     },
-    "L2_word_20": {
+    "words-ru-20": {
       "last_trained_at": "2026-05-30T23:34:20.512883+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_20\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-20/model.pt",
       "last_repair_ratio": 2.455,
       "last_repair_at": "2026-05-30T23:34:20.513884+00:00"
     },
-    "L2_word_21": {
+    "words-ru-21": {
       "last_trained_at": "2026-05-30T23:37:43.761650+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1560,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_21\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-21/model.pt",
       "last_repair_ratio": 2.532,
       "last_repair_at": "2026-05-30T23:37:43.763161+00:00"
     },
-    "L2_word_22": {
+    "words-ru-22": {
       "last_trained_at": "2026-05-30T23:41:32.484529+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_22\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-22/model.pt",
       "last_repair_ratio": 2.58,
       "last_repair_at": "2026-05-30T23:41:32.486536+00:00"
     },
-    "L2_word_23": {
+    "words-ru-23": {
       "last_trained_at": "2026-05-30T23:44:38.739506+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_23\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-23/model.pt",
       "last_repair_ratio": 2.487,
       "last_repair_at": "2026-05-30T23:44:38.740507+00:00"
     },
-    "L2_word_24": {
+    "words-ru-24": {
       "last_trained_at": "2026-05-30T23:47:45.178733+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_24\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-24/model.pt",
       "last_repair_ratio": 2.608,
       "last_repair_at": "2026-05-30T23:47:45.179744+00:00"
     },
-    "L2_word_25": {
+    "words-ru-25": {
       "last_trained_at": "2026-05-30T23:50:42.772982+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_25\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-25/model.pt",
       "last_repair_ratio": 2.511,
       "last_repair_at": "2026-05-30T23:50:42.773982+00:00"
     },
-    "L2_word_26": {
+    "words-ru-26": {
       "last_trained_at": "2026-05-30T23:53:49.245406+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_26\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-26/model.pt",
       "last_repair_ratio": 2.472,
       "last_repair_at": "2026-05-30T23:53:49.246412+00:00"
     },
-    "L2_word_27": {
+    "words-ru-27": {
       "last_trained_at": "2026-05-30T23:58:11.064146+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_27\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-27/model.pt",
       "last_repair_ratio": 2.519,
       "last_repair_at": "2026-05-30T23:58:11.065689+00:00"
     },
-    "L2_word_28": {
+    "words-ru-28": {
       "last_trained_at": "2026-05-31T00:01:28.852793+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_28\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-28/model.pt",
       "last_repair_ratio": 2.522,
       "last_repair_at": "2026-05-31T00:01:28.853793+00:00"
     },
-    "L2_word_29": {
+    "words-ru-29": {
       "last_trained_at": "2026-05-31T00:04:39.666959+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_29\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-29/model.pt",
       "last_repair_ratio": 2.617,
       "last_repair_at": "2026-05-31T00:04:39.668448+00:00"
     },
-    "L2_word_30": {
+    "words-ru-30": {
       "last_trained_at": "2026-05-31T00:07:46.490292+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_30\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-30/model.pt",
       "last_repair_ratio": 2.417,
       "last_repair_at": "2026-05-31T00:07:46.491292+00:00"
     },
-    "L2_word_31": {
+    "words-ru-31": {
       "last_trained_at": "2026-05-31T00:10:59.781584+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_31\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-31/model.pt",
       "last_repair_ratio": 2.488,
       "last_repair_at": "2026-05-31T00:10:59.782595+00:00"
     },
-    "L2_word_32": {
+    "words-ru-32": {
       "last_trained_at": "2026-05-31T00:13:54.520299+00:00",
       "field_version_at_train": 2,
       "token_count_at_train": 1562,
-      "model_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-ru-general-v0\\nca\\L2_word_32\\model.pt",
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-32/model.pt",
       "last_repair_ratio": 2.47,
       "last_repair_at": "2026-05-31T00:13:54.521307+00:00"
+    },
+    "words-ru-33": {
+      "last_trained_at": "2026-05-31T00:17:08.340606+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-33/model.pt",
+      "last_repair_ratio": 2.519,
+      "last_repair_at": "2026-05-31T00:17:08.342081+00:00"
+    },
+    "words-ru-34": {
+      "last_trained_at": "2026-05-31T00:20:43.210900+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-34/model.pt",
+      "last_repair_ratio": 2.528,
+      "last_repair_at": "2026-05-31T00:20:43.211899+00:00"
+    },
+    "words-ru-35": {
+      "last_trained_at": "2026-05-31T00:24:03.760158+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-35/model.pt",
+      "last_repair_ratio": 2.511,
+      "last_repair_at": "2026-05-31T00:24:03.761163+00:00"
+    },
+    "words-ru-36": {
+      "last_trained_at": "2026-05-31T00:27:35.686412+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-36/model.pt",
+      "last_repair_ratio": 2.475,
+      "last_repair_at": "2026-05-31T00:27:35.688920+00:00"
+    },
+    "words-ru-37": {
+      "last_trained_at": "2026-05-31T00:30:25.840458+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-37/model.pt",
+      "last_repair_ratio": 2.517,
+      "last_repair_at": "2026-05-31T00:30:25.841983+00:00"
+    },
+    "words-ru-38": {
+      "last_trained_at": "2026-05-31T00:33:15.531018+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-38/model.pt",
+      "last_repair_ratio": 2.556,
+      "last_repair_at": "2026-05-31T00:33:15.531018+00:00"
+    },
+    "words-ru-39": {
+      "last_trained_at": "2026-05-31T00:36:15.482807+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-39/model.pt",
+      "last_repair_ratio": 2.508,
+      "last_repair_at": "2026-05-31T00:36:15.483832+00:00"
+    },
+    "words-ru-40": {
+      "last_trained_at": "2026-05-31T00:39:33.774536+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-40/model.pt",
+      "last_repair_ratio": 2.556,
+      "last_repair_at": "2026-05-31T00:39:33.775537+00:00"
+    },
+    "words-ru-41": {
+      "last_trained_at": "2026-05-31T00:42:47.915473+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-41/model.pt",
+      "last_repair_ratio": 2.521,
+      "last_repair_at": "2026-05-31T00:42:47.917474+00:00"
+    },
+    "words-ru-42": {
+      "last_trained_at": "2026-05-31T00:45:38.414066+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1560,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-42/model.pt",
+      "last_repair_ratio": 2.551,
+      "last_repair_at": "2026-05-31T00:45:38.415090+00:00"
+    },
+    "words-ru-43": {
+      "last_trained_at": "2026-05-31T00:48:21.851092+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-43/model.pt",
+      "last_repair_ratio": 2.501,
+      "last_repair_at": "2026-05-31T00:48:21.853091+00:00"
+    },
+    "words-ru-44": {
+      "last_trained_at": "2026-05-31T00:51:11.862704+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-44/model.pt",
+      "last_repair_ratio": 2.475,
+      "last_repair_at": "2026-05-31T00:51:11.863704+00:00"
+    },
+    "words-ru-45": {
+      "last_trained_at": "2026-05-31T00:54:00.393625+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-45/model.pt",
+      "last_repair_ratio": 2.503,
+      "last_repair_at": "2026-05-31T00:54:00.395131+00:00"
+    },
+    "words-ru-46": {
+      "last_trained_at": "2026-05-31T00:57:10.022590+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-46/model.pt",
+      "last_repair_ratio": 2.472,
+      "last_repair_at": "2026-05-31T00:57:10.023617+00:00"
+    },
+    "words-ru-47": {
+      "last_trained_at": "2026-05-31T01:00:08.546295+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-47/model.pt",
+      "last_repair_ratio": 2.471,
+      "last_repair_at": "2026-05-31T01:00:08.547786+00:00"
+    },
+    "words-ru-48": {
+      "last_trained_at": "2026-05-31T01:03:07.673963+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-48/model.pt",
+      "last_repair_ratio": 2.529,
+      "last_repair_at": "2026-05-31T01:03:07.675387+00:00"
+    },
+    "words-ru-49": {
+      "last_trained_at": "2026-05-31T01:06:01.339388+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-49/model.pt",
+      "last_repair_ratio": 2.51,
+      "last_repair_at": "2026-05-31T01:06:01.340894+00:00"
+    },
+    "words-ru-50": {
+      "last_trained_at": "2026-05-31T01:09:02.080964+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-50/model.pt",
+      "last_repair_ratio": 2.558,
+      "last_repair_at": "2026-05-31T01:09:02.080964+00:00"
+    },
+    "words-ru-51": {
+      "last_trained_at": "2026-05-31T01:11:37.914597+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-51/model.pt",
+      "last_repair_ratio": 2.535,
+      "last_repair_at": "2026-05-31T01:11:37.915598+00:00"
+    },
+    "words-ru-52": {
+      "last_trained_at": "2026-05-31T01:17:33.632419+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-52/model.pt",
+      "last_repair_ratio": 2.316,
+      "last_repair_at": "2026-05-31T01:17:33.634001+00:00"
+    },
+    "words-ru-53": {
+      "last_trained_at": "2026-05-31T01:18:30.806117+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-53/model.pt",
+      "last_repair_ratio": 2.375,
+      "last_repair_at": "2026-05-31T01:18:30.807625+00:00"
+    },
+    "words-ru-54": {
+      "last_trained_at": "2026-05-31T01:19:28.176035+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-54/model.pt",
+      "last_repair_ratio": 2.344,
+      "last_repair_at": "2026-05-31T01:19:28.180061+00:00"
+    },
+    "words-ru-55": {
+      "last_trained_at": "2026-05-31T01:20:22.694974+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-55/model.pt",
+      "last_repair_ratio": 2.392,
+      "last_repair_at": "2026-05-31T01:20:22.696482+00:00"
+    },
+    "words-ru-56": {
+      "last_trained_at": "2026-05-31T01:21:25.095875+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-56/model.pt",
+      "last_repair_ratio": 2.417,
+      "last_repair_at": "2026-05-31T01:21:25.096874+00:00"
+    },
+    "words-ru-57": {
+      "last_trained_at": "2026-05-31T01:22:22.087364+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-57/model.pt",
+      "last_repair_ratio": 2.373,
+      "last_repair_at": "2026-05-31T01:22:22.088374+00:00"
+    },
+    "words-ru-58": {
+      "last_trained_at": "2026-05-31T01:23:15.477824+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-58/model.pt",
+      "last_repair_ratio": 2.289,
+      "last_repair_at": "2026-05-31T01:23:15.480345+00:00"
+    },
+    "words-ru-59": {
+      "last_trained_at": "2026-05-31T01:24:08.513466+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-59/model.pt",
+      "last_repair_ratio": 2.306,
+      "last_repair_at": "2026-05-31T01:24:08.515466+00:00"
+    },
+    "words-ru-60": {
+      "last_trained_at": "2026-05-31T01:25:06.642937+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-60/model.pt",
+      "last_repair_ratio": 2.32,
+      "last_repair_at": "2026-05-31T01:25:06.643933+00:00"
+    },
+    "words-ru-61": {
+      "last_trained_at": "2026-05-31T01:25:49.055764+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-61/model.pt",
+      "last_repair_ratio": 2.319,
+      "last_repair_at": "2026-05-31T01:25:49.056764+00:00"
+    },
+    "words-ru-62": {
+      "last_trained_at": "2026-05-31T01:26:41.089039+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-62/model.pt",
+      "last_repair_ratio": 2.385,
+      "last_repair_at": "2026-05-31T01:26:41.091039+00:00"
+    },
+    "words-ru-63": {
+      "last_trained_at": "2026-05-31T01:27:31.592314+00:00",
+      "field_version_at_train": 2,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-63/model.pt",
+      "last_repair_ratio": 2.405,
+      "last_repair_at": "2026-05-31T01:27:31.593315+00:00"
     }
   }
 }

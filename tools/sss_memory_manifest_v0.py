@@ -13,6 +13,7 @@ from field_write import load_field_state  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import LEGACY_L2, is_l2_word_lattice, l2_word_lattice_ids, nca_model_registry, shard_stats  # type: ignore
 from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
+from store_layout_v0 import rel_to_repo  # type: ignore
 
 
 def _dir_size(path: Path) -> int:
@@ -62,7 +63,7 @@ def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
                 "height": lat.get("height"),
                 "token_count": len(toks),
                 "word_concepts": sum(1 for t in toks if t.startswith("C:lang.word.")),
-                "nca_model": nca_path,
+                "nca_model": rel_to_repo(nca_path),
                 "nca_bytes": nca_bytes,
             }
         )
@@ -83,7 +84,7 @@ def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
         "schema_version": 1,
         "kind": "sss_memory_manifest",
         "store_id": store_dir.name,
-        "store_path": str(store_dir),
+        "store_path": rel_to_repo(store_dir),
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "field_version": state.get("field_version"),
         "schema": state.get("schema_version"),
