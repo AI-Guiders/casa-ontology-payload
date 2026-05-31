@@ -3,8 +3,8 @@
   "kind": "sss_memory_manifest",
   "store_id": "sss-ru-general-v0",
   "store_path": "lab/agent-stores/sss-ru-general-v0",
-  "generated_at": "2026-05-31T01:32:45.720150+00:00",
-  "field_version": 2,
+  "generated_at": "2026-05-31T07:19:00.006639+00:00",
+  "field_version": 5,
   "schema": "multi_prism_v1",
   "l2_sharding": {
     "enabled": true,
@@ -1230,8 +1230,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-05/model.pt",
+      "nca_bytes": 2460431
     },
     {
       "id": "words-ru-06",
@@ -1241,8 +1241,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-06/model.pt",
+      "nca_bytes": 2461839
     },
     {
       "id": "words-ru-07",
@@ -1252,8 +1252,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-07/model.pt",
+      "nca_bytes": 2465103
     },
     {
       "id": "words-ru-08",
@@ -1263,8 +1263,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-08/model.pt",
+      "nca_bytes": 2466703
     },
     {
       "id": "words-ru-09",
@@ -1274,8 +1274,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-09/model.pt",
+      "nca_bytes": 2460239
     },
     {
       "id": "words-ru-10",
@@ -1285,8 +1285,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-10/model.pt",
+      "nca_bytes": 2461071
     },
     {
       "id": "words-ru-11",
@@ -1296,8 +1296,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-11/model.pt",
+      "nca_bytes": 2460559
     },
     {
       "id": "words-ru-12",
@@ -1307,8 +1307,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-12/model.pt",
+      "nca_bytes": 2462927
     },
     {
       "id": "words-ru-13",
@@ -1318,8 +1318,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-13/model.pt",
+      "nca_bytes": 2460495
     },
     {
       "id": "words-ru-14",
@@ -1329,8 +1329,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-14/model.pt",
+      "nca_bytes": 2459599
     },
     {
       "id": "words-ru-15",
@@ -1340,8 +1340,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-15/model.pt",
+      "nca_bytes": 2466319
     },
     {
       "id": "words-ru-16",
@@ -1351,8 +1351,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-16/model.pt",
+      "nca_bytes": 2466511
     },
     {
       "id": "words-ru-17",
@@ -1362,8 +1362,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-17/model.pt",
+      "nca_bytes": 2460751
     },
     {
       "id": "words-ru-18",
@@ -1373,8 +1373,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-18/model.pt",
+      "nca_bytes": 2464335
     },
     {
       "id": "words-ru-19",
@@ -1384,8 +1384,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-19/model.pt",
+      "nca_bytes": 2461519
     },
     {
       "id": "words-ru-20",
@@ -1395,8 +1395,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-20/model.pt",
+      "nca_bytes": 2460047
     },
     {
       "id": "words-ru-21",
@@ -1406,8 +1406,8 @@
       "height": 32,
       "token_count": 1560,
       "word_concepts": 780,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-21/model.pt",
+      "nca_bytes": 2458447
     },
     {
       "id": "words-ru-22",
@@ -1417,8 +1417,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-22/model.pt",
+      "nca_bytes": 2463759
     },
     {
       "id": "words-ru-23",
@@ -1428,8 +1428,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-23/model.pt",
+      "nca_bytes": 2461071
     },
     {
       "id": "words-ru-24",
@@ -1439,8 +1439,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-24/model.pt",
+      "nca_bytes": 2458063
     },
     {
       "id": "words-ru-25",
@@ -1450,8 +1450,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-25/model.pt",
+      "nca_bytes": 2458319
     },
     {
       "id": "words-ru-26",
@@ -1461,8 +1461,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-26/model.pt",
+      "nca_bytes": 2460751
     },
     {
       "id": "words-ru-27",
@@ -1472,8 +1472,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-27/model.pt",
+      "nca_bytes": 2462415
     },
     {
       "id": "words-ru-28",
@@ -1483,8 +1483,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-28/model.pt",
+      "nca_bytes": 2459919
     },
     {
       "id": "words-ru-29",
@@ -1494,8 +1494,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-29/model.pt",
+      "nca_bytes": 2464719
     },
     {
       "id": "words-ru-30",
@@ -1505,8 +1505,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-30/model.pt",
+      "nca_bytes": 2467599
     },
     {
       "id": "words-ru-31",
@@ -1516,8 +1516,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-31/model.pt",
+      "nca_bytes": 2470095
     },
     {
       "id": "words-ru-32",
@@ -1527,8 +1527,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-32/model.pt",
+      "nca_bytes": 2461519
     },
     {
       "id": "words-ru-33",
@@ -1538,8 +1538,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-33/model.pt",
+      "nca_bytes": 2465679
     },
     {
       "id": "words-ru-34",
@@ -1549,8 +1549,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-34/model.pt",
+      "nca_bytes": 2462863
     },
     {
       "id": "words-ru-35",
@@ -1560,8 +1560,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-35/model.pt",
+      "nca_bytes": 2466255
     },
     {
       "id": "words-ru-36",
@@ -1571,8 +1571,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-36/model.pt",
+      "nca_bytes": 2460879
     },
     {
       "id": "words-ru-37",
@@ -1582,8 +1582,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-37/model.pt",
+      "nca_bytes": 2468495
     },
     {
       "id": "words-ru-38",
@@ -1593,8 +1593,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-38/model.pt",
+      "nca_bytes": 2462799
     },
     {
       "id": "words-ru-39",
@@ -1604,8 +1604,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-39/model.pt",
+      "nca_bytes": 2467855
     },
     {
       "id": "words-ru-40",
@@ -1615,8 +1615,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-40/model.pt",
+      "nca_bytes": 2465743
     },
     {
       "id": "words-ru-41",
@@ -1626,8 +1626,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-41/model.pt",
+      "nca_bytes": 2465743
     },
     {
       "id": "words-ru-42",
@@ -1637,8 +1637,8 @@
       "height": 32,
       "token_count": 1560,
       "word_concepts": 780,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-42/model.pt",
+      "nca_bytes": 2466575
     },
     {
       "id": "words-ru-43",
@@ -1648,8 +1648,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-43/model.pt",
+      "nca_bytes": 2469263
     },
     {
       "id": "words-ru-44",
@@ -1659,8 +1659,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-44/model.pt",
+      "nca_bytes": 2469711
     },
     {
       "id": "words-ru-45",
@@ -1670,8 +1670,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-45/model.pt",
+      "nca_bytes": 2463311
     },
     {
       "id": "words-ru-46",
@@ -1681,8 +1681,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-46/model.pt",
+      "nca_bytes": 2469711
     },
     {
       "id": "words-ru-47",
@@ -1692,8 +1692,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-47/model.pt",
+      "nca_bytes": 2462223
     },
     {
       "id": "words-ru-48",
@@ -1703,8 +1703,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-48/model.pt",
+      "nca_bytes": 2460111
     },
     {
       "id": "words-ru-49",
@@ -1714,8 +1714,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-49/model.pt",
+      "nca_bytes": 2462671
     },
     {
       "id": "words-ru-50",
@@ -1725,8 +1725,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-50/model.pt",
+      "nca_bytes": 2461839
     },
     {
       "id": "words-ru-51",
@@ -1736,8 +1736,8 @@
       "height": 32,
       "token_count": 1562,
       "word_concepts": 781,
-      "nca_model": null,
-      "nca_bytes": 0
+      "nca_model": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-51/model.pt",
+      "nca_bytes": 2462735
     },
     {
       "id": "words-ru-52",
@@ -1940,11 +1940,11 @@
     "words-ru-63"
   ],
   "disk": {
-    "field_state_json": 43781742,
-    "field_state_human": "41.8 MiB",
-    "store_total": 223327308,
-    "store_total_human": "213.0 MiB",
-    "nca_dir": 165655229,
+    "field_state_json": 46777297,
+    "field_state_human": "44.6 MiB",
+    "store_total": 269816024,
+    "store_total_human": "257.3 MiB",
+    "nca_dir": 165328790,
     "parallel_shards_dir": 0,
     "examples_exp_reports": 613239
   }

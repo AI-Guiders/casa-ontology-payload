@@ -1,624 +1,1661 @@
 {
   "store": "lab\\agent-stores\\sss-ru-general-v0",
-  "layer": "all",
+  "layer": "L2",
   "results": [
     {
-      "lattice_id": "L2_word",
+      "lattice_id": "words-ru",
       "token_count": 0,
       "trained": false,
       "skipped": true,
       "reason": "min_tokens"
     },
     {
-      "lattice_id": "L1_syllable",
-      "token_count": 0,
+      "lattice_id": "words-ru-00",
+      "token_count": 1560,
       "trained": false,
       "skipped": true,
-      "reason": "min_tokens"
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-00",
+      "reason": "already_trained"
     },
     {
-      "lattice_id": "L0_grapheme",
-      "token_count": 0,
+      "lattice_id": "words-ru-01",
+      "token_count": 1562,
       "trained": false,
       "skipped": true,
-      "reason": "min_tokens"
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-01",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-02",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-02",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-03",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-03",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-04",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-04",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-05",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-05",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-06",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-06",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-07",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-07",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-08",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-08",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-09",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-09",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-10",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-10",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-11",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-11",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-12",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-12",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-13",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-13",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-14",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-14",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-15",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-15",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-16",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-16",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-17",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-17",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-18",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-18",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-19",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-19",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-20",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-20",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-21",
+      "token_count": 1560,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-21",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-22",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-22",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-23",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-23",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-24",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-24",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-25",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-25",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-26",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-26",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-27",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-27",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-28",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-28",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-29",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-29",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-30",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-30",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-31",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-31",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-32",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-32",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-33",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-33",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-34",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-34",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-35",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-35",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-36",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-36",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-37",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-37",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-38",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-38",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-39",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-39",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-40",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-40",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-41",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-41",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-42",
+      "token_count": 1560,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-42",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-43",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-43",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-44",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-44",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-45",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-45",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-46",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-46",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-47",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-47",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-48",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-48",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-49",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-49",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-50",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-50",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-51",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-51",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-52",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-52",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-53",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-53",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-54",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-54",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-55",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-55",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-56",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-56",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-57",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-57",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-58",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-58",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-59",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-59",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-60",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-60",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-61",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-61",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-62",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-62",
+      "reason": "already_trained"
+    },
+    {
+      "lattice_id": "words-ru-63",
+      "token_count": 1562,
+      "trained": false,
+      "skipped": true,
+      "out_dir": "lab\\agent-stores\\sss-ru-general-v0\\nca\\words-ru-63",
+      "reason": "already_trained"
     }
   ],
   "shard_stats": {
     "enabled": true,
     "mode": "lexicographic",
-    "lex_plan": "alpha",
+    "lex_plan": "corpus_quantile",
     "num_shards": 64,
-    "legacy_lattice": "L2_word",
-    "indexed_words": 0,
-    "attested_initial_letters": [],
-    "initial_letter_counts": null,
+    "legacy_lattice": "words-ru",
+    "indexed_words": 49981,
+    "attested_initial_letters": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е",
+      "ж",
+      "з",
+      "и",
+      "й",
+      "к",
+      "л",
+      "м",
+      "н",
+      "о",
+      "п",
+      "р",
+      "с",
+      "т",
+      "у",
+      "ф",
+      "х",
+      "ц",
+      "ч",
+      "ш",
+      "щ",
+      "ы",
+      "э",
+      "ю",
+      "я"
+    ],
+    "initial_letter_counts": {
+      "а": 1468,
+      "б": 2532,
+      "в": 3098,
+      "г": 1851,
+      "д": 1991,
+      "е": 307,
+      "ж": 480,
+      "з": 2207,
+      "и": 1086,
+      "й": 12,
+      "к": 3805,
+      "л": 1408,
+      "м": 2393,
+      "н": 2917,
+      "о": 2735,
+      "п": 7371,
+      "р": 2307,
+      "с": 4507,
+      "т": 1963,
+      "у": 1198,
+      "ф": 791,
+      "х": 687,
+      "ц": 263,
+      "ч": 765,
+      "ш": 876,
+      "щ": 113,
+      "ы": 3,
+      "э": 449,
+      "ю": 141,
+      "я": 257
+    },
     "letter_ranges": [
       {
         "shard": 0,
-        "plan": "alpha",
-        "letter_lo": 0,
-        "letter_hi_excl": 0,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "а",
+        "word_hi": "андрейкин",
+        "label": "а–андрейкин",
+        "word_count": 780,
+        "initial_letters": [
+          "а"
+        ]
       },
       {
         "shard": 1,
-        "plan": "alpha",
-        "letter_lo": 0,
-        "letter_hi_excl": 1,
-        "first_lo": "а",
-        "first_hi": "а",
-        "label": "а"
+        "plan": "corpus_quantile",
+        "word_lo": "андрес",
+        "word_hi": "базыр",
+        "label": "андрес–базыр",
+        "word_count": 781,
+        "initial_letters": [
+          "а",
+          "б"
+        ]
       },
       {
         "shard": 2,
-        "plan": "alpha",
-        "letter_lo": 1,
-        "letter_hi_excl": 1,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "баиньки",
+        "word_hi": "белым-бело",
+        "label": "баиньки–белым-бело",
+        "word_count": 781,
+        "initial_letters": [
+          "б"
+        ]
       },
       {
         "shard": 3,
-        "plan": "alpha",
-        "letter_lo": 1,
-        "letter_hi_excl": 2,
-        "first_lo": "б",
-        "first_hi": "б",
-        "label": "б"
+        "plan": "corpus_quantile",
+        "word_lo": "бель",
+        "word_hi": "болотина",
+        "label": "бель–болотина",
+        "word_count": 781,
+        "initial_letters": [
+          "б"
+        ]
       },
       {
         "shard": 4,
-        "plan": "alpha",
-        "letter_lo": 2,
-        "letter_hi_excl": 2,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "болотистый",
+        "word_hi": "буш",
+        "label": "болотистый–буш",
+        "word_count": 781,
+        "initial_letters": [
+          "б"
+        ]
       },
       {
         "shard": 5,
-        "plan": "alpha",
-        "letter_lo": 2,
-        "letter_hi_excl": 3,
-        "first_lo": "в",
-        "first_hi": "в",
-        "label": "в"
+        "plan": "corpus_quantile",
+        "word_lo": "бушевать",
+        "word_hi": "вершинин",
+        "label": "бушевать–вершинин",
+        "word_count": 781,
+        "initial_letters": [
+          "б",
+          "в"
+        ]
       },
       {
         "shard": 6,
-        "plan": "alpha",
-        "letter_lo": 3,
-        "letter_hi_excl": 3,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "вершинина",
+        "word_hi": "водкин",
+        "label": "вершинина–водкин",
+        "word_count": 781,
+        "initial_letters": [
+          "в"
+        ]
       },
       {
         "shard": 7,
-        "plan": "alpha",
-        "letter_lo": 3,
-        "letter_hi_excl": 4,
-        "first_lo": "г",
-        "first_hi": "г",
-        "label": "г"
+        "plan": "corpus_quantile",
+        "word_lo": "водкина",
+        "word_hi": "всемирный",
+        "label": "водкина–всемирный",
+        "word_count": 781,
+        "initial_letters": [
+          "в"
+        ]
       },
       {
         "shard": 8,
-        "plan": "alpha",
-        "letter_lo": 4,
-        "letter_hi_excl": 4,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "всемогущий",
+        "word_hi": "вышивка",
+        "label": "всемогущий–вышивка",
+        "word_count": 781,
+        "initial_letters": [
+          "в"
+        ]
       },
       {
         "shard": 9,
-        "plan": "alpha",
-        "letter_lo": 4,
-        "letter_hi_excl": 5,
-        "first_lo": "д",
-        "first_hi": "д",
-        "label": "д"
+        "plan": "corpus_quantile",
+        "word_lo": "вышимирский",
+        "word_hi": "глубокоуважаемый",
+        "label": "вышимирский–глубокоуважаемый",
+        "word_count": 781,
+        "initial_letters": [
+          "в",
+          "г"
+        ]
       },
       {
         "shard": 10,
-        "plan": "alpha",
-        "letter_lo": 5,
-        "letter_hi_excl": 5,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "глубь",
+        "word_hi": "гриновский",
+        "label": "глубь–гриновский",
+        "word_count": 781,
+        "initial_letters": [
+          "г"
+        ]
       },
       {
         "shard": 11,
-        "plan": "alpha",
-        "letter_lo": 5,
-        "letter_hi_excl": 6,
-        "first_lo": "е",
-        "first_hi": "е",
-        "label": "е"
+        "plan": "corpus_quantile",
+        "word_lo": "гринч",
+        "word_hi": "демагог",
+        "label": "гринч–демагог",
+        "word_count": 781,
+        "initial_letters": [
+          "г",
+          "д"
+        ]
       },
       {
         "shard": 12,
-        "plan": "alpha",
-        "letter_lo": 6,
-        "letter_hi_excl": 6,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "демагогия",
+        "word_hi": "долговечный",
+        "label": "демагогия–долговечный",
+        "word_count": 781,
+        "initial_letters": [
+          "д"
+        ]
       },
       {
         "shard": 13,
-        "plan": "alpha",
-        "letter_lo": 6,
-        "letter_hi_excl": 7,
-        "first_lo": "ё",
-        "first_hi": "ё",
-        "label": "ё"
+        "plan": "corpus_quantile",
+        "word_lo": "долговременный",
+        "word_hi": "дядько",
+        "label": "долговременный–дядько",
+        "word_count": 781,
+        "initial_letters": [
+          "д"
+        ]
       },
       {
         "shard": 14,
-        "plan": "alpha",
-        "letter_lo": 7,
-        "letter_hi_excl": 7,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "дядюшка",
+        "word_hi": "жутковатый",
+        "label": "дядюшка–жутковатый",
+        "word_count": 781,
+        "initial_letters": [
+          "д",
+          "е",
+          "ж"
+        ]
       },
       {
         "shard": 15,
-        "plan": "alpha",
-        "letter_lo": 7,
-        "letter_hi_excl": 8,
-        "first_lo": "ж",
-        "first_hi": "ж",
-        "label": "ж"
+        "plan": "corpus_quantile",
+        "word_lo": "жуть",
+        "word_hi": "замаскировывать",
+        "label": "жуть–замаскировывать",
+        "word_count": 781,
+        "initial_letters": [
+          "ж",
+          "з"
+        ]
       },
       {
         "shard": 16,
-        "plan": "alpha",
-        "letter_lo": 8,
-        "letter_hi_excl": 9,
-        "first_lo": "з",
-        "first_hi": "з",
-        "label": "з"
+        "plan": "corpus_quantile",
+        "word_lo": "замасливать",
+        "word_hi": "захолонуть",
+        "label": "замасливать–захолонуть",
+        "word_count": 781,
+        "initial_letters": [
+          "з"
+        ]
       },
       {
         "shard": 17,
-        "plan": "alpha",
-        "letter_lo": 9,
-        "letter_hi_excl": 9,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "захолустный",
+        "word_hi": "иеромонах",
+        "label": "захолустный–иеромонах",
+        "word_count": 781,
+        "initial_letters": [
+          "з",
+          "и"
+        ]
       },
       {
         "shard": 18,
-        "plan": "alpha",
-        "letter_lo": 9,
-        "letter_hi_excl": 10,
-        "first_lo": "и",
-        "first_hi": "и",
-        "label": "и"
+        "plan": "corpus_quantile",
+        "word_lo": "иероним",
+        "word_hi": "исполнительный",
+        "label": "иероним–исполнительный",
+        "word_count": 781,
+        "initial_letters": [
+          "и"
+        ]
       },
       {
         "shard": 19,
-        "plan": "alpha",
-        "letter_lo": 10,
-        "letter_hi_excl": 10,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "исполнять",
+        "word_hi": "карловна",
+        "label": "исполнять–карловна",
+        "word_count": 781,
+        "initial_letters": [
+          "и",
+          "й",
+          "к"
+        ]
       },
       {
         "shard": 20,
-        "plan": "alpha",
-        "letter_lo": 10,
-        "letter_hi_excl": 11,
-        "first_lo": "й",
-        "first_hi": "й",
-        "label": "й"
+        "plan": "corpus_quantile",
+        "word_lo": "карлос",
+        "word_hi": "клеопарди",
+        "label": "карлос–клеопарди",
+        "word_count": 781,
+        "initial_letters": [
+          "к"
+        ]
       },
       {
         "shard": 21,
-        "plan": "alpha",
-        "letter_lo": 11,
-        "letter_hi_excl": 11,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "клеопатра",
+        "word_hi": "коновязь",
+        "label": "клеопатра–коновязь",
+        "word_count": 780,
+        "initial_letters": [
+          "к"
+        ]
       },
       {
         "shard": 22,
-        "plan": "alpha",
-        "letter_lo": 11,
-        "letter_hi_excl": 12,
-        "first_lo": "к",
-        "first_hi": "к",
-        "label": "к"
+        "plan": "corpus_quantile",
+        "word_lo": "коногон",
+        "word_hi": "красовицкий",
+        "label": "коногон–красовицкий",
+        "word_count": 781,
+        "initial_letters": [
+          "к"
+        ]
       },
       {
         "shard": 23,
-        "plan": "alpha",
-        "letter_lo": 12,
-        "letter_hi_excl": 12,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "красовская",
+        "word_hi": "кусандр",
+        "label": "красовская–кусандр",
+        "word_count": 781,
+        "initial_letters": [
+          "к"
+        ]
       },
       {
         "shard": 24,
-        "plan": "alpha",
-        "letter_lo": 12,
-        "letter_hi_excl": 13,
-        "first_lo": "л",
-        "first_hi": "л",
-        "label": "л"
+        "plan": "corpus_quantile",
+        "word_lo": "кусандра",
+        "word_hi": "ликующий",
+        "label": "кусандра–ликующий",
+        "word_count": 781,
+        "initial_letters": [
+          "к",
+          "л"
+        ]
       },
       {
         "shard": 25,
-        "plan": "alpha",
-        "letter_lo": 13,
-        "letter_hi_excl": 13,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "лилейный",
+        "word_hi": "маевка",
+        "label": "лилейный–маевка",
+        "word_count": 781,
+        "initial_letters": [
+          "л",
+          "м"
+        ]
       },
       {
         "shard": 26,
-        "plan": "alpha",
-        "letter_lo": 13,
-        "letter_hi_excl": 14,
-        "first_lo": "м",
-        "first_hi": "м",
-        "label": "м"
+        "plan": "corpus_quantile",
+        "word_lo": "маечка",
+        "word_hi": "медник",
+        "label": "маечка–медник",
+        "word_count": 781,
+        "initial_letters": [
+          "м"
+        ]
       },
       {
         "shard": 27,
-        "plan": "alpha",
-        "letter_lo": 14,
-        "letter_hi_excl": 14,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "медно-красный",
+        "word_hi": "мово",
+        "label": "медно-красный–мово",
+        "word_count": 781,
+        "initial_letters": [
+          "м"
+        ]
       },
       {
         "shard": 28,
-        "plan": "alpha",
-        "letter_lo": 14,
-        "letter_hi_excl": 15,
-        "first_lo": "н",
-        "first_hi": "н",
-        "label": "н"
+        "plan": "corpus_quantile",
+        "word_lo": "могельницкий",
+        "word_hi": "набатников",
+        "label": "могельницкий–набатников",
+        "word_count": 781,
+        "initial_letters": [
+          "м",
+          "н"
+        ]
       },
       {
         "shard": 29,
-        "plan": "alpha",
-        "letter_lo": 15,
-        "letter_hi_excl": 15,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "набатный",
+        "word_hi": "насекомое",
+        "label": "набатный–насекомое",
+        "word_count": 781,
+        "initial_letters": [
+          "н"
+        ]
       },
       {
         "shard": 30,
-        "plan": "alpha",
-        "letter_lo": 15,
-        "letter_hi_excl": 16,
-        "first_lo": "о",
-        "first_hi": "о",
-        "label": "о"
+        "plan": "corpus_quantile",
+        "word_lo": "население",
+        "word_hi": "неизъяснимый",
+        "label": "население–неизъяснимый",
+        "word_count": 781,
+        "initial_letters": [
+          "н"
+        ]
       },
       {
         "shard": 31,
-        "plan": "alpha",
-        "letter_lo": 16,
-        "letter_hi_excl": 17,
-        "first_lo": "п",
-        "first_hi": "п",
-        "label": "п"
+        "plan": "corpus_quantile",
+        "word_lo": "неимение",
+        "word_hi": "неусыпный",
+        "label": "неимение–неусыпный",
+        "word_count": 781,
+        "initial_letters": [
+          "н"
+        ]
       },
       {
         "shard": 32,
-        "plan": "alpha",
-        "letter_lo": 17,
-        "letter_hi_excl": 17,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "неутешительный",
+        "word_hi": "облачаться",
+        "label": "неутешительный–облачаться",
+        "word_count": 781,
+        "initial_letters": [
+          "н",
+          "о"
+        ]
       },
       {
         "shard": 33,
-        "plan": "alpha",
-        "letter_lo": 17,
-        "letter_hi_excl": 18,
-        "first_lo": "р",
-        "first_hi": "р",
-        "label": "р"
+        "plan": "corpus_quantile",
+        "word_lo": "облачение",
+        "word_hi": "озноб",
+        "label": "облачение–озноб",
+        "word_count": 781,
+        "initial_letters": [
+          "о"
+        ]
       },
       {
         "shard": 34,
-        "plan": "alpha",
-        "letter_lo": 18,
-        "letter_hi_excl": 18,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "ознорский",
+        "word_hi": "осподи",
+        "label": "ознорский–осподи",
+        "word_count": 781,
+        "initial_letters": [
+          "о"
+        ]
       },
       {
         "shard": 35,
-        "plan": "alpha",
-        "letter_lo": 18,
-        "letter_hi_excl": 19,
-        "first_lo": "с",
-        "first_hi": "с",
-        "label": "с"
+        "plan": "corpus_quantile",
+        "word_lo": "осрамить",
+        "word_hi": "отъедать",
+        "label": "осрамить–отъедать",
+        "word_count": 781,
+        "initial_letters": [
+          "о"
+        ]
       },
       {
         "shard": 36,
-        "plan": "alpha",
-        "letter_lo": 19,
-        "letter_hi_excl": 19,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "отъедаться",
+        "word_hi": "пена",
+        "label": "отъедаться–пена",
+        "word_count": 781,
+        "initial_letters": [
+          "о",
+          "п"
+        ]
       },
       {
         "shard": 37,
-        "plan": "alpha",
-        "letter_lo": 19,
-        "letter_hi_excl": 20,
-        "first_lo": "т",
-        "first_hi": "т",
-        "label": "т"
+        "plan": "corpus_quantile",
+        "word_lo": "пенал",
+        "word_hi": "печерский",
+        "label": "пенал–печерский",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
       },
       {
         "shard": 38,
-        "plan": "alpha",
-        "letter_lo": 20,
-        "letter_hi_excl": 20,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "печка",
+        "word_hi": "повисеть",
+        "label": "печка–повисеть",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
       },
       {
         "shard": 39,
-        "plan": "alpha",
-        "letter_lo": 20,
-        "letter_hi_excl": 21,
-        "first_lo": "у",
-        "first_hi": "у",
-        "label": "у"
+        "plan": "corpus_quantile",
+        "word_lo": "повлажнеть",
+        "word_hi": "поерзать",
+        "label": "повлажнеть–поерзать",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
       },
       {
         "shard": 40,
-        "plan": "alpha",
-        "letter_lo": 21,
-        "letter_hi_excl": 21,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "поесть",
+        "word_hi": "поминки",
+        "label": "поесть–поминки",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
       },
       {
         "shard": 41,
-        "plan": "alpha",
-        "letter_lo": 21,
-        "letter_hi_excl": 22,
-        "first_lo": "ф",
-        "first_hi": "ф",
-        "label": "ф"
+        "plan": "corpus_quantile",
+        "word_lo": "поминутно",
+        "word_hi": "поторопиться",
+        "label": "поминутно–поторопиться",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
       },
       {
         "shard": 42,
-        "plan": "alpha",
-        "letter_lo": 22,
-        "letter_hi_excl": 22,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "поторчать",
+        "word_hi": "приволжский",
+        "label": "поторчать–приволжский",
+        "word_count": 780,
+        "initial_letters": [
+          "п"
+        ]
       },
       {
         "shard": 43,
-        "plan": "alpha",
-        "letter_lo": 22,
-        "letter_hi_excl": 23,
-        "first_lo": "х",
-        "first_hi": "х",
-        "label": "х"
+        "plan": "corpus_quantile",
+        "word_lo": "приволье",
+        "word_hi": "проголодаться",
+        "label": "приволье–проголодаться",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
       },
       {
         "shard": 44,
-        "plan": "alpha",
-        "letter_lo": 23,
-        "letter_hi_excl": 23,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "проголосовать",
+        "word_hi": "прощальный",
+        "label": "проголосовать–прощальный",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
       },
       {
         "shard": 45,
-        "plan": "alpha",
-        "letter_lo": 23,
-        "letter_hi_excl": 24,
-        "first_lo": "ц",
-        "first_hi": "ц",
-        "label": "ц"
+        "plan": "corpus_quantile",
+        "word_lo": "прощание",
+        "word_hi": "развьючивать",
+        "label": "прощание–развьючивать",
+        "word_count": 781,
+        "initial_letters": [
+          "п",
+          "р"
+        ]
       },
       {
         "shard": 46,
-        "plan": "alpha",
-        "letter_lo": 24,
-        "letter_hi_excl": 24,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "развязка",
+        "word_hi": "растерянный",
+        "label": "развязка–растерянный",
+        "word_count": 781,
+        "initial_letters": [
+          "р"
+        ]
       },
       {
         "shard": 47,
-        "plan": "alpha",
-        "letter_lo": 24,
-        "letter_hi_excl": 25,
-        "first_lo": "ч",
-        "first_hi": "ч",
-        "label": "ч"
+        "plan": "corpus_quantile",
+        "word_lo": "растеряха",
+        "word_hi": "рознь",
+        "label": "растеряха–рознь",
+        "word_count": 781,
+        "initial_letters": [
+          "р"
+        ]
       },
       {
         "shard": 48,
-        "plan": "alpha",
-        "letter_lo": 25,
-        "letter_hi_excl": 26,
-        "first_lo": "ш",
-        "first_hi": "ш",
-        "label": "ш"
+        "plan": "corpus_quantile",
+        "word_lo": "розоватый",
+        "word_hi": "сан",
+        "label": "розоватый–сан",
+        "word_count": 781,
+        "initial_letters": [
+          "р",
+          "с"
+        ]
       },
       {
         "shard": 49,
-        "plan": "alpha",
-        "letter_lo": 26,
-        "letter_hi_excl": 26,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "сан-франциско",
+        "word_hi": "сена",
+        "label": "сан-франциско–сена",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
       },
       {
         "shard": 50,
-        "plan": "alpha",
-        "letter_lo": 26,
-        "letter_hi_excl": 27,
-        "first_lo": "щ",
-        "first_hi": "щ",
-        "label": "щ"
+        "plan": "corpus_quantile",
+        "word_lo": "сенат",
+        "word_hi": "скромность",
+        "label": "сенат–скромность",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
       },
       {
         "shard": 51,
-        "plan": "alpha",
-        "letter_lo": 27,
-        "letter_hi_excl": 27,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "скромный",
+        "word_hi": "соколова",
+        "label": "скромный–соколова",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
       },
       {
         "shard": 52,
-        "plan": "alpha",
-        "letter_lo": 27,
-        "letter_hi_excl": 28,
-        "first_lo": "ъ",
-        "first_hi": "ъ",
-        "label": "ъ"
+        "plan": "corpus_quantile",
+        "word_lo": "соколовский",
+        "word_hi": "станица",
+        "label": "соколовский–станица",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
       },
       {
         "shard": 53,
-        "plan": "alpha",
-        "letter_lo": 28,
-        "letter_hi_excl": 28,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "станичник",
+        "word_hi": "сундуккер",
+        "label": "станичник–сундуккер",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
       },
       {
         "shard": 54,
-        "plan": "alpha",
-        "letter_lo": 28,
-        "letter_hi_excl": 29,
-        "first_lo": "ы",
-        "first_hi": "ы",
-        "label": "ы"
+        "plan": "corpus_quantile",
+        "word_lo": "сундучок",
+        "word_hi": "темно-розовый",
+        "label": "сундучок–темно-розовый",
+        "word_count": 781,
+        "initial_letters": [
+          "с",
+          "т"
+        ]
       },
       {
         "shard": 55,
-        "plan": "alpha",
-        "letter_lo": 29,
-        "letter_hi_excl": 29,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "темно-русый",
+        "word_hi": "трамвай",
+        "label": "темно-русый–трамвай",
+        "word_count": 781,
+        "initial_letters": [
+          "т"
+        ]
       },
       {
         "shard": 56,
-        "plan": "alpha",
-        "letter_lo": 29,
-        "letter_hi_excl": 30,
-        "first_lo": "ь",
-        "first_hi": "ь",
-        "label": "ь"
+        "plan": "corpus_quantile",
+        "word_lo": "трамвайный",
+        "word_hi": "увеличиваться",
+        "label": "трамвайный–увеличиваться",
+        "word_count": 781,
+        "initial_letters": [
+          "т",
+          "у"
+        ]
       },
       {
         "shard": 57,
-        "plan": "alpha",
-        "letter_lo": 30,
-        "letter_hi_excl": 30,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "увеличитель",
+        "word_hi": "ускорять",
+        "label": "увеличитель–ускорять",
+        "word_count": 781,
+        "initial_letters": [
+          "у"
+        ]
       },
       {
         "shard": 58,
-        "plan": "alpha",
-        "letter_lo": 30,
-        "letter_hi_excl": 31,
-        "first_lo": "э",
-        "first_hi": "э",
-        "label": "э"
+        "plan": "corpus_quantile",
+        "word_lo": "ускоряться",
+        "word_hi": "фландрия",
+        "label": "ускоряться–фландрия",
+        "word_count": 781,
+        "initial_letters": [
+          "у",
+          "ф"
+        ]
       },
       {
         "shard": 59,
-        "plan": "alpha",
-        "letter_lo": 31,
-        "letter_hi_excl": 31,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "фланелевка",
+        "word_hi": "холодище",
+        "label": "фланелевка–холодище",
+        "word_count": 781,
+        "initial_letters": [
+          "ф",
+          "х"
+        ]
       },
       {
         "shard": 60,
-        "plan": "alpha",
-        "letter_lo": 31,
-        "letter_hi_excl": 32,
-        "first_lo": "ю",
-        "first_hi": "ю",
-        "label": "ю"
+        "plan": "corpus_quantile",
+        "word_lo": "холодненький",
+        "word_hi": "черкассы",
+        "label": "холодненький–черкассы",
+        "word_count": 781,
+        "initial_letters": [
+          "х",
+          "ц",
+          "ч"
+        ]
       },
       {
         "shard": 61,
-        "plan": "alpha",
-        "letter_lo": 32,
-        "letter_hi_excl": 32,
-        "first_lo": "{",
-        "first_hi": "{",
-        "label": "∅"
+        "plan": "corpus_quantile",
+        "word_lo": "черкать",
+        "word_hi": "шелохнуть",
+        "label": "черкать–шелохнуть",
+        "word_count": 781,
+        "initial_letters": [
+          "ч",
+          "ш"
+        ]
       },
       {
         "shard": 62,
-        "plan": "alpha",
-        "letter_lo": 32,
-        "letter_hi_excl": 33,
-        "first_lo": "я",
-        "first_hi": "я",
-        "label": "я"
+        "plan": "corpus_quantile",
+        "word_lo": "шелохнуться",
+        "word_hi": "экзамен",
+        "label": "шелохнуться–экзамен",
+        "word_count": 781,
+        "initial_letters": [
+          "ш",
+          "щ",
+          "ы",
+          "э"
+        ]
       },
       {
         "shard": 63,
-        "plan": "alpha",
-        "letter_lo": 33,
-        "letter_hi_excl": 34,
-        "first_lo": "{",
-        "first_hi": "~",
-        "label": "прочее"
+        "plan": "corpus_quantile",
+        "word_lo": "экзаменатор",
+        "word_hi": "яя",
+        "label": "экзаменатор–яя",
+        "word_count": 781,
+        "initial_letters": [
+          "э",
+          "ю",
+          "я"
+        ]
       }
     ],
     "lattices": [
       {
-        "lattice_id": "L2_word",
+        "lattice_id": "words-ru",
         "token_count": 0,
         "word_concepts": 0
+      },
+      {
+        "lattice_id": "words-ru-00",
+        "token_count": 1560,
+        "word_concepts": 780
+      },
+      {
+        "lattice_id": "words-ru-01",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-02",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-03",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-04",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-05",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-06",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-07",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-08",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-09",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-10",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-11",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-12",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-13",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-14",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-15",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-16",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-17",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-18",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-19",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-20",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-21",
+        "token_count": 1560,
+        "word_concepts": 780
+      },
+      {
+        "lattice_id": "words-ru-22",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-23",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-24",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-25",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-26",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-27",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-28",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-29",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-30",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-31",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-32",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-33",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-34",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-35",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-36",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-37",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-38",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-39",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-40",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-41",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-42",
+        "token_count": 1560,
+        "word_concepts": 780
+      },
+      {
+        "lattice_id": "words-ru-43",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-44",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-45",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-46",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-47",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-48",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-49",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-50",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-51",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-52",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-53",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-54",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-55",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-56",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-57",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-58",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-59",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-60",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-61",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-62",
+        "token_count": 1562,
+        "word_concepts": 781
+      },
+      {
+        "lattice_id": "words-ru-63",
+        "token_count": 1562,
+        "word_concepts": 781
       }
     ]
   },
   "trained": 0,
-  "skipped": 3
+  "skipped": 65
 }

@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "format": "ltm-pack-v0",
-  "field_version": 2,
-  "updated_at": "2026-05-31T01:27:31.594314+00:00",
+  "field_version": 5,
+  "updated_at": "2026-05-31T07:18:40.891994+00:00",
   "lattices": {
     "words-ru-00": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-00.ltm",
+      "path": "ltm/l2/words-ru-00.ltm",
       "compress": null,
       "raw_bytes": 56338,
       "file_bytes": 56338,
@@ -20,7 +20,7 @@
       }
     },
     "words-ru-01": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-01.ltm",
+      "path": "ltm/l2/words-ru-01.ltm",
       "compress": null,
       "raw_bytes": 55900,
       "file_bytes": 55900,
@@ -35,7 +35,7 @@
       }
     },
     "words-ru-02": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-02.ltm",
+      "path": "ltm/l2/words-ru-02.ltm",
       "compress": null,
       "raw_bytes": 58550,
       "file_bytes": 58550,
@@ -50,7 +50,7 @@
       }
     },
     "words-ru-03": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-03.ltm",
+      "path": "ltm/l2/words-ru-03.ltm",
       "compress": null,
       "raw_bytes": 59260,
       "file_bytes": 59260,
@@ -65,7 +65,7 @@
       }
     },
     "words-ru-04": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-04.ltm",
+      "path": "ltm/l2/words-ru-04.ltm",
       "compress": null,
       "raw_bytes": 55876,
       "file_bytes": 55876,
@@ -80,7 +80,7 @@
       }
     },
     "words-ru-05": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-05.ltm",
+      "path": "ltm/l2/words-ru-05.ltm",
       "compress": null,
       "raw_bytes": 56106,
       "file_bytes": 56106,
@@ -95,7 +95,7 @@
       }
     },
     "words-ru-06": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-06.ltm",
+      "path": "ltm/l2/words-ru-06.ltm",
       "compress": null,
       "raw_bytes": 57564,
       "file_bytes": 57564,
@@ -110,7 +110,7 @@
       }
     },
     "words-ru-07": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-07.ltm",
+      "path": "ltm/l2/words-ru-07.ltm",
       "compress": null,
       "raw_bytes": 60802,
       "file_bytes": 60802,
@@ -125,7 +125,7 @@
       }
     },
     "words-ru-08": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-08.ltm",
+      "path": "ltm/l2/words-ru-08.ltm",
       "compress": null,
       "raw_bytes": 62402,
       "file_bytes": 62402,
@@ -140,7 +140,7 @@
       }
     },
     "words-ru-09": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-09.ltm",
+      "path": "ltm/l2/words-ru-09.ltm",
       "compress": null,
       "raw_bytes": 55968,
       "file_bytes": 55968,
@@ -155,7 +155,7 @@
       }
     },
     "words-ru-10": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-10.ltm",
+      "path": "ltm/l2/words-ru-10.ltm",
       "compress": null,
       "raw_bytes": 56792,
       "file_bytes": 56792,
@@ -170,7 +170,7 @@
       }
     },
     "words-ru-11": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-11.ltm",
+      "path": "ltm/l2/words-ru-11.ltm",
       "compress": null,
       "raw_bytes": 56240,
       "file_bytes": 56240,
@@ -185,7 +185,7 @@
       }
     },
     "words-ru-12": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-12.ltm",
+      "path": "ltm/l2/words-ru-12.ltm",
       "compress": null,
       "raw_bytes": 58606,
       "file_bytes": 58606,
@@ -200,7 +200,7 @@
       }
     },
     "words-ru-13": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-13.ltm",
+      "path": "ltm/l2/words-ru-13.ltm",
       "compress": null,
       "raw_bytes": 56182,
       "file_bytes": 56182,
@@ -215,7 +215,7 @@
       }
     },
     "words-ru-14": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-14.ltm",
+      "path": "ltm/l2/words-ru-14.ltm",
       "compress": null,
       "raw_bytes": 55320,
       "file_bytes": 55320,
@@ -230,7 +230,7 @@
       }
     },
     "words-ru-15": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-15.ltm",
+      "path": "ltm/l2/words-ru-15.ltm",
       "compress": null,
       "raw_bytes": 62030,
       "file_bytes": 62030,
@@ -245,7 +245,7 @@
       }
     },
     "words-ru-16": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-16.ltm",
+      "path": "ltm/l2/words-ru-16.ltm",
       "compress": null,
       "raw_bytes": 62206,
       "file_bytes": 62206,
@@ -260,7 +260,7 @@
       }
     },
     "words-ru-17": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-17.ltm",
+      "path": "ltm/l2/words-ru-17.ltm",
       "compress": null,
       "raw_bytes": 56454,
       "file_bytes": 56454,
@@ -275,7 +275,7 @@
       }
     },
     "words-ru-18": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-18.ltm",
+      "path": "ltm/l2/words-ru-18.ltm",
       "compress": null,
       "raw_bytes": 60048,
       "file_bytes": 60048,
@@ -290,7 +290,7 @@
       }
     },
     "words-ru-19": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-19.ltm",
+      "path": "ltm/l2/words-ru-19.ltm",
       "compress": null,
       "raw_bytes": 57252,
       "file_bytes": 57252,
@@ -305,7 +305,7 @@
       }
     },
     "words-ru-20": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-20.ltm",
+      "path": "ltm/l2/words-ru-20.ltm",
       "compress": null,
       "raw_bytes": 55752,
       "file_bytes": 55752,
@@ -320,7 +320,7 @@
       }
     },
     "words-ru-21": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-21.ltm",
+      "path": "ltm/l2/words-ru-21.ltm",
       "compress": null,
       "raw_bytes": 57194,
       "file_bytes": 57194,
@@ -335,12 +335,12 @@
       }
     },
     "words-ru-22": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-22.ltm",
+      "path": "ltm/l2/words-ru-22.ltm",
       "compress": null,
-      "raw_bytes": 59492,
-      "file_bytes": 59492,
+      "raw_bytes": 59508,
+      "file_bytes": 59508,
       "vocab": 1562,
-      "placements": 4686,
+      "placements": 4690,
       "width": 32,
       "height": 32,
       "meta": {
@@ -350,7 +350,7 @@
       }
     },
     "words-ru-23": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-23.ltm",
+      "path": "ltm/l2/words-ru-23.ltm",
       "compress": null,
       "raw_bytes": 56794,
       "file_bytes": 56794,
@@ -365,7 +365,7 @@
       }
     },
     "words-ru-24": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-24.ltm",
+      "path": "ltm/l2/words-ru-24.ltm",
       "compress": null,
       "raw_bytes": 53766,
       "file_bytes": 53766,
@@ -380,7 +380,7 @@
       }
     },
     "words-ru-25": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-25.ltm",
+      "path": "ltm/l2/words-ru-25.ltm",
       "compress": null,
       "raw_bytes": 54014,
       "file_bytes": 54014,
@@ -395,7 +395,7 @@
       }
     },
     "words-ru-26": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-26.ltm",
+      "path": "ltm/l2/words-ru-26.ltm",
       "compress": null,
       "raw_bytes": 56454,
       "file_bytes": 56454,
@@ -410,7 +410,7 @@
       }
     },
     "words-ru-27": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-27.ltm",
+      "path": "ltm/l2/words-ru-27.ltm",
       "compress": null,
       "raw_bytes": 58138,
       "file_bytes": 58138,
@@ -425,7 +425,7 @@
       }
     },
     "words-ru-28": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-28.ltm",
+      "path": "ltm/l2/words-ru-28.ltm",
       "compress": null,
       "raw_bytes": 55628,
       "file_bytes": 55628,
@@ -440,7 +440,7 @@
       }
     },
     "words-ru-29": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-29.ltm",
+      "path": "ltm/l2/words-ru-29.ltm",
       "compress": null,
       "raw_bytes": 60410,
       "file_bytes": 60410,
@@ -455,7 +455,7 @@
       }
     },
     "words-ru-30": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-30.ltm",
+      "path": "ltm/l2/words-ru-30.ltm",
       "compress": null,
       "raw_bytes": 63274,
       "file_bytes": 63274,
@@ -470,7 +470,7 @@
       }
     },
     "words-ru-31": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-31.ltm",
+      "path": "ltm/l2/words-ru-31.ltm",
       "compress": null,
       "raw_bytes": 65784,
       "file_bytes": 65784,
@@ -485,7 +485,7 @@
       }
     },
     "words-ru-32": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-32.ltm",
+      "path": "ltm/l2/words-ru-32.ltm",
       "compress": null,
       "raw_bytes": 57242,
       "file_bytes": 57242,
@@ -500,7 +500,7 @@
       }
     },
     "words-ru-33": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-33.ltm",
+      "path": "ltm/l2/words-ru-33.ltm",
       "compress": null,
       "raw_bytes": 61410,
       "file_bytes": 61410,
@@ -515,7 +515,7 @@
       }
     },
     "words-ru-34": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-34.ltm",
+      "path": "ltm/l2/words-ru-34.ltm",
       "compress": null,
       "raw_bytes": 58554,
       "file_bytes": 58554,
@@ -530,7 +530,7 @@
       }
     },
     "words-ru-35": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-35.ltm",
+      "path": "ltm/l2/words-ru-35.ltm",
       "compress": null,
       "raw_bytes": 61988,
       "file_bytes": 61988,
@@ -545,7 +545,7 @@
       }
     },
     "words-ru-36": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-36.ltm",
+      "path": "ltm/l2/words-ru-36.ltm",
       "compress": null,
       "raw_bytes": 56608,
       "file_bytes": 56608,
@@ -560,7 +560,7 @@
       }
     },
     "words-ru-37": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-37.ltm",
+      "path": "ltm/l2/words-ru-37.ltm",
       "compress": null,
       "raw_bytes": 64170,
       "file_bytes": 64170,
@@ -575,7 +575,7 @@
       }
     },
     "words-ru-38": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-38.ltm",
+      "path": "ltm/l2/words-ru-38.ltm",
       "compress": null,
       "raw_bytes": 58490,
       "file_bytes": 58490,
@@ -590,7 +590,7 @@
       }
     },
     "words-ru-39": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-39.ltm",
+      "path": "ltm/l2/words-ru-39.ltm",
       "compress": null,
       "raw_bytes": 63572,
       "file_bytes": 63572,
@@ -605,7 +605,7 @@
       }
     },
     "words-ru-40": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-40.ltm",
+      "path": "ltm/l2/words-ru-40.ltm",
       "compress": null,
       "raw_bytes": 61462,
       "file_bytes": 61462,
@@ -620,7 +620,7 @@
       }
     },
     "words-ru-41": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-41.ltm",
+      "path": "ltm/l2/words-ru-41.ltm",
       "compress": null,
       "raw_bytes": 61442,
       "file_bytes": 61442,
@@ -635,7 +635,7 @@
       }
     },
     "words-ru-42": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-42.ltm",
+      "path": "ltm/l2/words-ru-42.ltm",
       "compress": null,
       "raw_bytes": 65338,
       "file_bytes": 65338,
@@ -650,7 +650,7 @@
       }
     },
     "words-ru-43": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-43.ltm",
+      "path": "ltm/l2/words-ru-43.ltm",
       "compress": null,
       "raw_bytes": 64998,
       "file_bytes": 64998,
@@ -665,7 +665,7 @@
       }
     },
     "words-ru-44": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-44.ltm",
+      "path": "ltm/l2/words-ru-44.ltm",
       "compress": null,
       "raw_bytes": 65416,
       "file_bytes": 65416,
@@ -680,7 +680,7 @@
       }
     },
     "words-ru-45": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-45.ltm",
+      "path": "ltm/l2/words-ru-45.ltm",
       "compress": null,
       "raw_bytes": 58994,
       "file_bytes": 58994,
@@ -695,7 +695,7 @@
       }
     },
     "words-ru-46": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-46.ltm",
+      "path": "ltm/l2/words-ru-46.ltm",
       "compress": null,
       "raw_bytes": 65420,
       "file_bytes": 65420,
@@ -710,7 +710,7 @@
       }
     },
     "words-ru-47": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-47.ltm",
+      "path": "ltm/l2/words-ru-47.ltm",
       "compress": null,
       "raw_bytes": 57920,
       "file_bytes": 57920,
@@ -725,7 +725,7 @@
       }
     },
     "words-ru-48": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-48.ltm",
+      "path": "ltm/l2/words-ru-48.ltm",
       "compress": null,
       "raw_bytes": 55840,
       "file_bytes": 55840,
@@ -740,7 +740,7 @@
       }
     },
     "words-ru-49": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-49.ltm",
+      "path": "ltm/l2/words-ru-49.ltm",
       "compress": null,
       "raw_bytes": 58390,
       "file_bytes": 58390,
@@ -755,7 +755,7 @@
       }
     },
     "words-ru-50": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-50.ltm",
+      "path": "ltm/l2/words-ru-50.ltm",
       "compress": null,
       "raw_bytes": 57512,
       "file_bytes": 57512,
@@ -770,7 +770,7 @@
       }
     },
     "words-ru-51": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-51.ltm",
+      "path": "ltm/l2/words-ru-51.ltm",
       "compress": null,
       "raw_bytes": 58458,
       "file_bytes": 58458,
@@ -785,7 +785,7 @@
       }
     },
     "words-ru-52": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-52.ltm",
+      "path": "ltm/l2/words-ru-52.ltm",
       "compress": null,
       "raw_bytes": 59966,
       "file_bytes": 59966,
@@ -800,7 +800,7 @@
       }
     },
     "words-ru-53": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-53.ltm",
+      "path": "ltm/l2/words-ru-53.ltm",
       "compress": null,
       "raw_bytes": 58418,
       "file_bytes": 58418,
@@ -815,7 +815,7 @@
       }
     },
     "words-ru-54": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-54.ltm",
+      "path": "ltm/l2/words-ru-54.ltm",
       "compress": null,
       "raw_bytes": 55738,
       "file_bytes": 55738,
@@ -830,7 +830,7 @@
       }
     },
     "words-ru-55": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-55.ltm",
+      "path": "ltm/l2/words-ru-55.ltm",
       "compress": null,
       "raw_bytes": 55512,
       "file_bytes": 55512,
@@ -845,7 +845,7 @@
       }
     },
     "words-ru-56": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-56.ltm",
+      "path": "ltm/l2/words-ru-56.ltm",
       "compress": null,
       "raw_bytes": 56730,
       "file_bytes": 56730,
@@ -860,7 +860,7 @@
       }
     },
     "words-ru-57": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-57.ltm",
+      "path": "ltm/l2/words-ru-57.ltm",
       "compress": null,
       "raw_bytes": 58030,
       "file_bytes": 58030,
@@ -875,7 +875,7 @@
       }
     },
     "words-ru-58": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-58.ltm",
+      "path": "ltm/l2/words-ru-58.ltm",
       "compress": null,
       "raw_bytes": 56926,
       "file_bytes": 56926,
@@ -890,7 +890,7 @@
       }
     },
     "words-ru-59": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-59.ltm",
+      "path": "ltm/l2/words-ru-59.ltm",
       "compress": null,
       "raw_bytes": 54916,
       "file_bytes": 54916,
@@ -905,7 +905,7 @@
       }
     },
     "words-ru-60": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-60.ltm",
+      "path": "ltm/l2/words-ru-60.ltm",
       "compress": null,
       "raw_bytes": 55268,
       "file_bytes": 55268,
@@ -920,7 +920,7 @@
       }
     },
     "words-ru-61": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-61.ltm",
+      "path": "ltm/l2/words-ru-61.ltm",
       "compress": null,
       "raw_bytes": 55842,
       "file_bytes": 55842,
@@ -935,7 +935,7 @@
       }
     },
     "words-ru-62": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-62.ltm",
+      "path": "ltm/l2/words-ru-62.ltm",
       "compress": null,
       "raw_bytes": 54352,
       "file_bytes": 54352,
@@ -950,7 +950,7 @@
       }
     },
     "words-ru-63": {
-      "path": "lab\\agent-stores\\sss-ru-general-v0\\ltm\\l2\\words-ru-63.ltm",
+      "path": "ltm/l2/words-ru-63.ltm",
       "compress": null,
       "raw_bytes": 54692,
       "file_bytes": 54692,
@@ -51803,533 +51803,580 @@
       "words-ru-60": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-60/model.pt",
       "words-ru-61": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-61/model.pt",
       "words-ru-62": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-62/model.pt",
-      "words-ru-63": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-63/model.pt"
+      "words-ru-63": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-63/model.pt",
+      "words-ru-05": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-05/model.pt",
+      "words-ru-06": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-06/model.pt",
+      "words-ru-07": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-07/model.pt",
+      "words-ru-08": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-08/model.pt",
+      "words-ru-09": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-09/model.pt",
+      "words-ru-10": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-10/model.pt",
+      "words-ru-11": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-11/model.pt",
+      "words-ru-12": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-12/model.pt",
+      "words-ru-13": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-13/model.pt",
+      "words-ru-14": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-14/model.pt",
+      "words-ru-15": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-15/model.pt",
+      "words-ru-16": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-16/model.pt",
+      "words-ru-17": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-17/model.pt",
+      "words-ru-18": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-18/model.pt",
+      "words-ru-19": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-19/model.pt",
+      "words-ru-20": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-20/model.pt",
+      "words-ru-21": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-21/model.pt",
+      "words-ru-22": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-22/model.pt",
+      "words-ru-23": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-23/model.pt",
+      "words-ru-24": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-24/model.pt",
+      "words-ru-25": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-25/model.pt",
+      "words-ru-26": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-26/model.pt",
+      "words-ru-27": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-27/model.pt",
+      "words-ru-28": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-28/model.pt",
+      "words-ru-29": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-29/model.pt",
+      "words-ru-30": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-30/model.pt",
+      "words-ru-31": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-31/model.pt",
+      "words-ru-32": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-32/model.pt",
+      "words-ru-33": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-33/model.pt",
+      "words-ru-34": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-34/model.pt",
+      "words-ru-35": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-35/model.pt",
+      "words-ru-36": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-36/model.pt",
+      "words-ru-37": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-37/model.pt",
+      "words-ru-38": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-38/model.pt",
+      "words-ru-39": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-39/model.pt",
+      "words-ru-40": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-40/model.pt",
+      "words-ru-41": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-41/model.pt",
+      "words-ru-42": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-42/model.pt",
+      "words-ru-43": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-43/model.pt",
+      "words-ru-44": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-44/model.pt",
+      "words-ru-45": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-45/model.pt",
+      "words-ru-46": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-46/model.pt",
+      "words-ru-47": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-47/model.pt",
+      "words-ru-48": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-48/model.pt",
+      "words-ru-49": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-49/model.pt",
+      "words-ru-50": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-50/model.pt",
+      "words-ru-51": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-51/model.pt"
     }
   },
   "totals": {
     "lattice_count": 64,
-    "raw_bytes": 3746210,
-    "file_bytes": 3746210
+    "raw_bytes": 3746226,
+    "file_bytes": 3746226
   },
   "nca_train_registry": {
     "schema_version": 1,
     "kind": "nca_train_registry_v0",
     "store_id": "sss-ru-general-v0",
-    "updated_at": "2026-05-31T01:31:24.823434+00:00",
-    "field_version": 2,
+    "updated_at": "2026-05-31T07:18:40.890949+00:00",
+    "field_version": 5,
     "pending": [],
     "lattices": {
       "words-ru-00": {
-        "last_trained_at": "2026-05-30T22:34:58.923582+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:01:47.578014+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1560,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-00/model.pt",
         "last_repair_ratio": 2.478,
-        "last_repair_at": "2026-05-30T22:34:58.924586+00:00"
+        "last_repair_at": "2026-05-31T06:01:47.580117+00:00"
       },
       "words-ru-01": {
-        "last_trained_at": "2026-05-30T22:37:41.401136+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:04:48.028942+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-01/model.pt",
         "last_repair_ratio": 2.516,
-        "last_repair_at": "2026-05-30T22:37:41.402136+00:00"
+        "last_repair_at": "2026-05-31T06:04:48.031327+00:00"
       },
       "words-ru-02": {
-        "last_trained_at": "2026-05-30T22:40:35.964176+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:07:43.657839+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-02/model.pt",
         "last_repair_ratio": 2.613,
-        "last_repair_at": "2026-05-30T22:40:35.965178+00:00"
+        "last_repair_at": "2026-05-31T06:07:43.660381+00:00"
       },
       "words-ru-03": {
-        "last_trained_at": "2026-05-30T22:43:40.247392+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:10:41.683085+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-03/model.pt",
         "last_repair_ratio": 2.489,
-        "last_repair_at": "2026-05-30T22:43:40.248394+00:00"
+        "last_repair_at": "2026-05-31T06:10:41.685197+00:00"
       },
       "words-ru-04": {
-        "last_trained_at": "2026-05-30T22:46:42.162329+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:13:57.000144+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-04/model.pt",
         "last_repair_ratio": 2.52,
-        "last_repair_at": "2026-05-30T22:46:42.163604+00:00"
+        "last_repair_at": "2026-05-31T06:13:57.002801+00:00"
       },
       "words-ru-05": {
-        "last_trained_at": "2026-05-30T22:49:39.792859+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:15:28.010794+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-05/model.pt",
-        "last_repair_ratio": 2.563,
-        "last_repair_at": "2026-05-30T22:49:39.793860+00:00"
+        "last_repair_ratio": 2.401,
+        "last_repair_at": "2026-05-31T06:15:28.013946+00:00"
       },
       "words-ru-06": {
-        "last_trained_at": "2026-05-30T22:52:38.143105+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:16:31.329808+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-06/model.pt",
-        "last_repair_ratio": 2.497,
-        "last_repair_at": "2026-05-30T22:52:38.144175+00:00"
+        "last_repair_ratio": 2.36,
+        "last_repair_at": "2026-05-31T06:16:31.332513+00:00"
       },
       "words-ru-07": {
-        "last_trained_at": "2026-05-30T22:56:35.529588+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:17:36.133298+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-07/model.pt",
-        "last_repair_ratio": 2.52,
-        "last_repair_at": "2026-05-30T22:56:35.530492+00:00"
+        "last_repair_ratio": 2.385,
+        "last_repair_at": "2026-05-31T06:17:36.135295+00:00"
       },
       "words-ru-08": {
-        "last_trained_at": "2026-05-30T22:59:34.939703+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:18:37.324376+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-08/model.pt",
-        "last_repair_ratio": 2.499,
-        "last_repair_at": "2026-05-30T22:59:34.940702+00:00"
+        "last_repair_ratio": 2.367,
+        "last_repair_at": "2026-05-31T06:18:37.327376+00:00"
       },
       "words-ru-09": {
-        "last_trained_at": "2026-05-30T23:02:31.975705+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:19:45.472222+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-09/model.pt",
-        "last_repair_ratio": 2.543,
-        "last_repair_at": "2026-05-30T23:02:31.976710+00:00"
+        "last_repair_ratio": 2.356,
+        "last_repair_at": "2026-05-31T06:19:45.474242+00:00"
       },
       "words-ru-10": {
-        "last_trained_at": "2026-05-30T23:05:53.875304+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:20:47.494411+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-10/model.pt",
-        "last_repair_ratio": 2.536,
-        "last_repair_at": "2026-05-30T23:05:53.876601+00:00"
+        "last_repair_ratio": 2.335,
+        "last_repair_at": "2026-05-31T06:20:47.497632+00:00"
       },
       "words-ru-11": {
-        "last_trained_at": "2026-05-30T23:09:03.774335+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:21:50.060692+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-11/model.pt",
-        "last_repair_ratio": 2.526,
-        "last_repair_at": "2026-05-30T23:09:03.774844+00:00"
+        "last_repair_ratio": 2.388,
+        "last_repair_at": "2026-05-31T06:21:50.062693+00:00"
       },
       "words-ru-12": {
-        "last_trained_at": "2026-05-30T23:11:55.863920+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:22:48.043702+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-12/model.pt",
-        "last_repair_ratio": 2.536,
-        "last_repair_at": "2026-05-30T23:11:55.864921+00:00"
+        "last_repair_ratio": 2.397,
+        "last_repair_at": "2026-05-31T06:22:48.046721+00:00"
       },
       "words-ru-13": {
-        "last_trained_at": "2026-05-30T23:14:53.896170+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:23:51.644349+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-13/model.pt",
-        "last_repair_ratio": 2.603,
-        "last_repair_at": "2026-05-30T23:14:53.897169+00:00"
+        "last_repair_ratio": 2.388,
+        "last_repair_at": "2026-05-31T06:23:51.647003+00:00"
       },
       "words-ru-14": {
-        "last_trained_at": "2026-05-30T23:17:32.568728+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:25:00.725252+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-14/model.pt",
-        "last_repair_ratio": 2.533,
-        "last_repair_at": "2026-05-30T23:17:32.569737+00:00"
+        "last_repair_ratio": 2.376,
+        "last_repair_at": "2026-05-31T06:25:00.727351+00:00"
       },
       "words-ru-15": {
-        "last_trained_at": "2026-05-30T23:20:03.533879+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:26:04.332394+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-15/model.pt",
-        "last_repair_ratio": 2.571,
-        "last_repair_at": "2026-05-30T23:20:03.535893+00:00"
+        "last_repair_ratio": 2.424,
+        "last_repair_at": "2026-05-31T06:26:04.334392+00:00"
       },
       "words-ru-16": {
-        "last_trained_at": "2026-05-30T23:22:21.828404+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:27:07.663030+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-16/model.pt",
-        "last_repair_ratio": 2.53,
-        "last_repair_at": "2026-05-30T23:22:21.830413+00:00"
+        "last_repair_ratio": 2.361,
+        "last_repair_at": "2026-05-31T06:27:07.665536+00:00"
       },
       "words-ru-17": {
-        "last_trained_at": "2026-05-30T23:25:21.901220+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:28:12.393248+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-17/model.pt",
-        "last_repair_ratio": 2.499,
-        "last_repair_at": "2026-05-30T23:25:21.902229+00:00"
+        "last_repair_ratio": 2.312,
+        "last_repair_at": "2026-05-31T06:28:12.395256+00:00"
       },
       "words-ru-18": {
-        "last_trained_at": "2026-05-30T23:28:29.864067+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:29:15.430771+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-18/model.pt",
-        "last_repair_ratio": 2.457,
-        "last_repair_at": "2026-05-30T23:28:29.865081+00:00"
+        "last_repair_ratio": 2.307,
+        "last_repair_at": "2026-05-31T06:29:15.433566+00:00"
       },
       "words-ru-19": {
-        "last_trained_at": "2026-05-30T23:31:24.736416+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:30:18.199075+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-19/model.pt",
-        "last_repair_ratio": 2.567,
-        "last_repair_at": "2026-05-30T23:31:24.738439+00:00"
+        "last_repair_ratio": 2.417,
+        "last_repair_at": "2026-05-31T06:30:18.201577+00:00"
       },
       "words-ru-20": {
-        "last_trained_at": "2026-05-30T23:34:20.512883+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:31:20.680079+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-20/model.pt",
-        "last_repair_ratio": 2.455,
-        "last_repair_at": "2026-05-30T23:34:20.513884+00:00"
+        "last_repair_ratio": 2.3,
+        "last_repair_at": "2026-05-31T06:31:20.682821+00:00"
       },
       "words-ru-21": {
-        "last_trained_at": "2026-05-30T23:37:43.761650+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:32:24.139675+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1560,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-21/model.pt",
-        "last_repair_ratio": 2.532,
-        "last_repair_at": "2026-05-30T23:37:43.763161+00:00"
+        "last_repair_ratio": 2.4,
+        "last_repair_at": "2026-05-31T06:32:24.143074+00:00"
       },
       "words-ru-22": {
-        "last_trained_at": "2026-05-30T23:41:32.484529+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:33:35.837054+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-22/model.pt",
-        "last_repair_ratio": 2.58,
-        "last_repair_at": "2026-05-30T23:41:32.486536+00:00"
+        "last_repair_ratio": 2.335,
+        "last_repair_at": "2026-05-31T06:33:35.838087+00:00"
       },
       "words-ru-23": {
-        "last_trained_at": "2026-05-30T23:44:38.739506+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:34:43.453559+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-23/model.pt",
-        "last_repair_ratio": 2.487,
-        "last_repair_at": "2026-05-30T23:44:38.740507+00:00"
+        "last_repair_ratio": 2.352,
+        "last_repair_at": "2026-05-31T06:34:43.455562+00:00"
       },
       "words-ru-24": {
-        "last_trained_at": "2026-05-30T23:47:45.178733+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:35:44.800807+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-24/model.pt",
-        "last_repair_ratio": 2.608,
-        "last_repair_at": "2026-05-30T23:47:45.179744+00:00"
+        "last_repair_ratio": 2.401,
+        "last_repair_at": "2026-05-31T06:35:44.802813+00:00"
       },
       "words-ru-25": {
-        "last_trained_at": "2026-05-30T23:50:42.772982+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:36:52.056945+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-25/model.pt",
-        "last_repair_ratio": 2.511,
-        "last_repair_at": "2026-05-30T23:50:42.773982+00:00"
+        "last_repair_ratio": 2.369,
+        "last_repair_at": "2026-05-31T06:36:52.059959+00:00"
       },
       "words-ru-26": {
-        "last_trained_at": "2026-05-30T23:53:49.245406+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:37:53.615462+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-26/model.pt",
-        "last_repair_ratio": 2.472,
-        "last_repair_at": "2026-05-30T23:53:49.246412+00:00"
+        "last_repair_ratio": 2.309,
+        "last_repair_at": "2026-05-31T06:37:53.618104+00:00"
       },
       "words-ru-27": {
-        "last_trained_at": "2026-05-30T23:58:11.064146+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:39:00.008347+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-27/model.pt",
-        "last_repair_ratio": 2.519,
-        "last_repair_at": "2026-05-30T23:58:11.065689+00:00"
+        "last_repair_ratio": 2.382,
+        "last_repair_at": "2026-05-31T06:39:00.041124+00:00"
       },
       "words-ru-28": {
-        "last_trained_at": "2026-05-31T00:01:28.852793+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:40:25.900406+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-28/model.pt",
-        "last_repair_ratio": 2.522,
-        "last_repair_at": "2026-05-31T00:01:28.853793+00:00"
+        "last_repair_ratio": 2.388,
+        "last_repair_at": "2026-05-31T06:40:25.901413+00:00"
       },
       "words-ru-29": {
-        "last_trained_at": "2026-05-31T00:04:39.666959+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:42:04.019132+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-29/model.pt",
-        "last_repair_ratio": 2.617,
-        "last_repair_at": "2026-05-31T00:04:39.668448+00:00"
+        "last_repair_ratio": 2.382,
+        "last_repair_at": "2026-05-31T06:42:04.022160+00:00"
       },
       "words-ru-30": {
-        "last_trained_at": "2026-05-31T00:07:46.490292+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:43:10.981360+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-30/model.pt",
-        "last_repair_ratio": 2.417,
-        "last_repair_at": "2026-05-31T00:07:46.491292+00:00"
+        "last_repair_ratio": 2.282,
+        "last_repair_at": "2026-05-31T06:43:10.984894+00:00"
       },
       "words-ru-31": {
-        "last_trained_at": "2026-05-31T00:10:59.781584+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:44:23.386172+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-31/model.pt",
-        "last_repair_ratio": 2.488,
-        "last_repair_at": "2026-05-31T00:10:59.782595+00:00"
+        "last_repair_ratio": 2.329,
+        "last_repair_at": "2026-05-31T06:44:23.388831+00:00"
       },
       "words-ru-32": {
-        "last_trained_at": "2026-05-31T00:13:54.520299+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:45:36.453189+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-32/model.pt",
-        "last_repair_ratio": 2.47,
-        "last_repair_at": "2026-05-31T00:13:54.521307+00:00"
+        "last_repair_ratio": 2.306,
+        "last_repair_at": "2026-05-31T06:45:36.456704+00:00"
       },
       "words-ru-33": {
-        "last_trained_at": "2026-05-31T00:17:08.340606+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:46:49.262539+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-33/model.pt",
-        "last_repair_ratio": 2.519,
-        "last_repair_at": "2026-05-31T00:17:08.342081+00:00"
+        "last_repair_ratio": 2.335,
+        "last_repair_at": "2026-05-31T06:46:49.265135+00:00"
       },
       "words-ru-34": {
-        "last_trained_at": "2026-05-31T00:20:43.210900+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:48:00.168787+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-34/model.pt",
-        "last_repair_ratio": 2.528,
-        "last_repair_at": "2026-05-31T00:20:43.211899+00:00"
+        "last_repair_ratio": 2.378,
+        "last_repair_at": "2026-05-31T06:48:00.171443+00:00"
       },
       "words-ru-35": {
-        "last_trained_at": "2026-05-31T00:24:03.760158+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:49:12.473857+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-35/model.pt",
-        "last_repair_ratio": 2.511,
-        "last_repair_at": "2026-05-31T00:24:03.761163+00:00"
+        "last_repair_ratio": 2.314,
+        "last_repair_at": "2026-05-31T06:49:12.476855+00:00"
       },
       "words-ru-36": {
-        "last_trained_at": "2026-05-31T00:27:35.686412+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:50:18.293917+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-36/model.pt",
-        "last_repair_ratio": 2.475,
-        "last_repair_at": "2026-05-31T00:27:35.688920+00:00"
+        "last_repair_ratio": 2.334,
+        "last_repair_at": "2026-05-31T06:50:18.297188+00:00"
       },
       "words-ru-37": {
-        "last_trained_at": "2026-05-31T00:30:25.840458+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:51:37.715947+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-37/model.pt",
-        "last_repair_ratio": 2.517,
-        "last_repair_at": "2026-05-31T00:30:25.841983+00:00"
+        "last_repair_ratio": 2.342,
+        "last_repair_at": "2026-05-31T06:51:37.718450+00:00"
       },
       "words-ru-38": {
-        "last_trained_at": "2026-05-31T00:33:15.531018+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:52:41.769798+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-38/model.pt",
-        "last_repair_ratio": 2.556,
-        "last_repair_at": "2026-05-31T00:33:15.531018+00:00"
+        "last_repair_ratio": 2.373,
+        "last_repair_at": "2026-05-31T06:52:41.772434+00:00"
       },
       "words-ru-39": {
-        "last_trained_at": "2026-05-31T00:36:15.482807+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:53:50.857492+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-39/model.pt",
-        "last_repair_ratio": 2.508,
-        "last_repair_at": "2026-05-31T00:36:15.483832+00:00"
+        "last_repair_ratio": 2.315,
+        "last_repair_at": "2026-05-31T06:53:50.860004+00:00"
       },
       "words-ru-40": {
-        "last_trained_at": "2026-05-31T00:39:33.774536+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:54:58.910480+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-40/model.pt",
-        "last_repair_ratio": 2.556,
-        "last_repair_at": "2026-05-31T00:39:33.775537+00:00"
+        "last_repair_ratio": 2.365,
+        "last_repair_at": "2026-05-31T06:54:58.938828+00:00"
       },
       "words-ru-41": {
-        "last_trained_at": "2026-05-31T00:42:47.915473+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:56:10.063090+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-41/model.pt",
-        "last_repair_ratio": 2.521,
-        "last_repair_at": "2026-05-31T00:42:47.917474+00:00"
+        "last_repair_ratio": 2.411,
+        "last_repair_at": "2026-05-31T06:56:10.066113+00:00"
       },
       "words-ru-42": {
-        "last_trained_at": "2026-05-31T00:45:38.414066+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:57:21.420894+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1560,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-42/model.pt",
-        "last_repair_ratio": 2.551,
-        "last_repair_at": "2026-05-31T00:45:38.415090+00:00"
+        "last_repair_ratio": 2.382,
+        "last_repair_at": "2026-05-31T06:57:21.424049+00:00"
       },
       "words-ru-43": {
-        "last_trained_at": "2026-05-31T00:48:21.851092+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:58:30.642115+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-43/model.pt",
-        "last_repair_ratio": 2.501,
-        "last_repair_at": "2026-05-31T00:48:21.853091+00:00"
+        "last_repair_ratio": 2.312,
+        "last_repair_at": "2026-05-31T06:58:30.644180+00:00"
       },
       "words-ru-44": {
-        "last_trained_at": "2026-05-31T00:51:11.862704+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T06:59:31.153071+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-44/model.pt",
-        "last_repair_ratio": 2.475,
-        "last_repair_at": "2026-05-31T00:51:11.863704+00:00"
+        "last_repair_ratio": 2.312,
+        "last_repair_at": "2026-05-31T06:59:31.155180+00:00"
       },
       "words-ru-45": {
-        "last_trained_at": "2026-05-31T00:54:00.393625+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:00:36.006897+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-45/model.pt",
-        "last_repair_ratio": 2.503,
-        "last_repair_at": "2026-05-31T00:54:00.395131+00:00"
+        "last_repair_ratio": 2.312,
+        "last_repair_at": "2026-05-31T07:00:36.008911+00:00"
       },
       "words-ru-46": {
-        "last_trained_at": "2026-05-31T00:57:10.022590+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:01:34.573248+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-46/model.pt",
-        "last_repair_ratio": 2.472,
-        "last_repair_at": "2026-05-31T00:57:10.023617+00:00"
+        "last_repair_ratio": 2.346,
+        "last_repair_at": "2026-05-31T07:01:34.575251+00:00"
       },
       "words-ru-47": {
-        "last_trained_at": "2026-05-31T01:00:08.546295+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:02:33.044867+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-47/model.pt",
-        "last_repair_ratio": 2.471,
-        "last_repair_at": "2026-05-31T01:00:08.547786+00:00"
+        "last_repair_ratio": 2.346,
+        "last_repair_at": "2026-05-31T07:02:33.047010+00:00"
       },
       "words-ru-48": {
-        "last_trained_at": "2026-05-31T01:03:07.673963+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:03:34.981468+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-48/model.pt",
-        "last_repair_ratio": 2.529,
-        "last_repair_at": "2026-05-31T01:03:07.675387+00:00"
+        "last_repair_ratio": 2.41,
+        "last_repair_at": "2026-05-31T07:03:34.984954+00:00"
       },
       "words-ru-49": {
-        "last_trained_at": "2026-05-31T01:06:01.339388+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:04:35.753613+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-49/model.pt",
-        "last_repair_ratio": 2.51,
-        "last_repair_at": "2026-05-31T01:06:01.340894+00:00"
+        "last_repair_ratio": 2.385,
+        "last_repair_at": "2026-05-31T07:04:35.755612+00:00"
       },
       "words-ru-50": {
-        "last_trained_at": "2026-05-31T01:09:02.080964+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:05:38.727823+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-50/model.pt",
-        "last_repair_ratio": 2.558,
-        "last_repair_at": "2026-05-31T01:09:02.080964+00:00"
+        "last_repair_ratio": 2.375,
+        "last_repair_at": "2026-05-31T07:05:38.729824+00:00"
       },
       "words-ru-51": {
-        "last_trained_at": "2026-05-31T01:11:37.914597+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:06:39.046772+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-51/model.pt",
-        "last_repair_ratio": 2.535,
-        "last_repair_at": "2026-05-31T01:11:37.915598+00:00"
+        "last_repair_ratio": 2.406,
+        "last_repair_at": "2026-05-31T07:06:39.048772+00:00"
       },
       "words-ru-52": {
-        "last_trained_at": "2026-05-31T01:17:33.632419+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:07:36.965650+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-52/model.pt",
         "last_repair_ratio": 2.316,
-        "last_repair_at": "2026-05-31T01:17:33.634001+00:00"
+        "last_repair_at": "2026-05-31T07:07:36.967770+00:00"
       },
       "words-ru-53": {
-        "last_trained_at": "2026-05-31T01:18:30.806117+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:08:38.664395+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-53/model.pt",
         "last_repair_ratio": 2.375,
-        "last_repair_at": "2026-05-31T01:18:30.807625+00:00"
+        "last_repair_at": "2026-05-31T07:08:38.666404+00:00"
       },
       "words-ru-54": {
-        "last_trained_at": "2026-05-31T01:19:28.176035+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:09:36.488391+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-54/model.pt",
         "last_repair_ratio": 2.344,
-        "last_repair_at": "2026-05-31T01:19:28.180061+00:00"
+        "last_repair_at": "2026-05-31T07:09:36.491403+00:00"
       },
       "words-ru-55": {
-        "last_trained_at": "2026-05-31T01:20:22.694974+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:10:38.098260+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-55/model.pt",
         "last_repair_ratio": 2.392,
-        "last_repair_at": "2026-05-31T01:20:22.696482+00:00"
+        "last_repair_at": "2026-05-31T07:10:38.101261+00:00"
       },
       "words-ru-56": {
-        "last_trained_at": "2026-05-31T01:21:25.095875+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:11:41.048356+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-56/model.pt",
         "last_repair_ratio": 2.417,
-        "last_repair_at": "2026-05-31T01:21:25.096874+00:00"
+        "last_repair_at": "2026-05-31T07:11:41.050453+00:00"
       },
       "words-ru-57": {
-        "last_trained_at": "2026-05-31T01:22:22.087364+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:12:40.734763+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-57/model.pt",
         "last_repair_ratio": 2.373,
-        "last_repair_at": "2026-05-31T01:22:22.088374+00:00"
+        "last_repair_at": "2026-05-31T07:12:40.737255+00:00"
       },
       "words-ru-58": {
-        "last_trained_at": "2026-05-31T01:23:15.477824+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:13:42.220819+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-58/model.pt",
         "last_repair_ratio": 2.289,
-        "last_repair_at": "2026-05-31T01:23:15.480345+00:00"
+        "last_repair_at": "2026-05-31T07:13:42.223818+00:00"
       },
       "words-ru-59": {
-        "last_trained_at": "2026-05-31T01:24:08.513466+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:14:44.252997+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-59/model.pt",
         "last_repair_ratio": 2.306,
-        "last_repair_at": "2026-05-31T01:24:08.515466+00:00"
+        "last_repair_at": "2026-05-31T07:14:44.255996+00:00"
       },
       "words-ru-60": {
-        "last_trained_at": "2026-05-31T01:25:06.642937+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:15:41.019907+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-60/model.pt",
         "last_repair_ratio": 2.32,
-        "last_repair_at": "2026-05-31T01:25:06.643933+00:00"
+        "last_repair_at": "2026-05-31T07:15:41.023444+00:00"
       },
       "words-ru-61": {
-        "last_trained_at": "2026-05-31T01:25:49.055764+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:16:36.904073+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-61/model.pt",
         "last_repair_ratio": 2.319,
-        "last_repair_at": "2026-05-31T01:25:49.056764+00:00"
+        "last_repair_at": "2026-05-31T07:16:36.906590+00:00"
       },
       "words-ru-62": {
-        "last_trained_at": "2026-05-31T01:26:41.089039+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:17:37.613660+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-62/model.pt",
         "last_repair_ratio": 2.385,
-        "last_repair_at": "2026-05-31T01:26:41.091039+00:00"
+        "last_repair_at": "2026-05-31T07:17:37.617180+00:00"
       },
       "words-ru-63": {
-        "last_trained_at": "2026-05-31T01:27:31.592314+00:00",
-        "field_version_at_train": 2,
+        "last_trained_at": "2026-05-31T07:18:40.887326+00:00",
+        "field_version_at_train": 5,
         "token_count_at_train": 1562,
         "model_path": "lab/agent-stores/sss-ru-general-v0/nca/words-ru-63/model.pt",
         "last_repair_ratio": 2.405,
-        "last_repair_at": "2026-05-31T01:27:31.593315+00:00"
+        "last_repair_at": "2026-05-31T07:18:40.890416+00:00"
       }
     }
   }
