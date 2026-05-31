@@ -15,6 +15,8 @@
 | Элемент KB | Роль |
 |------------|------|
 | Слои **L0–L3** | что всегда в силе → оперативка по домену → архив/evidence → семантический роутинг |
+
+Semantic layer ids (prose): `memory.grapheme` … `memory.phrase` — [naming-memory-layers-v0.md](naming-memory-layers-v0.md); CIDE cross-ref [naming-layers-v1.md](../../cascade-ide/docs/design/naming-layers-v1.md) §6.
 | **Домен** | ось темы (Git, язык, HCI, …) |
 | **Понятие** | `concept_id`, карточки, слоты |
 | **Факт** | `claims` (`claim`, `rule`, `concept`, …) |
