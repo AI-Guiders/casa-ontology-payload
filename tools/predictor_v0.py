@@ -4,14 +4,36 @@
 from __future__ import annotations
 
 import math
+from dataclasses import dataclass
 from typing import Any
 
 from f0_math_ingest_v0 import ingest_math_bundle  # type: ignore
 from f0_stack_v0 import decode_f0_lattice, rank_cue_on_f0  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
-from sss_l2_shard_v0 import L2_CONCEPT_PREFIX, lattice_digest_l2_network  # type: ignore
+from sss_l2_shard_v0 import L2_CONCEPT_PREFIX, is_l2_word_lattice, lattice_digest_l2_network  # type: ignore
 from lexicon_usage_axes_v0 import T9Policy, filter_ranked_for_t9, lemma_axis  # type: ignore
 from sss_segment_v0 import format_segment, norm_word, segment_hypothesis, verify_segment  # type: ignore
+
+
+@dataclass(frozen=True)
+class T9Weights:
+    """Ranking weights for T9 prefix candidates.
+
+    Tuned on the RU DetCorpus + EN folk dev sets (BiT9 gate, 2026-05). Values are
+    relative scores, not physical units. Override per call via
+    ``predict_t9(..., weights=T9Weights(...))`` rather than editing literals.
+    """
+
+    vote: float = 10.0  # field-vote mass per L2 headword
+    remaining_penalty: float = 25.0  # cost per grapheme still to type (shorter completion wins)
+    length_penalty: float = 0.5  # mild bias against long words on ties
+    ipm_bonus: float = 4.0  # scale on log1p(ipm) (DetCorpus instances-per-million)
+    rank_bonus_base: float = 12.0  # ceiling of the frequency-rank fallback bonus
+    rank_bonus_slope: float = 3.0  # log10(rank) decay of the rank fallback
+    freq_min_prefix: int = 3  # apply frequency tie-break only from 3 graphemes (homoglyph-safe)
+
+
+DEFAULT_T9_WEIGHTS = T9Weights()
 
 
 def word_anchors_from_ranked(
@@ -58,20 +80,26 @@ def _confidence_from_ranked(ranked: list[tuple[str, Any]], *, top_k: int = 5) ->
     return round(top / max(1.0, top + rest), 3)
 
 
-def _freq_bonus(word: str, prefix: str, axes: dict[str, dict[str, Any]] | None) -> float:
-    """DetCorpus ipm/rank — ranking tie-break from 3+ grapheme prefix (homoglyph-safe)."""
+def _freq_bonus(
+    word: str,
+    prefix: str,
+    axes: dict[str, dict[str, Any]] | None,
+    *,
+    weights: T9Weights = DEFAULT_T9_WEIGHTS,
+) -> float:
+    """DetCorpus ipm/rank — ranking tie-break from N+ grapheme prefix (homoglyph-safe)."""
     p = norm_word(prefix)
-    if len(p) < 3 or not axes:
+    if len(p) < weights.freq_min_prefix or not axes:
         return 0.0
     ax = lemma_axis(axes, word)
     if not ax:
         return 0.0
     ipm = float(ax.get("ipm") or 0)
     if ipm > 0:
-        return math.log1p(ipm) * 4.0
+        return math.log1p(ipm) * weights.ipm_bonus
     rank = int(ax.get("rank") or 0)
     if rank > 0:
-        return max(0.0, 12.0 - math.log10(rank + 1) * 3.0)
+        return max(0.0, weights.rank_bonus_base - math.log10(rank + 1) * weights.rank_bonus_slope)
     return 0.0
 
 
@@ -81,13 +109,19 @@ def _t9_score(
     prefix: str,
     *,
     axes: dict[str, dict[str, Any]] | None = None,
+    weights: T9Weights = DEFAULT_T9_WEIGHTS,
 ) -> float:
-    """Field votes + length bias + lexicon ipm/rank (prefix ≥3)."""
+    """Field votes + length bias + lexicon ipm/rank (prefix ≥ weights.freq_min_prefix)."""
     w, p = norm_word(word), norm_word(prefix)
     if not w.startswith(p):
         return float("-inf")
     remaining = len(w) - len(p)
-    return float(votes) * 10.0 - remaining * 25.0 - len(w) * 0.5 + _freq_bonus(w, p, axes)
+    return (
+        float(votes) * weights.vote
+        - remaining * weights.remaining_penalty
+        - len(w) * weights.length_penalty
+        + _freq_bonus(w, p, axes, weights=weights)
+    )
 
 
 def _prefix_bucket_key(prefix: str) -> str:
@@ -133,13 +167,14 @@ def _prefix_from_index(
     *,
     top_k: int = 8,
     axes: dict[str, dict[str, Any]] | None = None,
+    weights: T9Weights = DEFAULT_T9_WEIGHTS,
 ) -> list[tuple[str, int]]:
     p = norm_word(prefix)
     if not p:
         return []
     bucket = _prefix_bucket_items(index, p)
     out = [(word, votes) for word, votes in bucket if word.startswith(p)]
-    out.sort(key=lambda x: (-_t9_score(x[0], x[1], p, axes=axes), len(x[0]), x[0]))
+    out.sort(key=lambda x: (-_t9_score(x[0], x[1], p, axes=axes, weights=weights), len(x[0]), x[0]))
     return out[:top_k]
 
 
@@ -149,6 +184,7 @@ def _prefix_from_digest(
     *,
     top_k: int = 8,
     axes: dict[str, dict[str, Any]] | None = None,
+    weights: T9Weights = DEFAULT_T9_WEIGHTS,
 ) -> list[tuple[str, int]]:
     p = norm_word(prefix)
     if not p:
@@ -160,7 +196,7 @@ def _prefix_from_digest(
         word = cid[len(L2_CONCEPT_PREFIX) :]
         if word.startswith(p):
             out.append((word, int(votes)))
-    out.sort(key=lambda x: (-_t9_score(x[0], x[1], p, axes=axes), len(x[0]), x[0]))
+    out.sort(key=lambda x: (-_t9_score(x[0], x[1], p, axes=axes, weights=weights), len(x[0]), x[0]))
     return out[:top_k]
 
 
@@ -188,6 +224,7 @@ def l2_prefix_candidates(
     *,
     top_k: int = 8,
     t9_policy: T9Policy = "prod",
+    weights: T9Weights = DEFAULT_T9_WEIGHTS,
 ) -> list[tuple[str, int]]:
     """Words from L2 network matching prefix — field-only (T9)."""
     axes = state.get("lexicon_axes") or {}
@@ -196,6 +233,7 @@ def l2_prefix_candidates(
         prefix,
         top_k=max(top_k * 4, 32),
         axes=axes or None,
+        weights=weights,
     )
     return filter_ranked_for_t9(raw, axes, policy=t9_policy, top_k=top_k)
 
@@ -316,10 +354,17 @@ def predict_schema(
     }
 
 
-def predict_t9(state: dict, cue: str, *, top_k: int = 8, t9_policy: T9Policy = "prod") -> dict[str, Any]:
+def predict_t9(
+    state: dict,
+    cue: str,
+    *,
+    top_k: int = 8,
+    t9_policy: T9Policy = "prod",
+    weights: T9Weights = DEFAULT_T9_WEIGHTS,
+) -> dict[str, Any]:
     state = ensure_prisms(state)
     prefix = norm_word(cue)
-    ranked = l2_prefix_candidates(state, prefix, top_k=top_k, t9_policy=t9_policy)
+    ranked = l2_prefix_candidates(state, prefix, top_k=top_k, t9_policy=t9_policy, weights=weights)
     axes = state.get("lexicon_axes") or {}
     anchors = word_anchors_from_ranked(ranked, cue=prefix)
     focus = focus_from_anchors(prefix, anchors)
@@ -337,7 +382,7 @@ def predict_t9(state: dict, cue: str, *, top_k: int = 8, t9_policy: T9Policy = "
         "digest": {"prefix": prefix, "match_count": len(ranked)},
         "confidence": _confidence_from_ranked(ranked),
         "lexicon_miss": lexicon_miss,
-        "lattice_ids": [lid for lid in memory_lattices(state) if lid.startswith("L2_word")],
+        "lattice_ids": [lid for lid in memory_lattices(state) if is_l2_word_lattice(lid)],
         "nca_used": [],
         "provenance": {"engine": "l2_prefix_index_votes", "t9_policy": t9_policy},
         "lexicon_filter": {
@@ -356,10 +401,13 @@ def predict(
     modality: str,
     bundle: dict | None = None,
     lattice_id: str | None = None,
-    nca_repair: bool = True,  # noqa: ARG001 — hook for v0.5+
     top_k: int = 8,
 ) -> dict[str, Any]:
-    """Returns Prediction dict; read-mostly (no sleep side effects)."""
+    """Returns Prediction dict; read-mostly (no sleep side effects).
+
+    NCA repair is a sleep/offline path (see ``sss_nca_repair_v0``), not part of
+    the read-only predict hot path.
+    """
     mod = (modality or "segment").strip().lower()
     if mod in ("t9", "prefix_word", "prefix"):
         return predict_t9(state, cue, top_k=top_k)
