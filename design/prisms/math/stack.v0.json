@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "prism_id": "prism_memory",
+  "subsystem_id": "first_signal_math",
+  "semantic_namespace": "memory.math",
+  "description": "First signal — logic/cardinal (modal-agnostic). lattice_id = v1 kebab.",
+  "doc": "design/f0-math-logical-layer-v0.md",
+  "lattices": [
+    { "lattice_id": "schema-math", "legacy_id": "F0_schema", "semantic_id": "memory.math.schema", "f_level": 0, "nca_profile": "sss", "status": "v0_text" },
+    { "lattice_id": "compose-math", "legacy_id": "F1_compose", "semantic_id": "memory.math.compose", "f_level": 1, "nca_profile": "sss", "status": "design" },
+    { "lattice_id": "cardinal-math", "legacy_id": "F2_quantity", "semantic_id": "memory.math.cardinal", "f_level": 2, "nca_profile": "sss", "status": "design" }
+  ],
+  "roadmap_lattices": [
+    { "lattice_id": "rational-math", "semantic_id": "memory.math.rational", "status": "roadmap", "note": "fractions; separate lattice when curriculum ready" }
+  ]
+}

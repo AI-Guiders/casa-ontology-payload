@@ -164,7 +164,7 @@ CASA: **store profile** = composition root:
 - [ ] Update `.gitignore` / CI for canonical paths only
 - [ ] Optional: filter-repo **paths only** if duplicate cartridges bloated history (not urgent)
 
-**Не делать в M4:** rename physical `L2_word_07` lattice_id (stable forever in manifests).
+**Не делать в M4:** delete legacy alias resolution until all stores migrated; **do** rename physical ids to v1 kebab via `migrate_lattice_ids_v1.py` (no NCA retrain).
 
 ---
 

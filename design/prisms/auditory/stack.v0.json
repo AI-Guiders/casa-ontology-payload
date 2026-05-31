@@ -1,19 +1,19 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "prism_id": "prism_auditory",
   "semantic_namespace": "sensory.audio",
-  "description": "Auditory cortex stack — separate from memory.grapheme until bridged (listen / bukvar).",
+  "description": "Auditory stack — lattice_id = v1 kebab.",
   "lattices": [
-    { "lattice_id": "A0_spectrum", "semantic_id": "sensory.audio.spectrum", "z_level": 0, "nca_profile": "sss" },
-    { "lattice_id": "A0_binaural", "semantic_id": "sensory.audio.binaural", "z_level": 0, "nca_profile": "sss", "status": "roadmap" },
-    { "lattice_id": "A1_phon", "semantic_id": "sensory.audio.phoneme", "z_level": 1, "nca_profile": "sss" },
-    { "lattice_id": "A2_event", "semantic_id": "sensory.audio.event", "z_level": 2, "nca_profile": "sss" },
-    { "lattice_id": "A2_localization", "semantic_id": "sensory.audio.localization", "z_level": 2, "nca_profile": "sss", "status": "roadmap" }
+    { "lattice_id": "audio-spectrum", "legacy_id": "A0_spectrum", "semantic_id": "sensory.audio.spectrum", "z_level": 0, "nca_profile": "sss" },
+    { "lattice_id": "audio-binaural", "legacy_id": "A0_binaural", "semantic_id": "sensory.audio.binaural", "z_level": 0, "nca_profile": "sss", "status": "roadmap" },
+    { "lattice_id": "audio-phoneme", "legacy_id": "A1_phon", "semantic_id": "sensory.audio.phoneme", "z_level": 1, "nca_profile": "sss" },
+    { "lattice_id": "audio-event", "legacy_id": "A2_event", "semantic_id": "sensory.audio.event", "z_level": 2, "nca_profile": "sss" },
+    { "lattice_id": "audio-localization", "legacy_id": "A2_localization", "semantic_id": "sensory.audio.localization", "z_level": 2, "nca_profile": "sss", "status": "roadmap" }
   ],
   "bridges": [
-    { "bridge_id": "a_bridge_A0_A1", "kind": "z_bridge", "from": "A0_spectrum", "to": "A1_phon" },
-    { "bridge_id": "a_bridge_A1_A2", "kind": "z_bridge", "from": "A1_phon", "to": "A2_event" },
-    { "bridge_id": "a_bridge_A1_L1", "kind": "x_bridge", "from": "A1_phon", "to": "prism_memory.L1_syllable", "status": "design" }
+    { "bridge_id": "a_bridge_A0_A1", "kind": "z_bridge", "from": "audio-spectrum", "to": "audio-phoneme" },
+    { "bridge_id": "a_bridge_A1_A2", "kind": "z_bridge", "from": "audio-phoneme", "to": "audio-event" },
+    { "bridge_id": "a_bridge_A1_L1", "kind": "x_bridge", "from": "audio-phoneme", "to": "syllables-ru", "status": "design" }
   ],
   "nca_path_template": "nca/auditory/{lattice_id}/"
 }

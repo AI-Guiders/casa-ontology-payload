@@ -1,24 +1,21 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "prism_id": "prism_memory",
   "semantic_namespace": "memory",
-  "legacy_aliases": { "subsystem": "sss", "lattice_prefix": "L" },
-  "description": "Second signal system — signs in field (grapheme → phrase). Replaces sss-lattice-stack naming.",
+  "description": "Second signal — signs in field (grapheme → phrase). lattice_id = v1 kebab.",
   "lattices": [
-    { "lattice_id": "L0_grapheme_cyrl", "semantic_id": "memory.grapheme.cyrl", "z_level": 0, "nca_profile": "sss" },
-    { "lattice_id": "L0_grapheme_latn", "semantic_id": "memory.grapheme.latn", "z_level": 0, "nca_profile": "sss" },
-    { "lattice_id": "L1_syllable", "semantic_id": "memory.syllable", "z_level": 1, "nca_profile": "sss" },
-    { "lattice_id": "L2_word", "semantic_id": "memory.lexicon.monolith", "z_level": 2, "nca_profile": "sss", "status": "legacy_dev" },
-    { "lattice_id": "L2_word_{shard}", "semantic_id": "memory.lexicon.shard", "z_level": 2, "nca_profile": "sss", "shard_pattern": "words-ru-{00..63}" },
-    { "lattice_id": "L3_phrase", "semantic_id": "memory.phrase", "z_level": 3, "nca_profile": "sss", "status": "roadmap" }
+    { "lattice_id": "alphabet-ru", "legacy_id": "L0_grapheme_cyrl", "semantic_id": "memory.grapheme.cyrl", "z_level": 0, "nca_profile": "sss" },
+    { "lattice_id": "alphabet-en", "legacy_id": "L0_grapheme_latn", "semantic_id": "memory.grapheme.latn", "z_level": 0, "nca_profile": "sss" },
+    { "lattice_id": "syllables-ru", "legacy_id": "L1_syllable", "semantic_id": "memory.syllable", "z_level": 1, "nca_profile": "sss" },
+    { "lattice_id": "words-ru", "legacy_id": "L2_word", "semantic_id": "memory.lexicon.monolith", "z_level": 2, "nca_profile": "sss", "status": "legacy_dev" },
+    { "lattice_id": "words-ru-{shard}", "legacy_id": "L2_word_{shard}", "semantic_id": "memory.lexicon.shard", "z_level": 2, "nca_profile": "sss", "shard_pattern": "words-ru-{00..63}" },
+    { "lattice_id": "phrases", "legacy_id": "L3_phrase", "semantic_id": "memory.phrase", "z_level": 3, "nca_profile": "sss", "status": "roadmap" }
   ],
   "bridges": [
-    { "bridge_id": "z_bridge_L0_L1", "kind": "z_bridge", "from": "L0_grapheme_*", "to": "L1_syllable" },
-    { "bridge_id": "z_bridge_L1_L2", "kind": "z_bridge", "from": "L1_syllable", "to": "L2_word_*" },
-    { "bridge_id": "z_bridge_L2_L3", "kind": "z_bridge", "from": "L2_word_*", "to": "L3_phrase" }
+    { "bridge_id": "z_bridge_L0_L1", "kind": "z_bridge", "from": "alphabet-*", "to": "syllables-ru" },
+    { "bridge_id": "z_bridge_L1_L2", "kind": "z_bridge", "from": "syllables-ru", "to": "words-ru-*" },
+    { "bridge_id": "z_bridge_L2_L3", "kind": "z_bridge", "from": "words-ru-*", "to": "phrases" }
   ],
   "nca_path_template": "nca/memory/lexicon/{shard_or_lattice}/",
-  "ltm_path_template": "ltm/memory/{layer}/{lattice_id}.ltm",
-  "legacy_nca_path": "nca/{lattice_id}/",
-  "legacy_ltm_path": "ltm/l2/"
+  "ltm_path_template": "ltm/memory/{layer}/{lattice_id}.ltm"
 }

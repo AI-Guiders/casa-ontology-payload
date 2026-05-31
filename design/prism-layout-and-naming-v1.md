@@ -43,6 +43,7 @@ design/prisms/                          # machine-readable stacks (SSOT)
   spatial/stack.v0.json
   hippo/stack.v0.json
   math/stack.v0.json                    # F0…F2 logical
+  hippo/stack.v0.json                   # episodic H*
 
 casa/                                   # P2: пакет (сейчас — roadmap; код ещё в tools/)
   prisms/
@@ -93,20 +94,26 @@ lab/agent-stores/<store-id>/
 
 ---
 
-## Lattice id: физический vs semantic
+## Lattice id: canonical v1 vs legacy
 
-| Semantic id (prose, routing, UI) | Physical lattice_id (stable in git) | Folder under `nca/` |
-|----------------------------------|-------------------------------------|---------------------|
-| `control.dmn` | `lattice_dmn` | `control/lattice_dmn/` |
-| `control.predict` | `lattice_predict` | `control/lattice_predict/` |
-| `memory.grapheme.cyrl` | `L0_grapheme_cyrl` | `memory/sign/L0_grapheme_cyrl/` |
-| `memory.lexicon.shard_07` | `L2_word_07` or `words-ru-07` | `memory/lexicon/words-ru-07/` |
-| `sensory.audio.phon` | `A1_phon` | `auditory/A1_phon/` |
-| `sensory.vis.object` | `V1_object` | `visual/V1_object/` |
-| `sensory.spatial.disparity` | `S0_disparity` | `spatial/S0_disparity/` |
-| `episodic.scene` | `H3_scene` | `hippo/H3_scene/` |
+**Canonical `lattice_id`** (field, nca, manifest): v1 kebab from [`lattice-id-map.v1.json`](lattice-id-map.v1.json).  
+**Legacy** (`L2_word_07`, `lattice_dmn`, …): alias only — boot resolves both until M4.
 
-Prose: **«shard `memory.lexicon` (`words-ru-07`)»** — не «sss L2».
+| Semantic id (prose) | Canonical v1 `lattice_id` | Legacy alias | Folder under `nca/` |
+|---------------------|---------------------------|--------------|---------------------|
+| `control.dmn` | `control-dmn` | `lattice_dmn` | `control/control-dmn/` |
+| `control.predict` | `control-predict` | `lattice_predict` | `control/control-predict/` |
+| `memory.grapheme.cyrl` | `alphabet-ru` | `L0_grapheme_cyrl` | `memory/sign/alphabet-ru/` |
+| `memory.lexicon.shard` | `words-ru-07` | `L2_word_07` | `memory/lexicon/words-ru-07/` |
+| `memory.math.schema` | `schema-math` | `F0_schema` | `memory/math/schema-math/` |
+| `memory.math.cardinal` | `cardinal-math` | `F2_quantity` | `memory/math/cardinal-math/` |
+| `episodic.surface` | `episodic-surface` | `H1_surface`, `H0_episode` | `hippo/episodic-surface/` |
+| `episodic.rule` | `episodic-rule` | `H2_rule` | `hippo/episodic-rule/` |
+| `sensory.audio.phoneme` | `audio-phoneme` | `A1_phon` | `auditory/audio-phoneme/` |
+| `sensory.vis.object` | `vis-object` | `V1_object` | `visual/vis-object/` |
+| `sensory.spatial.disparity` | `spatial-disparity` | `S0_disparity` | `spatial/spatial-disparity/` |
+
+Prose: **«shard `memory.lexicon` (`words-ru-07`)»** — не «sss L2»; **«`memory.math.schema` (`F0_schema`)»** — не «F0».
 
 ---
 

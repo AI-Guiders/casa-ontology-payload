@@ -1,30 +1,30 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "prism_id": "prism_control",
   "semantic_namespace": "control.lattice",
-  "description": "Control CU stack (ADR-0010). Physical lattice_id stable; see design/prism-layout-and-naming-v1.md",
+  "description": "Control CU stack (ADR-0010). lattice_id = v1 kebab canonical.",
   "lattices": [
-    { "lattice_id": "lattice_dmn", "semantic_id": "control.dmn", "z_ctrl": 0, "z_phases": ["digest"] },
-    { "lattice_id": "lattice_sn", "semantic_id": "control.salience", "z_ctrl": 1, "z_phases": ["gate"] },
-    { "lattice_id": "lattice_fpn_wm", "semantic_id": "control.working_memory", "z_ctrl": 2, "z_phases": ["encode", "repair"] },
-    { "lattice_id": "lattice_cen", "semantic_id": "control.executive", "z_ctrl": 3, "z_phases": ["encode", "repair"] },
-    { "lattice_id": "lattice_predict", "semantic_id": "control.predict", "z_ctrl": 4, "z_phases": ["encode", "roll", "digest"] },
-    { "lattice_id": "lattice_dan", "semantic_id": "control.attention_topdown", "z_ctrl": 5, "z_phases": ["gate"] },
-    { "lattice_id": "lattice_value", "semantic_id": "control.value", "z_ctrl": 6, "z_phases": ["digest"] }
+    { "lattice_id": "control-dmn", "legacy_id": "lattice_dmn", "semantic_id": "control.dmn", "z_ctrl": 0, "z_phases": ["digest"] },
+    { "lattice_id": "control-salience", "legacy_id": "lattice_sn", "semantic_id": "control.salience", "z_ctrl": 1, "z_phases": ["gate"] },
+    { "lattice_id": "control-working-memory", "legacy_id": "lattice_fpn_wm", "semantic_id": "control.working_memory", "z_ctrl": 2, "z_phases": ["encode", "repair"] },
+    { "lattice_id": "control-executive", "legacy_id": "lattice_cen", "semantic_id": "control.executive", "z_ctrl": 3, "z_phases": ["encode", "repair"] },
+    { "lattice_id": "control-predict", "legacy_id": "lattice_predict", "semantic_id": "control.predict", "z_ctrl": 4, "z_phases": ["encode", "roll", "digest"] },
+    { "lattice_id": "control-attention", "legacy_id": "lattice_dan", "semantic_id": "control.attention_topdown", "z_ctrl": 5, "z_phases": ["gate"] },
+    { "lattice_id": "control-value", "legacy_id": "lattice_value", "semantic_id": "control.value", "z_ctrl": 6, "z_phases": ["digest"] }
   ],
   "bridges": [
-    { "bridge_id": "P1", "kind": "control_bridge", "from": "lattice_dmn", "to": "lattice_sn" },
-    { "bridge_id": "P2a", "kind": "control_bridge", "from": "lattice_sn", "to": "lattice_fpn_wm" },
-    { "bridge_id": "P2b", "kind": "control_bridge", "from": "lattice_fpn_wm", "to": "lattice_cen" },
-    { "bridge_id": "P3", "kind": "control_bridge", "from": "lattice_cen", "to": "lattice_dmn" },
-    { "bridge_id": "P4", "kind": "control_bridge", "from": "lattice_cen", "to": "lattice_fpn_wm" },
-    { "bridge_id": "P5", "kind": "control_bridge", "from": "lattice_fpn_wm", "to": "lattice_sn" },
-    { "bridge_id": "P6", "kind": "control_bridge", "from": "lattice_fpn_wm", "to": "lattice_dan" },
-    { "bridge_id": "P7", "kind": "control_bridge", "from": "lattice_dan", "to": "lattice_dmn" },
-    { "bridge_id": "P8", "kind": "control_bridge", "from": "lattice_predict", "to": "lattice_sn" },
-    { "bridge_id": "P9", "kind": "control_bridge", "from": "lattice_value", "to": "lattice_sn" },
-    { "bridge_id": "P10", "kind": "control_bridge", "from": "prism_sensor", "to": "lattice_sn", "status": "design" },
-    { "bridge_id": "P11", "kind": "control_bridge", "from": "lattice_dan", "to": "prism_sensor", "status": "design" }
+    { "bridge_id": "P1", "kind": "control_bridge", "from": "control-dmn", "to": "control-salience" },
+    { "bridge_id": "P2a", "kind": "control_bridge", "from": "control-salience", "to": "control-working-memory" },
+    { "bridge_id": "P2b", "kind": "control_bridge", "from": "control-working-memory", "to": "control-executive" },
+    { "bridge_id": "P3", "kind": "control_bridge", "from": "control-executive", "to": "control-dmn" },
+    { "bridge_id": "P4", "kind": "control_bridge", "from": "control-executive", "to": "control-working-memory" },
+    { "bridge_id": "P5", "kind": "control_bridge", "from": "control-working-memory", "to": "control-salience" },
+    { "bridge_id": "P6", "kind": "control_bridge", "from": "control-working-memory", "to": "control-attention" },
+    { "bridge_id": "P7", "kind": "control_bridge", "from": "control-attention", "to": "control-dmn" },
+    { "bridge_id": "P8", "kind": "control_bridge", "from": "control-predict", "to": "control-salience" },
+    { "bridge_id": "P9", "kind": "control_bridge", "from": "control-value", "to": "control-salience" },
+    { "bridge_id": "P10", "kind": "control_bridge", "from": "prism_sensor", "to": "control-salience", "status": "design" },
+    { "bridge_id": "P11", "kind": "control_bridge", "from": "control-attention", "to": "prism_sensor", "status": "design" }
   ],
   "nca_path_template": "nca/control/{lattice_id}/"
 }

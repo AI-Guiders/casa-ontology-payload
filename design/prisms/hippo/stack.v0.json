@@ -1,0 +1,15 @@
+{
+  "schema_version": 2,
+  "prism_id": "prism_hippo",
+  "semantic_namespace": "episodic",
+  "description": "Fast episodic write; consolidate to memory.* on sleep.",
+  "lattices": [
+    { "lattice_id": "episodic-io", "legacy_id": "H0_io", "semantic_id": "episodic.io", "h_level": 0, "status": "roadmap" },
+    { "lattice_id": "episodic-surface", "legacy_id": "H1_surface", "legacy_aliases": ["H0_episode"], "semantic_id": "episodic.surface", "h_level": 1, "status": "v0" },
+    { "lattice_id": "episodic-rule", "legacy_id": "H2_rule", "semantic_id": "episodic.rule", "h_level": 2, "status": "partial" },
+    { "lattice_id": "episodic-scene", "legacy_id": "H3_scene", "semantic_id": "episodic.scene", "h_level": 3, "status": "roadmap" }
+  ],
+  "schedulers": [
+    { "id": "episodic-replay-queue", "legacy_id": "H_replay_queue", "semantic_id": "episodic.replay_queue", "kind": "scheduler", "not_a_lattice": true }
+  ]
+}

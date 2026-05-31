@@ -16,6 +16,7 @@
   "lattices": [
     {
       "id": "H0_io",
+      "semantic_id": "episodic.io",
       "h_level": 0,
       "size": { "width": 32, "height": 32 },
       "token_prefix": ["U:", "raw."],
@@ -25,6 +26,7 @@
     },
     {
       "id": "H1_surface",
+      "semantic_id": "episodic.surface",
       "h_level": 1,
       "size": { "width": 32, "height": 32 },
       "token_prefix": ["T:"],
@@ -35,6 +37,7 @@
     },
     {
       "id": "H2_rule",
+      "semantic_id": "episodic.rule",
       "h_level": 2,
       "size": { "width": 32, "height": 32 },
       "token_prefix": ["T:", "R:"],
@@ -45,6 +48,7 @@
     },
     {
       "id": "H3_scene",
+      "semantic_id": "episodic.scene",
       "h_level": 3,
       "size": { "width": 32, "height": 32 },
       "token_prefix": ["T:", "S3:"],
@@ -106,6 +110,7 @@
   ],
   "replay": {
     "id": "H_replay_queue",
+    "semantic_id": "episodic.replay_queue",
     "kind": "scheduler",
     "not_a_lattice": true,
     "role": ["sleep_replay_order", "nca_finetune_windows"],

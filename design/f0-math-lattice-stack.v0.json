@@ -27,8 +27,10 @@
   "lattices": [
     {
       "id": "F0_schema",
+      "semantic_id": "memory.math.schema",
+      "legacy_id": "F0_schema",
+      "lattice_id": "schema-math",
       "f_level": 0,
-      "size": { "width": 32, "height": 32 },
       "token_prefix": ["M:", "M:sym:"],
       "role": ["pure_symbol", "stick_count", "operators"],
       "lab": ["M:sym:one", "M:sym:two", "M:op:add", "M:op:eq"],
@@ -37,8 +39,10 @@
     },
     {
       "id": "F1_compose",
+      "semantic_id": "memory.math.compose",
+      "legacy_id": "F1_compose",
+      "lattice_id": "compose-math",
       "f_level": 1,
-      "size": { "width": 32, "height": 32 },
       "token_prefix": ["M:inst:", "M:unit:"],
       "role": ["instance_slots", "homogeneous_merge", "working_memory"],
       "lab": ["M:inst:cow@a", "M:inst:cow@b", "M:unit:cow"],
@@ -47,8 +51,10 @@
     },
     {
       "id": "F2_quantity",
+      "semantic_id": "memory.math.cardinal",
+      "legacy_id": "F2_quantity",
+      "lattice_id": "cardinal-math",
       "f_level": 2,
-      "size": { "width": 32, "height": 32 },
       "token_prefix": ["M:qty:"],
       "role": ["bound_quantity", "cardinality_plus_unit"],
       "lab": ["M:qty:2×cow", "M:qty:3×stick"],
