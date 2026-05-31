@@ -56,7 +56,7 @@ Checkpoint: `language-agent-lab-v0/checkpoints/model_hard.pt`
 ## FPN + autonomous T (v0)
 
 - Session: `agent_session.json` in store (`tools/fpn_state.py`)
-- Tick loop: `.\scripts\run_exp_j_autonomous.ps1` or `python tools/agent_autonomous_tick.py --ticks N`
+- Tick loop: `.\scripts\run_exp_j_autonomous.ps1` or `python tools/agent_sn_cen_tick.py --ticks N`
 - Infer with session: `sn_cen_infer.py --from-field --session --query "..."`
 
 ## Scripts

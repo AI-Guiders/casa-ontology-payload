@@ -54,7 +54,7 @@
 **Import / finetune** из §5 north star — **соседние** каналы (KB с диска, opt-in train), но **не замена** sleep:  
 git ingest = I/O; **sleep** = перенос **своего** episodic из гиппокампа в LTM.
 
-Hook в lab (roadmap): `agent_autonomous_tick.py --mode sleep` или каждые N wake-тиков → один `T_sleep`.
+Hook в lab (roadmap): `agent_autonomous_tick_v0.py --sleep-only` или каждые N wake-тиков → один `T_sleep`.
 
 ## Цилиндры (v0 naming)
 
