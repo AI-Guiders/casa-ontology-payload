@@ -9,6 +9,7 @@ from typing import Any
 
 from f0_math_ingest_v0 import ingest_math_bundle  # type: ignore
 from f0_stack_v0 import decode_f0_lattice, rank_cue_on_f0  # type: ignore
+from lattice_names_v1 import PHRASES  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import L2_CONCEPT_PREFIX, is_l2_word_lattice, lattice_digest_l2_network  # type: ignore
 from lexicon_usage_axes_v0 import T9Policy, filter_ranked_for_t9, lemma_axis  # type: ignore
@@ -278,7 +279,7 @@ def predict_segment(state: dict, cue: str) -> dict[str, Any]:
             "verify": ver,
         },
         "confidence": round(conf, 3),
-        "lattice_ids": ["L1_syllable", "L3_phrase"],
+        "lattice_ids": ["syllables-ru", PHRASES],
         "nca_used": [],
         "provenance": {"engine": "segment_hypothesis"},
         "ranked": [(hypothesis, int(fs))],

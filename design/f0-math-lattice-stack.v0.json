@@ -81,14 +81,14 @@
     {
       "id": "f_bridge_F2_L2",
       "from": "cardinal-math",
-      "to": "words-ru",
+      "to": "lexicon-ru",
       "kind": "name",
       "via": "concept_hub",
       "note": "«2 коровы» — SN/CEN + lang, не прямой write в L2 без sleep"
     },
     {
       "id": "f_bridge_L2_F1",
-      "from": "words-ru",
+      "from": "lexicon-ru",
       "to": "compose-math",
       "kind": "ground_word",
       "example": "lang.word.cow → M:unit:cow"

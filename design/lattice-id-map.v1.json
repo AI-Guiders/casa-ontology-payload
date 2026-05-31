@@ -1,13 +1,14 @@
 {
-  "schema_version": 4,
-  "title": "CASA lattice id map — v1 kebab canonical; legacy alias for boot/migrate",
+  "schema_version": 5,
+  "title": "CASA lattice id map — v1 kebab canonical; legacy alias for migrate-only",
   "doc": "design/naming-memory-layers-v0.md",
   "legacy_to_v1": {
     "L0_grapheme_cyrl": "alphabet-ru",
     "L0_grapheme_latn": "alphabet-en",
     "L0_grapheme": "alphabet-ru",
     "L1_syllable": "syllables-ru",
-    "L2_word": "words-ru",
+    "L2_word": "lexicon-ru",
+    "words-ru": "lexicon-ru",
     "L3_phrase": "phrases",
     "L0_vk_physical": "keys-physical",
     "L0_layout_qwerty_us": "layout-en-us",
@@ -44,8 +45,10 @@
     "S2_ego": "spatial-ego"
   },
   "pattern_legacy_to_v1": [
-    { "match": "^L2_word_(\\d{2})$", "replace": "words-ru-\\1" },
-    { "match": "^L2_en_word_(\\d{2})$", "replace": "words-en-\\1" }
+    { "match": "^L2_word_(\\d{2})$", "replace": "lexicon-ru-\\1" },
+    { "match": "^L2_en_word_(\\d{2})$", "replace": "lexicon-en-\\1" },
+    { "match": "^words-ru-(\\d{2})$", "replace": "lexicon-ru-\\1" },
+    { "match": "^words-en-(\\d{2})$", "replace": "lexicon-en-\\1" }
   ],
   "alphabet_by_locale": {
     "ru": { "id": "alphabet-ru", "script": "cyrl", "legacy": "L0_grapheme_cyrl" },

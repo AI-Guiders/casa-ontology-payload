@@ -8,7 +8,16 @@
 
 В CASA несколько **независимых осей** с буквой+цифрой: **L**, **F**, **B**, **H**, **A**, **V**, **S**, **T** (APLF). Голые «F2», «B0», «H1» в prose **не использовать** — только **semantic id** + physical `lattice_id` в скобках.
 
-**Physical id не переименовывать** в store/git (`F0_schema`, `H1_surface`, `words-ru-07`) — alias в manifest и routing.
+**Physical id (v1):** `lexicon-ru-07` = shelf 7 of Russian lexicon; **not** a linguistic class. POS / entity → **`phrases`**, not `lexicon-ru-nouns`.
+
+**Two axes (do not merge):**
+
+| Axis | Question | Example ids |
+|------|----------|-------------|
+| **Shard (capacity)** | Where does `lang.word.*` surface fit + NCA repair? | `lexicon-ru-07` |
+| **Attribution (semantics)** | What POS / type / meta links to that word? | `phrases` + `E:lang.word.мама\|has_pos\|pos.noun` |
+
+Prose: ✓ «shard 7 of `memory.lexicon` (`lexicon-ru-07`)» · ✗ «words-ru-07 lattice type».
 
 Machine-readable stacks: [`design/prisms/*/stack.v0.json`](prisms/).
 
@@ -20,8 +29,8 @@ Machine-readable stacks: [`design/prisms/*/stack.v0.json`](prisms/).
 |-------------|----------------|---------------------|-----------|------|
 | `memory.grapheme` | `L0_grapheme_*` | **B0** | T0 | grapheme / letter |
 | `memory.syllable` | `L1_syllable` | **B1** | T1 | syllable |
-| `memory.lexicon` | `L2_word`, `L2_word_*`, `words-ru-*` | **B2** | T2 | lexicon shard |
-| `memory.phrase` | `L3_phrase` | **B3** | T3 | phrase / dialog hub |
+| `memory.lexicon` | `L2_word`, `L2_word_*`, `lexicon-{locale}-{shard}` | **B2** | T2 | lexicon shard (capacity bins, not POS) |
+| `memory.phrase` | `L3_phrase`, **`phrases`** | **B3** | T3 | phrase hub — **POS, entity, meta** via `E:` edges |
 
 **B0…B3** — **педагогическая** лестница ([`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md)), не отдельные решётки. В новых доках: «ступень **B0** → слой `memory.grapheme`», не «решётка B0».
 

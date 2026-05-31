@@ -20,7 +20,7 @@ from prism_state_v0 import (  # type: ignore
 )
 from codec_grid_v0 import Grid  # type: ignore
 from field_write import load_field_state, save_field_state  # type: ignore
-from lattice_names_v1 import ALPHABET_RU, ALPHABET_UK, ALPHABET_EN, EPISODIC_SURFACE, PHRASES  # type: ignore
+from lattice_names_v1 import ALPHABET_RU, ALPHABET_UK, ALPHABET_EN, EPISODIC_SURFACE, LEXICON_RU, PHRASES  # type: ignore
 from sss_stack_v0 import (  # type: ignore
     _place_token,
     apply_z_compose_v0,
@@ -105,7 +105,7 @@ def concept_id_for_surface(bundle: dict, surface: str, *, lattice_id: str) -> st
         "syllables-en": "syllable.",
     }
     prefix = prefix_map.get(lattice_id, "")
-    if not prefix and lattice_id.startswith("words-"):
+    if not prefix and (lattice_id.startswith("lexicon-") or lattice_id == LEXICON_RU):
         prefix = "lang.word."
     for c in bundle.get("claims") or []:
         cid = str(c.get("concept_id") or "")
@@ -267,8 +267,8 @@ def append_rule_episode(
         "correct": correct.strip()[:120],
         "rule_id": rule_id,
         "rule_hint": rule_hint.strip()[:240],
-        "lattice_id": "words-ru",
-        "concept_id": concept_id_for_surface(bundle, word, lattice_id="words-ru") if bundle else None,
+        "lattice_id": LEXICON_RU,
+        "concept_id": concept_id_for_surface(bundle, word, lattice_id=LEXICON_RU) if bundle else None,
         "consolidated": False,
     }
     hippo = prism_hippo(state)
@@ -360,7 +360,7 @@ def run_sleep(
     stack_path: Path | None = None,
     strength: int = 4,
     nca_model_path: Path | None = None,
-    nca_lattice_id: str = "words-ru",
+    nca_lattice_id: str = LEXICON_RU,
     replay_k: int = 0,
     replay_value_weight: float = 0.0,
 ) -> dict:

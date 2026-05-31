@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "prism_id": "prism_memory",
   "semantic_namespace": "memory",
   "description": "Second signal — signs in field (grapheme → phrase). lattice_id = v1 kebab.",
@@ -7,14 +7,14 @@
     { "lattice_id": "alphabet-ru", "legacy_id": "L0_grapheme_cyrl", "semantic_id": "memory.grapheme.cyrl", "z_level": 0, "nca_profile": "sss" },
     { "lattice_id": "alphabet-en", "legacy_id": "L0_grapheme_latn", "semantic_id": "memory.grapheme.latn", "z_level": 0, "nca_profile": "sss" },
     { "lattice_id": "syllables-ru", "legacy_id": "L1_syllable", "semantic_id": "memory.syllable", "z_level": 1, "nca_profile": "sss" },
-    { "lattice_id": "words-ru", "legacy_id": "L2_word", "semantic_id": "memory.lexicon.monolith", "z_level": 2, "nca_profile": "sss", "status": "legacy_dev" },
-    { "lattice_id": "words-ru-{shard}", "legacy_id": "L2_word_{shard}", "semantic_id": "memory.lexicon.shard", "z_level": 2, "nca_profile": "sss", "shard_pattern": "words-ru-{00..63}" },
-    { "lattice_id": "phrases", "legacy_id": "L3_phrase", "semantic_id": "memory.phrase", "z_level": 3, "nca_profile": "sss", "status": "roadmap" }
+    { "lattice_id": "lexicon-ru", "legacy_id": "L2_word", "semantic_id": "memory.lexicon.monolith", "z_level": 2, "nca_profile": "sss", "status": "legacy_dev" },
+    { "lattice_id": "lexicon-ru-{shard}", "legacy_id": "L2_word_{shard}", "semantic_id": "memory.lexicon.shard", "z_level": 2, "nca_profile": "sss", "shard_pattern": "lexicon-ru-{00..63}" },
+    { "lattice_id": "phrases", "legacy_id": "L3_phrase", "semantic_id": "memory.phrase", "z_level": 3, "nca_profile": "sss", "note": "POS, entity, meta — attribution hub (E: edges to lang.word.*)" }
   ],
   "bridges": [
     { "bridge_id": "z_bridge_L0_L1", "kind": "z_bridge", "from": "alphabet-*", "to": "syllables-ru" },
-    { "bridge_id": "z_bridge_L1_L2", "kind": "z_bridge", "from": "syllables-ru", "to": "words-ru-*" },
-    { "bridge_id": "z_bridge_L2_L3", "kind": "z_bridge", "from": "words-ru-*", "to": "phrases" }
+    { "bridge_id": "z_bridge_L1_L2", "kind": "z_bridge", "from": "syllables-ru", "to": "lexicon-ru-*" },
+    { "bridge_id": "z_bridge_L2_L3", "kind": "z_bridge", "from": "lexicon-ru-*", "to": "phrases" }
   ],
   "nca_path_template": "nca/memory/lexicon/{shard_or_lattice}/",
   "ltm_path_template": "ltm/memory/{layer}/{lattice_id}.ltm"

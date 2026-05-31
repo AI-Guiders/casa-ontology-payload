@@ -10,7 +10,7 @@ import zlib
 from collections.abc import Iterable
 from typing import Any
 
-from lattice_names_v1 import parse_words_shard, words_shard_id  # type: ignore
+from lattice_names_v1 import lexicon_shard_id, parse_lexicon_shard  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_stack_v0 import decode_lattice, lattice_digest  # type: ignore
 
@@ -45,14 +45,14 @@ def is_l2_en_word_lattice(lattice_id: str) -> bool:
     lid = str(lattice_id)
     if lid.startswith(L2_EN_SHARD_PREFIX):
         return True
-    parsed = parse_words_shard(lid)
+    parsed = parse_lexicon_shard(lid)
     return parsed is not None and parsed[0] == "en"
 
 
 def en_l2_shard_id(word: str, *, num_shards: int = DEFAULT_EN_NUM_SHARDS) -> str:
     w = norm_word(word)
     idx = zlib.crc32(w.encode("utf-8")) % max(1, num_shards)
-    return f"{L2_EN_SHARD_PREFIX}{idx:02d}"
+    return lexicon_shard_id("en", idx)
 
 
 def route_en_l2_lattice(state: dict, word: str) -> str:
@@ -83,7 +83,7 @@ def is_l2_word_lattice(lattice_id: str) -> bool:
     lid = str(lattice_id)
     if lid == LEGACY_L2 or lid.startswith(L2_SHARD_PREFIX):
         return True
-    parsed = parse_words_shard(lid)
+    parsed = parse_lexicon_shard(lid)
     return parsed is not None and parsed[0] == "ru"
 
 
@@ -382,9 +382,9 @@ def l2_shard_id(
         shard_starts=shard_starts,
     )
     prefix = shard_prefix or L2_SHARD_PREFIX
-    if prefix.startswith("words-"):
-        locale = prefix.removeprefix("words-").rstrip("-")
-        return words_shard_id(locale, idx)
+    if prefix.startswith("lexicon-"):
+        locale = prefix.removeprefix("lexicon-").rstrip("-")
+        return lexicon_shard_id(locale, idx)
     return f"{prefix}{idx:02d}"
 
 

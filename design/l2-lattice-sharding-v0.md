@@ -25,7 +25,7 @@ L1_syllable ──compose──► L2_word_00 … L2_word_63 ──bind──►
 | Key | Value |
 |-----|--------|
 | `num_shards` | 64 (default) |
-| `shard_id` | `L2_word_{idx:02d}` |
+| `shard_id` | `lexicon-ru_{idx:02d}` (v1 kebab: `lexicon-ru-07`) |
 | `mode` | **`lexicographic`** (default) or `hash` (legacy) |
 | `lex_plan` | **`corpus_quantile`** (default) or `alpha` (fallback) |
 | `idx` (lex, corpus) | sort all headwords → **equal-count bins** in dictionary order; label `авось–агнец` |

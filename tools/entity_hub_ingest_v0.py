@@ -11,6 +11,7 @@ from typing import Any
 
 from codec_grid_v0 import Grid  # type: ignore
 from field_write import load_field_state, save_field_state  # type: ignore
+from lattice_names_v1 import PHRASES  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import concept_votes_l2  # type: ignore
 from sss_stack_v0 import _place_token, decode_lattice, lattice_meta, load_stack  # type: ignore
@@ -25,11 +26,14 @@ def _surface_concept(word: str) -> str:
 
 def _ensure_l3_lattice(state: dict) -> dict[str, Any]:
     lattices = memory_lattices(state)
-    lid = "L3_phrase"
+    lid = PHRASES
     if lid in lattices:
         return lattices[lid]
     stack = load_stack()
-    meta = lattice_meta(stack, lid)
+    try:
+        meta = lattice_meta(stack, "L3_phrase")
+    except KeyError:
+        meta = {"z_level": 3, "size": {"width": 32, "height": 32}, "concept_prefix": "ru.dialog."}
     size = meta.get("size") or {}
     w = int(size.get("width") or 32)
     h = int(size.get("height") or 32)
@@ -81,7 +85,7 @@ def ingest_entity_hub(
     state: dict,
     bundle: dict,
     *,
-    lattice_id: str = "L3_phrase",
+    lattice_id: str = PHRASES,
     copies: int = 5,
     strengthen_l2: bool = True,
     listen_copies: int = 2,
@@ -158,7 +162,7 @@ def ingest_entity_hub(
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="Ingest entity hub bundle → L3_phrase")
+    p = argparse.ArgumentParser(description="Ingest entity hub bundle → phrases")
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--bundle", type=Path, required=True)
     p.add_argument("--boot-ltm-only", action="store_true")

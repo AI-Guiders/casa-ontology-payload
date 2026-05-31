@@ -9,12 +9,14 @@ from lattice_names_v1 import (  # type: ignore
     CONTROL_DMN,
     CONTROL_STACK,
     EPISODIC_SURFACE,
+    LEXICON_RU,
+    PHRASES,
     SCHEMA_MATH,
     alphabet_id,
     has_control_lattice,
+    lexicon_shard_id,
     missing_control_lattices,
     require_lattice,
-    words_shard_id,
 )
 
 
@@ -24,9 +26,11 @@ class TestLatticeIdsV1(unittest.TestCase):
         self.assertIn("control-predict", CONTROL_STACK)
         self.assertEqual(len(CONTROL_STACK), 7)
 
-    def test_math_and_episodic(self) -> None:
+    def test_memory_layers(self) -> None:
         self.assertEqual(SCHEMA_MATH, "schema-math")
         self.assertEqual(EPISODIC_SURFACE, "episodic-surface")
+        self.assertEqual(PHRASES, "phrases")
+        self.assertEqual(LEXICON_RU, "lexicon-ru")
 
     def test_require_lattice_strict(self) -> None:
         lats = {"control-dmn": {}}
@@ -43,8 +47,8 @@ class TestLatticeIdsV1(unittest.TestCase):
         self.assertTrue(has_control_lattice({"control-dmn": {}}))
         self.assertFalse(has_control_lattice({"lattice_dmn": {}}))
 
-    def test_words_shard_id(self) -> None:
-        self.assertEqual(words_shard_id("ru", 7), "words-ru-07")
+    def test_lexicon_shard_id(self) -> None:
+        self.assertEqual(lexicon_shard_id("ru", 7), "lexicon-ru-07")
         self.assertEqual(alphabet_id("ru"), "alphabet-ru")
 
 

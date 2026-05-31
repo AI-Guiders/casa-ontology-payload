@@ -223,7 +223,7 @@ def migrate_manifest(store_dir: Path, rename_map: dict[str, str], *, dry_run: bo
         if sh.get("shard_prefix") in rename_map:
             sh["shard_prefix"] = rename_map[str(sh["shard_prefix"])]
         elif sh.get("shard_prefix") == "L2_word_":
-            sh["shard_prefix"] = "words-ru-"
+            sh["shard_prefix"] = "lexicon-ru-"
         manifest["l2_sharding"] = _rewrite_strings(sh, rename_map)
     manifest["lattice_naming"] = {"version": 1, "migrated_at": _now_iso()}
     after = json.dumps(manifest, ensure_ascii=False, sort_keys=True)

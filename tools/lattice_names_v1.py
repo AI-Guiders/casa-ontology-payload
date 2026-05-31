@@ -29,6 +29,12 @@ KEYS_PHYSICAL = "keys-physical"
 LAYOUT_EN_US = "layout-en-us"
 LAYOUT_RU_JCUKEN = "layout-ru-jcuken"
 
+# Lexicon (memory.lexicon shards)
+LEXICON_RU = "lexicon-ru"
+LEXICON_EN = "lexicon-en"
+
+LEXICON_V1_RE = re.compile(r"^lexicon-([a-z]{2,3}(?:-[a-z0-9]+)?)-(\d{2})$")
+
 # Math (prism_memory)
 SCHEMA_MATH = "schema-math"
 COMPOSE_MATH = "compose-math"
@@ -65,7 +71,7 @@ CONTROL_NCA_TRAIN_STACK: tuple[str, ...] = (
     CONTROL_VALUE,
 )
 
-WORDS_V1_RE = re.compile(r"^words-([a-z]{2,3}(?:-[a-z0-9]+)?)-(\d{2})$")
+WORDS_V1_RE = LEXICON_V1_RE  # compat alias; prefer LEXICON_V1_RE
 
 ALPHABET_CYRL = ALPHABET_RU
 ALPHABET_LATN = ALPHABET_EN
@@ -109,17 +115,27 @@ def alphabet_id_for_script(script: Script) -> str:
     return ALPHABET_RU if script == "cyrl" else ALPHABET_EN
 
 
-def words_shard_id(locale: str, shard: int) -> str:
+def lexicon_shard_id(locale: str, shard: int) -> str:
     if shard < 0 or shard > 99:
         raise ValueError(f"shard out of range 0..99: {shard}")
     loc = str(locale).strip().lower().replace("_", "-")
     if not loc or not re.fullmatch(r"[a-z]{2,3}(-[a-z0-9]+)?", loc):
         raise ValueError(f"locale slug: {locale!r}")
-    return f"words-{loc}-{shard:02d}"
+    return f"lexicon-{loc}-{shard:02d}"
 
 
-def is_words_lattice(lattice_id: str) -> bool:
-    return WORDS_V1_RE.fullmatch(str(lattice_id)) is not None
+def is_lexicon_lattice(lattice_id: str) -> bool:
+    lid = str(lattice_id)
+    if lid in (LEXICON_RU, LEXICON_EN):
+        return True
+    return LEXICON_V1_RE.fullmatch(lid) is not None
+
+
+def parse_lexicon_shard(lattice_id: str) -> tuple[str, int] | None:
+    m = LEXICON_V1_RE.fullmatch(str(lattice_id))
+    if not m:
+        return None
+    return m.group(1), int(m.group(2))
 
 
 def is_alphabet_lattice(lattice_id: str) -> bool:
@@ -141,10 +157,3 @@ def missing_control_lattices(lattices: dict[str, Any]) -> list[str]:
 
 def has_control_lattice(lattices: dict[str, Any], *, probe: str = CONTROL_DMN) -> bool:
     return probe in lattices
-
-
-def parse_words_shard(lattice_id: str) -> tuple[str, int] | None:
-    m = WORDS_V1_RE.fullmatch(str(lattice_id))
-    if not m:
-        return None
-    return m.group(1), int(m.group(2))

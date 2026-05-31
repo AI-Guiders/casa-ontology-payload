@@ -11,6 +11,7 @@ from typing import Any
 from codec_grid_v0 import Grid  # type: ignore
 from entity_hub_ingest_v0 import _ensure_l3_lattice  # type: ignore
 from field_write import load_field_state, save_field_state  # type: ignore
+from lattice_names_v1 import PHRASES  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_stack_v0 import _place_token, decode_lattice  # type: ignore
 from sss_vocab_v0 import norm_word  # type: ignore
@@ -34,7 +35,7 @@ def ingest_pos_claims(
     state: dict,
     bundle: dict,
     *,
-    lattice_id: str = "L3_phrase",
+    lattice_id: str = PHRASES,
     copies: int = 4,
 ) -> dict[str, Any]:
     state = ensure_prisms(state)
@@ -86,7 +87,7 @@ def ingest_pos_claims(
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="Ingest POS claims bundle → L3_phrase")
+    p = argparse.ArgumentParser(description="Ingest POS claims bundle → phrases")
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--bundle", type=Path, required=True)
     p.add_argument("--boot-ltm-only", action="store_true")
