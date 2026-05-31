@@ -81,6 +81,30 @@ def test_mark_replayed_updates_priority():
     assert second == ["b"]  # 'a' just rehearsed -> 'b' is now more forgotten
 
 
+def test_value_weight_reorders_high_value_first():
+    buf = [
+        _surface("stale_lowval", archived=0, value=0.0),    # staleness 100, value 0
+        _surface("fresh_highval", archived=90, value=50.0),  # staleness 10, value 50
+    ]
+    # pure recency -> stale wins
+    assert [r["episode_id"] for r in rb.sample(buf, 1, now_tick=100)] == ["stale_lowval"]
+    # value-weighted -> 10 + 1.0*50 = 60 beats 100? no; use weight 5 -> 10+250 > 100
+    order = [r["episode_id"] for r in rb.sample(buf, 1, now_tick=100, value_weight=5.0)]
+    assert order == ["fresh_highval"]
+
+
+def test_value_present_but_zero_weight_is_pure_recency():
+    buf = [_surface("a", archived=0, value=99.0), _surface("b", archived=5, value=0.0)]
+    # value ignored at weight 0 -> oldest (a) first
+    assert [r["episode_id"] for r in rb.sample(buf, 2, now_tick=100)] == ["a", "b"]
+
+
+def test_tag_value_sets_record():
+    buf = [_surface("a"), _surface("b")]
+    rb.tag_value(buf, "b", 7.5)
+    assert next(r for r in buf if r["episode_id"] == "b")["value"] == 7.5
+
+
 def test_to_replay_episode_kwargs_shapes():
     surf = rb.to_replay_episode_kwargs(_surface("ep-1"))
     assert surf["kind"] == "surface" and surf["correct"] == "приказу" and surf["lattice_id"] == "L2_word"

@@ -26,6 +26,7 @@ Schema of a buffer record (stored under state.consolidation.replay_buffer):
       "rule_hint": str | None,
       "correction_kind": str | None,
       "scene": str | None,
+      "value": float,              # limbic/value tag -> priority weight (CASA-ADR-0010)
       "first_archived_tick": int,
       "last_replayed_tick": int | None,
       "replays": int,
@@ -85,6 +86,7 @@ def _record_from_merged(item: dict, *, now_tick: int) -> dict:
         "rule_hint": item.get("rule_hint"),
         "correction_kind": item.get("correction_kind"),
         "scene": item.get("scene"),
+        "value": float(item.get("value") or 0.0),
         "first_archived_tick": int(now_tick),
         "last_replayed_tick": None,
         "replays": 0,
@@ -116,17 +118,23 @@ def _staleness(record: dict, *, now_tick: int) -> int:
     return int(now_tick) - int(last_seen)
 
 
-def prioritize(buffer: list[dict], *, now_tick: int) -> list[dict]:
-    """Order eligible records by replay priority (most-forgotten first).
+def _priority(record: dict, *, now_tick: int, value_weight: float) -> float:
+    """staleness + value*w. With value_weight=0 this is plain staleness (default)."""
+    return _staleness(record, now_tick=now_tick) + value_weight * float(record.get("value") or 0.0)
 
-    Deterministic key: larger staleness first, then fewer prior replays,
-    then older first_archived, then episode_id for stability.
+
+def prioritize(buffer: list[dict], *, now_tick: int, value_weight: float = 0.0) -> list[dict]:
+    """Order eligible records by replay priority (most-forgotten / most-valued first).
+
+    Deterministic key: larger (staleness + value*weight) first, then fewer prior
+    replays, then older first_archived, then episode_id for stability.
+    value_weight defaults to 0.0 -> pure recency (backward compatible).
     """
     eligible = [r for r in buffer if eligible_for_replay(r)]
     return sorted(
         eligible,
         key=lambda r: (
-            -_staleness(r, now_tick=now_tick),
+            -_priority(r, now_tick=now_tick, value_weight=value_weight),
             int(r.get("replays") or 0),
             int(r.get("first_archived_tick") or 0),
             str(r.get("episode_id") or ""),
@@ -134,11 +142,19 @@ def prioritize(buffer: list[dict], *, now_tick: int) -> list[dict]:
     )
 
 
-def sample(buffer: list[dict], k: int, *, now_tick: int) -> list[dict]:
+def sample(buffer: list[dict], k: int, *, now_tick: int, value_weight: float = 0.0) -> list[dict]:
     """Top-k spaced rehearsal batch. Does not mutate the buffer."""
     if k <= 0:
         return []
-    return prioritize(buffer, now_tick=now_tick)[:k]
+    return prioritize(buffer, now_tick=now_tick, value_weight=value_weight)[:k]
+
+
+def tag_value(buffer: list[dict], episode_id: str, value: float) -> None:
+    """Set the limbic value tag for a record (CASA-ADR-0010 lattice_value brick)."""
+    for rec in buffer:
+        if rec.get("episode_id") == episode_id:
+            rec["value"] = float(value)
+            return
 
 
 def mark_replayed(buffer: list[dict], episode_ids: list[str], *, now_tick: int) -> None:
@@ -227,6 +243,7 @@ def main() -> int:
     p.add_argument("--state", required=True, type=Path, help="field_state.json")
     p.add_argument("--archive", action="store_true", help="pull last_sleep items into the buffer")
     p.add_argument("--sample", type=int, default=5, help="size of the rehearsal batch to show")
+    p.add_argument("--value-weight", type=float, default=0.0, help="weight of value tag in priority (ADR-0010)")
     p.add_argument("--apply", action="store_true", help="re-inject sampled records as fresh episodes")
     args = p.parse_args()
 
@@ -239,7 +256,7 @@ def main() -> int:
     if args.archive:
         archive_records(buffer, last_sleep_items(state), now_tick=now)
 
-    batch = sample(buffer, args.sample, now_tick=now)
+    batch = sample(buffer, args.sample, now_tick=now, value_weight=args.value_weight)
     dirty = bool(args.archive)
 
     if args.apply and batch:
@@ -250,7 +267,7 @@ def main() -> int:
     report = {
         "now_tick": now,
         "buffer_size": len(buffer),
-        "eligible": len(prioritize(buffer, now_tick=now)),
+        "eligible": len(prioritize(buffer, now_tick=now, value_weight=args.value_weight)),
         "sampled": [
             {"episode_id": r["episode_id"], "kind": r["kind"], "cue": r["cue"], "correct": r["correct"]}
             for r in batch
