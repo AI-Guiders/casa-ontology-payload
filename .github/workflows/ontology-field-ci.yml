@@ -20,6 +20,8 @@ jobs:
           python-version: "3.12"
       - name: Install deps
         run: pip install -r tools/requirements-dev.txt
+      - name: No absolute paths (CI scope)
+        run: python scripts/check_no_abs_paths.py --scope ci
       - name: Unit tests (predictor ranking contract)
         run: pytest
       - name: CI smoke train + bench

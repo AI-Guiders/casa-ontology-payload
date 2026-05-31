@@ -3,8 +3,7 @@
 
 The careful half of the P0 abs-path sanitation (open-source-readiness-and-tech-debt-v0):
 ``nca_train_registry.v0.json`` (``model_path``) and ``memory_manifest.json``
-(``store_path`` + ``lattice_stack[].nca_model``) embed ``D:\\Experiments\\...``
-paths. These fields are bookkeeping only -- model loading resolves via
+(``store_path`` + ``lattice_stack[].nca_model``) embed absolute Windows drive paths. These fields are bookkeeping only -- model loading resolves via
 store-relative fallback (see nca_registry_v0.model_path_for_lattice) -- so
 rewriting them to repo-relative is safe and stops the leak. The matching writer
 fixes (store_layout_v0.rel_to_repo) keep regenerated files clean.
@@ -90,11 +89,15 @@ def sanitize_pack_manifest(path: Path, store_id: str, *, write: bool) -> int:
         if isinstance(entry, dict) and _looks_absolute(entry.get("path")):
             entry["path"] = _store_rel(entry["path"], store_id)
             changed += 1
-    models = (man.get("nca") or {}).get("models") or {}
+    nca = man.get("nca") or {}
+    models = nca.get("models") or {}
     for lid, mp in list(models.items()):
         if _looks_absolute(mp):
             models[lid] = _rel(mp)
             changed += 1
+    if _looks_absolute(nca.get("model_path")):
+        nca["model_path"] = _rel(nca["model_path"])
+        changed += 1
     for entry in ((man.get("nca_train_registry") or {}).get("lattices") or {}).values():
         mp = entry.get("model_path")
         if _looks_absolute(mp):

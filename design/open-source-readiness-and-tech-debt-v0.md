@@ -19,7 +19,7 @@
 | **Scratch artifacts** | `lab/_bench_*` выкинуты из tracking | регенерируемый мусор не в git |
 | **Тесты** | `tests/test_predictor_smoke.py` + pytest в CI; `pyproject.toml` | детерминированный assert-gate ранжирования T9 |
 | **Guard** | `scripts/check_no_abs_paths.py` | pre-publish защита от утечки абсолютных путей |
-| **Replay (ADR-0009)** | `replay_buffer_v0.py` + тесты | борьба с забыванием коррекций |
+| **Replay (ADR-0009)** | `replay_buffer_v0` (pure) + `sleep_replay_v0` (wire) + bench/tests | борьба с забыванием коррекций |
 
 ---
 
@@ -27,7 +27,7 @@
 
 ### P0 — до публичного анонса
 
-- [ ] **Массовая санитация абсолютных путей.** `check_no_abs_paths.py` ловит ~1190 вхождений `D:\Experiments\…`. Разделить:
+- [ ] **Массовая санитация абсолютных путей.** `check_no_abs_paths.py` ловит ~1190 вхождений абсолютных путей в machine-specific roots. Разделить:
   - *безопасно* — текст в design/доках и логах: автозамена на repo-relative / `<repo>`;
   - *осторожно* — store-манифесты (`pack.manifest.json`, `nca_train_registry.v0.json`): пути читаются на boot → менять **с валидацией `store_boot_v0`**, не текстовой заменой.
   - Превратить guard в CI-gate (fail при новом абсолютном пути в tracked).
