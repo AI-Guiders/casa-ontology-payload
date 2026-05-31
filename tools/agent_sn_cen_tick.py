@@ -20,6 +20,7 @@ from fpn_state import (  # type: ignore
     salience_mode_bias,
     save_session,
 )
+from control_tick_v0 import run_control_extensions  # type: ignore
 from sn_cen_infer import _run_from_field  # type: ignore
 from sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict  # type: ignore
 
@@ -40,6 +41,13 @@ def run_tick(
     q = effective_user_query(wm, user_query)
     task = cen_plan(gated, bundle=bundle, user_query=q)
     wm_next = fpn_after_cen(wm, task, user_query=q)
+    control = run_control_extensions(
+        prior_digest=wm.last_concepts,
+        current_digest=digest.concept_ids,
+        goal=[wm.goal] if wm.goal else digest.concept_ids[:8],
+        task_relevant=bool(wm.goal or q),
+    )
+    wm_next.last_concepts = list(digest.concept_ids)
     report = {
         "tick": wm_next.tick,
         "query": q,
@@ -48,6 +56,7 @@ def run_tick(
         "recovery_concepts_f1": (recovery or {}).get("concepts", {}).get("f1"),
         "sn_mode": gated.gate.mode,
         "cen": task_to_dict(task, fpn=wm_next.to_dict()),
+        "control": control.to_dict(),
     }
     return report, wm_next
 

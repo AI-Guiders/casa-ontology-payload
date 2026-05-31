@@ -28,7 +28,15 @@ def main() -> None:
     state = ensure_prisms(load_field_state(fs))
     ok_stack = has_control_stack(state)
     lats = control_lattices(state) if ok_stack else {}
-    expected = {"lattice_dmn", "lattice_sn", "lattice_fpn_wm", "lattice_cen"}
+    expected = {
+        "lattice_dmn",
+        "lattice_sn",
+        "lattice_fpn_wm",
+        "lattice_cen",
+        "lattice_predict",
+        "lattice_dan",
+        "lattice_value",
+    }
     missing = expected - set(lats.keys())
 
     decoded = None
@@ -38,6 +46,18 @@ def main() -> None:
         dmn_concepts = len(decoded.get("concept_ids") or [])
 
     infer_ok = False
+    infer_detail = "skipped"
+    control_ext = None
+    if ok_stack and dmn_concepts > 0:
+        from control_tick_v0 import run_control_extensions  # type: ignore
+
+        cids = list(decoded.get("concept_ids") or []) if decoded else []
+        control_ext = run_control_extensions(
+            prior_digest=cids[: max(1, len(cids) // 2)],
+            current_digest=cids,
+            goal=cids[:3],
+        ).to_dict()
+
     out = Path(__file__).resolve().parent.parent / "lab/sn_cen_out" / f"{store.name}_control_smoke.json"
     bundle = next((store / "bundles").glob("*.json"), None)
     if bundle and ok_stack and not missing:
@@ -61,15 +81,19 @@ def main() -> None:
     else:
         infer_detail = "skipped"
 
+    stack_ok = ok_stack and not missing and dmn_concepts > 0
+    extensions_ok = control_ext is not None and control_ext.get("sparse_ratio", 1.0) <= 1.0
+
     report = {
         "store": str(store),
         "control_stack": ok_stack,
         "lattices": sorted(lats.keys()),
         "missing": sorted(missing),
         "dmn_concept_count": dmn_concepts,
+        "control_extensions": control_ext,
         "infer_ok": infer_ok,
         "infer_detail": infer_detail if not infer_ok else str(out),
-        "pass": ok_stack and not missing and dmn_concepts > 0 and infer_ok,
+        "pass": stack_ok and extensions_ok and infer_ok,
     }
     print(json.dumps(report, ensure_ascii=False, indent=2))
     raise SystemExit(0 if report["pass"] else 1)
