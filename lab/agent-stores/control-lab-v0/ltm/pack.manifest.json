@@ -4,8 +4,8 @@
   "field_version": 2,
   "updated_at": "2026-05-30T20:49:06.354082+00:00",
   "lattices": {
-    "lattice_cen": {
-      "path": "ltm/ctrl/lattice_cen.ltm",
+    "control-executive": {
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\control-lab-v0\\ltm\\lat\\control-executive.ltm",
       "compress": null,
       "raw_bytes": 195,
       "file_bytes": 195,
@@ -19,8 +19,8 @@
         "subsystem": "control"
       }
     },
-    "lattice_dmn": {
-      "path": "ltm/ctrl/lattice_dmn.ltm",
+    "control-dmn": {
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\control-lab-v0\\ltm\\lat\\control-dmn.ltm",
       "compress": null,
       "raw_bytes": 409,
       "file_bytes": 409,
@@ -34,8 +34,8 @@
         "subsystem": "control"
       }
     },
-    "lattice_fpn_wm": {
-      "path": "ltm/ctrl/lattice_fpn_wm.ltm",
+    "control-working-memory": {
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\control-lab-v0\\ltm\\lat\\control-working-memory.ltm",
       "compress": null,
       "raw_bytes": 172,
       "file_bytes": 172,
@@ -49,8 +49,8 @@
         "subsystem": "control"
       }
     },
-    "lattice_sn": {
-      "path": "ltm/ctrl/lattice_sn.ltm",
+    "control-salience": {
+      "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\control-lab-v0\\ltm\\lat\\control-salience.ltm",
       "compress": null,
       "raw_bytes": 188,
       "file_bytes": 188,
@@ -71,5 +71,9 @@
     "lattice_count": 4,
     "raw_bytes": 964,
     "file_bytes": 964
+  },
+  "lattice_naming": {
+    "version": 1,
+    "migrated_at": "2026-05-31T17:39:54.045448+00:00"
   }
 }
