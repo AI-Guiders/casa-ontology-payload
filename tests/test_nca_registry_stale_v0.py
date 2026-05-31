@@ -15,7 +15,8 @@ from nca_registry_v0 import (  # type: ignore
     save_registry,
     empty_registry,
 )
-from sss_nca_codec_v0 import tokens_from_lattice  # type: ignore
+
+LEXICON_SHARD = "lexicon-ru-00"
 
 
 def _memory_lattice(tokens: list[str]) -> dict:
@@ -39,8 +40,8 @@ def _state_with_shard(lid: str, tokens: list[str], *, field_version: int = 6) ->
 
 
 class NcaStaleControlBumpTests(unittest.TestCase):
-    def test_control_bump_does_not_stale_unchanged_l2_legacy_registry(self) -> None:
-        lid = "words-ru-00"
+    def test_control_bump_does_not_stale_unchanged_lexicon(self) -> None:
+        lid = LEXICON_SHARD
         toks = [f"C:lang.word.w{i}" for i in range(10)]
         state = _state_with_shard(lid, toks, field_version=6)
         with tempfile.TemporaryDirectory() as tmp:
@@ -62,7 +63,7 @@ class NcaStaleControlBumpTests(unittest.TestCase):
             self.assertEqual(stale, [])
 
     def test_content_change_stale_with_fingerprint(self) -> None:
-        lid = "words-ru-00"
+        lid = LEXICON_SHARD
         toks = [f"C:lang.word.w{i}" for i in range(10)]
         state = _state_with_shard(lid, toks, field_version=6)
         lat = state["prisms"]["prism_memory"]["lattices"][lid]
@@ -77,7 +78,7 @@ class NcaStaleControlBumpTests(unittest.TestCase):
             self.assertIn("content_drift", stale[0]["reasons"])
 
     def test_memory_bump_stale_when_fingerprint_recorded(self) -> None:
-        lid = "words-ru-00"
+        lid = LEXICON_SHARD
         toks = [f"C:lang.word.w{i}" for i in range(10)]
         state = _state_with_shard(lid, toks, field_version=6)
         lat = state["prisms"]["prism_memory"]["lattices"][lid]

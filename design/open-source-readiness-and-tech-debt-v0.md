@@ -30,8 +30,9 @@
 
 ### P2 — структура
 
-- [ ] **Пакет + prism folders + FieldBus.** Канон: [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md), [`CASA-ADR-0012-cide-parity-fieldbus-and-migration.md`](CASA-ADR-0012-cide-parity-fieldbus-and-migration.md) (M0–M4 **после post_train**).
-- [ ] **Чистка `sss_` / legacy paths.** Semantic namespace; physical lattice id + store paths — alias → canonical.
+- [x] **Пакет + prism folders.** `casa/prisms/*`, `casa/cli/*`; `tools/` = shims (M2, 2026-05-31).
+- [ ] **FieldBus** + M4 shim removal.
+- [ ] **Чистка legacy store paths** (`ltm/l2`, …).
 
 ---
 

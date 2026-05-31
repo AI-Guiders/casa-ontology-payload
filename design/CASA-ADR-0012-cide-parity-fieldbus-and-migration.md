@@ -147,10 +147,10 @@ CASA: **store profile** = composition root:
 
 ### Phase M2 — package skeleton + shims
 
-- [x] Create `casa/prisms/{control,memory,shared,hippo}/` (hippo/memory skeleton only)
-- [x] Move **control stack + lattice_names** under `casa/`; `tools/*` → one-line shims
-- [ ] Move memory (`sss_*`) and shared (`store_layout`, `prism_state`) modules
+- [x] Create `casa/prisms/{control,memory,shared,hippo,tick}/` + `casa/cli/`
+- [x] Move runtime modules under `casa/`; `tools/*` → sys.modules shims
 - [ ] FieldBus v0: publish `ConsolidatePhaseEvent`, `FieldVersionDriftEvent` from stale train + post_train
+- [ ] M4: drop shims when grep clean
 
 ### Phase M3 — store paths (new writes canonical)
 

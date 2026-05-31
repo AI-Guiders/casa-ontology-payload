@@ -1,11 +1,21 @@
 #!/usr/bin/env python3
 """Shim → casa.cli.bench.bench_articulation_realize (M2 layout)."""
-from _shim_v0 import load_casa
+from __future__ import annotations
 
-load_casa("casa.cli.bench.bench_articulation_realize")
-from casa.cli.bench.bench_articulation_realize import *  # noqa: F403
+import sys
+from importlib import import_module
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parent.parent
+for _p in (str(_ROOT), str(_ROOT / "tools")):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+_LEGACY = "bench_articulation_realize"
+_mod = import_module("casa.cli.bench.bench_articulation_realize")
+sys.modules[_LEGACY] = _mod
+if __name__ != "__main__":
+    sys.modules[__name__] = _mod
 
 if __name__ == "__main__":
-    from casa.cli.bench.bench_articulation_realize import main
-
-    raise SystemExit(main())
+    raise SystemExit(_mod.main())

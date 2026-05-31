@@ -1,50 +1,54 @@
-# CASA ontology payload — Python layout (M2 migration)
+# `tools/` — legacy CLI paths (M2 layout)
 
-**Статус:** `tools/` всё ещё содержит ~270 CLI-скриптов и legacy-модулей; канонический код переезжает в **`casa/prisms/`**. Старые пути — **shim** (`from casa… import *`), CI и `python tools/foo.py` не ломаются.
+**Все реализации** живут в **`casa/`**; здесь только **shims** (`sys.modules` alias) и `_shim_v0.py`.
 
-Канон: [`design/prism-layout-and-naming-v1.md`](../design/prism-layout-and-naming-v1.md), фазы M0–M4 в [`design/CASA-ADR-0012-cide-parity-fieldbus-and-migration.md`](../design/CASA-ADR-0012-cide-parity-fieldbus-and-migration.md).
+Канон: [`design/prism-layout-and-naming-v1.md`](../design/prism-layout-and-naming-v1.md), [`design/CASA-ADR-0012-cide-parity-fieldbus-and-migration.md`](../design/CASA-ADR-0012-cide-parity-fieldbus-and-migration.md).
 
-## Целевая структура
+## Структура `casa/`
 
 ```
 casa/
-  _paths.py              # REPO_ROOT, tools/ на sys.path
+  _paths.py                 REPO_ROOT + tools/ на sys.path
   prisms/
-    control/             # prism_control (DMN, SN, FPN, CEN, predict, DAN, value)
-    memory/              # lexicon shards, math schema, orthography
-    hippo/               # wake / sleep / episodic
-    shared/              # lattice ids, store layout, field bus (roadmap)
+    shared/                 codec, field I/O, store layout, NCA train, migrations
+    memory/                 sss_*, orthography, lexicon, ingest
+    hippo/                  wake / sleep / replay / repair
+    control/                DMN stack, SN/CEN tick, control NCA train
+    tick/                   unified tick, T9 runtime, predictor, surface error
+  cli/
+    bench/                  bench_* scripts
+    init_*, train_*, exp_*   one-off lab CLIs
 tools/
-  _shim_v0.py            # bootstrap для shims
-  *.py                   # тонкие shims + ещё не перенесённые скрипты
+  *.py                      shim → casa.* (имя модуля сохранено для CI/scripts)
+  _shim_v0.py               (legacy helper; shims inline import_module)
+scripts/
+  migrate_tools_to_casa.py  batch migrator + `reshim-all`
 ```
 
-## Перенесено (M2, in progress)
+## Использование
 
-| Legacy `tools/` | Semantic home | Статус |
-|-----------------|---------------|--------|
-| `lattice_names_v1.py` | `casa.prisms.shared.lattice_names_v1` | **done** (shim) |
-| `control_stack_v0.py` | `casa.prisms.control.stack_v0` | **done** |
-| `control_cylinders_v0.py` | `casa.prisms.control.cylinders_v0` | **done** |
-| `control_tick_v0.py` | `casa.prisms.control.tick_v0` | **done** |
-| `control_predict_v0.py` | `casa.prisms.control.predict_v0` | **done** |
-| `control_attention_v0.py` | `casa.prisms.control.attention_v0` | **done** |
-| `control_value_v0.py` | `casa.prisms.control.value_v0` | **done** |
+```powershell
+# CLI как раньше — путь не менялся
+python tools/store_boot_v0.py --smoke ...
+python tools/run_t9_demo_cycle_v0.py
 
-## Следующие очереди (не тронуто)
+# Импорт в коде — legacy имя или casa.*
+from store_layout_v0 import repo_root
+from casa.prisms.shared.store_layout_v0 import repo_root
+```
 
-| Legacy | Target |
-|--------|--------|
-| `store_layout_v0.py`, `prism_state_v0.py`, `field_write.py` | `casa.prisms.shared.*` |
-| `sss_cylinders_v0.py`, `sss_l2_shard_v0.py`, `sss_stack_v0.py`, … | `casa.prisms.memory.*` |
-| `sss_wake_v0.py`, `sss_sleep_v0.py`, `sleep_replay_v0.py` | `casa.prisms.hippo.*` |
-| `train_sss_nca_v0.py` | `casa.prisms.shared.nca_train` |
-| `bench_*`, `init_*`, ingest | остаются в `tools/` как CLI или `casa/prisms/*/cli` |
+## Мигратор
 
-## Как добавлять модуль
+```powershell
+python scripts/migrate_tools_to_casa.py list          # размеры батчей
+python scripts/migrate_tools_to_casa.py shared-core     # один батч
+python scripts/migrate_tools_to_casa.py reshim-all    # перегенерить shims
+```
 
-1. Реализация → `casa/prisms/<prism>/<name>_v0.py` (`ensure_import_paths()` + legacy imports из `tools/` пока нужно).
-2. `tools/<legacy>.py` → shim через `_shim_v0.load_casa(...)`.
-3. Строка в эту таблицу + pytest green.
+## M4 (ещё не сделано)
 
-**Не делать:** big-bang rename всех `sss_*` одним коммитом; удалять shims до grep-clean (M4).
+- Удалить shims, когда grep `tools/` imports clean
+- FieldBus v0
+- Store path aliases (`ltm/memory/lexicon` vs `ltm/l2`)
+
+Тесты: **`tests/`** (не в `tools/`).

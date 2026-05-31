@@ -13,10 +13,22 @@ TOOLS = ROOT / "tools"
 
 SHIM_HEADER = '''#!/usr/bin/env python3
 """Shim → {module} (M2 layout)."""
-from _shim_v0 import load_casa
+from __future__ import annotations
 
-load_casa("{module}")
-from {module} import *  # noqa: F403
+import sys
+from importlib import import_module
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parent.parent
+for _p in (str(_ROOT), str(_ROOT / "tools")):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+_LEGACY = "{legacy}"
+_mod = import_module("{module}")
+sys.modules[_LEGACY] = _mod
+if __name__ != "__main__":
+    sys.modules[__name__] = _mod
 '''
 
 BOOTSTRAP = """from casa._paths import ensure_import_paths
@@ -26,6 +38,16 @@ ensure_import_paths()
 """
 
 SKIP = frozenset({"_shim_v0.py"})
+
+# tools name → casa path (short names from first M2 commit)
+CASA_ALIASES: dict[str, str] = {
+    "control_stack_v0.py": "casa/prisms/control/stack_v0.py",
+    "control_cylinders_v0.py": "casa/prisms/control/cylinders_v0.py",
+    "control_tick_v0.py": "casa/prisms/control/tick_v0.py",
+    "control_predict_v0.py": "casa/prisms/control/predict_v0.py",
+    "control_attention_v0.py": "casa/prisms/control/attention_v0.py",
+    "control_value_v0.py": "casa/prisms/control/value_v0.py",
+}
 
 ALREADY_SHIM = re.compile(r'^"""Shim → casa\.', re.M)
 
@@ -59,15 +81,14 @@ def insert_bootstrap(text: str) -> str:
 
 
 def write_shim(tool_file: Path, module: str, *, main_name: str | None) -> None:
-    lines = [SHIM_HEADER.format(module=module).rstrip()]
+    legacy = tool_file.stem
+    lines = [SHIM_HEADER.format(module=module, legacy=legacy).rstrip()]
     if main_name:
         lines.extend(
             [
                 "",
                 'if __name__ == "__main__":',
-                f"    from {module} import {main_name}",
-                "",
-                f"    raise SystemExit({main_name}())",
+                f"    raise SystemExit(_mod.{main_name}())",
             ]
         )
     tool_file.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -80,11 +101,15 @@ def migrate_one(name: str, casa_rel: str, *, dry_run: bool = False) -> str:
     if not src.exists():
         return f"missing:{name}"
     text = src.read_text(encoding="utf-8")
-    if ALREADY_SHIM.search(text):
-        return "shim"
-
     dst = ROOT / casa_rel
     module = casa_module(dst)
+
+    if ALREADY_SHIM.search(text):
+        impl_text = dst.read_text(encoding="utf-8") if dst.exists() else text
+        main_name = main_block(impl_text)
+        if not dry_run:
+            write_shim(src, module, main_name=main_name)
+        return "reshim"
 
     if dst.exists():
         impl = dst.read_text(encoding="utf-8")
@@ -102,6 +127,8 @@ def migrate_one(name: str, casa_rel: str, *, dry_run: bool = False) -> str:
 
 def classify(name: str) -> str | None:
     """Return casa relative path or None to leave in tools/."""
+    if name in CASA_ALIASES:
+        return CASA_ALIASES[name]
     if name in SKIP or name.startswith("test_"):
         return None
 
@@ -163,12 +190,6 @@ def classify(name: str) -> str | None:
 
     # control (already under casa/prisms/control for some)
     control = {
-        "control_stack_v0.py",
-        "control_cylinders_v0.py",
-        "control_tick_v0.py",
-        "control_predict_v0.py",
-        "control_attention_v0.py",
-        "control_value_v0.py",
         "train_control_nca_stack_v0.py",
         "migrate_control_stack_v0.py",
         "migrate_control_all_stores_v0.py",
@@ -423,12 +444,18 @@ def run_batch(batch: str, *, dry_run: bool = False) -> int:
 
 def main() -> int:
     p = argparse.ArgumentParser()
-    p.add_argument("batch", choices=[*BATCHES.keys(), "all", "list"])
+    p.add_argument("batch", choices=[*BATCHES.keys(), "all", "list", "reshim-all"])
     p.add_argument("--dry-run", action="store_true")
     args = p.parse_args()
     if args.batch == "list":
         for k, v in BATCHES.items():
             print(f"{k}: {len(v)} files")
+        return 0
+    if args.batch == "reshim-all":
+        for py in sorted(TOOLS.glob("*.py")):
+            dest = classify(py.name)
+            if dest:
+                migrate_one(py.name, dest, dry_run=args.dry_run)
         return 0
     if args.batch == "all":
         for b in BATCHES:
