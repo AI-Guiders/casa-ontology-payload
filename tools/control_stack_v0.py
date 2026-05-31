@@ -10,7 +10,7 @@ from codec_grid_v0 import Grid  # type: ignore
 from config_io_v0 import load_config  # type: ignore
 from sss_stack_v0 import _place_token, decode_lattice, encode_lattice  # type: ignore
 
-DEFAULT_STACK = Path("design/control-lattice-stack.v0.toml")
+DEFAULT_STACK = Path("design/control-lattice-stack.v0.json")
 
 
 def load_control_stack(path: Path | None = None) -> dict:
@@ -52,6 +52,24 @@ def _seed_fpn_tokens(grid: Grid, *, copies: int, mode: str = "explore", goal: st
         grid = _place_token(grid, f"wm.goal.{g}", f"wm.goal.{g}", copies=max(2, copies // 2), radius=4)
     grid = _place_token(grid, "P:p2a_sn_to_fpn", "P:p2a_sn_to_fpn", copies=2, radius=3)
     grid = _place_token(grid, "P:p5_fpn_to_sn", "P:p5_fpn_to_sn", copies=2, radius=3)
+    return grid
+
+
+def _seed_predict_tokens(grid: Grid, *, copies: int) -> Grid:
+    for tok in ("predict.rollout.v0", "P:p8_predict_to_sn", "port.surprise.forward"):
+        grid = _place_token(grid, tok, tok, copies=max(2, copies // 2), radius=4)
+    return grid
+
+
+def _seed_dan_tokens(grid: Grid, *, copies: int) -> Grid:
+    for tok in ("dan.spotlight.goal", "P:p6_fpn_to_dan", "P:p7_dan_to_dmn", "port.mask.forward"):
+        grid = _place_token(grid, tok, tok, copies=max(2, copies // 2), radius=4)
+    return grid
+
+
+def _seed_value_tokens(grid: Grid, *, copies: int) -> Grid:
+    for tok in ("value.priority.high", "P:p9_value_to_sn", "port.value.forward"):
+        grid = _place_token(grid, tok, tok, copies=max(2, copies // 2), radius=4)
     return grid
 
 
@@ -100,6 +118,21 @@ def encode_control_stack(
             grid_dict = encode_lattice(cen_claims, edges, width=w, height=h, copies=copies, concept_prefix=prefix)
             g = Grid(width=w, height=h, cells=[list(x) for x in grid_dict["cells"]])
             g = _seed_cen_tokens(g, copies=copies)
+            grid_dict["cells"] = g.cells
+        elif lid == "lattice_predict":
+            grid_dict = encode_lattice(claims, edges, width=w, height=h, copies=copies, concept_prefix=prefix)
+            g = Grid(width=w, height=h, cells=[list(x) for x in grid_dict["cells"]])
+            g = _seed_predict_tokens(g, copies=copies)
+            grid_dict["cells"] = g.cells
+        elif lid == "lattice_dan":
+            grid_dict = encode_lattice(claims, edges, width=w, height=h, copies=copies, concept_prefix=prefix)
+            g = Grid(width=w, height=h, cells=[list(x) for x in grid_dict["cells"]])
+            g = _seed_dan_tokens(g, copies=copies)
+            grid_dict["cells"] = g.cells
+        elif lid == "lattice_value":
+            grid_dict = encode_lattice(claims, edges, width=w, height=h, copies=copies, concept_prefix=prefix)
+            g = Grid(width=w, height=h, cells=[list(x) for x in grid_dict["cells"]])
+            g = _seed_value_tokens(g, copies=copies)
             grid_dict["cells"] = g.cells
         else:
             grid_dict = encode_lattice(claims, edges, width=w, height=h, copies=copies, concept_prefix=prefix)

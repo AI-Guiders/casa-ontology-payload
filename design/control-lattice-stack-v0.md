@@ -71,16 +71,46 @@
 
 ---
 
-## Предлагаемые lattice_id (v0)
+## Предлагаемые lattice_id (v0 → v1 ADR-0010)
 
-| lattice_id | z_ctrl | Роль | z_phase tail |
-|------------|--------|------|--------------|
-| `lattice_dmn` | 0 | ontology / claims digest | digest |
-| `lattice_sn` | 1 | salience gate | gate |
-| `lattice_fpn_wm` | 2 | working memory goal/mode/stack | encode+repair |
-| `lattice_cen` | 3 | planner action | encode+repair |
+| lattice_id | z_ctrl | Роль | z_phase tail | Статус |
+|------------|--------|------|--------------|--------|
+| `lattice_dmn` | 0 | ontology / claims digest | digest | ✅ lab |
+| `lattice_sn` | 1 | salience gate (bottom-up) | gate | ✅ lab |
+| `lattice_fpn_wm` | 2 | working memory goal/mode/stack | encode+repair | ✅ lab |
+| `lattice_cen` | 3 | planner action | encode+repair | ✅ lab |
+| **`lattice_predict`** | 4 | forward-model rollout + prediction error | encode→roll→digest | ✅ digest brick (R3) |
+| **`lattice_dan`** | 5 | top-down attention spotlight | gate(mask) | ✅ digest brick (R4) |
+| **`lattice_value`** | 6 | limbic priority / guardrail tag | digest(scalar) | ✅ digest brick (R5) |
 
 Размер v0: **32×32** (как SSS), NCA profile `sss` из [`nca-train-defaults.v0.json`](nca-train-defaults.v0.json).
+
+Cosmos-паритет: [`casa-cosmos-mapping-v0.md`](casa-cosmos-mapping-v0.md). ADR: [`CASA-ADR-0010-control-zone-predict-attention-value.md`](CASA-ADR-0010-control-zone-predict-attention-value.md).
+
+### Мосты P1–P9
+
+| bridge | from → to | Несёт | Статус |
+|--------|-----------|--------|--------|
+| P1 | DMN → SN | digest, concept_ids | ✅ |
+| P2a | SN → FPN | salience mask | ✅ |
+| P2b | FPN → CEN | goal + subgoal | ✅ |
+| P3 | CEN → DMN | task.query | ✅ |
+| P4 | CEN → FPN | outcome | ✅ |
+| P5 | FPN → SN | mode bias (opt) | ✅ |
+| **P6** | FPN → DAN | goal → spotlight | ✅ design + encode seed |
+| **P7** | DAN → DMN | sparse activation mask | ✅ design + encode seed |
+| **P8** | predict → SN | prediction error / surprise | ✅ digest brick |
+| **P9** | value → SN / sleep / replay | priority bias | ✅ value brick + replay |
+
+```text
+  VALUE ──P9──► SN ◄──P8── PREDICT
+                  │ P2a
+                  ▼
+                 FPN ──P6──► DAN ──P7──► DMN / L2 (sparse)
+                  │ P2b
+                  ▼
+                 CEN ──P3──► DMN
+```
 
 **Session mirror:** `agent_session.json` ↔ tokens на `lattice_fpn_wm` (как в старом FPN design), не источник правды в prod.
 

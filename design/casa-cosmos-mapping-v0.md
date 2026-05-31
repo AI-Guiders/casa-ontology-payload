@@ -1,148 +1,80 @@
 # CASA ↔ NVIDIA Cosmos mapping v0
 
-**Status:** north-star design (analogy, not vendor integration spec)  
-**Date:** 2026-05-28  
-**Cosmos reference:** [NVIDIA Cosmos](https://www.nvidia.com/en-us/ai/cosmos/) — Predict / Transfer / Reason world foundation models for Physical AI.
+**Date:** 2026-05-31  
+**Status:** accepted (updated by CASA-ADR-0010)  
+**Supersedes:** Cosmos table in [`fpn-control-region-v0.md`](fpn-control-region-v0.md) § Cosmos mapping  
+**Parent:** [`CASA-ADR-0010-control-zone-predict-attention-value.md`](CASA-ADR-0010-control-zone-predict-attention-value.md), [`control-lattice-stack-v0.md`](control-lattice-stack-v0.md)
 
-## Зачем этот документ
-
-Зафиксировать, что **CASA и Cosmos идут одним архитектурным путём**: несколько **специализированных** моделей/слоёв + **оркестрация**, а не один монолит «всё в одном forward pass».  
-Отличие — **субстрат и домен**: Cosmos — видео/физический мир; CASA — **онтология в поле**, KB, агентный маршрут, текст с провенансом.
-
-См. также:
-
-| Аналогия | Файл |
-|----------|------|
-| fMRI / регионы | [`casa-layout-v0.md`](casa-layout-v0.md), [`modules-fmri-analogy-v0.md`](modules-fmri-analogy-v0.md) |
-| **Термины (DMN, SN, CEN, …)** | [`casa-glossary-v0.md`](casa-glossary-v0.md) |
-| Поршень (z-фазы) | [`layered-ca-pipeline-v0.md`](layered-ca-pipeline-v0.md) |
-| SN / CEN | [`cen-sn-runtime-v0.md`](cen-sn-runtime-v0.md), [`sn-cen-lab-v1.md`](sn-cen-lab-v1.md) |
-| Substrate v2 | [`substrate-v2-roadmap.md`](substrate-v2-roadmap.md) |
-| RU language lab | [`experiment-j-text-modality-v1.md`](experiment-j-text-modality-v1.md) |
+NVIDIA Cosmos World Foundation Models expose **Predict / Transfer / Reason** plus infrastructure (**Tokenizer**, **Guardrail**). CASA maps them onto the **same CA substrate** — separate control lattices and bridges, not an external LLM.
 
 ---
 
-## 1. Грубое соответствие семейств
+## Core mapping (post ADR-0010)
 
-| NVIDIA Cosmos | Роль в Physical AI | CASA (ca-substrate-agent) | Статус CASA |
-|---------------|-------------------|---------------------------|-------------|
-| **Cosmos Predict** | Предсказание / генерация **следующего состояния мира** (видео) | **DMN** + NCA repair + encode/decode: поле токенов, восстановление после damage, digest | PoC + v2 lab |
-| **Cosmos Transfer** | Перенос домена, аугментация (sim → реализм, стиль среды) | **Import / codec tiers**: `import_knowledge_delta`, codec v1→v3, Experiment G/H, union bundles, `kb_field_watcher` | v2 |
-| **Cosmos Reason** | VLM: common sense, план, критика, промпты для Predict | **SN** (salience, gate) + **CEN** (task policy, targets, `query_to_dmn`) | v1 lab |
-| *(нет прямого аналога в Cosmos)* | — | **Артикуляция** (текст из digest + claims); MoE экспертов речи | **Proposed** (см. §4) |
+| Cosmos | CASA organ | lattice_id | Bridge / tool |
+|--------|------------|------------|---------------|
+| **Predict** (rollout next state) | forward-model digest + field rollout | **`lattice_predict`** | P8 → SN (prediction error); [`lattice_predict_v0.py`](../tools/lattice_predict_v0.py) |
+| **Transfer** (adapt world model) | listen / ingest / sleep consolidate | `cyl_memory` L0–L3 + `run_sleep` | z_bridge compose; ADR-0002 ltm/nca ship |
+| **Reason** (plan → act) | salience + attention + planner | **`lattice_sn`** + **`lattice_dan`** + **`lattice_fpn_wm`** + **`lattice_cen`** | P2a/P6/P7/P2b/P3/P4 |
+| **Tokenizer** | field codec (tokens on grid) | (memory lattices) | [`codec_grid_v0.py`](../tools/codec_grid_v0.py), `.ltm` vocab+placements |
+| **Guardrail** | critic + value + integrity | **`lattice_value`** + Critic + POST | P9 → SN/sleep/replay; [`surface_error_v0.py`](../tools/surface_error_v0.py), [`replay_buffer_v0.py`](../tools/replay_buffer_v0.py) |
 
-**Оркестрация Cosmos:** Reason → (критика / план) → Predict / Transfer.  
-**Оркестрация CASA:** KB → field → digest → **SN** → **CEN** → (будущее) **articulation**; hot path `--from-field` ~мс.
+### What changed from v0
+
+| Cosmos | v0 (before ADR-0010) | v1 (now) |
+|--------|----------------------|----------|
+| Predict | «нет» — conflated with DMN world-state | **`lattice_predict`** — explicit rollout + surprise |
+| Reason | SN gate + CEN plan only | SN(salience) + **DAN**(spotlight) + FPN(goal) + CEN(act) |
+| Guardrail | implicit critic only | **`lattice_value`** tags + replay priority (ADR-0009) |
+
+**DMN stays** «what we know» (ontology digest). It is **not** Predict.
 
 ---
 
-## 2. Один цилиндр vs три чекпоинта
-
-| | Cosmos | CASA |
-|---|--------|------|
-| Память мира | latent video WFM | дискретное **64×64** поле (**цилиндр**); канон `claims` — **вне** цилиндра, опыт — **в** grid ([`language-acquisition-loop-v0.md`](language-acquisition-loop-v0.md)) |
-| Параллельность | отдельные модели, pipeline в продукте | **регионы DMN/SN/CEN параллельны на (x,y)** + фазы **z** (поршень) на одном буфере |
-| Прозрачность | частично (VLM rationales) | **concept_id**, `doc_path`, `section`, `field_version`, `claims_nav` |
-| Типичный GPU | обучение/инференс WFMs | NCA train на 4060+; infer field — CPU/GPU лёгкий |
-
-Поршень ([`layered-ca-pipeline-v0.md`](layered-ca-pipeline-v0.md)):
+## Control stack diagram
 
 ```text
-z=0 encode → z=1 dmn_repair → z=2 digest → z=3 gate
-         одно поле (x,y); регионы SN/DMN/CEN сосуществуют на карте
+  VALUE ──P9──► SN ◄──P8── PREDICT(rollout)
+                  │ P2a
+                  ▼
+                 FPN ──P6──► DAN ──P7──► DMN / L2 (sparse read)
+                  │ P2b              ▲
+                  ▼                  │ P1
+                 CEN ──P3───────────┘
+                  │ P4
+                  └──► FPN (outcome)
 ```
 
----
-
-## 3. Мозг, fMRI, Cosmos — одна ось
-
-| Метафора | Смысл |
-|----------|--------|
-| **fMRI** (DMN / SN / CEN) | Крупные сети на одном «поле» |
-| **Поршень** | Фазы обработки **z** без смены буфера |
-| **Cosmos** | Продуктовая декомпозиция WFMs (Predict / Transfer / Reason) |
-| **CASA** | Тот же *принцип слоёв*, другой носитель: KB → ontology field → agent |
-
-«Высшие функции» (связная речь) у CASA — **не DMN**, а будущая **кора артикуляции** (§4).
+Machine-readable: [`control-lattice-stack.v0.json`](control-lattice-stack.v0.json).
 
 ---
 
-## 4. Артикуляция и MoE (proposed)
+## Memory vs control (ADR-0002 + ADR-0007)
 
-Текст и «генерация» речи — **высший уровень**, под ними — **не один** блок, а **mixture of specialists** (явный MoE, не только внутри одного transformer).
+| Layer | Ships in prod store | Role |
+|-------|---------------------|------|
+| `ltm/` + `nca/` (memory) | **yes** | specialization cartridge (lexicon, alphabet, …) |
+| `ltm/ctrl/` + `nca/lattice_*/` (control) | roadmap | control NCA per lattice |
+| `field_state.json` | **no** (lab) | full runtime snapshot |
 
-```text
-digest + answer_blocks
-        │
-        ▼
-  CEN policy (answer | open_kb | probe)
-        │
-        ▼
-  Articulation router  ──► expert: ru_grammar | kb_cite | code_nav | dialogue_surface
-        │
-        ▼
-  answer_text (+ provenance)
-```
-
-| Эксперт (черновик) | Вход | Выход |
-|--------------------|------|--------|
-| `compose_ru_grammar` | `claim_kind=rule`, таблицы RU | норма + пример |
-| `compose_kb_cite` | top `answer_blocks` | цитата + section |
-| `compose_code_nav` | `code_anchors` | кратко + путь |
-| `dialogue_surface` | digest + session | связки (обучение / imitation, цель 3) |
-| `cosmos_reason` *(опционально, out-of-field)* | видео/физика | не замена поля; соседний WFM |
-
-**Арбитр:** CEN (+ SN gate), как Reason в Cosmos не заменяет Predict, а направляет.
+Cosmos **Transfer** = changing the **agent store cartridge**, not recompiling core tools.
 
 ---
 
-## 5. Когда что использовать (политика v0)
+## Implementation status
 
-| Ситуация | Путь |
-|----------|------|
-| Запрос попадает в KB / field (высокий match) | CASA hot path: decode → SN → CEN → compose/MoE |
-| Нужен канон, русская грамматика, CASA docs | `language-agent-lab-v0`, Experiment J |
-| Физика, видео, робот, длинный visual context | **Cosmos** Predict / Reason (отдельный контур) |
-| Out-of-KB «любая тема» | опционально локальный LM / Cosmos Reason — **не** память агента |
-
-Память агента остаётся в **поле + git + agent-notes**; внешние WFMs — **поверхность**, не источник правды.
-
----
-
-## 6. Железо и «без дата-центра»
-
-| | Cosmos (типично) | CASA (сейчас) |
-|---|------------------|---------------|
-| Train | кластер / DGX | локальная GPU (4060), union NCA |
-| Infer WFMs | GPU, NIM | field decode + SN/CEN — **мс** |
-| Масштаб «как Cosmos дома» | DGX Spark и т.п. | тот же железный класс: train поля + опционально Reason/articulation local |
+| Brick | Status |
+|-------|--------|
+| Predict digest model (R3) | ✅ `lattice_predict_v0`, P8, bench + tests |
+| Predict field NCA | roadmap `train_sss_nca_v0 --lattice-id lattice_predict` |
+| DAN spotlight (R4) | ✅ `lattice_dan_v0`, P6/P7, bench + tests |
+| Value organ (R5) | ✅ `lattice_value_v0`, P9; replay `value_weight` (R2) |
+| Tick P1–P9 on field | roadmap (replace layered_infer hot path) |
 
 ---
 
-## 7. Roadmap (согласование с Cosmos-путём)
+## Related
 
-| Этап | CASA | Cosmos-параллель |
-|------|------|------------------|
-| Done | DMN PoC, G/H, union, watcher, IDE bridge | Predict/Transfer/Reason как **внешний** референс |
-| Done | SN/CEN v2, `answer_blocks`, RU bundles (Exp J) | Reason ≈ CEN; retrieval ≈ часть Reason |
-| Next | `answer_compose` + articulation MoE v0 | специализированные «мини-модели» выхода |
-| Next | `T:` tokens on field (Exp J phase 2) | Predict-like **state** на поле, не видео |
-| Later | imitation + repair на артикуляции (цель 3) | post-train WFMs, но на **своём** субстрате |
-| Optional | Cosmos Reason для video/physical tool | federated agent card, не merge в DMN |
-
----
-
-## 8. Non-goals (v0)
-
-- Не дублировать Cosmos Predict для текста/KB.
-- Не смешивать VLM weights с `field_state.json`.
-- Не называть один LLM hook «памятью» — память = DMN + KB + import.
-
----
-
-## 9. Ссылки
-
-- NVIDIA Cosmos: https://www.nvidia.com/en-us/ai/cosmos/
-- Docs: https://docs.nvidia.com/cosmos/latest/introduction.html
-- KB canon (mirror): `agent-notes` → `work/projects/door-to-singularity/ca-substrate-agent/casa-goals-and-roadmap-v1.md`
-- Repo: https://github.com/AI-Guiders/casa-ontology-payload
+- [`understanding-contract-v0.md`](understanding-contract-v0.md) — predict loop as comprehension invariant
+- [`CASA-ADR-0009-experience-replay-retention.md`](CASA-ADR-0009-experience-replay-retention.md) — value → replay priority
+- [`modules-fmri-analogy-v0.md`](modules-fmri-analogy-v0.md) — DAN/VAN split, sparse modules

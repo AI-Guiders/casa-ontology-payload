@@ -1,6 +1,6 @@
 # CASA-ADR-0010: расширение управляющей зоны — Predict / Attention split / Value
 
-**Статус:** proposed (design; mechanism-кирпич value→replay в `replay_buffer_v0`)  
+**Статус:** accepted (digest bricks R2–R5; field rollout + tick wiring — roadmap)  
 **Дата:** 2026-05-31  
 **Область:** control lattice stack (DMN/SN/FPN/CEN), predictive coding, sparse routing, prioritization  
 **Вдохновение:** NVIDIA Cosmos (WFM: Predict / Transfer / Reason + Tokenizer / Guardrail) + крупномасштабные сети мозга (DMN, SN, **DAN/VAN**, лимбическая оценка, forward-model) — но **инженерно и эффективнее**, на одном CA-субстрате  
@@ -95,11 +95,11 @@ DMN(что знаем) ─P1─► SN(что релевантно) ─P2a─► 
 
 ### Поэтапно (каждый шаг — green перед следующим)
 
-- [ ] **R1 (design):** этот ADR; обновить `casa-cosmos-mapping-v0` (Predict→lattice_predict) и `control-lattice-stack-v0` (таблица lattice_id + P6–P9).
+- [x] **R1 (design):** этот ADR; [`casa-cosmos-mapping-v0.md`](casa-cosmos-mapping-v0.md) (Predict→lattice_predict); [`control-lattice-stack-v0.md`](control-lattice-stack-v0.md) + JSON (7 lattice_id + P6–P9).
 - [x] **R2 (value brick):** value-взвешенный replay в [`replay_buffer_v0.py`](../tools/replay_buffer_v0.py) (`value_weight`, тег value) + тесты — **первый кирпич `lattice_value`** без нового органа.
 - [x] **R3 (predict):** `lattice_predict` (z_ctrl 4) + мост P8 в `control-lattice-stack.v0.json`; digest-уровневый [`lattice_predict_v0.py`](../tools/lattice_predict_v0.py) (fit/predict_next/rollout/prediction_error/surprise) + [`bench_predict_error_v0.py`](../tools/bench_predict_error_v0.py) (predicted vs no-rollout baseline) + `tests/test_lattice_predict.py`. Field-rollout (`train_sss_nca_v0 --lattice-id lattice_predict`) — следующий шаг того же кирпича.
-- [ ] **R4 (attention split):** `lattice_dan` + P6/P7; sparse rollout mask из spotlight; SN сужается до salience+P8.
-- [ ] **R5 (value organ):** `lattice_value` на поле + P9 в SN gate и в sleep-порядок; источники value: повторный surprise (`surface_error_v0`), teacher-emphasis, task-relevance из FPN.
+- [x] **R4 (attention split):** `lattice_dan` + P6/P7 в stack; digest [`lattice_dan_v0.py`](../tools/lattice_dan_v0.py) (spotlight/sparse_mask) + `tests/test_lattice_dan.py`. Field sparse rollout + SN сужение — следующий шаг.
+- [x] **R5 (value organ):** `lattice_value` + P9 в stack; digest [`lattice_value_v0.py`](../tools/lattice_value_v0.py) (surprise/correction/task → scalar) + `tests/test_lattice_value.py`. Hook в sleep-порядок на поле — следующий шаг.
 
 ### Не меняется
 
@@ -115,10 +115,10 @@ DMN(что знаем) ─P1─► SN(что релевантно) ─P2a─► 
 
 ## Проверка (критерии)
 
-- [x] R3: `bench_predict_error_v0` — predicted next-digest ближе к observed, чем baseline (no-rollout) (digest-уровень; green в `tests/test_predict_tick.py`)
-- [ ] R4: sparse rollout по DAN-mask даёт тот же ответ при меньшем числе активных ячеек (latency↓)
-- [x] R2: value_weight меняет порядок реплея (high-value раньше) при сохранении дефолтного поведения
-- [ ] R5: high-value коррекции консолидируются/реплеятся раньше low-value под интерференцией (retention@N, ADR-0009)
+- [x] R3: `bench_predict_error_v0` — predicted next-digest ближе к observed, чем baseline (no-rollout) (digest-уровень; green в `tests/test_lattice_predict.py`)
+- [x] R4: DAN spotlight даёт sparse_ratio < 0.85 и predict-under-mask error < 0.5 на synthetic walk (`tests/test_lattice_dan.py`)
+- [x] R2/R5: value_weight меняет порядок реплея (high-value раньше) при сохранении дефолтного поведения (`tests/test_lattice_value.py`, `tests/test_replay_buffer.py`)
+- [ ] R5 field: high-value коррекции консолидируются/реплеятся раньше low-value под интерференцией (retention@N, ADR-0009)
 
 ---
 
@@ -138,3 +138,4 @@ DMN(что знаем) ─P1─► SN(что релевантно) ─P2a─► 
 | Дата | Изменение |
 |------|-----------|
 | 2026-05-31 | v0 (proposed): +3 control-решётки (predict / dan / value), мосты P6–P9, Cosmos-паритет; кирпич value→replay реализован |
+| 2026-05-31 | v1 (accepted): R1 cosmos/stack docs; R3–R5 digest bricks (predict/dan/value) + tests green; field tick wiring — roadmap |

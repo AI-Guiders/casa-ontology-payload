@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "subsystem": "control",
-  "title": "Control lattice stack (DMN / SN / FPN / CEN)",
+  "title": "Control lattice stack (DMN / SN / FPN / CEN / Predict / DAN / Value)",
   "doc": "design/control-lattice-stack-v0.md",
   "deprecated_interim": "design/layout.v0.json, design/fpn-control-region-v0.md",
   "axes": {
@@ -25,7 +25,7 @@
       "z_ctrl": 1,
       "size": { "width": 32, "height": 32 },
       "concept_prefix": "salience.",
-      "role": ["gate", "router"]
+      "role": ["gate", "router", "salience"]
     },
     {
       "id": "lattice_fpn_wm",
@@ -48,6 +48,22 @@
       "concept_prefix": "predict.",
       "role": ["forward_model", "rollout", "prediction_error"],
       "doc": "tools/lattice_predict_v0.py, design/CASA-ADR-0010-control-zone-predict-attention-value.md"
+    },
+    {
+      "id": "lattice_dan",
+      "z_ctrl": 5,
+      "size": { "width": 32, "height": 32 },
+      "concept_prefix": "dan.",
+      "role": ["top_down_attention", "spotlight", "sparse_mask"],
+      "doc": "tools/lattice_dan_v0.py, design/CASA-ADR-0010-control-zone-predict-attention-value.md"
+    },
+    {
+      "id": "lattice_value",
+      "z_ctrl": 6,
+      "size": { "width": 32, "height": 32 },
+      "concept_prefix": "value.",
+      "role": ["limbic_tag", "priority", "guardrail"],
+      "doc": "tools/lattice_value_v0.py, design/CASA-ADR-0010-control-zone-predict-attention-value.md"
     }
   ],
   "control_bridges": [
@@ -57,6 +73,9 @@
     { "id": "port_P3", "from": "lattice_cen", "to": "lattice_dmn", "kind": "task_query", "channels": ["port.task.*"] },
     { "id": "port_P4", "from": "lattice_cen", "to": "lattice_fpn_wm", "kind": "outcome", "channels": ["port.outcome.*"] },
     { "id": "port_P5", "from": "lattice_fpn_wm", "to": "lattice_sn", "kind": "mode_bias", "channels": ["port.mode.*"], "optional": true },
-    { "id": "port_P8", "from": "lattice_predict", "to": "lattice_sn", "kind": "prediction_error", "channels": ["port.surprise.*"] }
+    { "id": "port_P6", "from": "lattice_fpn_wm", "to": "lattice_dan", "kind": "goal_spotlight", "channels": ["port.goal.*"] },
+    { "id": "port_P7", "from": "lattice_dan", "to": "lattice_dmn", "kind": "sparse_mask", "channels": ["port.mask.*"] },
+    { "id": "port_P8", "from": "lattice_predict", "to": "lattice_sn", "kind": "prediction_error", "channels": ["port.surprise.*"] },
+    { "id": "port_P9", "from": "lattice_value", "to": "lattice_sn", "kind": "value_bias", "channels": ["port.value.*"] }
   ]
 }
