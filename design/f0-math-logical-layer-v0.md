@@ -134,6 +134,7 @@ Vis и webcam **не блокируют** проектирование F-сло�
 | [`second-signal-system-v0.md`](second-signal-system-v0.md) | граница 1-й / 2-й СС |
 | [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md) | поставка памяти |
 | [`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md) | порядок: язык → потом картинки |
+| [`kb-math-development-evidence-v1.md`](kb-math-development-evidence-v1.md) | human numeracy evidence (agent-notes; deny → F0 oracle) |
 
 ## Пример цепочки (палочки → коровы — один механизм)
 

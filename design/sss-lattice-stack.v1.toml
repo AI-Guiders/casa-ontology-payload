@@ -1,0 +1,179 @@
+# SSS lattice stack — v1 ids (alphabet per locale)
+# Canon: design/lattice-naming-v1.md
+
+schema_version = 2
+subsystem = "sss"
+title = "SSS lattice stack — v1 ids"
+doc = "design/lattice-naming-v1.md"
+replaces = "design/sss-lattice-stack.v0.toml"
+
+[axes]
+x = "cell within lattice"
+y = "cell within lattice"
+z_level = "compose ladder 0..3"
+z_phase = "encode | repair | digest"
+t = "CA micro-steps"
+T = "agent macro tick"
+
+[[lattices]]
+id = "alphabet-ru"
+legacy_id = "L0_grapheme_cyrl"
+z_level = 0
+size = { width = 32, height = 32 }
+locale = "ru"
+script = "cyrl"
+concept_prefix = "grapheme.cyrl."
+role = ["listen", "babble_robust"]
+note = "33 RU letters; no Ukrainian і"
+
+[[lattices]]
+id = "alphabet-uk"
+legacy_id = ""
+z_level = 0
+size = { width = 32, height = 32 }
+locale = "uk"
+script = "cyrl"
+concept_prefix = "grapheme.cyrl."
+status = "roadmap"
+role = ["listen", "babble_robust"]
+note = "і ї є ґ — separate from alphabet-ru"
+
+[[lattices]]
+id = "alphabet-en"
+legacy_id = "L0_grapheme_latn"
+z_level = 0
+size = { width = 32, height = 32 }
+locale = "en"
+script = "latn"
+concept_prefix = "grapheme.latn."
+role = ["listen", "babble_robust"]
+
+[[lattices]]
+id = "alphabet-de"
+legacy_id = ""
+z_level = 0
+locale = "de"
+script = "latin-extended"
+status = "roadmap"
+
+[[lattices]]
+id = "keys-physical"
+legacy_id = "L0_vk_physical"
+z_level = 0
+size = { width = 48, height = 48 }
+concept_prefix = "vk."
+
+[[lattices]]
+id = "layout-en-us"
+legacy_id = "L0_layout_qwerty_us"
+z_level = 0
+locale = "en"
+layout = "qwerty-us"
+concept_prefix = "layout."
+
+[[lattices]]
+id = "layout-ru-jcuken"
+legacy_id = "L0_layout_jcuken_ru"
+z_level = 0
+locale = "ru"
+layout = "jcuken"
+concept_prefix = "layout."
+
+[[lattices]]
+id = "punct-ru"
+legacy_id = "L0_punct_cyrl"
+z_level = 0
+locale = "ru"
+script = "cyrl"
+concept_prefix = "punct.cyrl."
+
+[[lattices]]
+id = "punct-en"
+legacy_id = "L0_punct_latn"
+z_level = 0
+locale = "en"
+script = "latn"
+concept_prefix = "punct.latn."
+
+[[lattices]]
+id = "syllables-ru"
+legacy_id = "L1_syllable"
+z_level = 1
+locale = "ru"
+concept_prefix = "syllable."
+
+[[lattices]]
+id = "syllables-uk"
+legacy_id = ""
+z_level = 1
+locale = "uk"
+status = "roadmap"
+concept_prefix = "syllable."
+
+[[lattices]]
+id = "syllables-en"
+legacy_id = "L1_syllable"
+z_level = 1
+locale = "en"
+concept_prefix = "syllable."
+
+[[lattices]]
+id = "words-ru"
+legacy_id = "L2_word"
+z_level = 2
+locale = "ru"
+concept_prefix = "lang.word."
+virtual = true
+
+[[lattices]]
+id = "phrases"
+legacy_id = "L3_phrase"
+z_level = 3
+concept_prefix = "ru.dialog."
+role = ["phrase", "hub"]
+
+[[z_bridges]]
+id = "bridge-alphabet-ru-syllables-ru"
+legacy_id = "z_bridge_L0cyrl_L1"
+from = "alphabet-ru"
+to = "syllables-ru"
+kind = "compose"
+
+[[z_bridges]]
+id = "bridge-alphabet-en-syllables-en"
+legacy_id = "z_bridge_L0latn_L1"
+from = "alphabet-en"
+to = "syllables-en"
+kind = "compose"
+
+[[z_bridges]]
+id = "bridge-alphabet-uk-syllables-uk"
+legacy_id = ""
+from = "alphabet-uk"
+to = "syllables-uk"
+kind = "compose"
+status = "roadmap"
+
+[[z_bridges]]
+id = "bridge-syllables-ru-words-ru"
+legacy_id = "z_bridge_L1_L2"
+from = "syllables-ru"
+to = "words-ru"
+kind = "compose"
+
+[[z_bridges]]
+id = "bridge-words-phrases"
+legacy_id = "z_bridge_L2_L3"
+from = "words-ru"
+to = "phrases"
+kind = "bind"
+
+[routing.l2_sharding]
+shard_pattern = "words-{locale}-{idx:02d}"
+legacy_shard_pattern = "L2_word_{idx:02d}"
+legacy_en_shard_pattern = "L2_en_word_{idx:02d}"
+num_shards_ru = 64
+num_shards_en = 16
+
+[first_signal_stack]
+lattices = ["schema-math", "compose-math", "quantity-math"]

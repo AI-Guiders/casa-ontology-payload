@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-30  
 **Status:** plan + lab gate  
-**Related:** ADR-0006, ADR-0007, ADR-0008, `lexicon-corpus-quad-v0.md`, `agent_autonomous_tick_v0.py`
+**Related:** ADR-0006, ADR-0007, ADR-0008, `lexicon-corpus-quad-v0.md`, [`casa-wake-sleep-concept-v0.md`](casa-wake-sleep-concept-v0.md)
 
 ## Принцип
 
@@ -124,7 +124,8 @@ Sleep: stale shards → **CUDA** NCA только для изменённых п
 - [x] unified + ambiguous benches — `scripts/run_bit9_gate_v0.ps1` on `sss-ru-general-v0` (2026-05-30)
 - [x] ru-general headwords **вне Афан** + init store
 - [ ] quad stores OR обновить prod RU store с новым списком
-- [ ] GPU NCA на новых stores
+- [x] GPU NCA ru-general — migrate v1 ids + 64 shards CUDA, stale 0 (2026-05-31)
+- [ ] GPU NCA на остальных stores (en-folk уже есть; quad TBD)
 - [x] entity/POS/taxonomy bundles + sleep ingest — `run_sleep_semantic_ingest_v0.ps1`, UD POS 3790+ claims (2026-05-31)
 - [x] parallel tracks gate — `run_bit9_parallel_tracks_v0.ps1` (A scale + C2 POS/taxonomy + semantic prior bench)
 - [ ] `run_agent_profile` + prod pack

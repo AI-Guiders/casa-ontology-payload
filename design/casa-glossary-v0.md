@@ -212,7 +212,7 @@
 | **Experiment J** | RU language KB + `answer_blocks` + bench answer@k. |
 | **Experiment L** | Concrete→abstract: `math.*` schemas, `vis.*` images, букварь — [`experiment-l-concrete-to-abstract-v0.md`](experiment-l-concrete-to-abstract-v0.md). Логический стек F0…F2: [`f0-math-logical-layer-v0.md`](f0-math-logical-layer-v0.md). |
 | **ССС (SSS)** | *Second signal system* — подсистема знаков; **стек решёток** по `z_level` + `z_bridge`. [`second-signal-system-v0.md`](second-signal-system-v0.md), [`sss-multi-lattice-z-v0.md`](sss-multi-lattice-z-v0.md). |
-| **z_level** | Индекс **целой решётки** (L0 графема … L3 фраза). |
+| **z_level** | CASA: индекс решётки по z — в prose **T0…T3** (APLF); ID `L0…L3`. **Не путать:** **K0…K3** (KB depth), **SA1…SA3** (CIDE Endsley), **SL1…SL3** (CIDE Safety) — [`sss-layer-names-v0.md`](sss-layer-names-v0.md) § коллизий. |
 | **z_phase** | Фаза поршня **внутри** одной решётки (encode / repair / digest). |
 | **z_bridge** | Пространственная связь между соседними `z_level` (compose, correct). |
 | **Von Neumann (mapping)** | Перекладка классики (память/шина/CU/ALU/I/O) на CASA — [`von-neumann-casa-mapping-v0.md`](von-neumann-casa-mapping-v0.md). |

@@ -127,6 +127,7 @@ CASA **не** строит полную грамматику сверху. Ко�
 | context L3 T9 (`согласно пр`) | ADR-0006 roadmap |
 | `reasoning_trace` в tick JSON | **roadmap** |
 | `context.*` concept namespace на L3 | **roadmap** (ingest как kb bundle) |
+| wake/sleep / Extract vs batch L3 | **concept:** [`casa-wake-sleep-concept-v0.md`](casa-wake-sleep-concept-v0.md) |
 
 ---
 

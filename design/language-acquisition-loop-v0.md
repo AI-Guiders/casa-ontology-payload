@@ -4,6 +4,7 @@
 **Date:** 2026-05-28  
 **Предшествует этому:** [`bukvar-text-modality-v0.md`](bukvar-text-modality-v0.md) — буква → слог → слово, массовый listen в цилиндр  
 **Companion:** [`infancy-corpus-phases-v0.md`](infancy-corpus-phases-v0.md) — фазы 0–5, корпуса, белый шум vs сказка  
+**Teacher / sleep (CASA spec):** [`teacher-correction-protocol-v0.md`](teacher-correction-protocol-v0.md), [`kb-casa-teacher-sleep-lab-norm-v1.md`](kb-casa-teacher-sleep-lab-norm-v1.md)  
 **Supersedes framing in:** [`articulation-explain-concept-v0.md`](articulation-explain-concept-v0.md) (карточки «для ответа пользователю» — не цель)
 
 ## Ошибка предыдущего шага

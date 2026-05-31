@@ -3,7 +3,8 @@
 **Статус:** accepted (design + lab path)  
 **Дата:** 2026-05-30  
 **Область:** поставка агента, agent store, runtime boot, продуктовые профили  
-**Связано:** [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`ltm-pack-v0.md`](ltm-pack-v0.md), [`CASA-ADR-0006-t9-predictive-text.md`](CASA-ADR-0006-t9-predictive-text.md), [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md), [`agent-existence-north-star-v0.md`](agent-existence-north-star-v0.md)
+**Связано:** [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`ltm-pack-v0.md`](ltm-pack-v0.md), [`CASA-ADR-0006-t9-predictive-text.md`](CASA-ADR-0006-t9-predictive-text.md), [`multi-cylinder-memory-v0.md`](multi-cylinder-memory-v0.md), [`agent-existence-north-star-v0.md`](agent-existence-north-star-v0.md)  
+**KB canon (deployment):** `ca-substrate-agent/kb-casa-deployment-tracks-v1.md` — **`Autonomous.Standalone`** · **`Autonomous.Integrated.CascadeIDE`** (не A/B); одна автономия, разные instance.
 
 ---
 

@@ -1,0 +1,31 @@
+{
+  "schema_version": 3,
+  "title": "CASA lattice id map — alphabet per locale, script is metadata",
+  "legacy_to_v1": {
+    "L0_grapheme_cyrl": "alphabet-ru",
+    "L0_grapheme_latn": "alphabet-en",
+    "L0_grapheme": "alphabet-ru",
+    "L1_syllable": "syllables-ru",
+    "L2_word": "words-ru",
+    "L3_phrase": "phrases",
+    "L0_vk_physical": "keys-physical",
+    "L0_layout_qwerty_us": "layout-en-us",
+    "L0_layout_jcuken_ru": "layout-ru-jcuken",
+    "L0_punct_latn": "punct-en",
+    "L0_punct_cyrl": "punct-ru",
+    "F0_schema": "schema-math",
+    "F1_compose": "compose-math",
+    "F2_quantity": "quantity-math"
+  },
+  "pattern_legacy_to_v1": [
+    { "match": "^L2_word_(\\d{2})$", "replace": "words-ru-\\1" },
+    { "match": "^L2_en_word_(\\d{2})$", "replace": "words-en-\\1" }
+  ],
+  "alphabet_by_locale": {
+    "ru": { "id": "alphabet-ru", "script": "cyrl", "legacy": "L0_grapheme_cyrl" },
+    "uk": { "id": "alphabet-uk", "script": "cyrl", "note": "і ї є ґ; not alphabet-ru" },
+    "be": { "id": "alphabet-be", "script": "cyrl" },
+    "en": { "id": "alphabet-en", "script": "latn", "legacy": "L0_grapheme_latn" },
+    "de": { "id": "alphabet-de", "script": "latin-extended" }
+  }
+}

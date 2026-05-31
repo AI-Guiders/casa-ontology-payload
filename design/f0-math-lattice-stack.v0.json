@@ -110,6 +110,13 @@
     "cen": ["compose_instances", "count", "compare", "name_quantity"],
     "homogeneity_rule": "M:op:add только при одинаковом M:unit:*"
   },
+  "compose_strategies": {
+    "note": "Human numeracy evidence (Cowan 2011): retrieval correlates with achievement but is not prerequisite — deny fluency-oracle in bench.",
+    "kinds": ["retrieve", "decompose", "count_all"],
+    "default": "decompose",
+    "episode_field": "M:strategy",
+    "transfer_boundary": "deny → F0 oracle; allow-with-check → lab scenario metadata"
+  },
   "text_only_v0": {
     "enabled": true,
     "note": "Можно начать без vis: палочки как M:sym:*, корова как L2 + M:unit:cow"
