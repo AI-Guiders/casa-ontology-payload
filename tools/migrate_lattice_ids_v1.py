@@ -3,7 +3,7 @@
 
 Structural rename only — **no NCA retrain**. Weights in model.pt stay valid; paths update.
 
-Map: design/lattice-id-map.v1.json. Boot resolves legacy + v1 via store_layout.resolve_nca_lattice_dir.
+Map: design/lattice-id-map.v1.json (migrate-only; runtime uses v1 ids directly).
 
 **Do not run while `train_sss_nca_shards_v0.py` / CUDA train is active** — race on nca/ dirs.
 
@@ -15,18 +15,33 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from field_write import load_field_state, save_field_state  # type: ignore
-from lattice_names_v1 import legacy_to_v1  # type: ignore
 from ltm_pack_v0 import lattice_subdir  # type: ignore
 from prism_state_v0 import normalize_prisms, prism_control, prism_hippo, prism_memory  # type: ignore
 from sss_cylinders_v0 import memory_lattices  # type: ignore
 from store_layout_v0 import field_state_path, ltm_root, nca_root, nca_train_registry_path  # type: ignore
 
+_MAP_PATH = Path(__file__).resolve().parent.parent / "design" / "lattice-id-map.v1.json"
+
 _LTM_SUFFIXES = (".ltm.zst", ".ltm.gz", ".ltm")
+
+
+def _legacy_to_v1(lattice_id: str) -> str:
+    lid = str(lattice_id)
+    doc = json.loads(_MAP_PATH.read_text(encoding="utf-8"))
+    fixed = doc.get("legacy_to_v1") or {}
+    if lid in fixed:
+        return str(fixed[lid])
+    for rule in doc.get("pattern_legacy_to_v1") or []:
+        m = re.fullmatch(str(rule["match"]), lid)
+        if m:
+            return m.expand(str(rule["replace"]))
+    return lid
 
 
 def _now_iso() -> str:
@@ -34,7 +49,7 @@ def _now_iso() -> str:
 
 
 def _v1_id(lattice_id: str) -> str:
-    return legacy_to_v1(str(lattice_id))
+    return _legacy_to_v1(str(lattice_id))
 
 
 def _needs_rename(lattice_id: str) -> bool:

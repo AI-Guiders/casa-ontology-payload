@@ -20,7 +20,7 @@ from prism_state_v0 import (  # type: ignore
 )
 from codec_grid_v0 import Grid  # type: ignore
 from field_write import load_field_state, save_field_state  # type: ignore
-from lattice_names_v1 import episodic_surface_lattice_id  # type: ignore
+from lattice_names_v1 import ALPHABET_RU, ALPHABET_UK, ALPHABET_EN, EPISODIC_SURFACE, PHRASES  # type: ignore
 from sss_stack_v0 import (  # type: ignore
     _place_token,
     apply_z_compose_v0,
@@ -50,8 +50,7 @@ def ensure_cylinders(state: dict) -> dict:
     hip = prism_hippo(state)
     hip.setdefault("subsystem", "episodic")
     hip.setdefault("lattices", {})
-    surf_key = episodic_surface_lattice_id(hip["lattices"])
-    hip["lattices"].setdefault(surf_key, empty_hippo_lattice())
+    hip["lattices"].setdefault(EPISODIC_SURFACE, empty_hippo_lattice())
     hip.setdefault("episodes", list(hip.get("episodes") or []))
 
     mem = prism_memory(state)
@@ -63,7 +62,7 @@ def ensure_cylinders(state: dict) -> dict:
     mem["subsystem"] = "sss"
     mem["stack"] = sss.get("stack") or "design/sss-lattice-stack.v0.toml"
     mem["lattices"] = lattices
-    mem["active_lattice"] = sss.get("active_lattice") or "L0_grapheme_cyrl"
+    mem["active_lattice"] = sss.get("active_lattice") or ALPHABET_RU
     state["sn"] = {
         **(state.get("sn") or {}),
         "active_lattice": mem["active_lattice"],
@@ -99,17 +98,14 @@ def concept_id_for_surface(bundle: dict, surface: str, *, lattice_id: str) -> st
     if not surface:
         return None
     prefix_map = {
-        "L0_grapheme_cyrl": "grapheme.cyrl.",
-        "L0_grapheme_latn": "grapheme.latn.",
-        "L0_grapheme": "grapheme.",
-        "alphabet-ru": "grapheme.cyrl.",
-        "alphabet-en": "grapheme.latn.",
-        "alphabet-uk": "grapheme.cyrl.",
-        "L1_syllable": "syllable.",
-        "L2_word": "lang.word.",
+        ALPHABET_RU: "grapheme.cyrl.",
+        ALPHABET_EN: "grapheme.latn.",
+        ALPHABET_UK: "grapheme.cyrl.",
+        "syllables-ru": "syllable.",
+        "syllables-en": "syllable.",
     }
     prefix = prefix_map.get(lattice_id, "")
-    if not prefix and (lattice_id.startswith("L2_word_") or lattice_id.startswith("words-")):
+    if not prefix and lattice_id.startswith("words-"):
         prefix = "lang.word."
     for c in bundle.get("claims") or []:
         cid = str(c.get("concept_id") or "")
@@ -133,8 +129,7 @@ def concept_id_for_surface(bundle: dict, surface: str, *, lattice_id: str) -> st
 
 def _episodic_surface_lattice(hippo: dict) -> dict:
     lats = hippo.setdefault("lattices", {})
-    key = episodic_surface_lattice_id(lats)
-    return lats.setdefault(key, empty_hippo_lattice())
+    return lats.setdefault(EPISODIC_SURFACE, empty_hippo_lattice())
 
 
 def _register_episode_on_h0(state: dict, ep: dict, *, token_suffix: str = "") -> None:
@@ -272,8 +267,8 @@ def append_rule_episode(
         "correct": correct.strip()[:120],
         "rule_id": rule_id,
         "rule_hint": rule_hint.strip()[:240],
-        "lattice_id": "L2_word",
-        "concept_id": concept_id_for_surface(bundle, word, lattice_id="L2_word") if bundle else None,
+        "lattice_id": "words-ru",
+        "concept_id": concept_id_for_surface(bundle, word, lattice_id="words-ru") if bundle else None,
         "consolidated": False,
     }
     hippo = prism_hippo(state)
@@ -311,7 +306,7 @@ def _strengthen_rule(state: dict, rule_id: str, *, copies: int = 5) -> None:
     rtok = f"R:{rule_id}"
     lattices = memory_lattices(state)
 
-    lid = "L3_phrase"
+    lid = PHRASES
     if lid in lattices:
         lat = lattices[lid]
         g = Grid(
@@ -365,7 +360,7 @@ def run_sleep(
     stack_path: Path | None = None,
     strength: int = 4,
     nca_model_path: Path | None = None,
-    nca_lattice_id: str = "L2_word",
+    nca_lattice_id: str = "words-ru",
     replay_k: int = 0,
     replay_value_weight: float = 0.0,
 ) -> dict:

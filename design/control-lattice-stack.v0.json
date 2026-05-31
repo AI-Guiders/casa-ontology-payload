@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "subsystem": "control",
   "title": "Control lattice stack (DMN / SN / FPN / CEN / Predict / DAN / Value)",
   "doc": "design/control-lattice-stack-v0.md",
@@ -14,68 +14,68 @@
   },
   "lattices": [
     {
-      "id": "lattice_dmn",
+      "id": "control-dmn",
       "z_ctrl": 0,
       "size": { "width": 32, "height": 32 },
       "concept_prefix": "",
       "role": ["ontology", "claims_nav", "bundle_claims"]
     },
     {
-      "id": "lattice_sn",
+      "id": "control-salience",
       "z_ctrl": 1,
       "size": { "width": 32, "height": 32 },
       "concept_prefix": "salience.",
       "role": ["gate", "router", "salience"]
     },
     {
-      "id": "lattice_fpn_wm",
+      "id": "control-working-memory",
       "z_ctrl": 2,
       "size": { "width": 32, "height": 32 },
       "concept_prefix": "wm.",
       "role": ["working_memory", "goal", "mode"]
     },
     {
-      "id": "lattice_cen",
+      "id": "control-executive",
       "z_ctrl": 3,
       "size": { "width": 32, "height": 32 },
       "concept_prefix": "task.",
       "role": ["planner", "act"]
     },
     {
-      "id": "lattice_predict",
+      "id": "control-predict",
       "z_ctrl": 4,
       "size": { "width": 32, "height": 32 },
       "concept_prefix": "predict.",
       "role": ["forward_model", "rollout", "prediction_error"],
-      "doc": "tools/lattice_predict_v0.py, design/CASA-ADR-0010-control-zone-predict-attention-value.md"
+      "doc": "tools/control_predict_v0.py, design/CASA-ADR-0010-control-zone-predict-attention-value.md"
     },
     {
-      "id": "lattice_dan",
+      "id": "control-attention",
       "z_ctrl": 5,
       "size": { "width": 32, "height": 32 },
       "concept_prefix": "dan.",
       "role": ["top_down_attention", "spotlight", "sparse_mask"],
-      "doc": "tools/lattice_dan_v0.py, design/CASA-ADR-0010-control-zone-predict-attention-value.md"
+      "doc": "tools/control_attention_v0.py, design/CASA-ADR-0010-control-zone-predict-attention-value.md"
     },
     {
-      "id": "lattice_value",
+      "id": "control-value",
       "z_ctrl": 6,
       "size": { "width": 32, "height": 32 },
       "concept_prefix": "value.",
       "role": ["limbic_tag", "priority", "guardrail"],
-      "doc": "tools/lattice_value_v0.py, design/CASA-ADR-0010-control-zone-predict-attention-value.md"
+      "doc": "tools/control_value_v0.py, design/CASA-ADR-0010-control-zone-predict-attention-value.md"
     }
   ],
   "control_bridges": [
-    { "id": "port_P1", "from": "lattice_dmn", "to": "lattice_sn", "kind": "digest", "channels": ["port.digest.*"] },
-    { "id": "port_P2a", "from": "lattice_sn", "to": "lattice_fpn_wm", "kind": "salience", "channels": ["port.salience.*"] },
-    { "id": "port_P2b", "from": "lattice_fpn_wm", "to": "lattice_cen", "kind": "wm_gated", "channels": ["port.wm.*"] },
-    { "id": "port_P3", "from": "lattice_cen", "to": "lattice_dmn", "kind": "task_query", "channels": ["port.task.*"] },
-    { "id": "port_P4", "from": "lattice_cen", "to": "lattice_fpn_wm", "kind": "outcome", "channels": ["port.outcome.*"] },
-    { "id": "port_P5", "from": "lattice_fpn_wm", "to": "lattice_sn", "kind": "mode_bias", "channels": ["port.mode.*"], "optional": true },
-    { "id": "port_P6", "from": "lattice_fpn_wm", "to": "lattice_dan", "kind": "goal_spotlight", "channels": ["port.goal.*"] },
-    { "id": "port_P7", "from": "lattice_dan", "to": "lattice_dmn", "kind": "sparse_mask", "channels": ["port.mask.*"] },
-    { "id": "port_P8", "from": "lattice_predict", "to": "lattice_sn", "kind": "prediction_error", "channels": ["port.surprise.*"] },
-    { "id": "port_P9", "from": "lattice_value", "to": "lattice_sn", "kind": "value_bias", "channels": ["port.value.*"] }
+    { "id": "port_P1", "from": "control-dmn", "to": "control-salience", "kind": "digest", "channels": ["port.digest.*"] },
+    { "id": "port_P2a", "from": "control-salience", "to": "control-working-memory", "kind": "salience", "channels": ["port.salience.*"] },
+    { "id": "port_P2b", "from": "control-working-memory", "to": "control-executive", "kind": "wm_gated", "channels": ["port.wm.*"] },
+    { "id": "port_P3", "from": "control-executive", "to": "control-dmn", "kind": "task_query", "channels": ["port.task.*"] },
+    { "id": "port_P4", "from": "control-executive", "to": "control-working-memory", "kind": "outcome", "channels": ["port.outcome.*"] },
+    { "id": "port_P5", "from": "control-working-memory", "to": "control-salience", "kind": "mode_bias", "channels": ["port.mode.*"], "optional": true },
+    { "id": "port_P6", "from": "control-working-memory", "to": "control-attention", "kind": "goal_spotlight", "channels": ["port.goal.*"] },
+    { "id": "port_P7", "from": "control-attention", "to": "control-dmn", "kind": "sparse_mask", "channels": ["port.mask.*"] },
+    { "id": "port_P8", "from": "control-predict", "to": "control-salience", "kind": "prediction_error", "channels": ["port.surprise.*"] },
+    { "id": "port_P9", "from": "control-value", "to": "control-salience", "kind": "value_bias", "channels": ["port.value.*"] }
   ]
 }

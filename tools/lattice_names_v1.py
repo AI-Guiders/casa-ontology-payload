@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Lattice ids v1: alphabet/syllables per locale; script is metadata."""
+"""Canonical v1 kebab lattice ids — runtime uses these only (no legacy lookup)."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ Script = Literal["cyrl", "latn", "latin-extended"]
 
 _MAP_PATH = Path(__file__).resolve().parent.parent / "design" / "lattice-id-map.v1.json"
 
-# Per-locale alphabets (L0)
+# Memory / language
 ALPHABET_RU = "alphabet-ru"
 ALPHABET_UK = "alphabet-uk"
 ALPHABET_BE = "alphabet-be"
@@ -29,11 +29,44 @@ KEYS_PHYSICAL = "keys-physical"
 LAYOUT_EN_US = "layout-en-us"
 LAYOUT_RU_JCUKEN = "layout-ru-jcuken"
 
-WORDS_RU_LEGACY_PREFIX = "L2_word_"
-WORDS_EN_LEGACY_PREFIX = "L2_en_word_"
+# Math (prism_memory)
+SCHEMA_MATH = "schema-math"
+COMPOSE_MATH = "compose-math"
+CARDINAL_MATH = "cardinal-math"
+
+# Episodic (prism_hippo)
+EPISODIC_SURFACE = "episodic-surface"
+EPISODIC_RULE = "episodic-rule"
+EPISODIC_IO = "episodic-io"
+EPISODIC_SCENE = "episodic-scene"
+
+# Control (prism_control)
+CONTROL_DMN = "control-dmn"
+CONTROL_SALIENCE = "control-salience"
+CONTROL_WORKING_MEMORY = "control-working-memory"
+CONTROL_EXECUTIVE = "control-executive"
+CONTROL_PREDICT = "control-predict"
+CONTROL_ATTENTION = "control-attention"
+CONTROL_VALUE = "control-value"
+
+CONTROL_STACK: tuple[str, ...] = (
+    CONTROL_DMN,
+    CONTROL_SALIENCE,
+    CONTROL_WORKING_MEMORY,
+    CONTROL_EXECUTIVE,
+    CONTROL_PREDICT,
+    CONTROL_ATTENTION,
+    CONTROL_VALUE,
+)
+
+CONTROL_NCA_TRAIN_STACK: tuple[str, ...] = (
+    CONTROL_PREDICT,
+    CONTROL_ATTENTION,
+    CONTROL_VALUE,
+)
+
 WORDS_V1_RE = re.compile(r"^words-([a-z]{2,3}(?:-[a-z0-9]+)?)-(\d{2})$")
 
-# Deprecated v1.1 names (do not use for new lattices)
 ALPHABET_CYRL = ALPHABET_RU
 ALPHABET_LATN = ALPHABET_EN
 
@@ -73,7 +106,6 @@ def script_for_locale(locale: str) -> Script:
 
 
 def alphabet_id_for_script(script: Script) -> str:
-    """Legacy helper: cyrl→alphabet-ru, latn→alphabet-en only. Prefer alphabet_id(locale)."""
     return ALPHABET_RU if script == "cyrl" else ALPHABET_EN
 
 
@@ -86,123 +118,33 @@ def words_shard_id(locale: str, shard: int) -> str:
     return f"words-{loc}-{shard:02d}"
 
 
-def legacy_words_shard_id(locale: str, shard: int) -> str:
-    loc = str(locale).lower().split("-", 1)[0]
-    if loc == "ru":
-        return f"{WORDS_RU_LEGACY_PREFIX}{shard:02d}"
-    if loc == "en":
-        return f"{WORDS_EN_LEGACY_PREFIX}{shard:02d}"
-    return words_shard_id(locale, shard)
-
-
 def is_words_lattice(lattice_id: str) -> bool:
-    lid = str(lattice_id)
-    if lid in ("L2_word", "words-ru", "words-en"):
-        return True
-    if lid.startswith(WORDS_RU_LEGACY_PREFIX) or lid.startswith(WORDS_EN_LEGACY_PREFIX):
-        return True
-    return WORDS_V1_RE.fullmatch(lid) is not None
+    return WORDS_V1_RE.fullmatch(str(lattice_id)) is not None
 
 
 def is_alphabet_lattice(lattice_id: str) -> bool:
-    lid = str(lattice_id)
-    if lid.startswith("alphabet-"):
-        return True
-    return lid in ("L0_grapheme_cyrl", "L0_grapheme_latn", "L0_grapheme")
+    return str(lattice_id).startswith("alphabet-")
 
 
-def legacy_to_v1(lattice_id: str) -> str:
+def require_lattice(lattice_id: str, lattices: dict[str, Any]) -> str:
+    """Return lattice_id if present; raise KeyError otherwise."""
     lid = str(lattice_id)
-    doc = _map_doc()
-    fixed = doc.get("legacy_to_v1") or {}
-    if lid in fixed:
-        return str(fixed[lid])
-    for rule in doc.get("pattern_legacy_to_v1") or []:
-        m = re.fullmatch(str(rule["match"]), lid)
-        if m:
-            return m.expand(str(rule["replace"]))
+    if lid not in lattices:
+        raise KeyError(f"Lattice {lid!r} not in store")
     return lid
-
-
-def v1_to_legacy(lattice_id: str) -> str:
-    lid = str(lattice_id)
-    doc = _map_doc()
-    fixed = doc.get("legacy_to_v1") or {}
-    for legacy, v1 in fixed.items():
-        if v1 == lid:
-            return legacy
-    m = re.fullmatch(r"words-ru-(\d{2})", lid)
-    if m:
-        return f"L2_word_{m.group(1)}"
-    m = re.fullmatch(r"words-en-(\d{2})", lid)
-    if m:
-        return f"L2_en_word_{m.group(1)}"
-    return lid
-
-
-def resolve_lattice_id(lattice_id: str, *, prefer: Literal["v1", "legacy"] = "v1") -> str:
-    lid = str(lattice_id)
-    if prefer == "v1":
-        return legacy_to_v1(lid)
-    return v1_to_legacy(lid)
-
-
-def resolve_store_lattice_id(lattice_id: str, lattices: dict[str, Any]) -> str:
-    """Pick id that exists in store (v1 preferred; legacy CLI args still work)."""
-    lid = str(lattice_id)
-    v1 = legacy_to_v1(lid)
-    if v1 in lattices:
-        return v1
-    if lid in lattices:
-        return lid
-    raise KeyError(f"Lattice {lid!r} (v1={v1!r}) not in store")
-
-
-CONTROL_STACK_LEGACY = (
-    "lattice_dmn",
-    "lattice_sn",
-    "lattice_fpn_wm",
-    "lattice_cen",
-    "lattice_predict",
-    "lattice_dan",
-    "lattice_value",
-)
-
-
-def control_stack_v1_ids() -> tuple[str, ...]:
-    return tuple(legacy_to_v1(x) for x in CONTROL_STACK_LEGACY)
 
 
 def missing_control_lattices(lattices: dict[str, Any]) -> list[str]:
-    """Return canonical v1 ids missing from prism_control.lattices."""
     present = set(lattices.keys())
-    missing: list[str] = []
-    for leg in CONTROL_STACK_LEGACY:
-        v1 = legacy_to_v1(leg)
-        if v1 not in present and leg not in present:
-            missing.append(v1)
-    return sorted(missing)
+    return sorted(lid for lid in CONTROL_STACK if lid not in present)
 
 
-def has_control_lattice(lattices: dict[str, Any], legacy_id: str = "lattice_dmn") -> bool:
-    v1 = legacy_to_v1(legacy_id)
-    return v1 in lattices or legacy_id in lattices
-
-
-def episodic_surface_lattice_id(lattices: dict[str, Any]) -> str:
-    for key in ("episodic-surface", "H1_surface", "H0_episode"):
-        if key in lattices:
-            return key
-    return "episodic-surface"
+def has_control_lattice(lattices: dict[str, Any], *, probe: str = CONTROL_DMN) -> bool:
+    return probe in lattices
 
 
 def parse_words_shard(lattice_id: str) -> tuple[str, int] | None:
-    lid = str(lattice_id)
-    m = WORDS_V1_RE.fullmatch(lid)
-    if m:
-        return m.group(1), int(m.group(2))
-    if lid.startswith(WORDS_RU_LEGACY_PREFIX):
-        return "ru", int(lid[len(WORDS_RU_LEGACY_PREFIX) :])
-    if lid.startswith(WORDS_EN_LEGACY_PREFIX):
-        return "en", int(lid[len(WORDS_EN_LEGACY_PREFIX) :])
-    return None
+    m = WORDS_V1_RE.fullmatch(str(lattice_id))
+    if not m:
+        return None
+    return m.group(1), int(m.group(2))

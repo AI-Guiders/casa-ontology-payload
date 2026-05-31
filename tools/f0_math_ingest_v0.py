@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ingest math L0 bundle → F0_schema lattice on store state."""
+"""Ingest math L0 bundle → schema-math lattice on store state."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from lattice_names_v1 import SCHEMA_MATH  # type: ignore
 from f0_stack_v0 import encode_f0_lattice, load_f0_stack  # type: ignore
 from field_write import load_field_state, save_field_state  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
@@ -20,7 +21,7 @@ def ingest_math_bundle(
     state: dict,
     bundle: dict,
     *,
-    lattice_id: str = "F0_schema",
+    lattice_id: str = SCHEMA_MATH,
     stack_path: Path | None = None,
     copies: int = 5,
 ) -> dict[str, Any]:
@@ -52,7 +53,7 @@ def ingest_math_bundle(
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="Ingest kb-math L0 → F0_schema")
+    p = argparse.ArgumentParser(description="Ingest kb-math L0 → schema-math")
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--bundle", type=Path, required=True)
     p.add_argument("--boot-ltm-only", action="store_true", help="Boot from ltm/ if no field_state")

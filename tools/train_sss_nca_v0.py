@@ -11,7 +11,7 @@ import numpy as np
 import torch
 
 from field_write import load_field_state  # type: ignore
-from lattice_names_v1 import resolve_store_lattice_id  # type: ignore
+from lattice_names_v1 import require_lattice  # type: ignore
 from layout_apply import Rect  # type: ignore
 from nca_train_core_v0 import NcaTrainerConfig, WindowedTrainConfig, run_nca_training  # type: ignore
 from nca_train_defaults_v0 import (  # type: ignore
@@ -102,12 +102,10 @@ def main() -> None:
     else:
         lattices = memory_lattices(state)
     try:
-        lattice_key = resolve_store_lattice_id(args.lattice_id, lattices)
+        lattice_key = require_lattice(args.lattice_id, lattices)
     except KeyError as exc:
         raise SystemExit(str(exc)) from exc
     lattice = lattices[lattice_key]
-    if lattice_key != args.lattice_id:
-        args.out_dir = args.out_dir.parent / lattice_key.replace("/", "_")
 
     grid = lattice_as_grid(lattice)
     token_ids = tokens_from_lattice(lattice)

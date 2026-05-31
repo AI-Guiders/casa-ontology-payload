@@ -26,7 +26,7 @@ def lattice_meta_f0(stack: dict, lattice_id: str) -> dict:
 def encode_f0_lattice(
     bundle: dict,
     *,
-    lattice_id: str = "F0_schema",
+    lattice_id: str = "schema-math",
     stack: dict | None = None,
     width: int = 32,
     height: int = 32,

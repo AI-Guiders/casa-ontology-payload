@@ -5,6 +5,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from lattice_names_v1 import ALPHABET_RU, CONTROL_DMN  # type: ignore
+
 SCHEMA_LEGACY = "multi_cylinder_v1"
 SCHEMA_CURRENT = "multi_prism_v1"
 
@@ -59,7 +61,7 @@ def prism_memory(state: dict) -> dict[str, Any]:
             "subsystem": "sss",
             "stack": "design/sss-lattice-stack.v0.json",
             "lattices": {},
-            "active_lattice": "L0_grapheme_cyrl",
+            "active_lattice": ALPHABET_RU,
         }
     return p[PRISM_MEMORY]
 
@@ -79,7 +81,7 @@ def prism_control(state: dict) -> dict[str, Any]:
             "subsystem": "control",
             "stack": "design/control-lattice-stack.v0.json",
             "lattices": {},
-            "active_lattice": "lattice_dmn",
+            "active_lattice": CONTROL_DMN,
         },
     )
 

@@ -1,31 +1,51 @@
 #!/usr/bin/env python3
-"""Lattice id map v1 — legacy → canonical kebab."""
+"""Canonical lattice id constants (runtime — no legacy resolution)."""
 
 from __future__ import annotations
 
 import unittest
 
-from lattice_names_v1 import legacy_to_v1, resolve_store_lattice_id, v1_to_legacy  # type: ignore
+from lattice_names_v1 import (  # type: ignore
+    CONTROL_DMN,
+    CONTROL_STACK,
+    EPISODIC_SURFACE,
+    SCHEMA_MATH,
+    alphabet_id,
+    has_control_lattice,
+    missing_control_lattices,
+    require_lattice,
+    words_shard_id,
+)
 
 
-class LatticeIdMapV1Tests(unittest.TestCase):
-    def test_math_and_control(self) -> None:
-        self.assertEqual(legacy_to_v1("F2_quantity"), "cardinal-math")
-        self.assertEqual(legacy_to_v1("lattice_predict"), "control-predict")
-        self.assertEqual(v1_to_legacy("control-dmn"), "lattice_dmn")
+class TestLatticeIdsV1(unittest.TestCase):
+    def test_control_stack_constants(self) -> None:
+        self.assertEqual(CONTROL_DMN, "control-dmn")
+        self.assertIn("control-predict", CONTROL_STACK)
+        self.assertEqual(len(CONTROL_STACK), 7)
 
-    def test_episodic_monolith(self) -> None:
-        self.assertEqual(legacy_to_v1("H0_episode"), "episodic-surface")
-        self.assertEqual(legacy_to_v1("H1_surface"), "episodic-surface")
+    def test_math_and_episodic(self) -> None:
+        self.assertEqual(SCHEMA_MATH, "schema-math")
+        self.assertEqual(EPISODIC_SURFACE, "episodic-surface")
 
-    def test_resolve_store_prefers_v1(self) -> None:
-        lats = {"control-dmn": {}, "lattice_dmn": {}}
-        self.assertEqual(resolve_store_lattice_id("lattice_dmn", lats), "control-dmn")
-        self.assertEqual(resolve_store_lattice_id("control-dmn", lats), "control-dmn")
+    def test_require_lattice_strict(self) -> None:
+        lats = {"control-dmn": {}}
+        self.assertEqual(require_lattice("control-dmn", lats), "control-dmn")
+        with self.assertRaises(KeyError):
+            require_lattice("lattice_dmn", lats)
 
-    def test_words_shard_pattern(self) -> None:
-        self.assertEqual(legacy_to_v1("L2_word_07"), "words-ru-07")
-        self.assertEqual(legacy_to_v1("words-ru-07"), "words-ru-07")
+    def test_missing_control_no_legacy(self) -> None:
+        missing = missing_control_lattices({"control-dmn": {}})
+        self.assertNotIn("control-dmn", missing)
+        self.assertIn("control-predict", missing)
+
+    def test_has_control_probe(self) -> None:
+        self.assertTrue(has_control_lattice({"control-dmn": {}}))
+        self.assertFalse(has_control_lattice({"lattice_dmn": {}}))
+
+    def test_words_shard_id(self) -> None:
+        self.assertEqual(words_shard_id("ru", 7), "words-ru-07")
+        self.assertEqual(alphabet_id("ru"), "alphabet-ru")
 
 
 if __name__ == "__main__":

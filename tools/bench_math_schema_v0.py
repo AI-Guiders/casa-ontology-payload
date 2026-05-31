@@ -18,7 +18,7 @@ def run_bench(
     bundle: dict,
     cues: list[dict],
     *,
-    lattice_id: str = "F0_schema",
+    lattice_id: str = "schema-math",
 ) -> dict:
     lattices = memory_lattices(state)
     if lattice_id not in lattices:

@@ -321,7 +321,7 @@ def predict_schema(
     cue: str,
     bundle: dict,
     *,
-    lattice_id: str = "F0_schema",
+    lattice_id: str = "schema-math",
     top_k: int = 8,
 ) -> dict[str, Any]:
     state = ensure_prisms(state)
@@ -418,7 +418,7 @@ def predict(
     if mod == "schema":
         if bundle is None:
             raise ValueError("schema modality requires bundle")
-        return predict_schema(state, cue, bundle, lattice_id=lattice_id or "F0_schema")
+        return predict_schema(state, cue, bundle, lattice_id=lattice_id or "schema-math")
     if mod == "segment":
         return predict_segment(state, cue)
     raise ValueError(f"unsupported modality: {modality}")

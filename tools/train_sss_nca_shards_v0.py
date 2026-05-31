@@ -60,7 +60,7 @@ def main() -> None:
     if args.layer in ("L1", "all"):
         targets.extend(sorted(lid for lid in lattices if lid.startswith("syllables-") or lid.startswith("L1_")))
     if args.layer in ("L0", "all"):
-        targets.extend(sorted(lid for lid in lattices if is_alphabet_lattice(lid) or lid.startswith("L0_grapheme")))
+        targets.extend(sorted(lid for lid in lattices if is_alphabet_lattice(lid)))
     targets = list(dict.fromkeys(targets))
     if args.from_lattice:
         start = str(args.from_lattice)

@@ -26,7 +26,7 @@
   },
   "lattices": [
     {
-      "id": "F0_schema",
+      "id": "schema-math",
       "semantic_id": "memory.math.schema",
       "legacy_id": "F0_schema",
       "lattice_id": "schema-math",
@@ -38,7 +38,7 @@
       "curriculum": "experiment-l L0"
     },
     {
-      "id": "F1_compose",
+      "id": "compose-math",
       "semantic_id": "memory.math.compose",
       "legacy_id": "F1_compose",
       "lattice_id": "compose-math",
@@ -50,7 +50,7 @@
       "note": "«одна корова + ещё одна корова» — два слота одного M:unit:cow"
     },
     {
-      "id": "F2_quantity",
+      "id": "cardinal-math",
       "semantic_id": "memory.math.cardinal",
       "legacy_id": "F2_quantity",
       "lattice_id": "cardinal-math",
@@ -65,37 +65,37 @@
   "f_bridges": [
     {
       "id": "f_bridge_F0_F1",
-      "from": "F0_schema",
-      "to": "F1_compose",
+      "from": "schema-math",
+      "to": "compose-math",
       "kind": "instantiate",
       "example": "M:sym:one → один слот M:inst:*"
     },
     {
       "id": "f_bridge_F1_F2",
-      "from": "F1_compose",
-      "to": "F2_quantity",
+      "from": "compose-math",
+      "to": "cardinal-math",
       "kind": "aggregate",
       "when": "same M:unit:*",
       "example": "cow@a + cow@b → M:qty:2×cow"
     },
     {
       "id": "f_bridge_F2_L2",
-      "from": "F2_quantity",
-      "to": "L2_word",
+      "from": "cardinal-math",
+      "to": "words-ru",
       "kind": "name",
       "via": "concept_hub",
       "note": "«2 коровы» — SN/CEN + lang, не прямой write в L2 без sleep"
     },
     {
       "id": "f_bridge_L2_F1",
-      "from": "L2_word",
-      "to": "F1_compose",
+      "from": "words-ru",
+      "to": "compose-math",
       "kind": "ground_word",
       "example": "lang.word.cow → M:unit:cow"
     },
     {
       "id": "f_bridge_F2_vis",
-      "from": "F2_quantity",
+      "from": "cardinal-math",
       "to": "F0_vis",
       "kind": "ground_image",
       "status": "roadmap",

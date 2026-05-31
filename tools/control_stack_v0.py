@@ -8,6 +8,15 @@ from typing import Any
 
 from codec_grid_v0 import Grid  # type: ignore
 from config_io_v0 import load_config  # type: ignore
+from lattice_names_v1 import (  # type: ignore
+    CONTROL_ATTENTION,
+    CONTROL_DMN,
+    CONTROL_EXECUTIVE,
+    CONTROL_PREDICT,
+    CONTROL_SALIENCE,
+    CONTROL_VALUE,
+    CONTROL_WORKING_MEMORY,
+)
 from sss_stack_v0 import _place_token, decode_lattice, encode_lattice  # type: ignore
 
 DEFAULT_STACK = Path("design/control-lattice-stack.v0.json")
@@ -99,37 +108,37 @@ def encode_control_stack(
         h = int((lat.get("size") or {}).get("height") or 32)
         prefix = str(lat.get("concept_prefix") or "")
 
-        if lid == "lattice_dmn":
+        if lid == CONTROL_DMN:
             grid_dict = encode_lattice(claims, edges, width=w, height=h, copies=copies, concept_prefix="")
-        elif lid == "lattice_sn":
+        elif lid == CONTROL_SALIENCE:
             sn_claims = [c for c in claims if str(c.get("concept_id", "")).startswith(("salience.", "gate."))]
             grid_dict = encode_lattice(sn_claims, edges, width=w, height=h, copies=copies, concept_prefix=prefix)
             g = Grid(width=w, height=h, cells=[list(x) for x in grid_dict["cells"]])
             g = _seed_sn_tokens(g, copies=copies)
             grid_dict["cells"] = g.cells
-        elif lid == "lattice_fpn_wm":
+        elif lid == CONTROL_WORKING_MEMORY:
             wm_claims = [c for c in claims if str(c.get("concept_id", "")).startswith("wm.")]
             grid_dict = encode_lattice(wm_claims, edges, width=w, height=h, copies=copies, concept_prefix=prefix)
             g = Grid(width=w, height=h, cells=[list(x) for x in grid_dict["cells"]])
             g = _seed_fpn_tokens(g, copies=copies, mode=wm_mode, goal=wm_goal)
             grid_dict["cells"] = g.cells
-        elif lid == "lattice_cen":
+        elif lid == CONTROL_EXECUTIVE:
             cen_claims = [c for c in claims if str(c.get("concept_id", "")).startswith("task.")]
             grid_dict = encode_lattice(cen_claims, edges, width=w, height=h, copies=copies, concept_prefix=prefix)
             g = Grid(width=w, height=h, cells=[list(x) for x in grid_dict["cells"]])
             g = _seed_cen_tokens(g, copies=copies)
             grid_dict["cells"] = g.cells
-        elif lid == "lattice_predict":
+        elif lid == CONTROL_PREDICT:
             grid_dict = encode_lattice(claims, edges, width=w, height=h, copies=copies, concept_prefix=prefix)
             g = Grid(width=w, height=h, cells=[list(x) for x in grid_dict["cells"]])
             g = _seed_predict_tokens(g, copies=copies)
             grid_dict["cells"] = g.cells
-        elif lid == "lattice_dan":
+        elif lid == CONTROL_ATTENTION:
             grid_dict = encode_lattice(claims, edges, width=w, height=h, copies=copies, concept_prefix=prefix)
             g = Grid(width=w, height=h, cells=[list(x) for x in grid_dict["cells"]])
             g = _seed_dan_tokens(g, copies=copies)
             grid_dict["cells"] = g.cells
-        elif lid == "lattice_value":
+        elif lid == CONTROL_VALUE:
             grid_dict = encode_lattice(claims, edges, width=w, height=h, copies=copies, concept_prefix=prefix)
             g = Grid(width=w, height=h, cells=[list(x) for x in grid_dict["cells"]])
             g = _seed_value_tokens(g, copies=copies)
@@ -203,16 +212,16 @@ def migrate_legacy_grid_to_control(
     """layout.v0 regions → control lattices (fallback when no bundle)."""
     stack = stack or load_control_stack()
     region_map = {
-        "lattice_dmn": "dmn_ontology",
-        "lattice_sn": "sn_router",
-        "lattice_cen": "cen_planner",
+        CONTROL_DMN: "dmn_ontology",
+        CONTROL_SALIENCE: "sn_router",
+        CONTROL_EXECUTIVE: "cen_planner",
     }
     out: dict[str, dict] = {}
     for lat in stack.get("lattices") or []:
         lid = str(lat["id"])
         w = int((lat.get("size") or {}).get("width") or 32)
         h = int((lat.get("size") or {}).get("height") or 32)
-        if lid == "lattice_fpn_wm":
+        if lid == CONTROL_WORKING_MEMORY:
             base = empty_control_lattice(lat)
             g = Grid(width=w, height=h, cells=[[] for _ in range(w * h)])
             g = _seed_fpn_tokens(g, copies=4)
@@ -247,18 +256,16 @@ def migrate_legacy_grid_to_control(
 
 def decode_control_dmn(state: dict, *, min_votes: int = 1) -> dict:
     from control_cylinders_v0 import control_lattices, has_control_stack  # type: ignore
-    from lattice_names_v1 import resolve_store_lattice_id  # type: ignore
 
     if not has_control_stack(state):
-        raise ValueError("no prism_control lattices")
+        raise ValueError("no control stack")
     lattices = control_lattices(state)
-    dmn_key = resolve_store_lattice_id("lattice_dmn", lattices)
-    lat = lattices[dmn_key]
+    lat = lattices[CONTROL_DMN]
     decoded = decode_lattice(lat, min_votes=min_votes)
     vote: dict[str, int] = {}
     for cell in lat.get("cells") or []:
         for t in cell:
             vote[t] = vote.get(t, 0) + 1
     decoded["present_token_list"] = sorted([t for t, v in vote.items() if v >= min_votes])
-    decoded["lattice_id"] = dmn_key
+    decoded["lattice_id"] = CONTROL_DMN
     return decoded

@@ -7,7 +7,7 @@ from prism_state_v0 import normalize_prisms, prism_memory, prism_hippo, prism_co
 from typing import Any
 
 from codec_grid_v0 import Grid  # type: ignore
-from lattice_names_v1 import episodic_surface_lattice_id  # type: ignore
+from lattice_names_v1 import EPISODIC_SURFACE, PHRASES  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_field_decode_v0 import grapheme_votes_for_word, rule_votes_from_field, syllable_hits_from_field  # type: ignore
 from sss_field_decode_v0 import active_rule_from_field  # type: ignore
@@ -33,8 +33,7 @@ def parse_h_token(token: str) -> tuple[str, str] | None:
 def _hippo_h0(state: dict) -> dict:
     state = ensure_prisms(state)
     lats = prism_hippo(state).setdefault("lattices", {})
-    key = episodic_surface_lattice_id(lats)
-    return lats[key]
+    return lats[EPISODIC_SURFACE]
 
 
 def _lattice_to_grid(lat: dict) -> Grid:
@@ -51,7 +50,7 @@ def h_votes_for_word(state: dict, word: str) -> dict[str, int]:
     prefix = f"H:{w}/"
     votes: dict[str, int] = {}
     lattices: list[dict] = [_hippo_h0(state)]
-    l3 = memory_lattices(state).get("L3_phrase")
+    l3 = memory_lattices(state).get(PHRASES)
     if l3:
         lattices.append(l3)
     for lat in lattices:
@@ -92,7 +91,7 @@ def _replant_hypotheses(
 
     if also_l3:
         lattices = memory_lattices(state)
-        lid = "L3_phrase"
+        lid = PHRASES
         if lid in lattices:
             lat = lattices[lid]
             g3 = _clear_h_tokens(lat, w)

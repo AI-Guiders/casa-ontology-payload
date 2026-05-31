@@ -16,10 +16,10 @@ from nca_train_defaults_v0 import add_windowed_train_args, damage_defaults, epoc
 from nca_train_util import add_device_args  # type: ignore
 from sss_cylinders_v0 import ensure_prisms  # type: ignore
 from sss_l2_shard_v0 import set_nca_model  # type: ignore
-from lattice_names_v1 import legacy_to_v1  # type: ignore
+from lattice_names_v1 import CONTROL_NCA_TRAIN_STACK  # type: ignore
 from store_layout_v0 import nca_lattice_dir, rel_to_repo, repo_root  # type: ignore
 
-DEFAULT_STACK = tuple(legacy_to_v1(x) for x in ("lattice_predict", "lattice_dan", "lattice_value"))
+DEFAULT_STACK = CONTROL_NCA_TRAIN_STACK
 
 
 def _train_one(

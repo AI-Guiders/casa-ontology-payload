@@ -9,6 +9,7 @@ from typing import Any
 
 from codec_grid_v0 import Grid, decode_grid  # type: ignore
 from codec_grid_v1 import _pick_cells_clustered  # type: ignore
+from lattice_names_v1 import ALPHABET_EN, ALPHABET_RU  # type: ignore
 
 
 def load_stack(path: Path | None = None) -> dict:
@@ -21,9 +22,9 @@ def load_stack(path: Path | None = None) -> dict:
 def lattice_id_for_concept(stack: dict, concept_id: str) -> str:
     cid = concept_id or ""
     if cid.startswith("grapheme.cyrl."):
-        return "L0_grapheme_cyrl"
+        return ALPHABET_RU
     if cid.startswith("grapheme.latn."):
-        return "L0_grapheme_latn"
+        return ALPHABET_EN
     best: tuple[int, str] | None = None
     for lat in stack.get("lattices") or []:
         prefix = str(lat.get("concept_prefix") or "")
@@ -33,7 +34,7 @@ def lattice_id_for_concept(stack: dict, concept_id: str) -> str:
                 best = cand
     if best:
         return best[1]
-    return "L0_grapheme_cyrl"
+    return ALPHABET_RU
 
 
 def lattice_meta(stack: dict, lattice_id: str) -> dict:

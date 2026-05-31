@@ -10,18 +10,17 @@ from typing import Any, Iterable, Literal
 from codec_grid_v0 import Grid  # type: ignore
 from sss_cylinders_v0 import ensure_prisms, memory_lattices  # type: ignore
 from sss_l2_shard_v0 import L2_CONCEPT_PREFIX, l2_word_lattice_ids  # type: ignore
+from lattice_names_v1 import ALPHABET_EN, ALPHABET_RU, is_alphabet_lattice  # type: ignore
 from sss_stack_v0 import _place_token, decode_lattice, lattice_meta, load_stack  # type: ignore
 from sss_vocab_v0 import norm_word  # type: ignore
 
 Script = Literal["latn", "cyrl"]
 GRAPHEME_LATN_PREFIX = "grapheme.latn."
 GRAPHEME_CYRL_PREFIX = "grapheme.cyrl."
-L0_CYRL_ID = "L0_grapheme_cyrl"
-L0_LATN_ID = "L0_grapheme_latn"
-L0_ID_LEGACY = "L0_grapheme"
+L0_CYRL_ID = ALPHABET_RU
+L0_LATN_ID = ALPHABET_EN
 L0_GRAPHEME_IDS = (L0_CYRL_ID, L0_LATN_ID)
-# Back-compat alias (do not imprint new data here)
-L0_ID = L0_ID_LEGACY
+L0_ID_LEGACY = "L0_grapheme"  # strip/migrate scripts only
 
 
 def l0_lattice_id(script: Script) -> str:
@@ -29,8 +28,7 @@ def l0_lattice_id(script: Script) -> str:
 
 
 def is_grapheme_lattice(lattice_id: str) -> bool:
-    lid = str(lattice_id)
-    return lid in L0_GRAPHEME_IDS or lid == L0_ID_LEGACY
+    return is_alphabet_lattice(str(lattice_id))
 
 
 def _is_cyrillic(ch: str) -> bool:
