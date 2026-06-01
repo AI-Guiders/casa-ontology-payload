@@ -25,6 +25,7 @@ PRISM_HOT_CONTEXT = "prism_hot_context"
 PRISM_ROUTER = "prism_router"
 PRISM_VISUAL = "prism_visual"
 PRISM_CONTROL_VIS = "prism_control_vis"
+PRISM_CONTROL_THALAMUS = "prism_control_thalamus"
 
 PRISM_KIND_CONTENT = "content"
 PRISM_KIND_HOT_CONTEXT = "hot_context"

@@ -73,6 +73,15 @@
       "role": ["visual_attention", "frame_gate", "modality_vis"],
       "status": "roadmap",
       "doc": "Monolith placeholder; full vis CU → prism_control_vis in design/prisms/control/vis-stack.json, CASA-ADR-0019"
+    },
+    {
+      "id": "control-thalamic",
+      "z_ctrl": 8,
+      "size": { "width": 32, "height": 32 },
+      "concept_prefix": "thal.",
+      "role": ["relay", "arousal", "bandwidth"],
+      "status": "roadmap",
+      "doc": "Monolith placeholder; full thalamic CU → prism_control_thalamus, CASA-ADR-0024"
     }
   ],
   "control_bridges": [

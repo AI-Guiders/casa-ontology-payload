@@ -7,7 +7,9 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from typing import Any
+from typing import Any, Callable
+
+ProgressFn = Callable[[int, int, str], None] | None
 
 from casa.prisms.tick.predictor import _L2_PREFIX_INDEX_CACHE
 from casa.prisms.memory.memory_prisms import ensure_prisms
@@ -39,6 +41,8 @@ def ingest_ru_lex_batch(
     *,
     copies: int = 3,
     configure: bool = True,
+    on_word_progress: ProgressFn = None,
+    progress_every: int = 5000,
 ) -> dict[str, Any]:
     """Fast batch RU lexicon imprint (field-only, no listen episodes)."""
     state = ensure_prisms(state)
@@ -47,9 +51,12 @@ def ingest_ru_lex_batch(
         configure_ru_store(state, unique)
 
     shards: dict[str, int] = {}
-    for w in unique:
+    total = len(unique)
+    for i, w in enumerate(unique, 1):
         lid = _strengthen_word_on_l2(state, w, copies=copies)
         shards[lid] = shards.get(lid, 0) + 1
+        if on_word_progress and (i == 1 or i == total or i % progress_every == 0):
+            on_word_progress(i, total, lid)
 
     state.pop(_L2_PREFIX_INDEX_CACHE, None)
     state["field_version"] = int(state.get("field_version") or 0) + 1

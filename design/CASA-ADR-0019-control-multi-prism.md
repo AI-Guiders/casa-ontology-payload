@@ -3,7 +3,7 @@
 **Статус:** принято (design); код v0 = monolith `prism_control` + roadmap split  
 **Дата:** 2026-06-01  
 **Область:** `prism_control*`, control stack, tick, DAN/vis  
-**Связано:** [`control-lattice-stack.md`](control-lattice-stack.md), [`CASA-ADR-0016-prism-domains-hot-router.md`](CASA-ADR-0016-prism-domains-hot-router.md), [`CASA-ADR-0018-vision-modality-v0.md`](CASA-ADR-0018-vision-modality-v0.md), [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md)
+**Связано:** [`control-lattice-stack.md`](control-lattice-stack.md), [`CASA-ADR-0016-prism-domains-hot-router.md`](CASA-ADR-0016-prism-domains-hot-router.md), [`CASA-ADR-0018-vision-modality-v0.md`](CASA-ADR-0018-vision-modality-v0.md), [`CASA-ADR-0024-control-thalamus.md`](CASA-ADR-0024-control-thalamus.md), [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md)
 
 ---
 
@@ -31,6 +31,7 @@
 |----------|------|-----------------|
 | **`prism_control`** | bootstrap / legacy monolith v0 | полный stack (7 lattices) |
 | **`prism_control_exec`** | DMN, SN, FPN, CEN, predict, value | `design/prisms/control/core-stack.json` |
+| **`prism_control_thalamus`** | relay, arousal, bandwidth (wake/sleep gate) | `design/prisms/control/thalamus-stack.json` |
 | **`prism_control_vis`** | зрительное внимание, frame gate | `design/prisms/control/vis-stack.json` |
 | **`prism_control_motor`** | письмо / compose (roadmap) | ADR-0005 |
 
@@ -39,9 +40,10 @@
 
 ```text
 field_state.prisms
-├── prism_router              # modality → content
+├── prism_router              # modality → content (policy)
+├── prism_control_thalamus    # relay + arousal + bandwidth  ← ADR-0024
 ├── prism_control_exec        # «мыслить / планировать»
-├── prism_control_vis         # «куда смотреть»  ← новый отдел
+├── prism_control_vis         # «куда смотреть»
 ├── prism_visual              # «что на поле vis.*»
 └── prism_memory              # lang.*
 ```
@@ -113,6 +115,7 @@ CU **не дублирует** контент нижнего уровня (ка�
 
 ```text
 INPUT (cue, modality, optional frame)
+  → prism_control_thalamus: arousal (sn.mode) → relay ports  # ADR-0024
   → resolve_route → content (prism_visual | prism_memory | …)
   → active_control_prism:
        exec: SN → FPN → CEN (как сейчас)
@@ -204,3 +207,4 @@ L2 patch     prism_control_exec lattices     ← только Critic + budget + 
 | 2026-06-01 | ADR-0019: CU multi-prism + visual division |
 | 2026-06-01 | §2b паритет z-стека с памятью / prism_visual |
 | 2026-06-01 | §4 agent modify control (L0/L1/L2 + gates) |
+| 2026-06-01 | `prism_control_thalamus` — ADR-0024, tick_prepare hook |

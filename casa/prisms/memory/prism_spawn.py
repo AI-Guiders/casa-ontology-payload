@@ -23,6 +23,8 @@ from casa.prisms.shared.prism_state import (
     PRISM_MEMORY,
     PRISM_ROUTER,
     PRISM_VISUAL,
+    PRISM_CONTROL_THALAMUS,
+    PRISM_CONTROL_VIS,
     normalize_prisms,
     prism_block,
     prism_hot_context,
@@ -40,12 +42,23 @@ _KIND_RE = re.compile(r"^[a-z][a-z0-9_]{0,47}$")
 # Created only via ensure_* / migrate — not agent spawn.
 _SYSTEM_PRISM_IDS = frozenset({PRISM_HIPPO, PRISM_CONTROL, PRISM_AGENT})
 
+_CONTROL_STACK_BY_PRISM: dict[str, str] = {
+    PRISM_CONTROL_VIS: "design/prisms/control/vis-stack.json",
+    PRISM_CONTROL_THALAMUS: "design/prisms/control/thalamus-stack.json",
+}
+
 _DEFAULT_STACK: dict[str, str] = {
     PRISM_KIND_CONTENT: "design/prisms/memory/stack.json",
     PRISM_KIND_HOT_CONTEXT: "design/prisms/hot_context/stack.json",
     PRISM_KIND_ROUTER: "design/prisms/router/stack.json",
     PRISM_KIND_CONTROL: "design/prisms/control/vis-stack.json",
 }
+
+
+def control_stack_path_for_prism(prism_id: str, stack: str | None) -> str:
+    if stack:
+        return stack
+    return _CONTROL_STACK_BY_PRISM.get(prism_id) or _DEFAULT_STACK[PRISM_KIND_CONTROL]
 
 
 def normalize_prism_kind(kind: str | None) -> str:
@@ -197,7 +210,10 @@ def spawn_prism(
     if pid in root and root[pid].get("kind") not in (None, kind_n):
         raise ValueError(f"prism {pid!r} exists with kind {root[pid].get('kind')!r}")
 
-    stack_path = stack or _DEFAULT_STACK.get(kind_n) or f"design/prisms/{kind_n}/stack.json"
+    if kind_n == PRISM_KIND_CONTROL:
+        stack_path = control_stack_path_for_prism(pid, stack)
+    else:
+        stack_path = stack or _DEFAULT_STACK.get(kind_n) or f"design/prisms/{kind_n}/stack.json"
 
     if pid == PRISM_HOT_CONTEXT and kind_n == PRISM_KIND_HOT_CONTEXT:
         block = prism_hot_context(state)
@@ -323,6 +339,13 @@ def list_control_prism_ids(state: dict) -> list[str]:
         if prism_kind(state, pid) == PRISM_KIND_CONTROL and (block.get("lattices") or {}):
             out.append(pid)
     return sorted(set(out))
+
+
+def ensure_control_thalamus_bootstrap(state: dict) -> dict[str, Any]:
+    """Thalamic CU relay + arousal (ADR-0024)."""
+    from casa.prisms.control.thalamus import ensure_control_thalamus
+
+    return ensure_control_thalamus(state)
 
 
 def ensure_vision_bootstrap(state: dict) -> dict[str, Any]:

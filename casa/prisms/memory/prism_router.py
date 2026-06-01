@@ -98,11 +98,13 @@ def apply_route_for_modality(state: dict, modality: str, *, segment: str = "") -
 
 
 def tick_prepare_memory(state: dict, *, cue: str = "", modality: str = "segment") -> dict[str, Any]:
+    from casa.prisms.control.thalamus import thalamus_tick_phase
     from casa.prisms.memory.prism_hot_context import merge_hot_context_digest
 
+    thal = thalamus_tick_phase(state, modality=modality, cue=cue)
     target = apply_route_for_modality(state, modality)
     hot = merge_hot_context_digest(state, cue) if cue else merge_hot_context_digest(state, "")
-    return {"route": target, "hot": hot}
+    return {"thalamus": thal, "route": target, "hot": hot}
 
 
 def bootstrap_default_routes(state: dict, *, locale: str = "ru", force: bool = False) -> list[dict[str, Any]]:
