@@ -16,6 +16,7 @@ from casa.prisms.shared.field_write import load_field_state
 from casa.prisms.shared.ltm_pack import lattice_subdir, write_ltm
 from casa.prisms.shared.store_paths_v1 import ltm_write_targets, manifest_layout_block
 from casa.prisms.control.cylinders import control_lattices, has_control_stack
+from casa.domain.field_state import FieldState
 from casa.prisms.memory.memory_prisms import content_prism_lattices, ensure_prisms, memory_lattices
 from casa.prisms.memory.lexicon_shard import l2_en_word_lattice_ids, l2_lexicon_lattice_ids, l2_word_lattice_ids
 from casa.prisms.memory.prism_spawn import list_content_prism_ids, list_control_prism_ids
@@ -94,6 +95,15 @@ def iter_profile_lattice_exports(
     return items
 
 
+def export_field_state(
+    field: FieldState,
+    out_dir: Path,
+    **kwargs: Any,
+) -> dict[str, Any]:
+    """Domain entry: export shipped ltm from :class:`FieldState` (ADR-0020 M2)."""
+    return export_pack(field.wire, out_dir, **kwargs)
+
+
 def export_pack(
     state: dict,
     out_dir: Path,
@@ -109,7 +119,9 @@ def export_pack(
     progress: bool = False,
     parallel_writes: int = 0,
 ) -> dict[str, Any]:
-    state = ensure_prisms(state)
+    field = FieldState.bind(state)
+    state = field.wire
+    _ = field.catalog  # ensure prism catalog normalized (ADR-0020 M2)
 
     def _word_progress(done: int, total: int, shard: str) -> None:
         if progress:

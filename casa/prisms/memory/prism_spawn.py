@@ -11,6 +11,7 @@ import re
 import time
 from typing import Any
 
+from casa.domain.field_state import FieldState
 from casa.prisms.shared.prism_state import (
     PRISM_AGENT,
     PRISM_CONTROL,
@@ -200,7 +201,8 @@ def spawn_prism(
     Shipped bootstrap uses content / hot_context / router; agent may add e.g.
     prism_workspace + kind=workspace_meta or prism_nav + kind=router.
     """
-    normalize_prisms(state)
+    field = FieldState.bind(state)
+    state = field.wire
     kind_n = normalize_prism_kind(kind)
     if kind_n == PRISM_KIND_CONTENT:
         state = ensure_prisms(state)
@@ -307,6 +309,8 @@ def ensure_default_router_and_hot(state: dict) -> dict[str, Any]:
 
 
 def list_content_prism_ids(state: dict) -> list[str]:
+    """Content prism ids via domain catalog (ADR-0020 M2)."""
+    field = FieldState.bind(state)
     state = ensure_prisms(state)
     out: list[str] = []
     for pid, block in prisms(state).items():
