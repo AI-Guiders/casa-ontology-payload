@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create sss-ru-lexicon dev store: batch RU headwords + ltm export."""
+"""Create lexicon-ru-archaic dev store: batch RU headwords + ltm export."""
 
 from __future__ import annotations
 

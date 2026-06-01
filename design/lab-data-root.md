@@ -15,4 +15,4 @@
 
 Канон путей в коде: `tools/store_layout.py` → `LAB_DATA_DIR = "lab"`.
 
-**Без junction:** store — обычная папка под `lab/agent-stores/<store_id>/` (напр. `sss-ru-lexicon`, не ярлык на другое имя).
+**Без junction:** store — обычная папка под `lab/agent-stores/<store_id>/` (напр. `lexicon-ru-archaic`, не ярлык на другое имя).

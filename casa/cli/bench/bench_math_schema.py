@@ -34,7 +34,7 @@ def run_bench(
         cue = str(item.get("cue") or "")
         expect = str(item.get("expect_top") or item.get("expect") or "")
         min_score = int(item.get("min_score") or 1)
-        ranked = rank_cue_on_f0(bundle, decoded, cue)
+        ranked = rank_cue_on_f0(decoded, cue)
         top = ranked[0][0] if ranked else None
         top_score = ranked[0][1] if ranked else 0
         ok = top == expect and top_score >= min_score

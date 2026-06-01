@@ -21,15 +21,15 @@
 
 ```bash
 python tools/bench_bilingual_linked.py \
-  --ru-store lab/agent-stores/sss-ru-general \
-  --en-store lab/agent-stores/sss-en-folk \
+  --ru-store lab/agent-stores/lexicon-ru-general \
+  --en-store lab/agent-stores/lexicon-en-folk \
   --bundle lab/exp_bilingual/kb-entity-surfaces-dev.v1.json
 
 .\scripts\run_bit9_gate.ps1          # smoke + T9 sweep 1000×RU + 1000×EN
 .\scripts\run_bit9_gate.ps1 -SmokeOnly   # integration + merged preview cues
 
 python tools/bench_t9_lexicon_sweep.py \
-  --store-dir lab/agent-stores/sss-ru-general --sample 1000 --t9-policy lab \
+  --store-dir lab/agent-stores/lexicon-ru-general --sample 1000 --t9-policy lab \
   --min-full-rate 0.99 --min-prefix-rate 0.15 \
   --out lab/exp_bilingual/reports/bit9_ru_sweep_1000.json
 ```
@@ -85,7 +85,7 @@ POS/роли v0: **не новый organ** — claims + edges на L3/L2, ingest
 
 ```bash
 python tools/agent_autonomous_tick.py \
-  --store-dir lab/agent-stores/sss-ru-general \
+  --store-dir lab/agent-stores/lexicon-ru-general \
   --cues lab/exp_t9/lexicon_cold_cues.v1.json \
   --headwords <miss-list.txt> \
   --train-nca --device cuda
@@ -121,7 +121,7 @@ Sleep: stale shards → **CUDA** NCA только для изменённых п
 ## Чеклист исполнения
 
 - [x] BiT9 linked bench green (2026-05-30)
-- [x] unified + ambiguous benches — `scripts/run_bit9_gate.ps1` on `sss-ru-general` (2026-05-30)
+- [x] unified + ambiguous benches — `scripts/run_bit9_gate.ps1` on `lexicon-ru-general` (2026-05-30)
 - [x] ru-general headwords **вне Афан** + init store
 - [ ] quad stores OR обновить prod RU store с новым списком
 - [x] GPU NCA ru-general — migrate v1 ids + 64 shards CUDA, stale 0 (2026-05-31)

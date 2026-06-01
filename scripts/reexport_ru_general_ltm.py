@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Re-export sss-ru-general ltm/ with canonical paths + legacy mirrors (M3/M4)."""
+"""Re-export lexicon-ru-general ltm/ with canonical paths + legacy mirrors (M3/M4)."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-STORE = ROOT / "lab" / "agent-stores" / "sss-ru-general"
+STORE = ROOT / "lab" / "agent-stores" / "lexicon-ru-general"
 
 
 def main() -> int:

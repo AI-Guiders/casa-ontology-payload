@@ -15,8 +15,8 @@ python tools/init_en_folk_store.py \
 
 # Linked RU+EN + entity hub on L3 (no duplicate L2 imprint)
 python tools/bench_bilingual_linked.py \
-  --ru-store lab/agent-stores/sss-ru-general \
-  --en-store lab/agent-stores/sss-en-folk \
+  --ru-store lab/agent-stores/lexicon-ru-general \
+  --en-store lab/agent-stores/lexicon-en-folk \
   --bundle lab/exp_bilingual/kb-entity-surfaces-dev.v1.json
 ```
 
@@ -125,11 +125,11 @@ python tools/init_en_folk_store.py
 
 ```bash
 python tools/ingest_en_lex_dev.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --headwords lab/exp_bilingual/en_dev_headwords.v1.txt
 
 python tools/bench_en_t9_smoke.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --headwords lab/exp_bilingual/en_dev_headwords.v1.txt
 ```
 
@@ -146,11 +146,11 @@ python tools/bench_segment_en.py \
 
 ```bash
 python tools/entity_hub_ingest.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --bundle lab/exp_bilingual/kb-entity-surfaces-dev.v1.json
 
 python tools/bench_entity_hub.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --bundle lab/exp_bilingual/kb-entity-surfaces-dev.v1.json
 ```
 
@@ -160,8 +160,8 @@ Model: `entity.cow` ← `E:denotes` ← `lang.word.cow` / `lang.word.коров�
 
 ```bash
 python tools/bench_segment_en.py --cues lab/exp_bilingual/en_segment_cues.v1.json
-python tools/bench_en_t9_smoke.py --store-dir lab/agent-stores/sss-ru-lexicon --headwords lab/exp_bilingual/en_dev_headwords.v1.txt
-python tools/bench_entity_hub.py --store-dir lab/agent-stores/sss-ru-lexicon --bundle lab/exp_bilingual/kb-entity-surfaces-dev.v1.json
+python tools/bench_en_t9_smoke.py --store-dir lab/agent-stores/lexicon-ru-archaic --headwords lab/exp_bilingual/en_dev_headwords.v1.txt
+python tools/bench_entity_hub.py --store-dir lab/agent-stores/lexicon-ru-archaic --bundle lab/exp_bilingual/kb-entity-surfaces-dev.v1.json
 ```
 
 Expected: segment **10/10**, en_t9 **12/12**, entity_hub **12/12**.

@@ -103,10 +103,10 @@ def init_math_l0_lab(
                 "python -m casa.cli bench_math_schema --store-dir "
                 + f"lab/agent-stores/{STORE_MATH_L0_LAB}",
                 "python -m casa.cli bench_schema_predict --store-dir "
-                + f"lab/agent-stores/{STORE_MATH_L0_LAB} --bundle {rel_bundle}",
+                + f"lab/agent-stores/{STORE_MATH_L0_LAB}",
                 "```",
                 "",
-                "Do **not** run stick/emergent teacher loops on `sss-ru-general` (prod RU lexicon).",
+                "Do **not** run stick/emergent teacher loops on `lexicon-ru-general` (prod RU lexicon).",
                 "",
             ]
         ),

@@ -6,11 +6,11 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-afan'
+$store = 'lab/agent-stores/ingest-ref-afan'
 $bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $stack = 'design/prisms/memory/stack.json'
 $corpus = 'lab/text/corpus/afanasyev'
-$outDir = 'lab/exp_sss_v1'
+$outDir = 'lab/exp_lexicon_v1'
 
 Write-Host '=== Afan-I: lattice (L0 grapheme, L1 syllable, L2 word) ===' -ForegroundColor Cyan
 python tools/bench_sss_lattice.py `

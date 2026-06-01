@@ -6,10 +6,10 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-phases-abc'
+$store = 'lab/agent-stores/lexicon-phases-abc'
 $bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $corpus = 'lab/text/corpus'
-$exp = 'lab/exp_sss_v1'
+$exp = 'lab/exp_lexicon_v1'
 $ncaOut = 'lab/nca_out_sss_l2_smoke'
 
 Write-Host '========== PHASE A: corpus batch + growth + babble ==========' -ForegroundColor Green

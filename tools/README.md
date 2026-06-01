@@ -3,7 +3,7 @@
 Runtime lives in **`casa/`**. Run CLIs:
 
 ```powershell
-python -m casa.cli store_boot --store-dir lab/agent-stores/sss-ru-general --smoke
+python -m casa.cli store_boot --store-dir lab/agent-stores/lexicon-ru-general --smoke
 # or backward compat:
 python tools/run.py store_boot --store-dir ...
 ```

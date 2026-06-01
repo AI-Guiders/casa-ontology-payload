@@ -97,6 +97,33 @@ def gate_pattern_rows_by_predict_fail(
     return marked
 
 
+def gate_mul_equiv_by_learning_gap(
+    state: dict,
+    episodes: list[dict[str, Any]],
+    *,
+    has_equiv_edge,
+) -> int:
+    from casa.prisms.memory.f0_equiv_extract import _cluster_rows, mul_equiv_scene_key
+
+    groups: dict[str, list[dict[str, Any]]] = {}
+    for ep in episodes:
+        key = mul_equiv_scene_key(str(ep.get("scene") or ""))
+        if key:
+            groups.setdefault(key, []).append(ep)
+
+    marked = 0
+    for _scene, rows in groups.items():
+        parsed = _cluster_rows(rows)
+        if not parsed:
+            continue
+        _mag, num_cid = parsed
+        if has_equiv_edge(num_cid):
+            continue
+        mark_cluster_form_extract(rows, reason="mul_add_equiv_co_present")
+        marked += len(rows)
+    return marked
+
+
 def gate_names_by_learning_gap(
     state: dict,
     episodes: list[dict[str, Any]],

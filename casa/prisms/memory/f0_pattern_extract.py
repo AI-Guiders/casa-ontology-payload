@@ -105,6 +105,15 @@ def numeral_int_to_concept_id(value: int) -> str | None:
     return _INT_TO_NUMERAL_CID.get(value)
 
 
+def numeral_concept_to_int(concept_id: str | None) -> int | None:
+    if not concept_id:
+        return None
+    for val, cid in _INT_TO_NUMERAL_CID.items():
+        if cid == str(concept_id):
+            return val
+    return None
+
+
 def parse_comma_numeral_cue(cue: str) -> list[int] | None:
     cue = str(cue or "").strip()
     if not _COMMA_NUM.match(cue):

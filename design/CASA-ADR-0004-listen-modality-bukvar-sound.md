@@ -182,7 +182,7 @@ ASR и субтитры — **OCR для уха**: переводят медиа
 #### Layout store (listen mass)
 
 ```text
-sss-ru-lexicon/              # или sss-listen-mass/
+lexicon-ru-archaic/              # или lexicon-listen-mass/
 ├── ltm/                        # ship после export_ltm_pack
 ├── nca/
 ├── audio/                      # .gitignore — сырые клипы
@@ -287,7 +287,7 @@ T:voice.masha              |  speaker_of |  …
 | Q5 | Связь listen B0 с ScriptS PNG | optional `E: grapheme.* \| cursive_glyph \| file.png` — visual particular, не tag |
 | Q6 | Mass = только слоги или целые клипы? | **целые клипы и фразы**; слоги — для controlled lab/correct |
 | Q7 | ASR в pipeline? | **только cold ingest**; manifest = текст сцен, не live decode |
-| Q8 | Отдельный store для mass? | optional `sss-listen-mass`; merge в lexicon через export/import ltm |
+| Q8 | Отдельный store для mass? | optional `lexicon-listen-mass`; merge в lexicon через export/import ltm |
 
 ---
 

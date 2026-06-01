@@ -1,6 +1,6 @@
 # Вторая сигнальная система (ССС) — подсистема CASA
 
-**Status:** lab — `tools/sss_*`, store `lab/agent-stores/sss-lab`  
+**Status:** lab — `tools/sss_*`, store `lab/agent-stores/lexicon-lab`  
 **Date:** 2026-05-28  
 **Не называть:** «Bukvar Encode», «ещё один codec для KB»  
 **См.:** [`bukvar-text-modality.md`](bukvar-text-modality.md) (педагогическая лестница), [`casa-layout.md`](casa-layout.md)
@@ -46,7 +46,7 @@
 | `layout.v1.json` | **interim:** y-полосы на одной плоскости |
 | `prisms/memory/stack.json` | **цель:** отдельная решётка на `z_level`, z-мосты |
 
-Целевые имена (когда стабилизируем): `sss_codec`, `memory_field`, `sss_surface`, store `sss-lab`.
+Целевые имена (когда стабилизируем): `sss_codec`, `memory_field`, `sss_surface`, store `lexicon-lab`.
 
 ## Что ССС делает и не делает
 

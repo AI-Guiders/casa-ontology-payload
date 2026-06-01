@@ -45,7 +45,7 @@ T9 / predict зажигает **якоря слов** на своей полке
 | 2 | `segment_en` + L1 heuristics | `bench_segment_en` |
 | 3 | `entity_hub_ingest` + `hub_neighbors` | `bench_entity_hub` |
 
-Merge: один store (`sss-ru-lexicon` + EN listen + hub on L3).
+Merge: один store (`lexicon-ru-archaic` + EN listen + hub on L3).
 
 ---
 

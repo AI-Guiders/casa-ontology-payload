@@ -57,7 +57,7 @@ predict(state, cue="мам", modality="t9", top_k=8)
 | следующая буква | новый cue → сужение set; final → critic → `focus` |
 | завершил слово | `observation == expect` → critic pass |
 
-**Цифры 2–9 в v0 не нужны** — достаточно Unicode prefix по lexicon в цилиндре (`sss-ru-lexicon`, bilingual stores).
+**Цифры 2–9 в v0 не нужны** — достаточно Unicode prefix по lexicon в цилиндре (`lexicon-ru-archaic`, bilingual stores).
 
 ### 3. Три режима cue (v0 + roadmap)
 

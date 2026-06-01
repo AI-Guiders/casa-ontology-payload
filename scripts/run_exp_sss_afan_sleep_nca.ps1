@@ -6,10 +6,10 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$srcStore = 'lab/agent-stores/sss-afan'
-$store = 'lab/agent-stores/sss-afan-iii'
+$srcStore = 'lab/agent-stores/ingest-ref-afan'
+$store = 'lab/agent-stores/ingest-ref-afan-iii'
 $bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
-$exp = 'lab/exp_sss_v1'
+$exp = 'lab/exp_lexicon_v1'
 $ncaOut = 'lab/nca_out_afan_l1'
 $lattice = 'L1_syllable'
 

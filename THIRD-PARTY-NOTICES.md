@@ -18,7 +18,7 @@ redistribute derived artifacts (headword lists, POS maps, trained stores).
 | **UD English-EWT** | EN `ud_lemma_pos.v1.json` | [UniversalDependencies/UD_English-EWT](https://github.com/UniversalDependencies/UD_English-EWT) | CC BY-SA 4.0 |
 | **Grimm's Fairy Tales** (PG #17038) | EN folk ingest source text | [Project Gutenberg 17038](https://www.gutenberg.org/ebooks/17038) | Public domain |
 | **English Fairy Tales** — Jacobs (PG #2591) | EN folk ingest source text | [Project Gutenberg 2591](https://www.gutenberg.org/ebooks/2591) | Public domain |
-| **Afanasyev 1855** (RU folk, archaic) | `sss-ru-lexicon` lab store only | 19th-c. folk collection (PD in source jurisdiction) | Public domain — **not** shipped as raw text in this repo |
+| **Afanasyev 1855** (RU folk, archaic) | `lexicon-ru-archaic` lab store only | 19th-c. folk collection (PD in source jurisdiction) | Public domain — **not** shipped as raw text in this repo |
 | **ru-archaic headwords** | archaic-only word list (Afan L2 minus modern DetCorpus) | derived locally in lab | lab artifact — rebuild from lexicon store, not redistributed here |
 | **en-tech / ru-tech headwords** | repo-scan seed lists | this repository's tracked source code | MIT (same as code) |
 
@@ -40,6 +40,6 @@ Gutenberg files land in `lab/corpus/en-folk/source/` (gitignored). See
 
 ## Afanasyev / archaic RU
 
-Production RU lexicon uses **DetCorpus** (`sss-ru-general`). The Afanasyev-based
-**archaic** store (`sss-ru-lexicon`) is lab-only; raw tale text and large
+Production RU lexicon uses **DetCorpus** (`lexicon-ru-general`). The Afanasyev-based
+**archaic** store (`lexicon-ru-archaic`) is lab-only; raw tale text and large
 `field_state.json` are not public-ship targets (see ADR-0007 preview scope).

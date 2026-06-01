@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 $env:PYTHONUTF8 = '1'
-$Store = 'lab/agent-stores/sss-ru-general'
+$Store = 'lab/agent-stores/lexicon-ru-general'
 $Log = Join-Path $Root 'post_train_ru_general.log'
 
 function Write-Log([string]$Msg) {
@@ -27,13 +27,13 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'bench structure failed' }
 
     python tools/export_ltm_pack.py --store-dir $Store
-    python tools/sss_memory_manifest.py --store-dir $Store --write
+    python tools/lexicon_memory_manifest.py --store-dir $Store --write
 
     git add "$Store/ltm/ctrl" tools/migrate_control_stack.py tools/bench_control_stack.py `
         "$Store/MEMORY.md" "$Store/memory_manifest.json" scripts/post_train_resume.ps1
     git diff --cached --quiet 2>$null
     if ($LASTEXITCODE -ne 0) {
-        git commit -m "feat(control): rollout prism_control on sss-ru-general (seed stack)"
+        git commit -m "feat(control): rollout prism_control on lexicon-ru-general (seed stack)"
     }
 
     Write-Log 'train_control_nca_stack cuda'
@@ -42,7 +42,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'control NCA train failed' }
 
     python tools/export_ltm_pack.py --store-dir $Store
-    python tools/sss_memory_manifest.py --store-dir $Store --write
+    python tools/lexicon_memory_manifest.py --store-dir $Store --write
     python tools/bench_control_stack.py --store-dir $Store --structure-only
 
     git add "$Store/nca/lattice_predict" "$Store/nca/lattice_dan" "$Store/nca/lattice_value" `
@@ -50,7 +50,7 @@ try {
         tools/train_control_nca_stack.py "$Store/MEMORY.md" "$Store/memory_manifest.json"
     git diff --cached --quiet 2>$null
     if ($LASTEXITCODE -ne 0) {
-        git commit -m "feat(control): train predict/dan/value NCA on sss-ru-general"
+        git commit -m "feat(control): train predict/dan/value NCA on lexicon-ru-general"
     }
 
     $head = git rev-parse --short HEAD

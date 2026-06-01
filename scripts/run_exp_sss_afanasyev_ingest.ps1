@@ -6,10 +6,10 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-afan'
+$store = 'lab/agent-stores/ingest-ref-afan'
 $bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $corpus = 'lab/text/corpus/afanasyev'
-$exp = 'lab/exp_sss_v1'
+$exp = 'lab/exp_lexicon_v1'
 
 Write-Host '=== sanitize corpus (OCR/editorial) ===' -ForegroundColor Cyan
 python tools/sanitize_afanasyev_corpus.py --corpus-dir $corpus `

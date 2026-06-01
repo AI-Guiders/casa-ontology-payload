@@ -9,9 +9,9 @@
 
 ## Позиция
 
-- **Prod RU T9** = только **modern** DetCorpus (`sss-ru-general`). Афан **не** в hot path.
+- **Prod RU T9** = только **modern** DetCorpus (`lexicon-ru-general`). Афан **не** в hot path.
 - Диалект / архаика / ультраредкое = **оси на лемме**, не отдельный runtime-store в profile.
-- Arhaic corpus (`sss-ru-lexicon`, `ru-archaic/`) — **lab / ingest ref**, помечается осями `era=archaic`, `active_for_t9=false`.
+- Arhaic corpus (`lexicon-ru-archaic`, `ru-archaic/`) — **lab / ingest ref**, помечается осями `era=archaic`, `active_for_t9=false`.
 
 ---
 
@@ -24,7 +24,7 @@
 | **active_for_t9** | bool | Допуск в predict T9 (prod default: только `true`) |
 | **sources** | string[] | `detcorpus-50k-cc0`, `opensubtitles-en-50k`, `afanasyev-sharded`, … |
 
-Sidecar: `{store}/lexicon_axes.jsonl` или `lab/corpus/ru-general/lexicon_axes.jsonl` (копируется в store при init).
+Sidecar `{store}/lexicon_axes.jsonl` — **ingest artifact only** (provenance / rebuild). После init/boot материализуется на **L3** как `E:lang.word.*|usage_axis|…` (`lexicon_field_oracle.py`). **Predict не читает sidecar** — только поле.
 
 ### Пороги `usage_band` (DetCorpus rank, v0)
 
@@ -44,10 +44,9 @@ Sidecar: `{store}/lexicon_axes.jsonl` или `lab/corpus/ru-general/lexicon_axes
 ## Runtime
 
 ```text
-boot_store → load lexicon_axes.jsonl → state["lexicon_axes"]
-predict_t9(..., t9_policy="prod") → filter candidates по active_for_t9
-_t9_score → sort: votes + length; ipm/rank if prefix ≥3 graphemes (homoglyph-safe)
-tick JSON (roadmap): context.lexicon_filter + sample axis на top anchor
+ingest / init_lexicon_store → axes JSONL (audit) + imprint L3 usage_axis edges
+boot_store → materialize sidecar → L3 if missing; lexicon_oracle_for_predict(state)
+predict_t9(..., t9_policy="prod") → L2 votes + L3 oracle (ipm/rank/era) — no bundle
 ```
 
 Политики `t9_policy`:
@@ -72,7 +71,7 @@ tick JSON (roadmap): context.lexicon_filter + sample axis на top anchor
 python tools/fetch_ru_frequency_headwords.py
 python tools/fetch_en_frequency_headwords.py
 python tools/build_lexicon_usage_axes.py --corpus ru-general
-python tools/build_lexicon_usage_axes.py --corpus en-general --copy-to-store lab/agent-stores/sss-en-folk
+python tools/build_lexicon_usage_axes.py --corpus en-general --copy-to-store lab/agent-stores/lexicon-en-folk
 python tools/init_lexicon_store.py --corpus-id ru-general
-python tools/bench_t9_lexicon_sweep.py --store-dir lab/agent-stores/sss-ru-general
+python tools/bench_t9_lexicon_sweep.py --store-dir lab/agent-stores/lexicon-ru-general
 ```

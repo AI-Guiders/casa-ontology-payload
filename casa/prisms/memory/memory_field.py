@@ -28,7 +28,7 @@ def rebuild_sss_store(
     bundle_name: str,
     *,
     stack_path: Path | None = None,
-    agent_id: str = "sss-lab",
+    agent_id: str = "lexicon-lab",
     listen_passes: int = 3,
     apply_bridges: bool = True,
 ) -> dict:

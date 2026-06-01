@@ -105,8 +105,8 @@ Shift / Caps — как раньше (`surface_effect` → capitalize / upper).
 python tools/vk_nca_train.py --device cuda
 
 # lexicon shards (CUDA по умолчанию)
-python tools/agent_autonomous_tick.py --store-dir lab/agent-stores/sss-ru-lexicon --sleep --train-nca
-python tools/nca_stale_shards.py --store-dir lab/agent-stores/sss-en-folk --train --device cuda
+python tools/agent_autonomous_tick.py --store-dir lab/agent-stores/lexicon-ru-archaic --sleep --train-nca
+python tools/nca_stale_shards.py --store-dir lab/agent-stores/lexicon-en-folk --train --device cuda
 ```
 
 **Lexicon:** тренить при pending/stale shards (cold ingest, новые headwords). **VK:** один раз после ingest или при смене layout pack.

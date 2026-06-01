@@ -5,12 +5,12 @@
   "stores": [
     {
       "role": "ru",
-      "store_dir": "lab/agent-stores/sss-ru-general",
+      "store_dir": "lab/agent-stores/lexicon-ru-general",
       "notes": "modern DetCorpus; lexicon_axes prod filter. Afan/archaic lab-only."
     },
     {
       "role": "en",
-      "store_dir": "lab/agent-stores/sss-en-folk"
+      "store_dir": "lab/agent-stores/lexicon-en-folk"
     }
   ],
   "boot": {

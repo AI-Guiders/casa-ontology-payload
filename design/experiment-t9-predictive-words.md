@@ -3,7 +3,7 @@
 **Status:** design (bench после `predictor`)  
 **Date:** 2026-05-30  
 **Канон:** [`CASA-ADR-0006-t9-predictive-text.md`](CASA-ADR-0006-t9-predictive-text.md) — архитектурные решения; этот файл — experiment cues и metrics.  
-**Depends on:** [`predictor.md`](predictor.md), [`critic.md`](critic.md), store `sss-ru-lexicon`  
+**Depends on:** [`predictor.md`](predictor.md), [`critic.md`](critic.md), store `lexicon-ru-archaic`  
 **Blocks:** Exp L F1/F2 compose until green
 
 ---
@@ -52,7 +52,7 @@ tools/bench_t9_predict.py
 
 ```bash
 python tools/bench_t9_predict.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --cues lab/exp_t9/t9_prefix_cues.v1.json \
   --boot-ltm-only
 ```

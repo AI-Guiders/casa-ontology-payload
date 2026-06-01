@@ -43,7 +43,7 @@
 | Слой | Меняется между продуктами? | Пример |
 |------|----------------------------|--------|
 | **Core** | **нет** (версия runtime) | `casa-ontology-payload` tools |
-| **Agent store** | **да** | `lab/agent-stores/sss-ru-lexicon` |
+| **Agent store** | **да** | `lab/agent-stores/lexicon-ru-archaic` |
 | **Profile** | **да** | `bilingual-t9-console.json` |
 
 **Цилиндры** (`prism_memory`, `prism_hippo`, `prism_io`) и **SN/DMN/CEN** — **архитектура core**, не отдельный store «Dev-мозг».
@@ -53,8 +53,8 @@
 **Поставка памяти** = каталог agent store после export:
 
 ```bash
-python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-ru-lexicon
-python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-en-folk
+python tools/export_ltm_pack.py --store-dir lab/agent-stores/lexicon-ru-archaic
+python tools/export_ltm_pack.py --store-dir lab/agent-stores/lexicon-en-folk
 # опционально: --compress  → .ltm.zst
 ```
 
@@ -88,8 +88,8 @@ python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-en-folk
   "profile_id": "bilingual-t9-console",
   "title": "Bilingual T9 (RU+EN) — console demo",
   "stores": [
-    { "role": "ru", "store_dir": "lab/agent-stores/sss-ru-lexicon" },
-    { "role": "en", "store_dir": "lab/agent-stores/sss-en-folk" }
+    { "role": "ru", "store_dir": "lab/agent-stores/lexicon-ru-archaic" },
+    { "role": "en", "store_dir": "lab/agent-stores/lexicon-en-folk" }
   ],
   "boot": { "mode": "linked" },
   "export_before_ship": true,
@@ -116,12 +116,12 @@ python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-en-folk
 **Сейчас (lab):**
 
 ```bash
-python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-ru-lexicon
+python tools/export_ltm_pack.py --store-dir lab/agent-stores/lexicon-ru-archaic
 python tools/boot_linked_stores.py \
-  --ru-store lab/agent-stores/sss-ru-lexicon \
-  --en-store lab/agent-stores/sss-en-folk
+  --ru-store lab/agent-stores/lexicon-ru-archaic \
+  --en-store lab/agent-stores/lexicon-en-folk
 python tools/run_t9_demo_cycle.py
-python tools/store_boot.py --store-dir lab/agent-stores/sss-ru-lexicon --smoke
+python tools/store_boot.py --store-dir lab/agent-stores/lexicon-ru-archaic --smoke
 ```
 
 **Целевой:**

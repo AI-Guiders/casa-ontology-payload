@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create sss-en-folk store: batch ingest EN folk headwords + export ltm/."""
+"""Create lexicon-en-folk store: batch ingest EN folk headwords + export ltm/."""
 
 from __future__ import annotations
 

@@ -2,7 +2,7 @@
 # Run from casa-ontology-payload/: .\scripts\run_sleep_uc_e2e.ps1
 
 param(
-    [string]$StoreDir = "lab/agent-stores/sss-ru-general",
+    [string]$StoreDir = "lab/agent-stores/lexicon-ru-general",
     [switch]$NoWrite,
     [switch]$NoBackup
 )

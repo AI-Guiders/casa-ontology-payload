@@ -83,8 +83,11 @@
 | | Роль | Примеры |
 |---|------|---------|
 | **Цифра** | знак записи (glyph) | арабские `0`…`9`; римские `I`, `V`, `X` — тоже знаки, не «десятая цифра» |
-| **Число** | `math.num.*`, мощность | one…nine, **ten**, twelve — cardinality |
-| **Запись числа (numeral)** | строка из цифр | `"10"`, `"12"` — это **число** ten/twelve, не новая цифра |
+| **Число** | `math.num.*`, мощность | абстракция «сколько»; **не** полный каталог в bundle |
+
+**Cardinality не потолок bundle:** claims `math.num.one`…`twenty_one` в L0 — **ранний опыт** счёта (палочки, цифры, teens). Любая мощность **N** = результат счёта/compose (`count×step`, add-chain); имя `math.num.N` (или выученное `math.num.five` для 5) **выводится**, не обязано быть заранее в KB. Запись `"30"` позже **denotes** к уже сложившейся мощности, а не наоборот.
+
+| **Запись числа (numeral)** | строка из цифр | `"10"`, `"12"` — denotes к мощности ten/twelve |
 
 Фаза teacher «арабские цифры» = только **0–9** → `E:grapheme.latn.d@…|denotes|math.num.*`.  
 **Ten** — число (`math.num.ten`); на поле через teacher (`X`→ten, `"10"`→ten), не как «цифра 10».
@@ -105,10 +108,12 @@
 
 ```text
   analyze(cue) → operand kinds (string_literal, identifier, pipe_run, …)
-              → reading_contexts[] in bundle (when: shape + op + operand)
-              → symbol_senses[] (glyph + context → math.op.*)
+              → reading frames on field (E:math.ctx.*|frame|… at ingest)
               → E:grapheme@math.ctx.*|denotes|concept on field
+              → predict: reading_model_from_decoded — **без** cartridge JSON
 ```
+
+**Ingest-only cartridge:** `reading_contexts`, `symbol_senses`, `math_keywords`, `math_glyphs` → materialize на поле (`f0_field_reading.materialize_reading_edges`). Runtime predict читает только `decode_f0_lattice` + hippo/sleep Extract.
 
 | `when.shape` | Параметры | Смысл |
 |--------------|-----------|--------|
@@ -117,9 +122,9 @@
 | `singleton` / `contains` | `glyph` | клавиша `+`, `=` |
 | `default` | — | слабый fallback |
 
-Новый случай (union, matrix `+`, …) — **строка в bundle**, не патч Python. Legacy теги `pipes_only` / `string_concat` ещё понимаются.
+Новый случай — **строка в ingest-cartridge** → sleep/ingest на поле, не патч predict. Legacy теги `pipes_only` / `string_concat` ещё понимаются.
 
-Код: `f0_reading.py` (analyze + match), `f0_stack.py` (encode/rank).
+Код: `f0_reading.py`, `f0_field_reading.py`, `f0_stack.py` (encode/rank).
 
 ### Оператор ↔ клавиатура
 

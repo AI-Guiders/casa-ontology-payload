@@ -88,7 +88,7 @@ CASA: **store profile** = composition root:
 
 ```json
 {
-  "profile_id": "sss-ru-general",
+  "profile_id": "lexicon-ru-general",
   "prism_composition": {
     "prism_control": { "stack": "design/prisms/control/stack.json", "enabled": true },
     "prism_memory": { "stack": "design/prisms/memory/stack.json", "enabled": true },
@@ -156,7 +156,7 @@ CASA: **store profile** = composition root:
 
 - [x] `export_ltm_pack` writes `ltm/memory/lexicon/` **and** legacy alias `ltm/l2/` + `ltm/lat/`
 - [x] NCA resolve: `nca/memory/lexicon/<id>/` primary; flat `nca/<id>/` readable
-- [x] One store migrated on disk (`sss-ru-general` re-export); boot smoke green
+- [x] One store migrated on disk (`lexicon-ru-general` re-export); boot smoke green
 
 ### Phase M4 — drop legacy
 
@@ -201,7 +201,7 @@ IDE может подписаться на FieldBus (future) для PFD: «stale
 
 ## 6. Критерии готовности migration
 
-- [x] Boot smoke `sss-ru-general` with **canonical paths** (`ltm/memory/lexicon/`, `ltm/memory/math/`)
+- [x] Boot smoke `lexicon-ru-general` with **canonical paths** (`ltm/memory/lexicon/`, `ltm/memory/math/`)
 - [x] `casa/` uses `casa.*` imports; no `sss_*` modules or legacy finder
 - [x] FieldBus events emitted on train complete + sleep complete
 - [ ] `design/prisms/*` referenced from store manifest

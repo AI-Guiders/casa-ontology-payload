@@ -6,10 +6,10 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-segment'
+$store = 'lab/agent-stores/lexicon-segment'
 $bundle = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
-$heldout = 'lab/exp_sss_v1/segment_heldout_words.json'
-$train = 'lab/exp_sss_v1/segment_train_vstrecha.json'
+$heldout = 'lab/exp_lexicon_v1/segment_heldout_words.json'
+$train = 'lab/exp_lexicon_v1/segment_train_vstrecha.json'
 
 Write-Host '=== init ===' -ForegroundColor Cyan
 python tools/gen_kb_bukvar_ru_full.py --out $bundle
@@ -21,6 +21,6 @@ python tools/run_segment_smoke.py `
     --bundle $bundle `
     --train $train `
     --heldout $heldout `
-    --out lab/exp_sss_v1/report_segment_generalize.json
+    --out lab/exp_lexicon_v1/report_segment_generalize.json
 
 Write-Host 'Done.'

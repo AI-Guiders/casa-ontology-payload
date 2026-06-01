@@ -12,7 +12,7 @@ python tools/normalize_afanasyev_txt.py `
     --volumes 1 `
     --limit 30 `
     --out-dir lab/text/corpus/afanasyev `
-    --manifest lab/exp_sss_v1/report_afanasyev_normalize_smoke.json
+    --manifest lab/exp_lexicon_v1/report_afanasyev_normalize_smoke.json
 
 Write-Host '=== sample file ===' -ForegroundColor Cyan
 Get-Content lab/text/corpus/afanasyev/afan-v1-n001.txt -Encoding UTF8 -TotalCount 12

@@ -271,7 +271,7 @@ Exp L0 остаётся **regression** для F0 ingest; predict bench — **н�
 | список кандидатов на экране | **`anchors[]`** — не один `hypothesis` |
 | следующая буква уточняет | новый cue → **сужение** anchor set; Critic при финале → `focus` |
 
-**Не нужны** цифры 2-9 в v0 — достаточно **prefix cue** по RU lexicon (`sss-ru-lexicon`):
+**Не нужны** цифры 2-9 в v0 — достаточно **prefix cue** по RU lexicon (`lexicon-ru-archaic`):
 
 ```text
 cue: "ма"     → anchors: мама | майка | маска | марля | …

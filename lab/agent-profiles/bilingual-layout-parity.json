@@ -5,11 +5,11 @@
   "stores": [
     {
       "role": "ru",
-      "store_dir": "lab/agent-stores/sss-ru-lexicon"
+      "store_dir": "lab/agent-stores/lexicon-ru-archaic"
     },
     {
       "role": "en",
-      "store_dir": "lab/agent-stores/sss-en-folk"
+      "store_dir": "lab/agent-stores/lexicon-en-folk"
     }
   ],
   "core_ltm": {

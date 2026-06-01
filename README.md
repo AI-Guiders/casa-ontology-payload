@@ -24,8 +24,8 @@ Type `co` → see **EN: cow** and **RU: сова** candidates. `Esc` to quit.
 
 | Piece | Role |
 |-------|------|
-| `python -m casa.cli init_ru_dev_store` | Minimal RU lexicon (~90 headwords) → `sss-ru-lexicon/` |
-| `python -m casa.cli init_en_folk_store` | EN folk lexicon → `sss-en-folk/` |
+| `python -m casa.cli init_ru_dev_store` | Minimal RU lexicon (~90 headwords) → `lexicon-ru-archaic/` |
+| `python -m casa.cli init_en_folk_store` | EN folk lexicon → `lexicon-en-folk/` |
 | `python -m casa.cli run_t9_demo_cycle` | Init + benches (ambiguous, T9, unified, linked) |
 | `python -m casa.cli t9_runtime` | Python stdio JSON server for C# UI |
 | `apps/Casa.T9.Console` | Interactive dual-column T9 demo |

@@ -19,8 +19,8 @@ Set-Location $PSScriptRoot\..
 $env:PYTHONUTF8 = "1"
 $env:PYTHONUNBUFFERED = "1"
 
-$RuStore = "lab/agent-stores/sss-ru-general"
-$EnStore = "lab/agent-stores/sss-en-folk"
+$RuStore = "lab/agent-stores/lexicon-ru-general"
+$EnStore = "lab/agent-stores/lexicon-en-folk"
 $ReportDir = "lab/exp_bilingual/reports"
 New-Item -ItemType Directory -Force -Path $ReportDir | Out-Null
 

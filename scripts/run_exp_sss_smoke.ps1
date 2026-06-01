@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$store = 'lab/agent-stores/sss-lab'
+$store = 'lab/agent-stores/lexicon-lab'
 $bundle = 'lab/kb/kb-bukvar-ru-primer-v1.payload.json'
 $stack = 'design/prisms/memory/stack.json'
 
@@ -15,7 +15,7 @@ python tools/bench_sss_lattice.py `
     --store-dir $store `
     --bundle $bundle `
     --stack $stack `
-    --out lab/exp_sss_v1/report_lattice.json
+    --out lab/exp_lexicon_v1/report_lattice.json
 
 Write-Host '=== SSS: babble L0 L1 L2 ===' -ForegroundColor Cyan
 python tools/sss_surface.py --store-dir $store --lattice L0_grapheme --prompt 'м а'

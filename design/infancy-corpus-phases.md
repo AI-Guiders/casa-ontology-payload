@@ -67,7 +67,7 @@
 
 | | |
 |---|---|
-| **Корпус** | **Целые тексты**: Afan shards (`sss-afan` ingest ref), dialogue KB, будущий `listen_mass/manifest.ndjson`. |
+| **Корпус** | **Целые тексты**: Afan shards (`ingest-ref-afan` ingest ref), dialogue KB, будущий `listen_mass/manifest.ndjson`. |
 | **Режим** | Batch **encode в цилиндр**, не exam-QA; teacher **не** требует ответа на каждый токен. |
 | **Цель** | Повторяющиеся n-граммы, контекстные «маркеры окружения»; co-activation **ветер / ветяр / …** на соседних tiles. |
 | **Prod** | Modern DetCorpus **не заменяет** сказку для dialect merge — только **частотный** hot path. |
@@ -100,9 +100,9 @@
 
 | | |
 |---|---|
-| **Store** | `sss-ru-general` (modern), profile `ru_lexicon`. |
+| **Store** | `lexicon-ru-general` (modern), profile `ru_lexicon`. |
 | **Оси** | `lexicon_axes.jsonl`: `active_for_t9`, `era`, `usage_band` — **фильтр predict**, не тег на клетке. |
-| **Archaic** | `sss-ru-lexicon` / Afan — **lab**, не prod hot path. |
+| **Archaic** | `lexicon-ru-archaic` / Afan — **lab**, не prod hot path. |
 
 См. [`lexicon-usage-axes.md`](lexicon-usage-axes.md), [`ru-lexicon-modern-archaic.md`](ru-lexicon-modern-archaic.md).
 
@@ -114,11 +114,11 @@
 |------|-------------------|------------|---------------------|--------------|
 | 0 | immutable alphabet | любой RU store после imprint L0 | `grapheme_ingest`, quad init | — |
 | 1 | bukvar KB | `bukvar-lab`, bundles | ingest bundle, listen_tick (roadmap) | listen (future) |
-| 2 | Afan tales (sharded) | `sss-afan` (ingest ref), `sss-ru-lexicon` | parallel ingest, **listen-only** mode TBD | — (не `ru_lexicon` prod) |
+| 2 | Afan tales (sharded) | `ingest-ref-afan` (ingest ref), `lexicon-ru-archaic` | parallel ingest, **listen-only** mode TBD | — (не `ru_lexicon` prod) |
 | 2b | DetCorpus 50k (modern) | `lab/corpus/ru-general/` | `build_lexicon_usage_axes.py` | источник для general |
 | 3 | dialogue + grammar KB | `language-agent-lab` | Exp J train windowed | lab |
 | 4 | — | тот же store после sleep | `T_consolidate` / hippo pipeline TBD | — |
-| 5 | merged modern headwords | `sss-ru-general` | `scripts/run_sss_ru_general.ps1` | `ru_lexicon` |
+| 5 | merged modern headwords | `lexicon-ru-general` | `scripts/run_sss_ru_general.ps1` | `ru_lexicon` |
 
 **Правило:** имя корпуса (Afan) **не** в prod store_id; tier `archaic` vs `general` — в [`agent-store-catalog.md`](agent-store-catalog.md).
 
@@ -129,7 +129,7 @@
 | Возможность | Статус (2026-05-30) |
 |-------------|---------------------|
 | Immutable L0 + split cyrl/latn | ✅ |
-| Batch imprint L2 + NCA CUDA shards | ✅ (`sss-ru-general`, `sss-ru-lexicon`) |
+| Batch imprint L2 + NCA CUDA shards | ✅ (`lexicon-ru-general`, `lexicon-ru-archaic`) |
 | Listen mass → encode без quiz | ⚠️ design + ADR-0004; batch driver не канонизирован |
 | Авто-hub ветер↔ветяр после listen | ❌ roadmap (Extract/sleep) |
 | Babble→correct на held-out | ⚠️ Exp J partial (grammar/literacy), не dialect merge |
@@ -169,7 +169,7 @@ Lab-эксперимент «после listen+correct+sleep cue `вет…` →
 |--------|------|---------|
 | `run_infancy_phase0_wiring.ps1` | 0 | L0 imprint + repair smoke |
 | `run_infancy_phase1_bukvar_listen.ps1` | 1 | symbolic listen B0–B1 |
-| `run_infancy_phase2_afan_listen_mass.ps1` | 2 | ingest encode **без** L2 quiz; store `sss-ru-lexicon` или listen tier |
+| `run_infancy_phase2_afan_listen_mass.ps1` | 2 | ingest encode **без** L2 quiz; store `lexicon-ru-archaic` или listen tier |
 | `run_sss_ru_general.ps1` | 5 | уже есть: axes + init + NCA + bench |
 | `bench_infancy_cluster_merge.py` | 4 | dialect pair list → cluster purity |
 
@@ -184,7 +184,7 @@ Lab-эксперимент «после listen+correct+sleep cue `вет…` →
 | Pack | Stores | Фазы |
 |------|--------|------|
 | **Language child (full)** | RU general + listen mass tier | 0→2→3→4→5 |
-| **BiT9 console** | `sss-ru-general` only | в основном **5** (surface/T9) |
+| **BiT9 console** | `lexicon-ru-general` only | в основном **5** (surface/T9) |
 
 Не смешивать: prod T9 profile **не** подмешивает Afan без явного `t9_policy=lab`.
 

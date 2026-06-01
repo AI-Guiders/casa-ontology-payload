@@ -2,7 +2,7 @@
 # Run from casa-ontology-payload/: .\scripts\run_sleep_semantic_ingest.ps1
 
 param(
-    [string]$StoreDir = "lab/agent-stores/sss-ru-general",
+    [string]$StoreDir = "lab/agent-stores/lexicon-ru-general",
     [switch]$DryRun,
     [switch]$SeedOnly
 )

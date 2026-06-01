@@ -12,16 +12,16 @@
 Перед поставкой store — **export ltm** (канон):
 
 ```bash
-python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-ru-lexicon
-python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-en-folk
+python tools/export_ltm_pack.py --store-dir lab/agent-stores/lexicon-ru-archaic
+python tools/export_ltm_pack.py --store-dir lab/agent-stores/lexicon-en-folk
 ```
 
 Boot по profile (сейчас вручную):
 
 ```bash
 python tools/boot_linked_stores.py \
-  --ru-store lab/agent-stores/sss-ru-lexicon \
-  --en-store lab/agent-stores/sss-en-folk
+  --ru-store lab/agent-stores/lexicon-ru-archaic \
+  --en-store lab/agent-stores/lexicon-en-folk
 python tools/run_t9_demo_cycle.py
 ```
 

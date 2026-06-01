@@ -115,7 +115,7 @@ def test_predict_ranks_by_field_edges_not_name() -> None:
     extract_emergent_count_patterns(lats, _episodes_for_step(5, 5, 4), state, copies=5)
     bundle = _bundle()
     dec = decode_f0_lattice(lats["schema-math"], min_votes=1)
-    ranked = rank_cue_on_f0(bundle, dec, "5, 10, 15, 20")
+    ranked = rank_cue_on_f0(dec, "5, 10, 15, 20")
     matches = match_emergent_patterns_for_values(dec, [5, 10, 15, 20])
     assert matches
     assert ranked[0][0] == matches[0][0]

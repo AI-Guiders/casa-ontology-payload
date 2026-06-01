@@ -6,10 +6,10 @@ Set-Location $Root
 $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
-$store = 'lab/agent-stores/sss-phase-a'
+$store = 'lab/agent-stores/lexicon-phase-a'
 $bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
 $corpus = 'lab/text/corpus'
-$exp = 'lab/exp_sss_v1'
+$exp = 'lab/exp_lexicon_v1'
 
 Write-Host '=== init bukvar store ===' -ForegroundColor Cyan
 python tools/gen_kb_bukvar_ru_full.py --out $bukvar
