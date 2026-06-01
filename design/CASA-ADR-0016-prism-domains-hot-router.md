@@ -2,7 +2,7 @@
 
 **Статус:** принято (design + API v0, 2026-06-01)  
 **Область:** `field_state.prisms`, predict/sleep, store layout  
-**Связано:** [`memory-hierarchy.md`](memory-hierarchy.md), [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`context-axis.md`](context-axis.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md)
+**Связано:** [`memory-hierarchy.md`](memory-hierarchy.md), [`prism-memory-architecture-v1.md`](prism-memory-architecture-v1.md) (KB L0–L3 parity, compaction, maintenance), [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`context-axis.md`](context-axis.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md)
 
 ---
 
@@ -134,3 +134,4 @@ v0: content остаётся в `prism_memory` + legacy `ltm/l2/`; spawn нов�
 | Дата | Изменение |
 |------|-----------|
 | 2026-06-01 | ADR + API v0 (`prism_spawn`, hot_context, router) |
+| 2026-06-01 | bootstrap routes on `ensure_prisms`; profile `default_content_prism`; T9 hot salience re-rank |

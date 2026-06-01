@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "doc": "design/prism-memory-architecture-v1.md",
+  "kb_canon": "work/projects/door-to-singularity/ca-substrate-agent/kb-casa-prism-memory-architecture-v1.md",
+  "p0_hot": {
+    "prism_id": "prism_hot_context",
+    "max_edges_default": 4096,
+    "prune_target_default": 2048,
+    "soft_edge_count": 1024,
+    "min_salience_prune": 0.05
+  },
+  "p1_operational": {
+    "content_kinds": ["content"],
+    "always_wake": ["prism_control"],
+    "default_content_prism": "prism_memory"
+  },
+  "p2_episodic": {
+    "prism_id": "prism_hippo",
+    "self_paths": ["journal/", "agent/"]
+  },
+  "p3_router": {
+    "prism_id": "prism_router",
+    "retrieval_order": ["resolve_route", "hot_digest", "content_predict", "hippo_write", "sleep_consolidate"]
+  },
+  "compact_order": [
+    "prune_hot_context",
+    "hippo_trim_post_consolidate",
+    "journal_archive_optional"
+  ],
+  "store_tiers": ["shipped_ltm_nca", "runtime_checkpoint", "self_agent_journal"]
+}

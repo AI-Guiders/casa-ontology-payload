@@ -2,7 +2,7 @@
 
 **Status:** v0 (`memory_manifest.py`)  
 **Date:** 2026-05-30  
-**See:** [`l2-lattice-sharding.md`](l2-lattice-sharding.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0016-prism-domains-hot-router.md`](CASA-ADR-0016-prism-domains-hot-router.md)
+**See:** [`l2-lattice-sharding.md`](l2-lattice-sharding.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0016-prism-domains-hot-router.md`](CASA-ADR-0016-prism-domains-hot-router.md), [`prism-memory-architecture-v1.md`](prism-memory-architecture-v1.md) (KB L0–L3 parity для `field_state.prisms`)
 
 ## Tree (analog of KB folders)
 
@@ -87,6 +87,17 @@ Do **not** use `lab/nca_out_<corpus>_*/` for production — train in-place under
 | `note` / `draft` | наблюдение без проверки |
 
 `meta.status`: `open` → `testing` → `confirmed` / `rejected` / `unclear`. **`workbook_check`** гоняет predict по `test_cues`. **`agent_promote`** — явный перенос confirmed (или `--allow-unconfirmed`) → hippo episode + sleep → `ltm/` (структура памяти). Код: `agent_workbook.py`, `agent_promote.py`, CLI `agent_workbook`, `agent_promote`.
+
+## Prism layers (KB parity)
+
+Операционные слои **P0–P3** (hot / operational / episodic / router) для `field_state.prisms` — тот же контракт, что KB **L0–L3** для agent-notes: budgets, compaction, maintenance, retrieval order. Полная таблица и правила: [`prism-memory-architecture-v1.md`](prism-memory-architecture-v1.md); manifest: [`prism-memory-architecture-v1.json`](prism-memory-architecture-v1.json).
+
+| KB | CASA prism |
+|----|------------|
+| L0 hot | `prism_hot_context` + SN meta |
+| L1 operational | content + `prism_control` |
+| L2 archive | `prism_hippo`, `journal/` |
+| L3 routing | `prism_router` |
 
 ## Logical hierarchy
 
