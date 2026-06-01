@@ -95,6 +95,7 @@
 **Compaction:**
 
 - После успешной consolidate — **trim** hippo (TTL / cap episodes).
+- Большие очереди (lab ingest): **batched** `run_sleep`, **thin-first** checkpoint — [`CASA-ADR-0023-sleep-scale-thin-first.md`](CASA-ADR-0023-sleep-scale-thin-first.md).
 - Journal: ротация по scope — см. [`CASA-ADR-0013-agent-journal.md`](CASA-ADR-0013-agent-journal.md).
 
 ---
@@ -169,8 +170,11 @@ resolve_route(state, ctx)
 | hippo cap | queue > policy (post-sleep) |
 | nca.models | lattice без path для active content |
 | kind integrity | `hot_context` без lattices; `content` без kind |
+| ltm_vocab_over_cap | любая решётка vocab > 65535 (u16) |
+| ltm_l2_monolith_remigrate | `needs_l2_remigrate` (legacy monolith) |
+| ltm_vocab_soft (warn) | shard ≥ 90% u16 cap — plan re-shard |
 
-**CLI / код:** `python -m casa.prisms.memory.prism_memory_health` or `tools/prism_memory_health.py`; v0 — `prune_hot_context` + `run_prism_memory_health`.
+**Kernel:** `maintain_memory_kernel` на каждом `run_sleep` — аспекты по порядку compaction loop (hot → … → `ltm_layout`). `run_prism_memory_health` / `--auto-maintain` — тот же API. Расширение: класс аспекта с `scan` / `checks` / `maintain`, регистрация в `memory_kernel_aspects()`.
 
 ---
 

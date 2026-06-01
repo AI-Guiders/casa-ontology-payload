@@ -4,7 +4,7 @@
 **Status:** concept (канон для lab; уточняет терминологию)  
 **Audience:** разработка BiT9, sleep, Extract  
 **Parent:** [`understanding-contract.md`](understanding-contract.md), [`context-axis.md`](context-axis.md)  
-**Companion:** [`bit9-lexicon-parallel-roadmap.md`](bit9-lexicon-parallel-roadmap.md), [`infancy-corpus-phases.md`](infancy-corpus-phases.md), [`lexicon-usage-axes.md`](lexicon-usage-axes.md), [`sss-layer-names.md`](sss-layer-names.md)
+**Companion:** [`bit9-lexicon-parallel-roadmap.md`](bit9-lexicon-parallel-roadmap.md), [`infancy-corpus-phases.md`](infancy-corpus-phases.md), [`lexicon-usage-axes.md`](lexicon-usage-axes.md), [`sss-layer-names.md`](sss-layer-names.md), [`CASA-ADR-0023-sleep-scale-thin-first.md`](CASA-ADR-0023-sleep-scale-thin-first.md) (batched sleep, thin-first, **вытесняющая многозадачность** — non-claim)
 
 **Имена слоёв:** в prose — **T0…T3** (APLF) или язык ЗССФ; **`L0_*`…`L3_phrase`** только как ID в коде. Карта коллизий: [`sss-layer-names.md`](sss-layer-names.md) § «Почему Lx путаются».
 
@@ -85,6 +85,10 @@ Orchestrator: `scripts/run_bit9_parallel_tracks.ps1` (A + C2 benches парал�
 | **NCA sleep / stale shards** (track D) | GPU repair полок после cold ingest | отдельно от cognitive sleep |
 
 **Вывод:** понятийный аппарат **заложен** (L3 edges), но **кристаллизация из episodic** (ветер↔ветяр, Extract после babble) — **следующий этап**.
+
+### Wake вытесняет sleep (планировщик, non-claim)
+
+Метафора ОС: **tick / surprise** — высокий приоритет; **sleep consolidate** — фоновый job с квантами (батчи). Monolithic sleep на весь hippo — как критическая секция без preemption; целевое — checkpoint между батчами и возможность resume. Подробно: [`CASA-ADR-0023-sleep-scale-thin-first.md`](CASA-ADR-0023-sleep-scale-thin-first.md) § «Neuro analogy & вытесняющая многозадачность». Это **не** claim биологической модели.
 
 ---
 
@@ -241,3 +245,4 @@ Lab-эксперiment «после listen+correct+**sleep** cue `вет…` → 
 | Date | Change |
 |------|--------|
 | 2026-05-31 | v0: параллельный рост wake/sleep; различие semantic ingest vs `run_sleep`; карта Extract roadmap |
+| 2026-06-01 | Ссылка ADR-0023: preemptive scheduling, batched sleep |

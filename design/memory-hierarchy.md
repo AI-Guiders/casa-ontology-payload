@@ -2,7 +2,7 @@
 
 **Status:** v0 (`memory_manifest.py`)  
 **Date:** 2026-05-30  
-**See:** [`l2-lattice-sharding.md`](l2-lattice-sharding.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0016-prism-domains-hot-router.md`](CASA-ADR-0016-prism-domains-hot-router.md), [`CASA-ADR-0017-compact-persist.md`](CASA-ADR-0017-compact-persist.md), [`prism-memory-architecture-v1.md`](prism-memory-architecture-v1.md) (KB L0–L3 parity для `field_state.prisms`)
+**See:** [`l2-lattice-sharding.md`](l2-lattice-sharding.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0016-prism-domains-hot-router.md`](CASA-ADR-0016-prism-domains-hot-router.md), [`CASA-ADR-0017-compact-persist.md`](CASA-ADR-0017-compact-persist.md), [`CASA-ADR-0021-experience-agent-transfer.md`](CASA-ADR-0021-experience-agent-transfer.md) (опыт без картридж-продукта; transfer matrix), [`CASA-ADR-0022-agent-v1-existence-bar.md`](CASA-ADR-0022-agent-v1-existence-bar.md) (бар «живого агента» v1, не AGI), [`CASA-ADR-0023-sleep-scale-thin-first.md`](CASA-ADR-0023-sleep-scale-thin-first.md) (batched sleep, thin-first, ingest hippo), [`prism-memory-architecture-v1.md`](prism-memory-architecture-v1.md) (KB L0–L3 parity для `field_state.prisms`)
 
 ## Tree (analog of KB folders)
 
@@ -54,13 +54,15 @@ Do **not** use `lab/nca_out_<corpus>_*/` for production — train in-place under
   Self (agent/, journal/)     ◄── agent_remember ──  не в ltm/ без agent_promote
 ```
 
-**Hippo:** wake пишет в **runtime checkpoint**; после **sleep** консолидация уходит в **структуру памяти** (`prism_memory` → `ltm/`); episodic queue **prune** — не дублировать в profile tar как dump эпизодов.
+**Hippo:** wake пишет в **runtime checkpoint**; после **sleep** консолидация уходит в **структуру памяти** (`prism_memory` → `ltm/`); episodic queue **prune** — не дублировать в profile tar как dump эпизодов. На больших store: **thin checkpoint до sleep**, батчи consolidate — [`CASA-ADR-0023-sleep-scale-thin-first.md`](CASA-ADR-0023-sleep-scale-thin-first.md).
 
 **Код:** константы `STORE_TIER_*` в `casa/prisms/shared/store_layout.py`; flush — `casa/prisms/shared/store_persist.py`.
 
 **Неявная vs явная память:** [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md) § Неявная vs явная — tick/hippo/структура памяти vs `agent_remember`.
 
 ### Фактология vs картриджи (canon)
+
+Продуктовая модель «только опыт, без картриджей» — [`CASA-ADR-0021-experience-agent-transfer.md`](CASA-ADR-0021-experience-agent-transfer.md). **Shipped tier** здесь = **agent memory pack** (`ltm/` + `nca/`), не ingest cartridge.
 
 Всё **фактическое**, чем агент оперирует, — в **его структуре памяти** (`prism_memory`: раскладка на решётках → `ltm/` после sleep; runtime-зеркало — `field_state.json`) и в **self** (`agent/`, `journal/`). **Не** в ingest-картриджах (`bundles/`, corpus, lab KB JSON) и **не** как runtime-oracle из них.
 

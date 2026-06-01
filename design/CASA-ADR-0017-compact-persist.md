@@ -2,7 +2,7 @@
 
 **Статус:** принято (v0, 2026-06-01)  
 **Область:** agent store / `ltm/` / multi-prism  
-**Связано:** [`memory-hierarchy.md`](memory-hierarchy.md), [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md), [`CASA-ADR-0016-prism-domains-hot-router.md`](CASA-ADR-0016-prism-domains-hot-router.md), [`ltm-pack.md`](ltm-pack.md)
+**Связано:** [`memory-hierarchy.md`](memory-hierarchy.md), [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md), [`CASA-ADR-0016-prism-domains-hot-router.md`](CASA-ADR-0016-prism-domains-hot-router.md), [`CASA-ADR-0023-sleep-scale-thin-first.md`](CASA-ADR-0023-sleep-scale-thin-first.md) (thin-before-sleep на больших store), [`ltm-pack.md`](ltm-pack.md)
 
 ---
 
@@ -58,9 +58,13 @@ v0 до ADR-0017: `export_ltm_pack` писал в основном `prism_memory
 
 CLI: `python tools/remigrate_l2_lex.py --store-dir … --write`
 
+**Прогресс (долгие прогоны):** `migrate_thin_checkpoint.py` и `compact_persist --progress` пишут этапы в **stderr** (`casa.prisms.shared.migrate_progress`); JSON-отчёт — в stdout. Лог: `lab/agent-stores/<id>/migrate.log` при `Tee-Object`.
+
+**Kernel health (общее):** `kernel_memory_health` — регистр **аспектов** (`hot_context`, `hippo`, `router`, `nca_registry`, `kind_integrity`, `ltm_layout`). `scan_memory_kernel_health` / `maintain_memory_kernel` на **`run_sleep`** (`store.kernel_memory_maintain_on_sleep`, default true). **Vocab/u16** — только аспект `ltm_layout` (`ltm_vocab_health.py`). CLI `tools/*` — lab-обёртки. Новые лимиты → новый aspect + `maintain`, не разовый скрипт.
+
 NCA на одной полке с 86k каналами по-прежнему невозможен — sharding это же требование [`l2-lattice-sharding.md`](l2-lattice-sharding.md).
 
-**L3 `L3_phrase` monolith:** на ingest-ref-afan vocab может быть **> u16** (сотни тысяч). До phrase-sharding migrate с `skip_vocab_over=65535` **не пишет** такие решётки в `ltm/`, фиксирует их в `manifest.skipped_vocab_lattices`; тело остаётся в `field_state.legacy.json`. Roadmap: shard L3 по тому же паттерну, что L2.
+**L3 `L3_phrase` monolith:** vocab может быть **> u16**. **Исправление:** `l3_remigrate` / `phrase_shard` → `L3_phrase_XX` (quantile по token string), `ensure_l3_sharded_for_export` в export/sleep/migrate. См. [`l3-lattice-sharding.md`](l3-lattice-sharding.md). После remigrate повторный `compact_persist` пишет все L3 shards в `ltm/`.
 
 ### Шарды решёток ≠ несколько призм
 
