@@ -19,10 +19,7 @@ from casa.domain.prism_wire import (
     prism_kind,
     prism_memory,
     prism_supports_lattices,
-)
-from casa.prisms.shared.prism_state import (
-    prism_kind as facade_kind,
-    prism_supports_lattices as facade_supports,
+    wire_used_legacy_format,
 )
 
 
@@ -40,8 +37,18 @@ def test_prism_from_block_matches_wire_helpers():
     p = prism_from_block(PRISM_MEMORY, block)
     assert p.kind == PRISM_KIND_CONTENT
     assert p.supports_lattices is True
-    assert prism_kind(state, PRISM_MEMORY) == facade_kind(state, PRISM_MEMORY)
-    assert prism_supports_lattices(state, PRISM_MEMORY) == facade_supports(state, PRISM_MEMORY)
+    assert prism_kind(state, PRISM_MEMORY) == PRISM_KIND_CONTENT
+    assert prism_supports_lattices(state, PRISM_MEMORY) is True
+
+
+def test_wire_used_legacy_format_detects_cylinder_keys():
+    state = {
+        "schema_version": "multi_cylinder_v1",
+        "cylinders": {},
+    }
+    assert wire_used_legacy_format(state) is True
+    normalize_prisms(state)
+    assert wire_used_legacy_format(state) is False
 
 
 def test_normalize_legacy_cylinders():

@@ -3,10 +3,7 @@
 
 from __future__ import annotations
 
-SCHEMA_LEGACY = "multi_cylinder_v1"
 SCHEMA_CURRENT = "multi_prism_v1"
-
-ROOT_LEGACY = "cylinders"
 ROOT = "prisms"
 
 PRISM_MEMORY = "prism_memory"
@@ -29,12 +26,5 @@ PRISM_KIND_HIPPO = "hippo"
 
 SN_ACTIVE_PRISM = "active_prism"
 SN_ACTIVE_CONTROL = "active_control_prism"
-SN_ACTIVE_LEGACY = "active_cylinder"
-
-_LEGACY_BLOCK = {
-    "cyl_memory": PRISM_MEMORY,
-    "cyl_hippo": PRISM_HIPPO,
-    "cyl_control": PRISM_CONTROL,
-}
 
 SYSTEM_PRISM_IDS = frozenset({PRISM_HIPPO, PRISM_CONTROL, PRISM_AGENT})

@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Compatibility facade over casa.domain.prism_wire (ADR-0020 M4).
-
-New code should prefer FieldState / PrismCatalog; imports from this module remain valid.
-"""
+"""Deprecated: use casa.domain.prism_ids and casa.domain.prism_wire (ADR-0020 M4)."""
 
 from __future__ import annotations
+
+import warnings
 
 from casa.domain.prism_ids import (
     PRISM_AGENT,
@@ -23,9 +22,7 @@ from casa.domain.prism_ids import (
     PRISM_ROUTER,
     PRISM_VISUAL,
     ROOT,
-    ROOT_LEGACY,
     SCHEMA_CURRENT,
-    SCHEMA_LEGACY,
 )
 from casa.domain.prism_wire import (
     active_control_prism_id,
@@ -45,14 +42,12 @@ from casa.domain.prism_wire import (
     set_active_prism,
 )
 
-_ACTIVE_CONTROL = "active_control_prism"
-_ACTIVE_LEGACY = "active_cylinder"
+# Back-compat aliases for SN keys (not legacy wire).
 _ACTIVE = "active_prism"
+_ACTIVE_CONTROL = "active_control_prism"
 
 __all__ = [
-    "SCHEMA_LEGACY",
     "SCHEMA_CURRENT",
-    "ROOT_LEGACY",
     "ROOT",
     "PRISM_MEMORY",
     "PRISM_LANG_RU",
@@ -69,9 +64,8 @@ __all__ = [
     "PRISM_KIND_HOT_CONTEXT",
     "PRISM_KIND_ROUTER",
     "PRISM_KIND_CONTROL",
-    "_ACTIVE_CONTROL",
-    "_ACTIVE_LEGACY",
     "_ACTIVE",
+    "_ACTIVE_CONTROL",
     "normalize_prisms",
     "prisms",
     "prism_memory",
@@ -88,3 +82,20 @@ __all__ = [
     "active_prism_id",
     "set_active_prism",
 ]
+
+
+def __getattr__(name: str):
+    if name in ("SCHEMA_LEGACY", "ROOT_LEGACY", "_ACTIVE_LEGACY"):
+        warnings.warn(
+            f"casa.prisms.shared.prism_state.{name} removed; legacy wire is internal to "
+            "casa.domain.prism_wire.normalize_prisms",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        legacy = {
+            "SCHEMA_LEGACY": "multi_cylinder_v1",
+            "ROOT_LEGACY": "cylinders",
+            "_ACTIVE_LEGACY": "active_cylinder",
+        }
+        return legacy[name]
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
