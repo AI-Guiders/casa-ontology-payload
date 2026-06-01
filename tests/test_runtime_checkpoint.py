@@ -65,6 +65,42 @@ def test_thin_checkpoint_round_trip(tmp_path: Path) -> None:
     assert hot_neighbors(booted, "cue:pi")
 
 
+def test_build_thin_snapshot_strips_hippo_lattice_cells():
+    from casa.prisms.memory.memory_prisms import empty_hippo_lattice
+    from casa.prisms.shared.lattice_names_v1 import EPISODIC_SURFACE
+    from casa.prisms.shared.prism_state import prism_hippo
+
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 1})
+    hip = prism_hippo(state)
+    hip["lattices"][EPISODIC_SURFACE] = empty_hippo_lattice()
+    hip["lattices"]["H0_episode"] = empty_hippo_lattice(width=32, height=32)
+    hip["lattices"]["H0_episode"]["cells"][0] = ["ep:stub"]
+
+    thin = build_thin_snapshot(state)
+    for lid in ("H0_episode", EPISODIC_SURFACE):
+        lat = thin["prisms"]["prism_hippo"]["lattices"][lid]
+        assert lat.get("_cells_in_ltm") is True
+        assert lat["cells"] == []
+    assert thin["prisms"]["prism_hippo"]["episodes"] == []
+
+
+def test_build_thin_snapshot_omits_last_sleep_items():
+    state = ensure_prisms(
+        {
+            "schema_version": "multi_prism_v1",
+            "field_version": 1,
+            "consolidation": {
+                "last_sleep": {"merged": 2, "items": [{"id": "a"}, {"id": "b"}]},
+            },
+        }
+    )
+    thin = build_thin_snapshot(state)
+    last = thin["consolidation"]["last_sleep"]
+    assert "items" not in last
+    assert last["items_omitted"] == 2
+    assert last["merged"] == 2
+
+
 def test_merge_thin_overlay_keeps_episodes():
     state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
     spawn_content_lattice(state, "prism_memory", "L3_phrase", z_level=3)

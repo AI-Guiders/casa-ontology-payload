@@ -42,6 +42,9 @@ _RUNTIME_TOP_KEYS = (
     "_checkpoint",
 )
 
+# Ephemeral boot flags — never persist in checkpoint JSON.
+_EPHEMERAL_STATE_KEYS = frozenset({"_multi_prism_bootstrapped", "_runtime_dirty", "_bootstrap_depth"})
+
 
 def ltm_pack_ready(store_dir: Path) -> bool:
     return (store_dir / "ltm" / "pack.manifest.json").is_file()
@@ -62,16 +65,40 @@ def _strip_lattice_cells(lat: dict) -> dict:
     return out
 
 
+def _trim_consolidation_for_checkpoint(thin: dict) -> None:
+    """Drop bulky sleep merge logs from runtime JSON (counts remain in consolidation)."""
+    cons = thin.get("consolidation")
+    if not isinstance(cons, dict):
+        return
+    last = cons.get("last_sleep")
+    if not isinstance(last, dict) or "items" not in last:
+        return
+    items = last.get("items")
+    omitted = len(items) if isinstance(items, list) else 0
+    cons["last_sleep"] = {k: v for k, v in last.items() if k != "items"}
+    if omitted:
+        cons["last_sleep"]["items_omitted"] = omitted
+
+
 def build_thin_snapshot(state: dict) -> dict[str, Any]:
     """Copy runtime state without content/control lattice cells (bodies live in ltm/)."""
     state = ensure_prisms(state)
     thin = copy.deepcopy(state)
+    for key in _EPHEMERAL_STATE_KEYS:
+        thin.pop(key, None)
     thin["checkpoint_format"] = THIN_CHECKPOINT_FORMAT
     root = thin.get("prisms") or {}
     for pid, block in list(root.items()):
         if not isinstance(block, dict):
             continue
-        if pid in (PRISM_HIPPO, PRISM_HOT_CONTEXT, PRISM_ROUTER):
+        if pid == PRISM_HIPPO:
+            lats = block.get("lattices")
+            if isinstance(lats, dict):
+                for lid, lat in list(lats.items()):
+                    if isinstance(lat, dict):
+                        lats[lid] = _strip_lattice_cells(lat)
+            continue
+        if pid in (PRISM_HOT_CONTEXT, PRISM_ROUTER):
             continue
         if not prism_supports_lattices(state, pid) and pid != PRISM_CONTROL:
             continue
@@ -86,6 +113,7 @@ def build_thin_snapshot(state: dict) -> dict[str, Any]:
         for lid, lat in list(legacy["lattices"].items()):
             if isinstance(lat, dict):
                 legacy["lattices"][lid] = _strip_lattice_cells(lat)
+    _trim_consolidation_for_checkpoint(thin)
     return thin
 
 

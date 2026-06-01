@@ -33,9 +33,10 @@ def test_save_runtime_state_skips_unchanged(tmp_path: Path) -> None:
     store = tmp_path / "store"
     store.mkdir()
     state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 3})
+    fv = int(state["field_version"])
     save_field_state(field_state_path(store), state)
 
-    rep = save_runtime_state(store, state, baseline_version=3)
+    rep = save_runtime_state(store, state, baseline_version=fv)
     assert rep["saved"] is False
     assert rep["tier"] == STORE_TIER_RUNTIME
 
