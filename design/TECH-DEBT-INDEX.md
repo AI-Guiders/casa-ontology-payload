@@ -43,7 +43,7 @@
 | M1 | `prism_router` → `domain.routing` | **done** |
 | M2 | `prism_spawn`, `export_ltm_pack` → domain | **done** |
 | M3 | `compact_persist`, tick orchestrator | partial (`compact_persist` → domain; tick uses `tick_prepare_memory`) |
-| M4 | no raw `state["prisms"]` outside persistence | partial (`prism_wire` + facade; call sites still migrate) |
+| M4 | no raw `state["prisms"]` outside persistence | partial (`casa/` → domain; `prism_state` deprecated facade) |
 
 ## ADR-0016 / 0021 multi-prism (runtime)
 
@@ -115,3 +115,4 @@
 | 2026-06-01 | M2 domain bind; T22-1 bar check; T24-1 partial |
 | 2026-06-01 | T21-2 transfer matrix bootstrap; MP-2–4 multi-prism; thin checkpoint trim |
 | 2026-06-01 | M4 partial: `prism_ids`, `prism_wire`, `prism_state` facade |
+| 2026-06-01 | Legacy wire private in prism_wire; casa imports → domain |
