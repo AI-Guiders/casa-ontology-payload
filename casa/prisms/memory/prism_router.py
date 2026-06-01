@@ -10,7 +10,7 @@ ensure_import_paths()
 from typing import Any
 
 from casa.domain.routing import RouteContext, RouteTarget, Router
-from casa.prisms.shared.prism_state import normalize_prisms
+from casa.domain.prism_wire import normalize_prisms
 
 __all__ = ["RouteContext", "RouteTarget", "resolve_route", "add_route", "bootstrap_default_routes"]
 
@@ -61,7 +61,7 @@ def _apply_lattice_hint(state: dict, prism_id: str, hint: str | None) -> None:
     if not hint:
         return
     from casa.prisms.memory.memory_prisms import content_prism_lattices
-    from casa.prisms.shared.prism_state import prisms
+    from casa.domain.prism_wire import prisms
 
     lats = content_prism_lattices(state, prism_id)
     if hint in lats:
@@ -81,7 +81,7 @@ def _apply_lattice_hint(state: dict, prism_id: str, hint: str | None) -> None:
 
 
 def apply_route_to_sn(state: dict, target: RouteTarget) -> None:
-    from casa.prisms.shared.prism_state import set_active_prism
+    from casa.domain.prism_wire import set_active_prism
 
     set_active_prism(state, target.prism_id)
     sn = state.setdefault("sn", {})

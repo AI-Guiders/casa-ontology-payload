@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Literal
 
-from casa.prisms.shared.prism_state import prism_memory
+from casa.domain.prism_wire import prism_memory
 from casa.prisms.shared.codec_grid import Grid
 from casa.prisms.memory.grapheme_ingest import (
     GRAPHEME_CYRL_PREFIX,

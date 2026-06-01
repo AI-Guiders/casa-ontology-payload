@@ -18,7 +18,7 @@ from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.memory.prism_hot_context import hot_edges
 from casa.prisms.memory.prism_spawn import list_content_prism_ids
 from casa.prisms.shared.export_ltm_pack import export_field_state
-from casa.prisms.shared.prism_state import prism_router
+from casa.domain.prism_wire import prism_router
 from casa.prisms.shared.store_layout import ltm_root
 
 

@@ -7,7 +7,8 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from casa.prisms.shared.prism_state import PRISM_CONTROL, normalize_prisms, prism_control
+from casa.domain.prism_ids import PRISM_CONTROL
+from casa.domain.prism_wire import normalize_prisms, prism_control
 from pathlib import Path
 from typing import Any
 

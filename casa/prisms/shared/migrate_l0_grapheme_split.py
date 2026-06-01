@@ -15,7 +15,7 @@ from typing import Any
 from casa.prisms.shared.field_write import load_field_state, save_field_state
 from casa.prisms.shared.store_layout import use_compact_field_state
 from casa.prisms.memory.grapheme_ingest import migrate_legacy_l0_grapheme
-from casa.prisms.shared.prism_state import normalize_prisms, prism_memory
+from casa.domain.prism_wire import normalize_prisms, prism_memory
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 
 STACK_TOML = "design/sss-lattice-stack.toml"

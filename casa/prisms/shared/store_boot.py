@@ -49,7 +49,7 @@ def apply_store_boot_profile(store_dir: Path, state: dict) -> None:
 
     default_prism = store.get("default_content_prism")
     if default_prism:
-        from casa.prisms.shared.prism_state import prism_router
+        from casa.domain.prism_wire import prism_router
 
         prism_router(state)["default_content_prism"] = str(default_prism)
 

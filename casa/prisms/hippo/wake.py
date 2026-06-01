@@ -14,7 +14,7 @@ from typing import Any
 
 from casa.prisms.shared.field_write import load_field_state
 from casa.prisms.memory.memory_prisms import append_episode, ensure_prisms
-from casa.prisms.shared.prism_state import prism_hippo
+from casa.domain.prism_wire import prism_hippo
 from casa.prisms.shared.store_persist import save_runtime_state
 from casa.prisms.memory.surface import surface_from_sss
 from casa.prisms.hippo.wake_util import (

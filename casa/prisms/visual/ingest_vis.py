@@ -12,7 +12,8 @@ from casa.prisms.memory.prism_spawn import spawn_content_lattice, spawn_prism
 from casa.prisms.memory.stack import _place_token
 from casa.prisms.shared.codec_grid import Grid
 from casa.prisms.shared.config_io import load_config
-from casa.prisms.shared.prism_state import PRISM_KIND_CONTENT, PRISM_VISUAL, prism_block
+from casa.domain.prism_ids import PRISM_KIND_CONTENT, PRISM_VISUAL
+from casa.domain.prism_wire import prism_block
 
 VIS_STACK = Path("design/prisms/visual/stack.json")
 VIS_OBJECT = "V1_object"

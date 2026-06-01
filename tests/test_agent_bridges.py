@@ -18,7 +18,8 @@ from casa.prisms.memory.agent_prism import create_agent_lattice, load_agent_pris
 from casa.prisms.control.sn_cen_runtime import digest_from_decoded
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.shared.lattice_names_v1 import CONTROL_DMN
-from casa.prisms.shared.prism_state import PRISM_CONTROL, prism_control
+from casa.domain.prism_ids import PRISM_CONTROL
+from casa.domain.prism_wire import prism_control
 from casa.prisms.shared.store_layout import agent_bridges_path
 
 

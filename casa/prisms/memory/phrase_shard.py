@@ -18,7 +18,7 @@ from casa.prisms.memory.lexicon_shard import (
     lattice_vocab_size,
 )
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
-from casa.prisms.shared.prism_state import prism_memory
+from casa.domain.prism_wire import prism_memory
 
 LEGACY_L3 = "L3_phrase"
 L3_SHARD_PREFIX = "L3_phrase_"

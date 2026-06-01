@@ -23,7 +23,7 @@ def episode_surprise_gated(ep: dict[str, Any]) -> bool:
 
 
 def mark_episode_form_extract(state: dict, episode_id: str, *, reason: str) -> None:
-    from casa.prisms.shared.prism_state import prism_hippo
+    from casa.domain.prism_wire import prism_hippo
 
     for ep in prism_hippo(state).get("episodes") or []:
         if str(ep.get("id") or "") == episode_id:
@@ -33,7 +33,7 @@ def mark_episode_form_extract(state: dict, episode_id: str, *, reason: str) -> N
 
 
 def mark_episodes_form_extract(state: dict, episode_ids: list[str], *, reason: str) -> None:
-    from casa.prisms.shared.prism_state import prism_hippo
+    from casa.domain.prism_wire import prism_hippo
 
     by_id = {str(ep.get("id") or ""): ep for ep in prism_hippo(state).get("episodes") or []}
     for eid in episode_ids:

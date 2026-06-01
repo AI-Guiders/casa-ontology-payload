@@ -28,13 +28,8 @@ from casa.prisms.memory.prism_spawn import (
     spawn_content_lattice,
     spawn_prism,
 )
-from casa.prisms.shared.prism_state import (
-    PRISM_HOT_CONTEXT,
-    PRISM_MEMORY,
-    PRISM_ROUTER,
-    active_prism_id,
-    prism_kind,
-)
+from casa.domain.prism_ids import PRISM_HOT_CONTEXT, PRISM_MEMORY, PRISM_ROUTER
+from casa.domain.prism_wire import active_prism_id, prism_kind
 
 
 def test_spawn_content_prism_and_lattice():
@@ -56,8 +51,7 @@ def test_hot_context_edges_only():
     assert nbr and nbr[0]["dst"] == "lang.word.дом"
     digest = hot_digest_for_cue(state, "дом")
     assert "lang.word.дом" in digest
-  # no lattice in hot prism
-    from casa.prisms.shared.prism_state import prism_hot_context
+    from casa.domain.prism_wire import prism_hot_context
 
     assert not prism_hot_context(state).get("lattices")
 

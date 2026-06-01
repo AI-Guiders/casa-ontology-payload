@@ -13,7 +13,7 @@ from pathlib import Path
 
 from casa.prisms.shared.field_write import load_field_state, save_field_state
 from casa.prisms.shared.store_layout import use_compact_field_state
-from casa.prisms.shared.prism_state import normalize_prisms
+from casa.domain.prism_wire import normalize_prisms
 
 
 def main() -> None:

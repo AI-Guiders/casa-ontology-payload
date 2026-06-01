@@ -8,7 +8,7 @@ from casa.domain.transfer_matrix import load_transfer_matrix, routes_from_transf
 from casa.prisms.memory.memory_prisms import content_prism_lattices, ensure_prisms
 from casa.prisms.memory.prism_spawn import ensure_multi_prism_bootstrap, spawn_content_lattice
 from casa.prisms.memory.prism_router import resolve_route
-from casa.prisms.shared.prism_state import PRISM_LANG_RU, PRISM_MEMORY
+from casa.domain.prism_ids import PRISM_LANG_RU, PRISM_MEMORY
 
 
 def test_transfer_matrix_loads_routes():
@@ -21,7 +21,7 @@ def test_transfer_matrix_loads_routes():
 
 def test_bootstrap_registers_domain_stubs_and_routes():
     state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
-    from casa.prisms.shared.prism_state import prisms
+    from casa.domain.prism_wire import prisms
 
     assert PRISM_LANG_RU in prisms(state)
     routes = Router.bind(state).routes()

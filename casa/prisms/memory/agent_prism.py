@@ -23,7 +23,8 @@ from casa.prisms.shared.layout_apply import Rect
 from casa.prisms.shared.nca_train_core import NcaTrainerConfig, WindowedTrainConfig, run_nca_training
 from casa.prisms.shared.nca_train_defaults import damage_defaults, epoch_budget, field_edge, nca_profile
 from casa.prisms.shared.nca_train_util import damage_tensor_patches, grid_indices, resolve_train_device, scatter_grid_tensor
-from casa.prisms.shared.prism_state import PRISM_AGENT, normalize_prisms, prism_agent, set_active_prism
+from casa.domain.prism_ids import PRISM_AGENT
+from casa.domain.prism_wire import normalize_prisms, prism_agent, set_active_prism
 from casa.prisms.shared.store_layout import (
     agent_bridges_path,
     agent_lattice_path,

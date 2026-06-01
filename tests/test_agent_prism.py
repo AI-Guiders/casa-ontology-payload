@@ -17,7 +17,8 @@ from casa.prisms.memory.agent_prism import (
     save_agent_prism,
 )
 from casa.prisms.memory.memory_prisms import ensure_prisms
-from casa.prisms.shared.prism_state import PRISM_AGENT, prism_agent
+from casa.domain.prism_ids import PRISM_AGENT
+from casa.domain.prism_wire import prism_agent
 
 
 def test_lattice_id_prefix() -> None:

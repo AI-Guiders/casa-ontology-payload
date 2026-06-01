@@ -10,7 +10,8 @@ ensure_import_paths()
 import time
 from typing import Any
 
-from casa.prisms.shared.prism_state import PRISM_KIND_HOT_CONTEXT, normalize_prisms, prism_kind, prisms
+from casa.domain.prism_ids import PRISM_KIND_HOT_CONTEXT
+from casa.domain.prism_wire import normalize_prisms, prism_kind, prisms
 from casa.prisms.memory.memory_prisms import ensure_prisms
 
 
@@ -49,7 +50,8 @@ def add_hot_edge(
 ) -> dict[str, Any]:
     """Append or bump salience on matching edge (default canonical hot prism)."""
     ensure_prisms(state)
-    from casa.prisms.shared.prism_state import PRISM_HOT_CONTEXT, prism_block, prism_hot_context
+    from casa.domain.prism_ids import PRISM_HOT_CONTEXT
+    from casa.domain.prism_wire import prism_block, prism_hot_context
 
     pid = prism_id or PRISM_HOT_CONTEXT
     block = prism_hot_context(state) if pid == PRISM_HOT_CONTEXT else prism_block(state, pid)

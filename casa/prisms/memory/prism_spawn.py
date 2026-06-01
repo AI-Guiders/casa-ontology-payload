@@ -12,9 +12,11 @@ import time
 from typing import Any
 
 from casa.domain.field_state import FieldState
-from casa.prisms.shared.prism_state import (
+from casa.domain.prism_ids import (
     PRISM_AGENT,
     PRISM_CONTROL,
+    PRISM_CONTROL_THALAMUS,
+    PRISM_CONTROL_VIS,
     PRISM_HIPPO,
     PRISM_HOT_CONTEXT,
     PRISM_KIND_CONTENT,
@@ -24,8 +26,9 @@ from casa.prisms.shared.prism_state import (
     PRISM_MEMORY,
     PRISM_ROUTER,
     PRISM_VISUAL,
-    PRISM_CONTROL_THALAMUS,
-    PRISM_CONTROL_VIS,
+    SYSTEM_PRISM_IDS,
+)
+from casa.domain.prism_wire import (
     normalize_prisms,
     prism_block,
     prism_hot_context,
@@ -41,7 +44,7 @@ _PRISM_ID_RE = re.compile(r"^prism_[a-z][a-z0-9_]{0,47}$")
 _KIND_RE = re.compile(r"^[a-z][a-z0-9_]{0,47}$")
 
 # Created only via ensure_* / migrate — not agent spawn.
-_SYSTEM_PRISM_IDS = frozenset({PRISM_HIPPO, PRISM_CONTROL, PRISM_AGENT})
+_SYSTEM_PRISM_IDS = SYSTEM_PRISM_IDS
 
 _CONTROL_STACK_BY_PRISM: dict[str, str] = {
     PRISM_CONTROL_VIS: "design/prisms/control/vis-stack.json",

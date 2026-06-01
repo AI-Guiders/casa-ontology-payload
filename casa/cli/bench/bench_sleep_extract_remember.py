@@ -19,7 +19,7 @@ from casa.prisms.shared.field_write import save_field_state
 from casa.prisms.tick.preflight_teacher import VALID_MODES, preflight_teacher_cue
 from casa.prisms.tick.predictor import predict_t9
 from casa.prisms.tick.surface_error import classify_surface_error, is_mixed_script
-from casa.prisms.shared.prism_state import prism_hippo
+from casa.domain.prism_wire import prism_hippo
 from casa.prisms.memory.memory_prisms import (
     append_episode,
     append_hint_episode,

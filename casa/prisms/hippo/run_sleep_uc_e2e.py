@@ -18,7 +18,7 @@ from typing import Any
 from casa.cli.bench.bench_sleep_extract_remember import run_sleep_tick
 from casa.prisms.shared.field_write import save_field_state
 from casa.prisms.tick.predictor import predict_t9
-from casa.prisms.shared.prism_state import prism_hippo, prism_memory
+from casa.domain.prism_wire import prism_hippo, prism_memory
 from casa.prisms.memory.memory_prisms import memory_lattices
 from casa.prisms.memory.field_decode import rule_votes_from_field
 from casa.prisms.memory.lexicon_shard import concept_votes_l2

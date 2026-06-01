@@ -6,7 +6,7 @@ from __future__ import annotations
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.memory.prism_router import resolve_route, RouteContext
 from casa.prisms.memory.prism_spawn import ensure_vision_bootstrap, list_content_prism_ids, spawn_prism
-from casa.prisms.shared.prism_state import PRISM_KIND_CONTROL, PRISM_VISUAL
+from casa.domain.prism_ids import PRISM_KIND_CONTROL, PRISM_VISUAL
 from casa.prisms.tick.predictor import predict
 from casa.prisms.visual.ingest_vis import ingest_vis_claim
 
@@ -34,7 +34,7 @@ def test_spawn_control_vis_prism():
     state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
     rep = spawn_prism(state, "prism_control_vis", kind="control")
     assert rep["kind"] == "control"
-    from casa.prisms.shared.prism_state import prism_block
+    from casa.domain.prism_wire import prism_block
 
     lats = prism_block(state, "prism_control_vis").get("lattices") or {}
     assert "lattice_vis_sn" in lats or "control-vis-salience" in lats

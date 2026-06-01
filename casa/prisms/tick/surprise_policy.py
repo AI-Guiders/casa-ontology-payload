@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from casa.prisms.memory.agent_journal import read_journal_entries
-from casa.prisms.shared.prism_state import prism_hippo
+from casa.domain.prism_wire import prism_hippo
 
 
 def normalize_cue(cue: str) -> str:

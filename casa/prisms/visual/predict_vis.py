@@ -7,7 +7,7 @@ from typing import Any
 
 from casa.prisms.memory.memory_prisms import content_prism_lattices, ensure_prisms
 from casa.prisms.memory.stack import decode_lattice
-from casa.prisms.shared.prism_state import PRISM_VISUAL
+from casa.domain.prism_ids import PRISM_VISUAL
 from casa.prisms.visual.ingest_vis import VIS_OBJECT, ensure_prism_visual
 
 

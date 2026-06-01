@@ -7,7 +7,7 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from casa.prisms.shared.prism_state import prism_hippo
+from casa.domain.prism_wire import prism_hippo
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.segment import norm_word
 from casa.prisms.memory.stack import decode_lattice

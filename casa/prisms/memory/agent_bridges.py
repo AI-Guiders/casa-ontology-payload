@@ -18,17 +18,8 @@ from casa.prisms.control.sn_cen_runtime import FieldDigest
 from casa.prisms.memory.agent_prism import agent_lattices, ensure_agent_prism, safe_agent_lattice_id
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.shared.field_write import load_field_state, save_field_state
-from casa.prisms.shared.prism_state import (
-    PRISM_AGENT,
-    PRISM_CONTROL,
-    PRISM_HIPPO,
-    PRISM_MEMORY,
-    active_prism_id,
-    prism_agent,
-    prism_control,
-    prism_hippo,
-    prism_memory,
-)
+from casa.domain.prism_ids import PRISM_AGENT, PRISM_CONTROL, PRISM_HIPPO, PRISM_MEMORY
+from casa.domain.prism_wire import active_prism_id, prism_agent, prism_control, prism_hippo, prism_memory
 from casa.prisms.shared.store_layout import agent_bridges_path, field_state_path
 
 AGENT_BRIDGES_VERSION = 1

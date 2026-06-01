@@ -14,14 +14,8 @@ from typing import Any, Protocol
 from casa.prisms.memory.memory_prisms import content_prism_lattices, ensure_prisms, hippo_episodes
 from casa.prisms.memory.prism_hot_context import hot_edges, prune_hot_context
 from casa.prisms.memory.prism_router import RouteContext, resolve_route
-from casa.prisms.shared.prism_state import (
-    PRISM_KIND_HOT_CONTEXT,
-    PRISM_KIND_ROUTER,
-    PRISM_MEMORY,
-    active_prism_id,
-    prism_kind,
-    prisms,
-)
+from casa.domain.prism_ids import PRISM_KIND_HOT_CONTEXT, PRISM_KIND_ROUTER, PRISM_MEMORY
+from casa.domain.prism_wire import active_prism_id, prism_kind, prisms
 
 # Re-export aspect implementation for tests and thin wrappers.
 from casa.prisms.memory.ltm_vocab_health import (  # noqa: E402

@@ -28,7 +28,7 @@ from casa.prisms.memory.memory_prisms import append_episode, ensure_prisms, memo
 from casa.prisms.memory.stack import decode_lattice
 from casa.prisms.shared.field_write import decode_field_grid, load_field_state
 from casa.prisms.shared.canonical import CANONICAL_FIELD_MIN_VOTES
-from casa.prisms.shared.prism_state import prism_hippo
+from casa.domain.prism_wire import prism_hippo
 from casa.prisms.shared.store_persist import mark_runtime_dirty
 from casa.prisms.tick.act_rollout import act_rollout_phase, active_memory_lattice_id, merge_decoded_digests
 from casa.prisms.tick.surprise_policy import (

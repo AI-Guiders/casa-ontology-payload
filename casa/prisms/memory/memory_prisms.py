@@ -13,10 +13,8 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
-from casa.prisms.shared.prism_state import (
-    PRISM_HIPPO,
-    PRISM_MEMORY,
-    SCHEMA_CURRENT,
+from casa.domain.prism_ids import PRISM_HIPPO, PRISM_MEMORY, SCHEMA_CURRENT
+from casa.domain.prism_wire import (
     normalize_prisms,
     prism_hippo,
     prism_memory,
@@ -94,14 +92,13 @@ ensure_prisms = ensure_cylinders
 def content_prism_lattices(state: dict, prism_id: str | None = None) -> dict[str, dict]:
     """Lattices for a content prism (default active or prism_memory)."""
     state = ensure_cylinders(state)
-    from casa.prisms.shared.prism_state import (
-        PRISM_MEMORY,
+    from casa.domain.prism_ids import PRISM_MEMORY
+    from casa.domain.prism_wire import (
         active_prism_id,
         prism_memory,
+        prism_supports_lattices,
         prisms,
     )
-
-    from casa.prisms.shared.prism_state import prism_supports_lattices
 
     pid = prism_id or active_prism_id(state)
     if not prism_supports_lattices(state, pid):
@@ -124,9 +121,8 @@ def memory_lattices(state: dict, prism_id: str | None = None) -> dict[str, dict]
 def import_lattice_into_prism(state: dict, prism_id: str, lattice_id: str, lattice: dict) -> None:
     """Place decoded lattice into a content prism (multi-prism import from ltm/)."""
     from casa.prisms.memory.prism_spawn import list_content_prism_ids, spawn_prism
-    from casa.prisms.shared.prism_state import (
-        PRISM_KIND_CONTENT,
-        PRISM_MEMORY,
+    from casa.domain.prism_ids import PRISM_KIND_CONTENT, PRISM_MEMORY
+    from casa.domain.prism_wire import (
         prism_block,
         prism_memory,
         prism_supports_lattices,

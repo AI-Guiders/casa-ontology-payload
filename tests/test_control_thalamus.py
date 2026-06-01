@@ -7,7 +7,8 @@ from casa.prisms.control.thalamus import ensure_control_thalamus, thalamus_tick_
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.memory.prism_router import tick_prepare_memory
 from casa.prisms.memory.prism_spawn import ensure_default_router_and_hot, spawn_prism
-from casa.prisms.shared.prism_state import PRISM_CONTROL_THALAMUS, active_control_prism_id, prism_block
+from casa.domain.prism_ids import PRISM_CONTROL_THALAMUS
+from casa.domain.prism_wire import active_control_prism_id, prism_block
 
 
 def test_ensure_control_thalamus_spawns_stack():

@@ -68,7 +68,7 @@ def test_thin_checkpoint_round_trip(tmp_path: Path) -> None:
 def test_build_thin_snapshot_strips_hippo_lattice_cells():
     from casa.prisms.memory.memory_prisms import empty_hippo_lattice
     from casa.prisms.shared.lattice_names_v1 import EPISODIC_SURFACE
-    from casa.prisms.shared.prism_state import prism_hippo
+    from casa.domain.prism_wire import prism_hippo
 
     state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 1})
     hip = prism_hippo(state)

@@ -105,7 +105,7 @@ def clear_legacy_l2_monolith(state: dict, *, lattice_id: str | None = None) -> N
         return
     n = int(lat.get("width") or 32) * int(lat.get("height") or 32)
     lat["cells"] = [[] for _ in range(n)]
-    from casa.prisms.shared.prism_state import prism_memory
+    from casa.domain.prism_wire import prism_memory
 
     prism_memory(state)["lattices"] = lattices
     state.setdefault("sss", {})["lattices"] = lattices

@@ -20,7 +20,8 @@ from casa.domain.field_state import FieldState
 from casa.prisms.memory.memory_prisms import content_prism_lattices, ensure_prisms, memory_lattices
 from casa.prisms.memory.lexicon_shard import l2_en_word_lattice_ids, l2_lexicon_lattice_ids, l2_word_lattice_ids
 from casa.prisms.memory.prism_spawn import list_content_prism_ids, list_control_prism_ids
-from casa.prisms.shared.prism_state import PRISM_CONTROL, PRISM_MEMORY, prism_kind, prism_router
+from casa.domain.prism_ids import PRISM_CONTROL, PRISM_MEMORY
+from casa.domain.prism_wire import prism_kind, prism_router
 from casa.prisms.shared.store_layout import nca_train_registry_path, rel_to_repo
 
 

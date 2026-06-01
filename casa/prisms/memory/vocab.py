@@ -7,7 +7,8 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from casa.prisms.shared.prism_state import normalize_prisms, prism_memory, prism_hippo, prism_control, PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL, set_active_prism
+from casa.domain.prism_ids import PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL
+from casa.domain.prism_wire import normalize_prisms, prism_memory, prism_hippo, prism_control, set_active_prism
 import re
 import unicodedata
 from typing import Any

@@ -11,11 +11,8 @@ from typing import Any
 
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.memory.prism_spawn import spawn_prism
-from casa.prisms.shared.prism_state import (
-    PRISM_CONTROL_THALAMUS,
-    prism_block,
-    set_active_control_prism,
-)
+from casa.domain.prism_ids import PRISM_CONTROL_THALAMUS
+from casa.domain.prism_wire import prism_block, set_active_control_prism
 
 _THALAMUS_STACK = "design/prisms/control/thalamus-stack.json"
 

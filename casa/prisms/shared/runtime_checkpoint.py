@@ -12,15 +12,8 @@ from pathlib import Path
 from typing import Any
 
 from casa.prisms.memory.memory_prisms import ensure_prisms
-from casa.prisms.shared.prism_state import (
-    PRISM_CONTROL,
-    PRISM_HIPPO,
-    PRISM_HOT_CONTEXT,
-    PRISM_ROUTER,
-    normalize_prisms,
-    prism_kind,
-    prism_supports_lattices,
-)
+from casa.domain.prism_ids import PRISM_CONTROL, PRISM_HIPPO, PRISM_HOT_CONTEXT, PRISM_ROUTER
+from casa.domain.prism_wire import normalize_prisms, prism_kind, prism_supports_lattices
 
 THIN_CHECKPOINT_FORMAT = "thin_v1"
 
