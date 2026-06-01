@@ -17,9 +17,19 @@ if str(_REPO) not in sys.path:
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.shared.compact_persist import compact_persist_store
 from casa.prisms.shared.field_write import load_field_state
-from casa.prisms.shared.migrate_progress import StepTimer, progress, set_progress_enabled
+from casa.prisms.shared.migrate_progress import (
+    StepTimer,
+    progress,
+    resolve_parallel_workers,
+    set_progress_enabled,
+)
 from casa.prisms.shared.runtime_checkpoint import is_thin_checkpoint_file
-from casa.prisms.shared.store_layout import field_state_path, ltm_root
+from casa.prisms.shared.store_layout import (
+    LAB_DATA_DIR,
+    LAB_LEGACY_STORES_DIR,
+    field_state_path,
+    ltm_root,
+)
 from casa.prisms.shared.store_persist import save_runtime_state
 
 
@@ -34,6 +44,7 @@ def migrate_store(
     dry_run: bool,
     min_legacy_mb: float,
     verbose: bool = True,
+    parallel_workers: int = 0,
 ) -> dict:
     store_dir = store_dir.resolve()
     fs = field_state_path(store_dir)
@@ -85,11 +96,16 @@ def migrate_store(
             f"max_shard_vocab={rem.get('max_shard_vocab')}"
         )
 
+    workers = resolve_parallel_workers(parallel_workers)
+    if workers >= 2 and verbose:
+        progress(f"  parallel workers: {workers} (L3 remigrate + ltm writes)")
+
     if needs_l3_remigrate(state):
         with StepTimer("L3 remigrate", "monolith → phrase shards"):
             rem3 = ensure_l3_sharded_for_export(
                 state,
                 on_token_progress=_remigrate_token_progress if verbose else None,
+                parallel_workers=workers,
             )
     else:
         progress("  L3 remigrate skipped (already sharded)")
@@ -101,6 +117,7 @@ def migrate_store(
             f"max_shard_vocab={rem3.get('max_shard_vocab')}"
         )
 
+    ltm_parallel = workers if workers >= 2 else 0
     with StepTimer("compact_persist", "ltm/*.ltm"):
         cp = compact_persist_store(
             store_dir,
@@ -110,6 +127,7 @@ def migrate_store(
             progress=verbose,
             remigrate_l2=False,
             remigrate_l3=False,
+            parallel_writes=ltm_parallel,
         )
     totals = cp.get("manifest_totals") or {}
     rep["compact_persist"] = {
@@ -159,7 +177,7 @@ def main() -> None:
     p.add_argument(
         "--stores-root",
         type=Path,
-        default=_REPO / "lab" / "agent-stores",
+        default=_REPO / LAB_DATA_DIR / LAB_LEGACY_STORES_DIR,
         help="Parent of store-id directories",
     )
     p.add_argument("--store", type=str, default=None, help="Single store id")
@@ -167,6 +185,12 @@ def main() -> None:
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--min-mb", type=float, default=1.0, help="Only migrate if field_state >= N MiB")
     p.add_argument("--quiet", action="store_true", help="No progress lines (JSON report only)")
+    p.add_argument(
+        "--parallel-workers",
+        type=int,
+        default=0,
+        help="L3 remigrate + parallel ltm writes: 0=auto (cpu), 1=sequential, N>=2",
+    )
     args = p.parse_args()
 
     set_progress_enabled(not args.quiet)
@@ -187,6 +211,7 @@ def main() -> None:
                 dry_run=args.dry_run,
                 min_legacy_mb=args.min_mb,
                 verbose=not args.quiet,
+                parallel_workers=args.parallel_workers,
             )
         )
 

@@ -18,7 +18,11 @@ from casa.domain.prism_wire import normalize_prisms
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Migrate prism keys in all agent stores")
-    p.add_argument("--stores-root", type=Path, default=Path("lab/agent-stores"))
+    p.add_argument(
+        "--stores-root",
+        type=Path,
+        default=Path("lab/snapshots/legacy-agent-stores"),
+    )
     p.add_argument("--compact", action="store_true", help="Compact JSON for large lexicon stores")
     args = p.parse_args()
 

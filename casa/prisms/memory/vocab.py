@@ -14,7 +14,7 @@ import unicodedata
 from typing import Any
 
 from casa.prisms.shared.codec_grid import Grid
-from casa.prisms.memory.memory_prisms import append_episode, ensure_prisms, memory_lattices
+from casa.prisms.memory.memory_prisms import append_episode, ensure_prisms, memory_lattices, persist_content_lattices
 from casa.prisms.memory.lexicon_shard import (
     LEGACY_L2,
     concept_votes_l2,
@@ -139,8 +139,7 @@ def _strengthen_word_on_l2(
     g = Grid(width=int(lat["width"]), height=int(lat["height"]), cells=lat["cells"])
     g = _place_token(g, f"C:{cid}", f"C:{cid}", copies=copies, radius=5)
     g = _place_token(g, w_token(w), w_token(w), copies=max(2, copies), radius=4)
-    prism_memory(state)["lattices"] = lattices
-    state.setdefault("sss", {})["lattices"] = lattices
+    persist_content_lattices(state, lattices)
     return lid
 
 
@@ -170,8 +169,7 @@ def _listen_scene_on_l3(
         ptok = p_token(mark)
         g = _place_token(g, ptok, ptok, copies=max(1, copies - 1), radius=3)
         g = _place_token(g, f"Lp:{scene_id}|{mark}", f"Lp:{scene_id}|{mark}", copies=copies, radius=3)
-    prism_memory(state)["lattices"] = lattices
-    state.setdefault("sss", {})["lattices"] = lattices
+    persist_content_lattices(state, lattices)
 
 
 def _strengthen_punct_on_field(state: dict, mark: str, *, copies: int = 2) -> None:
@@ -188,8 +186,7 @@ def _strengthen_punct_on_field(state: dict, mark: str, *, copies: int = 2) -> No
             g = _place_token(g, f"C:grapheme.{mark}", f"C:grapheme.{mark}", copies=max(1, copies - 1), radius=3)
         if lid == "L3_phrase":
             g = _place_token(g, f"C:{cid}", f"C:{cid}", copies=max(1, copies - 1), radius=3)
-    prism_memory(state)["lattices"] = lattices
-    state.setdefault("sss", {})["lattices"] = lattices
+    persist_content_lattices(state, lattices)
 
 
 def listen_punct(
@@ -329,6 +326,5 @@ def apply_story_compose(state: dict, bundle: dict, *, stack_path: str | None = N
     lattices = memory_lattices(ensure_prisms(state))
     stack = load_stack(stack_path)
     report = apply_z_compose(lattices, bundle, stack)
-    prism_memory(state)["lattices"] = lattices
-    state.setdefault("sss", {})["lattices"] = lattices
+    persist_content_lattices(state, lattices)
     return report

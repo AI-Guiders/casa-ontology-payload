@@ -19,7 +19,7 @@ from casa.prisms.memory.ortho_process import (
     capitalize_grapheme,
     lower_grapheme,
 )
-from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
+from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices, set_content_lattice
 from casa.prisms.memory.stack import _place_token, decode_lattice
 
 L3_ID = "L3_phrase"
@@ -78,7 +78,7 @@ def imprint_l3_concept(state: dict, concept_id: str, *, copies: int = 3) -> None
     g = Grid(width=int(lat["width"]), height=int(lat["height"]), cells=lat["cells"])
     g = _place_token(g, f"C:{concept_id}", f"C:{concept_id}", copies=copies, radius=4)
     lat["cells"] = g.cells
-    memory_lattices(state)[L3_ID] = lat
+    set_content_lattice(state, L3_ID, lat)
 
 
 def imprint_process(state: dict, proc_id: str, *, copies: int = 4) -> None:
@@ -89,7 +89,7 @@ def imprint_process(state: dict, proc_id: str, *, copies: int = 4) -> None:
     g = _place_token(g, tok, tok, copies=copies, radius=4)
     g = _place_token(g, f"C:{proc_id}", f"C:{proc_id}", copies=max(2, copies - 1), radius=3)
     lat["cells"] = g.cells
-    memory_lattices(state)[L3_ID] = lat
+    set_content_lattice(state, L3_ID, lat)
 
 
 def imprint_edge(state: dict, src: str, rel: str, dst: str, *, copies: int = 3) -> None:
@@ -99,7 +99,7 @@ def imprint_edge(state: dict, src: str, rel: str, dst: str, *, copies: int = 3) 
     tok = f"E:{src}|{rel}|{dst}"
     g = _place_token(g, tok, tok, copies=copies, radius=4)
     lat["cells"] = g.cells
-    memory_lattices(state)[L3_ID] = lat
+    set_content_lattice(state, L3_ID, lat)
 
 
 def imprint_capitalize_bootstrap(state: dict, *, copies: int = 4) -> dict[str, Any]:

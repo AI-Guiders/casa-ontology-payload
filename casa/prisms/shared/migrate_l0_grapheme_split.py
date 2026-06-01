@@ -56,7 +56,7 @@ def patch_state_metadata(state: dict, store_dir: Path) -> list[str]:
             holder["stack"] = STACK_TOML
             changes.append("stack→toml")
 
-    if state.get("schema_version") == "multi_cylinder_v1":
+    if not state.get("schema_version"):
         normalize_prisms(state)
         changes.append("schema→multi_prism_v1")
 
@@ -89,7 +89,11 @@ def migrate_field_state(path: Path, *, compact: bool) -> dict[str, Any] | None:
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Split L0_grapheme across agent stores + agent-core")
-    p.add_argument("--stores-root", type=Path, default=Path("lab/agent-stores"))
+    p.add_argument(
+        "--stores-root",
+        type=Path,
+        default=Path("lab/snapshots/legacy-agent-stores"),
+    )
     p.add_argument("--core-root", type=Path, default=Path("lab/agent-core"))
     p.add_argument("--compact", action="store_true", help="Compact JSON for large lexicon stores")
     args = p.parse_args()

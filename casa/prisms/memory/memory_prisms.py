@@ -89,33 +89,65 @@ def ensure_cylinders(state: dict) -> dict:
 ensure_prisms = ensure_cylinders
 
 
+def set_content_lattice(state: dict, lattice_id: str, lattice: dict) -> None:
+    """Write one lattice to its owning content prism."""
+    from casa.domain.content_prism_split import lattice_content_prism_target
+    from casa.domain.prism_ids import PRISM_MEMORY
+
+    target = lattice_content_prism_target(lattice_id) or PRISM_MEMORY
+    import_lattice_into_prism(state, target, lattice_id, lattice)
+
+
 def content_prism_lattices(state: dict, prism_id: str | None = None) -> dict[str, dict]:
-    """Lattices for a content prism (default active or prism_memory)."""
+    """Lattices for one content prism (no cross-prism merge)."""
     state = ensure_cylinders(state)
     from casa.domain.prism_ids import PRISM_MEMORY
-    from casa.domain.prism_wire import (
-        active_prism_id,
-        prism_memory,
-        prism_supports_lattices,
-        prisms,
-    )
+    from casa.domain.prism_wire import active_prism_id, prism_memory, prism_supports_lattices, prisms
 
-    pid = prism_id or active_prism_id(state)
+    pid = prism_id or active_prism_id(state) or PRISM_MEMORY
     if not prism_supports_lattices(state, pid):
         pid = PRISM_MEMORY
     if pid == PRISM_MEMORY:
-        mem = prism_memory(state)
-        lats = mem.get("lattices") or {}
-    else:
-        block = prisms(state).get(pid) or {}
-        lats = block.get("lattices") or {}
-    if lats:
-        return lats
-    return (state.get("sss") or {}).get("lattices") or {}
+        lats = dict(prism_memory(state).get("lattices") or {})
+        if lats:
+            return lats
+        return dict((state.get("sss") or {}).get("lattices") or {})
+    block = prisms(state).get(pid) or {}
+    return dict(block.get("lattices") or {})
+
+
+def merged_content_lattices(state: dict) -> dict[str, dict]:
+    """All content-prism lattices (runtime tick/sleep/predict)."""
+    from casa.prisms.memory.prism_spawn import list_content_prism_ids
+
+    state = ensure_cylinders(state)
+    out: dict[str, dict] = {}
+    for pid in list_content_prism_ids(state):
+        for lid, lat in content_prism_lattices(state, pid).items():
+            out[lid] = lat
+    return out
+
+
+def persist_content_lattices(state: dict, lattices: dict[str, dict]) -> None:
+    """Write lattice map back to owning content prisms (post split)."""
+    from casa.domain.content_prism_split import lattice_content_prism_target
+    from casa.domain.prism_ids import PRISM_MEMORY
+
+    mem: dict[str, dict] = {}
+    for lid, lat in lattices.items():
+        target = lattice_content_prism_target(lid) or PRISM_MEMORY
+        if target == PRISM_MEMORY:
+            mem[lid] = lat
+        else:
+            import_lattice_into_prism(state, target, lid, lat)
+    prism_memory(state)["lattices"] = mem
+    state.setdefault("sss", {})["lattices"] = dict(mem)
 
 
 def memory_lattices(state: dict, prism_id: str | None = None) -> dict[str, dict]:
-    return content_prism_lattices(state, prism_id)
+    if prism_id is not None:
+        return content_prism_lattices(state, prism_id)
+    return merged_content_lattices(state)
 
 
 def import_lattice_into_prism(state: dict, prism_id: str, lattice_id: str, lattice: dict) -> None:
@@ -183,9 +215,28 @@ def concept_id_for_surface(bundle: dict, surface: str, *, lattice_id: str) -> st
     return None
 
 
+def _normalize_hippo_lattice_cells(lat: dict, *, default_w: int = 32, default_h: int = 32) -> dict:
+    """Ensure cells length matches width×height (thin field_state may store cells: [])."""
+    w = int(lat.get("width") or default_w)
+    h = int(lat.get("height") or default_h)
+    n = w * h
+    cells = lat.get("cells")
+    if not isinstance(cells, list) or len(cells) != n:
+        old = cells if isinstance(cells, list) else []
+        lat["width"] = w
+        lat["height"] = h
+        lat["cells"] = [
+            list(old[i]) if i < len(old) and isinstance(old[i], list) else [] for i in range(n)
+        ]
+    return lat
+
+
 def _episodic_surface_lattice(hippo: dict) -> dict:
     lats = hippo.setdefault("lattices", {})
-    return lats.setdefault(EPISODIC_SURFACE, empty_hippo_lattice())
+    lat = lats.get(EPISODIC_SURFACE)
+    if lat is None:
+        return lats.setdefault(EPISODIC_SURFACE, empty_hippo_lattice())
+    return _normalize_hippo_lattice_cells(lat)
 
 
 def _register_episode_on_h0(state: dict, ep: dict, *, token_suffix: str = "") -> None:
@@ -414,8 +465,7 @@ def _strengthen_rule(state: dict, rule_id: str, *, copies: int = 5) -> None:
         "votes": int(rule_votes_from_field(state).get(rule_id, 0)),
         "source": "field",
     }
-    prism_memory(state)["lattices"] = lattices
-    sss["lattices"] = lattices
+    persist_content_lattices(state, lattices)
 
 
 def _strengthen_concept(lattices: dict[str, dict], lattice_id: str, concept_id: str, *, copies: int) -> bool:
@@ -586,8 +636,7 @@ def run_sleep(
 
     if budget_starved > 0:
         hippo["episodes"] = pending
-        prism_memory(state)["lattices"] = lattices
-        state["sss"] = {**(state.get("sss") or {}), "lattices": lattices}
+        persist_content_lattices(state, lattices)
         cons = state.setdefault("consolidation", {})
         cons["last_sleep_tick"] = int(state.get("field_version") or 0) + 1
         cons["episodes_merged_total"] = int(cons.get("episodes_merged_total") or 0) + len(merged)
@@ -755,10 +804,9 @@ def run_sleep(
     compose = apply_z_compose(lattices, bundle, stack)
 
     hippo["episodes"] = pending
-    prism_memory(state)["lattices"] = lattices
+    persist_content_lattices(state, lattices)
     state["sss"] = {
         **(state.get("sss") or {}),
-        "lattices": lattices,
         "last_compose": compose,
     }
     cons = state.setdefault("consolidation", {})
@@ -776,8 +824,7 @@ def run_sleep(
 
             reg = nca_regrow_lattice(lattices[nca_lattice_id], nca_path, device="cpu")
             lattices[nca_lattice_id] = reg["lattice"]
-            prism_memory(state)["lattices"] = lattices
-            state.setdefault("sss", {})["lattices"] = lattices
+            persist_content_lattices(state, lattices)
             nca_report = {"mode": "regrow", "lattice_id": nca_lattice_id, **{k: v for k, v in reg.items() if k != "lattice"}}
         except Exception as exc:  # noqa: BLE001 — sleep must not fail on optional NCA
             nca_report = {"error": str(exc), "lattice_id": nca_lattice_id}

@@ -7,8 +7,8 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from casa.domain.prism_ids import PRISM_MEMORY, PRISM_HIPPO, PRISM_CONTROL
-from casa.domain.prism_wire import normalize_prisms, prism_memory, prism_hippo, prism_control, set_active_prism
+from casa.domain.prism_ids import PRISM_MATH, PRISM_HIPPO, PRISM_CONTROL
+from casa.domain.prism_wire import normalize_prisms, prism_block, prism_hippo, prism_control, set_active_prism
 import argparse
 import json
 from pathlib import Path
@@ -17,7 +17,7 @@ from typing import Any
 from casa.prisms.shared.lattice_names_v1 import SCHEMA_MATH
 from casa.prisms.memory.f0_stack import encode_f0_lattice, load_f0_stack
 from casa.prisms.shared.field_write import load_field_state, save_field_state
-from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
+from casa.prisms.memory.memory_prisms import ensure_prisms, import_lattice_into_prism
 from casa.prisms.shared.store_boot import boot_store
 from casa.prisms.shared.store_layout import field_state_path
 
@@ -33,10 +33,8 @@ def ingest_math_bundle(
     state = ensure_prisms(state)
     stack = load_f0_stack(stack_path)
     lat = encode_f0_lattice(bundle, lattice_id=lattice_id, stack=stack, copies=copies)
-    lattices = memory_lattices(state)
-    lattices[lattice_id] = lat
-    prism_memory(state)["lattices"] = lattices
-    state.setdefault("sss", {})["lattices"] = lattices
+    import_lattice_into_prism(state, PRISM_MATH, lattice_id, lat)
+    prism_block(state, PRISM_MATH)["active_lattice"] = lattice_id
     state["f0"] = {
         "stack": str(stack_path or Path("design/f0-math-lattice-stack.json")),
         "bundle_id": bundle.get("bundle_id"),
@@ -46,7 +44,7 @@ def ingest_math_bundle(
         **(state.get("sn") or {}),
         "active_subsystem": "first_signal_math",
         "active_f_lattice": lattice_id,
-        "active_prism": "prism_memory",
+        "active_prism": PRISM_MATH,
     }
     state["field_version"] = int(state.get("field_version") or 0) + 1
     return {

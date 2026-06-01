@@ -162,6 +162,7 @@ def maintain_ltm_layout(
             state,
             on_token_progress=on_token_progress,
             progress_every=progress_every,
+            parallel_workers=0,
         )
         out["repaired"].append({"op": OP_L3_PHRASE_SHARD, "report": rem3})
         out["status"] = "repaired_l3" if out["status"] == "noop" else out["status"] + "+l3"

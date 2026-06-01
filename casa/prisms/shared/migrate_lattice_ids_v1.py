@@ -373,7 +373,11 @@ def migrate_store(
 def main() -> None:
     p = argparse.ArgumentParser(description="Migrate lattice ids legacy → v1 (no NCA retrain)")
     p.add_argument("--store-dir", type=Path, help="Single agent store directory")
-    p.add_argument("--stores-root", type=Path, default=Path("lab/agent-stores"))
+    p.add_argument(
+        "--stores-root",
+        type=Path,
+        default=Path("lab/snapshots/legacy-agent-stores"),
+    )
     p.add_argument("--dry-run", action="store_true", help="Print planned renames only")
     p.add_argument("--skip-field-state", action="store_true", help="ltm + manifest + nca paths only")
     p.add_argument("--skip-nca", action="store_true", help="Do not rename nca/ or registry")

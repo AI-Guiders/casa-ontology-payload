@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from casa._paths import REPO_ROOT
 from casa.prisms.memory.alphabet_core import merge_alphabet_l0_from_ltm
 from casa.prisms.shared.import_ltm_pack import import_pack
 from casa.prisms.memory.memory_prisms import ensure_prisms
@@ -18,7 +19,7 @@ from casa.prisms.memory.vk_layout_field import L0_VK_MAP_ID, compose_index_from_
 
 
 def _repo_root(root: Path | None) -> Path:
-    return root or Path(__file__).resolve().parent.parent
+    return (root or REPO_ROOT).resolve()
 
 
 def default_alphabet_core_ltm_dir(*, root: Path | None = None) -> Path:

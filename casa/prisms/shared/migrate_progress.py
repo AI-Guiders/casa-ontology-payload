@@ -3,9 +3,20 @@
 
 from __future__ import annotations
 
+import os
 import sys
 import time
 from typing import Callable
+
+
+def resolve_parallel_workers(flag: int) -> int:
+    """0 = auto (2..8 from cpu_count), 1 = sequential, N>=2 = cap at 32."""
+    if flag == 1:
+        return 1
+    if flag >= 2:
+        return min(32, flag)
+    cpu = os.cpu_count() or 4
+    return min(8, max(2, cpu))
 
 ProgressFn = Callable[[str], None]
 

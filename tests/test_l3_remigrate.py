@@ -32,6 +32,14 @@ def test_remigrate_l3_splits_and_exports(tmp_path: Path) -> None:
     assert rep["status"] == "ok"
     assert rep["max_shard_vocab"] <= LTM_VOCAB_U16_MAX
 
+    state2 = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+    state2.setdefault("sss", {})["lattices"] = {LEGACY_L3: _monolith_with_tokens(180)}
+    rep_par = remigrate_l3_from_monolith(
+        state2, num_shards=8, clear_monolith=True, parallel_workers=4
+    )
+    assert rep_par["status"] == "ok"
+    assert rep_par.get("parallel_workers", 1) >= 2
+
     manifest = export_pack(state, tmp_path / "ltm", remigrate_l2=False, remigrate_l3=False)
     shard_ids = [k for k in manifest["lattices"] if k.startswith(L3_SHARD_PREFIX)]
     assert len(shard_ids) >= 8

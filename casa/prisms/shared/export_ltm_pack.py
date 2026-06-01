@@ -120,9 +120,12 @@ def export_pack(
     progress: bool = False,
     parallel_writes: int = 0,
 ) -> dict[str, Any]:
+    from casa.prisms.shared.migrate_progress import resolve_parallel_workers
+
     field = FieldState.bind(state)
     state = field.wire
     _ = field.catalog  # ensure prism catalog normalized (ADR-0020 M2)
+    io_workers = resolve_parallel_workers(parallel_writes)
 
     def _word_progress(done: int, total: int, shard: str) -> None:
         if progress:
@@ -151,6 +154,7 @@ def export_pack(
         l3_remigrate_report = ensure_l3_sharded_for_export(
             state,
             on_token_progress=_token_progress if progress else None,
+            parallel_workers=io_workers,
         )
     nca_block = _rel_nca_block(state.get("nca"))
     exports = list(
@@ -224,11 +228,10 @@ def export_pack(
         total_raw += int(info["raw_bytes"])
         total_file += int(info["file_bytes"])
 
-    workers = max(0, int(parallel_writes))
-    if workers >= 2 and len(exports) >= 2:
+    if io_workers >= 2 and len(exports) >= 2:
         from concurrent.futures import ThreadPoolExecutor, as_completed
 
-        with ThreadPoolExecutor(max_workers=workers) as pool:
+        with ThreadPoolExecutor(max_workers=io_workers) as pool:
             futures = [
                 pool.submit(_export_one, i, pid, lid, lat)
                 for i, (pid, lid, lat) in enumerate(exports, 1)

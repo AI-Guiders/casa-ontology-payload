@@ -268,7 +268,9 @@ def run_e2e(
 def main() -> None:
     root = Path(__file__).resolve().parent.parent
     p = argparse.ArgumentParser(description="Sleep UC e2e: Use→Extract→Remember→reload→Use")
-    p.add_argument("--store-dir", type=Path, default=root / "lab/agent-stores/lexicon-ru-general")
+    from casa.prisms.shared.store_layout import default_agent_store
+
+    p.add_argument("--store-dir", type=Path, default=default_agent_store(root=root))
     p.add_argument("--cues", type=Path, default=root / "lab/exp_sleep/sleep_tick_cues.v1.json")
     p.add_argument("--cue-index", type=int, default=0)
     p.add_argument("--all-cues", action="store_true", help="Run every cue; exit 0 only if all pass")

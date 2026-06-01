@@ -29,6 +29,12 @@ def main() -> None:
         help="copy L3_phrase lattice from field_state.legacy.json before remigrate",
     )
     p.add_argument("--compact", action="store_true", help="flush ltm/ after remigrate")
+    p.add_argument(
+        "--parallel-workers",
+        type=int,
+        default=0,
+        help="0=auto (cpu), 1=sequential, N>=2",
+    )
     args = p.parse_args()
 
     fs = field_state_path(args.store_dir)
@@ -58,7 +64,9 @@ def main() -> None:
     if not args.force and not needs_l3_remigrate(state):
         rep = {"status": "noop", "reason": "needs_l3_remigrate=false"}
     elif args.force:
-        rep = remigrate_l3_from_monolith(state) or {"status": "noop"}
+        rep = remigrate_l3_from_monolith(
+            state, parallel_workers=args.parallel_workers
+        ) or {"status": "noop"}
     else:
         from casa.prisms.shared.migrate_progress import progress, set_progress_enabled
 
@@ -67,7 +75,14 @@ def main() -> None:
         def _tok(done: int, total: int, shard: str) -> None:
             progress(f"  remigrate L3 tokens {done}/{total} (shard {shard})")
 
-        rep = ensure_l3_sharded_for_export(state, on_token_progress=_tok) or {"status": "noop"}
+        rep = (
+            ensure_l3_sharded_for_export(
+                state,
+                on_token_progress=_tok,
+                parallel_workers=args.parallel_workers,
+            )
+            or {"status": "noop"}
+        )
 
     if args.write and rep.get("status") == "ok":
         from casa.prisms.shared.store_persist import save_runtime_state

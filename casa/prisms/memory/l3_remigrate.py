@@ -3,6 +3,9 @@
 
 from __future__ import annotations
 
+import threading
+from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any, Callable
 
 from casa.prisms.memory.l2_remigrate import LTM_VOCAB_U16_MAX
@@ -20,8 +23,11 @@ from casa.prisms.memory.phrase_shard import (
     placements_by_token,
     route_l3_lattice,
 )
+from casa.prisms.shared.migrate_progress import resolve_parallel_workers
 
 TokenProgressFn = Callable[[int, int, str], None] | None
+
+_PARALLEL_MIN_TOKENS = 2000
 
 
 def tokens_from_l3_monolith(state: dict, *, lattice_id: str | None = None) -> list[str]:
@@ -53,6 +59,66 @@ def needs_l3_remigrate(state: dict) -> bool:
     return on_monolith > 256 and indexed < on_monolith // 2
 
 
+def _remigrate_sequential(
+    state: dict,
+    keys: list[str],
+    by_pos: dict[str, list],
+    *,
+    on_token_progress: TokenProgressFn,
+    progress_every: int,
+) -> int:
+    total = len(keys)
+    copies = 0
+    for i, tok in enumerate(keys, 1):
+        shard = route_l3_lattice(state, tok)
+        lat = memory_lattices(state)[shard]
+        copies += copy_token_to_lattice(lat, tok, by_pos.get(tok, []))
+        if on_token_progress and (i == 1 or i == total or i % progress_every == 0):
+            on_token_progress(i, total, shard)
+    return copies
+
+
+def _remigrate_parallel(
+    state: dict,
+    keys: list[str],
+    by_pos: dict[str, list],
+    *,
+    workers: int,
+    on_token_progress: TokenProgressFn,
+    progress_every: int,
+) -> int:
+    buckets: dict[str, list[tuple[str, list]]] = defaultdict(list)
+    for tok in keys:
+        shard = route_l3_lattice(state, tok)
+        buckets[shard].append((tok, by_pos.get(tok, [])))
+
+    total = len(keys)
+    copies = 0
+    done = 0
+    lock = threading.Lock()
+
+    def _shard_job(shard_id: str, items: list[tuple[str, list]]) -> int:
+        nonlocal done
+        lat = memory_lattices(state)[shard_id]
+        local = 0
+        for tok, pos in items:
+            local += copy_token_to_lattice(lat, tok, pos)
+            if on_token_progress:
+                with lock:
+                    done += 1
+                    n = done
+                if n == 1 or n == total or n % progress_every == 0:
+                    on_token_progress(n, total, shard_id)
+        return local
+
+    max_workers = min(workers, max(1, len(buckets)))
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = [pool.submit(_shard_job, sid, items) for sid, items in buckets.items()]
+        for fut in as_completed(futures):
+            copies += fut.result()
+    return copies
+
+
 def remigrate_l3_from_monolith(
     state: dict,
     tokens: list[str] | None = None,
@@ -61,6 +127,7 @@ def remigrate_l3_from_monolith(
     clear_monolith: bool = True,
     on_token_progress: TokenProgressFn = None,
     progress_every: int = 5000,
+    parallel_workers: int = 0,
 ) -> dict[str, Any]:
     """Move field tokens off L3_phrase monolith onto L3_phrase_XX (preserve x,y placements)."""
     state = ensure_prisms(state)
@@ -78,14 +145,26 @@ def remigrate_l3_from_monolith(
 
     clear_l3_shards(state, keep_legacy=True)
 
-    total = len(keys)
-    copies = 0
-    for i, tok in enumerate(keys, 1):
-        shard = route_l3_lattice(state, tok)
-        lat = memory_lattices(state)[shard]
-        copies += copy_token_to_lattice(lat, tok, by_pos.get(tok, []))
-        if on_token_progress and (i == 1 or i == total or i % progress_every == 0):
-            on_token_progress(i, total, shard)
+    workers = resolve_parallel_workers(parallel_workers)
+    min_tokens = 100 if parallel_workers >= 2 else _PARALLEL_MIN_TOKENS
+    use_parallel = workers >= 2 and len(keys) >= min_tokens
+    if use_parallel:
+        copies = _remigrate_parallel(
+            state,
+            keys,
+            by_pos,
+            workers=workers,
+            on_token_progress=on_token_progress,
+            progress_every=progress_every,
+        )
+    else:
+        copies = _remigrate_sequential(
+            state,
+            keys,
+            by_pos,
+            on_token_progress=on_token_progress,
+            progress_every=progress_every,
+        )
 
     if clear_monolith:
         clear_legacy_l3_monolith(state, lattice_id=legacy)
@@ -106,6 +185,7 @@ def remigrate_l3_from_monolith(
         "monolith_cleared": clear_monolith,
         "max_shard_vocab": shard_vocab_max,
         "field_version": state["field_version"],
+        "parallel_workers": workers if use_parallel else 1,
     }
 
 
@@ -115,6 +195,7 @@ def ensure_l3_sharded_for_export(
     force: bool = False,
     on_token_progress: TokenProgressFn = None,
     progress_every: int = 5000,
+    parallel_workers: int = 0,
 ) -> dict[str, Any] | None:
     if not force and not needs_l3_remigrate(state):
         return None
@@ -122,4 +203,5 @@ def ensure_l3_sharded_for_export(
         state,
         on_token_progress=on_token_progress,
         progress_every=progress_every,
+        parallel_workers=parallel_workers,
     )
