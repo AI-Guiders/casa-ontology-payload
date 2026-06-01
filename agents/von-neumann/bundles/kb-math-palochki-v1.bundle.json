@@ -1,0 +1,1149 @@
+{
+  "schema_version": 5,
+  "bundle_id": "kb-math-palochki-v1",
+  "title": "Class math-palochki — sticks, operands, + − × ÷",
+  "doc": "lessons/math-palochki/README.md",
+  "math_tokens": [
+    {
+      "token": "M:sym:one",
+      "copies": 6
+    },
+    {
+      "token": "M:sym:two",
+      "copies": 6
+    },
+    {
+      "token": "M:sym:three",
+      "copies": 5
+    },
+    {
+      "token": "M:sym:four",
+      "copies": 4
+    },
+    {
+      "token": "M:sym:five",
+      "copies": 4
+    },
+    {
+      "token": "M:sym:six",
+      "copies": 4
+    },
+    {
+      "token": "M:sym:seven",
+      "copies": 4
+    },
+    {
+      "token": "M:sym:eight",
+      "copies": 4
+    },
+    {
+      "token": "M:sym:nine",
+      "copies": 4
+    },
+    {
+      "token": "M:sym:ten",
+      "copies": 4
+    },
+    {
+      "token": "M:sym:zero",
+      "copies": 4
+    },
+    {
+      "token": "M:sym:eleven",
+      "copies": 3
+    },
+    {
+      "token": "M:sym:twelve",
+      "copies": 3
+    },
+    {
+      "token": "M:sym:thirteen",
+      "copies": 3
+    },
+    {
+      "token": "M:sym:fourteen",
+      "copies": 3
+    },
+    {
+      "token": "M:sym:fifteen",
+      "copies": 3
+    },
+    {
+      "token": "M:sym:sixteen",
+      "copies": 3
+    },
+    {
+      "token": "M:sym:seventeen",
+      "copies": 3
+    },
+    {
+      "token": "M:sym:eighteen",
+      "copies": 3
+    },
+    {
+      "token": "M:sym:nineteen",
+      "copies": 3
+    },
+    {
+      "token": "M:sym:twenty",
+      "copies": 3
+    },
+    {
+      "token": "M:sym:twenty_one",
+      "copies": 3
+    },
+    {
+      "token": "M:op:add",
+      "copies": 5
+    },
+    {
+      "token": "M:op:concat",
+      "copies": 4
+    },
+    {
+      "token": "M:op:eq",
+      "copies": 4
+    },
+    {
+      "token": "M:entity:cow",
+      "copies": 4
+    },
+    {
+      "token": "M:entity:sheep",
+      "copies": 3
+    },
+    {
+      "token": "M:entity:stick",
+      "copies": 4
+    },
+    {
+      "token": "M:category:livestock",
+      "copies": 3
+    },
+    {
+      "token": "M:op:sub",
+      "copies": 5
+    },
+    {
+      "token": "M:op:mul",
+      "copies": 5
+    },
+    {
+      "token": "M:op:div",
+      "copies": 5
+    }
+  ],
+  "claims": [
+    {
+      "concept_id": "math.num.one",
+      "text": "Cardinality one (stick glyph |)."
+    },
+    {
+      "concept_id": "math.num.two",
+      "text": "Cardinality two (||)."
+    },
+    {
+      "concept_id": "math.num.three",
+      "text": "Cardinality three (|||)."
+    },
+    {
+      "concept_id": "math.num.four",
+      "text": "Cardinality four."
+    },
+    {
+      "concept_id": "math.num.five",
+      "text": "Cardinality five."
+    },
+    {
+      "concept_id": "math.num.six",
+      "text": "Cardinality six."
+    },
+    {
+      "concept_id": "math.num.seven",
+      "text": "Cardinality seven."
+    },
+    {
+      "concept_id": "math.num.eight",
+      "text": "Cardinality eight."
+    },
+    {
+      "concept_id": "math.num.nine",
+      "text": "Cardinality nine."
+    },
+    {
+      "concept_id": "math.num.ten",
+      "text": "Number ten (not a digit)."
+    },
+    {
+      "concept_id": "math.num.zero",
+      "text": "Number zero."
+    },
+    {
+      "concept_id": "math.num.eleven",
+      "text": "Number eleven (10+1)."
+    },
+    {
+      "concept_id": "math.num.twelve",
+      "text": "Number twelve (10+2)."
+    },
+    {
+      "concept_id": "math.num.thirteen",
+      "text": "Number thirteen (10+3)."
+    },
+    {
+      "concept_id": "math.num.fourteen",
+      "text": "Number fourteen (10+4)."
+    },
+    {
+      "concept_id": "math.num.fifteen",
+      "text": "Number fifteen (10+5)."
+    },
+    {
+      "concept_id": "math.num.sixteen",
+      "text": "Number sixteen (10+6)."
+    },
+    {
+      "concept_id": "math.num.seventeen",
+      "text": "Number seventeen (10+7)."
+    },
+    {
+      "concept_id": "math.num.eighteen",
+      "text": "Number eighteen (10+8)."
+    },
+    {
+      "concept_id": "math.num.nineteen",
+      "text": "Number nineteen (10+9)."
+    },
+    {
+      "concept_id": "math.num.twenty",
+      "text": "Number twenty (2×ten)."
+    },
+    {
+      "concept_id": "math.num.twenty_one",
+      "text": "Number twenty-one."
+    },
+    {
+      "concept_id": "math.op.mul",
+      "text": "Multiplication (repeated addition / skip counting)."
+    },
+    {
+      "concept_id": "math.reading.rule.numeral_teens",
+      "text": "Derived: teen numerals N+ten; -ty = N tens."
+    },
+    {
+      "concept_id": "lang.word.eleven",
+      "text": "Word: eleven."
+    },
+    {
+      "concept_id": "lang.word.twelve",
+      "text": "Word: twelve."
+    },
+    {
+      "concept_id": "lang.word.thirteen",
+      "text": "Word: thirteen."
+    },
+    {
+      "concept_id": "lang.word.fourteen",
+      "text": "Word: fourteen."
+    },
+    {
+      "concept_id": "lang.word.fifteen",
+      "text": "Word: fifteen."
+    },
+    {
+      "concept_id": "lang.word.twenty",
+      "text": "Word: twenty."
+    },
+    {
+      "concept_id": "lang.word.одиннадцать",
+      "text": "RU: одиннадцать."
+    },
+    {
+      "concept_id": "lang.word.двенадцать",
+      "text": "RU: двенадцать."
+    },
+    {
+      "concept_id": "lang.word.двадцать",
+      "text": "RU: двадцать."
+    },
+    {
+      "concept_id": "math.op.add",
+      "text": "Addition operator schema (glyph +)."
+    },
+    {
+      "concept_id": "math.op.concat",
+      "text": "String concatenation (\"a\"+\"b\")."
+    },
+    {
+      "concept_id": "math.op.eq",
+      "text": "Equality relation schema (glyph =)."
+    },
+    {
+      "concept_id": "math.op.or",
+      "text": "Bitwise OR (glyph | between operands, e.g. x|y)."
+    },
+    {
+      "concept_id": "math.ctx.cardinal",
+      "text": "Reading: pipe runs | || as cardinality."
+    },
+    {
+      "concept_id": "math.ctx.bitwise",
+      "text": "Reading: infix | between identifiers (x|y)."
+    },
+    {
+      "concept_id": "math.ctx.string",
+      "text": "Reading: quoted literals with + (\"a\"+\"b\")."
+    },
+    {
+      "concept_id": "math.ctx.arithmetic",
+      "text": "Reading: + = and stick addition | + |."
+    },
+    {
+      "concept_id": "math.dim.count",
+      "text": "Dimension: discrete counting (head, pieces)."
+    },
+    {
+      "concept_id": "math.dim.length",
+      "text": "Dimension: length (SI roadmap)."
+    },
+    {
+      "concept_id": "math.entity.cow",
+      "text": "Countable entity: cow (not SI unit)."
+    },
+    {
+      "concept_id": "math.entity.sheep",
+      "text": "Countable entity: sheep."
+    },
+    {
+      "concept_id": "math.entity.stick",
+      "text": "Countable entity: stick (L0 glyph)."
+    },
+    {
+      "concept_id": "math.category.livestock",
+      "text": "Category: livestock / скот (hypernym)."
+    },
+    {
+      "concept_id": "math.unit.m",
+      "text": "SI unit: metre (roadmap)."
+    },
+    {
+      "concept_id": "math.role.addend",
+      "text": "Operand role: addend (слагаемое)."
+    },
+    {
+      "concept_id": "math.role.sum",
+      "text": "Operand role: sum (сумма)."
+    },
+    {
+      "concept_id": "math.role.minuend",
+      "text": "Operand role: minuend (уменьшаемое)."
+    },
+    {
+      "concept_id": "math.role.subtrahend",
+      "text": "Operand role: subtrahend (вычитаемое)."
+    },
+    {
+      "concept_id": "math.role.difference",
+      "text": "Operand role: difference (разность)."
+    },
+    {
+      "concept_id": "math.role.factor",
+      "text": "Operand role: factor (множитель)."
+    },
+    {
+      "concept_id": "math.role.product",
+      "text": "Operand role: product (произведение)."
+    },
+    {
+      "concept_id": "math.role.dividend",
+      "text": "Operand role: dividend (делимое)."
+    },
+    {
+      "concept_id": "math.role.divisor",
+      "text": "Operand role: divisor (делитель)."
+    },
+    {
+      "concept_id": "math.role.quotient",
+      "text": "Operand role: quotient (частное)."
+    },
+    {
+      "concept_id": "math.role.heap",
+      "text": "Counting role: heap / pile (кучка)."
+    },
+    {
+      "concept_id": "math.op.sub",
+      "text": "Subtraction operator schema (glyph −)."
+    },
+    {
+      "concept_id": "math.op.div",
+      "text": "Division operator schema (glyph /)."
+    },
+    {
+      "concept_id": "lang.word.слагаемое",
+      "text": "RU word → math.role.addend"
+    },
+    {
+      "concept_id": "lang.word.сумма",
+      "text": "RU word → math.role.sum"
+    },
+    {
+      "concept_id": "lang.word.уменьшаемое",
+      "text": "RU word → math.role.minuend"
+    },
+    {
+      "concept_id": "lang.word.вычитаемое",
+      "text": "RU word → math.role.subtrahend"
+    },
+    {
+      "concept_id": "lang.word.разность",
+      "text": "RU word → math.role.difference"
+    },
+    {
+      "concept_id": "lang.word.множитель",
+      "text": "RU word → math.role.factor"
+    },
+    {
+      "concept_id": "lang.word.произведение",
+      "text": "RU word → math.role.product"
+    },
+    {
+      "concept_id": "lang.word.делимое",
+      "text": "RU word → math.role.dividend"
+    },
+    {
+      "concept_id": "lang.word.делитель",
+      "text": "RU word → math.role.divisor"
+    },
+    {
+      "concept_id": "lang.word.частное",
+      "text": "RU word → math.role.quotient"
+    },
+    {
+      "concept_id": "lang.word.кучка",
+      "text": "RU word → math.role.heap"
+    },
+    {
+      "concept_id": "lang.word.палочка",
+      "text": "RU word → math.entity.stick"
+    }
+  ],
+  "graph": {
+    "edges": [
+      {
+        "src": "M:sym:one",
+        "relation": "schema_of",
+        "dst": "math.num.one"
+      },
+      {
+        "src": "M:sym:two",
+        "relation": "schema_of",
+        "dst": "math.num.two"
+      },
+      {
+        "src": "M:sym:three",
+        "relation": "schema_of",
+        "dst": "math.num.three"
+      },
+      {
+        "src": "M:sym:four",
+        "relation": "schema_of",
+        "dst": "math.num.four"
+      },
+      {
+        "src": "M:sym:five",
+        "relation": "schema_of",
+        "dst": "math.num.five"
+      },
+      {
+        "src": "M:sym:six",
+        "relation": "schema_of",
+        "dst": "math.num.six"
+      },
+      {
+        "src": "M:sym:seven",
+        "relation": "schema_of",
+        "dst": "math.num.seven"
+      },
+      {
+        "src": "M:sym:eight",
+        "relation": "schema_of",
+        "dst": "math.num.eight"
+      },
+      {
+        "src": "M:sym:nine",
+        "relation": "schema_of",
+        "dst": "math.num.nine"
+      },
+      {
+        "src": "M:sym:ten",
+        "relation": "schema_of",
+        "dst": "math.num.ten"
+      },
+      {
+        "src": "M:sym:zero",
+        "relation": "schema_of",
+        "dst": "math.num.zero"
+      },
+      {
+        "src": "M:sym:eleven",
+        "relation": "schema_of",
+        "dst": "math.num.eleven"
+      },
+      {
+        "src": "M:sym:twelve",
+        "relation": "schema_of",
+        "dst": "math.num.twelve"
+      },
+      {
+        "src": "M:sym:thirteen",
+        "relation": "schema_of",
+        "dst": "math.num.thirteen"
+      },
+      {
+        "src": "M:sym:fourteen",
+        "relation": "schema_of",
+        "dst": "math.num.fourteen"
+      },
+      {
+        "src": "M:sym:fifteen",
+        "relation": "schema_of",
+        "dst": "math.num.fifteen"
+      },
+      {
+        "src": "M:sym:sixteen",
+        "relation": "schema_of",
+        "dst": "math.num.sixteen"
+      },
+      {
+        "src": "M:sym:seventeen",
+        "relation": "schema_of",
+        "dst": "math.num.seventeen"
+      },
+      {
+        "src": "M:sym:eighteen",
+        "relation": "schema_of",
+        "dst": "math.num.eighteen"
+      },
+      {
+        "src": "M:sym:nineteen",
+        "relation": "schema_of",
+        "dst": "math.num.nineteen"
+      },
+      {
+        "src": "M:sym:twenty",
+        "relation": "schema_of",
+        "dst": "math.num.twenty"
+      },
+      {
+        "src": "M:sym:twenty_one",
+        "relation": "schema_of",
+        "dst": "math.num.twenty_one"
+      },
+      {
+        "src": "M:op:add",
+        "relation": "schema_of",
+        "dst": "math.op.add"
+      },
+      {
+        "src": "M:op:concat",
+        "relation": "schema_of",
+        "dst": "math.op.concat"
+      },
+      {
+        "src": "M:op:eq",
+        "relation": "schema_of",
+        "dst": "math.op.eq"
+      },
+      {
+        "src": "M:entity:cow",
+        "relation": "schema_of",
+        "dst": "math.entity.cow"
+      },
+      {
+        "src": "M:entity:sheep",
+        "relation": "schema_of",
+        "dst": "math.entity.sheep"
+      },
+      {
+        "src": "M:entity:stick",
+        "relation": "schema_of",
+        "dst": "math.entity.stick"
+      },
+      {
+        "src": "math.op.add",
+        "relation": "requires_dim",
+        "dst": "math.dim.count"
+      },
+      {
+        "src": "math.entity.cow",
+        "relation": "in_dim",
+        "dst": "math.dim.count"
+      },
+      {
+        "src": "math.entity.sheep",
+        "relation": "in_dim",
+        "dst": "math.dim.count"
+      },
+      {
+        "src": "math.entity.stick",
+        "relation": "in_dim",
+        "dst": "math.dim.count"
+      },
+      {
+        "src": "math.entity.cow",
+        "relation": "is_a",
+        "dst": "math.category.livestock"
+      },
+      {
+        "src": "math.entity.sheep",
+        "relation": "is_a",
+        "dst": "math.category.livestock"
+      },
+      {
+        "src": "math.category.livestock",
+        "relation": "in_dim",
+        "dst": "math.dim.count"
+      },
+      {
+        "src": "math.unit.m",
+        "relation": "in_dim",
+        "dst": "math.dim.length"
+      },
+      {
+        "src": "math.entity.cow",
+        "relation": "denotes",
+        "dst": "lang.word.cow"
+      },
+      {
+        "src": "math.category.livestock",
+        "relation": "denotes",
+        "dst": "lang.word.скот"
+      },
+      {
+        "src": "M:op:sub",
+        "relation": "schema_of",
+        "dst": "math.op.sub"
+      },
+      {
+        "src": "M:op:mul",
+        "relation": "schema_of",
+        "dst": "math.op.mul"
+      },
+      {
+        "src": "M:op:div",
+        "relation": "schema_of",
+        "dst": "math.op.div"
+      },
+      {
+        "src": "math.role.addend",
+        "relation": "denotes",
+        "dst": "lang.word.слагаемое"
+      },
+      {
+        "src": "math.role.sum",
+        "relation": "denotes",
+        "dst": "lang.word.сумма"
+      },
+      {
+        "src": "math.role.minuend",
+        "relation": "denotes",
+        "dst": "lang.word.уменьшаемое"
+      },
+      {
+        "src": "math.role.subtrahend",
+        "relation": "denotes",
+        "dst": "lang.word.вычитаемое"
+      },
+      {
+        "src": "math.role.difference",
+        "relation": "denotes",
+        "dst": "lang.word.разность"
+      },
+      {
+        "src": "math.role.factor",
+        "relation": "denotes",
+        "dst": "lang.word.множитель"
+      },
+      {
+        "src": "math.role.product",
+        "relation": "denotes",
+        "dst": "lang.word.произведение"
+      },
+      {
+        "src": "math.role.dividend",
+        "relation": "denotes",
+        "dst": "lang.word.делимое"
+      },
+      {
+        "src": "math.role.divisor",
+        "relation": "denotes",
+        "dst": "lang.word.делитель"
+      },
+      {
+        "src": "math.role.quotient",
+        "relation": "denotes",
+        "dst": "lang.word.частное"
+      },
+      {
+        "src": "math.role.heap",
+        "relation": "denotes",
+        "dst": "lang.word.кучка"
+      },
+      {
+        "src": "math.entity.stick",
+        "relation": "denotes",
+        "dst": "lang.word.палочка"
+      }
+    ]
+  },
+  "reading_contexts": [
+    {
+      "id": "math.ctx.cardinal",
+      "when": {
+        "shape": "glyph_run",
+        "glyph_class": "pipe"
+      },
+      "weight": 10,
+      "text": "Surface: only pipe glyphs (stick counting)."
+    },
+    {
+      "id": "math.ctx.bitwise",
+      "when": {
+        "shape": "infix",
+        "op": "|",
+        "operand": "identifier"
+      },
+      "weight": 12,
+      "text": "Infix | between identifiers (incl. numeric literals)."
+    },
+    {
+      "id": "math.ctx.string",
+      "when": {
+        "shape": "infix",
+        "op": "+",
+        "operand": "string_literal"
+      },
+      "weight": 14,
+      "text": "Infix + between quoted strings."
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": {
+        "shape": "infix",
+        "op": "+",
+        "operand": "pipe_run"
+      },
+      "weight": 10,
+      "text": "Stick compose | + |."
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": {
+        "shape": "infix",
+        "op": "+",
+        "operand": "number"
+      },
+      "weight": 11,
+      "text": "Numeric addition 1+2."
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": {
+        "shape": "singleton",
+        "glyph": "+"
+      },
+      "weight": 10
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": {
+        "shape": "singleton",
+        "glyph": "="
+      },
+      "weight": 10
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": {
+        "shape": "contains",
+        "glyph": "="
+      },
+      "weight": 8
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": {
+        "shape": "default"
+      },
+      "weight": 1
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": {
+        "shape": "infix",
+        "op": "-",
+        "operand": "pipe_run"
+      },
+      "weight": 10,
+      "text": "Stick subtraction ||| - ||."
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": {
+        "shape": "infix",
+        "op": "/",
+        "operand": "pipe_run"
+      },
+      "weight": 10,
+      "text": "Stick division |||| / 2."
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": {
+        "shape": "singleton",
+        "glyph": "-"
+      },
+      "weight": 10
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": {
+        "shape": "singleton",
+        "glyph": "/"
+      },
+      "weight": 10
+    },
+    {
+      "id": "math.ctx.cardinal",
+      "when": {
+        "shape": "singleton",
+        "glyph": "0"
+      },
+      "weight": 10,
+      "text": "Digit zero in stick counting."
+    }
+  ],
+  "symbol_senses": [
+    {
+      "glyph": "|",
+      "context": "math.ctx.cardinal",
+      "concept_id": "math.num.one"
+    },
+    {
+      "glyph": "||",
+      "context": "math.ctx.cardinal",
+      "concept_id": "math.num.two"
+    },
+    {
+      "glyph": "|||",
+      "context": "math.ctx.cardinal",
+      "concept_id": "math.num.three"
+    },
+    {
+      "glyph": "|",
+      "grapheme": "grapheme.latn.|",
+      "context": "math.ctx.bitwise",
+      "concept_id": "math.op.or"
+    },
+    {
+      "glyph": "+",
+      "grapheme": "grapheme.latn.+",
+      "context": "math.ctx.arithmetic",
+      "concept_id": "math.op.add"
+    },
+    {
+      "glyph": "+",
+      "grapheme": "grapheme.latn.+",
+      "context": "math.ctx.string",
+      "concept_id": "math.op.concat"
+    },
+    {
+      "glyph": "=",
+      "grapheme": "grapheme.latn.=",
+      "context": "math.ctx.arithmetic",
+      "concept_id": "math.op.eq"
+    },
+    {
+      "glyph": "-",
+      "grapheme": "grapheme.latn.-",
+      "context": "math.ctx.arithmetic",
+      "concept_id": "math.op.sub"
+    },
+    {
+      "glyph": "/",
+      "grapheme": "grapheme.latn./",
+      "context": "math.ctx.arithmetic",
+      "concept_id": "math.op.div"
+    },
+    {
+      "glyph": "×",
+      "grapheme": "grapheme.latn.×",
+      "context": "math.ctx.arithmetic",
+      "concept_id": "math.op.mul"
+    },
+    {
+      "glyph": "*",
+      "grapheme": "grapheme.latn.*",
+      "context": "math.ctx.arithmetic",
+      "concept_id": "math.op.mul"
+    },
+    {
+      "glyph": "||||",
+      "context": "math.ctx.cardinal",
+      "concept_id": "math.num.four"
+    },
+    {
+      "glyph": "0",
+      "context": "math.ctx.cardinal",
+      "concept_id": "math.num.zero",
+      "grapheme": "grapheme.latn.0"
+    },
+    {
+      "glyph": "1",
+      "context": "math.ctx.cardinal",
+      "concept_id": "math.num.one",
+      "grapheme": "grapheme.latn.1"
+    },
+    {
+      "glyph": "2",
+      "context": "math.ctx.cardinal",
+      "concept_id": "math.num.two",
+      "grapheme": "grapheme.latn.2"
+    },
+    {
+      "glyph": "3",
+      "context": "math.ctx.cardinal",
+      "concept_id": "math.num.three",
+      "grapheme": "grapheme.latn.3"
+    },
+    {
+      "glyph": "4",
+      "context": "math.ctx.cardinal",
+      "concept_id": "math.num.four",
+      "grapheme": "grapheme.latn.4"
+    }
+  ],
+  "symbol_concepts": [
+    "grapheme.latn.+",
+    "grapheme.latn.=",
+    "grapheme.latn.|",
+    "grapheme.latn.-",
+    "grapheme.latn./",
+    "grapheme.latn.×",
+    "grapheme.latn.*",
+    "grapheme.latn.0",
+    "grapheme.latn.1",
+    "grapheme.latn.2",
+    "grapheme.latn.3",
+    "grapheme.latn.4"
+  ],
+  "keyboard_symbols": [
+    {
+      "char": "+",
+      "grapheme": "grapheme.latn.+",
+      "math_op": "math.op.add",
+      "context": "math.ctx.arithmetic",
+      "layout": "jcuken_ru",
+      "key": "Equal",
+      "shift": true,
+      "note": "punct.latn.+ realizes grapheme on keyboard lattice"
+    },
+    {
+      "char": "=",
+      "grapheme": "grapheme.latn.=",
+      "math_op": "math.op.eq",
+      "context": "math.ctx.arithmetic",
+      "layout": "jcuken_ru",
+      "key": "Equal",
+      "shift": false
+    }
+  ],
+  "math_glyphs": [
+    {
+      "glyph": "|||",
+      "concept_id": "math.num.three",
+      "context": "math.ctx.cardinal"
+    },
+    {
+      "glyph": "||",
+      "concept_id": "math.num.two",
+      "context": "math.ctx.cardinal"
+    },
+    {
+      "glyph": "|",
+      "concept_id": "math.num.one",
+      "context": "math.ctx.cardinal"
+    },
+    {
+      "glyph": "+",
+      "concept_id": "math.op.add",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "glyph": "=",
+      "concept_id": "math.op.eq",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "glyph": "-",
+      "concept_id": "math.op.sub",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "glyph": "/",
+      "concept_id": "math.op.div",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "glyph": "×",
+      "concept_id": "math.op.mul",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "glyph": "||||",
+      "concept_id": "math.num.four",
+      "context": "math.ctx.cardinal"
+    }
+  ],
+  "math_keywords": {
+    "math.num.one": [
+      "one",
+      "один",
+      "одна",
+      "stick",
+      "одна палочка"
+    ],
+    "math.num.two": [
+      "two",
+      "два",
+      "две",
+      "pair",
+      "две палочки"
+    ],
+    "math.num.three": [
+      "three",
+      "три",
+      "три палочки"
+    ],
+    "math.op.add": [
+      "add",
+      "сложить",
+      "склеить",
+      "plus"
+    ],
+    "math.op.concat": [
+      "concat",
+      "string",
+      "строк",
+      "склеить строк"
+    ],
+    "math.op.eq": [
+      "eq",
+      "равно",
+      "equals"
+    ],
+    "math.op.or": [
+      "or",
+      "бит",
+      "bitwise",
+      "побит"
+    ],
+    "math.entity.cow": [
+      "cow",
+      "корова",
+      "коровы"
+    ],
+    "math.entity.sheep": [
+      "sheep",
+      "овца",
+      "овцы"
+    ],
+    "math.entity.stick": [
+      "stick",
+      "палоч",
+      "палочк"
+    ],
+    "math.category.livestock": [
+      "livestock",
+      "скот",
+      "поголов",
+      "животн"
+    ],
+    "math.op.sub": [
+      "sub",
+      "вычесть",
+      "отрезать",
+      "minus",
+      "−"
+    ],
+    "math.op.div": [
+      "div",
+      "делить",
+      "разделить",
+      "÷",
+      "/"
+    ],
+    "math.op.mul": [
+      "mul",
+      "умнож",
+      "×",
+      "times"
+    ],
+    "math.role.dividend": [
+      "делимое"
+    ],
+    "math.role.divisor": [
+      "делитель"
+    ],
+    "math.role.quotient": [
+      "частное"
+    ],
+    "math.role.addend": [
+      "слагаемое"
+    ],
+    "math.role.sum": [
+      "сумма"
+    ],
+    "math.num.zero": [
+      "zero",
+      "ноль",
+      "пусто",
+      "нет",
+      "ноль палочек",
+      "0 палочек"
+    ],
+    "math.num.four": [
+      "four",
+      "четыре",
+      "четыре палочки"
+    ]
+  },
+  "compose_scenarios": [
+    {
+      "id": "cow_plus_cow",
+      "left": "M:qty:1×entity:cow",
+      "right": "M:qty:1×entity:cow",
+      "aggregate": "entity",
+      "expect": "M:qty:2×entity:cow"
+    },
+    {
+      "id": "cow_plus_sheep_entity_fail",
+      "left": "M:qty:10×entity:cow",
+      "right": "M:qty:2×entity:sheep",
+      "aggregate": "entity",
+      "expect_error": "heterogeneous_sort"
+    },
+    {
+      "id": "livestock_total",
+      "left": "M:qty:10×entity:cow",
+      "right": "M:qty:2×entity:sheep",
+      "aggregate": "category",
+      "lift_category": "math.category.livestock",
+      "expect": "M:qty:12×category:livestock",
+      "decomposes_to": [
+        "M:qty:10×entity:cow",
+        "M:qty:2×entity:sheep"
+      ]
+    }
+  ]
+}

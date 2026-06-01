@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "agent_prism",
+  "updated_at": "2026-06-01T23:40:44Z",
+  "active_lattice": "agent-self-default",
+  "lattices": {
+    "agent-self-default": {
+      "path": "lattices/agent-self-default.json",
+      "width": 32,
+      "height": 32,
+      "token_count": 0,
+      "updated_at": "2026-06-01T23:40:44Z"
+    }
+  },
+  "nca": {
+    "models": {}
+  },
+  "bridges_file": null,
+  "bridge_count": 0
+}

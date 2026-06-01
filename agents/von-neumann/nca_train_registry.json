@@ -1,0 +1,1116 @@
+{
+  "schema_version": 1,
+  "kind": "nca_train_registry",
+  "store_id": "lexicon-ru-general",
+  "updated_at": "2026-06-01T01:51:21.605028+00:00",
+  "field_version": 3,
+  "pending": [],
+  "lattices": {
+    "lexicon-ru-00": {
+      "last_trained_at": "2026-05-31T15:37:54.126572+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1560,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-00/model.pt",
+      "last_repair_ratio": 2.338,
+      "last_repair_at": "2026-05-31T15:37:54.129581+00:00"
+    },
+    "lexicon-ru-01": {
+      "last_trained_at": "2026-05-31T15:38:52.183335+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-01/model.pt",
+      "last_repair_ratio": 2.376,
+      "last_repair_at": "2026-05-31T15:38:52.186336+00:00"
+    },
+    "lexicon-ru-02": {
+      "last_trained_at": "2026-05-31T15:40:01.029487+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-02/model.pt",
+      "last_repair_ratio": 2.342,
+      "last_repair_at": "2026-05-31T15:40:01.031530+00:00"
+    },
+    "lexicon-ru-03": {
+      "last_trained_at": "2026-05-31T15:41:03.689439+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-03/model.pt",
+      "last_repair_ratio": 2.318,
+      "last_repair_at": "2026-05-31T15:41:03.692437+00:00"
+    },
+    "lexicon-ru-04": {
+      "last_trained_at": "2026-05-31T15:42:37.422038+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-04/model.pt",
+      "last_repair_ratio": 2.356,
+      "last_repair_at": "2026-05-31T15:42:37.424354+00:00"
+    },
+    "lexicon-ru-05": {
+      "last_trained_at": "2026-05-31T15:43:41.267360+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-05/model.pt",
+      "last_repair_ratio": 2.401,
+      "last_repair_at": "2026-05-31T15:43:41.269607+00:00"
+    },
+    "lexicon-ru-06": {
+      "last_trained_at": "2026-05-31T15:44:42.742735+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-06/model.pt",
+      "last_repair_ratio": 2.36,
+      "last_repair_at": "2026-05-31T15:44:42.745663+00:00"
+    },
+    "lexicon-ru-07": {
+      "last_trained_at": "2026-05-31T15:45:46.121582+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-07/model.pt",
+      "last_repair_ratio": 2.385,
+      "last_repair_at": "2026-05-31T15:45:46.123025+00:00"
+    },
+    "lexicon-ru-08": {
+      "last_trained_at": "2026-05-31T15:46:51.331723+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-08/model.pt",
+      "last_repair_ratio": 2.367,
+      "last_repair_at": "2026-05-31T15:46:51.335714+00:00"
+    },
+    "lexicon-ru-09": {
+      "last_trained_at": "2026-05-31T15:47:53.802375+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-09/model.pt",
+      "last_repair_ratio": 2.356,
+      "last_repair_at": "2026-05-31T15:47:53.805890+00:00"
+    },
+    "lexicon-ru-10": {
+      "last_trained_at": "2026-05-31T15:49:01.365722+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-10/model.pt",
+      "last_repair_ratio": 2.335,
+      "last_repair_at": "2026-05-31T15:49:01.368761+00:00"
+    },
+    "lexicon-ru-11": {
+      "last_trained_at": "2026-05-31T15:50:04.857170+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-11/model.pt",
+      "last_repair_ratio": 2.388,
+      "last_repair_at": "2026-05-31T15:50:04.858950+00:00"
+    },
+    "lexicon-ru-12": {
+      "last_trained_at": "2026-05-31T15:51:16.378217+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-12/model.pt",
+      "last_repair_ratio": 2.397,
+      "last_repair_at": "2026-05-31T15:51:16.380736+00:00"
+    },
+    "lexicon-ru-13": {
+      "last_trained_at": "2026-05-31T15:52:18.151795+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-13/model.pt",
+      "last_repair_ratio": 2.388,
+      "last_repair_at": "2026-05-31T15:52:18.154803+00:00"
+    },
+    "lexicon-ru-14": {
+      "last_trained_at": "2026-05-31T15:53:28.544699+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-14/model.pt",
+      "last_repair_ratio": 2.376,
+      "last_repair_at": "2026-05-31T15:53:28.547752+00:00"
+    },
+    "lexicon-ru-15": {
+      "last_trained_at": "2026-05-31T15:54:33.490023+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-15/model.pt",
+      "last_repair_ratio": 2.424,
+      "last_repair_at": "2026-05-31T15:54:33.492677+00:00"
+    },
+    "lexicon-ru-16": {
+      "last_trained_at": "2026-05-31T15:55:42.072390+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-16/model.pt",
+      "last_repair_ratio": 2.361,
+      "last_repair_at": "2026-05-31T15:55:42.074581+00:00"
+    },
+    "lexicon-ru-17": {
+      "last_trained_at": "2026-05-31T15:56:51.364890+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-17/model.pt",
+      "last_repair_ratio": 2.312,
+      "last_repair_at": "2026-05-31T15:56:51.367387+00:00"
+    },
+    "lexicon-ru-18": {
+      "last_trained_at": "2026-05-31T15:58:00.444869+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-18/model.pt",
+      "last_repair_ratio": 2.307,
+      "last_repair_at": "2026-05-31T15:58:00.447160+00:00"
+    },
+    "lexicon-ru-19": {
+      "last_trained_at": "2026-05-31T15:59:06.992201+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-19/model.pt",
+      "last_repair_ratio": 2.417,
+      "last_repair_at": "2026-05-31T15:59:06.994203+00:00"
+    },
+    "lexicon-ru-20": {
+      "last_trained_at": "2026-05-31T16:00:08.977290+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-20/model.pt",
+      "last_repair_ratio": 2.3,
+      "last_repair_at": "2026-05-31T16:00:08.979410+00:00"
+    },
+    "lexicon-ru-21": {
+      "last_trained_at": "2026-05-31T16:01:12.201541+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1560,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-21/model.pt",
+      "last_repair_ratio": 2.4,
+      "last_repair_at": "2026-05-31T16:01:12.203746+00:00"
+    },
+    "lexicon-ru-22": {
+      "last_trained_at": "2026-05-31T16:03:17.940826+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-22/model.pt",
+      "last_repair_ratio": 2.335,
+      "last_repair_at": "2026-05-31T16:03:17.942836+00:00"
+    },
+    "lexicon-ru-23": {
+      "last_trained_at": "2026-05-31T16:04:53.752257+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-23/model.pt",
+      "last_repair_ratio": 2.352,
+      "last_repair_at": "2026-05-31T16:04:53.754537+00:00"
+    },
+    "lexicon-ru-24": {
+      "last_trained_at": "2026-05-31T16:06:01.569059+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-24/model.pt",
+      "last_repair_ratio": 2.401,
+      "last_repair_at": "2026-05-31T16:06:01.572620+00:00"
+    },
+    "lexicon-ru-25": {
+      "last_trained_at": "2026-05-31T16:07:33.607084+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-25/model.pt",
+      "last_repair_ratio": 2.369,
+      "last_repair_at": "2026-05-31T16:07:33.609090+00:00"
+    },
+    "lexicon-ru-26": {
+      "last_trained_at": "2026-05-31T16:08:40.615766+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-26/model.pt",
+      "last_repair_ratio": 2.309,
+      "last_repair_at": "2026-05-31T16:08:40.617996+00:00"
+    },
+    "lexicon-ru-27": {
+      "last_trained_at": "2026-05-31T16:09:46.645849+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-27/model.pt",
+      "last_repair_ratio": 2.382,
+      "last_repair_at": "2026-05-31T16:09:46.648365+00:00"
+    },
+    "lexicon-ru-28": {
+      "last_trained_at": "2026-05-31T16:11:18.987627+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-28/model.pt",
+      "last_repair_ratio": 2.388,
+      "last_repair_at": "2026-05-31T16:11:18.991888+00:00"
+    },
+    "lexicon-ru-29": {
+      "last_trained_at": "2026-05-31T16:12:30.465585+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-29/model.pt",
+      "last_repair_ratio": 2.382,
+      "last_repair_at": "2026-05-31T16:12:30.469331+00:00"
+    },
+    "lexicon-ru-30": {
+      "last_trained_at": "2026-05-31T16:13:38.125557+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-30/model.pt",
+      "last_repair_ratio": 2.282,
+      "last_repair_at": "2026-05-31T16:13:38.129577+00:00"
+    },
+    "lexicon-ru-31": {
+      "last_trained_at": "2026-05-31T16:15:03.395211+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-31/model.pt",
+      "last_repair_ratio": 2.329,
+      "last_repair_at": "2026-05-31T16:15:03.397274+00:00"
+    },
+    "lexicon-ru-32": {
+      "last_trained_at": "2026-05-31T16:16:17.213530+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-32/model.pt",
+      "last_repair_ratio": 2.306,
+      "last_repair_at": "2026-05-31T16:16:17.216245+00:00"
+    },
+    "lexicon-ru-33": {
+      "last_trained_at": "2026-05-31T16:17:33.057912+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-33/model.pt",
+      "last_repair_ratio": 2.335,
+      "last_repair_at": "2026-05-31T16:17:33.061392+00:00"
+    },
+    "lexicon-ru-34": {
+      "last_trained_at": "2026-05-31T16:18:45.257466+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-34/model.pt",
+      "last_repair_ratio": 2.378,
+      "last_repair_at": "2026-05-31T16:18:45.260862+00:00"
+    },
+    "lexicon-ru-35": {
+      "last_trained_at": "2026-05-31T16:19:58.104806+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-35/model.pt",
+      "last_repair_ratio": 2.314,
+      "last_repair_at": "2026-05-31T16:19:58.107499+00:00"
+    },
+    "lexicon-ru-36": {
+      "last_trained_at": "2026-05-31T16:21:19.701431+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-36/model.pt",
+      "last_repair_ratio": 2.334,
+      "last_repair_at": "2026-05-31T16:21:19.704488+00:00"
+    },
+    "lexicon-ru-37": {
+      "last_trained_at": "2026-05-31T16:22:30.663106+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-37/model.pt",
+      "last_repair_ratio": 2.342,
+      "last_repair_at": "2026-05-31T16:22:30.665112+00:00"
+    },
+    "lexicon-ru-38": {
+      "last_trained_at": "2026-05-31T16:24:19.986576+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-38/model.pt",
+      "last_repair_ratio": 2.373,
+      "last_repair_at": "2026-05-31T16:24:19.989739+00:00"
+    },
+    "lexicon-ru-39": {
+      "last_trained_at": "2026-05-31T16:25:27.029112+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-39/model.pt",
+      "last_repair_ratio": 2.315,
+      "last_repair_at": "2026-05-31T16:25:27.032113+00:00"
+    },
+    "lexicon-ru-40": {
+      "last_trained_at": "2026-05-31T16:26:36.459120+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-40/model.pt",
+      "last_repair_ratio": 2.365,
+      "last_repair_at": "2026-05-31T16:26:36.461339+00:00"
+    },
+    "lexicon-ru-41": {
+      "last_trained_at": "2026-05-31T16:27:43.200595+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-41/model.pt",
+      "last_repair_ratio": 2.411,
+      "last_repair_at": "2026-05-31T16:27:43.202595+00:00"
+    },
+    "lexicon-ru-42": {
+      "last_trained_at": "2026-05-31T16:28:51.335441+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1560,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-42/model.pt",
+      "last_repair_ratio": 2.382,
+      "last_repair_at": "2026-05-31T16:28:51.337441+00:00"
+    },
+    "lexicon-ru-43": {
+      "last_trained_at": "2026-05-31T16:29:55.184633+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-43/model.pt",
+      "last_repair_ratio": 2.312,
+      "last_repair_at": "2026-05-31T16:29:55.186777+00:00"
+    },
+    "lexicon-ru-44": {
+      "last_trained_at": "2026-05-31T16:31:07.798911+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-44/model.pt",
+      "last_repair_ratio": 2.312,
+      "last_repair_at": "2026-05-31T16:31:07.801945+00:00"
+    },
+    "lexicon-ru-45": {
+      "last_trained_at": "2026-05-31T16:32:45.561422+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-45/model.pt",
+      "last_repair_ratio": 2.312,
+      "last_repair_at": "2026-05-31T16:32:45.566236+00:00"
+    },
+    "lexicon-ru-46": {
+      "last_trained_at": "2026-05-31T16:34:30.093655+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-46/model.pt",
+      "last_repair_ratio": 2.346,
+      "last_repair_at": "2026-05-31T16:34:30.096179+00:00"
+    },
+    "lexicon-ru-47": {
+      "last_trained_at": "2026-05-31T16:35:39.542097+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-47/model.pt",
+      "last_repair_ratio": 2.346,
+      "last_repair_at": "2026-05-31T16:35:39.544609+00:00"
+    },
+    "lexicon-ru-48": {
+      "last_trained_at": "2026-05-31T16:36:53.121203+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-48/model.pt",
+      "last_repair_ratio": 2.41,
+      "last_repair_at": "2026-05-31T16:36:53.122206+00:00"
+    },
+    "lexicon-ru-49": {
+      "last_trained_at": "2026-05-31T16:38:07.409487+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-49/model.pt",
+      "last_repair_ratio": 2.385,
+      "last_repair_at": "2026-05-31T16:38:07.412516+00:00"
+    },
+    "lexicon-ru-50": {
+      "last_trained_at": "2026-05-31T16:39:19.180747+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-50/model.pt",
+      "last_repair_ratio": 2.375,
+      "last_repair_at": "2026-05-31T16:39:19.183111+00:00"
+    },
+    "lexicon-ru-51": {
+      "last_trained_at": "2026-05-31T16:40:34.563513+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-51/model.pt",
+      "last_repair_ratio": 2.406,
+      "last_repair_at": "2026-05-31T16:40:34.566541+00:00"
+    },
+    "lexicon-ru-52": {
+      "last_trained_at": "2026-05-31T16:41:48.351592+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-52/model.pt",
+      "last_repair_ratio": 2.316,
+      "last_repair_at": "2026-05-31T16:41:48.354383+00:00"
+    },
+    "lexicon-ru-53": {
+      "last_trained_at": "2026-05-31T16:43:14.119883+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-53/model.pt",
+      "last_repair_ratio": 2.375,
+      "last_repair_at": "2026-05-31T16:43:14.122383+00:00"
+    },
+    "lexicon-ru-54": {
+      "last_trained_at": "2026-05-31T16:44:39.138033+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-54/model.pt",
+      "last_repair_ratio": 2.344,
+      "last_repair_at": "2026-05-31T16:44:39.142908+00:00"
+    },
+    "lexicon-ru-55": {
+      "last_trained_at": "2026-05-31T16:46:04.474953+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-55/model.pt",
+      "last_repair_ratio": 2.392,
+      "last_repair_at": "2026-05-31T16:46:04.477996+00:00"
+    },
+    "lexicon-ru-56": {
+      "last_trained_at": "2026-05-31T16:47:20.509126+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-56/model.pt",
+      "last_repair_ratio": 2.417,
+      "last_repair_at": "2026-05-31T16:47:20.512510+00:00"
+    },
+    "lexicon-ru-57": {
+      "last_trained_at": "2026-05-31T16:49:01.608259+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-57/model.pt",
+      "last_repair_ratio": 2.373,
+      "last_repair_at": "2026-05-31T16:49:01.611149+00:00"
+    },
+    "lexicon-ru-58": {
+      "last_trained_at": "2026-05-31T16:50:17.652832+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-58/model.pt",
+      "last_repair_ratio": 2.289,
+      "last_repair_at": "2026-05-31T16:50:17.654343+00:00"
+    },
+    "lexicon-ru-59": {
+      "last_trained_at": "2026-05-31T16:51:21.722801+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-59/model.pt",
+      "last_repair_ratio": 2.306,
+      "last_repair_at": "2026-05-31T16:51:21.725810+00:00"
+    },
+    "lexicon-ru-60": {
+      "last_trained_at": "2026-05-31T16:52:35.541726+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-60/model.pt",
+      "last_repair_ratio": 2.32,
+      "last_repair_at": "2026-05-31T16:52:35.544391+00:00"
+    },
+    "lexicon-ru-61": {
+      "last_trained_at": "2026-05-31T16:53:40.427230+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-61/model.pt",
+      "last_repair_ratio": 2.319,
+      "last_repair_at": "2026-05-31T16:53:40.430664+00:00"
+    },
+    "lexicon-ru-62": {
+      "last_trained_at": "2026-05-31T16:54:52.091360+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-62/model.pt",
+      "last_repair_ratio": 2.385,
+      "last_repair_at": "2026-05-31T16:54:52.094870+00:00"
+    },
+    "lexicon-ru-63": {
+      "last_trained_at": "2026-05-31T16:55:57.960236+00:00",
+      "field_version_at_train": 6,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-63/model.pt",
+      "last_repair_ratio": 2.405,
+      "last_repair_at": "2026-05-31T16:55:57.962246+00:00"
+    },
+    "control-predict": {
+      "last_trained_at": "2026-05-31T16:59:23.742786+00:00",
+      "field_version_at_train": 7,
+      "token_count_at_train": 0,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/control-predict/model.pt"
+    },
+    "control-attention": {
+      "last_trained_at": "2026-05-31T16:59:32.938379+00:00",
+      "field_version_at_train": 7,
+      "token_count_at_train": 0,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/control-attention/model.pt"
+    },
+    "control-value": {
+      "last_trained_at": "2026-05-31T16:59:41.887264+00:00",
+      "field_version_at_train": 7,
+      "token_count_at_train": 0,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/control-value/model.pt"
+    },
+    "L2_word_00": {
+      "last_trained_at": "2026-06-01T01:51:21.310025+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1560,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-00/model.pt",
+      "train_fingerprint": "e7f41ce00d36d589285f8a51",
+      "synced_from_disk": true
+    },
+    "L2_word_01": {
+      "last_trained_at": "2026-06-01T01:51:21.313031+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-01/model.pt",
+      "train_fingerprint": "cc49b41d4a7f4c218b48b6a4",
+      "synced_from_disk": true
+    },
+    "L2_word_02": {
+      "last_trained_at": "2026-06-01T01:51:21.379830+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-02/model.pt",
+      "train_fingerprint": "23dc92980acff950fbd0c69f",
+      "synced_from_disk": true
+    },
+    "L2_word_03": {
+      "last_trained_at": "2026-06-01T01:51:21.381337+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-03/model.pt",
+      "train_fingerprint": "3156b8191e4e77703205e3f2",
+      "synced_from_disk": true
+    },
+    "L2_word_04": {
+      "last_trained_at": "2026-06-01T01:51:21.384345+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-04/model.pt",
+      "train_fingerprint": "b88c67cca8f693bfbfef8d9f",
+      "synced_from_disk": true
+    },
+    "L2_word_05": {
+      "last_trained_at": "2026-06-01T01:51:21.387557+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-05/model.pt",
+      "train_fingerprint": "717c3d8e2ea31297fa1edb16",
+      "synced_from_disk": true
+    },
+    "L2_word_06": {
+      "last_trained_at": "2026-06-01T01:51:21.389557+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-06/model.pt",
+      "train_fingerprint": "d07a9a637c050be069d79670",
+      "synced_from_disk": true
+    },
+    "L2_word_07": {
+      "last_trained_at": "2026-06-01T01:51:21.391558+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-07/model.pt",
+      "train_fingerprint": "d2af753dec0c25f0617859f1",
+      "synced_from_disk": true
+    },
+    "L2_word_08": {
+      "last_trained_at": "2026-06-01T01:51:21.394559+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-08/model.pt",
+      "train_fingerprint": "fe7776945386bd8af0e9b911",
+      "synced_from_disk": true
+    },
+    "L2_word_09": {
+      "last_trained_at": "2026-06-01T01:51:21.398646+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-09/model.pt",
+      "train_fingerprint": "41eda4b7b3e41383a31115d9",
+      "synced_from_disk": true
+    },
+    "L2_word_10": {
+      "last_trained_at": "2026-06-01T01:51:21.400642+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-10/model.pt",
+      "train_fingerprint": "8177e83b11009abcc81478c8",
+      "synced_from_disk": true
+    },
+    "L2_word_11": {
+      "last_trained_at": "2026-06-01T01:51:21.402670+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-11/model.pt",
+      "train_fingerprint": "010b1b4b44f469d693d33d33",
+      "synced_from_disk": true
+    },
+    "L2_word_12": {
+      "last_trained_at": "2026-06-01T01:51:21.404756+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-12/model.pt",
+      "train_fingerprint": "8367c4ee6e4118760a765caa",
+      "synced_from_disk": true
+    },
+    "L2_word_13": {
+      "last_trained_at": "2026-06-01T01:51:21.407775+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-13/model.pt",
+      "train_fingerprint": "db78a94ae75ea7264b7b37a5",
+      "synced_from_disk": true
+    },
+    "L2_word_14": {
+      "last_trained_at": "2026-06-01T01:51:21.410779+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-14/model.pt",
+      "train_fingerprint": "1c9a0741ecb5c8af32f9ff95",
+      "synced_from_disk": true
+    },
+    "L2_word_15": {
+      "last_trained_at": "2026-06-01T01:51:21.413868+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-15/model.pt",
+      "train_fingerprint": "bc14a1da0ce6f8f157c91871",
+      "synced_from_disk": true
+    },
+    "L2_word_16": {
+      "last_trained_at": "2026-06-01T01:51:21.415867+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-16/model.pt",
+      "train_fingerprint": "40d09e724df4a0dac17c74d1",
+      "synced_from_disk": true
+    },
+    "L2_word_17": {
+      "last_trained_at": "2026-06-01T01:51:21.418762+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-17/model.pt",
+      "train_fingerprint": "08a91ec2c9617a7f53ce79b5",
+      "synced_from_disk": true
+    },
+    "L2_word_18": {
+      "last_trained_at": "2026-06-01T01:51:21.420810+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-18/model.pt",
+      "train_fingerprint": "96225fe82d81bc77e6b2b377",
+      "synced_from_disk": true
+    },
+    "L2_word_19": {
+      "last_trained_at": "2026-06-01T01:51:21.423809+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-19/model.pt",
+      "train_fingerprint": "6aa9aff22616ca91cfb2081f",
+      "synced_from_disk": true
+    },
+    "L2_word_20": {
+      "last_trained_at": "2026-06-01T01:51:21.426813+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-20/model.pt",
+      "train_fingerprint": "867918d77814d3fc6efcd731",
+      "synced_from_disk": true
+    },
+    "L2_word_21": {
+      "last_trained_at": "2026-06-01T01:51:21.429809+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1560,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-21/model.pt",
+      "train_fingerprint": "86650925183b1cc3ad8c4450",
+      "synced_from_disk": true
+    },
+    "L2_word_22": {
+      "last_trained_at": "2026-06-01T01:51:21.432321+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-22/model.pt",
+      "train_fingerprint": "9493bade97f6bc0b15deacf7",
+      "synced_from_disk": true
+    },
+    "L2_word_23": {
+      "last_trained_at": "2026-06-01T01:51:21.434321+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-23/model.pt",
+      "train_fingerprint": "eb71e5a6360e9f2f3f1ef6eb",
+      "synced_from_disk": true
+    },
+    "L2_word_24": {
+      "last_trained_at": "2026-06-01T01:51:21.436319+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-24/model.pt",
+      "train_fingerprint": "4835775308aff83bfecfd915",
+      "synced_from_disk": true
+    },
+    "L2_word_25": {
+      "last_trained_at": "2026-06-01T01:51:21.439322+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-25/model.pt",
+      "train_fingerprint": "26e8da8c00b51d5854d1fe9a",
+      "synced_from_disk": true
+    },
+    "L2_word_26": {
+      "last_trained_at": "2026-06-01T01:51:21.441769+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-26/model.pt",
+      "train_fingerprint": "3a77f2897149fa73756a1263",
+      "synced_from_disk": true
+    },
+    "L2_word_27": {
+      "last_trained_at": "2026-06-01T01:51:21.444767+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-27/model.pt",
+      "train_fingerprint": "bd67d65f0b5de01bd5296d6e",
+      "synced_from_disk": true
+    },
+    "L2_word_28": {
+      "last_trained_at": "2026-06-01T01:51:21.446783+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-28/model.pt",
+      "train_fingerprint": "a9e311bca5db78714b1971d5",
+      "synced_from_disk": true
+    },
+    "L2_word_29": {
+      "last_trained_at": "2026-06-01T01:51:21.449778+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-29/model.pt",
+      "train_fingerprint": "f2cffc5f4da7df939b10c3be",
+      "synced_from_disk": true
+    },
+    "L2_word_30": {
+      "last_trained_at": "2026-06-01T01:51:21.451778+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-30/model.pt",
+      "train_fingerprint": "2d18a5d42ea77fa765cdc20c",
+      "synced_from_disk": true
+    },
+    "L2_word_31": {
+      "last_trained_at": "2026-06-01T01:51:21.453956+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-31/model.pt",
+      "train_fingerprint": "31e5f5e6cdff7f0c6c77d07c",
+      "synced_from_disk": true
+    },
+    "L2_word_32": {
+      "last_trained_at": "2026-06-01T01:51:21.457962+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-32/model.pt",
+      "train_fingerprint": "751d9b6f72631e9f4b0c43e1",
+      "synced_from_disk": true
+    },
+    "L2_word_33": {
+      "last_trained_at": "2026-06-01T01:51:21.460325+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-33/model.pt",
+      "train_fingerprint": "5fc03f217ee6f6cfdfde1c2d",
+      "synced_from_disk": true
+    },
+    "L2_word_34": {
+      "last_trained_at": "2026-06-01T01:51:21.462864+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-34/model.pt",
+      "train_fingerprint": "4ebaa37e125d155d1a4b8a3a",
+      "synced_from_disk": true
+    },
+    "L2_word_35": {
+      "last_trained_at": "2026-06-01T01:51:21.464864+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-35/model.pt",
+      "train_fingerprint": "c9054f89ccb186556e0f8999",
+      "synced_from_disk": true
+    },
+    "L2_word_36": {
+      "last_trained_at": "2026-06-01T01:51:21.468354+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-36/model.pt",
+      "train_fingerprint": "365284b381ad6457f2a40383",
+      "synced_from_disk": true
+    },
+    "L2_word_37": {
+      "last_trained_at": "2026-06-01T01:51:21.470352+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-37/model.pt",
+      "train_fingerprint": "443111b410bdbfb028c1743a",
+      "synced_from_disk": true
+    },
+    "L2_word_38": {
+      "last_trained_at": "2026-06-01T01:51:21.472860+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-38/model.pt",
+      "train_fingerprint": "0c94c648ba9c2b2634cfe866",
+      "synced_from_disk": true
+    },
+    "L2_word_39": {
+      "last_trained_at": "2026-06-01T01:51:21.476071+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-39/model.pt",
+      "train_fingerprint": "094b492e489851146a3ca948",
+      "synced_from_disk": true
+    },
+    "L2_word_40": {
+      "last_trained_at": "2026-06-01T01:51:21.479076+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-40/model.pt",
+      "train_fingerprint": "00b1c5912f3e54023591c9b5",
+      "synced_from_disk": true
+    },
+    "L2_word_41": {
+      "last_trained_at": "2026-06-01T01:51:21.482080+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-41/model.pt",
+      "train_fingerprint": "317b4eaead41ddf43e064877",
+      "synced_from_disk": true
+    },
+    "L2_word_42": {
+      "last_trained_at": "2026-06-01T01:51:21.484077+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1560,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-42/model.pt",
+      "train_fingerprint": "a5751ba3d4e585a31a584a08",
+      "synced_from_disk": true
+    },
+    "L2_word_43": {
+      "last_trained_at": "2026-06-01T01:51:21.486076+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-43/model.pt",
+      "train_fingerprint": "6c2002e8f8e5d6cb14eda447",
+      "synced_from_disk": true
+    },
+    "L2_word_44": {
+      "last_trained_at": "2026-06-01T01:51:21.489080+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-44/model.pt",
+      "train_fingerprint": "0c386eef66804d08225051be",
+      "synced_from_disk": true
+    },
+    "L2_word_45": {
+      "last_trained_at": "2026-06-01T01:51:21.492096+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-45/model.pt",
+      "train_fingerprint": "46fe75f720c1de61f26e6c3a",
+      "synced_from_disk": true
+    },
+    "L2_word_46": {
+      "last_trained_at": "2026-06-01T01:51:21.495189+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-46/model.pt",
+      "train_fingerprint": "4fb93e229e426d55a7da6289",
+      "synced_from_disk": true
+    },
+    "L2_word_47": {
+      "last_trained_at": "2026-06-01T01:51:21.497196+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-47/model.pt",
+      "train_fingerprint": "d0a44588d72de16ca7bd89ec",
+      "synced_from_disk": true
+    },
+    "L2_word_48": {
+      "last_trained_at": "2026-06-01T01:51:21.500194+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-48/model.pt",
+      "train_fingerprint": "fd8fa9507fd6e8875e706e9d",
+      "synced_from_disk": true
+    },
+    "L2_word_49": {
+      "last_trained_at": "2026-06-01T01:51:21.502709+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-49/model.pt",
+      "train_fingerprint": "3215157d2d4330d9b2cc4d4e",
+      "synced_from_disk": true
+    },
+    "L2_word_50": {
+      "last_trained_at": "2026-06-01T01:51:21.566081+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-50/model.pt",
+      "train_fingerprint": "cca407168c362fa5d190dc49",
+      "synced_from_disk": true
+    },
+    "L2_word_51": {
+      "last_trained_at": "2026-06-01T01:51:21.569264+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-51/model.pt",
+      "train_fingerprint": "88b54f5c1db04ca0ae007bbb",
+      "synced_from_disk": true
+    },
+    "L2_word_52": {
+      "last_trained_at": "2026-06-01T01:51:21.572484+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-52/model.pt",
+      "train_fingerprint": "01ee0de48209fe291b47336b",
+      "synced_from_disk": true
+    },
+    "L2_word_53": {
+      "last_trained_at": "2026-06-01T01:51:21.575096+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-53/model.pt",
+      "train_fingerprint": "b07eb0d013948c7dbe419059",
+      "synced_from_disk": true
+    },
+    "L2_word_54": {
+      "last_trained_at": "2026-06-01T01:51:21.577314+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-54/model.pt",
+      "train_fingerprint": "c1977e7e3b1e4e6224adf095",
+      "synced_from_disk": true
+    },
+    "L2_word_55": {
+      "last_trained_at": "2026-06-01T01:51:21.581183+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-55/model.pt",
+      "train_fingerprint": "b6d10d4f668704a247d3ee48",
+      "synced_from_disk": true
+    },
+    "L2_word_56": {
+      "last_trained_at": "2026-06-01T01:51:21.583695+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-56/model.pt",
+      "train_fingerprint": "71cc5aed335ca495f230d565",
+      "synced_from_disk": true
+    },
+    "L2_word_57": {
+      "last_trained_at": "2026-06-01T01:51:21.587137+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-57/model.pt",
+      "train_fingerprint": "679fd60275d3dc090381ff01",
+      "synced_from_disk": true
+    },
+    "L2_word_58": {
+      "last_trained_at": "2026-06-01T01:51:21.589143+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-58/model.pt",
+      "train_fingerprint": "747aa2800183f20e45d95d6a",
+      "synced_from_disk": true
+    },
+    "L2_word_59": {
+      "last_trained_at": "2026-06-01T01:51:21.592153+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-59/model.pt",
+      "train_fingerprint": "09bd056f922576db61a6d2f8",
+      "synced_from_disk": true
+    },
+    "L2_word_60": {
+      "last_trained_at": "2026-06-01T01:51:21.595766+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-60/model.pt",
+      "train_fingerprint": "b9f6757770ef7d3c41b2fc4d",
+      "synced_from_disk": true
+    },
+    "L2_word_61": {
+      "last_trained_at": "2026-06-01T01:51:21.597923+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-61/model.pt",
+      "train_fingerprint": "bcb1b6e8c1578f28c6416895",
+      "synced_from_disk": true
+    },
+    "L2_word_62": {
+      "last_trained_at": "2026-06-01T01:51:21.600520+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-62/model.pt",
+      "train_fingerprint": "a1a79ae4916e8da2a496ae62",
+      "synced_from_disk": true
+    },
+    "L2_word_63": {
+      "last_trained_at": "2026-06-01T01:51:21.603029+00:00",
+      "field_version_at_train": 3,
+      "memory_field_version_at_train": 3,
+      "token_count_at_train": 1562,
+      "model_path": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-63/model.pt",
+      "train_fingerprint": "c715e2582269a8ea6282b7ce",
+      "synced_from_disk": true
+    }
+  }
+}

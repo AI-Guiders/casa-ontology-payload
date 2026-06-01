@@ -18,6 +18,7 @@ from casa.prisms.memory.agent_journal import (
     notebook_tag,
     search_journal_entries,
 )
+from casa.prisms.memory.agent_notebook import ensure_agent_notebook
 from casa.prisms.memory.agent_prism import (
     create_agent_lattice,
     ensure_agent_prism,
@@ -88,6 +89,12 @@ def agent_remember(
     kind = str(record.get("kind") or "observation")
     tags = [str(t) for t in (record.get("tags") or [])]
     notebook = str(record.get("notebook") or "").strip() or None
+    if notebook and record.get("create_notebook"):
+        ensure_agent_notebook(
+            store_dir,
+            notebook,
+            title=str(record.get("notebook_title") or notebook),
+        )
     if notebook:
         tags.append(notebook_tag(notebook))
 
@@ -257,6 +264,16 @@ def main() -> None:
     sp_recall.add_argument("--limit", type=int, default=50)
     sp_recall.add_argument("--include-field", action="store_true")
 
+    sp_nb = sub.add_parser("notebook")
+    nb_sub = sp_nb.add_subparsers(dest="nb_cmd", required=True)
+    sp_nb_create = nb_sub.add_parser("create")
+    sp_nb_create.add_argument("--store-dir", type=Path, required=True)
+    sp_nb_create.add_argument("--id", required=True)
+    sp_nb_create.add_argument("--title", default="")
+    sp_nb_create.add_argument("--intro", default=None)
+    sp_nb_list = nb_sub.add_parser("list")
+    sp_nb_list.add_argument("--store-dir", type=Path, required=True)
+
     args = p.parse_args()
     store_dir = args.store_dir.resolve()
 
@@ -276,6 +293,18 @@ def main() -> None:
         fs = field_state_path(store_dir)
         state = ensure_prisms(load_field_state(fs)) if fs.is_file() else ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
         out = agent_remember(store_dir, state, record, scope=args.scope)
+    elif args.cmd == "notebook":
+        from casa.prisms.memory.agent_notebook import create_agent_notebook, list_agent_notebooks
+
+        if args.nb_cmd == "create":
+            out = create_agent_notebook(
+                store_dir,
+                args.id,
+                title=args.title,
+                intro=args.intro,
+            )
+        else:
+            out = {"notebooks": list_agent_notebooks(store_dir)}
     else:
         fs = field_state_path(store_dir)
         state = ensure_prisms(load_field_state(fs)) if fs.is_file() and args.include_field else None

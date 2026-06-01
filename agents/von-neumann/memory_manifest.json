@@ -1,0 +1,2923 @@
+{
+  "schema_version": 1,
+  "kind": "lexicon_memory_manifest",
+  "prism_layout_version": 1,
+  "store_id": "von-neumann",
+  "store_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\agents\\von-neumann",
+  "generated_at": "2026-06-01T22:23:39.909549+00:00",
+  "field_version": 2,
+  "schema": "multi_prism_v1",
+  "l2_sharding": {
+    "enabled": true,
+    "mode": "lexicographic",
+    "lex_plan": "corpus_quantile",
+    "num_shards": 64,
+    "legacy_lattice": "L2_word",
+    "indexed_words": 49981,
+    "attested_initial_letters": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е",
+      "ж",
+      "з",
+      "и",
+      "й",
+      "к",
+      "л",
+      "м",
+      "н",
+      "о",
+      "п",
+      "р",
+      "с",
+      "т",
+      "у",
+      "ф",
+      "х",
+      "ц",
+      "ч",
+      "ш",
+      "щ",
+      "ы",
+      "э",
+      "ю",
+      "я"
+    ],
+    "initial_letter_counts": {
+      "а": 1468,
+      "б": 2532,
+      "в": 3098,
+      "г": 1851,
+      "д": 1991,
+      "е": 307,
+      "ж": 480,
+      "з": 2207,
+      "и": 1086,
+      "й": 12,
+      "к": 3805,
+      "л": 1408,
+      "м": 2393,
+      "н": 2917,
+      "о": 2735,
+      "п": 7371,
+      "р": 2307,
+      "с": 4507,
+      "т": 1963,
+      "у": 1198,
+      "ф": 791,
+      "х": 687,
+      "ц": 263,
+      "ч": 765,
+      "ш": 876,
+      "щ": 113,
+      "ы": 3,
+      "э": 449,
+      "ю": 141,
+      "я": 257
+    },
+    "letter_ranges": [
+      {
+        "shard": 0,
+        "plan": "corpus_quantile",
+        "word_lo": "а",
+        "word_hi": "андрейкин",
+        "label": "а–андрейкин",
+        "word_count": 780,
+        "initial_letters": [
+          "а"
+        ]
+      },
+      {
+        "shard": 1,
+        "plan": "corpus_quantile",
+        "word_lo": "андрес",
+        "word_hi": "базыр",
+        "label": "андрес–базыр",
+        "word_count": 781,
+        "initial_letters": [
+          "а",
+          "б"
+        ]
+      },
+      {
+        "shard": 2,
+        "plan": "corpus_quantile",
+        "word_lo": "баиньки",
+        "word_hi": "белым-бело",
+        "label": "баиньки–белым-бело",
+        "word_count": 781,
+        "initial_letters": [
+          "б"
+        ]
+      },
+      {
+        "shard": 3,
+        "plan": "corpus_quantile",
+        "word_lo": "бель",
+        "word_hi": "болотина",
+        "label": "бель–болотина",
+        "word_count": 781,
+        "initial_letters": [
+          "б"
+        ]
+      },
+      {
+        "shard": 4,
+        "plan": "corpus_quantile",
+        "word_lo": "болотистый",
+        "word_hi": "буш",
+        "label": "болотистый–буш",
+        "word_count": 781,
+        "initial_letters": [
+          "б"
+        ]
+      },
+      {
+        "shard": 5,
+        "plan": "corpus_quantile",
+        "word_lo": "бушевать",
+        "word_hi": "вершинин",
+        "label": "бушевать–вершинин",
+        "word_count": 781,
+        "initial_letters": [
+          "б",
+          "в"
+        ]
+      },
+      {
+        "shard": 6,
+        "plan": "corpus_quantile",
+        "word_lo": "вершинина",
+        "word_hi": "водкин",
+        "label": "вершинина–водкин",
+        "word_count": 781,
+        "initial_letters": [
+          "в"
+        ]
+      },
+      {
+        "shard": 7,
+        "plan": "corpus_quantile",
+        "word_lo": "водкина",
+        "word_hi": "всемирный",
+        "label": "водкина–всемирный",
+        "word_count": 781,
+        "initial_letters": [
+          "в"
+        ]
+      },
+      {
+        "shard": 8,
+        "plan": "corpus_quantile",
+        "word_lo": "всемогущий",
+        "word_hi": "вышивка",
+        "label": "всемогущий–вышивка",
+        "word_count": 781,
+        "initial_letters": [
+          "в"
+        ]
+      },
+      {
+        "shard": 9,
+        "plan": "corpus_quantile",
+        "word_lo": "вышимирский",
+        "word_hi": "глубокоуважаемый",
+        "label": "вышимирский–глубокоуважаемый",
+        "word_count": 781,
+        "initial_letters": [
+          "в",
+          "г"
+        ]
+      },
+      {
+        "shard": 10,
+        "plan": "corpus_quantile",
+        "word_lo": "глубь",
+        "word_hi": "гриновский",
+        "label": "глубь–гриновский",
+        "word_count": 781,
+        "initial_letters": [
+          "г"
+        ]
+      },
+      {
+        "shard": 11,
+        "plan": "corpus_quantile",
+        "word_lo": "гринч",
+        "word_hi": "демагог",
+        "label": "гринч–демагог",
+        "word_count": 781,
+        "initial_letters": [
+          "г",
+          "д"
+        ]
+      },
+      {
+        "shard": 12,
+        "plan": "corpus_quantile",
+        "word_lo": "демагогия",
+        "word_hi": "долговечный",
+        "label": "демагогия–долговечный",
+        "word_count": 781,
+        "initial_letters": [
+          "д"
+        ]
+      },
+      {
+        "shard": 13,
+        "plan": "corpus_quantile",
+        "word_lo": "долговременный",
+        "word_hi": "дядько",
+        "label": "долговременный–дядько",
+        "word_count": 781,
+        "initial_letters": [
+          "д"
+        ]
+      },
+      {
+        "shard": 14,
+        "plan": "corpus_quantile",
+        "word_lo": "дядюшка",
+        "word_hi": "жутковатый",
+        "label": "дядюшка–жутковатый",
+        "word_count": 781,
+        "initial_letters": [
+          "д",
+          "е",
+          "ж"
+        ]
+      },
+      {
+        "shard": 15,
+        "plan": "corpus_quantile",
+        "word_lo": "жуть",
+        "word_hi": "замаскировывать",
+        "label": "жуть–замаскировывать",
+        "word_count": 781,
+        "initial_letters": [
+          "ж",
+          "з"
+        ]
+      },
+      {
+        "shard": 16,
+        "plan": "corpus_quantile",
+        "word_lo": "замасливать",
+        "word_hi": "захолонуть",
+        "label": "замасливать–захолонуть",
+        "word_count": 781,
+        "initial_letters": [
+          "з"
+        ]
+      },
+      {
+        "shard": 17,
+        "plan": "corpus_quantile",
+        "word_lo": "захолустный",
+        "word_hi": "иеромонах",
+        "label": "захолустный–иеромонах",
+        "word_count": 781,
+        "initial_letters": [
+          "з",
+          "и"
+        ]
+      },
+      {
+        "shard": 18,
+        "plan": "corpus_quantile",
+        "word_lo": "иероним",
+        "word_hi": "исполнительный",
+        "label": "иероним–исполнительный",
+        "word_count": 781,
+        "initial_letters": [
+          "и"
+        ]
+      },
+      {
+        "shard": 19,
+        "plan": "corpus_quantile",
+        "word_lo": "исполнять",
+        "word_hi": "карловна",
+        "label": "исполнять–карловна",
+        "word_count": 781,
+        "initial_letters": [
+          "и",
+          "й",
+          "к"
+        ]
+      },
+      {
+        "shard": 20,
+        "plan": "corpus_quantile",
+        "word_lo": "карлос",
+        "word_hi": "клеопарди",
+        "label": "карлос–клеопарди",
+        "word_count": 781,
+        "initial_letters": [
+          "к"
+        ]
+      },
+      {
+        "shard": 21,
+        "plan": "corpus_quantile",
+        "word_lo": "клеопатра",
+        "word_hi": "коновязь",
+        "label": "клеопатра–коновязь",
+        "word_count": 780,
+        "initial_letters": [
+          "к"
+        ]
+      },
+      {
+        "shard": 22,
+        "plan": "corpus_quantile",
+        "word_lo": "коногон",
+        "word_hi": "красовицкий",
+        "label": "коногон–красовицкий",
+        "word_count": 781,
+        "initial_letters": [
+          "к"
+        ]
+      },
+      {
+        "shard": 23,
+        "plan": "corpus_quantile",
+        "word_lo": "красовская",
+        "word_hi": "кусандр",
+        "label": "красовская–кусандр",
+        "word_count": 781,
+        "initial_letters": [
+          "к"
+        ]
+      },
+      {
+        "shard": 24,
+        "plan": "corpus_quantile",
+        "word_lo": "кусандра",
+        "word_hi": "ликующий",
+        "label": "кусандра–ликующий",
+        "word_count": 781,
+        "initial_letters": [
+          "к",
+          "л"
+        ]
+      },
+      {
+        "shard": 25,
+        "plan": "corpus_quantile",
+        "word_lo": "лилейный",
+        "word_hi": "маевка",
+        "label": "лилейный–маевка",
+        "word_count": 781,
+        "initial_letters": [
+          "л",
+          "м"
+        ]
+      },
+      {
+        "shard": 26,
+        "plan": "corpus_quantile",
+        "word_lo": "маечка",
+        "word_hi": "медник",
+        "label": "маечка–медник",
+        "word_count": 781,
+        "initial_letters": [
+          "м"
+        ]
+      },
+      {
+        "shard": 27,
+        "plan": "corpus_quantile",
+        "word_lo": "медно-красный",
+        "word_hi": "мово",
+        "label": "медно-красный–мово",
+        "word_count": 781,
+        "initial_letters": [
+          "м"
+        ]
+      },
+      {
+        "shard": 28,
+        "plan": "corpus_quantile",
+        "word_lo": "могельницкий",
+        "word_hi": "набатников",
+        "label": "могельницкий–набатников",
+        "word_count": 781,
+        "initial_letters": [
+          "м",
+          "н"
+        ]
+      },
+      {
+        "shard": 29,
+        "plan": "corpus_quantile",
+        "word_lo": "набатный",
+        "word_hi": "насекомое",
+        "label": "набатный–насекомое",
+        "word_count": 781,
+        "initial_letters": [
+          "н"
+        ]
+      },
+      {
+        "shard": 30,
+        "plan": "corpus_quantile",
+        "word_lo": "население",
+        "word_hi": "неизъяснимый",
+        "label": "население–неизъяснимый",
+        "word_count": 781,
+        "initial_letters": [
+          "н"
+        ]
+      },
+      {
+        "shard": 31,
+        "plan": "corpus_quantile",
+        "word_lo": "неимение",
+        "word_hi": "неусыпный",
+        "label": "неимение–неусыпный",
+        "word_count": 781,
+        "initial_letters": [
+          "н"
+        ]
+      },
+      {
+        "shard": 32,
+        "plan": "corpus_quantile",
+        "word_lo": "неутешительный",
+        "word_hi": "облачаться",
+        "label": "неутешительный–облачаться",
+        "word_count": 781,
+        "initial_letters": [
+          "н",
+          "о"
+        ]
+      },
+      {
+        "shard": 33,
+        "plan": "corpus_quantile",
+        "word_lo": "облачение",
+        "word_hi": "озноб",
+        "label": "облачение–озноб",
+        "word_count": 781,
+        "initial_letters": [
+          "о"
+        ]
+      },
+      {
+        "shard": 34,
+        "plan": "corpus_quantile",
+        "word_lo": "ознорский",
+        "word_hi": "осподи",
+        "label": "ознорский–осподи",
+        "word_count": 781,
+        "initial_letters": [
+          "о"
+        ]
+      },
+      {
+        "shard": 35,
+        "plan": "corpus_quantile",
+        "word_lo": "осрамить",
+        "word_hi": "отъедать",
+        "label": "осрамить–отъедать",
+        "word_count": 781,
+        "initial_letters": [
+          "о"
+        ]
+      },
+      {
+        "shard": 36,
+        "plan": "corpus_quantile",
+        "word_lo": "отъедаться",
+        "word_hi": "пена",
+        "label": "отъедаться–пена",
+        "word_count": 781,
+        "initial_letters": [
+          "о",
+          "п"
+        ]
+      },
+      {
+        "shard": 37,
+        "plan": "corpus_quantile",
+        "word_lo": "пенал",
+        "word_hi": "печерский",
+        "label": "пенал–печерский",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 38,
+        "plan": "corpus_quantile",
+        "word_lo": "печка",
+        "word_hi": "повисеть",
+        "label": "печка–повисеть",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 39,
+        "plan": "corpus_quantile",
+        "word_lo": "повлажнеть",
+        "word_hi": "поерзать",
+        "label": "повлажнеть–поерзать",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 40,
+        "plan": "corpus_quantile",
+        "word_lo": "поесть",
+        "word_hi": "поминки",
+        "label": "поесть–поминки",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 41,
+        "plan": "corpus_quantile",
+        "word_lo": "поминутно",
+        "word_hi": "поторопиться",
+        "label": "поминутно–поторопиться",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 42,
+        "plan": "corpus_quantile",
+        "word_lo": "поторчать",
+        "word_hi": "приволжский",
+        "label": "поторчать–приволжский",
+        "word_count": 780,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 43,
+        "plan": "corpus_quantile",
+        "word_lo": "приволье",
+        "word_hi": "проголодаться",
+        "label": "приволье–проголодаться",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 44,
+        "plan": "corpus_quantile",
+        "word_lo": "проголосовать",
+        "word_hi": "прощальный",
+        "label": "проголосовать–прощальный",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 45,
+        "plan": "corpus_quantile",
+        "word_lo": "прощание",
+        "word_hi": "развьючивать",
+        "label": "прощание–развьючивать",
+        "word_count": 781,
+        "initial_letters": [
+          "п",
+          "р"
+        ]
+      },
+      {
+        "shard": 46,
+        "plan": "corpus_quantile",
+        "word_lo": "развязка",
+        "word_hi": "растерянный",
+        "label": "развязка–растерянный",
+        "word_count": 781,
+        "initial_letters": [
+          "р"
+        ]
+      },
+      {
+        "shard": 47,
+        "plan": "corpus_quantile",
+        "word_lo": "растеряха",
+        "word_hi": "рознь",
+        "label": "растеряха–рознь",
+        "word_count": 781,
+        "initial_letters": [
+          "р"
+        ]
+      },
+      {
+        "shard": 48,
+        "plan": "corpus_quantile",
+        "word_lo": "розоватый",
+        "word_hi": "сан",
+        "label": "розоватый–сан",
+        "word_count": 781,
+        "initial_letters": [
+          "р",
+          "с"
+        ]
+      },
+      {
+        "shard": 49,
+        "plan": "corpus_quantile",
+        "word_lo": "сан-франциско",
+        "word_hi": "сена",
+        "label": "сан-франциско–сена",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
+      },
+      {
+        "shard": 50,
+        "plan": "corpus_quantile",
+        "word_lo": "сенат",
+        "word_hi": "скромность",
+        "label": "сенат–скромность",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
+      },
+      {
+        "shard": 51,
+        "plan": "corpus_quantile",
+        "word_lo": "скромный",
+        "word_hi": "соколова",
+        "label": "скромный–соколова",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
+      },
+      {
+        "shard": 52,
+        "plan": "corpus_quantile",
+        "word_lo": "соколовский",
+        "word_hi": "станица",
+        "label": "соколовский–станица",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
+      },
+      {
+        "shard": 53,
+        "plan": "corpus_quantile",
+        "word_lo": "станичник",
+        "word_hi": "сундуккер",
+        "label": "станичник–сундуккер",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
+      },
+      {
+        "shard": 54,
+        "plan": "corpus_quantile",
+        "word_lo": "сундучок",
+        "word_hi": "темно-розовый",
+        "label": "сундучок–темно-розовый",
+        "word_count": 781,
+        "initial_letters": [
+          "с",
+          "т"
+        ]
+      },
+      {
+        "shard": 55,
+        "plan": "corpus_quantile",
+        "word_lo": "темно-русый",
+        "word_hi": "трамвай",
+        "label": "темно-русый–трамвай",
+        "word_count": 781,
+        "initial_letters": [
+          "т"
+        ]
+      },
+      {
+        "shard": 56,
+        "plan": "corpus_quantile",
+        "word_lo": "трамвайный",
+        "word_hi": "увеличиваться",
+        "label": "трамвайный–увеличиваться",
+        "word_count": 781,
+        "initial_letters": [
+          "т",
+          "у"
+        ]
+      },
+      {
+        "shard": 57,
+        "plan": "corpus_quantile",
+        "word_lo": "увеличитель",
+        "word_hi": "ускорять",
+        "label": "увеличитель–ускорять",
+        "word_count": 781,
+        "initial_letters": [
+          "у"
+        ]
+      },
+      {
+        "shard": 58,
+        "plan": "corpus_quantile",
+        "word_lo": "ускоряться",
+        "word_hi": "фландрия",
+        "label": "ускоряться–фландрия",
+        "word_count": 781,
+        "initial_letters": [
+          "у",
+          "ф"
+        ]
+      },
+      {
+        "shard": 59,
+        "plan": "corpus_quantile",
+        "word_lo": "фланелевка",
+        "word_hi": "холодище",
+        "label": "фланелевка–холодище",
+        "word_count": 781,
+        "initial_letters": [
+          "ф",
+          "х"
+        ]
+      },
+      {
+        "shard": 60,
+        "plan": "corpus_quantile",
+        "word_lo": "холодненький",
+        "word_hi": "черкассы",
+        "label": "холодненький–черкассы",
+        "word_count": 781,
+        "initial_letters": [
+          "х",
+          "ц",
+          "ч"
+        ]
+      },
+      {
+        "shard": 61,
+        "plan": "corpus_quantile",
+        "word_lo": "черкать",
+        "word_hi": "шелохнуть",
+        "label": "черкать–шелохнуть",
+        "word_count": 781,
+        "initial_letters": [
+          "ч",
+          "ш"
+        ]
+      },
+      {
+        "shard": 62,
+        "plan": "corpus_quantile",
+        "word_lo": "шелохнуться",
+        "word_hi": "экзамен",
+        "label": "шелохнуться–экзамен",
+        "word_count": 781,
+        "initial_letters": [
+          "ш",
+          "щ",
+          "ы",
+          "э"
+        ]
+      },
+      {
+        "shard": 63,
+        "plan": "corpus_quantile",
+        "word_lo": "экзаменатор",
+        "word_hi": "яя",
+        "label": "экзаменатор–яя",
+        "word_count": 781,
+        "initial_letters": [
+          "э",
+          "ю",
+          "я"
+        ]
+      }
+    ],
+    "lattices": [
+      {
+        "lattice_id": "L2_word",
+        "token_count": 0,
+        "word_concepts": 0
+      },
+      {
+        "lattice_id": "L2_word_00",
+        "token_count": 1560,
+        "word_concepts": 780,
+        "lex_range": "а–андрейкин",
+        "lex_word_count": 780
+      },
+      {
+        "lattice_id": "L2_word_01",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "андрес–базыр",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_02",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "баиньки–белым-бело",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_03",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "бель–болотина",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_04",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "болотистый–буш",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_05",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "бушевать–вершинин",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_06",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "вершинина–водкин",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_07",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "водкина–всемирный",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_08",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "всемогущий–вышивка",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_09",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "вышимирский–глубокоуважаемый",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_10",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "глубь–гриновский",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_11",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "гринч–демагог",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_12",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "демагогия–долговечный",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_13",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "долговременный–дядько",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_14",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "дядюшка–жутковатый",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_15",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "жуть–замаскировывать",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_16",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "замасливать–захолонуть",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_17",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "захолустный–иеромонах",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_18",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "иероним–исполнительный",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_19",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "исполнять–карловна",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_20",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "карлос–клеопарди",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_21",
+        "token_count": 1560,
+        "word_concepts": 780,
+        "lex_range": "клеопатра–коновязь",
+        "lex_word_count": 780
+      },
+      {
+        "lattice_id": "L2_word_22",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "коногон–красовицкий",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_23",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "красовская–кусандр",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_24",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "кусандра–ликующий",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_25",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "лилейный–маевка",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_26",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "маечка–медник",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_27",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "медно-красный–мово",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_28",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "могельницкий–набатников",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_29",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "набатный–насекомое",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_30",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "население–неизъяснимый",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_31",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "неимение–неусыпный",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_32",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "неутешительный–облачаться",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_33",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "облачение–озноб",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_34",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "ознорский–осподи",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_35",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "осрамить–отъедать",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_36",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "отъедаться–пена",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_37",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "пенал–печерский",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_38",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "печка–повисеть",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_39",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "повлажнеть–поерзать",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_40",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "поесть–поминки",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_41",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "поминутно–поторопиться",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_42",
+        "token_count": 1560,
+        "word_concepts": 780,
+        "lex_range": "поторчать–приволжский",
+        "lex_word_count": 780
+      },
+      {
+        "lattice_id": "L2_word_43",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "приволье–проголодаться",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_44",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "проголосовать–прощальный",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_45",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "прощание–развьючивать",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_46",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "развязка–растерянный",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_47",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "растеряха–рознь",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_48",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "розоватый–сан",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_49",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "сан-франциско–сена",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_50",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "сенат–скромность",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_51",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "скромный–соколова",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_52",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "соколовский–станица",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_53",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "станичник–сундуккер",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_54",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "сундучок–темно-розовый",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_55",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "темно-русый–трамвай",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_56",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "трамвайный–увеличиваться",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_57",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "увеличитель–ускорять",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_58",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "ускоряться–фландрия",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_59",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "фланелевка–холодище",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_60",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "холодненький–черкассы",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_61",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "черкать–шелохнуть",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_62",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "шелохнуться–экзамен",
+        "lex_word_count": 781
+      },
+      {
+        "lattice_id": "L2_word_63",
+        "token_count": 1562,
+        "word_concepts": 781,
+        "lex_range": "экзаменатор–яя",
+        "lex_word_count": 781
+      }
+    ]
+  },
+  "prisms": [
+    "prism_memory",
+    "prism_hippo"
+  ],
+  "lattice_stack": [
+    {
+      "id": "L0_grapheme_cyrl",
+      "z_level": 0,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 66,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L0_grapheme_latn",
+      "z_level": 0,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 52,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L0_layout_jcuken_ru",
+      "z_level": 0,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 148,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L0_layout_qwerty_us",
+      "z_level": 0,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 148,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L0_punct_cyrl",
+      "z_level": 0,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 57,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L0_punct_latn",
+      "z_level": 0,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 99,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L0_vk_physical",
+      "z_level": 0,
+      "role": "core",
+      "width": 48,
+      "height": 48,
+      "token_count": 280,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L1_syllable",
+      "z_level": null,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 924,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "lattice_thal_relay",
+      "z_level": 0,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 0,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "V1_object",
+      "z_level": 1,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 0,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "lattice_thal_arousal",
+      "z_level": 1,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 0,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_00",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1560,
+      "word_concepts": 780,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-00/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_01",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-01/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_02",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-02/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_03",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-03/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_04",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-04/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_05",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-05/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_06",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-06/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_07",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-07/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_08",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-08/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_09",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-09/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_10",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-10/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_11",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-11/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_12",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-12/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_13",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-13/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_14",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-14/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_15",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-15/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_16",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-16/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_17",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-17/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_18",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-18/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_19",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-19/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_20",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-20/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_21",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1560,
+      "word_concepts": 780,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-21/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_22",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-22/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_23",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-23/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_24",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-24/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_25",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-25/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_26",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-26/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_27",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-27/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_28",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-28/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_29",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-29/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_30",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-30/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_31",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-31/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_32",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-32/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_33",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-33/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_34",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-34/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_35",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-35/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_36",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-36/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_37",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-37/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_38",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-38/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_39",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-39/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_40",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-40/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_41",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-41/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_42",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1560,
+      "word_concepts": 780,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-42/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_43",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-43/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_44",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-44/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_45",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-45/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_46",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-46/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_47",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-47/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_48",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-48/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_49",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-49/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_50",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-50/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_51",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-51/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_52",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-52/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_53",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-53/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_54",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-54/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_55",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-55/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_56",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-56/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_57",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-57/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_58",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-58/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_59",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-59/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_60",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-60/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_61",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-61/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_62",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-62/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "L2_word_63",
+      "z_level": 2,
+      "role": "L2_shard",
+      "width": 32,
+      "height": 32,
+      "token_count": 1562,
+      "word_concepts": 781,
+      "nca_model": "lab/agent-stores/lexicon-ru-general/nca/lexicon-ru-63/model.pt",
+      "nca_bytes": 0
+    },
+    {
+      "id": "lattice_thal_band",
+      "z_level": 2,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 0,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 0,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_00",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 780,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_01",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_02",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_03",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_04",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_05",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_06",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_07",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_08",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_09",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_10",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_11",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_12",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_13",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_14",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_15",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_16",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_17",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_18",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_19",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_20",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_21",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 780,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_22",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_23",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_24",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_25",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_26",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_27",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_28",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_29",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_30",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_31",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_32",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_33",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_34",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_35",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_36",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_37",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_38",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_39",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_40",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_41",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_42",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 780,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_43",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_44",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_45",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_46",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_47",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_48",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_49",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_50",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_51",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_52",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_53",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_54",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_55",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_56",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_57",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_58",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_59",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_60",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_61",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_62",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "L3_phrase_63",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 781,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    },
+    {
+      "id": "phrases",
+      "z_level": 3,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 0,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    }
+  ],
+  "l2_network_ids": [
+    "L2_word",
+    "L2_word_00",
+    "L2_word_01",
+    "L2_word_02",
+    "L2_word_03",
+    "L2_word_04",
+    "L2_word_05",
+    "L2_word_06",
+    "L2_word_07",
+    "L2_word_08",
+    "L2_word_09",
+    "L2_word_10",
+    "L2_word_11",
+    "L2_word_12",
+    "L2_word_13",
+    "L2_word_14",
+    "L2_word_15",
+    "L2_word_16",
+    "L2_word_17",
+    "L2_word_18",
+    "L2_word_19",
+    "L2_word_20",
+    "L2_word_21",
+    "L2_word_22",
+    "L2_word_23",
+    "L2_word_24",
+    "L2_word_25",
+    "L2_word_26",
+    "L2_word_27",
+    "L2_word_28",
+    "L2_word_29",
+    "L2_word_30",
+    "L2_word_31",
+    "L2_word_32",
+    "L2_word_33",
+    "L2_word_34",
+    "L2_word_35",
+    "L2_word_36",
+    "L2_word_37",
+    "L2_word_38",
+    "L2_word_39",
+    "L2_word_40",
+    "L2_word_41",
+    "L2_word_42",
+    "L2_word_43",
+    "L2_word_44",
+    "L2_word_45",
+    "L2_word_46",
+    "L2_word_47",
+    "L2_word_48",
+    "L2_word_49",
+    "L2_word_50",
+    "L2_word_51",
+    "L2_word_52",
+    "L2_word_53",
+    "L2_word_54",
+    "L2_word_55",
+    "L2_word_56",
+    "L2_word_57",
+    "L2_word_58",
+    "L2_word_59",
+    "L2_word_60",
+    "L2_word_61",
+    "L2_word_62",
+    "L2_word_63"
+  ],
+  "journal": {
+    "schema_version": 1,
+    "domain_count": 0,
+    "entry_count": 0,
+    "bytes": 0,
+    "domains": []
+  },
+  "disk": {
+    "field_state_json": 26257468,
+    "field_state_human": "25.0 MiB",
+    "store_total": 359868656,
+    "store_total_human": "343.2 MiB",
+    "nca_dir": 165363284,
+    "parallel_shards_dir": 0,
+    "examples_exp_reports": 0
+  }
+}
