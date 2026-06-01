@@ -7,7 +7,7 @@
 ## Tree (analog of KB folders)
 
 ```text
-agent-store/{id}/              # e.g. lexicon-ru-archaic (not corpus name)
+agents/von-neumann/            # canon agent (STORE_AGENT_DEFAULT); legacy: lab/agent-stores/…
 ├── MEMORY.md                 ← human map (generated)
 ├── memory_manifest.json      ← machine map (generated)
 ├── field_state.json          ← **runtime checkpoint** (prism_hippo queue, SN meta; not in profile tar)
@@ -59,6 +59,19 @@ Do **not** use `lab/nca_out_<corpus>_*/` for production — train in-place under
 **Код:** константы `STORE_TIER_*` в `casa/prisms/shared/store_layout.py`; flush — `casa/prisms/shared/store_persist.py`.
 
 **Неявная vs явная память:** [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md) § Неявная vs явная — tick/hippo/структура памяти vs `agent_remember`.
+
+### Собственный опыт и занятия (canon)
+
+[`CASA-PROJECT-CONSTITUTION.md`](CASA-PROJECT-CONSTITUTION.md) (тема 3): **мозг, память, навыки, знания** агента — это **собственный опыт**, инженерно: `ltm/`, решётки, hippo→sleep, hot, router, self. Три tier выше — **как персистить один опыт**, не «память урока» vs «память агента».
+
+| | Занятие (curriculum) | Собственный опыт |
+|--|----------------------|------------------|
+| Суть | событие с учителем (bundle, ingest, bench) | след после консолидации в **`{store}/` агента** |
+| На диске | ingest log, опционально копия store для CI | `ltm/`, `nca/`, `field_state`, `agent/`, `journal/` |
+
+**Инварианты:** один агент → один store; math и lang — разные **события**, один **опыт** в призмах. Predict — только из опыта, bundle не oracle.
+
+**Layout (legacy → R5):** сейчас опыт часто под `lab/agent-stores/<id>/` (исторически `examples/`). После миграции — канон `agents/<id>/`; `lab/` только curriculum ([`CASA-ADR-0021`](CASA-ADR-0021-experience-agent-transfer.md) § R5, [`TECH-DEBT-INDEX.md`](TECH-DEBT-INDEX.md) L1).
 
 ### Фактология vs картриджи (canon)
 

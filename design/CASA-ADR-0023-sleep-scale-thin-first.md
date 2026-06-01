@@ -223,7 +223,9 @@ T_sleep (опц. хвост, GPU):
 | R2 | `sss_sleep.py --batch-size --progress --thin-first` | **done** |
 | R3 | `ingest_episodic_mode` + `record_listen_surface` | **done** |
 | R4 | `LearningTickConfig.sleep_batch_size` | **done** |
-| R5 | `compact_persist` `parallel_writes` / `--parallel-ltm` | **done** (shard sleep v2 — open) |
+| R5 | `compact_persist` `parallel_writes` / `--parallel-ltm` | **done** |
+| R5b | L3 remigrate parallel by shard (`l3_remigrate`, `migrate_thin_checkpoint --parallel-workers`) | **done** |
+| S-v2 | multiprocess sleep by L2 shard | open |
 | R6 | `SleepJob` + yield между батчами | **done** (`sn.input_pending` hook) |
 | R7 | § Neuro/preempt — ссылка в `casa-wake-sleep-concept.md` | P2 |
 
