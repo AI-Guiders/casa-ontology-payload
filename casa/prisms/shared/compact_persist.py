@@ -67,6 +67,10 @@ def compact_persist_store(
     include_router_meta: bool = True,
     include_hot_audit: bool = False,
     reason: str = "agent",
+    progress: bool = False,
+    remigrate_l2: bool = True,
+    remigrate_l3: bool = True,
+    parallel_writes: int = 0,
 ) -> dict[str, Any]:
     """Write compact shipped tier under {store}/ltm/ (all content prisms by default).
 
@@ -85,6 +89,10 @@ def compact_persist_store(
         include_control=include_control,
         compress=compress,
         skip_vocab_over=skip_vocab_over,
+        progress=progress,
+        remigrate_l2=remigrate_l2,
+        remigrate_l3=remigrate_l3,
+        parallel_writes=parallel_writes,
     )
     report: dict[str, Any] = {
         "tier": "shipped",
@@ -92,6 +100,7 @@ def compact_persist_store(
         "at": _utc_now(),
         "ltm_dir": str(ltm_dir),
         "content_prisms": pids,
+        "manifest": manifest,
         "manifest_totals": manifest.get("totals"),
         "field_version": state.get("field_version"),
     }
@@ -119,6 +128,13 @@ def compact_persist_on_sleep_enabled(state: dict) -> bool:
     return bool(store.get("compact_persist_on_sleep"))
 
 
+def _parallel_writes_from_state(state: dict) -> int:
+    store = state.get("store")
+    if isinstance(store, dict):
+        return max(0, int(store.get("compact_persist_parallel_writes") or 0))
+    return 0
+
+
 def maybe_compact_persist_after_sleep(
     store_dir: Path,
     state: dict,
@@ -131,6 +147,10 @@ def maybe_compact_persist_after_sleep(
     if not force and not compact_persist_on_sleep_enabled(state):
         return None
     reason = "sleep" if not force else "sleep_forced"
+    if "parallel_writes" not in kwargs:
+        pw = _parallel_writes_from_state(state)
+        if pw >= 2:
+            kwargs = {**kwargs, "parallel_writes": pw}
     rep = compact_persist_store(store_dir, state, reason=reason, **kwargs)
     if sleep_report is not None:
         sleep_report["compact_persist"] = rep
@@ -147,6 +167,7 @@ def main() -> None:
     p.add_argument("--hot-audit", action="store_true", help="write meta/hot_context.jsonl snapshot")
     p.add_argument("--no-control", action="store_true")
     p.add_argument("--reason", default="cli")
+    p.add_argument("--progress", action="store_true", help="stderr progress per lattice")
     args = p.parse_args()
 
     fs = field_state_path(args.store_dir)
@@ -163,6 +184,7 @@ def main() -> None:
         include_control=not args.no_control,
         include_hot_audit=args.hot_audit,
         reason=args.reason,
+        progress=args.progress,
     )
     print(json.dumps(report, ensure_ascii=False, indent=2))
 

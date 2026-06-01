@@ -40,6 +40,9 @@ def apply_store_boot_profile(store_dir: Path, state: dict) -> None:
                 store["locale"] = str(profile["locale"])
             if profile.get("default_content_prism"):
                 store["default_content_prism"] = str(profile["default_content_prism"])
+            mode = profile.get("ingest_episodic_mode")
+            if isinstance(mode, str) and mode in ("off", "surprise_only", "full"):
+                store["ingest_episodic_mode"] = mode
             prisms_block = profile.get("prisms")
             if isinstance(prisms_block, dict) and prisms_block.get("default_content_prism"):
                 store["default_content_prism"] = str(prisms_block["default_content_prism"])

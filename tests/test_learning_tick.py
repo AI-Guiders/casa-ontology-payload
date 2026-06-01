@@ -11,7 +11,8 @@ from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices, pri
 from casa.prisms.shared.field_write import save_field_state
 from casa.prisms.shared.store_layout import field_state_path
 from casa.prisms.tick.act_rollout import act_rollout_phase, merge_decoded_digests, resolve_nca_model_path
-from casa.prisms.tick.orchestrator import LearningTickConfig, surprise_to_hippo_episode
+from casa.prisms.memory.memory_prisms import append_episode
+from casa.prisms.tick.orchestrator import LearningTickConfig, maybe_sleep_phase, surprise_to_hippo_episode
 
 
 def _minimal_store(tmp_path: Path) -> tuple[Path, dict]:
@@ -161,3 +162,39 @@ def test_run_learning_tick_minimal(tmp_path: Path) -> None:
     assert report["control"]["prediction_error"] >= 0
     assert report["learning_cycle"]["use"]["sn_cen"] is True
     assert memory_lattices(state)["L0_grapheme"]
+
+
+def test_maybe_sleep_phase_batch_size(tmp_path: Path) -> None:
+    from casa.prisms.control.tick import run_control_extensions
+
+    _, state = _minimal_store(tmp_path)
+    bundle = {"claims": [], "graph": {"edges": []}}
+    for i in range(3):
+        append_episode(
+            state,
+            cue=f"c{i}",
+            surface_attempt="x",
+            correct=f"w{i}",
+            lattice_id="L0_grapheme",
+            concept_id=f"lang.word.w{i}",
+        )
+    control = run_control_extensions(
+        prior_digest=[],
+        current_digest=["demo.alpha"],
+        goal=["demo.alpha"],
+        task_relevant=True,
+    )
+    state.setdefault("consolidation", {})["ticks_since_sleep"] = 99
+    rep = maybe_sleep_phase(
+        state,
+        bundle,
+        sleep_every=1,
+        sleep_on_value=2.0,
+        control=control,
+        sleep_batch_size=1,
+    )
+    assert rep is not None
+    assert rep["merged"] == 1
+    assert len(prism_hippo(state).get("episodes") or []) == 2
+    job = (state.get("consolidation") or {}).get("sleep_job") or {}
+    assert int(job.get("batch_index") or 0) == 1

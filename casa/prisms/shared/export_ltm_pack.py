@@ -104,43 +104,83 @@ def export_pack(
     include_control: bool = True,
     compress: bool = False,
     remigrate_l2: bool = True,
+    remigrate_l3: bool = True,
     skip_vocab_over: int | None = None,
+    progress: bool = False,
+    parallel_writes: int = 0,
 ) -> dict[str, Any]:
     state = ensure_prisms(state)
+
+    def _word_progress(done: int, total: int, shard: str) -> None:
+        if progress:
+            from casa.prisms.shared.migrate_progress import progress as _prog
+
+            _prog(f"  remigrate words {done}/{total} (last shard {shard})")
+
+    def _token_progress(done: int, total: int, shard: str) -> None:
+        if progress:
+            from casa.prisms.shared.migrate_progress import progress as _prog
+
+            _prog(f"  remigrate L3 tokens {done}/{total} (last shard {shard})")
+
     l2_remigrate_report = None
     if remigrate_l2 and lattice_ids is None:
         from casa.prisms.memory.l2_remigrate import ensure_l2_sharded_for_export
 
-        l2_remigrate_report = ensure_l2_sharded_for_export(state)
+        l2_remigrate_report = ensure_l2_sharded_for_export(
+            state,
+            on_word_progress=_word_progress if progress else None,
+        )
+    l3_remigrate_report = None
+    if remigrate_l3 and lattice_ids is None:
+        from casa.prisms.memory.l3_remigrate import ensure_l3_sharded_for_export
+
+        l3_remigrate_report = ensure_l3_sharded_for_export(
+            state,
+            on_token_progress=_token_progress if progress else None,
+        )
     nca_block = _rel_nca_block(state.get("nca"))
-    exports = iter_profile_lattice_exports(
-        state,
-        content_prism_ids=content_prism_ids,
-        lattice_ids=lattice_ids,
-        include_control=include_control,
+    exports = list(
+        iter_profile_lattice_exports(
+            state,
+            content_prism_ids=content_prism_ids,
+            lattice_ids=lattice_ids,
+            include_control=include_control,
+        )
     )
+    if progress:
+        from casa.prisms.shared.migrate_progress import progress as _prog
+
+        _prog(f"  export ltm: {len(exports)} lattices")
     rows: dict[str, Any] = {}
     prism_index: dict[str, dict[str, Any]] = {}
     skipped_vocab: list[dict[str, Any]] = []
     total_raw = 0
     total_file = 0
 
-    for pid, lid, lat in exports:
+    def _export_one(i: int, pid: str, lid: str, lat: dict) -> dict[str, Any]:
         if skip_vocab_over is not None:
             from casa.prisms.memory.lexicon_shard import lattice_vocab_size
 
             vocab_n = lattice_vocab_size(lat)
             if vocab_n > skip_vocab_over:
-                skipped_vocab.append(
-                    {
+                if progress:
+                    from casa.prisms.shared.migrate_progress import progress as _prog
+
+                    _prog(f"  skip {i}/{len(exports)} {pid}/{lid} vocab={vocab_n} > {skip_vocab_over}")
+                return {
+                    "skip": {
                         "prism_id": pid,
                         "lattice_id": lid,
                         "vocab": vocab_n,
                         "limit": skip_vocab_over,
                         "reason": "ltm_v0_u16_vocab_cap",
                     }
-                )
-                continue
+                }
+        if progress:
+            from casa.prisms.shared.migrate_progress import progress as _prog
+
+            _prog(f"  write {i}/{len(exports)} {pid}/{lid}")
         primary, _aliases = ltm_write_targets(out_dir, lid)
         info = write_ltm(primary, lat, compress=compress)
         try:
@@ -148,12 +188,43 @@ def export_pack(
         except ValueError:
             store_rel = rel_to_repo(primary)
         meta = {**_lattice_meta(lat), "prism_id": pid}
-        rows[lid] = {**info, "path": store_rel, "prism_id": pid, "meta": meta}
+        return {
+            "lid": lid,
+            "pid": pid,
+            "info": info,
+            "entry": {"path": store_rel, "prism_id": pid, "meta": meta},
+        }
+
+    def _apply_export_result(result: dict[str, Any]) -> None:
+        nonlocal total_raw, total_file
+        if "skip" in result:
+            skipped_vocab.append(result["skip"])
+            return
+        lid = result["lid"]
+        pid = result["pid"]
+        info = result["info"]
+        entry = result["entry"]
+        rows[lid] = {**info, **entry}
         prism_index.setdefault(pid, {"kind": prism_kind(state, pid), "lattice_ids": []})
         if lid not in prism_index[pid]["lattice_ids"]:
             prism_index[pid]["lattice_ids"].append(lid)
         total_raw += int(info["raw_bytes"])
         total_file += int(info["file_bytes"])
+
+    workers = max(0, int(parallel_writes))
+    if workers >= 2 and len(exports) >= 2:
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            futures = [
+                pool.submit(_export_one, i, pid, lid, lat)
+                for i, (pid, lid, lat) in enumerate(exports, 1)
+            ]
+            for fut in as_completed(futures):
+                _apply_export_result(fut.result())
+    else:
+        for i, (pid, lid, lat) in enumerate(exports, 1):
+            _apply_export_result(_export_one(i, pid, lid, lat))
 
     router = prism_router(state)
     manifest = {
@@ -161,7 +232,9 @@ def export_pack(
         "format": "ltm-pack",
         **manifest_layout_block(),
         "l2_remigrate": l2_remigrate_report,
+        "l3_remigrate": l3_remigrate_report,
         "field_version": state.get("field_version"),
+        "l3_sharding": state.get("l3_sharding"),
         "updated_at": state.get("updated_at"),
         "default_content_prism": router.get("default_content_prism") or PRISM_MEMORY,
         "prisms": prism_index,

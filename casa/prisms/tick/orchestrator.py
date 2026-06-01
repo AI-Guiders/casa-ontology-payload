@@ -53,6 +53,7 @@ class LearningTickConfig:
     sleep_every: int = 0
     sleep_on_value: float = 1.0
     compact_persist_on_sleep: bool = False
+    sleep_batch_size: int = 0
     kolb_session: dict[str, Any] | None = None
 
 
@@ -157,9 +158,15 @@ def maybe_sleep_phase(
     control: ControlExtensions,
     store_dir: Path | None = None,
     compact_persist: bool | None = None,
+    sleep_batch_size: int = 0,
 ) -> dict[str, Any] | None:
-    hippo = (state.get("prisms") or {}).get("prism_hippo") or {}
-    episodes = [e for e in (hippo.get("episodes") or []) if not e.get("consolidated")]
+    from casa.prisms.memory.memory_prisms import hippo_episodes
+    from casa.prisms.memory.sleep_job import clear_sleep_interrupt, note_sleep_batch, sleep_job_should_yield
+
+    if sleep_job_should_yield(state):
+        return None
+
+    episodes = [e for e in hippo_episodes(state) if not e.get("consolidated")]
     if not episodes:
         return None
 
@@ -173,8 +180,21 @@ def maybe_sleep_phase(
     if not do_sleep:
         return None
 
-    rep = run_sleep(state, bundle, store_dir=store_dir, compact_persist=compact_persist)
-    cons["ticks_since_sleep"] = 0
+    batch = max(0, int(sleep_batch_size))
+    max_ep = batch if batch > 0 else None
+    rep = run_sleep(
+        state,
+        bundle,
+        store_dir=store_dir,
+        compact_persist=compact_persist,
+        max_episodes=max_ep,
+    )
+    pending_after = len(hippo_episodes(state))
+    if batch > 0:
+        note_sleep_batch(state, pending_after=pending_after, merged=int(rep.get("merged") or 0), max_episodes=max_ep)
+    if pending_after == 0:
+        cons["ticks_since_sleep"] = 0
+        clear_sleep_interrupt(state)
     mark_runtime_dirty(state)
     return rep
 
@@ -318,6 +338,7 @@ def run_learning_tick(
             control=control,
             store_dir=store_dir,
             compact_persist=True if cfg.compact_persist_on_sleep else None,
+            sleep_batch_size=cfg.sleep_batch_size,
         )
 
     kolb_rep: dict | None = None
