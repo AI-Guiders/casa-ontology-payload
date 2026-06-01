@@ -44,8 +44,7 @@ Semantic layer ids (prose): `memory.grapheme` … `memory.phrase` — [naming-me
 
 1. **`model.pt` (~2 MiB на полку)** выглядит как «вся память в нейросети» — обучение NCA действительно учит **восстанавливать поле после повреждений**, но **не хранит лексикон в весах**.
 2. **`field_state.json` (~400 MiB)** — удобная лабораторная копия, но сериализация **дублирует строки токенов** в `cells[]`; это не модель данных, а артефакт JSON.
-3. Путаница: маленький NCA ≠ «памяти нет»; маленький NCA = **дешёвая физика ремонта** при том, что **знание на поле** (или в компактном `ltm/`).
-
+3. Путаница: маленький NCA ≠ «памяти нет»; маленький NCA = **дешёвая физика ремонта** при том, что **знание в структуре памяти** (`ltm/`, не в весах NCA).
 ---
 
 ## Решение
@@ -63,17 +62,16 @@ Semantic layer ids (prose): `memory.grapheme` … `memory.phrase` — [naming-me
 Формула поставки агента с лексиконом:
 
 ```text
-память (структура на поле)  =  ltm/
-repair лексикона             =  nca/<lattice>/          (L0–L3, L2 shards)
-repair выведенных правил     =  nca/rules/<rule_id>/    (после Critic; та же regrow-math)
-канон правды                 =  KB → ingest
+память (структура prism_memory)  =  ltm/
+repair лексикона                 =  nca/<lattice>/          (те же model.pt; не в картриджах)
+repair выведенных правил         =  nca/rules/<rule_id>/    (после Critic; та же regrow-math)
+канон ingest                       =  KB / bundle → материализация в память (не runtime-oracle)
 ```
-
 ### 2. Принять **ltm-pack v0** как формат памяти для отгрузки
 
 - Бинарник `.ltm` на решётку: словарь токенов один раз + sparse `(token_idx, x, y)`.
 - `pack.manifest.json`: `l2_sharding`, реестр `nca.models`, метаданные решёток.
-- Измерено на `sss-ru-lexicon`: **~2,6 MiB** на весь L2 (65 решёток) против **~429 MiB** `field_state.json` при том же содержимом `cells`.
+- Измерено на `lexicon-ru-archaic`: **~2,6 MiB** на весь L2 (65 решёток) против **~429 MiB** `field_state.json` при том же содержимом `cells`.
 
 Инструменты: `export_ltm_pack.py`, `import_ltm_pack.py` — см. [`ltm-pack.md`](ltm-pack.md).
 
@@ -139,7 +137,7 @@ nca/
 ### Что не меняется
 
 - KB остаётся **источником правды** для фактов и графа.
-- Имя корпуса (Afan, bukvar) **не** задаёт структуру store (`sss-ru-lexicon`, не `sss-afan-*` в layout).
+- Имя корпуса (Afan, bukvar) **не** задаёт структуру store (`lexicon-ru-archaic`, не `ingest-ref-afan-*` в layout).
 
 ---
 
