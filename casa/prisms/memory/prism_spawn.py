@@ -17,10 +17,12 @@ from casa.prisms.shared.prism_state import (
     PRISM_HIPPO,
     PRISM_HOT_CONTEXT,
     PRISM_KIND_CONTENT,
+    PRISM_KIND_CONTROL,
     PRISM_KIND_HOT_CONTEXT,
     PRISM_KIND_ROUTER,
     PRISM_MEMORY,
     PRISM_ROUTER,
+    PRISM_VISUAL,
     normalize_prisms,
     prism_block,
     prism_hot_context,
@@ -42,6 +44,7 @@ _DEFAULT_STACK: dict[str, str] = {
     PRISM_KIND_CONTENT: "design/prisms/memory/stack.json",
     PRISM_KIND_HOT_CONTEXT: "design/prisms/hot_context/stack.json",
     PRISM_KIND_ROUTER: "design/prisms/router/stack.json",
+    PRISM_KIND_CONTROL: "design/prisms/control/vis-stack.json",
 }
 
 
@@ -131,6 +134,37 @@ def _new_content_block(*, stack: str) -> dict[str, Any]:
     }
 
 
+def _new_control_block(*, stack: str) -> dict[str, Any]:
+    return {
+        "kind": PRISM_KIND_CONTROL,
+        "subsystem": "control",
+        "stack": stack,
+        "lattices": {},
+        "active_lattice": None,
+        "nca": {"models": {}},
+    }
+
+
+def _lattices_from_stack(stack_path: str) -> dict[str, dict]:
+    from casa.prisms.shared.config_io import load_config
+
+    stack = load_config(stack_path)
+    out: dict[str, dict] = {}
+    for lat in stack.get("lattices") or []:
+        lid = str(lat.get("legacy_id") or lat.get("lattice_id") or lat.get("id") or "")
+        if not lid:
+            continue
+        size = lat.get("size") or {}
+        out[lid] = empty_content_lattice(
+            width=int(size.get("width") or 32),
+            height=int(size.get("height") or 32),
+            z_level=int(lat.get("z_ctrl") or lat.get("z_level") or 0),
+            concept_prefix=str(lat.get("concept_prefix") or ""),
+        )
+        out[lid]["subsystem"] = "control"
+    return out
+
+
 def _new_agent_kind_block(*, kind: str, stack: str) -> dict[str, Any]:
     """Agent-defined kind — minimal shell; payload/lattices added by agent ops."""
     return {
@@ -177,6 +211,12 @@ def spawn_prism(
         block = root.setdefault(pid, _new_router_block(stack=stack_path))
     elif kind_n == PRISM_KIND_CONTENT:
         block = root.setdefault(pid, _new_content_block(stack=stack_path))
+    elif kind_n == PRISM_KIND_CONTROL:
+        block = root.setdefault(pid, _new_control_block(stack=stack_path))
+        if not block.get("lattices"):
+            block["lattices"] = _lattices_from_stack(stack_path)
+            if block["lattices"]:
+                block["active_lattice"] = next(iter(block["lattices"]))
     else:
         block = root.setdefault(pid, _new_agent_kind_block(kind=kind_n, stack=stack_path))
 
@@ -258,11 +298,55 @@ def list_content_prism_ids(state: dict) -> list[str]:
             continue
         if pid in (PRISM_AGENT, PRISM_HIPPO, PRISM_CONTROL, PRISM_HOT_CONTEXT, PRISM_ROUTER):
             continue
+        if prism_kind(state, pid) == PRISM_KIND_CONTROL:
+            continue
         if prism_supports_lattices(state, pid):
             out.append(pid)
     if PRISM_MEMORY not in out:
         out.insert(0, PRISM_MEMORY)
     return sorted(set(out))
+
+
+def list_control_prism_ids(state: dict) -> list[str]:
+    """Monolith prism_control + spawned kind=control prisms (ADR-0019)."""
+    from casa.prisms.control.cylinders import has_control_stack
+
+    state = ensure_prisms(state)
+    out: list[str] = []
+    if has_control_stack(state):
+        out.append(PRISM_CONTROL)
+    for pid, block in prisms(state).items():
+        if not isinstance(block, dict):
+            continue
+        if pid == PRISM_CONTROL:
+            continue
+        if prism_kind(state, pid) == PRISM_KIND_CONTROL and (block.get("lattices") or {}):
+            out.append(pid)
+    return sorted(set(out))
+
+
+def ensure_vision_bootstrap(state: dict) -> dict[str, Any]:
+    """prism_visual + default router route for modality vis/image (ADR-0018)."""
+    from casa.prisms.memory.prism_router import add_route
+    from casa.prisms.visual.ingest_vis import ensure_prism_visual
+
+    ensure_default_router_and_hot(state)
+    vis = ensure_prism_visual(state)
+    add_route(
+        state,
+        {"modality": "vis"},
+        PRISM_VISUAL,
+        lattice_hint="V1_object",
+        priority=90,
+    )
+    add_route(
+        state,
+        {"modality": "image"},
+        PRISM_VISUAL,
+        lattice_hint="V1_object",
+        priority=90,
+    )
+    return vis
 
 
 def main() -> None:
@@ -289,6 +373,11 @@ def main() -> None:
     p.add_argument("--make-active", action="store_true")
     p.add_argument("--bootstrap-only", action="store_true", help="ensure_default_router_and_hot only")
     p.add_argument("--write", action="store_true", help="save field_state.json")
+    p.add_argument(
+        "--compact-persist",
+        action="store_true",
+        help="flush all content prisms to store/ltm/ (requires --store-dir)",
+    )
     args = p.parse_args()
 
     if args.store_dir:
@@ -317,6 +406,13 @@ def main() -> None:
             )
     out["content_prisms"] = list_content_prism_ids(state)
     out["field_version"] = state.get("field_version")
+
+    if args.compact_persist:
+        if not args.store_dir:
+            raise SystemExit("--compact-persist requires --store-dir")
+        from casa.prisms.shared.compact_persist import compact_persist_store
+
+        out["compact_persist"] = compact_persist_store(args.store_dir, state, reason="spawn_cli")
 
     if args.write and args.store_dir:
         save_field_state(field_state_path(args.store_dir), state, compact=True)

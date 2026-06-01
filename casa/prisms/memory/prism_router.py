@@ -10,7 +10,7 @@ ensure_import_paths()
 from dataclasses import dataclass
 from typing import Any
 
-from casa.prisms.shared.prism_state import PRISM_MEMORY, PRISM_ROUTER, normalize_prisms, prism_router
+from casa.prisms.shared.prism_state import PRISM_MEMORY, PRISM_ROUTER, PRISM_VISUAL, normalize_prisms, prism_router
 from casa.prisms.memory.prism_spawn import validate_content_prism_id
 
 
@@ -208,6 +208,18 @@ def bootstrap_default_routes(state: dict, *, locale: str = "ru", force: bool = F
             "target_prism": PRISM_MEMORY,
             "lattice_hint": "schema-math",
             "priority": 100,
+        },
+        {
+            "match": {"modality": "vis"},
+            "target_prism": PRISM_VISUAL,
+            "lattice_hint": "V1_object",
+            "priority": 95,
+        },
+        {
+            "match": {"modality": "image"},
+            "target_prism": PRISM_VISUAL,
+            "lattice_hint": "V1_object",
+            "priority": 95,
         },
         {
             "match": {"modality": "t9", "locale": _norm(locale)},

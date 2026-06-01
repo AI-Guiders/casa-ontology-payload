@@ -449,6 +449,10 @@ def predict(
         return predict_script(state, cue)
     if mod == "schema":
         return predict_schema(state, cue, bundle, lattice_id=lattice_id or "schema-math")
+    if mod in ("vis", "image", "vision"):
+        from casa.prisms.visual.predict_vis import predict_vis
+
+        return predict_vis(state, cue, top_k=top_k)
     if mod == "segment":
         return predict_segment(state, cue)
     raise ValueError(f"unsupported modality: {modality}")

@@ -23,10 +23,15 @@ PRISM_CONTROL = "prism_control"
 PRISM_AGENT = "prism_agent"
 PRISM_HOT_CONTEXT = "prism_hot_context"
 PRISM_ROUTER = "prism_router"
+PRISM_VISUAL = "prism_visual"
+PRISM_CONTROL_VIS = "prism_control_vis"
 
 PRISM_KIND_CONTENT = "content"
 PRISM_KIND_HOT_CONTEXT = "hot_context"
 PRISM_KIND_ROUTER = "router"
+PRISM_KIND_CONTROL = "control"
+
+_ACTIVE_CONTROL = "active_control_prism"
 
 _LEGACY_BLOCK = {
     "cyl_memory": PRISM_MEMORY,
@@ -154,22 +159,35 @@ def prism_kind(state: dict, prism_id: str) -> str:
         return PRISM_KIND_HOT_CONTEXT
     if prism_id == PRISM_ROUTER:
         return PRISM_KIND_ROUTER
-    if prism_id in (PRISM_HIPPO, PRISM_CONTROL):
-        return prism_id.replace("prism_", "")
+    if prism_id == PRISM_CONTROL:
+        return PRISM_KIND_CONTROL
+    if prism_id == PRISM_HIPPO:
+        return "hippo"
     return PRISM_KIND_CONTENT
 
 
 def prism_supports_lattices(state: dict, prism_id: str) -> bool:
-    """True if prism holds **content** lattices (not hippo episodic surface)."""
-    if prism_id in (PRISM_HIPPO, PRISM_CONTROL, PRISM_AGENT, PRISM_HOT_CONTEXT, PRISM_ROUTER):
+    """True if prism exports lattices via content_prism_lattices (not monolith CU path)."""
+    if prism_id in (PRISM_HIPPO, PRISM_AGENT, PRISM_HOT_CONTEXT, PRISM_ROUTER):
+        return False
+    if prism_id == PRISM_CONTROL:
         return False
     k = prism_kind(state, prism_id)
-    if k in (PRISM_KIND_HOT_CONTEXT, PRISM_KIND_ROUTER, "hippo", "control"):
+    if k in (PRISM_KIND_HOT_CONTEXT, PRISM_KIND_ROUTER, "hippo"):
         return False
-    if k == PRISM_KIND_CONTENT:
+    if k in (PRISM_KIND_CONTENT, PRISM_KIND_CONTROL):
         return True
     block = prism_block(state, prism_id)
     return isinstance(block.get("lattices"), dict)
+
+
+def active_control_prism_id(state: dict, *, default: str = PRISM_CONTROL) -> str:
+    sn = state.get("sn") or {}
+    return str(sn.get(_ACTIVE_CONTROL) or default)
+
+
+def set_active_control_prism(state: dict, prism_id: str) -> None:
+    state["sn"] = {**(state.get("sn") or {}), _ACTIVE_CONTROL: prism_id}
 
 
 def active_prism_id(state: dict, *, default: str = PRISM_MEMORY) -> str:
