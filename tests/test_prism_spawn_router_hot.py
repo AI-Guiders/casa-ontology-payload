@@ -4,8 +4,21 @@
 from __future__ import annotations
 
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
-from casa.prisms.memory.prism_hot_context import add_hot_edge, hot_digest_for_cue, hot_neighbors, prune_hot_context
-from casa.prisms.memory.prism_router import RouteContext, add_route, resolve_route
+from casa.prisms.memory.prism_hot_context import (
+    add_hot_edge,
+    apply_hot_boost_to_ranked,
+    hot_digest_for_cue,
+    hot_neighbors,
+    hot_word_salience_for_cue,
+    prune_hot_context,
+)
+from casa.prisms.memory.prism_router import (
+    RouteContext,
+    add_route,
+    bootstrap_default_routes,
+    resolve_route,
+    router_routes,
+)
 from casa.prisms.memory.prism_spawn import (
     ensure_default_router_and_hot,
     list_content_prism_ids,
@@ -63,6 +76,40 @@ def test_router_resolves_schema_and_t9():
 
     default = resolve_route(state, RouteContext())
     assert default.prism_id == PRISM_MEMORY
+
+
+def test_bootstrap_routes_on_ensure_default():
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+    ensure_default_router_and_hot(state)
+    routes = router_routes(state)
+    assert len(routes) >= 2
+    assert any((r.get("match") or {}).get("modality") == "t9" for r in routes)
+    again = bootstrap_default_routes(state)
+    assert len(again) == len(routes)
+
+
+def test_profile_default_content_prism():
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+    ensure_default_router_and_hot(state)
+    spawn_prism(state, "prism_math", kind="content")
+    state["store"] = {"default_content_prism": "prism_math"}
+    target = resolve_route(state, RouteContext(modality="unknown_mod"))
+    assert target.prism_id == "prism_math"
+    assert (target.matched or {}).get("source") == "profile"
+
+
+def test_hot_boost_reorders_candidates():
+    ranked = [("домой", 10), ("дом", 8), ("домашний", 6)]
+    boosted = apply_hot_boost_to_ranked(ranked, {"дом": 3.0})
+    assert boosted[0][0] == "дом"
+
+
+def test_hot_word_salience_from_edges():
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 1})
+    ensure_default_router_and_hot(state)
+    add_hot_edge(state, "cue:дом", "denotes", "lang.word.дом", salience=2.5)
+    boosts = hot_word_salience_for_cue(state, "дом")
+    assert boosts.get("дом") == 2.5
 
 
 def test_prune_hot_context_ttl():

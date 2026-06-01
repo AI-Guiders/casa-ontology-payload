@@ -17,7 +17,11 @@ from casa.prisms.shared.lattice_names_v1 import PHRASES
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.lexicon_shard import L2_CONCEPT_PREFIX, is_l2_word_lattice, lattice_digest_l2_network
 from casa.prisms.memory.lexicon_field_oracle import lexicon_oracle_for_predict
-from casa.prisms.memory.prism_hot_context import hot_digest_for_cue
+from casa.prisms.memory.prism_hot_context import (
+    apply_hot_boost_to_ranked,
+    hot_digest_for_cue,
+    hot_word_salience_for_cue,
+)
 from casa.prisms.memory.lexicon_usage_axes import T9Policy, filter_ranked_for_t9, lemma_axis
 from casa.prisms.memory.segment import format_segment, norm_word, segment_hypothesis, verify_segment
 
@@ -384,6 +388,9 @@ def predict_t9(
     state = ensure_prisms(state)
     prefix = norm_word(cue)
     ranked = l2_prefix_candidates(state, prefix, top_k=top_k, t9_policy=t9_policy, weights=weights)
+    hot_boosts = hot_word_salience_for_cue(state, prefix)
+    if hot_boosts:
+        ranked = apply_hot_boost_to_ranked(ranked, hot_boosts)[:top_k]
     axes = lexicon_oracle_for_predict(state)
     hot_hints = hot_digest_for_cue(state, prefix)
     anchors = word_anchors_from_ranked(ranked, cue=prefix)

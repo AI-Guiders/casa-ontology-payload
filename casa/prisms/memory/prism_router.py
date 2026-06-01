@@ -11,7 +11,6 @@ from dataclasses import dataclass
 from typing import Any
 
 from casa.prisms.shared.prism_state import PRISM_MEMORY, PRISM_ROUTER, normalize_prisms, prism_router
-from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.memory.prism_spawn import validate_content_prism_id
 
 
@@ -36,6 +35,18 @@ def _norm(s: str) -> str:
     return (s or "").strip().lower()
 
 
+def profile_default_content_prism(state: dict) -> str | None:
+    """Store/profile default before router block default (ADR-0016)."""
+    for key in ("store", "profile"):
+        block = state.get(key)
+        if not isinstance(block, dict):
+            continue
+        raw = block.get("default_content_prism")
+        if raw:
+            return validate_content_prism_id(str(raw))
+    return None
+
+
 def router_routes(state: dict) -> list[dict[str, Any]]:
     normalize_prisms(state)
     return list(prism_router(state).get("routes") or [])
@@ -49,7 +60,7 @@ def add_route(
     lattice_hint: str | None = None,
     priority: int = 0,
 ) -> dict[str, Any]:
-    ensure_prisms(state)
+    normalize_prisms(state)
     block = prism_router(state)
     pid = validate_content_prism_id(target_prism)
     row = {
@@ -88,7 +99,7 @@ def _match_score(route_match: dict[str, str], ctx: RouteContext) -> int:
 
 def resolve_route(state: dict, ctx: RouteContext) -> RouteTarget:
     """Pick content prism for this tick; falls back to router default or prism_memory."""
-    ensure_prisms(state)
+    normalize_prisms(state)
     block = prism_router(state)
     best: RouteTarget | None = None
     best_score = -1
@@ -105,6 +116,14 @@ def resolve_route(state: dict, ctx: RouteContext) -> RouteTarget:
             )
     if best is not None and best_score >= 0:
         return best
+    profile_default = profile_default_content_prism(state)
+    if profile_default:
+        return RouteTarget(
+            prism_id=profile_default,
+            lattice_hint=None,
+            route_index=None,
+            matched={"source": "profile"},
+        )
     default = str(block.get("default_content_prism") or PRISM_MEMORY)
     return RouteTarget(prism_id=default, lattice_hint=None, route_index=None, matched=None)
 
@@ -118,22 +137,25 @@ def apply_route_to_sn(state: dict, target: RouteTarget) -> None:
     sn["route_matched"] = target.matched
 
 
-def bootstrap_default_routes(state: dict, *, locale: str = "ru") -> list[dict[str, Any]]:
-    """Idempotent lab defaults for bilingual / math."""
+def bootstrap_default_routes(state: dict, *, locale: str = "ru", force: bool = False) -> list[dict[str, Any]]:
+    """Idempotent lab defaults for bilingual / math (structural init — no field_version bump)."""
+    normalize_prisms(state)
+    block = prism_router(state)
+    if block.get("routes") and not force:
+        return list(block.get("routes") or [])
     rows = [
-        add_route(
-            state,
-            {"modality": "schema"},
-            "prism_memory",
-            lattice_hint="schema-math",
-            priority=100,
-        ),
-        add_route(
-            state,
-            {"modality": "t9", "locale": locale},
-            "prism_memory",
-            lattice_hint="L2_word",
-            priority=50,
-        ),
+        {
+            "match": {"modality": "schema"},
+            "target_prism": PRISM_MEMORY,
+            "lattice_hint": "schema-math",
+            "priority": 100,
+        },
+        {
+            "match": {"modality": "t9", "locale": _norm(locale)},
+            "target_prism": PRISM_MEMORY,
+            "lattice_hint": "L2_word",
+            "priority": 50,
+        },
     ]
+    block["routes"] = rows
     return rows

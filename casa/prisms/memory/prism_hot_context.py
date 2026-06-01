@@ -123,6 +123,56 @@ def hot_neighbors(
     return out
 
 
+def _headword_from_hot_token(tok: str) -> str | None:
+    """Map hot edge endpoint to normalized headword when possible."""
+    t = (tok or "").strip()
+    if not t or t.startswith("cue:"):
+        return None
+    if t.startswith("C:"):
+        t = t[2:]
+    if t.startswith("lang.word."):
+        return t[len("lang.word.") :].strip().lower()
+    return None
+
+
+def hot_word_salience_for_cue(state: dict, cue: str) -> dict[str, float]:
+    """Headword → max salience from hot edges touching cue (for T9 re-rank)."""
+    cue_l = cue.strip().lower()[:48]
+    if not cue_l:
+        return {}
+    boosts: dict[str, float] = {}
+    for row in hot_edges(state):
+        src = str(row.get("src") or "").lower()
+        dst = str(row.get("dst") or "")
+        if cue_l not in src and cue_l not in dst.lower():
+            continue
+        sal = float(row.get("salience") or 0)
+        for tok in (dst, str(row.get("src") or "")):
+            word = _headword_from_hot_token(tok)
+            if word:
+                boosts[word] = max(boosts.get(word, 0.0), sal)
+    return boosts
+
+
+def apply_hot_boost_to_ranked(
+    ranked: list[tuple[str, int]],
+    boosts: dict[str, float],
+    *,
+    vote_scale: int = 40,
+) -> list[tuple[str, int]]:
+    """Re-order L2 prefix candidates using P0 hot salience (ADR-0016 / P3 order)."""
+    if not boosts:
+        return ranked
+
+    def sort_key(item: tuple[str, int]) -> tuple[float, int, str]:
+        word, votes = item
+        w = word.strip().lower()
+        bonus = int(boosts.get(w, 0.0) * vote_scale)
+        return (-(votes + bonus), len(word), word)
+
+    return sorted(ranked, key=sort_key)
+
+
 def hot_digest_for_cue(state: dict, cue: str, *, limit: int = 16) -> list[str]:
     """Concept/token ids linked to cue prefix for predict bias."""
     cue = cue.strip().lower()[:48]

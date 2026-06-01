@@ -191,6 +191,11 @@ def ensure_default_router_and_hot(state: dict) -> dict[str, Any]:
     normalize_prisms(state)
     prism_hot_context(state)
     prism_router(state)
+    from casa.prisms.memory.prism_router import bootstrap_default_routes
+
+    store = state.get("store") if isinstance(state.get("store"), dict) else {}
+    locale = str(store.get("locale") or "ru")
+    bootstrap_default_routes(state, locale=locale)
     return {"hot_context": PRISM_HOT_CONTEXT, "router": PRISM_ROUTER}
 
 
