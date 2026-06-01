@@ -7,7 +7,9 @@ from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
-from typing import Any
+from typing import Any, Callable
+
+LexProgressFn = Callable[[int, int, str], None] | None
 
 from casa.prisms.memory.lexicon_shard import (
     DEFAULT_NUM_SHARDS,
@@ -117,6 +119,8 @@ def remigrate_l2_from_monolith(
     num_shards: int = DEFAULT_NUM_SHARDS,
     clear_monolith: bool = True,
     lex_plan: str = "corpus_quantile",
+    on_word_progress: LexProgressFn = None,
+    progress_every: int = 5000,
 ) -> dict[str, Any]:
     """Move lang.word.* off L2_word monolith onto L2_word_XX shards (canon before compact ltm)."""
     state = ensure_prisms(state)
@@ -143,7 +147,14 @@ def remigrate_l2_from_monolith(
     else:
         from casa.prisms.memory.ru_lexicon import ingest_ru_lex_batch
 
-        ingest_rep = ingest_ru_lex_batch(state, extracted, copies=copies, configure=False)
+        ingest_rep = ingest_ru_lex_batch(
+            state,
+            extracted,
+            copies=copies,
+            configure=False,
+            on_word_progress=on_word_progress,
+            progress_every=progress_every,
+        )
         on_field_key = "ru_concepts_on_field"
 
     if clear_monolith:
@@ -174,8 +185,18 @@ def remigrate_l2_from_monolith(
     }
 
 
-def ensure_l2_sharded_for_export(state: dict, *, force: bool = False) -> dict[str, Any] | None:
+def ensure_l2_sharded_for_export(
+    state: dict,
+    *,
+    force: bool = False,
+    on_word_progress: LexProgressFn = None,
+    progress_every: int = 5000,
+) -> dict[str, Any] | None:
     """Run remigrate when monolith blocks ltm v0 (u16 vocab) or shards are empty."""
     if not force and not needs_l2_remigrate(state):
         return None
-    return remigrate_l2_from_monolith(state)
+    return remigrate_l2_from_monolith(
+        state,
+        on_word_progress=on_word_progress,
+        progress_every=progress_every,
+    )

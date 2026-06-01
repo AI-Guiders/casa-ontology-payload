@@ -63,4 +63,5 @@ Train: `train_memory_nca_shards.py --store-dir … --layer L2_word`
 
 - Auto-split shard when token count > cap (manual num_shards bump).
 - z_bridge per shard (compose still via bukvar on legacy or L2_word_00).
-- Re-migrate Afan monolith → shards (separate ingest pass).
+
+**L3 phrase sharding:** [`l3-lattice-sharding.md`](l3-lattice-sharding.md).
