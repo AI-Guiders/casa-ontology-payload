@@ -243,6 +243,19 @@ def run_learning_tick(
 
     load_agent_prism(store_dir, state)
     load_agent_bridges(store_dir, state)
+
+    from casa.prisms.memory.prism_router import RouteContext, apply_route_to_sn, resolve_route
+
+    store_meta = state.get("store") if isinstance(state.get("store"), dict) else {}
+    route_ctx = RouteContext(
+        modality="segment",
+        locale=str(store_meta.get("locale") or ""),
+        tier=str(store_meta.get("tier") or ""),
+        store_id=store_dir.name,
+    )
+    route_target = resolve_route(state, route_ctx)
+    apply_route_to_sn(state, route_target)
+
     digest = merge_digest_with_agent_bridges(digest_from_decoded(decoded), state)
     bias = salience_mode_bias(wm, digest.concept_ids)
     gated = sn_route(digest, bundle=routing_bundle, wm_mode=wm.mode, wm_salience_bias=bias)
@@ -330,6 +343,11 @@ def run_learning_tick(
         "wall_ms": wall_ms,
         "decode_ms": round(decode_ms, 2),
         "decode_source": bundle_name,
+        "route": {
+            "content_prism": route_target.prism_id,
+            "lattice_hint": route_target.lattice_hint,
+            "matched": route_target.matched,
+        },
         "field_version": state.get("field_version"),
         "recovery_concepts_f1": (recovery or {}).get("concepts", {}).get("f1"),
         "sn_mode": gated.gate.mode,

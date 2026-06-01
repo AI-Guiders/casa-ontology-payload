@@ -21,6 +21,12 @@ PRISM_MEMORY = "prism_memory"
 PRISM_HIPPO = "prism_hippo"
 PRISM_CONTROL = "prism_control"
 PRISM_AGENT = "prism_agent"
+PRISM_HOT_CONTEXT = "prism_hot_context"
+PRISM_ROUTER = "prism_router"
+
+PRISM_KIND_CONTENT = "content"
+PRISM_KIND_HOT_CONTEXT = "hot_context"
+PRISM_KIND_ROUTER = "router"
 
 _LEGACY_BLOCK = {
     "cyl_memory": PRISM_MEMORY,
@@ -98,11 +104,59 @@ def prism_agent(state: dict) -> dict[str, Any]:
         PRISM_AGENT,
         {
             "subsystem": "agent_owned",
+            "kind": PRISM_KIND_CONTENT,
             "lattices": {},
             "active_lattice": None,
             "nca": {"models": {}},
         },
     )
+
+
+def prism_hot_context(state: dict) -> dict[str, Any]:
+    p = prisms(state)
+    return p.setdefault(
+        PRISM_HOT_CONTEXT,
+        {
+            "kind": PRISM_KIND_HOT_CONTEXT,
+            "schema_version": 1,
+            "stack": "design/prisms/hot_context/stack.json",
+            "edges": [],
+            "max_edges": 4096,
+        },
+    )
+
+
+def prism_router(state: dict) -> dict[str, Any]:
+    p = prisms(state)
+    return p.setdefault(
+        PRISM_ROUTER,
+        {
+            "kind": PRISM_KIND_ROUTER,
+            "schema_version": 1,
+            "stack": "design/prisms/router/stack.json",
+            "default_content_prism": PRISM_MEMORY,
+            "routes": [],
+        },
+    )
+
+
+def prism_block(state: dict, prism_id: str) -> dict[str, Any]:
+    """Any prism block by id (content or extension)."""
+    normalize_prisms(state)
+    return prisms(state).setdefault(prism_id, {})
+
+
+def prism_kind(state: dict, prism_id: str) -> str:
+    block = prism_block(state, prism_id)
+    if block.get("kind"):
+        return str(block["kind"])
+    if prism_id == PRISM_HOT_CONTEXT:
+        return PRISM_KIND_HOT_CONTEXT
+    if prism_id == PRISM_ROUTER:
+        return PRISM_KIND_ROUTER
+    if prism_id in (PRISM_HIPPO, PRISM_CONTROL):
+        return prism_id.replace("prism_", "")
+    return PRISM_KIND_CONTENT
 
 
 def active_prism_id(state: dict, *, default: str = PRISM_MEMORY) -> str:

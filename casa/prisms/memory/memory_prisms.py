@@ -72,24 +72,50 @@ def ensure_cylinders(state: dict) -> dict:
         "active_lattice": mem["active_lattice"],
         "mode": (state.get("sn") or {}).get("mode") or "wake",
     }
-    set_active_prism(state, PRISM_MEMORY)
+    if not (state.get("sn") or {}).get("active_prism"):
+        set_active_prism(state, PRISM_MEMORY)
     state["consolidation"] = state.get("consolidation") or {
         "last_sleep_tick": 0,
         "episodes_merged_total": 0,
     }
     state.setdefault("sss", {})["lattices"] = lattices
+    from casa.prisms.memory.prism_spawn import ensure_default_router_and_hot
+
+    ensure_default_router_and_hot(state)
     return state
 
 
 ensure_prisms = ensure_cylinders
 
 
-def memory_lattices(state: dict) -> dict[str, dict]:
+def content_prism_lattices(state: dict, prism_id: str | None = None) -> dict[str, dict]:
+    """Lattices for a content prism (default active or prism_memory)."""
     state = ensure_cylinders(state)
-    mem = prism_memory(state)
-    if mem.get("lattices"):
-        return mem["lattices"]
+    from casa.prisms.shared.prism_state import (
+        PRISM_KIND_CONTENT,
+        PRISM_MEMORY,
+        active_prism_id,
+        prism_kind,
+        prism_memory,
+        prisms,
+    )
+
+    pid = prism_id or active_prism_id(state)
+    if prism_kind(state, pid) != PRISM_KIND_CONTENT:
+        pid = PRISM_MEMORY
+    if pid == PRISM_MEMORY:
+        mem = prism_memory(state)
+        lats = mem.get("lattices") or {}
+    else:
+        block = prisms(state).get(pid) or {}
+        lats = block.get("lattices") or {}
+    if lats:
+        return lats
     return (state.get("sss") or {}).get("lattices") or {}
+
+
+def memory_lattices(state: dict, prism_id: str | None = None) -> dict[str, dict]:
+    return content_prism_lattices(state, prism_id)
 
 
 def hippo_episodes(state: dict) -> list[dict]:

@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+"""Router prism — modality/locale → content prism (ADR-0016)."""
+
+from __future__ import annotations
+
+from casa._paths import ensure_import_paths
+
+ensure_import_paths()
+
+from dataclasses import dataclass
+from typing import Any
+
+from casa.prisms.shared.prism_state import PRISM_MEMORY, PRISM_ROUTER, normalize_prisms, prism_router
+from casa.prisms.memory.memory_prisms import ensure_prisms
+from casa.prisms.memory.prism_spawn import validate_content_prism_id
+
+
+@dataclass(frozen=True, slots=True)
+class RouteContext:
+    modality: str = ""
+    locale: str = ""
+    segment: str = ""
+    tier: str = ""
+    store_id: str = ""
+
+
+@dataclass(frozen=True, slots=True)
+class RouteTarget:
+    prism_id: str
+    lattice_hint: str | None = None
+    route_index: int | None = None
+    matched: dict[str, str] | None = None
+
+
+def _norm(s: str) -> str:
+    return (s or "").strip().lower()
+
+
+def router_routes(state: dict) -> list[dict[str, Any]]:
+    normalize_prisms(state)
+    return list(prism_router(state).get("routes") or [])
+
+
+def add_route(
+    state: dict,
+    match: dict[str, str],
+    target_prism: str,
+    *,
+    lattice_hint: str | None = None,
+    priority: int = 0,
+) -> dict[str, Any]:
+    ensure_prisms(state)
+    block = prism_router(state)
+    pid = validate_content_prism_id(target_prism)
+    row = {
+        "match": {k: _norm(v) for k, v in match.items() if v},
+        "target_prism": pid,
+        "lattice_hint": lattice_hint,
+        "priority": int(priority),
+    }
+    routes = block.setdefault("routes", [])
+    routes.append(row)
+    routes.sort(key=lambda r: int(r.get("priority") or 0), reverse=True)
+    state["field_version"] = int(state.get("field_version") or 0) + 1
+    return row
+
+
+def _match_score(route_match: dict[str, str], ctx: RouteContext) -> int:
+    ctx_map = {
+        "modality": _norm(ctx.modality),
+        "locale": _norm(ctx.locale),
+        "segment": _norm(ctx.segment),
+        "tier": _norm(ctx.tier),
+        "store_id": _norm(ctx.store_id),
+    }
+    if not route_match:
+        return 0
+    score = 0
+    for key, want in route_match.items():
+        got = ctx_map.get(key, "")
+        if not want:
+            continue
+        if got != want:
+            return -1
+        score += 10
+    return score
+
+
+def resolve_route(state: dict, ctx: RouteContext) -> RouteTarget:
+    """Pick content prism for this tick; falls back to router default or prism_memory."""
+    ensure_prisms(state)
+    block = prism_router(state)
+    best: RouteTarget | None = None
+    best_score = -1
+    for i, row in enumerate(block.get("routes") or []):
+        m = row.get("match") or {}
+        sc = _match_score(m, ctx)
+        if sc > best_score:
+            best_score = sc
+            best = RouteTarget(
+                prism_id=str(row.get("target_prism") or PRISM_MEMORY),
+                lattice_hint=row.get("lattice_hint"),
+                route_index=i,
+                matched=dict(m),
+            )
+    if best is not None and best_score >= 0:
+        return best
+    default = str(block.get("default_content_prism") or PRISM_MEMORY)
+    return RouteTarget(prism_id=default, lattice_hint=None, route_index=None, matched=None)
+
+
+def apply_route_to_sn(state: dict, target: RouteTarget) -> None:
+    from casa.prisms.shared.prism_state import set_active_prism
+
+    set_active_prism(state, target.prism_id)
+    sn = state.setdefault("sn", {})
+    sn["route_lattice_hint"] = target.lattice_hint
+    sn["route_matched"] = target.matched
+
+
+def bootstrap_default_routes(state: dict, *, locale: str = "ru") -> list[dict[str, Any]]:
+    """Idempotent lab defaults for bilingual / math."""
+    rows = [
+        add_route(
+            state,
+            {"modality": "schema"},
+            "prism_memory",
+            lattice_hint="schema-math",
+            priority=100,
+        ),
+        add_route(
+            state,
+            {"modality": "t9", "locale": locale},
+            "prism_memory",
+            lattice_hint="L2_word",
+            priority=50,
+        ),
+    ]
+    return rows

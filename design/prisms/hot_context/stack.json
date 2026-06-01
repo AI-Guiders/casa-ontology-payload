@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "prism_id": "prism_hot_context",
+  "kind": "hot_context",
+  "doc": "design/CASA-ADR-0016-prism-domains-hot-router.md",
+  "lattices": [],
+  "bridges": []
+}

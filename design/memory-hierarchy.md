@@ -2,7 +2,7 @@
 
 **Status:** v0 (`memory_manifest.py`)  
 **Date:** 2026-05-30  
-**See:** [`l2-lattice-sharding.md`](l2-lattice-sharding.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md)
+**See:** [`l2-lattice-sharding.md`](l2-lattice-sharding.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0016-prism-domains-hot-router.md`](CASA-ADR-0016-prism-domains-hot-router.md)
 
 ## Tree (analog of KB folders)
 
