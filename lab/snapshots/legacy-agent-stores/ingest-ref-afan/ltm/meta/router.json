@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "default_content_prism": "prism_memory",
+  "routes": [
+    {
+      "match": {
+        "modality": "schema"
+      },
+      "target_prism": "prism_memory",
+      "lattice_hint": "schema-math",
+      "priority": 100
+    },
+    {
+      "match": {
+        "modality": "vis"
+      },
+      "target_prism": "prism_visual",
+      "lattice_hint": "V1_object",
+      "priority": 95
+    },
+    {
+      "match": {
+        "modality": "image"
+      },
+      "target_prism": "prism_visual",
+      "lattice_hint": "V1_object",
+      "priority": 95
+    },
+    {
+      "match": {
+        "modality": "t9",
+        "locale": "ru"
+      },
+      "target_prism": "prism_memory",
+      "lattice_hint": "L2_word",
+      "priority": 50
+    }
+  ]
+}

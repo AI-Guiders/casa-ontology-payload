@@ -1,0 +1,350 @@
+{
+  "moved": {
+    "prism_lang_ru": [
+      "L0_grapheme_cyrl",
+      "L2_word_00",
+      "L2_word_01",
+      "L2_word_02",
+      "L2_word_03",
+      "L2_word_04",
+      "L2_word_05",
+      "L2_word_06",
+      "L2_word_07",
+      "L2_word_08",
+      "L2_word_09",
+      "L2_word_10",
+      "L2_word_11",
+      "L2_word_12",
+      "L2_word_13",
+      "L2_word_14",
+      "L2_word_15",
+      "L2_word_16",
+      "L2_word_17",
+      "L2_word_18",
+      "L2_word_19",
+      "L2_word_20",
+      "L2_word_21",
+      "L2_word_22",
+      "L2_word_23",
+      "L2_word_24",
+      "L2_word_25",
+      "L2_word_26",
+      "L2_word_27",
+      "L2_word_28",
+      "L2_word_29",
+      "L2_word_30",
+      "L2_word_31",
+      "L2_word_32",
+      "L2_word_33",
+      "L2_word_34",
+      "L2_word_35",
+      "L2_word_36",
+      "L2_word_37",
+      "L2_word_38",
+      "L2_word_39",
+      "L2_word_40",
+      "L2_word_41",
+      "L2_word_42",
+      "L2_word_43",
+      "L2_word_44",
+      "L2_word_45",
+      "L2_word_46",
+      "L2_word_47",
+      "L2_word_48",
+      "L2_word_49",
+      "L2_word_50",
+      "L2_word_51",
+      "L2_word_52",
+      "L2_word_53",
+      "L2_word_54",
+      "L2_word_55",
+      "L2_word_56",
+      "L2_word_57",
+      "L2_word_58",
+      "L2_word_59",
+      "L2_word_60",
+      "L2_word_61",
+      "L2_word_62",
+      "L2_word_63",
+      "L3_phrase",
+      "phrases"
+    ],
+    "prism_math": [],
+    "prism_memory": [
+      "L0_grapheme_latn"
+    ]
+  },
+  "remaining_in_memory": [
+    "L0_grapheme_latn"
+  ],
+  "counts": {
+    "prism_lang_ru": 67,
+    "prism_math": 0,
+    "prism_memory": 1
+  },
+  "written": "lab\\agent-stores\\lexicon-ru-general\\field_state.json"
+}
+migrate lexicon-ru-general
+  load field_stateтАж тАФ 73.8 MiB
+  [1.0s] load field_state тАФ 73.8 MiB
+  L2 remigrate skipped (already sharded)
+  L3 remigrateтАж тАФ monolith тЖТ phrase shards
+  remigrate L3 tokens 1/49981 (shard L3_phrase_00)
+  remigrate L3 tokens 5000/49981 (shard L3_phrase_06)
+  remigrate L3 tokens 10000/49981 (shard L3_phrase_12)
+  remigrate L3 tokens 15000/49981 (shard L3_phrase_19)
+  remigrate L3 tokens 20000/49981 (shard L3_phrase_25)
+  remigrate L3 tokens 25000/49981 (shard L3_phrase_32)
+  remigrate L3 tokens 30000/49981 (shard L3_phrase_38)
+  remigrate L3 tokens 35000/49981 (shard L3_phrase_44)
+  remigrate L3 tokens 40000/49981 (shard L3_phrase_51)
+  remigrate L3 tokens 45000/49981 (shard L3_phrase_57)
+  remigrate L3 tokens 49981/49981 (shard L3_phrase_63)
+  [132.8s] L3 remigrate тАФ monolith тЖТ phrase shards
+  L3 remigrate done: 49981 tokens, max_shard_vocab=781
+  compact_persistтАж тАФ ltm/*.ltm
+  export ltm: 204 lattices
+  write 1/204 prism_lang_ru/L0_grapheme_cyrl
+  write 2/204 prism_lang_ru/L2_word_00
+  write 3/204 prism_lang_ru/L2_word_01
+  write 4/204 prism_lang_ru/L2_word_02
+  write 5/204 prism_lang_ru/L2_word_03
+  write 6/204 prism_lang_ru/L2_word_04
+  write 7/204 prism_lang_ru/L2_word_05
+  write 8/204 prism_lang_ru/L2_word_06
+  write 9/204 prism_lang_ru/L2_word_07
+  write 10/204 prism_lang_ru/L2_word_08
+  write 11/204 prism_lang_ru/L2_word_09
+  write 12/204 prism_lang_ru/L2_word_10
+  write 13/204 prism_lang_ru/L2_word_11
+  write 14/204 prism_lang_ru/L2_word_12
+  write 15/204 prism_lang_ru/L2_word_13
+  write 16/204 prism_lang_ru/L2_word_14
+  write 17/204 prism_lang_ru/L2_word_15
+  write 18/204 prism_lang_ru/L2_word_16
+  write 19/204 prism_lang_ru/L2_word_17
+  write 20/204 prism_lang_ru/L2_word_18
+  write 21/204 prism_lang_ru/L2_word_19
+  write 22/204 prism_lang_ru/L2_word_20
+  write 23/204 prism_lang_ru/L2_word_21
+  write 24/204 prism_lang_ru/L2_word_22
+  write 25/204 prism_lang_ru/L2_word_23
+  write 26/204 prism_lang_ru/L2_word_24
+  write 27/204 prism_lang_ru/L2_word_25
+  write 28/204 prism_lang_ru/L2_word_26
+  write 29/204 prism_lang_ru/L2_word_27
+  write 30/204 prism_lang_ru/L2_word_28
+  write 31/204 prism_lang_ru/L2_word_29
+  write 32/204 prism_lang_ru/L2_word_30
+  write 33/204 prism_lang_ru/L2_word_31
+  write 34/204 prism_lang_ru/L2_word_32
+  write 35/204 prism_lang_ru/L2_word_33
+  write 36/204 prism_lang_ru/L2_word_34
+  write 37/204 prism_lang_ru/L2_word_35
+  write 38/204 prism_lang_ru/L2_word_36
+  write 39/204 prism_lang_ru/L2_word_37
+  write 40/204 prism_lang_ru/L2_word_38
+  write 41/204 prism_lang_ru/L2_word_39
+  write 42/204 prism_lang_ru/L2_word_40
+  write 43/204 prism_lang_ru/L2_word_41
+  write 44/204 prism_lang_ru/L2_word_42
+  write 45/204 prism_lang_ru/L2_word_43
+  write 46/204 prism_lang_ru/L2_word_44
+  write 47/204 prism_lang_ru/L2_word_45
+  write 48/204 prism_lang_ru/L2_word_46
+  write 49/204 prism_lang_ru/L2_word_47
+  write 50/204 prism_lang_ru/L2_word_48
+  write 51/204 prism_lang_ru/L2_word_49
+  write 52/204 prism_lang_ru/L2_word_50
+  write 53/204 prism_lang_ru/L2_word_51
+  write 54/204 prism_lang_ru/L2_word_52
+  write 55/204 prism_lang_ru/L2_word_53
+  write 56/204 prism_lang_ru/L2_word_54
+  write 57/204 prism_lang_ru/L2_word_55
+  write 58/204 prism_lang_ru/L2_word_56
+  write 59/204 prism_lang_ru/L2_word_57
+  write 60/204 prism_lang_ru/L2_word_58
+  write 61/204 prism_lang_ru/L2_word_59
+  write 62/204 prism_lang_ru/L2_word_60
+  write 63/204 prism_lang_ru/L2_word_61
+  write 64/204 prism_lang_ru/L2_word_62
+  write 65/204 prism_lang_ru/L2_word_63
+  write 66/204 prism_lang_ru/L3_phrase
+  write 67/204 prism_lang_ru/phrases
+  write 68/204 prism_memory/L0_grapheme_cyrl
+  write 69/204 prism_memory/L0_grapheme_latn
+  write 70/204 prism_memory/L2_word_00
+  write 71/204 prism_memory/L2_word_01
+  write 72/204 prism_memory/L2_word_02
+  write 73/204 prism_memory/L2_word_03
+  write 74/204 prism_memory/L2_word_04
+  write 75/204 prism_memory/L2_word_05
+  write 76/204 prism_memory/L2_word_06
+  write 77/204 prism_memory/L2_word_07
+  write 78/204 prism_memory/L2_word_08
+  write 79/204 prism_memory/L2_word_09
+  write 80/204 prism_memory/L2_word_10
+  write 81/204 prism_memory/L2_word_11
+  write 82/204 prism_memory/L2_word_12
+  write 83/204 prism_memory/L2_word_13
+  write 84/204 prism_memory/L2_word_14
+  write 85/204 prism_memory/L2_word_15
+  write 86/204 prism_memory/L2_word_16
+  write 87/204 prism_memory/L2_word_17
+  write 88/204 prism_memory/L2_word_18
+  write 89/204 prism_memory/L2_word_19
+  write 90/204 prism_memory/L2_word_20
+  write 91/204 prism_memory/L2_word_21
+  write 92/204 prism_memory/L2_word_22
+  write 93/204 prism_memory/L2_word_23
+  write 94/204 prism_memory/L2_word_24
+  write 95/204 prism_memory/L2_word_25
+  write 96/204 prism_memory/L2_word_26
+  write 97/204 prism_memory/L2_word_27
+  write 98/204 prism_memory/L2_word_28
+  write 99/204 prism_memory/L2_word_29
+  write 100/204 prism_memory/L2_word_30
+  write 101/204 prism_memory/L2_word_31
+  write 102/204 prism_memory/L2_word_32
+  write 103/204 prism_memory/L2_word_33
+  write 104/204 prism_memory/L2_word_34
+  write 105/204 prism_memory/L2_word_35
+  write 106/204 prism_memory/L2_word_36
+  write 107/204 prism_memory/L2_word_37
+  write 108/204 prism_memory/L2_word_38
+  write 109/204 prism_memory/L2_word_39
+  write 110/204 prism_memory/L2_word_40
+  write 111/204 prism_memory/L2_word_41
+  write 112/204 prism_memory/L2_word_42
+  write 113/204 prism_memory/L2_word_43
+  write 114/204 prism_memory/L2_word_44
+  write 115/204 prism_memory/L2_word_45
+  write 116/204 prism_memory/L2_word_46
+  write 117/204 prism_memory/L2_word_47
+  write 118/204 prism_memory/L2_word_48
+  write 119/204 prism_memory/L2_word_49
+  write 120/204 prism_memory/L2_word_50
+  write 121/204 prism_memory/L2_word_51
+  write 122/204 prism_memory/L2_word_52
+  write 123/204 prism_memory/L2_word_53
+  write 124/204 prism_memory/L2_word_54
+  write 125/204 prism_memory/L2_word_55
+  write 126/204 prism_memory/L2_word_56
+  write 127/204 prism_memory/L2_word_57
+  write 128/204 prism_memory/L2_word_58
+  write 129/204 prism_memory/L2_word_59
+  write 130/204 prism_memory/L2_word_60
+  write 131/204 prism_memory/L2_word_61
+  write 132/204 prism_memory/L2_word_62
+  write 133/204 prism_memory/L2_word_63
+  write 134/204 prism_memory/L3_phrase
+  write 135/204 prism_memory/L3_phrase_00
+  write 136/204 prism_memory/L3_phrase_01
+  write 137/204 prism_memory/L3_phrase_02
+  write 138/204 prism_memory/L3_phrase_03
+  write 139/204 prism_memory/L3_phrase_04
+  write 140/204 prism_memory/L3_phrase_05
+  write 141/204 prism_memory/L3_phrase_06
+  write 142/204 prism_memory/L3_phrase_07
+  write 143/204 prism_memory/L3_phrase_08
+  write 144/204 prism_memory/L3_phrase_09
+  write 145/204 prism_memory/L3_phrase_10
+  write 146/204 prism_memory/L3_phrase_11
+  write 147/204 prism_memory/L3_phrase_12
+  write 148/204 prism_memory/L3_phrase_13
+  write 149/204 prism_memory/L3_phrase_14
+  write 150/204 prism_memory/L3_phrase_15
+  write 151/204 prism_memory/L3_phrase_16
+  write 152/204 prism_memory/L3_phrase_17
+  write 153/204 prism_memory/L3_phrase_18
+  write 154/204 prism_memory/L3_phrase_19
+  write 155/204 prism_memory/L3_phrase_20
+  write 156/204 prism_memory/L3_phrase_21
+  write 157/204 prism_memory/L3_phrase_22
+  write 158/204 prism_memory/L3_phrase_23
+  write 159/204 prism_memory/L3_phrase_24
+  write 160/204 prism_memory/L3_phrase_25
+  write 161/204 prism_memory/L3_phrase_26
+  write 162/204 prism_memory/L3_phrase_27
+  write 163/204 prism_memory/L3_phrase_28
+  write 164/204 prism_memory/L3_phrase_29
+  write 165/204 prism_memory/L3_phrase_30
+  write 166/204 prism_memory/L3_phrase_31
+  write 167/204 prism_memory/L3_phrase_32
+  write 168/204 prism_memory/L3_phrase_33
+  write 169/204 prism_memory/L3_phrase_34
+  write 170/204 prism_memory/L3_phrase_35
+  write 171/204 prism_memory/L3_phrase_36
+  write 172/204 prism_memory/L3_phrase_37
+  write 173/204 prism_memory/L3_phrase_38
+  write 174/204 prism_memory/L3_phrase_39
+  write 175/204 prism_memory/L3_phrase_40
+  write 176/204 prism_memory/L3_phrase_41
+  write 177/204 prism_memory/L3_phrase_42
+  write 178/204 prism_memory/L3_phrase_43
+  write 179/204 prism_memory/L3_phrase_44
+  write 180/204 prism_memory/L3_phrase_45
+  write 181/204 prism_memory/L3_phrase_46
+  write 182/204 prism_memory/L3_phrase_47
+  write 183/204 prism_memory/L3_phrase_48
+  write 184/204 prism_memory/L3_phrase_49
+  write 185/204 prism_memory/L3_phrase_50
+  write 186/204 prism_memory/L3_phrase_51
+  write 187/204 prism_memory/L3_phrase_52
+  write 188/204 prism_memory/L3_phrase_53
+  write 189/204 prism_memory/L3_phrase_54
+  write 190/204 prism_memory/L3_phrase_55
+  write 191/204 prism_memory/L3_phrase_56
+  write 192/204 prism_memory/L3_phrase_57
+  write 193/204 prism_memory/L3_phrase_58
+  write 194/204 prism_memory/L3_phrase_59
+  write 195/204 prism_memory/L3_phrase_60
+  write 196/204 prism_memory/L3_phrase_61
+  write 197/204 prism_memory/L3_phrase_62
+  write 198/204 prism_memory/L3_phrase_63
+  write 199/204 prism_memory/V1_object
+  write 200/204 prism_memory/phrases
+  write 201/204 prism_visual/V1_object
+  write 202/204 prism_control_thalamus/lattice_thal_arousal
+  write 203/204 prism_control_thalamus/lattice_thal_band
+  write 204/204 prism_control_thalamus/lattice_thal_relay
+  [3.0s] compact_persist тАФ ltm/*.ltm
+  backupтАж тАФ field_state.legacy.json
+  [0.1s] backup тАФ field_state.legacy.json
+  thin checkpointтАж тАФ field_state.json
+  [1.4s] thin checkpoint тАФ field_state.json
+  done: field_state 73.8 тЖТ 19.6 MiB, ltm 47.0 MiB
+[
+  {
+    "store": "lexicon-ru-general",
+    "status": "ok",
+    "field_state_mb_before": 73.81,
+    "l3_remigrate": {
+      "status": "ok",
+      "legacy_lattice": "L3_phrase",
+      "tokens_remigrated": 49981,
+      "placements_copied": 149943,
+      "num_shards": 64,
+      "monolith_cleared": true,
+      "max_shard_vocab": 781,
+      "field_version": 9
+    },
+    "compact_persist": {
+      "lattice_count": 136,
+      "content_prisms": [
+        "prism_lang_ru",
+        "prism_math",
+        "prism_memory",
+        "prism_visual"
+      ]
+    },
+    "backup": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\lexicon-ru-general\\field_state.legacy.json",
+    "save_runtime": {
+      "thin": true,
+      "format": "thin_v1"
+    },
+    "field_state_mb_after": 19.62,
+    "ltm_total_mb": 47.0,
+    "elapsed_s": 138.5
+  }
+]

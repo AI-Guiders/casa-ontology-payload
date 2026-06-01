@@ -1,0 +1,105 @@
+{
+  "moved": {
+    "prism_lang_ru": [
+      "L0_grapheme_cyrl",
+      "L1_syllable",
+      "L2_word",
+      "L2_word_00",
+      "L2_word_01",
+      "L2_word_02",
+      "L2_word_03",
+      "L2_word_04",
+      "L2_word_05",
+      "L2_word_06",
+      "L2_word_07",
+      "L2_word_08",
+      "L2_word_09",
+      "L2_word_10",
+      "L2_word_11",
+      "L2_word_12",
+      "L2_word_13",
+      "L2_word_14",
+      "L2_word_15",
+      "L2_word_16",
+      "L2_word_17",
+      "L2_word_18",
+      "L2_word_19",
+      "L2_word_20",
+      "L2_word_21",
+      "L2_word_22",
+      "L2_word_23",
+      "L2_word_24",
+      "L2_word_25",
+      "L2_word_26",
+      "L2_word_27",
+      "L2_word_28",
+      "L2_word_29",
+      "L2_word_30",
+      "L2_word_31",
+      "L2_word_32",
+      "L2_word_33",
+      "L2_word_34",
+      "L2_word_35",
+      "L2_word_36",
+      "L2_word_37",
+      "L2_word_38",
+      "L2_word_39",
+      "L2_word_40",
+      "L2_word_41",
+      "L2_word_42",
+      "L2_word_43",
+      "L2_word_44",
+      "L2_word_45",
+      "L2_word_46",
+      "L2_word_47",
+      "L2_word_48",
+      "L2_word_49",
+      "L2_word_50",
+      "L2_word_51",
+      "L2_word_52",
+      "L2_word_53",
+      "L2_word_54",
+      "L2_word_55",
+      "L2_word_56",
+      "L2_word_57",
+      "L2_word_58",
+      "L2_word_59",
+      "L2_word_60",
+      "L2_word_61",
+      "L2_word_62",
+      "L2_word_63",
+      "L3_phrase"
+    ],
+    "prism_math": [],
+    "prism_memory": [
+      "L0_grapheme_latn"
+    ]
+  },
+  "remaining_in_memory": [
+    "L0_grapheme_latn"
+  ],
+  "counts": {
+    "prism_lang_ru": 68,
+    "prism_math": 0,
+    "prism_memory": 1
+  },
+  "written": "lab\\agent-stores\\lexicon-ru-archaic\\field_state.json"
+}
+migrate lexicon-ru-archaic
+  load field_stateтАж тАФ 298.7 MiB
+  [4.0s] load field_state тАФ 298.7 MiB
+  L2 remigrate skipped (already sharded)
+  L3 remigrateтАж тАФ monolith тЖТ phrase shards
+  remigrate L3 tokens 1/263529 (shard L3_phrase_00)
+  remigrate L3 tokens 5000/263529 (shard L3_phrase_01)
+  remigrate L3 tokens 10000/263529 (shard L3_phrase_02)
+  remigrate L3 tokens 15000/263529 (shard L3_phrase_03)
+  remigrate L3 tokens 20000/263529 (shard L3_phrase_04)
+  remigrate L3 tokens 25000/263529 (shard L3_phrase_06)
+  remigrate L3 tokens 30000/263529 (shard L3_phrase_07)
+migrate lexicon-ru-archaic
+  load field_stateтАж тАФ 298.7 MiB
+  [5.8s] load field_state тАФ 298.7 MiB
+  L2 remigrate skipped (already sharded)
+  parallel workers: 8 (L3 remigrate + ltm writes)
+  L3 remigrateтАж тАФ monolith тЖТ phrase shards

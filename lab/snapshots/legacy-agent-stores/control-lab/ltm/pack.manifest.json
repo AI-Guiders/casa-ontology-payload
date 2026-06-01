@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "format": "ltm-pack",
+  "prism_layout_version": 1,
+  "field_version": 1,
+  "updated_at": "2026-05-31T17:39:54.051970+00:00",
+  "default_content_prism": "prism_memory",
+  "prisms": {
+    "prism_memory": {
+      "kind": "content",
+      "lattice_ids": [
+        "alphabet-en",
+        "alphabet-ru"
+      ]
+    },
+    "prism_control": {
+      "kind": "control",
+      "lattice_ids": [
+        "control-dmn",
+        "control-executive",
+        "control-salience",
+        "control-working-memory"
+      ]
+    }
+  },
+  "lattices": {
+    "alphabet-en": {
+      "path": "ltm/memory/grapheme/alphabet-en.ltm",
+      "compress": null,
+      "raw_bytes": 1580,
+      "file_bytes": 1580,
+      "vocab": 52,
+      "placements": 234,
+      "width": 32,
+      "height": 32,
+      "prism_id": "prism_memory",
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "grapheme.latn.",
+        "script": "latn",
+        "immutable": true,
+        "kind": "core_ltm_alphabet",
+        "alphabet_en_n": 26,
+        "prism_id": "prism_memory"
+      }
+    },
+    "alphabet-ru": {
+      "path": "ltm/memory/grapheme/alphabet-ru.ltm",
+      "compress": null,
+      "raw_bytes": 2330,
+      "file_bytes": 2330,
+      "vocab": 66,
+      "placements": 363,
+      "width": 32,
+      "height": 32,
+      "prism_id": "prism_memory",
+      "meta": {
+        "z_level": 0,
+        "concept_prefix": "grapheme.cyrl.",
+        "script": "cyrl",
+        "immutable": true,
+        "kind": "core_ltm_alphabet",
+        "alphabet_ru_n": 33,
+        "prism_id": "prism_memory"
+      }
+    },
+    "control-dmn": {
+      "path": "ltm/control/control-dmn.ltm",
+      "compress": null,
+      "raw_bytes": 409,
+      "file_bytes": 409,
+      "vocab": 11,
+      "placements": 32,
+      "width": 32,
+      "height": 32,
+      "prism_id": "prism_control",
+      "meta": {
+        "z_ctrl": 0,
+        "concept_prefix": "",
+        "subsystem": "control",
+        "prism_id": "prism_control"
+      }
+    },
+    "control-executive": {
+      "path": "ltm/control/control-executive.ltm",
+      "compress": null,
+      "raw_bytes": 195,
+      "file_bytes": 195,
+      "vocab": 6,
+      "placements": 12,
+      "width": 32,
+      "height": 32,
+      "prism_id": "prism_control",
+      "meta": {
+        "z_ctrl": 3,
+        "concept_prefix": "task.",
+        "subsystem": "control",
+        "prism_id": "prism_control"
+      }
+    },
+    "control-salience": {
+      "path": "ltm/control/control-salience.ltm",
+      "compress": null,
+      "raw_bytes": 188,
+      "file_bytes": 188,
+      "vocab": 6,
+      "placements": 12,
+      "width": 32,
+      "height": 32,
+      "prism_id": "prism_control",
+      "meta": {
+        "z_ctrl": 1,
+        "concept_prefix": "salience.",
+        "subsystem": "control",
+        "prism_id": "prism_control"
+      }
+    },
+    "control-working-memory": {
+      "path": "ltm/control/control-working-memory.ltm",
+      "compress": null,
+      "raw_bytes": 172,
+      "file_bytes": 172,
+      "vocab": 5,
+      "placements": 12,
+      "width": 32,
+      "height": 32,
+      "prism_id": "prism_control",
+      "meta": {
+        "z_ctrl": 2,
+        "concept_prefix": "wm.",
+        "subsystem": "control",
+        "prism_id": "prism_control"
+      }
+    }
+  },
+  "l2_sharding": null,
+  "nca": null,
+  "totals": {
+    "lattice_count": 6,
+    "content_prism_count": 2,
+    "raw_bytes": 4874,
+    "file_bytes": 4874
+  }
+}

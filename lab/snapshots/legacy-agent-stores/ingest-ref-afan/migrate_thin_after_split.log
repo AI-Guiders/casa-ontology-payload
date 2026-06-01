@@ -1,0 +1,171 @@
+migrate ingest-ref-afan
+  load field_stateтАж тАФ 122.7 MiB
+  [1.9s] load field_state тАФ 122.7 MiB
+  L2 remigrate skipped (already sharded)
+  L3 remigrate skipped (already sharded)
+  compact_persistтАж тАФ ltm/*.ltm
+  export ltm: 137 lattices
+  write 1/137 prism_lang_ru/L0_grapheme_cyrl
+  write 2/137 prism_lang_ru/L1_syllable
+  write 3/137 prism_lang_ru/L2_word
+  write 4/137 prism_lang_ru/L2_word_00
+  write 5/137 prism_lang_ru/L2_word_01
+  write 6/137 prism_lang_ru/L2_word_02
+  write 7/137 prism_lang_ru/L2_word_03
+  write 8/137 prism_lang_ru/L2_word_04
+  write 9/137 prism_lang_ru/L2_word_05
+  write 10/137 prism_lang_ru/L2_word_06
+  write 11/137 prism_lang_ru/L2_word_07
+  write 12/137 prism_lang_ru/L2_word_08
+  write 13/137 prism_lang_ru/L2_word_09
+  write 14/137 prism_lang_ru/L2_word_10
+  write 15/137 prism_lang_ru/L2_word_11
+  write 16/137 prism_lang_ru/L2_word_12
+  write 17/137 prism_lang_ru/L2_word_13
+  write 18/137 prism_lang_ru/L2_word_14
+  write 19/137 prism_lang_ru/L2_word_15
+  write 20/137 prism_lang_ru/L2_word_16
+  write 21/137 prism_lang_ru/L2_word_17
+  write 22/137 prism_lang_ru/L2_word_18
+  write 23/137 prism_lang_ru/L2_word_19
+  write 24/137 prism_lang_ru/L2_word_20
+  write 25/137 prism_lang_ru/L2_word_21
+  write 26/137 prism_lang_ru/L2_word_22
+  write 27/137 prism_lang_ru/L2_word_23
+  write 28/137 prism_lang_ru/L2_word_24
+  write 29/137 prism_lang_ru/L2_word_25
+  write 30/137 prism_lang_ru/L2_word_26
+  write 31/137 prism_lang_ru/L2_word_27
+  write 32/137 prism_lang_ru/L2_word_28
+  write 33/137 prism_lang_ru/L2_word_29
+  write 34/137 prism_lang_ru/L2_word_30
+  write 35/137 prism_lang_ru/L2_word_31
+  write 36/137 prism_lang_ru/L2_word_32
+  write 37/137 prism_lang_ru/L2_word_33
+  write 38/137 prism_lang_ru/L2_word_34
+  write 39/137 prism_lang_ru/L2_word_35
+  write 40/137 prism_lang_ru/L2_word_36
+  write 41/137 prism_lang_ru/L2_word_37
+  write 42/137 prism_lang_ru/L2_word_38
+  write 43/137 prism_lang_ru/L2_word_39
+  write 44/137 prism_lang_ru/L2_word_40
+  write 45/137 prism_lang_ru/L2_word_41
+  write 46/137 prism_lang_ru/L2_word_42
+  write 47/137 prism_lang_ru/L2_word_43
+  write 48/137 prism_lang_ru/L2_word_44
+  write 49/137 prism_lang_ru/L2_word_45
+  write 50/137 prism_lang_ru/L2_word_46
+  write 51/137 prism_lang_ru/L2_word_47
+  write 52/137 prism_lang_ru/L2_word_48
+  write 53/137 prism_lang_ru/L2_word_49
+  write 54/137 prism_lang_ru/L2_word_50
+  write 55/137 prism_lang_ru/L2_word_51
+  write 56/137 prism_lang_ru/L2_word_52
+  write 57/137 prism_lang_ru/L2_word_53
+  write 58/137 prism_lang_ru/L2_word_54
+  write 59/137 prism_lang_ru/L2_word_55
+  write 60/137 prism_lang_ru/L2_word_56
+  write 61/137 prism_lang_ru/L2_word_57
+  write 62/137 prism_lang_ru/L2_word_58
+  write 63/137 prism_lang_ru/L2_word_59
+  write 64/137 prism_lang_ru/L2_word_60
+  write 65/137 prism_lang_ru/L2_word_61
+  write 66/137 prism_lang_ru/L2_word_62
+  write 67/137 prism_lang_ru/L2_word_63
+  write 68/137 prism_lang_ru/L3_phrase
+  write 69/137 prism_lang_ru/L3_phrase_00
+  write 70/137 prism_lang_ru/L3_phrase_01
+  write 71/137 prism_lang_ru/L3_phrase_02
+  write 72/137 prism_lang_ru/L3_phrase_03
+  write 73/137 prism_lang_ru/L3_phrase_04
+  write 74/137 prism_lang_ru/L3_phrase_05
+  write 75/137 prism_lang_ru/L3_phrase_06
+  write 76/137 prism_lang_ru/L3_phrase_07
+  write 77/137 prism_lang_ru/L3_phrase_08
+  write 78/137 prism_lang_ru/L3_phrase_09
+  write 79/137 prism_lang_ru/L3_phrase_10
+  write 80/137 prism_lang_ru/L3_phrase_11
+  write 81/137 prism_lang_ru/L3_phrase_12
+  write 82/137 prism_lang_ru/L3_phrase_13
+  write 83/137 prism_lang_ru/L3_phrase_14
+  write 84/137 prism_lang_ru/L3_phrase_15
+  write 85/137 prism_lang_ru/L3_phrase_16
+  write 86/137 prism_lang_ru/L3_phrase_17
+  write 87/137 prism_lang_ru/L3_phrase_18
+  write 88/137 prism_lang_ru/L3_phrase_19
+  write 89/137 prism_lang_ru/L3_phrase_20
+  write 90/137 prism_lang_ru/L3_phrase_21
+  write 91/137 prism_lang_ru/L3_phrase_22
+  write 92/137 prism_lang_ru/L3_phrase_23
+  write 93/137 prism_lang_ru/L3_phrase_24
+  write 94/137 prism_lang_ru/L3_phrase_25
+  write 95/137 prism_lang_ru/L3_phrase_26
+  write 96/137 prism_lang_ru/L3_phrase_27
+  write 97/137 prism_lang_ru/L3_phrase_28
+  write 98/137 prism_lang_ru/L3_phrase_29
+  write 99/137 prism_lang_ru/L3_phrase_30
+  write 100/137 prism_lang_ru/L3_phrase_31
+  write 101/137 prism_lang_ru/L3_phrase_32
+  write 102/137 prism_lang_ru/L3_phrase_33
+  write 103/137 prism_lang_ru/L3_phrase_34
+  write 104/137 prism_lang_ru/L3_phrase_35
+  write 105/137 prism_lang_ru/L3_phrase_36
+  write 106/137 prism_lang_ru/L3_phrase_37
+  write 107/137 prism_lang_ru/L3_phrase_38
+  write 108/137 prism_lang_ru/L3_phrase_39
+  write 109/137 prism_lang_ru/L3_phrase_40
+  write 110/137 prism_lang_ru/L3_phrase_41
+  write 111/137 prism_lang_ru/L3_phrase_42
+  write 112/137 prism_lang_ru/L3_phrase_43
+  write 113/137 prism_lang_ru/L3_phrase_44
+  write 114/137 prism_lang_ru/L3_phrase_45
+  write 115/137 prism_lang_ru/L3_phrase_46
+  write 116/137 prism_lang_ru/L3_phrase_47
+  write 117/137 prism_lang_ru/L3_phrase_48
+  write 118/137 prism_lang_ru/L3_phrase_49
+  write 119/137 prism_lang_ru/L3_phrase_50
+  write 120/137 prism_lang_ru/L3_phrase_51
+  write 121/137 prism_lang_ru/L3_phrase_52
+  write 122/137 prism_lang_ru/L3_phrase_53
+  write 123/137 prism_lang_ru/L3_phrase_54
+  write 124/137 prism_lang_ru/L3_phrase_55
+  write 125/137 prism_lang_ru/L3_phrase_56
+  write 126/137 prism_lang_ru/L3_phrase_57
+  write 127/137 prism_lang_ru/L3_phrase_58
+  write 128/137 prism_lang_ru/L3_phrase_59
+  write 129/137 prism_lang_ru/L3_phrase_60
+  write 130/137 prism_lang_ru/L3_phrase_61
+  write 131/137 prism_lang_ru/L3_phrase_62
+  write 132/137 prism_lang_ru/L3_phrase_63
+  write 133/137 prism_memory/L0_grapheme_latn
+  write 134/137 prism_visual/V1_object
+  write 135/137 prism_control_thalamus/lattice_thal_arousal
+  write 136/137 prism_control_thalamus/lattice_thal_band
+  write 137/137 prism_control_thalamus/lattice_thal_relay
+  [2.1s] compact_persist тАФ ltm/*.ltm
+  thin checkpointтАж тАФ field_state.json
+  [1.1s] thin checkpoint тАФ field_state.json
+  done: field_state 122.7 тЖТ 3.7 MiB, ltm 21.5 MiB
+[
+  {
+    "store": "ingest-ref-afan",
+    "status": "ok",
+    "field_state_mb_before": 122.73,
+    "compact_persist": {
+      "lattice_count": 137,
+      "content_prisms": [
+        "prism_lang_ru",
+        "prism_math",
+        "prism_memory",
+        "prism_visual"
+      ]
+    },
+    "save_runtime": {
+      "thin": true,
+      "format": "thin_v1"
+    },
+    "field_state_mb_after": 3.65,
+    "ltm_total_mb": 21.5,
+    "elapsed_s": 5.6
+  }
+]

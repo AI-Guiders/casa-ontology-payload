@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "lattice_id": "lexicon-ru-48",
+  "store": "lab/agent-stores/lexicon-ru-general",
+  "token_count": 1562,
+  "grid_size": [
+    32,
+    32
+  ],
+  "epochs": 25,
+  "steps": 24,
+  "train_mode": "windowed",
+  "best_loss": 2.9271631240844727,
+  "w_tokens_before_damage_eval": 2343,
+  "w_tokens_after_nca_eval": 1565
+}
