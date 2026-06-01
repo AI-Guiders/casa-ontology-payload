@@ -78,6 +78,27 @@
 
 Код: `math_compose.py` · bench: `bench_math_compose`.
 
+### Цифра vs число (не смешивать)
+
+| | Роль | Примеры |
+|---|------|---------|
+| **Цифра** | знак записи (glyph) | арабские `0`…`9`; римские `I`, `V`, `X` — тоже знаки, не «десятая цифра» |
+| **Число** | `math.num.*`, мощность | one…nine, **ten**, twelve — cardinality |
+| **Запись числа (numeral)** | строка из цифр | `"10"`, `"12"` — это **число** ten/twelve, не новая цифра |
+
+Фаза teacher «арабские цифры» = только **0–9** → `E:grapheme.latn.d@…|denotes|math.num.*`.  
+**Ten** — число (`math.num.ten`); на поле через teacher (`X`→ten, `"10"`→ten), не как «цифра 10».
+
+**Teens:** teacher co-present: cue `"15"` + scene `heard: ru: … | en: …` (слова **рядом**, без `links` в эпизоде). Sleep **Extract** (`f0_names_extract`) mint `math.num.*|names|lang.word.*` из co-occurrence после **learning-gap gate**. Слоты `lang.word.*` — bootstrap particulars; **ребро names** — emergent.
+
+**Successor:** не в bundle; sleep **Extract** (`f0_successor_extract`) из упорядоченных numerals в одной scene (напр. `arabic_digit_glyph`).
+
+**Счёт 2/3/5/7:** teacher — ряды numerals (`scene: count_row:{label}` — **без** `step=`). Шаг выводится из значений ряда. Extract только после **predict miss** на comma-cue (surprise gate). Mint **opaque** hub `math.pattern.emerged.{cluster}` + `math.struct.emerged.{token}`. Provenance: `consolidation.emergent_provenance`.
+
+**Teacher `episode.links`:** mint только при `allow_teacher_links` / `self_promote` — не для names/pattern.
+
+**Вывод связей (Extract):** … emergent `…|example|math.num.*`, `…|step|math.num.*`. Имя hub **не** кодирует шаг — слой Name позже.
+
 ### Символ ↔ смысл (контекст чтения)
 
 **Принцип:** glyph нейтрален; смысл = **symbol × reading frame**. Frame выводится из **формы cue** (операнды + оператор), не из списка примеров в коде.

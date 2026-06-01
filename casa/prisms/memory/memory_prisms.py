@@ -168,6 +168,8 @@ def append_episode(
     pending: bool = False,
     structure_tag: str | None = None,
     min_recurrence: int = 1,
+    links: list[dict[str, Any]] | None = None,
+    form_extract_allowed: bool = False,
 ) -> dict:
     state = ensure_cylinders(state)
     if bundle and not concept_id:
@@ -189,6 +191,18 @@ def append_episode(
         "recurrence_seen": 0,
         "min_recurrence": max(1, int(min_recurrence)),
     }
+    if form_extract_allowed:
+        ep["form_extract_allowed"] = True
+    if links:
+        ep["links"] = [
+            {
+                "src": str(x.get("src") or ""),
+                "relation": str(x.get("relation") or x.get("rel") or ""),
+                "dst": str(x.get("dst") or ""),
+            }
+            for x in links[:12]
+            if x.get("src") and (x.get("relation") or x.get("rel")) and x.get("dst")
+        ]
     hippo = prism_hippo(state)
     hippo.setdefault("episodes", []).append(ep)
     _register_episode_on_h0(state, ep)
@@ -428,8 +442,46 @@ def run_sleep(
                 bundle=bundle,
                 copies=strength,
             )
-        if cid and _strengthen_concept(lattices, lid, str(cid), copies=strength):
-            ep = {**ep, "consolidated": True, "merged_concept_id": cid}
+        numeral_extract = None
+        if cid and str(cid).startswith("math.num."):
+            from casa.prisms.memory.f0_stack import mint_numeral_denotes_from_episode
+
+            numeral_extract = mint_numeral_denotes_from_episode(
+                lattices,
+                lattice_id=lid,
+                cue=str(ep.get("cue") or ""),
+                concept_id=str(cid),
+                copies=strength,
+            )
+            if numeral_extract and not extract_rep:
+                extract_rep = numeral_extract
+            elif numeral_extract and extract_rep:
+                extract_rep = {**extract_rep, "numeral": numeral_extract}
+        link_extract = None
+        raw_links = ep.get("links") or []
+        allow_teacher_links = bool(
+            ep.get("allow_teacher_links")
+            or str(ep.get("structure_tag") or "") == "self_promote"
+            or str(ep.get("correction_kind") or "") == "self_promote"
+        )
+        if raw_links and allow_teacher_links:
+            from casa.prisms.memory.f0_stack import mint_episode_links
+
+            link_extract = mint_episode_links(
+                lattices,
+                lattice_id=lid,
+                links=raw_links,
+                copies=strength,
+            )
+            if link_extract and extract_rep:
+                extract_rep = {**extract_rep, "links": link_extract}
+            elif link_extract:
+                extract_rep = {"links": link_extract}
+        strengthened = bool(cid and _strengthen_concept(lattices, lid, str(cid), copies=strength))
+        if strengthened or link_extract:
+            ep = {**ep, "consolidated": True}
+            if cid:
+                ep["merged_concept_id"] = cid
             item = {
                 "episode_id": ep.get("id"),
                 "kind": "surface",
@@ -439,12 +491,102 @@ def run_sleep(
                 "correct": ep.get("correct"),
                 "correction_kind": ep.get("correction_kind"),
                 "scene": ep.get("scene"),
+                "links": ep.get("links"),
             }
             if extract_rep:
                 item["extract"] = extract_rep
             merged.append(item)
         else:
             pending.append(ep)
+
+    from casa.prisms.memory.f0_extract_gate import (
+        gate_names_by_learning_gap,
+        gate_pattern_rows_by_predict_fail,
+    )
+    from casa.prisms.memory.f0_names_extract import names_edges_on_field
+    from casa.prisms.memory.f0_pattern_extract import count_row_group_key, numeral_surface_to_int
+
+    def _cluster_values(rows: list[dict]) -> list[int]:
+        out: list[int] = []
+        for r in rows:
+            v = numeral_surface_to_int(str(r.get("cue") or r.get("correct") or ""))
+            if v is not None:
+                out.append(v)
+        return sorted(out)
+
+    gate_pattern_rows_by_predict_fail(
+        state,
+        bundle,
+        episodes,
+        group_key_fn=count_row_group_key,
+        values_fn=_cluster_values,
+    )
+
+    def _has_names_edge(cid: str) -> bool:
+        prefix = f"{cid}|names|"
+        return any(e.startswith(prefix) for e in names_edges_on_field(lattices, "schema-math"))
+
+    gate_names_by_learning_gap(state, episodes, has_names_edge=_has_names_edge)
+
+    from casa.prisms.memory.f0_pattern_extract import extract_emergent_count_patterns
+
+    for item in extract_emergent_count_patterns(
+        lattices,
+        episodes,
+        state,
+        lattice_id="schema-math",
+        copies=strength,
+    ):
+        if item.get("skipped"):
+            merged.append(item)
+            continue
+        merged.append(
+            {
+                "episode_id": None,
+                "kind": item.get("kind") or "emergent_pattern",
+                "lattice_id": "schema-math",
+                "concept_id": item.get("concept_id"),
+                "extract": item,
+            }
+        )
+
+    from casa.prisms.memory.f0_names_extract import extract_emergent_names_from_episodes
+
+    for item in extract_emergent_names_from_episodes(
+        lattices,
+        episodes,
+        bundle,
+        state,
+        lattice_id="schema-math",
+        copies=strength,
+    ):
+        merged.append(
+            {
+                "episode_id": item.get("episode_id"),
+                "kind": "emergent_names",
+                "lattice_id": "schema-math",
+                "concept_id": item.get("concept_id"),
+                "extract": item,
+            }
+        )
+
+    from casa.prisms.memory.f0_successor_extract import extract_emergent_successors
+
+    for item in extract_emergent_successors(
+        lattices,
+        episodes,
+        state,
+        lattice_id="schema-math",
+        copies=strength,
+    ):
+        merged.append(
+            {
+                "episode_id": None,
+                "kind": "emergent_successor",
+                "lattice_id": "schema-math",
+                "extract": item,
+            }
+        )
 
     compose = apply_z_compose(lattices, bundle, stack)
 

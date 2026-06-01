@@ -18,6 +18,7 @@ from casa.prisms.memory.f0_reading import (
     analyze_cue,
     detect_reading_contexts,
     score_contextual_senses,
+    score_field_glyph_numerals,
     score_field_infix_operators,
     unbound_operators,
 )
@@ -267,6 +268,14 @@ def analyze_f0_cue_ranking(bundle: dict, decoded: dict, cue: str) -> dict[str, A
             grapheme_for_glyph=_grapheme_for_glyph,
         )
     )
+    scores.update(
+        score_field_glyph_numerals(
+            cue,
+            decoded,
+            contexts,
+            grapheme_for_glyph=_grapheme_for_glyph,
+        )
+    )
 
     if len(cue) == 1:
         try:
@@ -285,10 +294,15 @@ def analyze_f0_cue_ranking(bundle: dict, decoded: dict, cue: str) -> dict[str, A
                 scores[str(cid)] = scores.get(str(cid), 0) + 3
 
     base = {cid: v for cid, v in f0_digest(decoded)}
+    _digest_skip = ("math.ctx.", "math.entity.", "math.category.", "math.dim.")
     for cid, v in base.items():
-        if cid.startswith("math.ctx."):
+        if cid.startswith(_digest_skip):
             continue
         scores[cid] = scores.get(cid, 0) + min(v, 5)
+
+    from casa.prisms.memory.f0_pattern_extract import score_emerged_patterns_from_cue
+
+    scores.update(score_emerged_patterns_from_cue(cue, decoded))
 
     ranked = sorted(scores.items(), key=lambda x: (-x[1], x[0]))
     return {
@@ -333,6 +347,56 @@ def strengthen_denotes_edge(
     g = _place_token(g, c_tok, c_tok, copies=max(2, copies // 2), radius=3)
     lat["cells"] = g.cells
     return True
+
+
+def strengthen_graph_edge(
+    lattices: dict[str, dict],
+    lattice_id: str,
+    src: str,
+    relation: str,
+    dst: str,
+    *,
+    copies: int = 4,
+) -> bool:
+    """Mint or reinforce E:src|relation|dst (+ C: for math.* / lang.* endpoints)."""
+    src, relation, dst = str(src or "").strip(), str(relation or "").strip(), str(dst or "").strip()
+    if not (src and relation and dst):
+        return False
+    if lattice_id not in lattices:
+        return False
+    lat = lattices[lattice_id]
+    g = Grid(
+        width=int(lat["width"]),
+        height=int(lat["height"]),
+        cells=[list(x) for x in lat["cells"]],
+    )
+    tok = f"E:{src}|{relation}|{dst}"
+    g = _place_token(g, tok, tok, copies=copies, radius=4)
+    for cid in (src, dst):
+        if cid.startswith(("math.", "lang.")):
+            g = _place_token(g, f"C:{cid}", f"C:{cid}", copies=max(2, copies // 2), radius=3)
+    lat["cells"] = g.cells
+    return True
+
+
+def mint_episode_links(
+    lattices: dict[str, dict],
+    *,
+    lattice_id: str,
+    links: list[dict[str, Any]],
+    copies: int = 4,
+) -> list[dict[str, str]]:
+    """Sleep Extract: teacher/agent derived edges (names, prepares, example, …)."""
+    minted: list[dict[str, str]] = []
+    for raw in links or []:
+        src = str(raw.get("src") or "")
+        rel = str(raw.get("relation") or raw.get("rel") or "")
+        dst = str(raw.get("dst") or "")
+        if not (src and rel and dst):
+            continue
+        if strengthen_graph_edge(lattices, lattice_id, src, rel, dst, copies=copies):
+            minted.append({"src": src, "relation": rel, "dst": dst, "edge": f"E:{src}|{rel}|{dst}"})
+    return minted
 
 
 def mint_operator_denotes_from_episode(
@@ -383,6 +447,59 @@ def mint_operator_denotes_from_episode(
         "grapheme": sym,
         "context": context,
         "edge": f"E:{contextual_symbol_key(sym, context)}|denotes|{cid}",
+    }
+
+
+def numeral_glyph_from_episode_cue(cue: str) -> str | None:
+    """Left-hand glyph for mapping episodes (I = 1, 4, IV = 4) — not infix equations."""
+    if analyze_cue(cue).get("infix"):
+        return None
+    raw = cue.strip()
+    if not raw:
+        return None
+    if "=" in raw:
+        raw = raw.split("=", 1)[0].strip()
+    token = raw.split()[0] if raw.split() else raw
+    return token.strip() or None
+
+
+def mint_numeral_denotes_from_episode(
+    lattices: dict[str, dict],
+    *,
+    lattice_id: str,
+    cue: str,
+    concept_id: str,
+    copies: int = 4,
+    context_id: str = "math.ctx.arithmetic",
+) -> dict[str, Any] | None:
+    """Sleep Extract: teacher math.num.* → E:glyph@ctx|denotes (digit glyph 0–9 or numeral/roman form)."""
+    cid = str(concept_id or "")
+    if not cid.startswith("math.num."):
+        return None
+    if lattice_id not in lattices:
+        return None
+    glyph = numeral_glyph_from_episode_cue(cue)
+    if not glyph:
+        return None
+    decoded = decode_f0_lattice(lattices[lattice_id], min_votes=1)
+    if len(glyph) == 1 and glyph.isdigit():
+        grapheme = _grapheme_for_glyph(glyph) or glyph
+        sym = grapheme if grapheme.startswith(_SYMBOL_PREFIXES) else grapheme
+    elif glyph.isdigit():
+        sym = glyph
+    else:
+        sym = glyph.upper()
+    if concept_in_context(decoded, sym, context_id) == cid:
+        return {"skipped": True, "concept_id": cid, "glyph": glyph, "context": context_id}
+    ok = strengthen_denotes_edge(lattices, lattice_id, sym, context_id, cid, copies=copies)
+    if not ok:
+        return None
+    return {
+        "concept_id": cid,
+        "glyph": glyph,
+        "grapheme": sym,
+        "context": context_id,
+        "edge": f"E:{contextual_symbol_key(sym, context_id)}|denotes|{cid}",
     }
 
 
