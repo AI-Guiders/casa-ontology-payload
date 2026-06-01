@@ -212,7 +212,7 @@ def snap(state: dict, bundle: dict, cue: str, expect: str | None, *, emergent_ro
         "hypothesis": hyp,
         "predict_before": pre_hyp,
         "unbound": unbound,
-        "top3": rank_cue_on_f0(bundle, dec, cue)[:3],
+        "top3": rank_cue_on_f0(dec, cue)[:3],
     }
 
 

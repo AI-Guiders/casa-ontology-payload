@@ -1,0 +1,583 @@
+{
+  "before": [
+    {
+      "cue": "2+2+2=6",
+      "hypothesis": "math.op.add",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          21
+        ],
+        [
+          "math.op.eq",
+          21
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "2+2+2 = 2*3 = 6",
+      "hypothesis": "math.op.eq",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.eq",
+          37
+        ],
+        [
+          "math.op.add",
+          21
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "2+2=4",
+      "hypothesis": "math.op.add",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          21
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "2+2 = 2*2 = 4",
+      "hypothesis": "math.op.add",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          21
+        ],
+        [
+          "math.op.mul",
+          21
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "2*2=4",
+      "hypothesis": "math.num.four",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.four",
+          48
+        ],
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "2*3=6",
+      "hypothesis": "math.num.six",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.six",
+          48
+        ],
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "3*3=?",
+      "hypothesis": "math.num.nine",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.nine",
+          48
+        ],
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "3*3 = ?",
+      "hypothesis": "math.num.nine",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.nine",
+          48
+        ],
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "3*10=?",
+      "hypothesis": "math.op.mul",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "3*10 = ?",
+      "hypothesis": "math.op.mul",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "5*5=?",
+      "hypothesis": "math.op.mul",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "5*5 = ?",
+      "hypothesis": "math.op.mul",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    }
+  ],
+  "after": [
+    {
+      "cue": "2+2+2=6",
+      "hypothesis": "math.op.add",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          21
+        ],
+        [
+          "math.op.eq",
+          21
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "2+2+2 = 2*3 = 6",
+      "hypothesis": "math.op.eq",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.eq",
+          37
+        ],
+        [
+          "math.op.add",
+          21
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "2+2=4",
+      "hypothesis": "math.op.add",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          21
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "2+2 = 2*2 = 4",
+      "hypothesis": "math.op.add",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          21
+        ],
+        [
+          "math.op.mul",
+          21
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "2*2=4",
+      "hypothesis": "math.num.four",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.four",
+          48
+        ],
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "2*3=6",
+      "hypothesis": "math.num.six",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.six",
+          48
+        ],
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "3*3=?",
+      "hypothesis": "math.num.nine",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.nine",
+          48
+        ],
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "3*3 = ?",
+      "hypothesis": "math.num.nine",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.nine",
+          48
+        ],
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "3*10=?",
+      "hypothesis": "math.op.mul",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "3*10 = ?",
+      "hypothesis": "math.op.mul",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "5*5=?",
+      "hypothesis": "math.op.mul",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "5*5 = ?",
+      "hypothesis": "math.op.mul",
+      "verdict": "fail",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.mul",
+          20
+        ],
+        [
+          "math.op.eq",
+          14
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    }
+  ],
+  "sleep_merged": 6
+}
