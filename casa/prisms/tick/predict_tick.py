@@ -9,6 +9,7 @@ ensure_import_paths()
 
 from typing import Any
 
+from casa.prisms.memory.prism_router import tick_prepare_memory
 from casa.prisms.tick.critic import critic_validate
 from casa.prisms.tick.predictor import predict
 from casa.prisms.memory.segment import norm_word
@@ -26,6 +27,8 @@ def predict_tick(
     top_k: int = 8,
 ) -> dict[str, Any]:
     """Single hot-path tick: predict → critic. clarify=True when critic fails."""
+    cue_n = norm_word(cue)
+    mem = tick_prepare_memory(state, cue=cue_n, modality=modality)
     pred = predict(
         state,
         cue,
@@ -40,10 +43,19 @@ def predict_tick(
         expect_in=expect_in,
         state=state,
     )
+    digest = pred.get("digest") if isinstance(pred.get("digest"), dict) else {}
+    digest["hot_context"] = mem.get("hot")
+    pred["digest"] = digest
+
     return {
         "schema_version": 1,
-        "cue": norm_word(cue),
+        "cue": cue_n,
         "modality": modality,
+        "route": {
+            "prism_id": mem["route"].prism_id,
+            "lattice_hint": mem["route"].lattice_hint,
+            "matched": mem["route"].matched,
+        },
         "predict": pred,
         "critic": crit,
         "clarify": bool(crit.get("clarify")),

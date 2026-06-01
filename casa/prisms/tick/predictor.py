@@ -332,10 +332,12 @@ def predict_schema(
     cue: str,
     bundle: dict | None = None,
     *,
-    lattice_id: str = "schema-math",
+    lattice_id: str | None = None,
     top_k: int = 8,
 ) -> dict[str, Any]:
     state = ensure_prisms(state)
+    sn = state.get("sn") or {}
+    lattice_id = lattice_id or sn.get("route_lattice_hint") or sn.get("active_lattice") or "schema-math"
     lattices = memory_lattices(state)
     if lattice_id not in lattices:
         if bundle is None:
@@ -436,6 +438,9 @@ def predict(
     the read-only predict hot path.
     """
     mod = (modality or "segment").strip().lower()
+    from casa.prisms.memory.prism_router import apply_route_for_modality
+
+    apply_route_for_modality(state, mod)
     if mod in ("t9", "prefix_word", "prefix"):
         return predict_t9(state, cue, top_k=top_k)
     if mod == "script":

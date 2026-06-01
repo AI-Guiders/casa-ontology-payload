@@ -173,6 +173,19 @@ def apply_hot_boost_to_ranked(
     return sorted(ranked, key=sort_key)
 
 
+HOT_SOFT_EDGE_COUNT = 1024
+
+
+def merge_hot_context_digest(state: dict, cue: str, *, limit: int = 16) -> dict[str, Any]:
+    """P0 digest for tick/predict (hints + budget signals)."""
+    edges = hot_edges(state)
+    hints = hot_digest_for_cue(state, cue, limit=limit) if cue else []
+    out: dict[str, Any] = {"hints": hints, "edge_count": len(edges), "cue": cue}
+    if len(edges) > HOT_SOFT_EDGE_COUNT:
+        out["soft_budget_warning"] = True
+    return out
+
+
 def hot_digest_for_cue(state: dict, cue: str, *, limit: int = 16) -> list[str]:
     """Concept/token ids linked to cue prefix for predict bias."""
     cue = cue.strip().lower()[:48]

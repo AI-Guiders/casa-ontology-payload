@@ -128,6 +128,47 @@ def resolve_route(state: dict, ctx: RouteContext) -> RouteTarget:
     return RouteTarget(prism_id=default, lattice_hint=None, route_index=None, matched=None)
 
 
+def route_context_from_state(
+    state: dict,
+    *,
+    modality: str = "",
+    segment: str = "",
+    locale: str | None = None,
+) -> RouteContext:
+    store = state.get("store") if isinstance(state.get("store"), dict) else {}
+    loc = str(store.get("locale") or "ru") if locale is None else locale
+    return RouteContext(
+        modality=_norm(modality),
+        locale=_norm(loc),
+        segment=_norm(segment),
+        tier=_norm(str(store.get("tier") or "")),
+        store_id=_norm(str(store.get("store_id") or "")),
+    )
+
+
+def _apply_lattice_hint(state: dict, prism_id: str, hint: str | None) -> None:
+    if not hint:
+        return
+    from casa.prisms.memory.memory_prisms import content_prism_lattices
+    from casa.prisms.shared.prism_state import prisms
+
+    lats = content_prism_lattices(state, prism_id)
+    if hint in lats:
+        state.setdefault("sn", {})["active_lattice"] = hint
+        block = prisms(state).get(prism_id)
+        if isinstance(block, dict):
+            block["active_lattice"] = hint
+        return
+    if hint in ("L2_word", "lexicon"):
+        for lid in sorted(lats):
+            if lid.startswith("L2_") or lid.startswith("lexicon-"):
+                state.setdefault("sn", {})["active_lattice"] = lid
+                block = prisms(state).get(prism_id)
+                if isinstance(block, dict):
+                    block["active_lattice"] = lid
+                return
+
+
 def apply_route_to_sn(state: dict, target: RouteTarget) -> None:
     from casa.prisms.shared.prism_state import set_active_prism
 
@@ -135,6 +176,24 @@ def apply_route_to_sn(state: dict, target: RouteTarget) -> None:
     sn = state.setdefault("sn", {})
     sn["route_lattice_hint"] = target.lattice_hint
     sn["route_matched"] = target.matched
+    _apply_lattice_hint(state, target.prism_id, target.lattice_hint)
+
+
+def apply_route_for_modality(state: dict, modality: str, *, segment: str = "") -> RouteTarget:
+    """Resolve and apply route for predict/tick (ADR-0016)."""
+    ctx = route_context_from_state(state, modality=modality, segment=segment)
+    target = resolve_route(state, ctx)
+    apply_route_to_sn(state, target)
+    return target
+
+
+def tick_prepare_memory(state: dict, *, cue: str = "", modality: str = "segment") -> dict[str, Any]:
+    """Route → hot digest (tick order before predict)."""
+    from casa.prisms.memory.prism_hot_context import merge_hot_context_digest
+
+    target = apply_route_for_modality(state, modality)
+    hot = merge_hot_context_digest(state, cue) if cue else merge_hot_context_digest(state, "")
+    return {"route": target, "hot": hot}
 
 
 def bootstrap_default_routes(state: dict, *, locale: str = "ru", force: bool = False) -> list[dict[str, Any]]:

@@ -12,12 +12,15 @@ from casa.prisms.memory.prism_hot_context import (
     hot_word_salience_for_cue,
     prune_hot_context,
 )
+from casa.prisms.memory.prism_memory_health import run_prism_memory_health
 from casa.prisms.memory.prism_router import (
     RouteContext,
     add_route,
+    apply_route_for_modality,
     bootstrap_default_routes,
     resolve_route,
     router_routes,
+    tick_prepare_memory,
 )
 from casa.prisms.memory.prism_spawn import (
     ensure_default_router_and_hot,
@@ -110,6 +113,39 @@ def test_hot_word_salience_from_edges():
     add_hot_edge(state, "cue:дом", "denotes", "lang.word.дом", salience=2.5)
     boosts = hot_word_salience_for_cue(state, "дом")
     assert boosts.get("дом") == 2.5
+
+
+def test_ensure_prisms_always_bootstraps_router():
+    state = ensure_prisms(
+        {
+            "schema_version": "multi_prism_v1",
+            "field_version": 0,
+            "prisms": {"prism_memory": {"subsystem": "sss", "lattices": {"L0_x": {"cells": [[]]}}}},
+        }
+    )
+    assert router_routes(state)
+
+
+def test_tick_prepare_memory_and_predict_tick_route():
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+    ensure_default_router_and_hot(state)
+    spawn_prism(state, "prism_math", kind="content")
+    spawn_content_lattice(state, "prism_math", "schema-math")
+    add_route(state, {"modality": "schema"}, "prism_math", lattice_hint="schema-math", priority=300)
+
+    prep = tick_prepare_memory(state, cue="||", modality="schema")
+    assert prep["route"].prism_id == "prism_math"
+
+    apply_route_for_modality(state, "t9")
+    assert active_prism_id(state) == PRISM_MEMORY
+
+
+def test_prism_memory_health_ok():
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+    ensure_default_router_and_hot(state)
+    rep = run_prism_memory_health(state)
+    assert rep["ok"] is True
+    assert any(c["id"] == "router_resolves" for c in rep["checks"])
 
 
 def test_prune_hot_context_ttl():

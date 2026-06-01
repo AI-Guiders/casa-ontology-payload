@@ -57,6 +57,10 @@ def ensure_cylinders(state: dict) -> dict:
     hip["lattices"].setdefault(EPISODIC_SURFACE, empty_hippo_lattice())
     hip.setdefault("episodes", list(hip.get("episodes") or []))
 
+    from casa.prisms.memory.prism_spawn import ensure_default_router_and_hot
+
+    ensure_default_router_and_hot(state)
+
     mem = prism_memory(state)
     if mem.get("lattices"):
         return state
@@ -79,9 +83,6 @@ def ensure_cylinders(state: dict) -> dict:
         "episodes_merged_total": 0,
     }
     state.setdefault("sss", {})["lattices"] = lattices
-    from casa.prisms.memory.prism_spawn import ensure_default_router_and_hot
-
-    ensure_default_router_and_hot(state)
     return state
 
 
@@ -671,6 +672,12 @@ def run_sleep(
         except Exception as exc:  # noqa: BLE001 — sleep must not fail on optional NCA
             nca_report = {"error": str(exc), "lattice_id": nca_lattice_id}
 
+    from casa.prisms.memory.prism_hot_context import hot_edges, prune_hot_context
+
+    hot_prune = None
+    if len(hot_edges(state)) > 2048:
+        hot_prune = prune_hot_context(state, max_edges=2048)
+
     cons["last_sleep"] = {
         "merged": len(merged),
         "pending": len(pending),
@@ -678,6 +685,7 @@ def run_sleep(
         "items": merged,
         "nca": nca_report,
         "replay": replay_report,
+        "hot_prune": hot_prune,
     }
     set_active_prism(state, PRISM_MEMORY)
     state["sn"] = {**(state.get("sn") or {}), "mode": "wake"}

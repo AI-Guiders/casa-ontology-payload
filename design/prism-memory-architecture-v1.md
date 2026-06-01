@@ -170,7 +170,7 @@ resolve_route(state, ctx)
 | nca.models | lattice без path для active content |
 | kind integrity | `hot_context` без lattices; `content` без kind |
 
-**CLI / код (roadmap):** `tools/prism_memory_health.py`; v0 — `prune_hot_context` + tests.
+**CLI / код:** `python -m casa.prisms.memory.prism_memory_health` or `tools/prism_memory_health.py`; v0 — `prune_hot_context` + `run_prism_memory_health`.
 
 ---
 
@@ -199,7 +199,7 @@ resolve_route(state, ctx)
 
 | KB tool (notes MCP) | CASA v0 |
 |---------------------|---------|
-| `memory_health` | `prune_hot_context` + manual checks (health CLI roadmap) |
+| `memory_health` | `run_prism_memory_health` / `tools/prism_memory_health.py` |
 | `compact_hot_context` | `prune_hot_context(state, max_edges=…)` |
 | `route_context` | `resolve_route` + `apply_route_to_sn` |
 | `read_hot_context` | `hot_edges` / `hot_digest_for_cue` |

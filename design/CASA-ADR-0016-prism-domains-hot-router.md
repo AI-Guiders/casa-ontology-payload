@@ -135,3 +135,4 @@ v0: content остаётся в `prism_memory` + legacy `ltm/l2/`; spawn нов�
 |------|-----------|
 | 2026-06-01 | ADR + API v0 (`prism_spawn`, hot_context, router) |
 | 2026-06-01 | bootstrap routes on `ensure_prisms`; profile `default_content_prism`; T9 hot salience re-rank |
+| 2026-06-01 | `tick_prepare_memory` on orchestrator/predict_tick; `prism_memory_health` CLI; sleep hot prune |

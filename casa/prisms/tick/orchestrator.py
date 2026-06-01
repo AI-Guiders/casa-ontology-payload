@@ -244,17 +244,11 @@ def run_learning_tick(
     load_agent_prism(store_dir, state)
     load_agent_bridges(store_dir, state)
 
-    from casa.prisms.memory.prism_router import RouteContext, apply_route_to_sn, resolve_route
+    from casa.prisms.memory.prism_router import tick_prepare_memory
 
-    store_meta = state.get("store") if isinstance(state.get("store"), dict) else {}
-    route_ctx = RouteContext(
-        modality="segment",
-        locale=str(store_meta.get("locale") or ""),
-        tier=str(store_meta.get("tier") or ""),
-        store_id=store_dir.name,
-    )
-    route_target = resolve_route(state, route_ctx)
-    apply_route_to_sn(state, route_target)
+    q_preview = effective_user_query(wm, user_query)
+    mem_prep = tick_prepare_memory(state, cue=q_preview or "", modality="segment")
+    route_target = mem_prep["route"]
 
     digest = merge_digest_with_agent_bridges(digest_from_decoded(decoded), state)
     bias = salience_mode_bias(wm, digest.concept_ids)
