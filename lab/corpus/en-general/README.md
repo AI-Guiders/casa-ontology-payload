@@ -8,7 +8,7 @@ python scripts/download_corpora.py
 ```
 python tools/build_lexicon_usage_axes.py --corpus en-general
 python tools/build_lexicon_usage_axes.py --corpus en-general \
-  --copy-to-store lab/agent-stores/sss-en-folk
+  --copy-to-store lab/agent-stores/lexicon-en-folk
 ```
 
 Sidecar: `frequency.ipm.v1.jsonl` → `lexicon_axes.jsonl` (ipm, rank, `usage_band`, `active_for_t9`).

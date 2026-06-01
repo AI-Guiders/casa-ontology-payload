@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "nca_onnx_export",
   "mode": "step",
-  "source_pt": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\sss-en-folk\\nca\\L2_en_word_00\\model.pt",
+  "source_pt": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\agent-stores\\lexicon-en-folk\\nca\\L2_en_word_00\\model.pt",
   "onnx_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\exp_l\\onnx-smoke\\L2_en_word_00.step.ts.onnx",
   "opset": 17,
   "lattice_id": "L2_en_word_00",

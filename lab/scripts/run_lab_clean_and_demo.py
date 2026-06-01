@@ -91,7 +91,7 @@ def _predict_row(state: dict, bundle: dict, cue: str, expect: str | None, label:
         "verdict": tick.get("verdict"),
         "hypothesis": pred.get("hypothesis"),
         "unbound": pred.get("unbound_operators"),
-        "top3": rank_cue_on_f0(bundle, dec, cue)[:3],
+        "top3": rank_cue_on_f0(dec, cue)[:3],
     }
 
 

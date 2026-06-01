@@ -101,7 +101,7 @@ def main() -> None:
 
     literary_store = args.literary_store
     if literary_store is None and args.literary_headwords is None:
-        literary_store = REPO / "lab/agent-stores/sss-ru-lexicon"
+        literary_store = REPO / "lab/agent-stores/lexicon-ru-archaic"
 
     modern = _load_modern(args.modern_headwords.resolve())
     literary = _load_literary(

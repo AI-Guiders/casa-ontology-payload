@@ -76,7 +76,7 @@ def _probe(state: dict, bundle: dict, ex: Example) -> dict[str, Any]:
     tick = predict_tick(state, ex.cue, modality="schema", expect=ex.expect, bundle=bundle)
     pred = tick.get("predict") or {}
     dec = decode_f0_lattice(memory_lattices(state)["schema-math"])
-    top = rank_cue_on_f0(bundle, dec, ex.cue)[:6]
+    top = rank_cue_on_f0(dec, ex.cue)[:6]
     count_mul = [(k, v) for k, v in top if is_emergent_pattern_id(k) or k == "math.op.mul"]
     hyp = pred.get("hypothesis")
     if ex.emergent_row:

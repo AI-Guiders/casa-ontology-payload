@@ -5,4 +5,4 @@ python tools/build_tech_headwords.py --locale ru \
   --out lab/corpus/ru-tech/headwords.v1.txt
 ```
 
-Store: `lab/agent-stores/sss-ru-tech`
+Store: `lab/agent-stores/lexicon-ru-tech`

@@ -21,7 +21,7 @@ from casa.prisms.shared.nca_train_util import add_device_args
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.memory.lexicon_shard import set_nca_model
 from casa.prisms.shared.lattice_names_v1 import CONTROL_NCA_TRAIN_STACK
-from casa.prisms.shared.store_layout import nca_lattice_dir, rel_to_repo, repo_root
+from casa.prisms.shared.store_layout import nca_lattice_dir, rel_to_repo, repo_root, use_compact_field_state
 
 DEFAULT_STACK = CONTROL_NCA_TRAIN_STACK
 
@@ -140,7 +140,7 @@ def main() -> None:
             }
         )
 
-    save_field_state(fs_path, state, compact=store.name.startswith("sss-"))
+    save_field_state(fs_path, state, compact=use_compact_field_state(store))
     print(json.dumps({"schema_version": 1, "store": str(store), "trained": reports}, ensure_ascii=False, indent=2))
 
 

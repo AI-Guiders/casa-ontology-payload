@@ -77,7 +77,7 @@ def main() -> None:
     if rep["l2_headwords"] < 1000:
         raise SystemExit(
             f"rebuild suspicious: only {rep['l2_headwords']} L2 headwords — "
-            "copy field_state from lab/agent-stores/sss-afan then remigrate_l2_lex.py"
+            "copy field_state from lab/agent-stores/ingest-ref-afan then remigrate_l2_lex.py"
         )
 
 

@@ -66,7 +66,7 @@ def main() -> None:
             "verdict": tick["verdict"],
             "hypothesis": pred.get("hypothesis"),
             "unbound": pred.get("unbound_operators"),
-            "top4": rank_cue_on_f0(bundle, dec, cue)[:4],
+            "top4": rank_cue_on_f0(dec, cue)[:4],
         }
 
     test_cues: list[tuple[str, str | None]] = [

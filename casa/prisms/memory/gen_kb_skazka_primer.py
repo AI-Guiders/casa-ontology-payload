@@ -111,7 +111,7 @@ def build_bundle() -> dict:
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--out", type=Path, default=Path("lab/kb/kb-skazka-primer-v1.payload.json"))
-    p.add_argument("--session-out", type=Path, default=Path("lab/exp_sss_v1/skazka_read_session.json"))
+    p.add_argument("--session-out", type=Path, default=Path("lab/exp_lexicon_v1/skazka_read_session.json"))
     args = p.parse_args()
     bundle = build_bundle()
     args.out.parent.mkdir(parents=True, exist_ok=True)

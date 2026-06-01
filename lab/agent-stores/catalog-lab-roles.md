@@ -10,5 +10,5 @@ See [`design/agent-store-catalog.md`](../../design/agent-store-catalog.md).
 | `code-agent-lab` | code | IDE autocomplete lab |
 | `bukvar-lab` | listen | bukvar / phoneme phases |
 | `research-agent-lab` | research | ML/research bundles |
-| `sss-ru-general` | ru / general | **prod** DetCorpus T9 only — no math teacher loops |
-| `sss-ru-lexicon` | ru / archaic | Afan lab + F0 smoke in INDEX legacy docs |
+| `lexicon-ru-general` | ru / general | **prod** DetCorpus T9 only — no math teacher loops |
+| `lexicon-ru-archaic` | ru / archaic | Afan lab + F0 smoke in INDEX legacy docs |

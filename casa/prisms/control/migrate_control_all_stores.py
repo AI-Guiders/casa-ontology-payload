@@ -14,6 +14,7 @@ from pathlib import Path
 from casa.prisms.control.cylinders import has_control_stack, migrate_control_stack
 from casa.prisms.shared.export_ltm_pack import control_lattice_ids, export_pack
 from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.store_layout import use_compact_field_state
 from casa.prisms.memory.memory_prisms import ensure_prisms
 
 STORES_ROOT = Path("lab/agent-stores")
@@ -58,7 +59,7 @@ def main() -> None:
             layout=layout,
             copies=args.copies,
         )
-        save_field_state(fs, state, compact=store.name.startswith("sss-"))
+        save_field_state(fs, state, compact=use_compact_field_state(store))
 
         if args.export_ltm:
             ids = control_lattice_ids(state)
