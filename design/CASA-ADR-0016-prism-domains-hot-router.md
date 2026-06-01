@@ -2,7 +2,7 @@
 
 **Статус:** принято (design + API v0, 2026-06-01)  
 **Область:** `field_state.prisms`, predict/sleep, store layout  
-**Связано:** [`memory-hierarchy.md`](memory-hierarchy.md), [`prism-memory-architecture-v1.md`](prism-memory-architecture-v1.md) (KB L0–L3 parity, compaction, maintenance), [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`context-axis.md`](context-axis.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md)
+**Связано:** [`memory-hierarchy.md`](memory-hierarchy.md), [`prism-memory-architecture-v1.md`](prism-memory-architecture-v1.md) (KB L0–L3 parity, compaction, maintenance), [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`context-axis.md`](context-axis.md), [`predictor.md`](predictor.md) (multi-anchor, focus), [`second-signal-system.md`](second-signal-system.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md)
 
 ---
 
@@ -90,6 +90,78 @@ INPUT
 
 ---
 
+## Disambiguation, register, multimodal speech act
+
+Полисемия, омонимия, «мат» с разной интонацией и литературные регистры (книжный, разговорный, архаика) **не** решаются отдельной content-призмой на каждый смысл или стиль. Граница призмы — **corpus / stack / sleep pipeline** (см. § `content`); смысл в конфликте — **слои ниже**.
+
+### Predict: несколько якорей, один focus позже
+
+См. [`predictor.md`](predictor.md): predict возвращает **`anchors[]`**, не один «ответ». Частичный cue сужает множество; **`focus`** — после контекста, Critic или достаточного cue, не на первом тике T9.
+
+```text
+cue "ма"   → anchors: мама | майка | маска | …
+cue "мам"  → множество сужается
+scene / hot / следующий токен → focus
+```
+
+| Слой | Роль при многозначности |
+|------|-------------------------|
+| **L2** (`lang.word.*`) | **форма** на решётке; не один sense_id на лемму в bundle |
+| **L3 / entity hub** | сцены, `E:…`, `L:scene\|…` — **ситуация** |
+| **`prism_hot_context`** | «сейчас в фокусе», disambiguation, мост к episodic id |
+| **`prism_hippo`** | эпизод: cue + scene + correction — опыт «в этом контексте имелось в виду …» |
+
+**Emergent (текст):** рёбра co-occurrence / scene после **learning-gap** (как `names` у math в `f0-math-logical-layer.md`), не полная онтология senses в ingest.
+
+### Register и era — оси на лексиконе, не призмы `lang.ru_*`
+
+Книжный / современный / научный / разговорный / архаика — в v0 через **узкие оси на лемму** (`casa/prisms/memory/lexicon_usage_axes.py`: `era`, `usage_band`, `active_for_t9`; roadmap: `register` enum 5–7 значений), материализация на L3 как `usage_axis` (`lexicon_field_oracle`).
+
+| Потребность | Призма | Ось / hot / router |
+|-------------|--------|-------------------|
+| Другой **corpus / shipped tier** (Afan archaic vs modern lab) | отдельный store или позже `prism_lang_ru_archaic` | `profile.tier`, route `locale` |
+| Тот же lexicon, **режим сессии** («пишем как в сказке») | нет | hot + `prism_control` |
+| Слово то же, **регистр** другой | нет | L3 `usage_axis` / `register` |
+| Фильтр T9 «не архаизмы в чате» | нет | `era` + `t9_allows_word` |
+
+**Не плодить** `prism_lang_ru_bookish`, `prism_lang_ru_colloquial`, … — дубли `lang.word.*`, раздувание transfer matrix и sleep.
+
+### Мат, частицы, интонация
+
+Одна **графема** на L2 не несёт prosody. Текстом: prefix-rank + policy (`usage_band`, `register`) — грубый фильтр, не разбор оскорбления vs частицы.
+
+| Канал | Что даёт |
+|-------|----------|
+| T9 / L2 только | multi-anchor + axes; **не** полная семантика speech act |
+| L3 + scene | диалоговый акт, ситуация («в шутку», «после конфликта») |
+| hot + control | политика сессии (lab vs prod) |
+| **Аудио (1-я СС)** | `audio-phoneme`, event, prosody — **интонация**; router `modality: listen` / `audio` |
+
+**Emergent с аудио:** мост prosody ↔ speech_act ↔ `lang.word.*` после surprise/sleep gate — не разметка всех табу в KB upfront.
+
+### Multimodal tick (roadmap)
+
+Расширение `RouteContext` (не отдельный ADR на каждый кейс):
+
+```text
+resolve_route(ctx: modality, locale, segment, scene_id, …)
+  → hot digest (session frame)
+  → predict multi-anchor on content_prism
+  → [audio lattice read when modality ∈ {listen, audio}]
+  → surprise → hippo → sleep (пара context–sense, promote hot)
+```
+
+| Феномен | Без аудио | С аудио + vis (позже) |
+|---------|-----------|------------------------|
+| Омонимия (`коса`, `замок`) | hot + scene + prefix narrow | + сцена / образ |
+| Полисемия (`банк`) | multi-anchor + L3 domain edges | + ситуативный кадр |
+| Мат: частица vs оскорбление | policy + dialogue scene (слабо) | **prosody** → emergent speech-act edges |
+| Сарказм | почти не из текста | audio (+ vis) |
+
+**Инвариант:** не притворяться, что текстовый lab-store учит интонации; bar scoped (ADR-0022).
+
+---
+
 ## API v0 (код)
 
 | Функция | Модуль |
@@ -127,15 +199,17 @@ v0: default content в `prism_memory` + legacy `ltm/l2/`; spawn новых conte
 | SN только heuristic | + `resolve_route` при наличии `prism_router` |
 | L3 oracle + entity hub | ситуативное → `prism_hot_context` |
 
-Без breaking: `memory_lattices(state)` без аргумента = `prism_memory`.
+Без breaking: `memory_lattices(state)` без аргумента = **merge** всех content-призм; запись — `persist_content_lattices` / `set_content_lattice` (MP-5).
 
 ---
 
 ## Non-goals (v0)
 
 - Полный split `lexicon-ru-general` store на несколько content-призм на диске.
+- Content-призма на каждый literary register или sense WordNet.
 - Emergent router training без gate.
 - Hot-context как отдельный NCA stack (edges only).
+- Текстовый predict как полный разбор prosody / оскорблений без аудио-канала.
 
 ---
 
@@ -147,3 +221,4 @@ v0: default content в `prism_memory` + legacy `ltm/l2/`; spawn новых conte
 | 2026-06-01 | bootstrap routes on `ensure_prisms`; profile `default_content_prism`; T9 hot salience re-rank |
 | 2026-06-01 | `tick_prepare_memory` on orchestrator/predict_tick; `prism_memory_health` CLI; sleep hot prune |
 | 2026-06-01 | open `kind` vocabulary in `spawn_prism`; multi hot_context prisms in `hot_edges` |
+| 2026-06-01 | § Disambiguation, register, multimodal speech act; MP-5 `memory_lattices` merge note |

@@ -12,6 +12,8 @@ from casa.domain.prism_ids import (
     PRISM_KIND_ROUTER,
     PRISM_MEMORY,
     PRISM_ROUTER,
+    ROOT,
+    SCHEMA_CURRENT,
 )
 from casa.domain.prism_wire import (
     infer_prism_kind,
@@ -19,7 +21,6 @@ from casa.domain.prism_wire import (
     prism_kind,
     prism_memory,
     prism_supports_lattices,
-    wire_used_legacy_format,
 )
 
 
@@ -41,23 +42,8 @@ def test_prism_from_block_matches_wire_helpers():
     assert prism_supports_lattices(state, PRISM_MEMORY) is True
 
 
-def test_wire_used_legacy_format_detects_cylinder_keys():
-    state = {
-        "schema_version": "multi_cylinder_v1",
-        "cylinders": {},
-    }
-    assert wire_used_legacy_format(state) is True
+def test_normalize_prisms_ensures_root():
+    state: dict = {"field_version": 1}
     normalize_prisms(state)
-    assert wire_used_legacy_format(state) is False
-
-
-def test_normalize_legacy_cylinders():
-    state = {
-        "schema_version": "multi_cylinder_v1",
-        "cylinders": {"cyl_memory": {"subsystem": "sss", "lattices": {}}},
-        "sn": {"active_cylinder": "cyl_memory"},
-    }
-    normalize_prisms(state)
-    assert "prisms" in state
-    assert "prism_memory" in state["prisms"]
-    assert state["sn"]["active_prism"] == "prism_memory"
+    assert ROOT in state
+    assert state["schema_version"] == SCHEMA_CURRENT

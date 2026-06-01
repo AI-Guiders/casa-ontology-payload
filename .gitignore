@@ -1,86 +1,14 @@
-__pycache__/
-*.pyc
-.venv/
-.python-version
-.DS_Store
+# Runtime checkpoints and shipped memory (local / CI cache; not in git)
+**/field_state.json
+**/field_state.legacy.json
+**/field_state.before_sleep_e2e.json
+agents/*/ltm/
+agents/*/nca/
+agents/*/field_state*.json
 
-# .NET build artifacts (apps/, tools with csproj)
-[Bb]in/
-[Oo]bj/
+# Lab snapshot shards and fat stores
+lab/snapshots/**/_parallel_shards/
+lab/snapshots/**/field_state*.json
 
-# duplicate lab tree under casa/prisms (use lab/corpus/ only; never ship raw headwords here)
-casa/prisms/lab/
-
-# third-party corpora (download via scripts/download_corpora.py; see THIRD-PARTY-NOTICES.md)
-lab/corpus/**/source/
-lab/corpus/**/*.gutenberg.txt
-lab/corpus/**/headwords.v1.txt
-lab/corpus/**/ud_lemma_pos.v1.json
-lab/corpus/**/frequency.ipm.v1.jsonl
-lab/corpus/**/lexicon_axes.v0.jsonl
-lab/corpus/**/extract_report.v1.json
-lab/corpus/**/split-report.v0.json
-
-# scratch / regenerable training outputs
-lab/**/nca/**/report.json
-lab/**/nca/train_shards_report.json
-lab/**/nca/**/final_grid.json
-lab/_tmp_*
-lab/**/_tmp_*
-lab/_bench_*
-lab/nca_out_*/
-lab/exp_*/model.pt
-lab/layered_out/*.pt
-lab/exp_e_clusters_v1/**/model.pt
-lab/exp_e_clusters_v1/**/digest_model.pt
-lab/exp_e_clusters_v1/**/gate_model.pt
-lab/exp_f_modules_v1/**/model.pt
-lab/exp_f_modules_v2_gpu/**/model.pt
-lab/exp_g_tiered_v1/**/model.pt
-lab/exp_*/report.json.tmp
-lab/agent-stores/**/checkpoints/*.pt
-lab/agent-stores/**/model*.pt
-
-# production store runtime (ship ltm/ + nca/ locally; rebuild field_state in lab)
-lab/agent-stores/**/field_state.json
-lab/agent-stores/**/ltm/**/*.ltm
-lab/agent-stores/**/ltm/**/*.ltm.zst
-lab/agent-stores/**/nca/**/model.pt
-lab/agent-stores/**/_parallel_shards/
-
-# prod cartridges — track shipped ltm + per-shard NCA (ADR-0002)
-!lab/agent-stores/lexicon-ru-general/ltm/**/*.ltm
-!lab/agent-stores/lexicon-ru-general/ltm/**/*.ltm.zst
-!lab/agent-stores/lexicon-ru-general/nca/**/model.pt
-!lab/agent-stores/lexicon-ru-archaic/ltm/**/*.ltm
-!lab/agent-stores/lexicon-ru-archaic/ltm/**/*.ltm.zst
-!lab/agent-stores/lexicon-ru-archaic/nca/**/model.pt
-!lab/agent-stores/lexicon-en-folk/ltm/**/*.ltm
-!lab/agent-stores/lexicon-en-folk/ltm/**/*.ltm.zst
-!lab/agent-stores/lexicon-en-folk/nca/**/model.pt
-
-# core VK repair models ship with agent-core pack (~1 MiB); regenerate: vk_nca_train_v0.py
-!lab/agent-core/**/nca/**/model.pt
-
-# third-party research sources (papers — not redistributable in public repo)
-lab/sources/
-
-# field_state snapshots & backups (regenerate in lab; ltm/+nca/ ship instead)
-lab/agent-stores/**/field_state.*.json
-lab/**/*.bak
-
-# pipeline / training logs (regenerable)
-lab/**/*.log
-post_train_ru_general.*
-train_*.log
-lab/agent-stores/**/import_log.ndjson
-lab/agent-stores/**/watcher_log.ndjson
-lab/agent-stores/**/lexicon_axes.v0.jsonl
-
-# experiment bench outputs (regenerable; curate results in design/*.md)
-lab/exp_*/reports/
-lab/exp_*/report_*.json
-lab/exp_*/**/report.json
-lab/exp_*/curve_*.json
-lab/exp_*/*.log
-
+# Temp
+.tmp-pdf-read/

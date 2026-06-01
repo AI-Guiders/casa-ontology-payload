@@ -11,8 +11,30 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
-# Lab data root (stores, profiles, corpus, experiments). Formerly `examples/`.
+# Dev corpus, CI snapshots (legacy). Pedagogy: LESSONS_DATA_DIR.
 LAB_DATA_DIR = "lab"
+LESSONS_DATA_DIR = "lessons"
+AGENTS_DATA_DIR = "agents"
+LAB_LEGACY_STORES_DIR = "snapshots/legacy-agent-stores"
+
+# Default living agent (one store, own experience). Display: «Нейманн» (John von Neumann).
+# CA / self-reproducing automata lineage — aligns with NCA regrow (Constitution § NCA).
+STORE_AGENT_DEFAULT = "von-neumann"
+STORE_AGENT_DISPLAY_NAME = "Нейманн"  # bootstrap label only; agent may choose identity in self/journal
+
+# Planned additional agents (separate store_id each; ADR-0021 naming canon).
+STORE_AGENT_LOVELACE = "lovelace"
+STORE_AGENT_LOVELACE_DISPLAY = "Ловлейс"
+STORE_AGENT_HAMILTON = "hamilton"
+STORE_AGENT_HAMILTON_DISPLAY = "Гамильтон"  # Margaret Hamilton (Apollo software)
+
+CANONICAL_AGENT_IDS: frozenset[str] = frozenset(
+    {
+        STORE_AGENT_DEFAULT,
+        STORE_AGENT_LOVELACE,
+        STORE_AGENT_HAMILTON,
+    }
+)
 
 # Agent lexicon stores (corpus → ingest → field/ltm; no sss- prefix).
 STORE_LEXICON_RU_ARCHAIC = "lexicon-ru-archaic"  # Afan lab, not prod T9
@@ -141,10 +163,14 @@ def use_compact_field_state(store_dir: Path | str) -> bool:
     return is_lexicon_store_id(name)
 
 
+def legacy_agent_stores_root(*, root: Path | None = None) -> Path:
+    rel = Path(LAB_DATA_DIR) / LAB_LEGACY_STORES_DIR
+    return (root / rel) if root is not None else rel
+
+
 def rename_legacy_lexicon_store_dirs(*, root: Path | None = None) -> list[dict[str, str]]:
-    """Rename lab/agent-stores/sss-* → lexicon-* (one-time migration)."""
-    rel = Path(LAB_DATA_DIR) / "agent-stores"
-    stores_root = (root / rel) if root else rel
+    """Rename lab/snapshots/legacy-agent-stores/sss-* → lexicon-* (one-time migration)."""
+    stores_root = legacy_agent_stores_root(root=root)
     reports: list[dict[str, str]] = []
     for old_id, new_id in LEXICON_STORE_ID_RENAMES.items():
         src = stores_root / old_id
@@ -170,10 +196,24 @@ def rename_legacy_lexicon_store_dirs(*, root: Path | None = None) -> list[dict[s
     return reports
 
 
-def agent_store_dir(store_id: str, *, root: Path | None = None) -> Path:
-    rel = Path(LAB_DATA_DIR) / "agent-stores"
+def agents_agent_store_dir(
+    store_id: str = STORE_AGENT_DEFAULT, *, root: Path | None = None
+) -> Path:
+    """Canonical living agent home (ADR-0021 R5)."""
+    rel = Path(AGENTS_DATA_DIR) / store_id
     base = (root / rel) if root is not None else rel
-    return base / store_id
+    return base
+
+
+def agent_store_dir(store_id: str, *, root: Path | None = None) -> Path:
+    if store_id in CANONICAL_AGENT_IDS:
+        return agents_agent_store_dir(store_id, root=root)
+    return legacy_agent_stores_root(root=root) / store_id
+
+
+def default_agent_store(*, root: Path | None = None) -> Path:
+    """Living agent store (`agents/von-neumann/` by default)."""
+    return agents_agent_store_dir(STORE_AGENT_DEFAULT, root=root)
 
 
 def lexicon_ru_archaic_store(*, root: Path | None = None) -> Path:

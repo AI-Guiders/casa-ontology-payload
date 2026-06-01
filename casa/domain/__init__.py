@@ -14,7 +14,7 @@ from casa.domain.prism import (
     prism_from_block,
 )
 from casa.domain.prism_ids import PRISM_MEMORY, PRISM_ROUTER
-from casa.domain.prism_wire import infer_prism_kind, normalize_prisms, wire_used_legacy_format
+from casa.domain.prism_wire import infer_prism_kind, normalize_prisms
 from casa.domain.routing import Route, RouteContext, RouteTarget, Router
 from casa.domain.stack import StackSpec, load_stack
 
@@ -32,7 +32,6 @@ __all__ = [
     "PRISM_ROUTER",
     "infer_prism_kind",
     "normalize_prisms",
-    "wire_used_legacy_format",
     "Prism",
     "PrismCatalog",
     "PrismKind",

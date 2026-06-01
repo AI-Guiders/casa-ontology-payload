@@ -24,16 +24,6 @@ from casa.domain.prism_ids import (
 )
 from casa.prisms.shared.lattice_names_v1 import ALPHABET_RU, CONTROL_DMN
 
-# Load-time only: old multi_cylinder checkpoints (no public re-export).
-_SCHEMA_LEGACY = "multi_cylinder_v1"
-_ROOT_LEGACY = "cylinders"
-_SN_ACTIVE_CYLINDER = "active_cylinder"
-_LEGACY_BLOCK = {
-    "cyl_memory": PRISM_MEMORY,
-    "cyl_hippo": PRISM_HIPPO,
-    "cyl_control": PRISM_CONTROL,
-}
-
 
 def infer_prism_kind(prism_id: str, block: dict[str, Any] | None) -> str:
     """Single source for kind from wire block + id heuristics."""
@@ -72,35 +62,11 @@ def prism_supports_lattices_for(
 
 
 def normalize_prisms(state: dict) -> dict:
-    """Migrate legacy multi_cylinder wire → multi_prism_v1 (idempotent)."""
-    if _ROOT_LEGACY in state and ROOT not in state:
-        state[ROOT] = state.pop(_ROOT_LEGACY)
-
-    root = state.setdefault(ROOT, {})
-    for old, new in _LEGACY_BLOCK.items():
-        if old in root and new not in root:
-            root[new] = root.pop(old)
-
-    if state.get("schema_version") == _SCHEMA_LEGACY:
+    """Ensure wire has prisms root and current schema (idempotent)."""
+    state.setdefault(ROOT, {})
+    if not state.get("schema_version"):
         state["schema_version"] = SCHEMA_CURRENT
-
-    sn = state.get("sn")
-    if isinstance(sn, dict) and _SN_ACTIVE_CYLINDER in sn and SN_ACTIVE_PRISM not in sn:
-        raw = str(sn.pop(_SN_ACTIVE_CYLINDER))
-        sn[SN_ACTIVE_PRISM] = _LEGACY_BLOCK.get(raw, raw)
-        state["sn"] = sn
-
     return state
-
-
-def wire_used_legacy_format(state: dict) -> bool:
-    """True if state still carries pre-prism wire keys (before normalize)."""
-    if _ROOT_LEGACY in state:
-        return True
-    sn = state.get("sn")
-    if isinstance(sn, dict) and _SN_ACTIVE_CYLINDER in sn:
-        return True
-    return state.get("schema_version") == _SCHEMA_LEGACY
 
 
 def prisms(state: dict) -> dict[str, Any]:

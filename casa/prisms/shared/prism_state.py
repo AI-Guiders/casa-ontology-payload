@@ -3,8 +3,6 @@
 
 from __future__ import annotations
 
-import warnings
-
 from casa.domain.prism_ids import (
     PRISM_AGENT,
     PRISM_CONTROL,
@@ -42,7 +40,6 @@ from casa.domain.prism_wire import (
     set_active_prism,
 )
 
-# Back-compat aliases for SN keys (not legacy wire).
 _ACTIVE = "active_prism"
 _ACTIVE_CONTROL = "active_control_prism"
 
@@ -82,20 +79,3 @@ __all__ = [
     "active_prism_id",
     "set_active_prism",
 ]
-
-
-def __getattr__(name: str):
-    if name in ("SCHEMA_LEGACY", "ROOT_LEGACY", "_ACTIVE_LEGACY"):
-        warnings.warn(
-            f"casa.prisms.shared.prism_state.{name} removed; legacy wire is internal to "
-            "casa.domain.prism_wire.normalize_prisms",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        legacy = {
-            "SCHEMA_LEGACY": "multi_cylinder_v1",
-            "ROOT_LEGACY": "cylinders",
-            "_ACTIVE_LEGACY": "active_cylinder",
-        }
-        return legacy[name]
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

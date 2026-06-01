@@ -16,7 +16,8 @@
 | **M0–M4** | [ADR-0020](CASA-ADR-0020-ooad-domain-model.md) | strangler → `casa.domain` |
 | **M0–M3** | [ADR-0019](CASA-ADR-0019-control-multi-prism.md) | split control prisms |
 | **R1–R6** | [ADR-0023](CASA-ADR-0023-sleep-scale-thin-first.md) | sleep scale (**R1–R2 done**) |
-| **R1–R4** | [ADR-0021](CASA-ADR-0021-experience-agent-transfer.md) | transfer / experience |
+| **R1–R5** | [ADR-0021](CASA-ADR-0021-experience-agent-transfer.md) | transfer / experience; **R5** = agent layout cleanup |
+| **L1** | [ADR-0021](CASA-ADR-0021-experience-agent-transfer.md) § R5 | `agents/` vs `lab/agent-stores` legacy |
 | **R1–R4** | [ADR-0022](CASA-ADR-0022-agent-v1-existence-bar.md) | bar check automation |
 | **E0–E8** | [ADR-0025](CASA-ADR-0025-autonomous-execution-tier.md) | CASA Engine tiers |
 
@@ -53,7 +54,7 @@
 | MP-2 | transfer matrix + `ensure_multi_prism_bootstrap` | **done** |
 | MP-3 | route fallback when domain prism has no lattices | **done** |
 | MP-4 | thin checkpoint: hippo cells + `last_sleep.items` trim | **done** (code) |
-| MP-5 | shipped store split `prism_lang_ru` / `prism_math` on disk | open (monolith `prism_memory` ok) |
+| MP-5 | shipped store split `prism_lang_ru` / `prism_math` on disk | partial (`split_content_prisms`, `persist_content_lattices`; run on lab stores) |
 
 ---
 
@@ -73,6 +74,7 @@
 |----|--------|--------|
 | R1–R6 | batched sleep, ingest mode, SleepJob, parallel ltm | **done** |
 | S-v2 | multiprocess sleep by L2 shard | open |
+| L3-par | L3 remigrate parallel by shard (`l3_remigrate`, `migrate_thin_checkpoint --parallel-workers`) | **done** |
 | E0–E8 | Engine T1 (`LatticeSlab`, `casa_engine tick`, …) | open |
 
 ---
@@ -97,6 +99,21 @@
 
 ---
 
+## Agent store layout (ADR-0021 R5 — после MP-5 / thin migration)
+
+**Триггер:** MP-5 + remigrate на **одном** живом `agent_id` закрыты; затем уборка, чтобы `lab/` не выглядел как «10 мозгов».
+
+| Id | Задача | Статус |
+|----|--------|--------|
+| L1-1 | Канон root: `agents/<id>/`; `agent_store_dir()` → agents or legacy snapshots | **done** |
+| L1-2 | `agents/von-neumann/` из `lexicon-ru-general` (thin + ltm) | **done** |
+| L1-3 | `lab/agent-stores` → `lab/snapshots/legacy-agent-stores/` | **done** |
+| L1-4 | Удалить лишнее из snapshots (опционально, human gate) | open |
+| L1-5 | CLI/tools/tests defaults → `default_agent_store()` | partial |
+| L1-6 | Доки: `agents/README`, lab README | partial |
+
+---
+
 ## Wake / listen
 
 | Id | Задача | Статус |
@@ -116,3 +133,5 @@
 | 2026-06-01 | T21-2 transfer matrix bootstrap; MP-2–4 multi-prism; thin checkpoint trim |
 | 2026-06-01 | M4 partial: `prism_ids`, `prism_wire`, `prism_state` facade |
 | 2026-06-01 | Legacy wire private in prism_wire; casa imports → domain |
+| 2026-06-01 | MP-5: `content_prism_split`, merged `memory_lattices`, `tools/split_content_prisms.py` |
+| 2026-06-01 | L1: post-migration agent layout (`agents/` vs lab legacy), ADR-0021 R5 |
