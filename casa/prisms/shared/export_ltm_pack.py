@@ -104,6 +104,7 @@ def export_pack(
     include_control: bool = True,
     compress: bool = False,
     remigrate_l2: bool = True,
+    skip_vocab_over: int | None = None,
 ) -> dict[str, Any]:
     state = ensure_prisms(state)
     l2_remigrate_report = None
@@ -120,10 +121,26 @@ def export_pack(
     )
     rows: dict[str, Any] = {}
     prism_index: dict[str, dict[str, Any]] = {}
+    skipped_vocab: list[dict[str, Any]] = []
     total_raw = 0
     total_file = 0
 
     for pid, lid, lat in exports:
+        if skip_vocab_over is not None:
+            from casa.prisms.memory.lexicon_shard import lattice_vocab_size
+
+            vocab_n = lattice_vocab_size(lat)
+            if vocab_n > skip_vocab_over:
+                skipped_vocab.append(
+                    {
+                        "prism_id": pid,
+                        "lattice_id": lid,
+                        "vocab": vocab_n,
+                        "limit": skip_vocab_over,
+                        "reason": "ltm_v0_u16_vocab_cap",
+                    }
+                )
+                continue
         primary, _aliases = ltm_write_targets(out_dir, lid)
         info = write_ltm(primary, lat, compress=compress)
         try:
@@ -158,6 +175,8 @@ def export_pack(
             "file_bytes": total_file,
         },
     }
+    if skipped_vocab:
+        manifest["skipped_vocab_lattices"] = skipped_vocab
     if store_dir is not None:
         reg_path = nca_train_registry_path(store_dir)
         if reg_path.is_file():

@@ -68,7 +68,12 @@ def migrate_store(
     if rem:
         rep["l2_remigrate"] = rem
 
-    cp = compact_persist_store(store_dir, state, reason="migrate_thin_checkpoint")
+    cp = compact_persist_store(
+        store_dir,
+        state,
+        reason="migrate_thin_checkpoint",
+        skip_vocab_over=65535,
+    )
     totals = cp.get("manifest_totals") or {}
     rep["compact_persist"] = {
         "lattice_count": totals.get("lattice_count"),

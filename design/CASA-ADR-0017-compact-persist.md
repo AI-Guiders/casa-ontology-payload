@@ -60,6 +60,8 @@ CLI: `python tools/remigrate_l2_lex.py --store-dir … --write`
 
 NCA на одной полке с 86k каналами по-прежнему невозможен — sharding это же требование [`l2-lattice-sharding.md`](l2-lattice-sharding.md).
 
+**L3 `L3_phrase` monolith:** на ingest-ref-afan vocab может быть **> u16** (сотни тысяч). До phrase-sharding migrate с `skip_vocab_over=65535` **не пишет** такие решётки в `ltm/`, фиксирует их в `manifest.skipped_vocab_lattices`; тело остаётся в `field_state.legacy.json`. Roadmap: shard L3 по тому же паттерну, что L2.
+
 ### Шарды решёток ≠ несколько призм
 
 При `vocab too large` и в UI/docs **не путать** два уровня (см. [`CASA-ADR-0016`](CASA-ADR-0016-prism-domains-hot-router.md)):

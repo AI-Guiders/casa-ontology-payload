@@ -63,6 +63,7 @@ def compact_persist_store(
     compress: bool = False,
     content_prism_ids: list[str] | None = None,
     include_control: bool = True,
+    skip_vocab_over: int | None = None,
     include_router_meta: bool = True,
     include_hot_audit: bool = False,
     reason: str = "agent",
@@ -83,6 +84,7 @@ def compact_persist_store(
         content_prism_ids=pids,
         include_control=include_control,
         compress=compress,
+        skip_vocab_over=skip_vocab_over,
     )
     report: dict[str, Any] = {
         "tier": "shipped",
