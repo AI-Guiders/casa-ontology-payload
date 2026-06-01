@@ -18,7 +18,8 @@ from casa.prisms.control.cylinders import ensure_control_cylinder
 from casa.prisms.shared.field_write import load_field_state, save_field_state
 from casa.prisms.shared.ltm_pack import read_ltm
 from casa.prisms.shared.store_paths_v1 import ltm_scan_subdirs, resolve_ltm_file
-from casa.prisms.memory.memory_prisms import ensure_cylinders, memory_lattices
+from casa.prisms.memory.memory_prisms import ensure_cylinders, import_lattice_into_prism, memory_lattices
+from casa.prisms.shared.prism_state import PRISM_CONTROL, PRISM_MEMORY, prism_router
 
 
 def _resolve_ltm_path(ltm_dir: Path, lid: str, entry: dict[str, Any]) -> Path:
@@ -53,6 +54,49 @@ def import_ltm_dir_scan(state: dict, ltm_dir: Path) -> dict[str, Any]:
     return {"scanned": loaded, "scan_count": len(loaded)}
 
 
+def _resolve_prism_id(
+    lid: str,
+    entry: dict[str, Any],
+    manifest: dict[str, Any],
+) -> str:
+    if entry.get("prism_id"):
+        return str(entry["prism_id"])
+    meta = entry.get("meta") if isinstance(entry.get("meta"), dict) else {}
+    if meta.get("prism_id"):
+        return str(meta["prism_id"])
+    prisms_block = manifest.get("prisms") or {}
+    if isinstance(prisms_block, dict):
+        for pid, info in prisms_block.items():
+            if not isinstance(info, dict):
+                continue
+            ids = info.get("lattice_ids") or []
+            if lid in ids:
+                return str(pid)
+    if str(lid).startswith("lattice_"):
+        return PRISM_CONTROL
+    return PRISM_MEMORY
+
+
+def _apply_router_manifest(state: dict, manifest: dict[str, Any], ltm_dir: Path) -> bool:
+    router_path = ltm_dir / "meta" / "router.json"
+    payload: dict[str, Any] | None = None
+    if router_path.is_file():
+        payload = json.loads(router_path.read_text(encoding="utf-8"))
+    elif manifest.get("default_content_prism"):
+        payload = {
+            "default_content_prism": manifest.get("default_content_prism"),
+            "routes": [],
+        }
+    if not payload:
+        return False
+    r = prism_router(state)
+    if payload.get("default_content_prism"):
+        r["default_content_prism"] = str(payload["default_content_prism"])
+    if isinstance(payload.get("routes"), list) and payload["routes"]:
+        r["routes"] = payload["routes"]
+    return True
+
+
 def import_pack(
     state: dict,
     ltm_dir: Path,
@@ -61,27 +105,26 @@ def import_pack(
 ) -> dict[str, Any]:
     state = ensure_cylinders(state)
     state = ensure_control_cylinder(state)
-    mem_lattices = memory_lattices(state)
-    ctrl_lattices = prism_control(state)["lattices"]
     manifest = manifest or json.loads((ltm_dir / "pack.manifest.json").read_text(encoding="utf-8"))
     loaded: list[str] = []
     loaded_control: list[str] = []
+    loaded_by_prism: dict[str, list[str]] = {}
 
     for lid, entry in (manifest.get("lattices") or {}).items():
-        path = _resolve_ltm_path(ltm_dir, lid, entry if isinstance(entry, dict) else {})
+        ent = entry if isinstance(entry, dict) else {}
+        path = _resolve_ltm_path(ltm_dir, lid, ent)
         decoded = read_ltm(path)
-        meta = entry.get("meta") if isinstance(entry, dict) else {}
+        meta = ent.get("meta") if isinstance(ent.get("meta"), dict) else {}
         merged = {**(meta or {}), **decoded}
-        if str(lid).startswith("lattice_"):
-            ctrl_lattices[lid] = merged
+        pid = _resolve_prism_id(lid, ent, manifest)
+        import_lattice_into_prism(state, pid, lid, merged)
+        loaded_by_prism.setdefault(pid, []).append(lid)
+        if pid == PRISM_CONTROL or str(lid).startswith("lattice_"):
             loaded_control.append(lid)
         else:
-            mem_lattices[lid] = merged
             loaded.append(lid)
 
-    prism_memory(state)["lattices"] = mem_lattices
-    prism_control(state)["lattices"] = ctrl_lattices
-    state.setdefault("sss", {})["lattices"] = mem_lattices
+    _apply_router_manifest(state, manifest, ltm_dir)
     if manifest.get("l2_sharding"):
         state["l2_sharding"] = manifest["l2_sharding"]
     if manifest.get("nca"):
@@ -91,6 +134,7 @@ def import_pack(
     return {
         "loaded": loaded,
         "loaded_control": loaded_control,
+        "loaded_by_prism": loaded_by_prism,
         "lattice_count": len(loaded),
         "control_lattice_count": len(loaded_control),
     }

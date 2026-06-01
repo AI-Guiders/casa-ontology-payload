@@ -20,6 +20,11 @@ from pathlib import Path
 from typing import Any
 
 from casa.prisms.shared.field_write import save_field_state
+from casa.prisms.shared.runtime_checkpoint import (
+    THIN_CHECKPOINT_FORMAT,
+    build_thin_snapshot,
+    use_thin_runtime_checkpoint,
+)
 from casa.prisms.shared.store_layout import (
     STORE_TIER_RUNTIME,
     STORE_TIER_SELF,
@@ -43,9 +48,15 @@ def save_runtime_state(
     baseline_version: int | None = None,
     force: bool = False,
     compact: bool | None = None,
+    thin: bool | None = None,
+    sync_ltm_on_save: bool = True,
     save_agent: bool = True,
 ) -> dict[str, Any]:
-    """Flush runtime checkpoint tier (field_state + optional self/agent mirror)."""
+    """Flush runtime checkpoint tier (field_state + optional self/agent mirror).
+
+    When ``thin`` is enabled and ``ltm/pack.manifest.json`` exists, lattice bodies
+    are synced via ``compact_persist_store`` and only episodic/hot/router/SN go to JSON.
+    """
     store_dir = store_dir.resolve()
     dirty = force or bool(state.pop("_runtime_dirty", False))
     fv = int(state.get("field_version") or 0)
@@ -59,10 +70,19 @@ def save_runtime_state(
 
     if compact is None:
         compact = use_compact_field_state(store_dir)
+    if thin is None:
+        thin = use_thin_runtime_checkpoint(store_dir)
+
+    compact_persist_report: dict[str, Any] | None = None
+    if thin and sync_ltm_on_save and (dirty or force):
+        from casa.prisms.shared.compact_persist import compact_persist_store
+
+        compact_persist_report = compact_persist_store(store_dir, state, reason="checkpoint_sync")
 
     checkpoints = runtime_checkpoint_paths(store_dir)
     fs = checkpoints["field_state"]
-    save_field_state(fs, state, compact=compact)
+    payload = build_thin_snapshot(state) if thin else state
+    save_field_state(fs, payload, compact=compact)
 
     agent_saved = False
     if save_agent and agent_prism_root(store_dir).is_dir():
@@ -77,6 +97,9 @@ def save_runtime_state(
         "field_state": str(fs),
         "field_version": fv,
         "compact": compact,
+        "thin_checkpoint": thin,
+        "checkpoint_format": THIN_CHECKPOINT_FORMAT if thin else None,
+        "compact_persist": compact_persist_report,
         "self_tier": {STORE_TIER_SELF: agent_saved},
     }
 
@@ -93,7 +116,9 @@ def load_runtime_state(store_dir: Path, *, prefer_field_state: bool = True) -> d
     boot_source = STORE_TIER_RUNTIME if prefer_field_state and fs.is_file() else STORE_TIER_SHIPPED
 
     if prefer_field_state and fs.is_file():
-        state = ensure_prisms(load_field_state(fs))
+        from casa.prisms.shared.field_write import load_field_state
+
+        state = ensure_prisms(load_field_state(fs, store_dir=store_dir))
     else:
         from casa.prisms.shared.store_boot import boot_store
 

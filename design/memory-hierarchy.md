@@ -2,7 +2,7 @@
 
 **Status:** v0 (`memory_manifest.py`)  
 **Date:** 2026-05-30  
-**See:** [`l2-lattice-sharding.md`](l2-lattice-sharding.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0016-prism-domains-hot-router.md`](CASA-ADR-0016-prism-domains-hot-router.md), [`prism-memory-architecture-v1.md`](prism-memory-architecture-v1.md) (KB L0–L3 parity для `field_state.prisms`)
+**See:** [`l2-lattice-sharding.md`](l2-lattice-sharding.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0016-prism-domains-hot-router.md`](CASA-ADR-0016-prism-domains-hot-router.md), [`CASA-ADR-0017-compact-persist.md`](CASA-ADR-0017-compact-persist.md), [`prism-memory-architecture-v1.md`](prism-memory-architecture-v1.md) (KB L0–L3 parity для `field_state.prisms`)
 
 ## Tree (analog of KB folders)
 
@@ -39,14 +39,14 @@ Do **not** use `lab/nca_out_<corpus>_*/` for production — train in-place under
 
 | Tier | Имя | Пути | Cold boot из `ltm/` | В profile tar | Flush после wake/tick/sleep |
 |------|-----|------|---------------------|---------------|----------------------------|
-| **Shipped** | память агента | `ltm/`, `nca/` | **да** — структура `prism_memory` + NCA paths | **да** | `export_ltm_pack` |
-| **Runtime** | checkpoint | `field_state.json`, `agent_session.json` | **нет** — hippo queue пуст до wake | **нет** | `save_runtime_state` |
+| **Shipped** | память агента | `ltm/`, `nca/` | **да** — все content-призмы + NCA paths | **да** (ops tar) | `compact_persist_store` / `export_ltm_pack` |
+| **Runtime** | checkpoint | `field_state.json` (thin_v1 + ltm/), `agent_session.json` | **нет** — hippo в thin JSON; cells из `ltm/` | **нет** | `save_runtime_state` (thin → sync `ltm/` + overlay) |
 | **Self** | agent-owned | `agent/`, `journal/` | load если каталог есть | **нет** (opt-in backup) | `save_agent_prism`, journal CLI |
 
 ```text
   Shipped (ltm/ + nca/)     ──cold boot──►  структура prism_memory + NCA paths (+ control)
          ▲                                      │
-         │ sleep / export_ltm_pack              │ T_wake: append_episode
+         │ compact_persist / export_ltm_pack    │ T_wake: append_episode
          │                                      ▼
   Runtime checkpoint          ◄──save_runtime_state──  зеркало структуры + prism_hippo queue
   (field_state, session)                         (не «место знания», а checkpoint)

@@ -67,7 +67,7 @@ def boot_store(
     fs_path = field_state_path(store_dir)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if prefer_field_state and fs_path.is_file():
-        state = ensure_prisms(load_field_state(fs_path))
+        state = ensure_prisms(load_field_state(fs_path, store_dir=store_dir))
         source = "field_state"
         # Do not import_pack lattice bodies — stale ltm can overwrite a full field (see ru-lexicon 92-word regression).
         imp = {

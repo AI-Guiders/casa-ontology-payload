@@ -52,6 +52,7 @@ class LearningTickConfig:
     retain_on_verified_predict: bool = True
     sleep_every: int = 0
     sleep_on_value: float = 1.0
+    compact_persist_on_sleep: bool = False
     kolb_session: dict[str, Any] | None = None
 
 
@@ -154,6 +155,8 @@ def maybe_sleep_phase(
     sleep_every: int,
     sleep_on_value: float,
     control: ControlExtensions,
+    store_dir: Path | None = None,
+    compact_persist: bool | None = None,
 ) -> dict[str, Any] | None:
     hippo = (state.get("prisms") or {}).get("prism_hippo") or {}
     episodes = [e for e in (hippo.get("episodes") or []) if not e.get("consolidated")]
@@ -170,7 +173,7 @@ def maybe_sleep_phase(
     if not do_sleep:
         return None
 
-    rep = run_sleep(state, bundle)
+    rep = run_sleep(state, bundle, store_dir=store_dir, compact_persist=compact_persist)
     cons["ticks_since_sleep"] = 0
     mark_runtime_dirty(state)
     return rep
@@ -305,12 +308,16 @@ def run_learning_tick(
 
     sleep_rep: dict | None = None
     if cfg.sleep_every > 0 or cfg.sleep_on_value > 0:
+        if cfg.compact_persist_on_sleep:
+            state.setdefault("store", {})["compact_persist_on_sleep"] = True
         sleep_rep = maybe_sleep_phase(
             state,
             bundle_for_hippo,
             sleep_every=cfg.sleep_every,
             sleep_on_value=cfg.sleep_on_value,
             control=control,
+            store_dir=store_dir,
+            compact_persist=True if cfg.compact_persist_on_sleep else None,
         )
 
     kolb_rep: dict | None = None

@@ -252,10 +252,15 @@ def new_field_state(*, agent_id: str, cluster: str | None = None) -> dict:
     }
 
 
-def load_field_state(path: Path) -> dict:
-    if path.is_file():
-        return _read_json(path)
-    return {}
+def load_field_state(path: Path, *, store_dir: Path | None = None) -> dict:
+    if not path.is_file():
+        return {}
+    sd = store_dir if store_dir is not None else path.parent
+    from casa.prisms.shared.runtime_checkpoint import is_thin_checkpoint_file, load_state_with_thin_checkpoint
+
+    if is_thin_checkpoint_file(path):
+        return load_state_with_thin_checkpoint(sd.resolve(), path)
+    return _read_json(path)
 
 
 def save_field_state(path: Path, state: dict, *, compact: bool = False) -> None:

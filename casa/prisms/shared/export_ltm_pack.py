@@ -16,8 +16,10 @@ from casa.prisms.shared.field_write import load_field_state
 from casa.prisms.shared.ltm_pack import lattice_subdir, write_ltm
 from casa.prisms.shared.store_paths_v1 import ltm_write_targets, manifest_layout_block
 from casa.prisms.control.cylinders import control_lattices, has_control_stack
-from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
+from casa.prisms.memory.memory_prisms import content_prism_lattices, ensure_prisms, memory_lattices
 from casa.prisms.memory.lexicon_shard import l2_en_word_lattice_ids, l2_lexicon_lattice_ids, l2_word_lattice_ids
+from casa.prisms.memory.prism_spawn import list_content_prism_ids, list_control_prism_ids
+from casa.prisms.shared.prism_state import PRISM_CONTROL, PRISM_MEMORY, prism_kind, prism_router
 from casa.prisms.shared.store_layout import nca_train_registry_path, rel_to_repo
 
 
@@ -56,50 +58,102 @@ def control_lattice_ids(state: dict) -> list[str]:
     return sorted(control_lattices(state).keys())
 
 
+def iter_profile_lattice_exports(
+    state: dict,
+    *,
+    content_prism_ids: list[str] | None = None,
+    lattice_ids: list[str] | None = None,
+    include_control: bool = True,
+) -> list[tuple[str, str, dict]]:
+    """(prism_id, lattice_id, lattice) for shipped compact persist."""
+    state = ensure_prisms(state)
+    items: list[tuple[str, str, dict]] = []
+    if lattice_ids is not None:
+        merged: dict[str, dict] = {**memory_lattices(state)}
+        if include_control and has_control_stack(state):
+            merged = {**merged, **control_lattices(state)}
+        for lid in lattice_ids:
+            lat = merged.get(lid)
+            if lat:
+                pid = PRISM_CONTROL if str(lid).startswith("lattice_") else PRISM_MEMORY
+                items.append((pid, lid, lat))
+        return items
+
+    pids = content_prism_ids if content_prism_ids is not None else list_content_prism_ids(state)
+    for pid in pids:
+        for lid, lat in sorted(content_prism_lattices(state, pid).items()):
+            items.append((pid, lid, lat))
+    if include_control:
+        for cpid in list_control_prism_ids(state):
+            if cpid == PRISM_CONTROL and has_control_stack(state):
+                for lid, lat in sorted(control_lattices(state).items()):
+                    items.append((PRISM_CONTROL, lid, lat))
+            elif cpid != PRISM_CONTROL:
+                for lid, lat in sorted(content_prism_lattices(state, cpid).items()):
+                    items.append((cpid, lid, lat))
+    return items
+
+
 def export_pack(
     state: dict,
     out_dir: Path,
     *,
     store_dir: Path | None = None,
     lattice_ids: list[str] | None = None,
+    content_prism_ids: list[str] | None = None,
+    include_control: bool = True,
     compress: bool = False,
+    remigrate_l2: bool = True,
 ) -> dict[str, Any]:
     state = ensure_prisms(state)
-    mem = memory_lattices(state)
-    ctrl = control_lattices(state) if has_control_stack(state) else {}
+    l2_remigrate_report = None
+    if remigrate_l2 and lattice_ids is None:
+        from casa.prisms.memory.l2_remigrate import ensure_l2_sharded_for_export
+
+        l2_remigrate_report = ensure_l2_sharded_for_export(state)
     nca_block = _rel_nca_block(state.get("nca"))
-    merged = {**mem, **ctrl}
-    ids = lattice_ids or sorted(merged.keys())
+    exports = iter_profile_lattice_exports(
+        state,
+        content_prism_ids=content_prism_ids,
+        lattice_ids=lattice_ids,
+        include_control=include_control,
+    )
     rows: dict[str, Any] = {}
+    prism_index: dict[str, dict[str, Any]] = {}
     total_raw = 0
     total_file = 0
 
-    for lid in ids:
-        lat = merged.get(lid)
-        if not lat:
-            continue
+    for pid, lid, lat in exports:
         primary, _aliases = ltm_write_targets(out_dir, lid)
         info = write_ltm(primary, lat, compress=compress)
-        written = Path(info["path"])
         try:
             store_rel = primary.relative_to(out_dir.parent).as_posix()
         except ValueError:
             store_rel = rel_to_repo(primary)
-        rows[lid] = {**info, "path": store_rel, "meta": _lattice_meta(lat)}
+        meta = {**_lattice_meta(lat), "prism_id": pid}
+        rows[lid] = {**info, "path": store_rel, "prism_id": pid, "meta": meta}
+        prism_index.setdefault(pid, {"kind": prism_kind(state, pid), "lattice_ids": []})
+        if lid not in prism_index[pid]["lattice_ids"]:
+            prism_index[pid]["lattice_ids"].append(lid)
         total_raw += int(info["raw_bytes"])
         total_file += int(info["file_bytes"])
 
+    router = prism_router(state)
     manifest = {
         "schema_version": 1,
         "format": "ltm-pack",
         **manifest_layout_block(),
+        "l2_remigrate": l2_remigrate_report,
         "field_version": state.get("field_version"),
         "updated_at": state.get("updated_at"),
+        "default_content_prism": router.get("default_content_prism") or PRISM_MEMORY,
+        "prisms": prism_index,
         "lattices": rows,
         "l2_sharding": state.get("l2_sharding"),
         "nca": nca_block,
         "totals": {
             "lattice_count": len(rows),
+            "content_prism_count": len(prism_index),
             "raw_bytes": total_raw,
             "file_bytes": total_file,
         },
@@ -127,24 +181,28 @@ def main() -> None:
     args = p.parse_args()
 
     state = ensure_prisms(load_field_state(args.store_dir / "field_state.json"))
-    lattices = memory_lattices(state)
-    targets: list[str] = []
-    if args.layer in ("L2", "all"):
-        targets.extend(l2_lexicon_lattice_ids(state))
-        if "L2_word" in lattices and "L2_word" not in targets:
-            targets.append("L2_word")
-    if args.layer in ("L1", "all") and "L1_syllable" in lattices:
-        targets.append("L1_syllable")
-    if args.layer in ("L0", "all"):
-        for lid in ("L0_grapheme_cyrl", "L0_grapheme_latn"):
-            if lid in lattices:
-                targets.append(lid)
-    if args.layer in ("L3", "all") and "L3_phrase" in lattices:
-        targets.append("L3_phrase")
-    targets = list(dict.fromkeys(targets))
-
     out_dir = args.out or (args.store_dir / "ltm")
-    manifest = export_pack(state, out_dir, store_dir=args.store_dir, lattice_ids=targets, compress=args.compress)
+    if args.layer == "all":
+        manifest = export_pack(state, out_dir, store_dir=args.store_dir, compress=args.compress)
+    else:
+        lattices = memory_lattices(state)
+        targets: list[str] = []
+        if args.layer == "L2":
+            targets.extend(l2_lexicon_lattice_ids(state))
+            if "L2_word" in lattices and "L2_word" not in targets:
+                targets.append("L2_word")
+        if args.layer == "L1" and "L1_syllable" in lattices:
+            targets.append("L1_syllable")
+        if args.layer == "L0":
+            for lid in ("L0_grapheme_cyrl", "L0_grapheme_latn"):
+                if lid in lattices:
+                    targets.append(lid)
+        if args.layer == "L3" and "L3_phrase" in lattices:
+            targets.append("L3_phrase")
+        targets = list(dict.fromkeys(targets))
+        manifest = export_pack(
+            state, out_dir, store_dir=args.store_dir, lattice_ids=targets, compress=args.compress
+        )
     print(json.dumps(manifest["totals"], ensure_ascii=False, indent=2))
 
 

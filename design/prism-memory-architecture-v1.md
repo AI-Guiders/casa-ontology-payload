@@ -136,7 +136,7 @@ resolve_route(state, ctx)
 
 | Событие | Что уходит в shipped |
 |---------|----------------------|
-| `export_ltm_pack` / sleep | content structure, NCA paths |
+| `compact_persist_store` / `export_ltm_pack` | all content prisms → `ltm/`, NCA paths, router meta |
 | `save_runtime_state` | P0+P1+P2+P3 checkpoint (не dump всех эпизодов в tar) |
 | `agent_promote` | подтверждённые hot edges → hippo → sleep → ltm (gate) |
 

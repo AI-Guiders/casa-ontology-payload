@@ -119,6 +119,33 @@ def memory_lattices(state: dict, prism_id: str | None = None) -> dict[str, dict]
     return content_prism_lattices(state, prism_id)
 
 
+def import_lattice_into_prism(state: dict, prism_id: str, lattice_id: str, lattice: dict) -> None:
+    """Place decoded lattice into a content prism (multi-prism import from ltm/)."""
+    from casa.prisms.memory.prism_spawn import list_content_prism_ids, spawn_prism
+    from casa.prisms.shared.prism_state import (
+        PRISM_KIND_CONTENT,
+        PRISM_MEMORY,
+        prism_block,
+        prism_memory,
+        prism_supports_lattices,
+        prisms,
+    )
+
+    state = ensure_cylinders(state)
+    pid = prism_id or PRISM_MEMORY
+    if pid != PRISM_MEMORY and pid not in prisms(state):
+        spawn_prism(state, pid, kind=PRISM_KIND_CONTENT)
+    if pid not in list_content_prism_ids(state) and pid != PRISM_MEMORY:
+        pid = PRISM_MEMORY
+    if pid == PRISM_MEMORY or not prism_supports_lattices(state, pid):
+        lats = prism_memory(state).setdefault("lattices", {})
+        lats[lattice_id] = lattice
+        state.setdefault("sss", {})["lattices"] = lats
+        return
+    block = prism_block(state, pid)
+    block.setdefault("lattices", {})[lattice_id] = lattice
+
+
 def hippo_episodes(state: dict) -> list[dict]:
     state = ensure_cylinders(state)
     return list(prism_hippo(state).get("episodes") or [])
@@ -408,6 +435,8 @@ def run_sleep(
     nca_lattice_id: str = LEXICON_RU,
     replay_k: int = 0,
     replay_value_weight: float = 0.0,
+    store_dir: Path | None = None,
+    compact_persist: bool | None = None,
 ) -> dict:
     """T_sleep: merge hippo episodes → prism_memory; prune consolidated."""
     bundle = bundle or {"claims": [], "graph": {"edges": []}}
@@ -687,6 +716,15 @@ def run_sleep(
         "replay": replay_report,
         "hot_prune": hot_prune,
     }
+    if store_dir is not None and compact_persist is not False:
+        from casa.prisms.shared.compact_persist import maybe_compact_persist_after_sleep
+
+        maybe_compact_persist_after_sleep(
+            store_dir,
+            state,
+            cons["last_sleep"],
+            force=compact_persist is True,
+        )
     set_active_prism(state, PRISM_MEMORY)
     state["sn"] = {**(state.get("sn") or {}), "mode": "wake"}
     state["field_version"] = int(state.get("field_version") or 0) + 1

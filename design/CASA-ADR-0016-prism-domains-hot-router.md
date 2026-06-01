@@ -115,7 +115,7 @@ INPUT
   nca/memory/lexicon/…
 ```
 
-v0: content остаётся в `prism_memory` + legacy `ltm/l2/`; spawn новых content-призм пишет в `field_state` only. Subdirs `ltm/memory/` — S5 в [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md).
+v0: default content в `prism_memory` + legacy `ltm/l2/`; spawn новых content-призм → `field_state`; **compact persist** (`compact_persist_store`, ADR-0017) пишет все content-призмы в `ltm/`. Subdirs `ltm/memory/` — S5 в [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md).
 
 ---
 

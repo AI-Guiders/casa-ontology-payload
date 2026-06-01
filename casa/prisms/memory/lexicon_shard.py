@@ -540,6 +540,13 @@ def _shard_index_from_lattice_id(lattice_id: str) -> int | None:
         return None
 
 
+def lattice_vocab_size(lattice: dict) -> int:
+    """Unique token count on a lattice (ltm v0 vocab limit is u16)."""
+    from casa.prisms.memory.nca_codec import tokens_from_lattice
+
+    return len(tokens_from_lattice(lattice))
+
+
 def shard_stats(state: dict) -> dict[str, Any]:
     from casa.prisms.memory.nca_codec import tokens_from_lattice
 
