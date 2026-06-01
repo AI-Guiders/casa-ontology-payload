@@ -7,11 +7,30 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from casa.domain.lattice import Lattice
+from casa.domain.prism_ids import (
+    PRISM_CONTROL,
+    PRISM_HIPPO,
+    PRISM_HOT_CONTEXT,
+    PRISM_KIND_CONTENT,
+    PRISM_KIND_CONTROL,
+    PRISM_KIND_HOT_CONTEXT,
+    PRISM_KIND_ROUTER,
+    PRISM_ROUTER,
+)
+from casa.domain.prism_wire import infer_prism_kind, prism_supports_lattices_for
 
-PRISM_KIND_CONTENT = "content"
-PRISM_KIND_HOT_CONTEXT = "hot_context"
-PRISM_KIND_ROUTER = "router"
-PRISM_KIND_CONTROL = "control"
+PrismKind = str
+
+__all__ = [
+    "PRISM_KIND_CONTENT",
+    "PRISM_KIND_HOT_CONTEXT",
+    "PRISM_KIND_ROUTER",
+    "PRISM_KIND_CONTROL",
+    "PrismKind",
+    "Prism",
+    "PrismCatalog",
+    "prism_from_block",
+]
 
 
 @dataclass
@@ -24,7 +43,7 @@ class Prism:
 
     @property
     def supports_lattices(self) -> bool:
-        return self.kind in (PRISM_KIND_CONTENT, PRISM_KIND_CONTROL)
+        return prism_supports_lattices_for(self.prism_id, kind=self.kind, block=self.block)
 
     def lattices(self) -> dict[str, Lattice]:
         raw = self.block.get("lattices") if isinstance(self.block.get("lattices"), dict) else {}
@@ -61,18 +80,7 @@ class PrismCatalog:
 
 
 def prism_from_block(prism_id: str, block: dict[str, Any]) -> Prism:
-    kind = str(block.get("kind") or "")
-    if not kind:
-        if prism_id.endswith("_hippo") or prism_id == "prism_hippo":
-            kind = "hippo"
-        elif prism_id == "prism_control":
-            kind = PRISM_KIND_CONTROL
-        elif prism_id in ("prism_hot_context",):
-            kind = PRISM_KIND_HOT_CONTEXT
-        elif prism_id in ("prism_router",):
-            kind = PRISM_KIND_ROUTER
-        else:
-            kind = PRISM_KIND_CONTENT
+    kind = infer_prism_kind(prism_id, block)
     return Prism(
         prism_id=prism_id,
         kind=kind,
@@ -80,6 +88,3 @@ def prism_from_block(prism_id: str, block: dict[str, Any]) -> Prism:
         subsystem=str(block.get("subsystem") or ""),
         block=block,
     )
-
-
-PrismKind = str

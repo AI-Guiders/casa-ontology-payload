@@ -6,8 +6,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from casa.domain.prism import PRISM_KIND_ROUTER, Prism, PrismCatalog, prism_from_block
-from casa.prisms.shared.prism_state import PRISM_ROUTER, normalize_prisms
+from casa.domain.prism import Prism, PrismCatalog, prism_from_block
+from casa.domain.prism_ids import PRISM_KIND_ROUTER, PRISM_MEMORY, PRISM_ROUTER
+from casa.domain.prism_wire import normalize_prisms, prism_router
 
 
 @dataclass
@@ -81,17 +82,7 @@ class FieldState:
         return PrismCatalog(prisms=out)
 
     def router_prism(self) -> Prism:
-        block = self.wire.setdefault("prisms", {}).setdefault(
-            PRISM_ROUTER,
-            {
-                "kind": PRISM_KIND_ROUTER,
-                "schema_version": 1,
-                "stack": "design/prisms/router/stack.json",
-                "default_content_prism": "prism_memory",
-                "routes": [],
-            },
-        )
-        return prism_from_block(PRISM_ROUTER, block)
+        return prism_from_block(PRISM_ROUTER, prism_router(self.wire))
 
     def profile_default_content_prism(self) -> str | None:
         from casa.prisms.memory.prism_spawn import validate_content_prism_id

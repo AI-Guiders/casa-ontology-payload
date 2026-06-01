@@ -1,200 +1,90 @@
 #!/usr/bin/env python3
-"""Prism block keys (square lattice stacks). Legacy cyl_* read + normalize on load."""
+"""Compatibility facade over casa.domain.prism_wire (ADR-0020 M4).
+
+New code should prefer FieldState / PrismCatalog; imports from this module remain valid.
+"""
 
 from __future__ import annotations
 
-from casa._paths import ensure_import_paths
-
-ensure_import_paths()
-
-from typing import Any
-
-from casa.prisms.shared.lattice_names_v1 import ALPHABET_RU, CONTROL_DMN
-
-SCHEMA_LEGACY = "multi_cylinder_v1"
-SCHEMA_CURRENT = "multi_prism_v1"
-
-ROOT_LEGACY = "cylinders"
-ROOT = "prisms"
-
-PRISM_MEMORY = "prism_memory"
-PRISM_HIPPO = "prism_hippo"
-PRISM_CONTROL = "prism_control"
-PRISM_AGENT = "prism_agent"
-PRISM_HOT_CONTEXT = "prism_hot_context"
-PRISM_ROUTER = "prism_router"
-PRISM_VISUAL = "prism_visual"
-PRISM_CONTROL_VIS = "prism_control_vis"
-PRISM_CONTROL_THALAMUS = "prism_control_thalamus"
-
-PRISM_KIND_CONTENT = "content"
-PRISM_KIND_HOT_CONTEXT = "hot_context"
-PRISM_KIND_ROUTER = "router"
-PRISM_KIND_CONTROL = "control"
+from casa.domain.prism_ids import (
+    PRISM_AGENT,
+    PRISM_CONTROL,
+    PRISM_CONTROL_THALAMUS,
+    PRISM_CONTROL_VIS,
+    PRISM_HIPPO,
+    PRISM_HOT_CONTEXT,
+    PRISM_KIND_CONTENT,
+    PRISM_KIND_CONTROL,
+    PRISM_KIND_HOT_CONTEXT,
+    PRISM_KIND_ROUTER,
+    PRISM_LANG_RU,
+    PRISM_MATH,
+    PRISM_MEMORY,
+    PRISM_ROUTER,
+    PRISM_VISUAL,
+    ROOT,
+    ROOT_LEGACY,
+    SCHEMA_CURRENT,
+    SCHEMA_LEGACY,
+)
+from casa.domain.prism_wire import (
+    active_control_prism_id,
+    active_prism_id,
+    normalize_prisms,
+    prism_agent,
+    prism_block,
+    prism_control,
+    prism_hippo,
+    prism_hot_context,
+    prism_kind,
+    prism_memory,
+    prism_router,
+    prism_supports_lattices,
+    prisms,
+    set_active_control_prism,
+    set_active_prism,
+)
 
 _ACTIVE_CONTROL = "active_control_prism"
-
-_LEGACY_BLOCK = {
-    "cyl_memory": PRISM_MEMORY,
-    "cyl_hippo": PRISM_HIPPO,
-    "cyl_control": PRISM_CONTROL,
-}
-
 _ACTIVE_LEGACY = "active_cylinder"
 _ACTIVE = "active_prism"
 
-
-def normalize_prisms(state: dict) -> dict:
-    """Migrate cylinders/cyl_* → prisms/prism_* (idempotent)."""
-    if ROOT_LEGACY in state and ROOT not in state:
-        state[ROOT] = state.pop(ROOT_LEGACY)
-
-    root = state.setdefault(ROOT, {})
-    for old, new in _LEGACY_BLOCK.items():
-        if old in root and new not in root:
-            root[new] = root.pop(old)
-
-    if state.get("schema_version") == SCHEMA_LEGACY:
-        state["schema_version"] = SCHEMA_CURRENT
-
-    sn = state.get("sn")
-    if isinstance(sn, dict) and _ACTIVE_LEGACY in sn and _ACTIVE not in sn:
-        raw = str(sn.pop(_ACTIVE_LEGACY))
-        sn[_ACTIVE] = _LEGACY_BLOCK.get(raw, raw)
-        state["sn"] = sn
-
-    return state
-
-
-def prisms(state: dict) -> dict[str, Any]:
-    normalize_prisms(state)
-    return state.setdefault(ROOT, {})
-
-
-def prism_memory(state: dict) -> dict[str, Any]:
-    p = prisms(state)
-    if PRISM_MEMORY not in p:
-        p[PRISM_MEMORY] = {
-            "subsystem": "sss",
-            "stack": "design/prisms/memory/stack.json",
-            "lattices": {},
-            "active_lattice": ALPHABET_RU,
-        }
-    return p[PRISM_MEMORY]
-
-
-def prism_hippo(state: dict) -> dict[str, Any]:
-    p = prisms(state)
-    if PRISM_HIPPO not in p:
-        p[PRISM_HIPPO] = {"subsystem": "episodic", "lattices": {}, "episodes": []}
-    return p[PRISM_HIPPO]
-
-
-def prism_control(state: dict) -> dict[str, Any]:
-    p = prisms(state)
-    return p.setdefault(
-        PRISM_CONTROL,
-        {
-            "subsystem": "control",
-            "stack": "design/control-lattice-stack.json",
-            "lattices": {},
-            "active_lattice": CONTROL_DMN,
-        },
-    )
-
-
-def prism_agent(state: dict) -> dict[str, Any]:
-    """Agent-owned lattice stack — not exported in profile ltm/ by default."""
-    p = prisms(state)
-    return p.setdefault(
-        PRISM_AGENT,
-        {
-            "subsystem": "agent_owned",
-            "kind": PRISM_KIND_CONTENT,
-            "lattices": {},
-            "active_lattice": None,
-            "nca": {"models": {}},
-        },
-    )
-
-
-def prism_hot_context(state: dict) -> dict[str, Any]:
-    p = prisms(state)
-    return p.setdefault(
-        PRISM_HOT_CONTEXT,
-        {
-            "kind": PRISM_KIND_HOT_CONTEXT,
-            "schema_version": 1,
-            "stack": "design/prisms/hot_context/stack.json",
-            "edges": [],
-            "max_edges": 4096,
-        },
-    )
-
-
-def prism_router(state: dict) -> dict[str, Any]:
-    p = prisms(state)
-    return p.setdefault(
-        PRISM_ROUTER,
-        {
-            "kind": PRISM_KIND_ROUTER,
-            "schema_version": 1,
-            "stack": "design/prisms/router/stack.json",
-            "default_content_prism": PRISM_MEMORY,
-            "routes": [],
-        },
-    )
-
-
-def prism_block(state: dict, prism_id: str) -> dict[str, Any]:
-    """Any prism block by id (content or extension)."""
-    normalize_prisms(state)
-    return prisms(state).setdefault(prism_id, {})
-
-
-def prism_kind(state: dict, prism_id: str) -> str:
-    block = prism_block(state, prism_id)
-    if block.get("kind"):
-        return str(block["kind"])
-    if prism_id == PRISM_HOT_CONTEXT:
-        return PRISM_KIND_HOT_CONTEXT
-    if prism_id == PRISM_ROUTER:
-        return PRISM_KIND_ROUTER
-    if prism_id == PRISM_CONTROL:
-        return PRISM_KIND_CONTROL
-    if prism_id == PRISM_HIPPO:
-        return "hippo"
-    return PRISM_KIND_CONTENT
-
-
-def prism_supports_lattices(state: dict, prism_id: str) -> bool:
-    """True if prism exports lattices via content_prism_lattices (not monolith CU path)."""
-    if prism_id in (PRISM_HIPPO, PRISM_AGENT, PRISM_HOT_CONTEXT, PRISM_ROUTER):
-        return False
-    if prism_id == PRISM_CONTROL:
-        return False
-    k = prism_kind(state, prism_id)
-    if k in (PRISM_KIND_HOT_CONTEXT, PRISM_KIND_ROUTER, "hippo"):
-        return False
-    if k in (PRISM_KIND_CONTENT, PRISM_KIND_CONTROL):
-        return True
-    block = prism_block(state, prism_id)
-    return isinstance(block.get("lattices"), dict)
-
-
-def active_control_prism_id(state: dict, *, default: str = PRISM_CONTROL) -> str:
-    sn = state.get("sn") or {}
-    return str(sn.get(_ACTIVE_CONTROL) or default)
-
-
-def set_active_control_prism(state: dict, prism_id: str) -> None:
-    state["sn"] = {**(state.get("sn") or {}), _ACTIVE_CONTROL: prism_id}
-
-
-def active_prism_id(state: dict, *, default: str = PRISM_MEMORY) -> str:
-    sn = state.get("sn") or {}
-    return str(sn.get(_ACTIVE) or default)
-
-
-def set_active_prism(state: dict, prism_id: str) -> None:
-    state["sn"] = {**(state.get("sn") or {}), _ACTIVE: prism_id}
+__all__ = [
+    "SCHEMA_LEGACY",
+    "SCHEMA_CURRENT",
+    "ROOT_LEGACY",
+    "ROOT",
+    "PRISM_MEMORY",
+    "PRISM_LANG_RU",
+    "PRISM_MATH",
+    "PRISM_HIPPO",
+    "PRISM_CONTROL",
+    "PRISM_AGENT",
+    "PRISM_HOT_CONTEXT",
+    "PRISM_ROUTER",
+    "PRISM_VISUAL",
+    "PRISM_CONTROL_VIS",
+    "PRISM_CONTROL_THALAMUS",
+    "PRISM_KIND_CONTENT",
+    "PRISM_KIND_HOT_CONTEXT",
+    "PRISM_KIND_ROUTER",
+    "PRISM_KIND_CONTROL",
+    "_ACTIVE_CONTROL",
+    "_ACTIVE_LEGACY",
+    "_ACTIVE",
+    "normalize_prisms",
+    "prisms",
+    "prism_memory",
+    "prism_hippo",
+    "prism_control",
+    "prism_agent",
+    "prism_hot_context",
+    "prism_router",
+    "prism_block",
+    "prism_kind",
+    "prism_supports_lattices",
+    "active_control_prism_id",
+    "set_active_control_prism",
+    "active_prism_id",
+    "set_active_prism",
+]
