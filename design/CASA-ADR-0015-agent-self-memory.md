@@ -146,7 +146,7 @@ agent_recall(query?, tags?, concepts?, limit?)
 | **Use** | `act_rollout_phase` — k-step NCA на active memory lattice |
 | **Extract** | `surprise_to_hippo_episode` при `control.value ≥ threshold` |
 | **Remember** | `run_sleep` по `--sleep-every` / `--sleep-on-value` |
-| **Explicit** | `agent_remember` при surprise ≥ `remember_min_value` |
+| **Explicit** | `agent_remember` при surprise ≥ `remember_min_value`; **`agent_retain`** при self-verify predict |
 
 Kolb CE→RO→AC→AE остаётся в `kolb_cycle.py` (сегментация); в orchestrator — opt-in hook, не каждый tick.
 
@@ -197,4 +197,4 @@ Hot path IDE → **core API** (`Remember` / `Recall` / `SaveRuntimeCheckpoint`),
 - Дублирование UC Extract для self-tier.
 - Сводить всю память агента к `journal/` (см. § Неявная vs явная).
 
-Код v0: `casa/prisms/memory/agent_memory_ops.py` · persist: `casa/prisms/shared/store_persist.py` · CLI: `agent_remember`, `agent_recall`.
+Код v0: `casa/prisms/memory/agent_memory_ops.py` · `agent_workbook.py` (draft/check) · `agent_promote.py` (Self→profile) · persist: `casa/prisms/shared/store_persist.py` · CLI: `agent_remember`, `agent_recall`, `agent_workbook`, `agent_promote`.

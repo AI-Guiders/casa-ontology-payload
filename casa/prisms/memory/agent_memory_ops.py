@@ -12,7 +12,12 @@ import json
 from pathlib import Path
 from typing import Any
 
-from casa.prisms.memory.agent_journal import append_journal_entry, read_journal_entries
+from casa.prisms.memory.agent_journal import (
+    DEFAULT_JOURNAL_DOMAIN,
+    append_journal_entry,
+    notebook_tag,
+    search_journal_entries,
+)
 from casa.prisms.memory.agent_prism import (
     create_agent_lattice,
     ensure_agent_prism,
@@ -81,6 +86,29 @@ def agent_remember(
     load_agent_prism(store_dir, state)
 
     kind = str(record.get("kind") or "observation")
+    tags = [str(t) for t in (record.get("tags") or [])]
+    notebook = str(record.get("notebook") or "").strip() or None
+    if notebook:
+        tags.append(notebook_tag(notebook))
+
+    meta: dict[str, Any] = {"scope": scope}
+    if notebook:
+        meta["notebook"] = notebook
+    if record.get("links"):
+        meta["links"] = [str(x) for x in record["links"] if str(x).strip()]
+    if record.get("data") is not None:
+        meta["data"] = record["data"]
+    if record.get("placements"):
+        meta["placements"] = record["placements"]
+    if record.get("status"):
+        meta["status"] = str(record["status"])
+    if record.get("test_cues"):
+        meta["test_cues"] = [str(c) for c in record["test_cues"] if str(c).strip()]
+    if record.get("draft"):
+        meta["draft"] = True
+        if "draft" not in tags:
+            tags.append("draft")
+
     entry = append_journal_entry(
         store_dir,
         {
@@ -88,12 +116,8 @@ def agent_remember(
             "text": _journal_text(record),
             "concepts": list(record.get("concepts") or []),
             "tokens": list(record.get("tokens") or []),
-            "tags": list(record.get("tags") or []),
-            "meta": {
-                "scope": scope,
-                **({"data": record["data"]} if record.get("data") is not None else {}),
-                **({"placements": record["placements"]} if record.get("placements") else {}),
-            },
+            "tags": tags,
+            "meta": meta,
         },
         domain=scope,
     )
@@ -156,29 +180,42 @@ def agent_recall(
     store_dir: Path,
     state: dict | None = None,
     *,
-    scope: str = DEFAULT_JOURNAL_SCOPE,
+    scope: str | None = DEFAULT_JOURNAL_SCOPE,
     query: str | None = None,
     concept: str | None = None,
     tag: str | None = None,
+    tags: list[str] | None = None,
+    notebook: str | None = None,
+    kind: str | None = None,
+    draft: bool | None = None,
     limit: int = 50,
     include_field: bool = False,
 ) -> dict[str, Any]:
     """Unified recall from agent self-memory index (+ optional field decode)."""
     store_dir = store_dir.resolve()
-    rows = read_journal_entries(store_dir, domain=scope, concept=concept, limit=limit)
-
+    all_scopes = scope in (None, "", "*")
+    tag_filter = list(tags or [])
     if tag:
-        rows = [r for r in rows if tag in (r.get("tags") or [])]
-    if query:
-        needle = query.casefold()
-        rows = [
-            r
-            for r in rows
-            if needle in str(r.get("text") or "").casefold()
-            or needle in json.dumps(r.get("meta") or {}, ensure_ascii=False).casefold()
-        ]
+        tag_filter.append(tag)
 
-    out: dict[str, Any] = {"scope": scope, "count": len(rows), "records": rows}
+    rows = search_journal_entries(
+        store_dir,
+        domain=None if all_scopes else scope,
+        kind=kind,
+        concept=concept,
+        tags=tag_filter or None,
+        notebook=notebook,
+        query=query,
+        draft=draft,
+        limit=limit,
+    )
+    records = [{k: v for k, v in row.items() if k != "_domain"} for row in rows]
+
+    out: dict[str, Any] = {
+        "scope": "*" if all_scopes else scope,
+        "count": len(records),
+        "records": records,
+    }
 
     if include_field and state is not None:
         load_agent_prism(store_dir, state)
@@ -204,13 +241,19 @@ def main() -> None:
     sp_remember.add_argument("--concepts", nargs="*", default=[])
     sp_remember.add_argument("--tokens", nargs="*", default=[])
     sp_remember.add_argument("--tags", nargs="*", default=[])
+    sp_remember.add_argument("--notebook", default=None)
+    sp_remember.add_argument("--links", nargs="*", default=[])
 
     sp_recall = sub.add_parser("recall")
     sp_recall.add_argument("--store-dir", type=Path, required=True)
-    sp_recall.add_argument("--scope", default=DEFAULT_JOURNAL_SCOPE)
+    sp_recall.add_argument("--scope", default=DEFAULT_JOURNAL_SCOPE, help="Shard label or * for all")
     sp_recall.add_argument("--query", default=None)
     sp_recall.add_argument("--concept", default=None)
     sp_recall.add_argument("--tag", default=None)
+    sp_recall.add_argument("--tags", nargs="*", default=[])
+    sp_recall.add_argument("--notebook", default=None)
+    sp_recall.add_argument("--kind", default=None)
+    sp_recall.add_argument("--draft", action="store_true")
     sp_recall.add_argument("--limit", type=int, default=50)
     sp_recall.add_argument("--include-field", action="store_true")
 
@@ -227,6 +270,8 @@ def main() -> None:
                 "concepts": args.concepts,
                 "tokens": args.tokens,
                 "tags": args.tags,
+                "notebook": args.notebook,
+                "links": args.links or None,
             }
         fs = field_state_path(store_dir)
         state = ensure_prisms(load_field_state(fs)) if fs.is_file() else ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
@@ -234,13 +279,18 @@ def main() -> None:
     else:
         fs = field_state_path(store_dir)
         state = ensure_prisms(load_field_state(fs)) if fs.is_file() and args.include_field else None
+        scope = None if args.scope.strip() in ("", "*") else args.scope
         out = agent_recall(
             store_dir,
             state,
-            scope=args.scope,
+            scope=scope,
             query=args.query,
             concept=args.concept,
             tag=args.tag,
+            tags=args.tags or None,
+            notebook=args.notebook,
+            kind=args.kind,
+            draft=True if args.draft else None,
             limit=args.limit,
             include_field=args.include_field,
         )

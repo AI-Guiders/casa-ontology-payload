@@ -22,7 +22,8 @@ agent-store/{id}/              # e.g. sss-ru-lexicon (not corpus name)
 ├── ingest_log.ndjson         ← optional: corpus sources (Afan, bukvar, …)
 ├── journal/                  ← agent-owned prose (NOT in ltm/ export)
 │   ├── index.json
-│   └── math/entries.jsonl
+│   └── {scope}/entries.jsonl   ← FS shard = optional scope label (default `self`)
+│       # tags/meta.notebook — agent collections (Zettelkasten, drafts, …)
 ├── agent/                    ← agent-owned prism (lattices + nca; NOT in ltm/ export)
 │   ├── manifest.json
 │   ├── lattices/
@@ -58,6 +59,18 @@ Do **not** use `lab/nca_out_<corpus>_*/` for production — train in-place under
 **Код:** константы `STORE_TIER_*` в `casa/prisms/shared/store_layout.py`; flush — `casa/prisms/shared/store_persist.py`.
 
 **Неявная vs явная память:** [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md) § Неявная vs явная — tick/hippo/поле vs `agent_remember`.
+
+### Черновики и эксперименты (Self journal, не отдельный tier)
+
+Черновики — **записи в `journal/`** с `tags: ["draft"]`, опционально `meta.notebook` / `notebook:*` tag, `meta.status`, `meta.links` (Zettelkasten). Сколько «тетрадей» — решает агент.
+
+| kind | role |
+|------|------|
+| `hypothesis` / `experiment` | «кажется, step 2 → mul» + `test_cues` |
+| `question` | открытый вопрос |
+| `note` / `draft` | наблюдение без проверки |
+
+`meta.status`: `open` → `testing` → `confirmed` / `rejected` / `unclear`. **`workbook_check`** гоняет predict по `test_cues`. **`agent_promote`** — явный перенос confirmed (или `--allow-unconfirmed`) → hippo episode + sleep → поле/profile. Код: `agent_workbook.py`, `agent_promote.py`, CLI `agent_workbook`, `agent_promote`.
 
 ## Logical hierarchy
 
