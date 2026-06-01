@@ -1,0 +1,60 @@
+{
+  "schema_version": "casa_transfer_matrix_v1",
+  "description": "CASA runtime cross-prism routes (ADR-0021 R1). KB transfer matrices project here as resolve_route rows.",
+  "content_prism_stubs": [
+    {
+      "prism_id": "prism_lang_ru",
+      "stack": "design/prisms/memory/lang-ru-stack.json",
+      "note": "RU lexicon domain; lattices migrate from prism_memory on split"
+    },
+    {
+      "prism_id": "prism_math",
+      "stack": "design/prisms/memory/math-stack.json",
+      "note": "schema / math F0 domain"
+    }
+  ],
+  "routes": [
+    {
+      "match": { "modality": "schema" },
+      "target_prism": "prism_math",
+      "lattice_hint": "schema-math",
+      "priority": 100
+    },
+    {
+      "match": { "modality": "vis" },
+      "target_prism": "prism_visual",
+      "lattice_hint": "V1_object",
+      "priority": 95
+    },
+    {
+      "match": { "modality": "image" },
+      "target_prism": "prism_visual",
+      "lattice_hint": "V1_object",
+      "priority": 95
+    },
+    {
+      "match": { "modality": "t9", "locale": "{locale}" },
+      "target_prism": "prism_lang_ru",
+      "lattice_hint": "L2_word",
+      "priority": 55
+    },
+    {
+      "match": { "modality": "segment", "locale": "{locale}" },
+      "target_prism": "prism_lang_ru",
+      "lattice_hint": "L2_word",
+      "priority": 40
+    },
+    {
+      "match": { "modality": "listen", "locale": "{locale}" },
+      "target_prism": "prism_lang_ru",
+      "lattice_hint": "L2_word",
+      "priority": 35
+    },
+    {
+      "match": { "locale": "{locale}" },
+      "target_prism": "prism_memory",
+      "lattice_hint": null,
+      "priority": 10
+    }
+  ]
+}

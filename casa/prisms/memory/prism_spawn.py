@@ -308,6 +308,36 @@ def ensure_default_router_and_hot(state: dict) -> dict[str, Any]:
     return {"hot_context": PRISM_HOT_CONTEXT, "router": PRISM_ROUTER}
 
 
+def ensure_domain_content_stubs(state: dict) -> list[str]:
+    """Register empty content prisms from transfer matrix (ADR-0021 R2)."""
+    from casa.domain.transfer_matrix import content_prism_stubs
+
+    normalize_prisms(state)
+    created: list[str] = []
+    for spec in content_prism_stubs():
+        pid = spec["prism_id"]
+        block = prisms(state).get(pid)
+        if isinstance(block, dict) and str(block.get("kind") or "") == PRISM_KIND_CONTENT:
+            continue
+        spawn_prism(state, pid, kind=PRISM_KIND_CONTENT, stack=spec.get("stack"))
+        created.append(pid)
+    return created
+
+
+def ensure_multi_prism_bootstrap(state: dict) -> dict[str, Any]:
+    """Full multi-prism bootstrap: router+hot, domain stubs, thalamus (ADR-0016/0019/0024)."""
+    out = ensure_default_router_and_hot(state)
+    out["content_stubs"] = ensure_domain_content_stubs(state)
+    out["thalamus"] = ensure_control_thalamus_bootstrap(state)
+    try:
+        from casa.prisms.visual.ingest_vis import ensure_prism_visual
+
+        out["visual"] = ensure_prism_visual(state)
+    except (ImportError, OSError, ValueError):
+        out["visual"] = None
+    return out
+
+
 def list_content_prism_ids(state: dict) -> list[str]:
     """Content prism ids via domain catalog (ADR-0020 M2)."""
     field = FieldState.bind(state)
@@ -398,7 +428,11 @@ def main() -> None:
     p.add_argument("--lattice", metavar="LATTICE_ID", help="with --spawn: spawn_content_lattice")
     p.add_argument("--z-level", type=int, default=0)
     p.add_argument("--make-active", action="store_true")
-    p.add_argument("--bootstrap-only", action="store_true", help="ensure_default_router_and_hot only")
+    p.add_argument(
+        "--bootstrap-only",
+        action="store_true",
+        help="ensure_multi_prism_bootstrap (router, hot, domain stubs, thalamus)",
+    )
     p.add_argument("--write", action="store_true", help="save field_state.json")
     p.add_argument(
         "--compact-persist",
@@ -420,7 +454,7 @@ def main() -> None:
 
     out: dict[str, Any] = {}
     if args.bootstrap_only or not args.spawn:
-        out["bootstrap"] = ensure_default_router_and_hot(state)
+        out["bootstrap"] = ensure_multi_prism_bootstrap(state)
     if args.spawn:
         out["spawn"] = spawn_prism(state, args.spawn, kind=args.kind, make_active=args.make_active)
         if args.lattice:

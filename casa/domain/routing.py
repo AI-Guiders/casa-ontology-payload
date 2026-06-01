@@ -7,7 +7,8 @@ from dataclasses import dataclass
 from typing import Any
 
 from casa.domain.field_state import FieldState
-from casa.prisms.shared.prism_state import PRISM_MEMORY, PRISM_VISUAL
+from casa.domain.transfer_matrix import routes_from_transfer_matrix
+from casa.domain.prism_ids import PRISM_LANG_RU, PRISM_MATH, PRISM_MEMORY, PRISM_VISUAL
 
 
 @dataclass(frozen=True, slots=True)
@@ -119,6 +120,21 @@ class Router:
         self._field.bump_field_version()
         return route
 
+    def _content_prism_has_lattices(self, prism_id: str) -> bool:
+        from casa.domain.prism_ids import PRISM_MEMORY
+        from casa.domain.prism_wire import prism_memory, prisms
+
+        block = prisms(self._field.wire).get(prism_id)
+        if not isinstance(block, dict):
+            return False
+        if block.get("lattices"):
+            return True
+        if prism_id == PRISM_MEMORY:
+            mem = prism_memory(self._field.wire).get("lattices") or {}
+            legacy = (self._field.wire.get("sss") or {}).get("lattices") or {}
+            return bool(mem or legacy)
+        return False
+
     def resolve(self, ctx: RouteContext) -> RouteTarget:
         best: RouteTarget | None = None
         best_score = -1
@@ -133,6 +149,17 @@ class Router:
                     matched=dict(route.match),
                 )
         if best is not None and best_score >= 0:
+            if not self._content_prism_has_lattices(best.prism_id):
+                fb = self._field.profile_default_content_prism() or PRISM_MEMORY
+                matched = dict(best.matched or {})
+                matched["logical_prism"] = best.prism_id
+                matched["fallback"] = fb
+                return RouteTarget(
+                    prism_id=fb,
+                    lattice_hint=best.lattice_hint,
+                    route_index=best.route_index,
+                    matched=matched,
+                )
             return best
         profile_default = self._field.profile_default_content_prism()
         if profile_default:
@@ -148,33 +175,29 @@ class Router:
     def bootstrap_defaults(self, *, locale: str = "ru", force: bool = False) -> list[Route]:
         if self._prism.routes and not force:
             return self.routes()
-        loc = _norm(locale)
-        defaults = [
-            Route(
-                match={"modality": "schema"},
-                target_prism=PRISM_MEMORY,
-                lattice_hint="schema-math",
-                priority=100,
-            ),
-            Route(
-                match={"modality": "vis"},
-                target_prism=PRISM_VISUAL,
-                lattice_hint="V1_object",
-                priority=95,
-            ),
-            Route(
-                match={"modality": "image"},
-                target_prism=PRISM_VISUAL,
-                lattice_hint="V1_object",
-                priority=95,
-            ),
-            Route(
-                match={"modality": "t9", "locale": loc},
-                target_prism=PRISM_MEMORY,
-                lattice_hint="L2_word",
-                priority=50,
-            ),
-        ]
+        defaults = routes_from_transfer_matrix(locale=locale)
+        if not defaults:
+            loc = _norm(locale)
+            defaults = [
+                Route(
+                    match={"modality": "schema"},
+                    target_prism=PRISM_MATH,
+                    lattice_hint="schema-math",
+                    priority=100,
+                ),
+                Route(
+                    match={"modality": "vis"},
+                    target_prism=PRISM_VISUAL,
+                    lattice_hint="V1_object",
+                    priority=95,
+                ),
+                Route(
+                    match={"modality": "t9", "locale": loc},
+                    target_prism=PRISM_LANG_RU,
+                    lattice_hint="L2_word",
+                    priority=50,
+                ),
+            ]
         self.set_routes(defaults)
         return defaults
 

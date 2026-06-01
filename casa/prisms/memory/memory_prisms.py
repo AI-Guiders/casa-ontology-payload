@@ -57,9 +57,11 @@ def ensure_cylinders(state: dict) -> dict:
     hip["lattices"].setdefault(EPISODIC_SURFACE, empty_hippo_lattice())
     hip.setdefault("episodes", list(hip.get("episodes") or []))
 
-    from casa.prisms.memory.prism_spawn import ensure_default_router_and_hot
+    if not state.get("_multi_prism_bootstrapped"):
+        state["_multi_prism_bootstrapped"] = True
+        from casa.prisms.memory.prism_spawn import ensure_multi_prism_bootstrap
 
-    ensure_default_router_and_hot(state)
+        ensure_multi_prism_bootstrap(state)
 
     mem = prism_memory(state)
     if mem.get("lattices"):
