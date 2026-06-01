@@ -1,0 +1,671 @@
+{
+  "store": "math-l0-lab",
+  "lessons": [
+    {
+      "cue": "|| + || = ||||",
+      "correct": "||||",
+      "concept_id": "math.op.add",
+      "scene": "sticks_add",
+      "id": "ep-8508454"
+    },
+    {
+      "cue": "| + | = ||",
+      "correct": "||",
+      "concept_id": "math.op.add",
+      "scene": "sticks_add",
+      "id": "ep-8508454"
+    },
+    {
+      "cue": "2 + 2 = 4",
+      "correct": "4",
+      "concept_id": "math.op.add",
+      "scene": "numeric_add",
+      "id": "ep-8508454"
+    },
+    {
+      "cue": "1 + 1 = 2",
+      "correct": "2",
+      "concept_id": "math.op.add",
+      "scene": "numeric_add",
+      "id": "ep-8508454"
+    },
+    {
+      "cue": "I + III = IV",
+      "correct": "IV",
+      "concept_id": "math.op.add",
+      "scene": "roman_add",
+      "id": "ep-8508454"
+    },
+    {
+      "cue": "II + II = IV",
+      "correct": "IV",
+      "concept_id": "math.op.add",
+      "scene": "roman_add",
+      "id": "ep-8508454"
+    },
+    {
+      "cue": "I + III = ||||",
+      "correct": "||||",
+      "concept_id": "math.op.add",
+      "scene": "roman_as_sticks",
+      "id": "ep-8508455"
+    },
+    {
+      "cue": "||| - || = |",
+      "correct": "|",
+      "concept_id": "math.op.sub",
+      "scene": "sticks_sub",
+      "id": "ep-8508455"
+    },
+    {
+      "cue": "III - II = I",
+      "correct": "I",
+      "concept_id": "math.op.sub",
+      "scene": "roman_sub",
+      "id": "ep-8508455"
+    },
+    {
+      "cue": "IV - I = III",
+      "correct": "III",
+      "concept_id": "math.op.sub",
+      "scene": "roman_sub",
+      "id": "ep-8508455"
+    },
+    {
+      "cue": "V - IV = I",
+      "correct": "I",
+      "concept_id": "math.op.sub",
+      "scene": "roman_sub",
+      "id": "ep-8508455"
+    },
+    {
+      "cue": "3 - 2 = 1",
+      "correct": "1",
+      "concept_id": "math.op.sub",
+      "scene": "numeric_sub",
+      "id": "ep-8508455"
+    }
+  ],
+  "sleep_merged": 12,
+  "sleep_extracts": [
+    {
+      "skipped": true,
+      "concept_id": "math.op.add",
+      "glyph": "+",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "skipped": true,
+      "concept_id": "math.op.add",
+      "glyph": "+",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "skipped": true,
+      "concept_id": "math.op.add",
+      "glyph": "+",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "skipped": true,
+      "concept_id": "math.op.add",
+      "glyph": "+",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "skipped": true,
+      "concept_id": "math.op.add",
+      "glyph": "+",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "skipped": true,
+      "concept_id": "math.op.add",
+      "glyph": "+",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "skipped": true,
+      "concept_id": "math.op.add",
+      "glyph": "+",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "skipped": true,
+      "concept_id": "math.op.sub",
+      "glyph": "-",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "skipped": true,
+      "concept_id": "math.op.sub",
+      "glyph": "-",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "skipped": true,
+      "concept_id": "math.op.sub",
+      "glyph": "-",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "skipped": true,
+      "concept_id": "math.op.sub",
+      "glyph": "-",
+      "context": "math.ctx.arithmetic"
+    },
+    {
+      "skipped": true,
+      "concept_id": "math.op.sub",
+      "glyph": "-",
+      "context": "math.ctx.arithmetic"
+    }
+  ],
+  "predict": [
+    {
+      "cue": "|| + || = ||||",
+      "expect_op": "math.op.add",
+      "verdict": "provisional",
+      "hypothesis": "math.op.add",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          20
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "|| + ||",
+      "expect_op": "math.op.add",
+      "verdict": "provisional",
+      "hypothesis": "math.op.add",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          20
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "| + | = ||",
+      "expect_op": "math.op.add",
+      "verdict": "provisional",
+      "hypothesis": "math.op.add",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          20
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "| + |",
+      "expect_op": "math.op.add",
+      "verdict": "provisional",
+      "hypothesis": "math.op.add",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          20
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "2 + 2 = 4",
+      "expect_op": "math.op.add",
+      "verdict": "provisional",
+      "hypothesis": "math.op.add",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          21
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "2 + 2",
+      "expect_op": "math.op.add",
+      "verdict": "provisional",
+      "hypothesis": "math.op.add",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          21
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "1 + 1 = 2",
+      "expect_op": "math.op.add",
+      "verdict": "provisional",
+      "hypothesis": "math.op.add",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          21
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "I + III = IV",
+      "expect_op": "math.op.add",
+      "verdict": "provisional",
+      "hypothesis": "math.op.add",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          20
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "I + III",
+      "expect_op": "math.op.add",
+      "verdict": "provisional",
+      "hypothesis": "math.op.add",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.add",
+          20
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "III - II = I",
+      "expect_op": "math.op.sub",
+      "verdict": "pass",
+      "hypothesis": "math.op.sub",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.sub",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ],
+        [
+          "math.num.two",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "III - II",
+      "expect_op": "math.op.sub",
+      "verdict": "pass",
+      "hypothesis": "math.op.sub",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.sub",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ],
+        [
+          "math.num.two",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "IV - I = III",
+      "expect_op": "math.op.sub",
+      "verdict": "pass",
+      "hypothesis": "math.op.sub",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.sub",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ],
+        [
+          "math.num.two",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "IV - I",
+      "expect_op": "math.op.sub",
+      "verdict": "pass",
+      "hypothesis": "math.op.sub",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.sub",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ],
+        [
+          "math.num.two",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "||| - || = |",
+      "expect_op": "math.op.sub",
+      "verdict": "pass",
+      "hypothesis": "math.op.sub",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.sub",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ],
+        [
+          "math.num.two",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "3 - 2 = 1",
+      "expect_op": "math.op.sub",
+      "verdict": "pass",
+      "hypothesis": "math.op.sub",
+      "unbound": [],
+      "top4": [
+        [
+          "math.op.sub",
+          20
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ],
+        [
+          "math.num.two",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "||||",
+      "expect_op": null,
+      "verdict": "fail",
+      "hypothesis": "math.num.one",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.one",
+          9
+        ],
+        [
+          "math.num.three",
+          9
+        ],
+        [
+          "math.num.two",
+          5
+        ],
+        [
+          "math.op.add",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "||",
+      "expect_op": null,
+      "verdict": "fail",
+      "hypothesis": "math.num.two",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.two",
+          9
+        ],
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ],
+        [
+          "math.op.add",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "|",
+      "expect_op": null,
+      "verdict": "fail",
+      "hypothesis": "math.num.one",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.one",
+          21
+        ],
+        [
+          "math.num.three",
+          5
+        ],
+        [
+          "math.num.two",
+          5
+        ],
+        [
+          "math.op.add",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "IV",
+      "expect_op": null,
+      "verdict": "fail",
+      "hypothesis": "math.num.one",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ],
+        [
+          "math.num.two",
+          5
+        ],
+        [
+          "math.op.add",
+          5
+        ]
+      ]
+    },
+    {
+      "cue": "I",
+      "expect_op": null,
+      "verdict": "fail",
+      "hypothesis": "math.num.one",
+      "unbound": [],
+      "top4": [
+        [
+          "math.num.one",
+          5
+        ],
+        [
+          "math.num.three",
+          5
+        ],
+        [
+          "math.num.two",
+          5
+        ],
+        [
+          "math.op.add",
+          5
+        ]
+      ]
+    }
+  ],
+  "denotes_edges": [
+    "grapheme.latn.+@math.ctx.arithmetic|denotes|math.op.add",
+    "grapheme.latn.+@math.ctx.string|denotes|math.op.concat",
+    "grapheme.latn.-@math.ctx.arithmetic|denotes|math.op.sub"
+  ]
+}

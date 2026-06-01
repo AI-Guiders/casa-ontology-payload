@@ -1,0 +1,1339 @@
+{
+  "clean": {
+    "removed": []
+  },
+  "curriculum": {
+    "store": "math-l0-lab",
+    "fresh": true,
+    "phases": [
+      {
+        "name": "0_bootstrap_add",
+        "passed": true,
+        "sleep_merged": 2,
+        "lessons": 2,
+        "checks": [
+          {
+            "label": "| + |",
+            "cue": "| + |",
+            "expect": "math.op.add",
+            "verdict": "pass",
+            "hypothesis": "math.op.add",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.add",
+                20
+              ],
+              [
+                "math.op.concat",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "|| + ||",
+            "cue": "|| + ||",
+            "expect": "math.op.add",
+            "verdict": "pass",
+            "hypothesis": "math.op.add",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.add",
+                20
+              ],
+              [
+                "math.op.concat",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "name": "1_emergent_minus",
+        "passed": true,
+        "sleep_merged": 2,
+        "lessons": 2,
+        "checks": [
+          {
+            "label": "||| - || = |",
+            "cue": "||| - || = |",
+            "expect": "math.op.sub",
+            "verdict": "pass",
+            "hypothesis": "math.op.sub",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.sub",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "||| - ||",
+            "cue": "||| - ||",
+            "expect": "math.op.sub",
+            "verdict": "pass",
+            "hypothesis": "math.op.sub",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.sub",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "|||| - |",
+            "cue": "|||| - |",
+            "expect": "math.op.sub",
+            "verdict": "pass",
+            "hypothesis": "math.op.sub",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.sub",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "name": "2_verify_minus",
+        "passed": true,
+        "sleep_merged": 0,
+        "lessons": 0,
+        "checks": [
+          {
+            "label": "|||| - | = |||",
+            "cue": "|||| - | = |||",
+            "expect": "math.op.sub",
+            "verdict": "pass",
+            "hypothesis": "math.op.sub",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.sub",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "|||| - |",
+            "cue": "|||| - |",
+            "expect": "math.op.sub",
+            "verdict": "pass",
+            "hypothesis": "math.op.sub",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.sub",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "name": "3_arabic_digits",
+        "passed": true,
+        "sleep_merged": 12,
+        "lessons": 12,
+        "checks": [
+          {
+            "label": "4",
+            "cue": "4",
+            "expect": "math.num.four",
+            "verdict": "pass",
+            "hypothesis": "math.num.four",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.four",
+                32
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "7",
+            "cue": "7",
+            "expect": "math.num.seven",
+            "verdict": "pass",
+            "hypothesis": "math.num.seven",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.seven",
+                32
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "0",
+            "cue": "0",
+            "expect": "math.num.zero",
+            "verdict": "pass",
+            "hypothesis": "math.num.zero",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.zero",
+                32
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "3 - 2 = 1",
+            "cue": "3 - 2 = 1",
+            "expect": "math.op.sub",
+            "verdict": "pass",
+            "hypothesis": "math.op.sub",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.sub",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "2 + 2",
+            "cue": "2 + 2",
+            "expect": "math.op.add",
+            "verdict": "pass",
+            "hypothesis": "math.op.add",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.add",
+                21
+              ],
+              [
+                "math.op.concat",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "name": "4_roman_teacher",
+        "passed": true,
+        "sleep_merged": 13,
+        "lessons": 14,
+        "checks": [
+          {
+            "label": "I",
+            "cue": "I",
+            "expect": "math.num.one",
+            "verdict": "pass",
+            "hypothesis": "math.num.one",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.one",
+                19
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "IV",
+            "cue": "IV",
+            "expect": "math.num.four",
+            "verdict": "pass",
+            "hypothesis": "math.num.four",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.four",
+                19
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "VI",
+            "cue": "VI",
+            "expect": "math.num.six",
+            "verdict": "pass",
+            "hypothesis": "math.num.six",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.six",
+                19
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "IX",
+            "cue": "IX",
+            "expect": "math.num.nine",
+            "verdict": "pass",
+            "hypothesis": "math.num.nine",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.nine",
+                19
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "III - II",
+            "cue": "III - II",
+            "expect": "math.op.sub",
+            "verdict": "pass",
+            "hypothesis": "math.op.sub",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.sub",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "name": "5_teens_compose",
+        "passed": true,
+        "sleep_merged": 19,
+        "lessons": 19,
+        "checks": [
+          {
+            "label": "10",
+            "cue": "10",
+            "expect": "math.num.ten",
+            "verdict": "pass",
+            "hypothesis": "math.num.ten",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.ten",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "11",
+            "cue": "11",
+            "expect": "math.num.eleven",
+            "verdict": "pass",
+            "hypothesis": "math.num.eleven",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.eleven",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "15",
+            "cue": "15",
+            "expect": "math.num.fifteen",
+            "verdict": "pass",
+            "hypothesis": "math.num.fifteen",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.fifteen",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "10 + 3 = 13",
+            "cue": "10 + 3 = 13",
+            "expect": "math.op.add",
+            "verdict": "pass",
+            "hypothesis": "math.op.add",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.add",
+                21
+              ],
+              [
+                "math.op.concat",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "10 + 7",
+            "cue": "10 + 7",
+            "expect": "math.op.add",
+            "verdict": "pass",
+            "hypothesis": "math.op.add",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.add",
+                21
+              ],
+              [
+                "math.op.concat",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "name": "6_numeral_names_ru_en",
+        "passed": true,
+        "sleep_merged": 14,
+        "lessons": 14,
+        "checks": [
+          {
+            "label": "20",
+            "cue": "20",
+            "expect": "math.num.twenty",
+            "verdict": "pass",
+            "hypothesis": "math.num.twenty",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.twenty",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "13",
+            "cue": "13",
+            "expect": "math.num.thirteen",
+            "verdict": "pass",
+            "hypothesis": "math.num.thirteen",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.thirteen",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "21",
+            "cue": "21",
+            "expect": "math.num.twenty_one",
+            "verdict": "pass",
+            "hypothesis": "math.num.twenty_one",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.twenty_one",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "10 + 10 = 20",
+            "cue": "10 + 10 = 20",
+            "expect": "math.op.add",
+            "verdict": "pass",
+            "hypothesis": "math.op.add",
+            "unbound": [],
+            "top3": [
+              [
+                "math.op.add",
+                21
+              ],
+              [
+                "math.op.concat",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "name": "7_skip_counting",
+        "passed": true,
+        "sleep_merged": 24,
+        "lessons": 24,
+        "checks": [
+          {
+            "label": "14",
+            "cue": "14",
+            "expect": "math.num.fourteen",
+            "verdict": "pass",
+            "hypothesis": "math.num.fourteen",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.fourteen",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "18",
+            "cue": "18",
+            "expect": "math.num.eighteen",
+            "verdict": "pass",
+            "hypothesis": "math.num.eighteen",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.eighteen",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eleven",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "15",
+            "cue": "15",
+            "expect": "math.num.fifteen",
+            "verdict": "pass",
+            "hypothesis": "math.num.fifteen",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.fifteen",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          },
+          {
+            "label": "21",
+            "cue": "21",
+            "expect": "math.num.twenty_one",
+            "verdict": "pass",
+            "hypothesis": "math.num.twenty_one",
+            "unbound": [],
+            "top3": [
+              [
+                "math.num.twenty_one",
+                20
+              ],
+              [
+                "math.num.eight",
+                5
+              ],
+              [
+                "math.num.eighteen",
+                5
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "all_passed": true
+  },
+  "predict_after_curriculum": [
+    {
+      "label": "sticks add",
+      "cue": "| + | = ||",
+      "expect": "math.op.add",
+      "verdict": "provisional",
+      "hypothesis": "math.op.add",
+      "unbound": [],
+      "top3": [
+        [
+          "math.op.add",
+          20
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "label": "add infix",
+      "cue": "|| + ||",
+      "expect": "math.op.add",
+      "verdict": "provisional",
+      "hypothesis": "math.op.add",
+      "unbound": [],
+      "top3": [
+        [
+          "math.op.add",
+          20
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "label": "sticks sub eq",
+      "cue": "||| - || = |",
+      "expect": "math.op.sub",
+      "verdict": "pass",
+      "hypothesis": "math.op.sub",
+      "unbound": [],
+      "top3": [
+        [
+          "math.op.sub",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "label": "sub infix",
+      "cue": "||| - ||",
+      "expect": "math.op.sub",
+      "verdict": "pass",
+      "hypothesis": "math.op.sub",
+      "unbound": [],
+      "top3": [
+        [
+          "math.op.sub",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "label": "numeric add",
+      "cue": "2 + 2 = 4",
+      "expect": "math.op.add",
+      "verdict": "provisional",
+      "hypothesis": "math.op.add",
+      "unbound": [],
+      "top3": [
+        [
+          "math.op.add",
+          21
+        ],
+        [
+          "math.op.concat",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    },
+    {
+      "label": "roman sub",
+      "cue": "III - II = I",
+      "expect": "math.op.sub",
+      "verdict": "pass",
+      "hypothesis": "math.op.sub",
+      "unbound": [],
+      "top3": [
+        [
+          "math.op.sub",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "label": "teen numeral",
+      "cue": "14",
+      "expect": "math.num.fourteen",
+      "verdict": "pass",
+      "hypothesis": "math.num.fourteen",
+      "unbound": [],
+      "top3": [
+        [
+          "math.num.fourteen",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "label": "skip pattern",
+      "cue": "21",
+      "expect": "math.num.twenty_one",
+      "verdict": "pass",
+      "hypothesis": "math.num.twenty_one",
+      "unbound": [],
+      "top3": [
+        [
+          "math.num.twenty_one",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    }
+  ],
+  "free_probe_predict": [
+    {
+      "query": "||| - ||",
+      "verdict": "fail",
+      "hypothesis": "math.op.sub",
+      "unbound": []
+    },
+    {
+      "query": "14",
+      "verdict": "fail",
+      "hypothesis": "math.num.fourteen",
+      "unbound": []
+    },
+    {
+      "query": "21",
+      "verdict": "fail",
+      "hypothesis": "math.num.twenty_one",
+      "unbound": []
+    },
+    {
+      "query": "2 + 2 = ?",
+      "verdict": "fail",
+      "hypothesis": "math.op.add",
+      "unbound": []
+    }
+  ],
+  "agent_self_tier": {
+    "written": [
+      {
+        "id": "j-42830a9b98a3",
+        "text": "stick subtraction: three minus two leaves one",
+        "notebook": "sticks-l0"
+      },
+      {
+        "id": "j-dc2430f79774",
+        "text": "14 names math.num.fourteen after teens lessons",
+        "notebook": "numerals-l0"
+      }
+    ],
+    "checked": [
+      {
+        "id": "j-42830a9b98a3",
+        "status": "confirmed",
+        "passes": 2
+      },
+      {
+        "id": "j-dc2430f79774",
+        "status": "confirmed",
+        "passes": 1
+      }
+    ],
+    "recall_sticks_l0": {
+      "scope": "*",
+      "count": 2,
+      "records": [
+        {
+          "id": "j-42830a9b98a3",
+          "ts": "2026-05-31T23:49:33Z",
+          "kind": "hypothesis",
+          "text": "stick subtraction: three minus two leaves one",
+          "concepts": [
+            "math.op.sub"
+          ],
+          "tokens": [],
+          "tags": [
+            "draft",
+            "notebook:sticks-l0"
+          ],
+          "meta": {
+            "draft": true,
+            "status": "confirmed",
+            "test_cues": [
+              "||| - ||",
+              "||| - || = |"
+            ],
+            "checks": [
+              {
+                "runs": [
+                  {
+                    "cue": "||| - ||",
+                    "expect": "math.op.sub",
+                    "verdict": "pass",
+                    "hypothesis": "math.op.sub",
+                    "unbound": []
+                  },
+                  {
+                    "cue": "||| - || = |",
+                    "expect": "math.op.sub",
+                    "verdict": "pass",
+                    "hypothesis": "math.op.sub",
+                    "unbound": []
+                  }
+                ],
+                "passes": 2,
+                "total": 2,
+                "status": "confirmed"
+              }
+            ],
+            "notebook": "sticks-l0",
+            "expect": "math.op.sub",
+            "last_check": [
+              {
+                "cue": "||| - ||",
+                "expect": "math.op.sub",
+                "verdict": "pass",
+                "hypothesis": "math.op.sub",
+                "unbound": []
+              },
+              {
+                "cue": "||| - || = |",
+                "expect": "math.op.sub",
+                "verdict": "pass",
+                "hypothesis": "math.op.sub",
+                "unbound": []
+              }
+            ]
+          },
+          "updated_at": "2026-05-31T23:49:33Z"
+        },
+        {
+          "id": "j-dc2430f79774",
+          "ts": "2026-05-31T23:49:33Z",
+          "kind": "hypothesis",
+          "text": "14 names math.num.fourteen after teens lessons",
+          "concepts": [
+            "math.num.fourteen"
+          ],
+          "tokens": [],
+          "tags": [
+            "draft",
+            "notebook:numerals-l0"
+          ],
+          "meta": {
+            "draft": true,
+            "status": "confirmed",
+            "test_cues": [
+              "14"
+            ],
+            "checks": [
+              {
+                "runs": [
+                  {
+                    "cue": "14",
+                    "expect": "math.num.fourteen",
+                    "verdict": "pass",
+                    "hypothesis": "math.num.fourteen",
+                    "unbound": []
+                  }
+                ],
+                "passes": 1,
+                "total": 1,
+                "status": "confirmed"
+              }
+            ],
+            "notebook": "numerals-l0",
+            "expect": "math.num.fourteen",
+            "last_check": [
+              {
+                "cue": "14",
+                "expect": "math.num.fourteen",
+                "verdict": "pass",
+                "hypothesis": "math.num.fourteen",
+                "unbound": []
+              }
+            ]
+          },
+          "updated_at": "2026-05-31T23:49:33Z"
+        }
+      ]
+    },
+    "open_drafts": [],
+    "confirmed": [
+      {
+        "id": "j-42830a9b98a3",
+        "ts": "2026-05-31T23:49:33Z",
+        "kind": "hypothesis",
+        "text": "stick subtraction: three minus two leaves one",
+        "concepts": [
+          "math.op.sub"
+        ],
+        "tokens": [],
+        "tags": [
+          "draft",
+          "notebook:sticks-l0"
+        ],
+        "meta": {
+          "draft": true,
+          "status": "confirmed",
+          "test_cues": [
+            "||| - ||",
+            "||| - || = |"
+          ],
+          "checks": [
+            {
+              "runs": [
+                {
+                  "cue": "||| - ||",
+                  "expect": "math.op.sub",
+                  "verdict": "pass",
+                  "hypothesis": "math.op.sub",
+                  "unbound": []
+                },
+                {
+                  "cue": "||| - || = |",
+                  "expect": "math.op.sub",
+                  "verdict": "pass",
+                  "hypothesis": "math.op.sub",
+                  "unbound": []
+                }
+              ],
+              "passes": 2,
+              "total": 2,
+              "status": "confirmed"
+            }
+          ],
+          "notebook": "sticks-l0",
+          "expect": "math.op.sub",
+          "last_check": [
+            {
+              "cue": "||| - ||",
+              "expect": "math.op.sub",
+              "verdict": "pass",
+              "hypothesis": "math.op.sub",
+              "unbound": []
+            },
+            {
+              "cue": "||| - || = |",
+              "expect": "math.op.sub",
+              "verdict": "pass",
+              "hypothesis": "math.op.sub",
+              "unbound": []
+            }
+          ]
+        },
+        "updated_at": "2026-05-31T23:49:33Z"
+      },
+      {
+        "id": "j-dc2430f79774",
+        "ts": "2026-05-31T23:49:33Z",
+        "kind": "hypothesis",
+        "text": "14 names math.num.fourteen after teens lessons",
+        "concepts": [
+          "math.num.fourteen"
+        ],
+        "tokens": [],
+        "tags": [
+          "draft",
+          "notebook:numerals-l0"
+        ],
+        "meta": {
+          "draft": true,
+          "status": "confirmed",
+          "test_cues": [
+            "14"
+          ],
+          "checks": [
+            {
+              "runs": [
+                {
+                  "cue": "14",
+                  "expect": "math.num.fourteen",
+                  "verdict": "pass",
+                  "hypothesis": "math.num.fourteen",
+                  "unbound": []
+                }
+              ],
+              "passes": 1,
+              "total": 1,
+              "status": "confirmed"
+            }
+          ],
+          "notebook": "numerals-l0",
+          "expect": "math.num.fourteen",
+          "last_check": [
+            {
+              "cue": "14",
+              "expect": "math.num.fourteen",
+              "verdict": "pass",
+              "hypothesis": "math.num.fourteen",
+              "unbound": []
+            }
+          ]
+        },
+        "updated_at": "2026-05-31T23:49:33Z"
+      }
+    ]
+  },
+  "journal": {
+    "stats": {
+      "schema_version": 1,
+      "domain_count": 1,
+      "entry_count": 2,
+      "bytes": 1823,
+      "domains": [
+        {
+          "domain": "self",
+          "entry_count": 2,
+          "updated_at": "2026-05-31T23:49:33Z"
+        }
+      ]
+    },
+    "entries": [
+      {
+        "id": "j-42830a9b98a3",
+        "ts": "2026-05-31T23:49:33Z",
+        "kind": "hypothesis",
+        "text": "stick subtraction: three minus two leaves one",
+        "concepts": [
+          "math.op.sub"
+        ],
+        "tokens": [],
+        "tags": [
+          "draft",
+          "notebook:sticks-l0"
+        ],
+        "meta": {
+          "draft": true,
+          "status": "confirmed",
+          "test_cues": [
+            "||| - ||",
+            "||| - || = |"
+          ],
+          "checks": [
+            {
+              "runs": [
+                {
+                  "cue": "||| - ||",
+                  "expect": "math.op.sub",
+                  "verdict": "pass",
+                  "hypothesis": "math.op.sub",
+                  "unbound": []
+                },
+                {
+                  "cue": "||| - || = |",
+                  "expect": "math.op.sub",
+                  "verdict": "pass",
+                  "hypothesis": "math.op.sub",
+                  "unbound": []
+                }
+              ],
+              "passes": 2,
+              "total": 2,
+              "status": "confirmed"
+            }
+          ],
+          "notebook": "sticks-l0",
+          "expect": "math.op.sub",
+          "last_check": [
+            {
+              "cue": "||| - ||",
+              "expect": "math.op.sub",
+              "verdict": "pass",
+              "hypothesis": "math.op.sub",
+              "unbound": []
+            },
+            {
+              "cue": "||| - || = |",
+              "expect": "math.op.sub",
+              "verdict": "pass",
+              "hypothesis": "math.op.sub",
+              "unbound": []
+            }
+          ]
+        },
+        "updated_at": "2026-05-31T23:49:33Z"
+      },
+      {
+        "id": "j-dc2430f79774",
+        "ts": "2026-05-31T23:49:33Z",
+        "kind": "hypothesis",
+        "text": "14 names math.num.fourteen after teens lessons",
+        "concepts": [
+          "math.num.fourteen"
+        ],
+        "tokens": [],
+        "tags": [
+          "draft",
+          "notebook:numerals-l0"
+        ],
+        "meta": {
+          "draft": true,
+          "status": "confirmed",
+          "test_cues": [
+            "14"
+          ],
+          "checks": [
+            {
+              "runs": [
+                {
+                  "cue": "14",
+                  "expect": "math.num.fourteen",
+                  "verdict": "pass",
+                  "hypothesis": "math.num.fourteen",
+                  "unbound": []
+                }
+              ],
+              "passes": 1,
+              "total": 1,
+              "status": "confirmed"
+            }
+          ],
+          "notebook": "numerals-l0",
+          "expect": "math.num.fourteen",
+          "last_check": [
+            {
+              "cue": "14",
+              "expect": "math.num.fourteen",
+              "verdict": "pass",
+              "hypothesis": "math.num.fourteen",
+              "unbound": []
+            }
+          ]
+        },
+        "updated_at": "2026-05-31T23:49:33Z"
+      }
+    ]
+  },
+  "hippo_pending": [
+    {
+      "id": "ep-1373501",
+      "cue": "roman",
+      "concept_id": null,
+      "consolidated": false
+    }
+  ]
+}

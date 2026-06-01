@@ -1,0 +1,891 @@
+{
+  "store": "math-l0-lab",
+  "fresh": true,
+  "phases": [
+    {
+      "name": "0_bootstrap_add",
+      "passed": true,
+      "sleep_merged": 2,
+      "lessons": 2,
+      "checks": [
+        {
+          "label": "| + |",
+          "cue": "| + |",
+          "expect": "math.op.add",
+          "verdict": "pass",
+          "hypothesis": "math.op.add",
+          "predict_before": "math.op.add",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.add",
+              20
+            ],
+            [
+              "math.op.concat",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "|| + ||",
+          "cue": "|| + ||",
+          "expect": "math.op.add",
+          "verdict": "pass",
+          "hypothesis": "math.op.add",
+          "predict_before": "math.op.add",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.add",
+              20
+            ],
+            [
+              "math.op.concat",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ]
+          ]
+        }
+      ],
+      "autonomous_retained": []
+    },
+    {
+      "name": "1_emergent_minus",
+      "passed": true,
+      "sleep_merged": 2,
+      "lessons": 2,
+      "checks": [
+        {
+          "label": "||| - || = |",
+          "cue": "||| - || = |",
+          "expect": "math.op.sub",
+          "verdict": "pass",
+          "hypothesis": "math.op.sub",
+          "predict_before": "math.op.sub",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.sub",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "||| - ||",
+          "cue": "||| - ||",
+          "expect": "math.op.sub",
+          "verdict": "pass",
+          "hypothesis": "math.op.sub",
+          "predict_before": "math.op.sub",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.sub",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "|||| - |",
+          "cue": "|||| - |",
+          "expect": "math.op.sub",
+          "verdict": "pass",
+          "hypothesis": "math.op.sub",
+          "predict_before": "math.op.sub",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.sub",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        }
+      ],
+      "autonomous_retained": []
+    },
+    {
+      "name": "2_verify_minus",
+      "passed": true,
+      "sleep_merged": 0,
+      "lessons": 0,
+      "checks": [
+        {
+          "label": "|||| - | = |||",
+          "cue": "|||| - | = |||",
+          "expect": "math.op.sub",
+          "verdict": "pass",
+          "hypothesis": "math.op.sub",
+          "predict_before": "math.op.sub",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.sub",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "|||| - |",
+          "cue": "|||| - |",
+          "expect": "math.op.sub",
+          "verdict": "pass",
+          "hypothesis": "math.op.sub",
+          "predict_before": "math.op.sub",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.sub",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        }
+      ],
+      "autonomous_retained": []
+    },
+    {
+      "name": "3_arabic_digits",
+      "passed": true,
+      "sleep_merged": 13,
+      "lessons": 12,
+      "checks": [
+        {
+          "label": "4",
+          "cue": "4",
+          "expect": "math.num.four",
+          "verdict": "pass",
+          "hypothesis": "math.num.four",
+          "predict_before": "math.num.four",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.four",
+              32
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "7",
+          "cue": "7",
+          "expect": "math.num.seven",
+          "verdict": "pass",
+          "hypothesis": "math.num.seven",
+          "predict_before": "math.num.seven",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.seven",
+              32
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "0",
+          "cue": "0",
+          "expect": "math.num.zero",
+          "verdict": "pass",
+          "hypothesis": "math.num.zero",
+          "predict_before": "math.num.zero",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.zero",
+              32
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "3 - 2 = 1",
+          "cue": "3 - 2 = 1",
+          "expect": "math.op.sub",
+          "verdict": "pass",
+          "hypothesis": "math.op.sub",
+          "predict_before": "math.op.sub",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.sub",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "2 + 2",
+          "cue": "2 + 2",
+          "expect": "math.op.add",
+          "verdict": "pass",
+          "hypothesis": "math.op.add",
+          "predict_before": "math.op.add",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.add",
+              21
+            ],
+            [
+              "math.op.concat",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ]
+          ]
+        }
+      ],
+      "autonomous_retained": []
+    },
+    {
+      "name": "4_roman_teacher",
+      "passed": true,
+      "sleep_merged": 13,
+      "lessons": 14,
+      "checks": [
+        {
+          "label": "I",
+          "cue": "I",
+          "expect": "math.num.one",
+          "verdict": "pass",
+          "hypothesis": "math.num.one",
+          "predict_before": "math.num.one",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.one",
+              19
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "IV",
+          "cue": "IV",
+          "expect": "math.num.four",
+          "verdict": "pass",
+          "hypothesis": "math.num.four",
+          "predict_before": "math.num.four",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.four",
+              19
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "VI",
+          "cue": "VI",
+          "expect": "math.num.six",
+          "verdict": "pass",
+          "hypothesis": "math.num.six",
+          "predict_before": "math.num.six",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.six",
+              19
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "IX",
+          "cue": "IX",
+          "expect": "math.num.nine",
+          "verdict": "pass",
+          "hypothesis": "math.num.nine",
+          "predict_before": "math.num.nine",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.nine",
+              19
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "III - II",
+          "cue": "III - II",
+          "expect": "math.op.sub",
+          "verdict": "pass",
+          "hypothesis": "math.op.sub",
+          "predict_before": "math.op.sub",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.sub",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        }
+      ],
+      "autonomous_retained": []
+    },
+    {
+      "name": "5_teens_compose",
+      "passed": true,
+      "sleep_merged": 19,
+      "lessons": 19,
+      "checks": [
+        {
+          "label": "10",
+          "cue": "10",
+          "expect": "math.num.ten",
+          "verdict": "pass",
+          "hypothesis": "math.num.ten",
+          "predict_before": "math.num.ten",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.ten",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "11",
+          "cue": "11",
+          "expect": "math.num.eleven",
+          "verdict": "pass",
+          "hypothesis": "math.num.eleven",
+          "predict_before": "math.num.eleven",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.eleven",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "15",
+          "cue": "15",
+          "expect": "math.num.fifteen",
+          "verdict": "pass",
+          "hypothesis": "math.num.fifteen",
+          "predict_before": "math.num.fifteen",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.fifteen",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "10 + 3 = 13",
+          "cue": "10 + 3 = 13",
+          "expect": "math.op.add",
+          "verdict": "pass",
+          "hypothesis": "math.op.add",
+          "predict_before": "math.op.add",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.add",
+              21
+            ],
+            [
+              "math.op.concat",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "10 + 7",
+          "cue": "10 + 7",
+          "expect": "math.op.add",
+          "verdict": "pass",
+          "hypothesis": "math.op.add",
+          "predict_before": "math.op.add",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.add",
+              21
+            ],
+            [
+              "math.op.concat",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ]
+          ]
+        }
+      ],
+      "autonomous_retained": []
+    },
+    {
+      "name": "6_numeral_names_ru_en",
+      "passed": true,
+      "sleep_merged": 14,
+      "lessons": 14,
+      "checks": [
+        {
+          "label": "20",
+          "cue": "20",
+          "expect": "math.num.twenty",
+          "verdict": "pass",
+          "hypothesis": "math.num.twenty",
+          "predict_before": "math.num.twenty",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.twenty",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "13",
+          "cue": "13",
+          "expect": "math.num.thirteen",
+          "verdict": "pass",
+          "hypothesis": "math.num.thirteen",
+          "predict_before": "math.num.thirteen",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.thirteen",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "21",
+          "cue": "21",
+          "expect": "math.num.twenty_one",
+          "verdict": "pass",
+          "hypothesis": "math.num.twenty_one",
+          "predict_before": "math.num.twenty_one",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.twenty_one",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "10 + 10 = 20",
+          "cue": "10 + 10 = 20",
+          "expect": "math.op.add",
+          "verdict": "pass",
+          "hypothesis": "math.op.add",
+          "predict_before": "math.op.add",
+          "unbound": [],
+          "top3": [
+            [
+              "math.op.add",
+              21
+            ],
+            [
+              "math.op.concat",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ]
+          ]
+        }
+      ],
+      "autonomous_retained": []
+    },
+    {
+      "name": "7_skip_counting",
+      "passed": true,
+      "sleep_merged": 24,
+      "lessons": 20,
+      "checks": [
+        {
+          "label": "14",
+          "cue": "14",
+          "expect": "math.num.fourteen",
+          "verdict": "pass",
+          "hypothesis": "math.num.fourteen",
+          "predict_before": "math.num.fourteen",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.fourteen",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "18",
+          "cue": "18",
+          "expect": "math.num.eighteen",
+          "verdict": "pass",
+          "hypothesis": "math.num.eighteen",
+          "predict_before": "math.num.eighteen",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.eighteen",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eleven",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "20",
+          "cue": "20",
+          "expect": "math.num.twenty",
+          "verdict": "pass",
+          "hypothesis": "math.num.twenty",
+          "predict_before": "math.num.twenty",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.twenty",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "21",
+          "cue": "21",
+          "expect": "math.num.twenty_one",
+          "verdict": "pass",
+          "hypothesis": "math.num.twenty_one",
+          "predict_before": "math.num.twenty_one",
+          "unbound": [],
+          "top3": [
+            [
+              "math.num.twenty_one",
+              20
+            ],
+            [
+              "math.num.eight",
+              5
+            ],
+            [
+              "math.num.eighteen",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "2, 4, 6, 8",
+          "cue": "2, 4, 6, 8",
+          "expect": "math.pattern.emerged.97de04a22af6",
+          "verdict": "pass",
+          "hypothesis": "math.pattern.emerged.97de04a22af6",
+          "predict_before": "math.pattern.emerged.97de04a22af6",
+          "unbound": [],
+          "top3": [
+            [
+              "math.pattern.emerged.97de04a22af6",
+              68
+            ],
+            [
+              "math.struct.emerged.8df3f280406f",
+              34
+            ],
+            [
+              "math.num.eight",
+              5
+            ]
+          ]
+        },
+        {
+          "label": "5, 10, 15, 20",
+          "cue": "5, 10, 15, 20",
+          "expect": "math.pattern.emerged.f19edb000472",
+          "verdict": "pass",
+          "hypothesis": "math.pattern.emerged.f19edb000472",
+          "predict_before": "math.pattern.emerged.f19edb000472",
+          "unbound": [],
+          "top3": [
+            [
+              "math.pattern.emerged.f19edb000472",
+              60
+            ],
+            [
+              "math.struct.emerged.8df3f280406f",
+              30
+            ],
+            [
+              "math.num.eight",
+              5
+            ]
+          ]
+        }
+      ],
+      "autonomous_retained": [
+        {
+          "retain_key": "2, 4, 6, 8|math.pattern.emerged.97de04a22af6",
+          "journal_id": "j-e3c430d916ea",
+          "status": "confirmed",
+          "passes": 1,
+          "total": 1,
+          "source": "teacher_check",
+          "self_name": {
+            "id": "j-ca64a32b7064",
+            "ts": "2026-06-01T00:32:04Z",
+            "kind": "note",
+            "text": "Считаю ряд «2, 4, 6, 8» — выученный count-by паттерн.",
+            "concepts": [
+              "math.pattern.emerged.97de04a22af6"
+            ],
+            "tokens": [],
+            "tags": [
+              "draft",
+              "self_name",
+              "emergent",
+              "notebook:count-by"
+            ],
+            "meta": {
+              "draft": true,
+              "status": "open",
+              "test_cues": [
+                "2, 4, 6, 8"
+              ],
+              "checks": [],
+              "notebook": "count-by",
+              "expect": "math.pattern.emerged.97de04a22af6",
+              "retain_key": "2, 4, 6, 8|math.pattern.emerged.97de04a22af6",
+              "self_name": "count-by:2, 4, 6, 8",
+              "scene": "2, 4, 6, 8"
+            }
+          }
+        },
+        {
+          "retain_key": "5, 10, 15, 20|math.pattern.emerged.f19edb000472",
+          "journal_id": "j-64ddebc589dd",
+          "status": "confirmed",
+          "passes": 1,
+          "total": 1,
+          "source": "teacher_check",
+          "self_name": {
+            "id": "j-2850560267ff",
+            "ts": "2026-06-01T00:32:04Z",
+            "kind": "note",
+            "text": "Считаю ряд «5, 10, 15, 20» — выученный count-by паттерн.",
+            "concepts": [
+              "math.pattern.emerged.f19edb000472"
+            ],
+            "tokens": [],
+            "tags": [
+              "draft",
+              "self_name",
+              "emergent",
+              "notebook:count-by"
+            ],
+            "meta": {
+              "draft": true,
+              "status": "open",
+              "test_cues": [
+                "5, 10, 15, 20"
+              ],
+              "checks": [],
+              "notebook": "count-by",
+              "expect": "math.pattern.emerged.f19edb000472",
+              "retain_key": "5, 10, 15, 20|math.pattern.emerged.f19edb000472",
+              "self_name": "count-by:5, 10, 15, 20",
+              "scene": "5, 10, 15, 20"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "autonomous_retained_total": 2,
+  "all_passed": true
+}

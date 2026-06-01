@@ -1,0 +1,437 @@
+{
+  "store": "math-l0-lab",
+  "extra_teach": false,
+  "taught": null,
+  "summary_by_kind": {
+    "skip2": {
+      "pass": 4,
+      "total": 4
+    },
+    "skip3": {
+      "pass": 5,
+      "total": 5
+    },
+    "mul": {
+      "pass": 3,
+      "total": 3
+    },
+    "unit": {
+      "pass": 1,
+      "total": 2
+    }
+  },
+  "probes": [
+    {
+      "kind": "skip2",
+      "label": "skip by 2: 2",
+      "cue": "2",
+      "expect": "math.num.two",
+      "verdict": "pass",
+      "hypothesis": "math.num.two",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.two",
+          32
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "skip2",
+      "label": "skip by 2: 4",
+      "cue": "4",
+      "expect": "math.num.four",
+      "verdict": "pass",
+      "hypothesis": "math.num.four",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.four",
+          32
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "skip2",
+      "label": "skip by 2: 6",
+      "cue": "6",
+      "expect": "math.num.six",
+      "verdict": "pass",
+      "hypothesis": "math.num.six",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.six",
+          32
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "skip2",
+      "label": "skip by 2: 8",
+      "cue": "8",
+      "expect": "math.num.eight",
+      "verdict": "pass",
+      "hypothesis": "math.num.eight",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.eight",
+          32
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ],
+        [
+          "math.num.eleven",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "skip3",
+      "label": "skip by 3: 3",
+      "cue": "3",
+      "expect": "math.num.three",
+      "verdict": "pass",
+      "hypothesis": "math.num.three",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.three",
+          32
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "skip3",
+      "label": "skip by 3: 6",
+      "cue": "6",
+      "expect": "math.num.six",
+      "verdict": "pass",
+      "hypothesis": "math.num.six",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.six",
+          32
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "skip3",
+      "label": "skip by 3: 9",
+      "cue": "9",
+      "expect": "math.num.nine",
+      "verdict": "pass",
+      "hypothesis": "math.num.nine",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.nine",
+          32
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "skip3",
+      "label": "skip by 3: 12",
+      "cue": "12",
+      "expect": "math.num.twelve",
+      "verdict": "pass",
+      "hypothesis": "math.num.twelve",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.twelve",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "skip3",
+      "label": "skip by 3: 15",
+      "cue": "15",
+      "expect": "math.num.fifteen",
+      "verdict": "pass",
+      "hypothesis": "math.num.fifteen",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.fifteen",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "mul",
+      "label": "2×7 = 14",
+      "cue": "14",
+      "expect": "math.num.fourteen",
+      "verdict": "pass",
+      "hypothesis": "math.num.fourteen",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.fourteen",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "mul",
+      "label": "3×6 = 18",
+      "cue": "18",
+      "expect": "math.num.eighteen",
+      "verdict": "pass",
+      "hypothesis": "math.num.eighteen",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.eighteen",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eleven",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "mul",
+      "label": "7×3 = 21",
+      "cue": "21",
+      "expect": "math.num.twenty_one",
+      "verdict": "pass",
+      "hypothesis": "math.num.twenty_one",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.twenty_one",
+          20
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "unit",
+      "label": "one stick",
+      "cue": "|",
+      "expect": "math.num.one",
+      "verdict": "pass",
+      "hypothesis": "math.num.one",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.one",
+          31
+        ],
+        [
+          "math.num.eight",
+          5
+        ],
+        [
+          "math.num.eighteen",
+          5
+        ]
+      ]
+    },
+    {
+      "kind": "unit",
+      "label": "four sticks",
+      "cue": "||||",
+      "expect": "math.num.four",
+      "verdict": "fail",
+      "hypothesis": "math.num.one",
+      "count_or_mul_in_top": [],
+      "top3": [
+        [
+          "math.num.one",
+          9
+        ],
+        [
+          "math.num.three",
+          9
+        ],
+        [
+          "math.num.eight",
+          5
+        ]
+      ]
+    }
+  ],
+  "group_lessons_for_teacher": [
+    {
+      "cue": "2+2+2+2+2+2+2=14",
+      "correct": "14",
+      "concept_id": "math.pattern.count_by_2",
+      "scene": "seven groups of two",
+      "links": [
+        {
+          "src": "math.pattern.count_by_2",
+          "relation": "prepares",
+          "dst": "math.op.mul"
+        },
+        {
+          "src": "math.pattern.count_by_2",
+          "relation": "example",
+          "dst": "math.num.fourteen"
+        }
+      ]
+    },
+    {
+      "cue": "2+2+2+2+2+2+2",
+      "correct": "14",
+      "concept_id": "math.pattern.count_by_2",
+      "scene": "repeat add two seven times",
+      "links": [
+        {
+          "src": "math.pattern.count_by_2",
+          "relation": "example",
+          "dst": "math.num.fourteen"
+        }
+      ]
+    },
+    {
+      "cue": "7+7=14",
+      "correct": "14",
+      "concept_id": "math.pattern.count_by_7",
+      "scene": "two sevens",
+      "links": [
+        {
+          "src": "math.pattern.count_by_7",
+          "relation": "prepares",
+          "dst": "math.op.mul"
+        },
+        {
+          "src": "math.pattern.count_by_7",
+          "relation": "example",
+          "dst": "math.num.fourteen"
+        }
+      ]
+    },
+    {
+      "cue": "5+5+5=15",
+      "correct": "15",
+      "concept_id": "math.pattern.count_by_5",
+      "scene": "three fives",
+      "links": [
+        {
+          "src": "math.pattern.count_by_5",
+          "relation": "example",
+          "dst": "math.num.fifteen"
+        }
+      ]
+    },
+    {
+      "cue": "3+3+3+3+3+3=18",
+      "correct": "18",
+      "concept_id": "math.pattern.count_by_3",
+      "scene": "six threes",
+      "links": [
+        {
+          "src": "math.pattern.count_by_3",
+          "relation": "example",
+          "dst": "math.num.eighteen"
+        }
+      ]
+    },
+    {
+      "cue": "10+10=20",
+      "correct": "20",
+      "concept_id": "math.num.ten",
+      "scene": "two tens not ten sticks",
+      "links": [
+        {
+          "src": "math.num.ten",
+          "relation": "compose",
+          "dst": "math.num.twenty"
+        }
+      ]
+    }
+  ]
+}

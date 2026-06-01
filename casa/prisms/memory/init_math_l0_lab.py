@@ -21,6 +21,42 @@ from casa.prisms.shared.lattice_names_v1 import SCHEMA_MATH
 from casa.prisms.shared.store_layout import STORE_MATH_L0_LAB, agent_store_dir, rel_to_repo
 
 
+_L0_LAB_DROP = frozenset(
+    {
+        "math.entity.cow",
+        "math.entity.sheep",
+        "math.category.livestock",
+        "M:entity:cow",
+        "M:entity:sheep",
+        "M:category:livestock",
+    }
+)
+
+
+def slim_math_l0_bundle(bundle: dict) -> dict:
+    """Drop Exp L livestock demo from math-l0 lab hot path (sticks/emergent ops only)."""
+    out = json.loads(json.dumps(bundle))
+    out["math_tokens"] = [t for t in out.get("math_tokens") or [] if t.get("token") not in _L0_LAB_DROP]
+    out["claims"] = [c for c in out.get("claims") or [] if c.get("concept_id") not in _L0_LAB_DROP]
+    edges = []
+    for e in (out.get("graph") or {}).get("edges") or []:
+        if e.get("src") in _L0_LAB_DROP or e.get("dst") in _L0_LAB_DROP:
+            continue
+        edges.append(e)
+    out.setdefault("graph", {})["edges"] = edges
+    kw = dict(out.get("math_keywords") or {})
+    for k in list(kw):
+        if k in _L0_LAB_DROP:
+            del kw[k]
+    out["math_keywords"] = kw
+    out["compose_scenarios"] = [
+        s
+        for s in out.get("compose_scenarios") or []
+        if "cow" not in str(s.get("id") or "") and "livestock" not in str(s.get("id") or "")
+    ]
+    return out
+
+
 def init_math_l0_lab(
     store_dir: Path,
     bundle_path: Path,
@@ -35,7 +71,8 @@ def init_math_l0_lab(
     if bundle_path.resolve() != dest.resolve():
         shutil.copy2(bundle_path, dest)
 
-    bundle = json.loads(dest.read_text(encoding="utf-8"))
+    bundle = slim_math_l0_bundle(json.loads(dest.read_text(encoding="utf-8")))
+    dest.write_text(json.dumps(bundle, ensure_ascii=False, indent=2), encoding="utf-8")
     state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
     state.setdefault("store", {})["store_id"] = store_dir.name
     state["store"]["subsystem"] = "first_signal_math"
