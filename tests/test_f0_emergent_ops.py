@@ -57,6 +57,38 @@ def test_predict_flags_unbound_not_false_eq() -> None:
     assert "unbound" in str(tick["critic"]["checks"][0].get("detail", ""))
 
 
+def test_roman_infix_not_livestock_after_sub_teacher() -> None:
+    b = _bundle()
+    state = ensure_prisms({})
+    ingest_math_bundle(state, b)
+    append_episode(
+        state,
+        cue="||| - || = |",
+        surface_attempt="?",
+        correct="|",
+        lattice_id="schema-math",
+        concept_id="math.op.sub",
+        bundle=b,
+        scene="sticks_sub",
+    )
+    run_sleep(state, b)
+    tick = predict_tick(state, "III - II", modality="schema", expect="math.op.sub", bundle=b)
+    pred = tick["predict"]
+    assert pred.get("hypothesis") == "math.op.sub"
+    assert pred.get("hypothesis") != "math.category.livestock"
+    assert tick["verdict"] == "pass"
+
+
+def test_identifier_infix_unbound_before_teacher() -> None:
+    b = _bundle()
+    state = ensure_prisms({})
+    ingest_math_bundle(state, b)
+    tick = predict_tick(state, "III - II", modality="schema", expect="math.op.sub", bundle=b)
+    pred = tick["predict"]
+    assert pred.get("unbound_operators")
+    assert pred["hypothesis"] is None
+
+
 def test_sleep_mint_denotes_enables_sub_predict() -> None:
     b = _bundle()
     state = ensure_prisms({})

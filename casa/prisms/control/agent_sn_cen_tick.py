@@ -192,6 +192,8 @@ def main() -> None:
 
                 remember_min_value=config.remember_min_value,
 
+                retain_on_verified_predict=config.retain_on_verified_predict,
+
                 sleep_every=config.sleep_every,
 
                 sleep_on_value=config.sleep_on_value,

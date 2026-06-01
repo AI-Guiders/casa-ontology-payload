@@ -49,6 +49,7 @@ class LearningTickConfig:
     surprise_min_value: float = 0.3
     remember_on_surprise: bool = True
     remember_min_value: float = 0.45
+    retain_on_verified_predict: bool = True
     sleep_every: int = 0
     sleep_on_value: float = 1.0
     kolb_session: dict[str, Any] | None = None
@@ -197,11 +198,18 @@ def _load_tick_field(
     except (ValueError, FileNotFoundError):
         t0 = time.perf_counter()
         state = ensure_prisms(load_field_state(field_path))
-        decoded = decode_field_grid(state, min_votes=min_votes)
-        lid = active_memory_lattice_id(state)
+        decoded: dict[str, Any] = {"concepts": {}, "tokens": {}}
+        try:
+            decoded = decode_field_grid(state, min_votes=min_votes)
+        except ValueError:
+            pass
         lats = memory_lattices(state)
+        lid = active_memory_lattice_id(state)
         if lid in lats:
             decoded = merge_decoded_digests(decoded, decode_lattice(lats[lid], min_votes=1))
+        elif lats:
+            for lat in lats.values():
+                decoded = merge_decoded_digests(decoded, decode_lattice(lat, min_votes=1))
         bundle = _fallback_bundle(store_dir)
         ms = (time.perf_counter() - t0) * 1000
         return "memory_field", bundle, decoded, {}, ms, state
@@ -274,6 +282,18 @@ def run_learning_tick(
             wm=wm,
         )
 
+    retain_rep: dict | None = None
+    if cfg.retain_on_verified_predict and q and bundle_for_hippo:
+        from casa.prisms.memory.agent_autonomous_retain import maybe_autonomous_retain_tick
+
+        retain_rep = maybe_autonomous_retain_tick(
+            store_dir,
+            state,
+            cue=q,
+            bundle=bundle_for_hippo,
+            persist=False,
+        )
+
     sleep_rep: dict | None = None
     if bundle_for_hippo and (cfg.sleep_every > 0 or cfg.sleep_on_value > 0):
         sleep_rep = maybe_sleep_phase(
@@ -316,12 +336,13 @@ def run_learning_tick(
         "act_rollout": act_report,
         "hippo_episode": hippo_ep,
         "agent_remember": remember_rep,
+        "agent_retain": retain_rep,
         "sleep": sleep_rep,
         "kolb": kolb_rep,
         "learning_cycle": {
             "extract": {"field_decode": True, "act_rollout": bool(act_report and not act_report.get("skipped"))},
             "remember": {"hippo_episode": hippo_ep is not None, "sleep": sleep_rep is not None},
-            "use": {"sn_cen": True, "explicit_remember": remember_rep is not None},
+            "use": {"sn_cen": True, "explicit_remember": remember_rep is not None, "self_retain": retain_rep is not None},
         },
     }
     return report, wm_next, state

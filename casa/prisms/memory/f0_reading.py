@@ -78,12 +78,16 @@ def analyze_cue(cue: str) -> dict[str, Any]:
         glyph_run = {"glyph_class": "pipe", "text": compact}
 
     singleton = cue if len(cue) == 1 else None
+    number_literal: str | None = None
+    if re.fullmatch(r"\d+", compact):
+        number_literal = compact
     return {
         "cue": cue,
         "has": has,
         "infix": infix,
         "glyph_run": glyph_run,
         "singleton": singleton,
+        "number_literal": number_literal,
     }
 
 
@@ -197,6 +201,98 @@ def _contexts_for_infix(ix: dict[str, Any], bundle: dict) -> list[str]:
     return out
 
 
+def infix_reading_contexts(ix: dict[str, Any], bundle: dict) -> list[str]:
+    """Bundle-matched frames first, then surface fallbacks (pipe / number → arithmetic)."""
+    ctxs = _contexts_for_infix(ix, bundle)
+    if ctxs:
+        return ctxs
+    kinds = (ix.get("left_kind"), ix.get("right_kind"))
+    fb: list[str] = []
+    if "pipe_run" in kinds:
+        fb.append("math.ctx.arithmetic")
+    if "number" in kinds:
+        fb.append("math.ctx.arithmetic")
+    return fb
+
+
+def field_bound_infix_operators(
+    decoded: dict,
+    op: str,
+    *,
+    grapheme_for_glyph: Any,
+) -> list[tuple[str, str]]:
+    """math.op.* bound on field for infix glyph in any reading context (Extract / sleep)."""
+    grapheme = grapheme_for_glyph(op) if grapheme_for_glyph else None
+    sym = grapheme if grapheme and str(grapheme).startswith(("grapheme.", "punct.", "vk.")) else op
+    out: list[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for edge in decoded.get("edges") or []:
+        es = str(edge)
+        if "|denotes|" not in es:
+            continue
+        src, _, dst = es.partition("|denotes|")
+        if not dst.startswith("math.op."):
+            continue
+        if "@" in src:
+            sym_part, ctx = src.rsplit("@", 1)
+        else:
+            sym_part, ctx = src, "math.ctx.arithmetic"
+        if sym_part not in (sym, op):
+            continue
+        key = (dst, ctx)
+        if key not in seen:
+            seen.add(key)
+            out.append(key)
+    return out
+
+
+def _glyph_lookup_keys(glyph: str, *, grapheme_for_glyph: Any) -> list[str]:
+    g = glyph.strip()
+    keys = [g]
+    if len(g) == 1:
+        grapheme = grapheme_for_glyph(g) if grapheme_for_glyph else None
+        if grapheme and grapheme not in keys:
+            keys.append(grapheme)
+    return keys
+
+
+def score_field_glyph_numerals(
+    cue: str,
+    decoded: dict,
+    contexts: dict[str, float],
+    *,
+    grapheme_for_glyph: Any,
+) -> dict[str, int]:
+    """Boost math.num.* from sleep-minted E:glyph@ctx|denotes (teacher mapping episodes)."""
+    analysis = analyze_cue(cue)
+    if analysis.get("infix"):
+        return {}
+    raw = str(analysis.get("cue") or cue).strip()
+    if "=" in raw:
+        raw = raw.split("=", 1)[0].strip()
+    glyph = raw.replace(" ", "")
+    if not glyph:
+        return {}
+    scores: dict[str, int] = {}
+    keys = _glyph_lookup_keys(glyph, grapheme_for_glyph=grapheme_for_glyph)
+    for edge in decoded.get("edges") or []:
+        es = str(edge)
+        if "|denotes|" not in es:
+            continue
+        src, _, dst = es.partition("|denotes|")
+        if not dst.startswith("math.num."):
+            continue
+        if "@" in src:
+            sym_part, ctx = src.rsplit("@", 1)
+        else:
+            sym_part, ctx = src, "math.ctx.arithmetic"
+        if sym_part not in keys:
+            continue
+        weight = max(float(contexts.get(ctx, 0)), 10.0)
+        scores[dst] = scores.get(dst, 0) + int(weight * 1.4)
+    return scores
+
+
 def _sense_binds_op(
     op: str,
     context_id: str,
@@ -238,14 +334,17 @@ def unbound_operators(
             continue
         if op == "|":
             continue
-        contexts = _contexts_for_infix(ix, bundle)
-        if not contexts and "pipe_run" in (ix.get("left_kind"), ix.get("right_kind")):
+        contexts = infix_reading_contexts(ix, bundle)
+        if not contexts and op in "+-=&":
             contexts = ["math.ctx.arithmetic"]
+        field_bound = {ctx for _, ctx in field_bound_infix_operators(decoded, op, grapheme_for_glyph=grapheme_for_glyph)}
         for ctx in contexts:
             key = (op, ctx)
             if key in seen:
                 continue
             seen.add(key)
+            if ctx in field_bound:
+                continue
             if _sense_binds_op(op, ctx, bundle, decoded, concept_in_context=concept_in_context, grapheme_for_glyph=grapheme_for_glyph):
                 continue
             grapheme = grapheme_for_glyph(op) if grapheme_for_glyph else None
@@ -276,9 +375,13 @@ def score_field_infix_operators(
         op = str(ix.get("op") or "")
         if len(op) != 1 or op == "|":
             continue
-        ctxs = _contexts_for_infix(ix, bundle)
-        if not ctxs and "pipe_run" in (ix.get("left_kind"), ix.get("right_kind")):
-            ctxs = ["math.ctx.arithmetic"]
+        field_hits = field_bound_infix_operators(decoded, op, grapheme_for_glyph=grapheme_for_glyph)
+        if field_hits:
+            for concept_id, ctx in field_hits:
+                weight = max(float(contexts.get(ctx, 0)), 10.0)
+                scores[concept_id] = scores.get(concept_id, 0) + int(weight * 1.5)
+            continue
+        ctxs = infix_reading_contexts(ix, bundle)
         for ctx in ctxs:
             weight = max(float(contexts.get(ctx, 0)), 10.0)
             grapheme = grapheme_for_glyph(op) if grapheme_for_glyph else None
@@ -317,6 +420,9 @@ def detect_reading_contexts(
             continue
         weight = float(ctx.get("weight") or 10)
         scores[cid] = max(scores.get(cid, 0), weight)
+
+    if analysis.get("number_literal"):
+        scores["math.ctx.arithmetic"] = max(scores.get("math.ctx.arithmetic", 0), 11.0)
 
     if not scores:
         scores["math.ctx.arithmetic"] = 1.0
