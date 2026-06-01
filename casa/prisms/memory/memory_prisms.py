@@ -224,8 +224,18 @@ def append_episode(
     min_recurrence: int = 1,
     links: list[dict[str, Any]] | None = None,
     form_extract_allowed: bool = False,
-) -> dict:
+    episode_source: str = "wake",
+) -> dict | None:
     state = ensure_cylinders(state)
+    if episode_source == "ingest":
+        from casa.prisms.memory.ingest_episodic import should_record_ingest_episode
+
+        if not should_record_ingest_episode(
+            state,
+            correction_kind=correction_kind,
+            scene=scene,
+        ):
+            return None
     if bundle and not concept_id:
         concept_id = concept_id_for_surface(bundle, correct, lattice_id=lattice_id)
 
@@ -437,8 +447,15 @@ def run_sleep(
     replay_value_weight: float = 0.0,
     store_dir: Path | None = None,
     compact_persist: bool | None = None,
+    max_episodes: int | None = None,
 ) -> dict:
-    """T_sleep: merge hippo episodes → prism_memory; prune consolidated."""
+    """T_sleep: merge hippo episodes → prism_memory; prune consolidated.
+
+    When ``max_episodes`` is set, consolidate at most that many eligible episodes
+    (FIFO). F0 emergent passes and ``z_compose`` run only when the queue is drained
+    in this call (full sleep or last batch). Kernel maintain + compact_persist still
+    run when ``store_dir`` is set (ADR-0023 batched sleep).
+    """
     bundle = bundle or {"claims": [], "graph": {"edges": []}}
     state = ensure_cylinders(state)
     from casa.prisms.hippo.sleep_replay import SleepReplayConfig, prepare_sleep_replay
@@ -453,13 +470,20 @@ def run_sleep(
     hippo = prism_hippo(state)
     episodes = hippo.get("episodes") or []
     merged: list[dict] = []
-    pending = []
+    pending: list[dict] = []
+    consolidate_budget = max_episodes
+    consolidated_this_call = 0
+    budget_starved = 0
 
     for ep in episodes:
         if ep.get("consolidated"):
             continue
         if ep.get("pending") or ep.get("kind") in ("question", "hint"):
             pending.append(ep)
+            continue
+        if consolidate_budget is not None and consolidate_budget <= 0:
+            pending.append(ep)
+            budget_starved += 1
             continue
         if ep.get("kind") == "rule" and ep.get("rule_id"):
             rid = str(ep["rule_id"])
@@ -476,6 +500,9 @@ def run_sleep(
                     "rule_hint": ep.get("rule_hint"),
                 }
             )
+            if consolidate_budget is not None:
+                consolidate_budget -= 1
+                consolidated_this_call += 1
             continue
         lid = str(ep.get("lattice_id") or "L1_syllable")
         cid = ep.get("concept_id")
@@ -553,8 +580,64 @@ def run_sleep(
             if extract_rep:
                 item["extract"] = extract_rep
             merged.append(item)
+            if consolidate_budget is not None:
+                consolidate_budget -= 1
+                consolidated_this_call += 1
         else:
             pending.append(ep)
+
+    if budget_starved > 0:
+        hippo["episodes"] = pending
+        prism_memory(state)["lattices"] = lattices
+        state["sss"] = {**(state.get("sss") or {}), "lattices": lattices}
+        cons = state.setdefault("consolidation", {})
+        cons["last_sleep_tick"] = int(state.get("field_version") or 0) + 1
+        cons["episodes_merged_total"] = int(cons.get("episodes_merged_total") or 0) + len(merged)
+        cons["last_sleep"] = {
+            "merged": len(merged),
+            "pending": len(pending),
+            "z_compose": None,
+            "items": merged,
+            "nca": None,
+            "replay": replay_report,
+            "batch": {
+                "max_episodes": max_episodes,
+                "consolidated": consolidated_this_call,
+                "budget_starved": budget_starved,
+                "deferred_tail": True,
+            },
+        }
+        if store_dir is not None:
+            from casa.prisms.memory.kernel_memory_health import (
+                MaintainContext,
+                kernel_memory_maintain_on_sleep_enabled,
+                maintain_memory_kernel,
+            )
+
+            if kernel_memory_maintain_on_sleep_enabled(state):
+                maintain_memory_kernel(
+                    state,
+                    store_dir,
+                    repair=True,
+                    ctx=MaintainContext(phase="sleep"),
+                    report=cons["last_sleep"],
+                )
+
+        if store_dir is not None and compact_persist is not False:
+            from casa.prisms.shared.compact_persist import maybe_compact_persist_after_sleep
+
+            maybe_compact_persist_after_sleep(
+                store_dir,
+                state,
+                cons["last_sleep"],
+                force=compact_persist is True,
+                skip_vocab_over=65535,
+                remigrate_l2=False,
+            )
+        set_active_prism(state, PRISM_MEMORY)
+        state["sn"] = {**(state.get("sn") or {}), "mode": "wake"}
+        state["field_version"] = int(state.get("field_version") or 0) + 1
+        return cons["last_sleep"]
 
     from casa.prisms.memory.f0_extract_gate import (
         gate_mul_equiv_by_learning_gap,
@@ -701,21 +784,38 @@ def run_sleep(
         except Exception as exc:  # noqa: BLE001 — sleep must not fail on optional NCA
             nca_report = {"error": str(exc), "lattice_id": nca_lattice_id}
 
-    from casa.prisms.memory.prism_hot_context import hot_edges, prune_hot_context
-
-    hot_prune = None
-    if len(hot_edges(state)) > 2048:
-        hot_prune = prune_hot_context(state, max_edges=2048)
-
-    cons["last_sleep"] = {
+    last_sleep: dict[str, Any] = {
         "merged": len(merged),
         "pending": len(pending),
         "z_compose": compose.get("count"),
         "items": merged,
         "nca": nca_report,
         "replay": replay_report,
-        "hot_prune": hot_prune,
     }
+    if max_episodes is not None:
+        last_sleep["batch"] = {
+            "max_episodes": max_episodes,
+            "consolidated": consolidated_this_call,
+            "budget_starved": budget_starved,
+            "deferred_tail": False,
+        }
+    cons["last_sleep"] = last_sleep
+    if store_dir is not None:
+        from casa.prisms.memory.kernel_memory_health import (
+            MaintainContext,
+            kernel_memory_maintain_on_sleep_enabled,
+            maintain_memory_kernel,
+        )
+
+        if kernel_memory_maintain_on_sleep_enabled(state):
+            maintain_memory_kernel(
+                state,
+                store_dir,
+                repair=True,
+                ctx=MaintainContext(phase="sleep"),
+                report=cons["last_sleep"],
+            )
+
     if store_dir is not None and compact_persist is not False:
         from casa.prisms.shared.compact_persist import maybe_compact_persist_after_sleep
 
@@ -724,6 +824,8 @@ def run_sleep(
             state,
             cons["last_sleep"],
             force=compact_persist is True,
+            skip_vocab_over=65535,
+            remigrate_l2=False,
         )
     set_active_prism(state, PRISM_MEMORY)
     state["sn"] = {**(state.get("sn") or {}), "mode": "wake"}
