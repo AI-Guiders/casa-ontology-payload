@@ -1,9 +1,10 @@
 {
   "schema_version": 1,
-  "kind": "sss_memory_manifest",
-  "store_id": "sss-ru-lexicon",
-  "store_path": "lab/agent-stores/sss-ru-lexicon",
-  "generated_at": "2026-05-31T06:40:38.491473+00:00",
+  "kind": "lexicon_memory_manifest",
+  "prism_layout_version": 1,
+  "store_id": "lexicon-ru-archaic",
+  "store_path": "D:/Experiments/Personal Cursor Folder/Financial/software/open/casa-ontology-payload/lab/agent-stores/lexicon-ru-archaic",
+  "generated_at": "2026-06-01T01:37:54.044908+00:00",
   "field_version": 8,
   "schema": "multi_prism_v1",
   "l2_sharding": {
@@ -2100,13 +2101,20 @@
     "L2_word_62",
     "L2_word_63"
   ],
+  "journal": {
+    "schema_version": 1,
+    "domain_count": 0,
+    "entry_count": 0,
+    "bytes": 0,
+    "domains": []
+  },
   "disk": {
-    "field_state_json": 429730851,
+    "field_state_json": 429730828,
     "field_state_human": "409.8 MiB",
-    "store_total": 573491707,
+    "store_total": 573495118,
     "store_total_human": "546.9 MiB",
-    "nca_dir": 138340106,
+    "nca_dir": 138342943,
     "parallel_shards_dir": 0,
-    "examples_exp_reports": 613239
+    "examples_exp_reports": 617696
   }
 }

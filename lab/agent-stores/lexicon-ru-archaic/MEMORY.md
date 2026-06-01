@@ -1,6 +1,6 @@
-# Memory map: `sss-ru-lexicon`
+# Memory map: `lexicon-ru-archaic`
 
-Generated: 2026-05-31T06:40:38.491473+00:00
+Generated: 2026-06-01T01:37:54.044908+00:00
 field_version: **8**
 
 ## Disk

@@ -1,0 +1,860 @@
+{
+  "schema_version": 1,
+  "kind": "lexicon_memory_manifest",
+  "prism_layout_version": 1,
+  "store_id": "lexicon-ru-general",
+  "store_path": "D:/Experiments/Personal Cursor Folder/Financial/software/open/casa-ontology-payload/lab/agent-stores/lexicon-ru-general",
+  "generated_at": "2026-06-01T01:37:50.674626+00:00",
+  "field_version": 8,
+  "schema": "multi_prism_v1",
+  "l2_sharding": {
+    "enabled": true,
+    "mode": "lexicographic",
+    "lex_plan": "corpus_quantile",
+    "num_shards": 64,
+    "legacy_lattice": "lexicon-ru",
+    "indexed_words": 49981,
+    "attested_initial_letters": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е",
+      "ж",
+      "з",
+      "и",
+      "й",
+      "к",
+      "л",
+      "м",
+      "н",
+      "о",
+      "п",
+      "р",
+      "с",
+      "т",
+      "у",
+      "ф",
+      "х",
+      "ц",
+      "ч",
+      "ш",
+      "щ",
+      "ы",
+      "э",
+      "ю",
+      "я"
+    ],
+    "initial_letter_counts": {
+      "а": 1468,
+      "б": 2532,
+      "в": 3098,
+      "г": 1851,
+      "д": 1991,
+      "е": 307,
+      "ж": 480,
+      "з": 2207,
+      "и": 1086,
+      "й": 12,
+      "к": 3805,
+      "л": 1408,
+      "м": 2393,
+      "н": 2917,
+      "о": 2735,
+      "п": 7371,
+      "р": 2307,
+      "с": 4507,
+      "т": 1963,
+      "у": 1198,
+      "ф": 791,
+      "х": 687,
+      "ц": 263,
+      "ч": 765,
+      "ш": 876,
+      "щ": 113,
+      "ы": 3,
+      "э": 449,
+      "ю": 141,
+      "я": 257
+    },
+    "letter_ranges": [
+      {
+        "shard": 0,
+        "plan": "corpus_quantile",
+        "word_lo": "а",
+        "word_hi": "андрейкин",
+        "label": "а–андрейкин",
+        "word_count": 780,
+        "initial_letters": [
+          "а"
+        ]
+      },
+      {
+        "shard": 1,
+        "plan": "corpus_quantile",
+        "word_lo": "андрес",
+        "word_hi": "базыр",
+        "label": "андрес–базыр",
+        "word_count": 781,
+        "initial_letters": [
+          "а",
+          "б"
+        ]
+      },
+      {
+        "shard": 2,
+        "plan": "corpus_quantile",
+        "word_lo": "баиньки",
+        "word_hi": "белым-бело",
+        "label": "баиньки–белым-бело",
+        "word_count": 781,
+        "initial_letters": [
+          "б"
+        ]
+      },
+      {
+        "shard": 3,
+        "plan": "corpus_quantile",
+        "word_lo": "бель",
+        "word_hi": "болотина",
+        "label": "бель–болотина",
+        "word_count": 781,
+        "initial_letters": [
+          "б"
+        ]
+      },
+      {
+        "shard": 4,
+        "plan": "corpus_quantile",
+        "word_lo": "болотистый",
+        "word_hi": "буш",
+        "label": "болотистый–буш",
+        "word_count": 781,
+        "initial_letters": [
+          "б"
+        ]
+      },
+      {
+        "shard": 5,
+        "plan": "corpus_quantile",
+        "word_lo": "бушевать",
+        "word_hi": "вершинин",
+        "label": "бушевать–вершинин",
+        "word_count": 781,
+        "initial_letters": [
+          "б",
+          "в"
+        ]
+      },
+      {
+        "shard": 6,
+        "plan": "corpus_quantile",
+        "word_lo": "вершинина",
+        "word_hi": "водкин",
+        "label": "вершинина–водкин",
+        "word_count": 781,
+        "initial_letters": [
+          "в"
+        ]
+      },
+      {
+        "shard": 7,
+        "plan": "corpus_quantile",
+        "word_lo": "водкина",
+        "word_hi": "всемирный",
+        "label": "водкина–всемирный",
+        "word_count": 781,
+        "initial_letters": [
+          "в"
+        ]
+      },
+      {
+        "shard": 8,
+        "plan": "corpus_quantile",
+        "word_lo": "всемогущий",
+        "word_hi": "вышивка",
+        "label": "всемогущий–вышивка",
+        "word_count": 781,
+        "initial_letters": [
+          "в"
+        ]
+      },
+      {
+        "shard": 9,
+        "plan": "corpus_quantile",
+        "word_lo": "вышимирский",
+        "word_hi": "глубокоуважаемый",
+        "label": "вышимирский–глубокоуважаемый",
+        "word_count": 781,
+        "initial_letters": [
+          "в",
+          "г"
+        ]
+      },
+      {
+        "shard": 10,
+        "plan": "corpus_quantile",
+        "word_lo": "глубь",
+        "word_hi": "гриновский",
+        "label": "глубь–гриновский",
+        "word_count": 781,
+        "initial_letters": [
+          "г"
+        ]
+      },
+      {
+        "shard": 11,
+        "plan": "corpus_quantile",
+        "word_lo": "гринч",
+        "word_hi": "демагог",
+        "label": "гринч–демагог",
+        "word_count": 781,
+        "initial_letters": [
+          "г",
+          "д"
+        ]
+      },
+      {
+        "shard": 12,
+        "plan": "corpus_quantile",
+        "word_lo": "демагогия",
+        "word_hi": "долговечный",
+        "label": "демагогия–долговечный",
+        "word_count": 781,
+        "initial_letters": [
+          "д"
+        ]
+      },
+      {
+        "shard": 13,
+        "plan": "corpus_quantile",
+        "word_lo": "долговременный",
+        "word_hi": "дядько",
+        "label": "долговременный–дядько",
+        "word_count": 781,
+        "initial_letters": [
+          "д"
+        ]
+      },
+      {
+        "shard": 14,
+        "plan": "corpus_quantile",
+        "word_lo": "дядюшка",
+        "word_hi": "жутковатый",
+        "label": "дядюшка–жутковатый",
+        "word_count": 781,
+        "initial_letters": [
+          "д",
+          "е",
+          "ж"
+        ]
+      },
+      {
+        "shard": 15,
+        "plan": "corpus_quantile",
+        "word_lo": "жуть",
+        "word_hi": "замаскировывать",
+        "label": "жуть–замаскировывать",
+        "word_count": 781,
+        "initial_letters": [
+          "ж",
+          "з"
+        ]
+      },
+      {
+        "shard": 16,
+        "plan": "corpus_quantile",
+        "word_lo": "замасливать",
+        "word_hi": "захолонуть",
+        "label": "замасливать–захолонуть",
+        "word_count": 781,
+        "initial_letters": [
+          "з"
+        ]
+      },
+      {
+        "shard": 17,
+        "plan": "corpus_quantile",
+        "word_lo": "захолустный",
+        "word_hi": "иеромонах",
+        "label": "захолустный–иеромонах",
+        "word_count": 781,
+        "initial_letters": [
+          "з",
+          "и"
+        ]
+      },
+      {
+        "shard": 18,
+        "plan": "corpus_quantile",
+        "word_lo": "иероним",
+        "word_hi": "исполнительный",
+        "label": "иероним–исполнительный",
+        "word_count": 781,
+        "initial_letters": [
+          "и"
+        ]
+      },
+      {
+        "shard": 19,
+        "plan": "corpus_quantile",
+        "word_lo": "исполнять",
+        "word_hi": "карловна",
+        "label": "исполнять–карловна",
+        "word_count": 781,
+        "initial_letters": [
+          "и",
+          "й",
+          "к"
+        ]
+      },
+      {
+        "shard": 20,
+        "plan": "corpus_quantile",
+        "word_lo": "карлос",
+        "word_hi": "клеопарди",
+        "label": "карлос–клеопарди",
+        "word_count": 781,
+        "initial_letters": [
+          "к"
+        ]
+      },
+      {
+        "shard": 21,
+        "plan": "corpus_quantile",
+        "word_lo": "клеопатра",
+        "word_hi": "коновязь",
+        "label": "клеопатра–коновязь",
+        "word_count": 780,
+        "initial_letters": [
+          "к"
+        ]
+      },
+      {
+        "shard": 22,
+        "plan": "corpus_quantile",
+        "word_lo": "коногон",
+        "word_hi": "красовицкий",
+        "label": "коногон–красовицкий",
+        "word_count": 781,
+        "initial_letters": [
+          "к"
+        ]
+      },
+      {
+        "shard": 23,
+        "plan": "corpus_quantile",
+        "word_lo": "красовская",
+        "word_hi": "кусандр",
+        "label": "красовская–кусандр",
+        "word_count": 781,
+        "initial_letters": [
+          "к"
+        ]
+      },
+      {
+        "shard": 24,
+        "plan": "corpus_quantile",
+        "word_lo": "кусандра",
+        "word_hi": "ликующий",
+        "label": "кусандра–ликующий",
+        "word_count": 781,
+        "initial_letters": [
+          "к",
+          "л"
+        ]
+      },
+      {
+        "shard": 25,
+        "plan": "corpus_quantile",
+        "word_lo": "лилейный",
+        "word_hi": "маевка",
+        "label": "лилейный–маевка",
+        "word_count": 781,
+        "initial_letters": [
+          "л",
+          "м"
+        ]
+      },
+      {
+        "shard": 26,
+        "plan": "corpus_quantile",
+        "word_lo": "маечка",
+        "word_hi": "медник",
+        "label": "маечка–медник",
+        "word_count": 781,
+        "initial_letters": [
+          "м"
+        ]
+      },
+      {
+        "shard": 27,
+        "plan": "corpus_quantile",
+        "word_lo": "медно-красный",
+        "word_hi": "мово",
+        "label": "медно-красный–мово",
+        "word_count": 781,
+        "initial_letters": [
+          "м"
+        ]
+      },
+      {
+        "shard": 28,
+        "plan": "corpus_quantile",
+        "word_lo": "могельницкий",
+        "word_hi": "набатников",
+        "label": "могельницкий–набатников",
+        "word_count": 781,
+        "initial_letters": [
+          "м",
+          "н"
+        ]
+      },
+      {
+        "shard": 29,
+        "plan": "corpus_quantile",
+        "word_lo": "набатный",
+        "word_hi": "насекомое",
+        "label": "набатный–насекомое",
+        "word_count": 781,
+        "initial_letters": [
+          "н"
+        ]
+      },
+      {
+        "shard": 30,
+        "plan": "corpus_quantile",
+        "word_lo": "население",
+        "word_hi": "неизъяснимый",
+        "label": "население–неизъяснимый",
+        "word_count": 781,
+        "initial_letters": [
+          "н"
+        ]
+      },
+      {
+        "shard": 31,
+        "plan": "corpus_quantile",
+        "word_lo": "неимение",
+        "word_hi": "неусыпный",
+        "label": "неимение–неусыпный",
+        "word_count": 781,
+        "initial_letters": [
+          "н"
+        ]
+      },
+      {
+        "shard": 32,
+        "plan": "corpus_quantile",
+        "word_lo": "неутешительный",
+        "word_hi": "облачаться",
+        "label": "неутешительный–облачаться",
+        "word_count": 781,
+        "initial_letters": [
+          "н",
+          "о"
+        ]
+      },
+      {
+        "shard": 33,
+        "plan": "corpus_quantile",
+        "word_lo": "облачение",
+        "word_hi": "озноб",
+        "label": "облачение–озноб",
+        "word_count": 781,
+        "initial_letters": [
+          "о"
+        ]
+      },
+      {
+        "shard": 34,
+        "plan": "corpus_quantile",
+        "word_lo": "ознорский",
+        "word_hi": "осподи",
+        "label": "ознорский–осподи",
+        "word_count": 781,
+        "initial_letters": [
+          "о"
+        ]
+      },
+      {
+        "shard": 35,
+        "plan": "corpus_quantile",
+        "word_lo": "осрамить",
+        "word_hi": "отъедать",
+        "label": "осрамить–отъедать",
+        "word_count": 781,
+        "initial_letters": [
+          "о"
+        ]
+      },
+      {
+        "shard": 36,
+        "plan": "corpus_quantile",
+        "word_lo": "отъедаться",
+        "word_hi": "пена",
+        "label": "отъедаться–пена",
+        "word_count": 781,
+        "initial_letters": [
+          "о",
+          "п"
+        ]
+      },
+      {
+        "shard": 37,
+        "plan": "corpus_quantile",
+        "word_lo": "пенал",
+        "word_hi": "печерский",
+        "label": "пенал–печерский",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 38,
+        "plan": "corpus_quantile",
+        "word_lo": "печка",
+        "word_hi": "повисеть",
+        "label": "печка–повисеть",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 39,
+        "plan": "corpus_quantile",
+        "word_lo": "повлажнеть",
+        "word_hi": "поерзать",
+        "label": "повлажнеть–поерзать",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 40,
+        "plan": "corpus_quantile",
+        "word_lo": "поесть",
+        "word_hi": "поминки",
+        "label": "поесть–поминки",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 41,
+        "plan": "corpus_quantile",
+        "word_lo": "поминутно",
+        "word_hi": "поторопиться",
+        "label": "поминутно–поторопиться",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 42,
+        "plan": "corpus_quantile",
+        "word_lo": "поторчать",
+        "word_hi": "приволжский",
+        "label": "поторчать–приволжский",
+        "word_count": 780,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 43,
+        "plan": "corpus_quantile",
+        "word_lo": "приволье",
+        "word_hi": "проголодаться",
+        "label": "приволье–проголодаться",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 44,
+        "plan": "corpus_quantile",
+        "word_lo": "проголосовать",
+        "word_hi": "прощальный",
+        "label": "проголосовать–прощальный",
+        "word_count": 781,
+        "initial_letters": [
+          "п"
+        ]
+      },
+      {
+        "shard": 45,
+        "plan": "corpus_quantile",
+        "word_lo": "прощание",
+        "word_hi": "развьючивать",
+        "label": "прощание–развьючивать",
+        "word_count": 781,
+        "initial_letters": [
+          "п",
+          "р"
+        ]
+      },
+      {
+        "shard": 46,
+        "plan": "corpus_quantile",
+        "word_lo": "развязка",
+        "word_hi": "растерянный",
+        "label": "развязка–растерянный",
+        "word_count": 781,
+        "initial_letters": [
+          "р"
+        ]
+      },
+      {
+        "shard": 47,
+        "plan": "corpus_quantile",
+        "word_lo": "растеряха",
+        "word_hi": "рознь",
+        "label": "растеряха–рознь",
+        "word_count": 781,
+        "initial_letters": [
+          "р"
+        ]
+      },
+      {
+        "shard": 48,
+        "plan": "corpus_quantile",
+        "word_lo": "розоватый",
+        "word_hi": "сан",
+        "label": "розоватый–сан",
+        "word_count": 781,
+        "initial_letters": [
+          "р",
+          "с"
+        ]
+      },
+      {
+        "shard": 49,
+        "plan": "corpus_quantile",
+        "word_lo": "сан-франциско",
+        "word_hi": "сена",
+        "label": "сан-франциско–сена",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
+      },
+      {
+        "shard": 50,
+        "plan": "corpus_quantile",
+        "word_lo": "сенат",
+        "word_hi": "скромность",
+        "label": "сенат–скромность",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
+      },
+      {
+        "shard": 51,
+        "plan": "corpus_quantile",
+        "word_lo": "скромный",
+        "word_hi": "соколова",
+        "label": "скромный–соколова",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
+      },
+      {
+        "shard": 52,
+        "plan": "corpus_quantile",
+        "word_lo": "соколовский",
+        "word_hi": "станица",
+        "label": "соколовский–станица",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
+      },
+      {
+        "shard": 53,
+        "plan": "corpus_quantile",
+        "word_lo": "станичник",
+        "word_hi": "сундуккер",
+        "label": "станичник–сундуккер",
+        "word_count": 781,
+        "initial_letters": [
+          "с"
+        ]
+      },
+      {
+        "shard": 54,
+        "plan": "corpus_quantile",
+        "word_lo": "сундучок",
+        "word_hi": "темно-розовый",
+        "label": "сундучок–темно-розовый",
+        "word_count": 781,
+        "initial_letters": [
+          "с",
+          "т"
+        ]
+      },
+      {
+        "shard": 55,
+        "plan": "corpus_quantile",
+        "word_lo": "темно-русый",
+        "word_hi": "трамвай",
+        "label": "темно-русый–трамвай",
+        "word_count": 781,
+        "initial_letters": [
+          "т"
+        ]
+      },
+      {
+        "shard": 56,
+        "plan": "corpus_quantile",
+        "word_lo": "трамвайный",
+        "word_hi": "увеличиваться",
+        "label": "трамвайный–увеличиваться",
+        "word_count": 781,
+        "initial_letters": [
+          "т",
+          "у"
+        ]
+      },
+      {
+        "shard": 57,
+        "plan": "corpus_quantile",
+        "word_lo": "увеличитель",
+        "word_hi": "ускорять",
+        "label": "увеличитель–ускорять",
+        "word_count": 781,
+        "initial_letters": [
+          "у"
+        ]
+      },
+      {
+        "shard": 58,
+        "plan": "corpus_quantile",
+        "word_lo": "ускоряться",
+        "word_hi": "фландрия",
+        "label": "ускоряться–фландрия",
+        "word_count": 781,
+        "initial_letters": [
+          "у",
+          "ф"
+        ]
+      },
+      {
+        "shard": 59,
+        "plan": "corpus_quantile",
+        "word_lo": "фланелевка",
+        "word_hi": "холодище",
+        "label": "фланелевка–холодище",
+        "word_count": 781,
+        "initial_letters": [
+          "ф",
+          "х"
+        ]
+      },
+      {
+        "shard": 60,
+        "plan": "corpus_quantile",
+        "word_lo": "холодненький",
+        "word_hi": "черкассы",
+        "label": "холодненький–черкассы",
+        "word_count": 781,
+        "initial_letters": [
+          "х",
+          "ц",
+          "ч"
+        ]
+      },
+      {
+        "shard": 61,
+        "plan": "corpus_quantile",
+        "word_lo": "черкать",
+        "word_hi": "шелохнуть",
+        "label": "черкать–шелохнуть",
+        "word_count": 781,
+        "initial_letters": [
+          "ч",
+          "ш"
+        ]
+      },
+      {
+        "shard": 62,
+        "plan": "corpus_quantile",
+        "word_lo": "шелохнуться",
+        "word_hi": "экзамен",
+        "label": "шелохнуться–экзамен",
+        "word_count": 781,
+        "initial_letters": [
+          "ш",
+          "щ",
+          "ы",
+          "э"
+        ]
+      },
+      {
+        "shard": 63,
+        "plan": "corpus_quantile",
+        "word_lo": "экзаменатор",
+        "word_hi": "яя",
+        "label": "экзаменатор–яя",
+        "word_count": 781,
+        "initial_letters": [
+          "э",
+          "ю",
+          "я"
+        ]
+      }
+    ],
+    "lattices": [
+      {
+        "lattice_id": "lexicon-ru",
+        "token_count": 0,
+        "word_concepts": 0
+      }
+    ]
+  },
+  "prisms": [
+    "prism_memory",
+    "prism_hippo"
+  ],
+  "lattice_stack": [
+    {
+      "id": "schema-math",
+      "z_level": null,
+      "role": "core",
+      "width": 32,
+      "height": 32,
+      "token_count": 16,
+      "word_concepts": 0,
+      "nca_model": null,
+      "nca_bytes": 0
+    }
+  ],
+  "l2_network_ids": [
+    "lexicon-ru"
+  ],
+  "journal": {
+    "schema_version": 1,
+    "domain_count": 0,
+    "entry_count": 0,
+    "bytes": 0,
+    "domains": []
+  },
+  "disk": {
+    "field_state_json": 2379318,
+    "field_state_human": "2.3 MiB",
+    "store_total": 225124365,
+    "store_total_human": "214.7 MiB",
+    "nca_dir": 165363284,
+    "parallel_shards_dir": 0,
+    "examples_exp_reports": 617696
+  }
+}
