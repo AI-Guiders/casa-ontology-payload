@@ -6,10 +6,17 @@ from __future__ import annotations
 import re
 from typing import Any
 
-# Operand: quoted string, pipe run, identifier, number
-_OPERAND = r'(?:"[^"\\]*(?:\\.[^"\\]*)*"|\'[^\'\\]*(?:\\.[^\'\\]*)*\'|\|+|[\w\u0400-\u04ff]+|\d+(?:\.\d+)?)'
+# Operand: quoted string, parenthesized group, pipe run, identifier, number
+_GROUP_OPERAND = r"\(\s*(?:\|+|I+)?\s*\)"
+_OPERAND = (
+    rf'(?:"[^"\\]*(?:\\.[^"\\]*)*"|\'[^\'\\]*(?:\\.[^\'\\]*)*\''
+    rf"|{_GROUP_OPERAND}|\|+|[\w\u0400-\u04ff]+|\d+(?:\.\d+)?)"
+)
 _INFIX_RE = re.compile(rf"({_OPERAND})\s*([+|=*&-])\s*({_OPERAND})")
 _PIPE_ONLY = re.compile(r"^[\| ]+$")
+_GROUP_EMPTY = re.compile(r"^\(\s*\)$")
+_GROUP_PIPE = re.compile(r"^\(\s*(\|+)\s*\)$")
+_GROUP_I = re.compile(r"^\(\s*(I+)\s*\)$", re.I)
 
 # Legacy string tags → structured when (bundle may use either)
 _LEGACY_WHEN: dict[str, dict[str, Any]] = {
@@ -26,13 +33,34 @@ def classify_operand(text: str) -> str:
         return "empty"
     if t[0] in "\"'":
         return "string_literal"
-    if _PIPE_ONLY.match(t.replace(" ", "")) and "|" in t:
+    compact = t.replace(" ", "")
+    if _GROUP_EMPTY.match(compact):
+        return "group_empty"
+    if _GROUP_PIPE.match(compact):
+        return "pipe_group"
+    if _GROUP_I.match(compact):
+        return "i_group"
+    if _PIPE_ONLY.match(compact) and "|" in compact:
         return "pipe_run"
     if re.fullmatch(r"\d+(?:\.\d+)?", t):
         return "number"
     if re.fullmatch(r"[\w\u0400-\u04ff]+", t):
         return "identifier"
     return "other"
+
+
+def _parse_group(compact: str) -> dict[str, Any] | None:
+    if _GROUP_EMPTY.match(compact):
+        return {"text": compact, "inner": "", "inner_kind": "empty", "count": 0}
+    m = _GROUP_PIPE.match(compact)
+    if m:
+        inner = m.group(1)
+        return {"text": compact, "inner": inner, "inner_kind": "pipe_run", "count": len(inner)}
+    m = _GROUP_I.match(compact)
+    if m:
+        inner = m.group(1).upper()
+        return {"text": compact, "inner": inner, "inner_kind": "i_run", "count": len(inner)}
+    return None
 
 
 def _filter_spurious_infix(infix: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -77,6 +105,8 @@ def analyze_cue(cue: str) -> dict[str, Any]:
     if _PIPE_ONLY.match(cue) and "|" in compact:
         glyph_run = {"glyph_class": "pipe", "text": compact}
 
+    group = _parse_group(compact)
+
     singleton = cue if len(cue) == 1 else None
     number_literal: str | None = None
     if re.fullmatch(r"\d+", compact):
@@ -86,6 +116,7 @@ def analyze_cue(cue: str) -> dict[str, Any]:
         "has": has,
         "infix": infix,
         "glyph_run": glyph_run,
+        "group": group,
         "singleton": singleton,
         "number_literal": number_literal,
     }
@@ -102,6 +133,8 @@ def _normalize_when(when: Any) -> dict[str, Any]:
 def _operand_matches(kind: str, rule: str) -> bool:
     if rule == "identifier":
         return kind in ("identifier", "number")
+    if rule == "pipe_run":
+        return kind in ("pipe_run", "pipe_group")
     return kind == rule
 
 
@@ -116,6 +149,15 @@ def _match_when(analysis: dict[str, Any], when: dict[str, Any]) -> bool:
         if not gr:
             return False
         return str(when.get("glyph_class") or "pipe") == gr.get("glyph_class")
+
+    if shape == "group":
+        g = analysis.get("group")
+        if not g:
+            return False
+        inner_rule = when.get("inner")
+        if inner_rule and str(g.get("inner_kind") or "") != str(inner_rule):
+            return False
+        return True
 
     if shape == "singleton":
         return analysis.get("singleton") == str(when.get("glyph") or "")
@@ -159,6 +201,8 @@ def _glyph_relevant(analysis: dict[str, Any], glyph: str, when: dict[str, Any]) 
     shape = str(when.get("shape") or "")
     if shape == "glyph_run":
         return glyph in str((analysis.get("glyph_run") or {}).get("text") or "")
+    if shape == "group":
+        return glyph == str((analysis.get("group") or {}).get("text") or "")
     if shape == "infix":
         return glyph == str(when.get("op") or "")
     if shape == "singleton":
@@ -208,8 +252,10 @@ def infix_reading_contexts(ix: dict[str, Any], reading_model: dict) -> list[str]
         return ctxs
     kinds = (ix.get("left_kind"), ix.get("right_kind"))
     fb: list[str] = []
-    if "pipe_run" in kinds:
+    if "pipe_run" in kinds or "pipe_group" in kinds or "i_group" in kinds:
         fb.append("math.ctx.arithmetic")
+    if "group_empty" in kinds:
+        fb.append("math.ctx.group")
     if "number" in kinds:
         fb.append("math.ctx.arithmetic")
     return fb

@@ -1,0 +1,962 @@
+{
+  "schema_version": 1,
+  "class_id": "math-palochki",
+  "target_agent": "von-neumann",
+  "bundle": "kb-math-palochki-v1.bundle.json",
+  "probe": [
+    {
+      "cue": "0",
+      "expect": "math.num.zero"
+    },
+    {
+      "cue": "()",
+      "expect": "math.num.zero"
+    },
+    {
+      "cue": "||||",
+      "expect": "math.num.four"
+    },
+    {
+      "cue": "(||)",
+      "expect": "math.num.two"
+    },
+    {
+      "cue": "(IIIII)",
+      "expect": "math.num.five"
+    },
+    {
+      "cue": "1",
+      "expect": "math.num.one"
+    },
+    {
+      "cue": "ноль палочек",
+      "expect": "math.num.zero"
+    },
+    {
+      "cue": "одна палочка",
+      "expect": "math.num.one"
+    },
+    {
+      "cue": "| + |",
+      "expect": "math.op.add"
+    },
+    {
+      "cue": "(||) + (||)",
+      "expect": "math.op.add"
+    },
+    {
+      "cue": "||| - ||",
+      "expect": "math.op.sub"
+    },
+    {
+      "cue": "(|||) - (||)",
+      "expect": "math.op.sub"
+    },
+    {
+      "cue": "|||| / 2",
+      "expect": "math.op.div"
+    },
+    {
+      "cue": "3 × 2",
+      "expect": "math.op.mul"
+    },
+    {
+      "cue": "||",
+      "expect": "math.num.two"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "lesson-00-zero-and-digits",
+      "title": "Ноль и цифры ↔ палочки",
+      "episodes": [
+        {
+          "cue": "0",
+          "correct": "0",
+          "concept_id": "math.num.zero",
+          "scene": "lesson00_zero",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "ноль",
+          "correct": "0",
+          "concept_id": "math.num.zero",
+          "scene": "lesson00_zero_word",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "пусто",
+          "correct": "0",
+          "concept_id": "math.num.zero",
+          "scene": "lesson00_empty",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "ноль палочек",
+          "correct": "0",
+          "concept_id": "math.num.zero",
+          "scene": "lesson00_zero_phrase",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "1",
+          "correct": "1",
+          "concept_id": "math.num.one",
+          "scene": "lesson00_digit",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "2",
+          "correct": "2",
+          "concept_id": "math.num.two",
+          "scene": "lesson00_digit",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "3",
+          "correct": "3",
+          "concept_id": "math.num.three",
+          "scene": "lesson00_digit",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "4",
+          "correct": "4",
+          "concept_id": "math.num.four",
+          "scene": "lesson00_digit",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "1 = |",
+          "correct": "|",
+          "concept_id": "math.num.one",
+          "scene": "lesson00_digit_stick",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "2 = ||",
+          "correct": "||",
+          "concept_id": "math.num.two",
+          "scene": "lesson00_digit_stick",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "3 = |||",
+          "correct": "|||",
+          "concept_id": "math.num.three",
+          "scene": "lesson00_digit_stick",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "4 = ||||",
+          "correct": "||||",
+          "concept_id": "math.num.four",
+          "scene": "lesson00_digit_stick",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "одна палочка",
+          "correct": "|",
+          "concept_id": "math.num.one",
+          "scene": "lesson00_phrase",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "две палочки",
+          "correct": "||",
+          "concept_id": "math.num.two",
+          "scene": "lesson00_phrase",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "три палочки",
+          "correct": "|||",
+          "concept_id": "math.num.three",
+          "scene": "lesson00_phrase",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "четыре палочки",
+          "correct": "||||",
+          "concept_id": "math.num.four",
+          "scene": "lesson00_phrase",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-01-sticks-and-heaps",
+      "title": "Палочка и кучки",
+      "episodes": [
+        {
+          "cue": "|",
+          "correct": "1",
+          "concept_id": "math.num.one",
+          "scene": "lesson01_count",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "||",
+          "correct": "2",
+          "concept_id": "math.num.two",
+          "scene": "lesson01_count",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|||",
+          "correct": "3",
+          "concept_id": "math.num.three",
+          "scene": "lesson01_count",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "||||",
+          "correct": "4",
+          "concept_id": "math.num.four",
+          "scene": "lesson01_count",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "палочка",
+          "correct": "палочка",
+          "concept_id": "math.entity.stick",
+          "scene": "lesson01_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "кучка",
+          "correct": "кучка",
+          "concept_id": "math.role.heap",
+          "scene": "lesson01_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-02-equal-heaps",
+      "title": "Поровну",
+      "episodes": [
+        {
+          "cue": "|||||| поровну 3",
+          "correct": "|| || ||",
+          "concept_id": "math.num.two",
+          "scene": "lesson02_equal",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|||| поровну 2",
+          "correct": "|| ||",
+          "concept_id": "math.num.two",
+          "scene": "lesson02_equal",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "сколько в каждой || || ||",
+          "correct": "2",
+          "concept_id": "math.num.two",
+          "scene": "lesson02_each",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-03-addition",
+      "title": "Сложение",
+      "episodes": [
+        {
+          "cue": "| + | = ||",
+          "correct": "||",
+          "concept_id": "math.op.add",
+          "scene": "lesson03_sticks_add",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|| + || = ||||",
+          "correct": "||||",
+          "concept_id": "math.op.add",
+          "scene": "lesson03_sticks_add",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "2 + 3 = 5",
+          "correct": "5",
+          "concept_id": "math.op.add",
+          "scene": "lesson03_numeric_add",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "слагаемое",
+          "correct": "слагаемое",
+          "concept_id": "math.role.addend",
+          "scene": "lesson03_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "сумма",
+          "correct": "сумма",
+          "concept_id": "math.role.sum",
+          "scene": "lesson03_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-04-subtraction",
+      "title": "Вычитание",
+      "episodes": [
+        {
+          "cue": "||| - || = |",
+          "correct": "|",
+          "concept_id": "math.op.sub",
+          "scene": "lesson04_sticks_sub",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|||| - | = |||",
+          "correct": "|||",
+          "concept_id": "math.op.sub",
+          "scene": "lesson04_sticks_sub",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "5 - 2 = 3",
+          "correct": "3",
+          "concept_id": "math.op.sub",
+          "scene": "lesson04_numeric_sub",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "уменьшаемое",
+          "correct": "уменьшаемое",
+          "concept_id": "math.role.minuend",
+          "scene": "lesson04_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "вычитаемое",
+          "correct": "вычитаемое",
+          "concept_id": "math.role.subtrahend",
+          "scene": "lesson04_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "разность",
+          "correct": "разность",
+          "concept_id": "math.role.difference",
+          "scene": "lesson04_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-05-groups-of-n",
+      "title": "Группы по N",
+      "episodes": [
+        {
+          "cue": "|| || ||",
+          "correct": "6",
+          "concept_id": "math.num.six",
+          "scene": "lesson05_groups",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "3 раза по 2",
+          "correct": "6",
+          "concept_id": "math.num.six",
+          "scene": "lesson05_skip",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "||| + ||| + |||",
+          "correct": "9",
+          "concept_id": "math.op.add",
+          "scene": "lesson05_repeat_add",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-06-multiplication",
+      "title": "Умножение",
+      "episodes": [
+        {
+          "cue": "3 × 2 = 6",
+          "correct": "6",
+          "concept_id": "math.op.mul",
+          "scene": "lesson06_mul",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "2 * 3 = 6",
+          "correct": "6",
+          "concept_id": "math.op.mul",
+          "scene": "lesson06_mul",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|| || || = 3 × 2",
+          "correct": "6",
+          "concept_id": "math.op.mul",
+          "scene": "lesson06_sticks_mul",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "множитель",
+          "correct": "множитель",
+          "concept_id": "math.role.factor",
+          "scene": "lesson06_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "произведение",
+          "correct": "произведение",
+          "concept_id": "math.role.product",
+          "scene": "lesson06_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-07-division-groups-of",
+      "title": "Деление: по N в кучке",
+      "episodes": [
+        {
+          "cue": "|||| / 2",
+          "correct": "2",
+          "concept_id": "math.op.div",
+          "scene": "lesson07_div_quotitive",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|||| / 2 = 2",
+          "correct": "2",
+          "concept_id": "math.op.div",
+          "scene": "lesson07_div_quotitive",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|||| / 2 → (||)(||)",
+          "correct": "2",
+          "concept_id": "math.role.quotient",
+          "scene": "lesson07_heap_count",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "делимое",
+          "correct": "делимое",
+          "concept_id": "math.role.dividend",
+          "scene": "lesson07_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "делитель",
+          "correct": "делитель",
+          "concept_id": "math.role.divisor",
+          "scene": "lesson07_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "частное",
+          "correct": "частное",
+          "concept_id": "math.role.quotient",
+          "scene": "lesson07_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-08-division-into-heaps",
+      "title": "Деление: на K кучек",
+      "episodes": [
+        {
+          "cue": "|||| на 2 кучки",
+          "correct": "2",
+          "concept_id": "math.role.quotient",
+          "scene": "lesson08_div_partition",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|||| / 2 кучки",
+          "correct": "||",
+          "concept_id": "math.num.two",
+          "scene": "lesson08_each_heap",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "6 / 3 = 2",
+          "correct": "2",
+          "concept_id": "math.op.div",
+          "scene": "lesson08_numeric_div",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-09-which-question",
+      "title": "Какой вопрос?",
+      "episodes": [
+        {
+          "cue": "|| + || = ?",
+          "correct": "math.op.add",
+          "concept_id": "math.op.add",
+          "scene": "lesson09_drill",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "||| - || = ?",
+          "correct": "math.op.sub",
+          "concept_id": "math.op.sub",
+          "scene": "lesson09_drill",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|||| / 2 = ?",
+          "correct": "math.op.div",
+          "concept_id": "math.op.div",
+          "scene": "lesson09_drill",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "3 × 2 = ?",
+          "correct": "math.op.mul",
+          "concept_id": "math.op.mul",
+          "scene": "lesson09_drill",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-10-operand-vocabulary",
+      "title": "Словарь операндов",
+      "episodes": [
+        {
+          "cue": "слагаемое + слагаемое = сумма",
+          "correct": "сумма",
+          "concept_id": "math.role.sum",
+          "scene": "lesson10_recap",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "уменьшаемое − вычитаемое = разность",
+          "correct": "разность",
+          "concept_id": "math.role.difference",
+          "scene": "lesson10_recap",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "делимое ÷ делитель = частное",
+          "correct": "частное",
+          "concept_id": "math.role.quotient",
+          "scene": "lesson10_recap",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "множитель × множитель = произведение",
+          "correct": "произведение",
+          "concept_id": "math.role.product",
+          "scene": "lesson10_recap",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-11-paren-groups",
+      "title": "Группы в скобках",
+      "episodes": [
+        {
+          "cue": "()",
+          "correct": "0",
+          "concept_id": "math.num.zero",
+          "scene": "lesson11_empty_group",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "пустая группа",
+          "correct": "0",
+          "concept_id": "math.num.zero",
+          "scene": "lesson11_empty_word",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(|)",
+          "correct": "1",
+          "concept_id": "math.num.one",
+          "scene": "lesson11_pipe_group",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(||)",
+          "correct": "2",
+          "concept_id": "math.num.two",
+          "scene": "lesson11_pipe_group",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(|||)",
+          "correct": "3",
+          "concept_id": "math.num.three",
+          "scene": "lesson11_pipe_group",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(||||)",
+          "correct": "4",
+          "concept_id": "math.num.four",
+          "scene": "lesson11_pipe_group",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(I)",
+          "correct": "1",
+          "concept_id": "math.num.one",
+          "scene": "lesson11_i_group",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(II)",
+          "correct": "2",
+          "concept_id": "math.num.two",
+          "scene": "lesson11_i_group",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(III)",
+          "correct": "3",
+          "concept_id": "math.num.three",
+          "scene": "lesson11_i_group",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(IIII)",
+          "correct": "4",
+          "concept_id": "math.num.four",
+          "scene": "lesson11_i_group",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(IIIII)",
+          "correct": "5",
+          "concept_id": "math.num.five",
+          "scene": "lesson11_i_group",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "() = 0",
+          "correct": "0",
+          "concept_id": "math.num.zero",
+          "scene": "lesson11_eq",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(|) = 1",
+          "correct": "1",
+          "concept_id": "math.num.one",
+          "scene": "lesson11_eq",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(||) = 2",
+          "correct": "2",
+          "concept_id": "math.num.two",
+          "scene": "lesson11_eq",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(|||) = 3",
+          "correct": "3",
+          "concept_id": "math.num.three",
+          "scene": "lesson11_eq",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(IIIII) = ?",
+          "correct": "5",
+          "concept_id": "math.num.five",
+          "scene": "lesson11_drill",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "группа",
+          "correct": "группа",
+          "concept_id": "math.entity.group",
+          "scene": "lesson11_vocab",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-12-compute-drill",
+      "title": "Вычисления: примеры",
+      "episodes": [
+        {
+          "cue": "| + | = ||",
+          "correct": "||",
+          "concept_id": "math.op.add",
+          "scene": "lesson12_sticks_add",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|| + | = |||",
+          "correct": "|||",
+          "concept_id": "math.op.add",
+          "scene": "lesson12_sticks_add",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(||) + (||) = ||||",
+          "correct": "||||",
+          "concept_id": "math.op.add",
+          "scene": "lesson12_group_add",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(|||) + (|) = ||||",
+          "correct": "||||",
+          "concept_id": "math.op.add",
+          "scene": "lesson12_group_add",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "1 + 2 = 3",
+          "correct": "3",
+          "concept_id": "math.op.add",
+          "scene": "lesson12_numeric_add",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "2 + 3 = 5",
+          "correct": "5",
+          "concept_id": "math.op.add",
+          "scene": "lesson12_numeric_add",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "||| - || = |",
+          "correct": "|",
+          "concept_id": "math.op.sub",
+          "scene": "lesson12_sticks_sub",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(|||) - (||) = (|)",
+          "correct": "(|)",
+          "concept_id": "math.op.sub",
+          "scene": "lesson12_group_sub",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "5 - 2 = 3",
+          "correct": "3",
+          "concept_id": "math.op.sub",
+          "scene": "lesson12_numeric_sub",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|||| - || = ||",
+          "correct": "||",
+          "concept_id": "math.op.sub",
+          "scene": "lesson12_sticks_sub",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "3 × 2 = 6",
+          "correct": "6",
+          "concept_id": "math.op.mul",
+          "scene": "lesson12_mul",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|| || || = 6",
+          "correct": "6",
+          "concept_id": "math.op.mul",
+          "scene": "lesson12_sticks_mul",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "|||| / 2 = 2",
+          "correct": "2",
+          "concept_id": "math.op.div",
+          "scene": "lesson12_div",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(||||) / (||) = (||)",
+          "correct": "(||)",
+          "concept_id": "math.op.div",
+          "scene": "lesson12_group_div",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "| + | = ?",
+          "correct": "||",
+          "concept_id": "math.op.add",
+          "scene": "lesson12_drill",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "(||) + (||) = ?",
+          "correct": "||||",
+          "concept_id": "math.op.add",
+          "scene": "lesson12_drill",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "4 - 1 = ?",
+          "correct": "3",
+          "concept_id": "math.op.sub",
+          "scene": "lesson12_drill",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "lesson-13-kolb-count-rows",
+      "title": "Kolb: ряд счёта → emergent pattern",
+      "episodes": [
+        {
+          "cue": "0",
+          "correct": "0",
+          "concept_id": "math.num.zero",
+          "scene": "count_row:by_one",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "1",
+          "correct": "1",
+          "concept_id": "math.num.one",
+          "scene": "count_row:by_one",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "2",
+          "correct": "2",
+          "concept_id": "math.num.two",
+          "scene": "count_row:by_one",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "3",
+          "correct": "3",
+          "concept_id": "math.num.three",
+          "scene": "count_row:by_one",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "4",
+          "correct": "4",
+          "concept_id": "math.num.four",
+          "scene": "count_row:by_one",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        },
+        {
+          "cue": "5",
+          "correct": "5",
+          "concept_id": "math.num.five",
+          "scene": "count_row:by_one",
+          "lattice_id": "schema-math",
+          "episode_source": "lesson"
+        }
+      ]
+    }
+  ]
+}
