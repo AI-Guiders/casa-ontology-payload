@@ -63,7 +63,7 @@ phrases (hub, multilingual)
 
 **Lab v0:** только `alphabet-ru` + `alphabet-en` (legacy `L0_grapheme_cyrl` / `_latn`). `alphabet-uk` — при добавлении UK corpus.
 
-**Store:** `sss-{locale}-{tier}-v{N}` — один store на язык+tier ([`agent-store-catalog.md`](agent-store-catalog.md)).
+**Store:** `lexicon-{locale}-{tier}` — один store на язык+tier ([`agent-store-catalog.md`](agent-store-catalog.md)).
 
 **Hub `phrases`:** entity/POS/taxonomy — общий каркас; леммы на **words-{locale}**.
 
@@ -137,10 +137,10 @@ Map: `lattice-id-map.v1.json`. **`L0_grapheme_cyrl` → `alphabet-ru`**, не `a
 
 ```bash
 # dry-run
-python tools/migrate_lattice_ids_v1.py --store-dir lab/agent-stores/sss-ru-general --dry-run
+python tools/migrate_lattice_ids_v1.py --store-dir lab/agent-stores/lexicon-ru-general --dry-run
 
 # apply (ltm + manifest + nca paths; без NCA retrain)
-python tools/migrate_lattice_ids_v1.py --store-dir lab/agent-stores/sss-ru-general --compact
+python tools/migrate_lattice_ids_v1.py --store-dir lab/agent-stores/lexicon-ru-general --compact
 
 # только ltm/manifest, без field_state (400 MiB JSON)
 python tools/migrate_lattice_ids_v1.py --store-dir … --skip-field-state

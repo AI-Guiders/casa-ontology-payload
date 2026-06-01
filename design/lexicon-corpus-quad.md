@@ -15,12 +15,12 @@
 
 | ID | Store | Источник headwords |
 |----|-------|-------------------|
-| `en-general` | `sss-en-general` | export L2 из **`sss-en-folk`** (~6700, production EN dictionary) |
-| `en-tech` | `sss-en-tech` | design/tools/apps/knowledge + seed (`build_tech_headwords`) |
-| `ru-general` | `sss-ru-general` | **DetCorpus 50k** частотник (CC0), `fetch_ru_frequency_headwords.py` (~50k лемм) |
-| `ru-tech` | `sss-ru-tech` | KB + design RU/EN scan + seed |
+| `en-general` | `lexicon-en-general` | export L2 из **`lexicon-en-folk`** (~6700, production EN dictionary) |
+| `en-tech` | `lexicon-en-tech` | design/tools/apps/knowledge + seed (`build_tech_headwords`) |
+| `ru-general` | `lexicon-ru-general` | **DetCorpus 50k** частотник (CC0), `fetch_ru_frequency_headwords.py` (~50k лемм) |
+| `ru-tech` | `lexicon-ru-tech` | KB + design RU/EN scan + seed |
 
-**Важно:** `sss-ru-lexicon` (Afan sharded) — literary/smoke lineage; **ru-general** = частотник. Позже: `meta.freq.*` + ipm sidecar → sleep ingest объясняет votes/T9.
+**Важно:** `lexicon-ru-archaic` (Afan sharded) — literary/smoke lineage; **ru-general** = частотник. Позже: `meta.freq.*` + ipm sidecar → sleep ingest объясняет votes/T9.
 
 ```bash
 python tools/fetch_ru_frequency_headwords.py
@@ -35,7 +35,7 @@ apps/Casa.Lexicon.Build/bin/Release/net10.0/win-x64/publish/casa-lexicon-build.e
 
 Проверяет минимумы: EN ≥5k, RU ≥10k. См. `apps/Casa.Lexicon.Build/README.md`.
 
-Старые stores (`sss-en-folk`, `sss-ru-lexicon`) остаются; quad — **ролевое** разбиение для BiT9 и профилей.
+Старые stores (`lexicon-en-folk`, `lexicon-ru-archaic`) остаются; quad — **ролевое** разбиение для BiT9 и профилей.
 
 ## Пайплайн (один раз)
 
@@ -57,8 +57,8 @@ cd Financial/software/open/casa-ontology-payload
 
 ```bash
 # новое слово на sleep / cold path
-python tools/lexicon_cold_ingest.py --store-dir lab/agent-stores/sss-en-tech --words-file new_words.txt
-python tools/nca_stale_shards.py --store-dir lab/agent-stores/sss-en-tech --train --device cuda
+python tools/lexicon_cold_ingest.py --store-dir lab/agent-stores/lexicon-en-tech --words-file new_words.txt
+python tools/nca_stale_shards.py --store-dir lab/agent-stores/lexicon-en-tech --train --device cuda
 ```
 
 ## Поставка

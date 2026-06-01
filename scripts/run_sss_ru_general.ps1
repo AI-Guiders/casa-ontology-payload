@@ -7,7 +7,7 @@ $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 $env:PYTHONUNBUFFERED = '1'
 
-$store = 'lab/agent-stores/sss-ru-general'
+$store = 'lab/agent-stores/lexicon-ru-general'
 $exp = 'lab/exp_t9'
 
 Write-Host '=== 0) DetCorpus headwords + usage axes ===' -ForegroundColor Green

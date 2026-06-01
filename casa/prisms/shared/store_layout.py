@@ -14,20 +14,23 @@ from typing import Literal
 # Lab data root (stores, profiles, corpus, experiments). Formerly `examples/`.
 LAB_DATA_DIR = "lab"
 
-# Lab archaic Afan lexicon (not prod T9). Prod modern → STORE_RU_GENERAL_V0.
-STORE_RU_LEXICON_V0 = "sss-ru-lexicon"
+# Agent lexicon stores (corpus → ingest → field/ltm; no sss- prefix).
+STORE_LEXICON_RU_ARCHAIC = "lexicon-ru-archaic"  # Afan lab, not prod T9
+STORE_LEXICON_RU_GENERAL = "lexicon-ru-general"  # prod modern RU
+STORE_LEXICON_RU_TECH = "lexicon-ru-tech"
+STORE_LEXICON_EN_FOLK = "lexicon-en-folk"
+STORE_LEXICON_EN_GENERAL = "lexicon-en-general"
+STORE_LEXICON_EN_TECH = "lexicon-en-tech"
+STORE_INGEST_REF_AFAN = "ingest-ref-afan"  # monolith ingest reference only
 
-# English folk-tale lexicon (separate store; L2_en_word_* shards).
-STORE_EN_FOLK_V0 = "sss-en-folk"
-
-# Quad corpora v0: general vs tech × ru vs en (batch imprint + per-store NCA).
-STORE_EN_GENERAL_V0 = "sss-en-general"
-STORE_EN_TECH_V0 = "sss-en-tech"
-STORE_RU_GENERAL_V0 = "sss-ru-general"
-STORE_RU_TECH_V0 = "sss-ru-tech"
-
-# Read-only monolith built from Afanasyev ingest (corpus reference only).
-STORE_INGEST_REF_AFAN_V0 = "sss-afan"
+# Deprecated aliases — remove after migration
+STORE_RU_LEXICON_V0 = STORE_LEXICON_RU_ARCHAIC
+STORE_EN_FOLK_V0 = STORE_LEXICON_EN_FOLK
+STORE_EN_GENERAL_V0 = STORE_LEXICON_EN_GENERAL
+STORE_EN_TECH_V0 = STORE_LEXICON_EN_TECH
+STORE_RU_GENERAL_V0 = STORE_LEXICON_RU_GENERAL
+STORE_RU_TECH_V0 = STORE_LEXICON_RU_TECH
+STORE_INGEST_REF_AFAN_V0 = STORE_INGEST_REF_AFAN
 
 # Role-based lab stores (no corpus in name — see agent-store-catalog.md)
 STORE_MATH_L0_LAB = "math-l0-lab"
@@ -63,28 +66,28 @@ class CorpusSpec:
 
 CORPUS_QUAD: dict[str, CorpusSpec] = {
     "en-general": CorpusSpec(
-        STORE_EN_GENERAL_V0,
+        STORE_LEXICON_EN_GENERAL,
         "en",
         "general",
         "en-general",
         f"{LAB_DATA_DIR}/corpus/en-general/headwords.v1.txt",
     ),
     "en-tech": CorpusSpec(
-        STORE_EN_TECH_V0,
+        STORE_LEXICON_EN_TECH,
         "en",
         "tech",
         "en-tech",
         f"{LAB_DATA_DIR}/corpus/en-tech/headwords.v1.txt",
     ),
     "ru-general": CorpusSpec(
-        STORE_RU_GENERAL_V0,
+        STORE_LEXICON_RU_GENERAL,
         "ru",
         "general",
         "ru-general",
         f"{LAB_DATA_DIR}/corpus/ru-general/headwords.v1.txt",
     ),
     "ru-tech": CorpusSpec(
-        STORE_RU_TECH_V0,
+        STORE_LEXICON_RU_TECH,
         "ru",
         "tech",
         "ru-tech",
@@ -93,19 +96,102 @@ CORPUS_QUAD: dict[str, CorpusSpec] = {
 }
 
 
+LEXICON_STORE_ID_RENAMES: dict[str, str] = {
+    "sss-ru-general-v0": STORE_LEXICON_RU_GENERAL,
+    "sss-ru-general": STORE_LEXICON_RU_GENERAL,
+    "sss-ru-lexicon": STORE_LEXICON_RU_ARCHAIC,
+    "sss-ru-archaic": STORE_LEXICON_RU_ARCHAIC,
+    "sss-ru-literary": STORE_LEXICON_RU_ARCHAIC,
+    "sss-ru-tech-v0": STORE_LEXICON_RU_TECH,
+    "sss-ru-tech": STORE_LEXICON_RU_TECH,
+    "sss-en-general-v0": STORE_LEXICON_EN_GENERAL,
+    "sss-en-general": STORE_LEXICON_EN_GENERAL,
+    "sss-en-folk-v0": STORE_LEXICON_EN_FOLK,
+    "sss-en-folk": STORE_LEXICON_EN_FOLK,
+    "sss-en-tech-v0": STORE_LEXICON_EN_TECH,
+    "sss-en-tech": STORE_LEXICON_EN_TECH,
+    "sss-afan-v0": STORE_INGEST_REF_AFAN,
+    "sss-afan": STORE_INGEST_REF_AFAN,
+    "sss-phases-abc": "lexicon-phases-abc",
+    "sss-shard-smoke": "lexicon-shard-smoke",
+    "sss-afan-iii": "lexicon-afan-iii",
+    "sss-afan-test": "lexicon-afan-test",
+    "sss-heldout": "lexicon-heldout",
+    "sss-hypothesis": "lexicon-hypothesis",
+    "sss-self": "lexicon-self",
+    "sss-segment": "lexicon-segment",
+    "sss-phase-a": "lexicon-phase-a",
+    "sss-listen-mass": "lexicon-listen-mass",
+    "sss-lab": "lexicon-lab",
+    "sss-full": "lexicon-full",
+    "sss-kolb": "lexicon-kolb",
+    "sss-bench": "lexicon-bench",
+    "sss-text": "lexicon-text",
+    "sss-vocab": "lexicon-vocab",
+}
+
+
+def is_lexicon_store_id(store_id: str) -> bool:
+    """Agent lexicon store folder id (compact field_state default)."""
+    return store_id.startswith("lexicon-")
+
+
+def use_compact_field_state(store_dir: Path | str) -> bool:
+    name = store_dir.name if isinstance(store_dir, Path) else Path(store_dir).name
+    return is_lexicon_store_id(name)
+
+
+def rename_legacy_lexicon_store_dirs(*, root: Path | None = None) -> list[dict[str, str]]:
+    """Rename lab/agent-stores/sss-* → lexicon-* (one-time migration)."""
+    rel = Path(LAB_DATA_DIR) / "agent-stores"
+    stores_root = (root / rel) if root else rel
+    reports: list[dict[str, str]] = []
+    for old_id, new_id in LEXICON_STORE_ID_RENAMES.items():
+        src = stores_root / old_id
+        dst = stores_root / new_id
+        if not src.is_dir():
+            continue
+        if dst.exists():
+            reports.append({"old": old_id, "new": new_id, "status": "skipped_dst_exists"})
+            continue
+        src.rename(dst)
+        fs = field_state_path(dst)
+        if fs.is_file():
+            try:
+                import json
+
+                state = json.loads(fs.read_text(encoding="utf-8"))
+                if isinstance(state.get("store"), dict):
+                    state["store"]["store_id"] = new_id
+                    fs.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+            except (OSError, json.JSONDecodeError):
+                pass
+        reports.append({"old": old_id, "new": new_id, "status": "renamed"})
+    return reports
+
+
 def agent_store_dir(store_id: str, *, root: Path | None = None) -> Path:
     rel = Path(LAB_DATA_DIR) / "agent-stores"
     base = (root / rel) if root is not None else rel
     return base / store_id
 
 
+def lexicon_ru_archaic_store(*, root: Path | None = None) -> Path:
+    """Archaic Afan lab lexicon — not prod T9."""
+    return agent_store_dir(STORE_LEXICON_RU_ARCHAIC, root=root)
+
+
+def lexicon_ru_general_store(*, root: Path | None = None) -> Path:
+    """Modern RU lexicon (prod)."""
+    return agent_store_dir(STORE_LEXICON_RU_GENERAL, root=root)
+
+
 def ru_lexicon_store(*, root: Path | None = None) -> Path:
-    """Legacy name: archaic Afan store (lab). Prefer ru_general_store() for prod."""
-    return agent_store_dir(STORE_RU_LEXICON_V0, root=root)
+    return lexicon_ru_archaic_store(root=root)
 
 
 def ru_general_store(*, root: Path | None = None) -> Path:
-    return agent_store_dir(STORE_RU_GENERAL_V0, root=root)
+    return lexicon_ru_general_store(root=root)
 
 
 def math_l0_lab_store(*, root: Path | None = None) -> Path:
@@ -120,8 +206,12 @@ def control_lab_store(*, root: Path | None = None) -> Path:
     return agent_store_dir(STORE_CONTROL_LAB, root=root)
 
 
+def lexicon_en_folk_store(*, root: Path | None = None) -> Path:
+    return agent_store_dir(STORE_LEXICON_EN_FOLK, root=root)
+
+
 def en_folk_store(*, root: Path | None = None) -> Path:
-    return agent_store_dir(STORE_EN_FOLK_V0, root=root)
+    return lexicon_en_folk_store(root=root)
 
 
 def nca_root(store_dir: Path) -> Path:

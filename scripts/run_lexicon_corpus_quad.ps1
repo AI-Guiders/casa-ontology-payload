@@ -35,10 +35,10 @@ foreach ($cid in $corpora) {
     Write-Host "=== Init + NCA: $cid ===" -ForegroundColor Cyan
     python tools/init_lexicon_store.py --corpus-id $cid --copies 3
     $store = switch ($cid) {
-        'en-general' { 'lab/agent-stores/sss-en-general' }
-        'en-tech' { 'lab/agent-stores/sss-en-tech' }
-        'ru-general' { 'lab/agent-stores/sss-ru-general' }
-        'ru-tech' { 'lab/agent-stores/sss-ru-tech' }
+        'en-general' { 'lab/agent-stores/lexicon-en-general' }
+        'en-tech' { 'lab/agent-stores/lexicon-en-tech' }
+        'ru-general' { 'lab/agent-stores/lexicon-ru-general' }
+        'ru-tech' { 'lab/agent-stores/lexicon-ru-tech' }
     }
     python tools/train_sss_nca_shards.py `
         --store-dir $store `
@@ -47,7 +47,7 @@ foreach ($cid in $corpora) {
         --epochs $epochs `
         --min-tokens 4
     python tools/nca_stale_shards.py --store-dir $store --sync-registry --dry-run
-    python tools/sss_memory_manifest.py --store-dir $store --write
+    python tools/lexicon_memory_manifest.py --store-dir $store --write
 }
 
 Write-Host "Done. Stores under lab/agent-stores/sss-*-general and sss-*-tech" -ForegroundColor Green

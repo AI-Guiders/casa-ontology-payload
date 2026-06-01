@@ -8,10 +8,10 @@ $env:PYTHONUTF8 = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 $env:PYTHONUNBUFFERED = '1'
 
-$ingestRef = 'lab/agent-stores/sss-afan'
-$store = 'lab/agent-stores/sss-ru-lexicon'
+$ingestRef = 'lab/agent-stores/ingest-ref-afan'
+$store = 'lab/agent-stores/lexicon-ru-archaic'
 $bukvar = 'lab/kb/kb-bukvar-ru-full-v1.payload.json'
-$exp = 'lab/exp_sss_v1'
+$exp = 'lab/exp_lexicon_v1'
 
 Write-Host '=== 0) Ensure store (copy monolith once from ingest ref) ===' -ForegroundColor Green
 New-Item -ItemType Directory -Force -Path $store | Out-Null
@@ -27,7 +27,7 @@ python tools/remigrate_l2_lex.py `
     --out "$exp/report_ru_lexicon_remigrate.json"
 
 Write-Host '=== 2) Memory map ===' -ForegroundColor Green
-python tools/sss_memory_manifest.py `
+python tools/lexicon_memory_manifest.py `
     --store-dir $store `
     --compare-dir $ingestRef `
     --write `
@@ -50,6 +50,6 @@ python tools/sss_sleep_all_nca.py `
     | Tee-Object -FilePath "$exp/report_ru_lexicon_sleep_nca.json"
 
 Write-Host '=== 5) Final manifest ===' -ForegroundColor Green
-python tools/sss_memory_manifest.py --store-dir $store --write
+python tools/lexicon_memory_manifest.py --store-dir $store --write
 
 Write-Host "Done. Store: $store/  NCA: $store/nca/  Map: $store/MEMORY.md"

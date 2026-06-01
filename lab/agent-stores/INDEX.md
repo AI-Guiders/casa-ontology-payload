@@ -5,7 +5,7 @@
 
 Structure names describe **role**, not ingest corpus.
 
-## Lab stores (role-first — prefer over `sss-*` for new work)
+## Lab stores (role-first)
 
 | Store | Role | Default for |
 |-------|------|-------------|
@@ -30,17 +30,17 @@ python -m casa.cli bench_schema_predict --store-dir lab/agent-stores/math-l0-lab
   --bundle lab/exp_l/kb-math-concrete-schemas-l0.bundle.v1.json
 ```
 
-**Do not** run stick/emergent teacher on `sss-ru-general` — prod DetCorpus T9 cartridge.
+**Do not** run stick/emergent teacher on `lexicon-ru-general` — prod DetCorpus T9 cartridge.
 
-## Lexicon / corpus stores (`sss-*` legacy folder names)
+## Lexicon stores (`lexicon-*`)
 
 | Store | Role | field_state | Notes |
 |-------|------|-------------|--------|
-| [sss-ru-lexicon](sss-ru-lexicon/) | **archaic** RU (Afanasyev dialect L2 + NCA) | see `MEMORY.md` | lab only; prod → `sss-ru-general` (modern) |
-| [sss-en-folk](sss-en-folk/) | **EN folk** lexicon (Grimm + Jacobs) | `field_state` + `ltm/` | `L2_en_word_*` shards; hub links via linked boot |
-| [sss-afan](sss-afan/) | **ingest ref** Afan 624 monolith | ~467 MiB | read-only; corpus source only |
-| [sss-shard-smoke](sss-shard-smoke/) | kolobok smoke | ~1.8 MiB | dev |
-| [sss-afan-iii](sss-afan-iii/) | sleep experiments (legacy) | optional | |
+| [lexicon-ru-archaic](lexicon-ru-archaic/) | **archaic** RU (Afanasyev dialect L2 + NCA) | see `MEMORY.md` | lab only; prod → `lexicon-ru-general` (modern) |
+| [lexicon-en-folk](lexicon-en-folk/) | **EN folk** lexicon (Grimm + Jacobs) | `field_state` + `ltm/` | `L2_en_word_*` shards; hub links via linked boot |
+| [ingest-ref-afan](ingest-ref-afan/) | **ingest ref** Afan 624 monolith | ~467 MiB | read-only; corpus source only |
+| [lexicon-shard-smoke](lexicon-shard-smoke/) | kolobok smoke | ~1.8 MiB | dev |
+| [ingest-ref-afan-iii](ingest-ref-afan-iii/) | sleep experiments (legacy) | optional | |
 | [control-lab](control-lab/) | **control stack** DMN/SN/FPN/CEN | `prism_control` + `ltm/ctrl/` | `run_control_stack_migrate.ps1` |
 
 ### Control lattice stack
@@ -55,7 +55,7 @@ Design: [`design/control-lattice-stack.md`](../../design/control-lattice-stack.m
 ## Layout (every production store)
 
 ```text
-sss-ru-lexicon/
+lexicon-ru-archaic/
 ├── ltm/                       # compact memory (production ship)
 │   ├── pack.manifest.json
 │   └── l2/L2_word_07.ltm
@@ -70,8 +70,8 @@ sss-ru-lexicon/
 **Поставка:** `ltm/` + `nca/` (~3 MiB + ~130 MiB NCA). Без `field_state.json` в дистрибутиве — см. `design/CASA-ADR-0002-agent-memory-ltm-nca.md`.
 
 ```bash
-python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-ru-lexicon
-python tools/import_ltm_pack.py --store-dir lab/agent-stores/sss-ru-lexicon --write
+python tools/export_ltm_pack.py --store-dir lab/agent-stores/lexicon-ru-archaic
+python tools/import_ltm_pack.py --store-dir lab/agent-stores/lexicon-ru-archaic --write
 ```
 
 NCA weights **only** under `{store}/nca/` — not `lab/nca_out_afan_*`.
@@ -79,17 +79,17 @@ NCA weights **only** under `{store}/nca/` — not `lab/nca_out_afan_*`.
 ## Commands
 
 ```bash
-python tools/remigrate_l2_lex.py --store-dir lab/agent-stores/sss-ru-lexicon
-python tools/train_memory_nca_shards.py --store-dir lab/agent-stores/sss-ru-lexicon --device cuda
+python tools/remigrate_l2_lex.py --store-dir lab/agent-stores/lexicon-ru-archaic
+python tools/train_memory_nca_shards.py --store-dir lab/agent-stores/lexicon-ru-archaic --device cuda
 # defaults: windowed 16×16/stride 8 on 32², 80 ep/shard — see design/nca-train-defaults.json
-python tools/memory_manifest.py --store-dir lab/agent-stores/sss-ru-lexicon --write
+python tools/memory_manifest.py --store-dir lab/agent-stores/lexicon-ru-archaic --write
 ```
 
 Full pipeline: `scripts/run_sss_ru_lexicon.ps1`
 
 ## Exp L0 smoke (ltm boot + F0 math)
 
-**Store:** `math-l0-lab` (canonical). Legacy alias: `sss-ru-lexicon` still works for old scripts.
+**Store:** `math-l0-lab` (canonical). Legacy alias: `lexicon-ru-archaic` still works for old scripts.
 
 ```bash
 python -m casa.cli init_math_l0_lab
@@ -121,40 +121,40 @@ python -m casa.cli f0_math_ingest --store-dir lab/agent-stores/math-l0-lab \
 ```bash
 # Segment predict + critic (field intuition)
 python tools/bench_predict.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --cues lab/exp_t9/segment_predict_cues.v1.json
 
 # T9 prefix disambiguation on L2 lexicon
 python tools/bench_t9_predict.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --cues lab/exp_t9/t9_prefix_cues.v1.json
 
 # Letter-by-letter T9 tick loop (UC v0.6)
 python tools/bench_predict_tick.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --cues lab/exp_t9/t9_tick_cues.v1.json
 
 # Manual anchor cues + lexicon sweep (optional)
 python tools/bench_t9_lexicon_sweep.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --manual-cues lab/exp_t9/t9_manual_cues.v1.json \
   --sample 200
 
 # Lexicon miss → cold ingest → predict again (offline headwords v0)
 python tools/bench_lexicon_cold.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --cues lab/exp_t9/lexicon_cold_cues.v1.json \
   --headwords lab/exp_t9/lexicon_cold_headwords.v1.txt
 
 # NCA stale shards: cold ingest queues pending → dry-run detect (no CUDA train)
 python tools/bench_nca_stale.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --headwords lab/exp_t9/lexicon_cold_headwords.v1.txt \
   --min-tokens 1
 
 # Incremental sleep repair: train only stale L2 shards (default 25 epochs)
 python tools/nca_stale_shards.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --sync-registry --dry-run
 
 # VK layouts on field (L0_vk_map core ltm)
@@ -168,7 +168,7 @@ dotnet test apps/Casa.Act.Core.Tests
 
 ## Exp bilingual v0 (EN + entity hub)
 
-Separate stores: **RU** `sss-ru-lexicon`, **EN folk** `sss-en-folk` (Grimm + Jacobs, full headword list including articles).
+Separate stores: **RU** `lexicon-ru-archaic`, **EN folk** `lexicon-en-folk` (Grimm + Jacobs, full headword list including articles).
 
 ```bash
 # 1. Create EN folk store (~6700 headwords, batch L2, no stopword filter)
@@ -177,8 +177,8 @@ python tools/init_en_folk_store.py \
 
 # 2. Linked boot + entity hub (L3 only; L2 stays on each store)
 python tools/bench_bilingual_linked.py \
-  --ru-store lab/agent-stores/sss-ru-lexicon \
-  --en-store lab/agent-stores/sss-en-folk \
+  --ru-store lab/agent-stores/lexicon-ru-archaic \
+  --en-store lab/agent-stores/lexicon-en-folk \
   --bundle lab/exp_bilingual/kb-entity-surfaces-dev.v1.json
 
 python tools/bench_grapheme_clusters.py \
@@ -190,7 +190,7 @@ Dev overlay on RU store (legacy lab):
 ```bash
 # See lab/exp_bilingual/README.md
 python tools/bench_entity_hub.py \
-  --store-dir lab/agent-stores/sss-ru-lexicon \
+  --store-dir lab/agent-stores/lexicon-ru-archaic \
   --bundle lab/exp_bilingual/kb-entity-surfaces-dev.v1.json
 ```
 
@@ -207,8 +207,8 @@ Regenerate map: `python tools/memory_manifest.py --store-dir <path> --write`
 
 ```bash
 # Export перед поставкой (канон)
-python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-ru-lexicon
-python tools/export_ltm_pack.py --store-dir lab/agent-stores/sss-en-folk
+python tools/export_ltm_pack.py --store-dir lab/agent-stores/lexicon-ru-archaic
+python tools/export_ltm_pack.py --store-dir lab/agent-stores/lexicon-en-folk
 ```
 
 Planned: `run_agent_profile.py`

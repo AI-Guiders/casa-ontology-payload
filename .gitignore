@@ -46,15 +46,15 @@ lab/agent-stores/**/nca/**/model.pt
 lab/agent-stores/**/_parallel_shards/
 
 # prod cartridges — track shipped ltm + per-shard NCA (ADR-0002)
-!lab/agent-stores/sss-ru-general-v0/ltm/**/*.ltm
-!lab/agent-stores/sss-ru-general-v0/ltm/**/*.ltm.zst
-!lab/agent-stores/sss-ru-general-v0/nca/**/model.pt
-!lab/agent-stores/sss-ru-lexicon-v0/ltm/**/*.ltm
-!lab/agent-stores/sss-ru-lexicon-v0/ltm/**/*.ltm.zst
-!lab/agent-stores/sss-ru-lexicon-v0/nca/**/model.pt
-!lab/agent-stores/sss-en-folk-v0/ltm/**/*.ltm
-!lab/agent-stores/sss-en-folk-v0/ltm/**/*.ltm.zst
-!lab/agent-stores/sss-en-folk-v0/nca/**/model.pt
+!lab/agent-stores/lexicon-ru-general/ltm/**/*.ltm
+!lab/agent-stores/lexicon-ru-general/ltm/**/*.ltm.zst
+!lab/agent-stores/lexicon-ru-general/nca/**/model.pt
+!lab/agent-stores/lexicon-ru-archaic/ltm/**/*.ltm
+!lab/agent-stores/lexicon-ru-archaic/ltm/**/*.ltm.zst
+!lab/agent-stores/lexicon-ru-archaic/nca/**/model.pt
+!lab/agent-stores/lexicon-en-folk/ltm/**/*.ltm
+!lab/agent-stores/lexicon-en-folk/ltm/**/*.ltm.zst
+!lab/agent-stores/lexicon-en-folk/nca/**/model.pt
 
 # core VK repair models ship with agent-core pack (~1 MiB); regenerate: vk_nca_train_v0.py
 !lab/agent-core/**/nca/**/model.pt

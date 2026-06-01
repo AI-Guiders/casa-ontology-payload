@@ -51,11 +51,11 @@ lab/corpus/ru-archaic/split-report.json  # счётчики + samples
 
 | store_id | tier | corpus_id | runtime |
 |----------|------|-----------|---------|
-| `sss-ru-general` | general | `detcorpus-50k-cc0` | prod T9 |
-| `sss-ru-lexicon` | **archaic** | `afanasyev-sharded` | lab / ФЭБ parity |
-| `sss-afan` | ingest_ref | `afanasyev-monolith` | не boot |
+| `lexicon-ru-general` | general | `detcorpus-50k-cc0` | prod T9 |
+| `lexicon-ru-archaic` | **archaic** | `afanasyev-sharded` | lab / ФЭБ parity |
+| `ingest-ref-afan` | ingest_ref | `afanasyev-monolith` | не boot |
 
-Переименование папки `sss-ru-lexicon` → `sss-ru-archaic` — опционально v1; до v1 достаточно смены **tier** в `catalog.json`.
+Переименование папки `lexicon-ru-archaic` → `lexicon-ru-archaic` — опционально v1; до v1 достаточно смены **tier** в `catalog.json`.
 
 ---
 
@@ -70,7 +70,7 @@ python tools/lexicon_headwords.py  # export from store — см. split tool --li
 
 # 3) Split
 python tools/split_ru_headwords_modern_archaic.py \
-  --literary-store lab/agent-stores/sss-ru-lexicon \
+  --literary-store lab/agent-stores/lexicon-ru-archaic \
   --write-archaic
 
 # 4) Prod store только modern
@@ -94,6 +94,6 @@ Archaic store пересобирать **только** из `ru-archaic/headwor
 ## Checklist
 
 - [ ] `catalog.json`: tier `archaic` у Afan sharded store
-- [ ] Profile `ru_lexicon` → `sss-ru-general` после сборки modern store
+- [ ] Profile `ru_lexicon` → `lexicon-ru-general` после сборки modern store
 - [ ] T9 bench: отдельные отчёты `report_sweep_ru_general.json` vs `report_sweep_ru_archaic.json`
 - [ ] Не union archaic в merged без ADR

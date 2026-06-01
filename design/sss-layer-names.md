@@ -223,7 +223,7 @@ North star CASA ([`agent-existence-north-star.md`](agent-existence-north-star.md
 
 ### Корпус ≠ z-уровень
 
-`sss-ru-general`, `sss-en-folk`, `sss-*-tech` — **разные stores**, один и тот же **T2 / L2** (лексемы). Оси `lexicon_axes` (ipm, era) — sidecar для **T2**, не «L2.5».
+`lexicon-ru-general`, `lexicon-en-folk`, `lexicon-*-tech` — **разные stores**, один и тот же **T2 / L2** (лексемы). Оси `lexicon_axes` (ipm, era) — sidecar для **T2**, не «L2.5».
 
 ---
 
@@ -251,7 +251,7 @@ North star CASA ([`agent-existence-north-star.md`](agent-existence-north-star.md
 | **Math / quantity** | 1-я СС | `F0…F2` | Схема → Compose → Quantity |
 | **Vision** (roadmap) | 1-я СС | `vis.*`, Exp L | образ / сцена — не в SSS |
 | **Motor / write** (roadmap) | 1-я СС + мост | stroke → compose | ADR-0005 |
-| **Tech lexicon** | 2-я СС, **тот же L2** | `sss-*-tech` | T2 = команды IDE/KB, T3 = entity/rules |
+| **Tech lexicon** | 2-я СС, **тот же L2** | `lexicon-*-tech` | T2 = команды IDE/KB, T3 = entity/rules |
 
 **x (домен) на layout:** отдельный регион цилиндра для другой 1-й СС (`F0_vis`, …) — [`bukvar-text-modality.md`](bukvar-text-modality.md). Имена **T0…T3** остаются; меняется **профиль** и `concept_prefix`.
 

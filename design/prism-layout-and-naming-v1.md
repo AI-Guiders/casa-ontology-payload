@@ -126,7 +126,7 @@ Prose: **«shard `memory.lexicon` (`words-ru-07`)»** — не «sss L2»; **«`
 | `lexicon_shard.py` | `casa.prisms.memory.lexicon.shard` | |
 | `wake.py` / `sleep.py` | `casa.prisms.hippo` + `shared.tick` | |
 | `train_memory_nca.py` | `casa.prisms.shared.nca_train` | prism-agnostic trainer |
-| store `sss-*` | **profile id** | имя store = dataset, не subsystem |
+| store `lexicon-*` | **profile id** | имя store = dataset, не subsystem |
 
 **Не переименовывать одним коммитом:** shim `tools/sss_foo.py` → `from casa.prisms.memory.foo import main` до green CI.
 

@@ -1,6 +1,6 @@
 examples/corpus/en-folk-v0/extract_report.v1.json
-lab/agent-stores/sss-en-folk-v0/lexicon_axes.v0.jsonl
-lab/agent-stores/sss-ru-general-v0/lexicon_axes.v0.jsonl
+lab/agent-stores/lexicon-en-folk/lexicon_axes.v0.jsonl
+lab/agent-stores/lexicon-ru-general/lexicon_axes.v0.jsonl
 lab/corpus/en-folk-v0/extract_report.v1.json
 lab/corpus/en-folk-v0/grimm-fairy-tales.gutenberg.txt
 lab/corpus/en-folk-v0/jacobs-english-fairy-tales.gutenberg.txt

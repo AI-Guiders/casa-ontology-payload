@@ -9,20 +9,21 @@
 
 ## Store — что это (одна фраза)
 
-**Agent store** = упакованная **LTM + NCA** (+ опц. bundles), которую **profile** подключает к одному CASA-core на boot.
+**Agent store** = упакованная **структура памяти** (`ltm/` + `nca/`); опц. `bundles/` — только ingest-след, не runtime.
 
 Это **не** язык, **не** продукт и **не** корпус. Корпус — только **источник ingest**; продукт — **profile + act**.
 
 ```text
   [CASA core]     один runtime (predict → critic → sleep)
        ↑ boot
-  [Agent store]   ltm/ + nca/  — «картридж памяти»
+  [Agent store]   ltm/ + nca/  — память агента (NCA те же файлы, не «в картридж»)
+       ↑ ingest (one-time / accelerated childhood)
+  [Ingest]        bundles / corpus → материализация в память
        ↑ recipe
-  [Profile]       какие картриджи + modalities + act
+  [Profile]       какие store + modalities + act
        ↑ ship
   [Product]       IDE T9, Orion, bukvar, …
 ```
-
 ---
 
 ## Оси каталогизации (обязательные поля)
@@ -36,7 +37,7 @@
 | **layer_pack** | `lex` \| `lex+entity` \| `lex+vk` \| `full` | lex+entity для BiT9 | Что в ltm кроме L2 |
 | **corpus_id** | строка | `detcorpus-50k-cc0`, `afan-v1`, `en-folk-gutenberg` | Откуда headwords (аудит) |
 | **lifecycle** | `lab` \| `staging` \| `prod` | prod | Можно ли в profile release |
-| **supersedes** | store_id \| null | `sss-ru-lexicon` → general v1 | Линия наследования |
+| **supersedes** | store_id \| null | `lexicon-ru-archaic` → general v1 | Линия наследования |
 
 **Правило:** один **locale + один tier** для prod-RU lexicon в runtime — не два store на один слот profile.
 
@@ -47,28 +48,27 @@
 Шаблон:
 
 ```text
-sss-{locale}-{tier}[-{qualifier}]-v{N}
+lexicon-{locale}-{tier}[-{qualifier}]
 ```
 
 | Компонент | Пример |
 |-----------|--------|
 | locale | `ru`, `en` |
-| tier | `general`, `archaic`, `tech`, `literary` (legacy), `folk` |
+| tier | `general`, `archaic`, `tech`, `folk` |
 | qualifier | опционально `sharded`, `console` (избегать имён корпуса в prod!) |
-| N | `v0`, `v1` |
 
-**Плохо:** `sss-afan` как prod-RU (корпус в имени).  
-**Хорошо:** `sss-ru-literary` (роль), `sss-afan` остаётся **ingest ref only**.
+**Плохо:** `ingest-ref-afan` как prod-RU (корпус в имени).  
+**Хорошо:** `lexicon-ru-archaic` (роль), `ingest-ref-afan` остаётся **ingest ref only**.
 
 ### Матрица quad (целевая)
 
 | store_id | locale | tier | corpus_id |
 |----------|--------|------|-----------|
-| `sss-en-general` | en | general | en-folk / gutenberg |
-| `sss-en-tech` | en | tech | repo-scan |
-| `sss-ru-general` | ru | general | detcorpus-50k-cc0 (modern prod) |
-| `sss-ru-tech` | ru | tech | repo-scan |
-| `sss-ru-lexicon` | ru | archaic | afanasyev-sharded (lab, не prod T9) |
+| `lexicon-en-general` | en | general | en-folk / gutenberg |
+| `lexicon-en-tech` | en | tech | repo-scan |
+| `lexicon-ru-general` | ru | general | detcorpus-50k-cc0 (modern prod) |
+| `lexicon-ru-tech` | ru | tech | repo-scan |
+| `lexicon-ru-archaic` | ru | archaic | afanasyev-sharded (lab, не prod T9) |
 
 ---
 
@@ -81,7 +81,7 @@ sss-{locale}-{tier}[-{qualifier}]-v{N}
   "schema_version": 1,
   "stores": [
     {
-      "store_id": "sss-ru-general",
+      "store_id": "lexicon-ru-general",
       "locale": "ru",
       "tier": "general",
       "corpus_id": "detcorpus-50k-cc0",
@@ -98,7 +98,7 @@ sss-{locale}-{tier}[-{qualifier}]-v{N}
 **Profile** ссылается только на `store_id` + **role**, не на путь корпуса:
 
 ```json
-{ "role": "ru_lexicon", "store_id": "sss-ru-general" }
+{ "role": "ru_lexicon", "store_id": "lexicon-ru-general" }
 ```
 
 Роли profile (фиксированный словарь v0):

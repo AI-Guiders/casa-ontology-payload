@@ -161,7 +161,7 @@ internal static class Cli
 
             Examples:
               casa-lexicon-build quad -r .
-              casa-lexicon-build export-store --store-id sss-en-folk-v0 --out lab/corpus/en-general-v0/headwords.v1.txt
+              casa-lexicon-build export-store --store-id lexicon-en-folk --out lab/corpus/en-general-v0/headwords.v1.txt
             """);
 }
 

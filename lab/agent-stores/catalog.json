@@ -4,29 +4,29 @@
   "design": "design/agent-store-catalog.md",
   "stores": [
     {
-      "store_id": "sss-ru-lexicon",
-      "path": "sss-ru-lexicon",
+      "store_id": "lexicon-ru-archaic",
+      "path": "lexicon-ru-archaic",
       "locale": "ru",
       "tier": "archaic",
       "corpus_id": "afanasyev-sharded",
       "lifecycle": "lab",
       "profile_roles": [],
-      "notes": "RU archaic/dialect (Afanasyev 1855). Lab only; prod ru_lexicon → sss-ru-general. Split: design/ru-lexicon-modern-archaic.md"
+      "notes": "RU archaic/dialect (Afanasyev). Lab only; prod → lexicon-ru-general."
     },
     {
-      "store_id": "sss-ru-general",
-      "path": "sss-ru-general",
+      "store_id": "lexicon-ru-general",
+      "path": "lexicon-ru-general",
       "locale": "ru",
       "tier": "general",
       "corpus_id": "detcorpus-50k-cc0",
       "lifecycle": "lab",
       "profile_roles": ["ru_lexicon"],
       "supersedes": null,
-      "notes": "Modern RU (DetCorpus 50k). Merge excludes archaic-only Afan forms."
+      "notes": "Modern RU lexicon (DetCorpus 50k)."
     },
     {
-      "store_id": "sss-ru-tech",
-      "path": "sss-ru-tech",
+      "store_id": "lexicon-ru-tech",
+      "path": "lexicon-ru-tech",
       "locale": "ru",
       "tier": "tech",
       "corpus_id": "repo-scan",
@@ -34,8 +34,8 @@
       "profile_roles": ["ru_tech"]
     },
     {
-      "store_id": "sss-en-folk",
-      "path": "sss-en-folk",
+      "store_id": "lexicon-en-folk",
+      "path": "lexicon-en-folk",
       "locale": "en",
       "tier": "general",
       "corpus_id": "en-folk-gutenberg",
@@ -43,8 +43,8 @@
       "profile_roles": ["en_lexicon"]
     },
     {
-      "store_id": "sss-en-general",
-      "path": "sss-en-general",
+      "store_id": "lexicon-en-general",
+      "path": "lexicon-en-general",
       "locale": "en",
       "tier": "general",
       "corpus_id": "en-folk-gutenberg",
@@ -52,8 +52,8 @@
       "profile_roles": ["en_lexicon"]
     },
     {
-      "store_id": "sss-en-tech",
-      "path": "sss-en-tech",
+      "store_id": "lexicon-en-tech",
+      "path": "lexicon-en-tech",
       "locale": "en",
       "tier": "tech",
       "corpus_id": "repo-scan",
@@ -121,8 +121,8 @@
       "notes": "prism_control DMN/SN/FPN/CEN; see design/control-lattice-stack.md"
     },
     {
-      "store_id": "sss-afan",
-      "path": "sss-afan",
+      "store_id": "ingest-ref-afan",
+      "path": "ingest-ref-afan",
       "locale": "ru",
       "tier": "literary",
       "corpus_id": "afanasyev-monolith",

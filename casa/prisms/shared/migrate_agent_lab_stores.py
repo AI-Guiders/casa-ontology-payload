@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One-shot: math-l0-lab init, agent journal → language-agent-lab, clean sss-ru-general runtime."""
+"""One-shot: math-l0-lab init, agent journal → language-agent-lab, clean lexicon-ru-general runtime."""
 
 from __future__ import annotations
 
@@ -18,10 +18,11 @@ from casa.prisms.shared.field_write import save_field_state
 from casa.prisms.shared.store_boot import boot_store
 from casa.prisms.shared.store_layout import (
     STORE_LANGUAGE_AGENT_LAB,
+    STORE_LEXICON_RU_GENERAL,
     STORE_MATH_L0_LAB,
-    STORE_RU_GENERAL_V0,
     agent_store_dir,
     journal_root,
+    rename_legacy_lexicon_store_dirs,
 )
 
 
@@ -69,9 +70,9 @@ def migrate_agent_lab_stores(
 ) -> dict[str, Any]:
     math_dir = agent_store_dir(STORE_MATH_L0_LAB, root=REPO_ROOT)
     lang_dir = agent_store_dir(STORE_LANGUAGE_AGENT_LAB, root=REPO_ROOT)
-    ru_dir = agent_store_dir(STORE_RU_GENERAL_V0, root=REPO_ROOT)
+    ru_dir = agent_store_dir(STORE_LEXICON_RU_GENERAL, root=REPO_ROOT)
 
-    out: dict[str, Any] = {"stores": {}}
+    out: dict[str, Any] = {"stores": {}, "lexicon_renames": rename_legacy_lexicon_store_dirs(root=REPO_ROOT)}
 
     if not skip_math_init:
         out["stores"][STORE_MATH_L0_LAB] = init_math_l0_lab(math_dir, bundle)
@@ -99,7 +100,7 @@ def migrate_agent_lab_stores(
             )
 
     if not skip_ru_clean:
-        out["stores"][STORE_RU_GENERAL_V0] = _clean_lexicon_runtime(ru_dir)
+        out["stores"][STORE_LEXICON_RU_GENERAL] = _clean_lexicon_runtime(ru_dir)
 
     return out
 
