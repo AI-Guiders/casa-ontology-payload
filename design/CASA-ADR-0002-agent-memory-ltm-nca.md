@@ -2,7 +2,7 @@
 
 **Статус:** принято (lab v0, 2026-05-30)  
 **Область:** SSS / agent store / поставка лексикона  
-**Связано:** [`ltm-pack.md`](ltm-pack.md), [`memory-hierarchy.md`](memory-hierarchy.md), [`l2-lattice-sharding.md`](l2-lattice-sharding.md), [`nca-train-defaults.json`](nca-train-defaults.json), канон KB (`agent-notes`, `kb-one-pager-structure-and-protocols-v1.md`)
+**Связано:** [`CASA-PROJECT-CONSTITUTION.md`](CASA-PROJECT-CONSTITUTION.md) (§ NCA — самовосстановление), [`ltm-pack.md`](ltm-pack.md), [`memory-hierarchy.md`](memory-hierarchy.md), [`l2-lattice-sharding.md`](l2-lattice-sharding.md), [`nca-train-defaults.json`](nca-train-defaults.json), канон KB (`agent-notes`, `kb-one-pager-structure-and-protocols-v1.md`)
 
 ---
 

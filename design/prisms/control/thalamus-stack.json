@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "prism_id": "prism_control_thalamus",
+  "kind": "control",
+  "semantic_namespace": "control.thal",
+  "description": "Thalamic CU — global relay, arousal/brain-state gate, bandwidth (wake/REM vs NREM metaphor). Not content memory.",
+  "parent_cu": "prism_control",
+  "doc": "design/CASA-ADR-0024-control-thalamus.md",
+  "lattices": [
+    {
+      "lattice_id": "control-thal-relay",
+      "legacy_id": "lattice_thal_relay",
+      "z_ctrl": 0,
+      "concept_prefix": "thal.relay.",
+      "size": { "width": 32, "height": 32 },
+      "role": ["modality_relay", "stream_gate", "route_activation"]
+    },
+    {
+      "lattice_id": "control-thal-arousal",
+      "legacy_id": "lattice_thal_arousal",
+      "z_ctrl": 1,
+      "concept_prefix": "thal.arousal.",
+      "size": { "width": 32, "height": 32 },
+      "role": ["brain_state", "wake_sleep_mode", "rem_microstate"]
+    },
+    {
+      "lattice_id": "control-thal-bandwidth",
+      "legacy_id": "lattice_thal_band",
+      "z_ctrl": 2,
+      "concept_prefix": "thal.band.",
+      "size": { "width": 32, "height": 32 },
+      "role": ["active_band", "nrem_quiesce", "throughput_cap"]
+    }
+  ],
+  "seed_tokens": {
+    "relay": ["G:mode.relay", "port.thal.forward.text", "port.thal.forward.vis"],
+    "arousal": ["G:mode.wake", "G:mode.sleep", "G:mode.rem", "thal.arousal.high", "thal.arousal.low"],
+    "bandwidth": ["thal.band.active", "thal.band.quiescent"]
+  },
+  "control_bridges": [
+    {
+      "id": "port_T0",
+      "from": "prism_router",
+      "to": "control-thal-relay",
+      "kind": "route_activation",
+      "note": "declarative route → thalamic relay (cross-prism)"
+    },
+    {
+      "id": "port_T1",
+      "from": "control-thal-relay",
+      "to": "control-salience",
+      "kind": "relay_to_sn",
+      "note": "cross-prism: to prism_control_exec / monolith SN"
+    },
+    {
+      "id": "port_T2",
+      "from": "control-thal-arousal",
+      "to": "control-working-memory",
+      "kind": "mode_wm",
+      "note": "sn.mode ↔ thal.arousal.*"
+    },
+    {
+      "id": "port_T3",
+      "from": "control-thal-bandwidth",
+      "to": "control-thal-relay",
+      "kind": "throughput_gate",
+      "note": "active band opens relay slots"
+    },
+    {
+      "id": "port_T4",
+      "from": "control-value",
+      "to": "control-thal-arousal",
+      "kind": "arousal_bias",
+      "note": "surprise / priority boosts arousal"
+    },
+    {
+      "id": "port_T5",
+      "from": "control-thal-arousal",
+      "to": "prism_hippo",
+      "kind": "sleep_phase_hint",
+      "note": "metadata only: sleep job vs tick; no episode cells"
+    }
+  ],
+  "ltm_path_template": "ltm/control/thal/{lattice_id}.ltm"
+}
