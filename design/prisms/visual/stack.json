@@ -1,12 +1,39 @@
 {
-  "schema_version": 2,
+  "schema_version": 1,
   "prism_id": "prism_visual",
   "semantic_namespace": "sensory.vis",
-  "description": "Visual ventral stack — lattice_id = v1 kebab.",
+  "description": "Vision modality v0 — visual anchors (vis.*), not raw pixels on SSS L2.",
   "lattices": [
-    { "lattice_id": "vis-patch", "legacy_id": "V0_patch", "semantic_id": "sensory.vis.patch", "z_level": 0, "nca_profile": "sss" },
-    { "lattice_id": "vis-object", "legacy_id": "V1_object", "semantic_id": "sensory.vis.object", "z_level": 1, "nca_profile": "sss" },
-    { "lattice_id": "vis-scene", "legacy_id": "V2_scene", "semantic_id": "sensory.vis.scene", "z_level": 2, "nca_profile": "sss" }
+    {
+      "lattice_id": "vis-object",
+      "legacy_id": "V1_object",
+      "semantic_id": "sensory.vis.object",
+      "z_level": 1,
+      "nca_profile": "vis",
+      "concept_prefix": "vis.",
+      "size": { "width": 32, "height": 32 }
+    },
+    {
+      "lattice_id": "vis-scene",
+      "legacy_id": "V2_scene",
+      "semantic_id": "sensory.vis.scene",
+      "z_level": 2,
+      "nca_profile": "vis",
+      "concept_prefix": "vis.scene.",
+      "size": { "width": 32, "height": 32 },
+      "status": "optional_v0"
+    }
   ],
+  "bridges": [
+    {
+      "bridge_id": "x_bridge_vis_lang",
+      "kind": "cross_prism",
+      "from": "sensory.vis.object",
+      "to": "memory.lexicon.shard",
+      "relation": "ground",
+      "note": "vis.* ↔ lang.word.* via E: tokens and hot_context"
+    }
+  ],
+  "ltm_path_template": "ltm/visual/{lattice_id}.ltm",
   "nca_path_template": "nca/visual/{lattice_id}/"
 }

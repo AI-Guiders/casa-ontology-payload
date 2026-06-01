@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "prism_id": "prism_control_vis",
+  "kind": "control",
+  "semantic_namespace": "control.vis",
+  "description": "Visual control division — attention, spotlight, gate (not vis.* content memory).",
+  "parent_cu": "prism_control",
+  "lattices": [
+    {
+      "lattice_id": "control-vis-salience",
+      "legacy_id": "lattice_vis_sn",
+      "z_ctrl": 0,
+      "concept_prefix": "vis.attn.",
+      "size": { "width": 32, "height": 32 },
+      "role": ["bottom_up", "novelty", "frame_salience"]
+    },
+    {
+      "lattice_id": "control-vis-spotlight",
+      "legacy_id": "lattice_vis_dan",
+      "z_ctrl": 1,
+      "concept_prefix": "vis.spot.",
+      "size": { "width": 32, "height": 32 },
+      "role": ["top_down", "goal_region", "saccade_target"]
+    },
+    {
+      "lattice_id": "control-vis-gate",
+      "legacy_id": "lattice_vis_gate",
+      "z_ctrl": 2,
+      "concept_prefix": "vis.gate.",
+      "size": { "width": 32, "height": 32 },
+      "role": ["modality_gate", "codec_enable", "frame_accept"]
+    }
+  ],
+  "control_bridges": [
+    { "id": "port_P10", "from": "control-working-memory", "to": "control-vis-spotlight", "kind": "goal_spotlight", "note": "cross-prism: from prism_control_exec" },
+    { "id": "port_P11", "from": "control-vis-spotlight", "to": "prism_visual", "kind": "sparse_mask", "channels": ["port.vis_mask.*"] },
+    { "id": "port_P12", "from": "prism_visual", "to": "control-vis-salience", "kind": "vis_surprise", "channels": ["port.vis_surprise.*"] },
+    { "id": "port_P13", "from": "control-vis-gate", "to": "control-salience", "kind": "modality_bias", "note": "cross-prism: to prism_control_exec SN" }
+  ],
+  "ltm_path_template": "ltm/control/vis/{lattice_id}.ltm"
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "prism_id": "prism_control_exec",
+  "kind": "control",
+  "semantic_namespace": "control.exec",
+  "description": "Executive CU — DMN/SN/FPN/CEN/predict/DAN/value (split target from monolith prism_control).",
+  "source_stack": "design/control-lattice-stack.json",
+  "lattice_ids": [
+    "control-dmn",
+    "control-salience",
+    "control-working-memory",
+    "control-executive",
+    "control-predict",
+    "control-attention",
+    "control-value"
+  ],
+  "ltm_path_template": "ltm/control/{lattice_id}.ltm",
+  "status": "roadmap_split"
+}
