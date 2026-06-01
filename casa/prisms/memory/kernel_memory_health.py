@@ -35,6 +35,17 @@ HOT_HARD_EDGE_COUNT = 4096
 HIPPO_EPISODE_SOFT_CAP = 512
 SLEEP_HOT_PRUNE_MAX = 2048
 
+# ADR-0022 R1 bar check — in-process kernel without requiring trained NCA weights.
+C3_BAR_CHECK_IDS = frozenset(
+    {
+        "router_resolves",
+        "hot_budget",
+        "hippo_cap",
+        "kind_integrity",
+        "ltm_vocab_over_cap",
+    }
+)
+
 
 @dataclass(frozen=True)
 class MaintainContext:
