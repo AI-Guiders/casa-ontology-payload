@@ -13,10 +13,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from casa.domain.field_state import FieldState
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.memory.prism_hot_context import hot_edges
 from casa.prisms.memory.prism_spawn import list_content_prism_ids
-from casa.prisms.shared.export_ltm_pack import export_pack
+from casa.prisms.shared.export_ltm_pack import export_field_state
 from casa.prisms.shared.prism_state import prism_router
 from casa.prisms.shared.store_layout import ltm_root
 
@@ -77,12 +78,13 @@ def compact_persist_store(
     Does not create tar archives — distribution packaging is external ops.
     """
     store_dir = store_dir.resolve()
-    state = ensure_prisms(state)
+    field = FieldState.bind(ensure_prisms(state))
+    state = field.wire
     ltm_dir = ltm_root(store_dir)
     pids = content_prism_ids if content_prism_ids is not None else list_content_prism_ids(state)
 
-    manifest = export_pack(
-        state,
+    manifest = export_field_state(
+        field,
         ltm_dir,
         store_dir=store_dir,
         content_prism_ids=pids,
