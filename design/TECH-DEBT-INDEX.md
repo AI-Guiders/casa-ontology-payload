@@ -29,7 +29,7 @@
 | M0–M3 | design, aliases, `casa/`, canonical ltm | **done** |
 | M4 | shims removed, `python -m casa.cli` | **done** |
 | T12-1 | `.gitignore` / CI canonical paths only | open |
-| T12-2 | `design/prisms/*` from store manifest | open |
+| T12-2 | `design/prisms/*` from store manifest | partial (`tools/sync_design_prisms_from_manifest.py`) |
 | T12-3 | prose: no «sss» subsystem name in new docs | open |
 | T12-4 | `migrate_lattice_ids_v1.py` (kebab ids) | open |
 
@@ -42,8 +42,18 @@
 | M0 | `casa/domain/*`, tests | **done** |
 | M1 | `prism_router` → `domain.routing` | **done** |
 | M2 | `prism_spawn`, `export_ltm_pack` → domain | **done** |
-| M3 | `compact_persist`, tick orchestrator | partial (`compact_persist` → domain) |
-| M4 | no raw `state["prisms"]` outside persistence | open |
+| M3 | `compact_persist`, tick orchestrator | partial (`compact_persist` → domain; tick uses `tick_prepare_memory`) |
+| M4 | no raw `state["prisms"]` outside persistence | partial (`prism_wire` + facade; call sites still migrate) |
+
+## ADR-0016 / 0021 multi-prism (runtime)
+
+| Id | Задача | Статус |
+|----|--------|--------|
+| MP-1 | `multi_prism_v1` wire + hot/router/hippo/control | **done** |
+| MP-2 | transfer matrix + `ensure_multi_prism_bootstrap` | **done** |
+| MP-3 | route fallback when domain prism has no lattices | **done** |
+| MP-4 | thin checkpoint: hippo cells + `last_sleep.items` trim | **done** (code) |
+| MP-5 | shipped store split `prism_lang_ru` / `prism_math` on disk | open (monolith `prism_memory` ok) |
 
 ---
 
@@ -82,7 +92,7 @@
 | Id | Задача | Статус |
 |----|--------|--------|
 | T21-1 | transfer matrix doc | **done** |
-| T21-2 | bootstrap routes from matrix | open |
+| T21-2 | bootstrap routes from matrix | **done** |
 | T22-1 | `agent_v1_bar_check.py` | **done** |
 
 ---
@@ -103,3 +113,5 @@
 |------|-----------|
 | 2026-06-01 | Первый индекс после flush WIP + sleep R1–R6 |
 | 2026-06-01 | M2 domain bind; T22-1 bar check; T24-1 partial |
+| 2026-06-01 | T21-2 transfer matrix bootstrap; MP-2–4 multi-prism; thin checkpoint trim |
+| 2026-06-01 | M4 partial: `prism_ids`, `prism_wire`, `prism_state` facade |
