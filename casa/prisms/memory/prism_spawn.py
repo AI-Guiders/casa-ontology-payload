@@ -211,3 +211,60 @@ def list_content_prism_ids(state: dict) -> list[str]:
     if PRISM_MEMORY not in out:
         out.insert(0, PRISM_MEMORY)
     return sorted(set(out))
+
+
+def main() -> None:
+    import argparse
+    import json
+    from pathlib import Path
+
+    from casa.prisms.shared.field_write import load_field_state, save_field_state
+    from casa.prisms.shared.store_layout import field_state_path
+
+    p = argparse.ArgumentParser(description="Spawn prisms / bootstrap router+hot (ADR-0016)")
+    p.add_argument("--store-dir", type=Path, help="Agent store; load/save field_state when set")
+    p.add_argument("--spawn", metavar="PRISM_ID", help="spawn_prism id")
+    p.add_argument("--kind", choices=("content", "hot_context", "router"), default="content")
+    p.add_argument("--lattice", metavar="LATTICE_ID", help="with --spawn: spawn_content_lattice")
+    p.add_argument("--z-level", type=int, default=0)
+    p.add_argument("--make-active", action="store_true")
+    p.add_argument("--bootstrap-only", action="store_true", help="ensure_default_router_and_hot only")
+    p.add_argument("--write", action="store_true", help="save field_state.json")
+    args = p.parse_args()
+
+    if args.store_dir:
+        from casa.prisms.shared.store_boot import apply_store_boot_profile
+
+        fs = field_state_path(args.store_dir)
+        state = ensure_prisms(load_field_state(fs)) if fs.is_file() else ensure_prisms(
+            {"schema_version": "multi_prism_v1", "field_version": 0}
+        )
+        apply_store_boot_profile(args.store_dir, state)
+    else:
+        state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+
+    out: dict[str, Any] = {}
+    if args.bootstrap_only or not args.spawn:
+        out["bootstrap"] = ensure_default_router_and_hot(state)
+    if args.spawn:
+        out["spawn"] = spawn_prism(state, args.spawn, kind=args.kind, make_active=args.make_active)
+        if args.lattice:
+            out["lattice"] = spawn_content_lattice(
+                state,
+                args.spawn,
+                args.lattice,
+                z_level=args.z_level,
+                make_active=args.make_active,
+            )
+    out["content_prisms"] = list_content_prism_ids(state)
+    out["field_version"] = state.get("field_version")
+
+    if args.write and args.store_dir:
+        save_field_state(field_state_path(args.store_dir), state, compact=True)
+        out["written"] = str(field_state_path(args.store_dir))
+
+    print(json.dumps(out, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

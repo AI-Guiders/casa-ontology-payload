@@ -23,6 +23,34 @@ from casa.prisms.memory.lexicon_shard import is_l2_word_lattice
 from casa.prisms.shared.store_layout import field_state_path, ltm_root, nca_root, agent_prism_root
 
 
+def apply_store_boot_profile(store_dir: Path, state: dict) -> None:
+    """Merge store profile (manifest) into runtime state + router default."""
+    store_dir = store_dir.resolve()
+    store = state.setdefault("store", {})
+    store["store_id"] = store_dir.name
+
+    profile_path = store_dir / "memory_manifest.json"
+    if profile_path.is_file():
+        try:
+            profile = json.loads(profile_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            profile = {}
+        if isinstance(profile, dict):
+            if profile.get("locale"):
+                store["locale"] = str(profile["locale"])
+            if profile.get("default_content_prism"):
+                store["default_content_prism"] = str(profile["default_content_prism"])
+            prisms_block = profile.get("prisms")
+            if isinstance(prisms_block, dict) and prisms_block.get("default_content_prism"):
+                store["default_content_prism"] = str(prisms_block["default_content_prism"])
+
+    default_prism = store.get("default_content_prism")
+    if default_prism:
+        from casa.prisms.shared.prism_state import prism_router
+
+        prism_router(state)["default_content_prism"] = str(default_prism)
+
+
 def boot_store(
     store_dir: Path,
     *,
@@ -55,8 +83,8 @@ def boot_store(
         state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
         source = "ltm_only"
         imp = import_pack(state, ltm, manifest=manifest)
+    apply_store_boot_profile(store_dir, state)
     state.setdefault("store", {})["boot_source"] = source
-    state["store"]["store_id"] = store_dir.name
     state["store"]["ltm_dir"] = str(ltm)
     state["store"]["nca_root"] = str(nca_root(store_dir))
 
