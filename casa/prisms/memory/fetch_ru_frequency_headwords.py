@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from casa._paths import ensure_import_paths
+from casa._paths import REPO_ROOT, ensure_import_paths
 
 ensure_import_paths()
 
@@ -82,7 +82,7 @@ def parse_frequency_csv(
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parent.parent
+    root = REPO_ROOT
     p = argparse.ArgumentParser(description="Fetch RU frequency headwords (DetCorpus CC0)")
     p.add_argument("--url", default=DEFAULT_URL)
     p.add_argument(

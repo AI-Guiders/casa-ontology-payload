@@ -83,12 +83,12 @@ def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
         "store_total_human": _fmt_bytes(_dir_size(store_dir)),
         "nca_dir": _dir_size(nca_dir),
         "parallel_shards_dir": _dir_size(parallel),
-        "examples_exp_reports": _dir_size(store_dir.parent.parent / "exp_sss_v1"),
+        "examples_exp_reports": _dir_size(store_dir.parent.parent / "exp_lexicon_v1"),
     }
 
     return {
         "schema_version": 1,
-        "kind": "sss_memory_manifest",
+        "kind": "lexicon_memory_manifest",
         **manifest_layout_block(),
         "store_id": store_dir.name,
         "store_path": rel_to_repo(store_dir),

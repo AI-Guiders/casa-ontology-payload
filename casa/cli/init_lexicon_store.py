@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from casa._paths import ensure_import_paths
+from casa._paths import REPO_ROOT, ensure_import_paths
 
 ensure_import_paths()
 
@@ -53,8 +53,7 @@ def init_lexicon_store(
     store_meta["corpus"] = corpus
     store_meta["tier"] = tier
 
-    root = Path(__file__).resolve().parent.parent
-    l0_rep: dict[str, Any] = {}
+    root = REPO_ROOT
     if (default_alphabet_core_ltm_dir(root=root) / "pack.manifest.json").is_file():
         l0_rep = merge_core_ltm_stack(state, root=root, include_alphabet=True, include_vk=False)
     else:
@@ -124,7 +123,7 @@ def init_lexicon_store(
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parent.parent
+    root = REPO_ROOT
     p = argparse.ArgumentParser(description="Init lexicon store from headwords file")
     p.add_argument("--corpus-id", choices=tuple(CORPUS_QUAD.keys()), default=None)
     p.add_argument("--store-dir", type=Path, default=None)

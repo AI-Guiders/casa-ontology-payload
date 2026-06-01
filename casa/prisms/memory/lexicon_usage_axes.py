@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from casa._paths import ensure_import_paths
+from casa._paths import REPO_ROOT, ensure_import_paths
 
 ensure_import_paths()
 
@@ -29,12 +29,12 @@ SOURCE_AFAN = "afanasyev-sharded"
 
 
 def en_general_frequency_path(*, root: Path | None = None) -> Path:
-    base = root or Path(__file__).resolve().parent.parent
+    base = root or REPO_ROOT
     return base / "lab/corpus/en-general/frequency.ipm.v1.jsonl"
 
 
 def ru_general_frequency_path(*, root: Path | None = None) -> Path:
-    base = root or Path(__file__).resolve().parent.parent
+    base = root or REPO_ROOT
     return base / "lab/corpus/ru-general/frequency.ipm.v1.jsonl"
 
 
@@ -178,7 +178,12 @@ def load_axes_jsonl(path: Path) -> dict[str, dict[str, Any]]:
     return out
 
 
-def attach_axes_to_state(state: dict, axes: dict[str, dict[str, Any]]) -> None:
+def attach_axes_to_state(
+    state: dict,
+    axes: dict[str, dict[str, Any]],
+    *,
+    materialize_field: bool = True,
+) -> None:
     state["lexicon_axes"] = axes
     state.setdefault("store", {})["lexicon_axes_path"] = "lexicon_axes.jsonl"
     active = sum(1 for r in axes.values() if r.get("active_for_t9"))
@@ -187,6 +192,14 @@ def attach_axes_to_state(state: dict, axes: dict[str, dict[str, Any]]) -> None:
         "active_for_t9": active,
         "schema": "lexicon_usage_axes",
     }
+    if materialize_field and axes:
+        from casa.prisms.memory.lexicon_field_oracle import lexicon_oracle_from_l3, sync_lexicon_axes_to_field
+
+        sync_lexicon_axes_to_field(state, axes)
+        field = lexicon_oracle_from_l3(state)
+        if field:
+            state["lexicon_axes"] = field
+            state["store"]["lexicon_oracle"] = "L3_field_v1"
 
 
 def lemma_axis(axes: dict[str, dict[str, Any]], word: str) -> dict[str, Any] | None:

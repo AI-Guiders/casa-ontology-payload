@@ -8,7 +8,7 @@ from typing import Any
 
 # Operand: quoted string, pipe run, identifier, number
 _OPERAND = r'(?:"[^"\\]*(?:\\.[^"\\]*)*"|\'[^\'\\]*(?:\\.[^\'\\]*)*\'|\|+|[\w\u0400-\u04ff]+|\d+(?:\.\d+)?)'
-_INFIX_RE = re.compile(rf"({_OPERAND})\s*([+|=\-&])\s*({_OPERAND})")
+_INFIX_RE = re.compile(rf"({_OPERAND})\s*([+|=*&-])\s*({_OPERAND})")
 _PIPE_ONLY = re.compile(r"^[\| ]+$")
 
 # Legacy string tags → structured when (bundle may use either)
@@ -142,17 +142,17 @@ def _match_when(analysis: dict[str, Any], when: dict[str, Any]) -> bool:
     return False
 
 
-def _when_rules_for_context(bundle: dict, context_id: str) -> list[dict[str, Any]]:
+def _when_rules_for_context(reading_model: dict, context_id: str) -> list[dict[str, Any]]:
     rules: list[dict[str, Any]] = []
-    for ctx in bundle.get("reading_contexts") or []:
+    for ctx in reading_model.get("reading_contexts") or []:
         if str(ctx.get("id") or "") != context_id:
             continue
         rules.append(_normalize_when(ctx.get("when")))
     return rules
 
 
-def _active_when_rules(bundle: dict, context_id: str, analysis: dict[str, Any]) -> list[dict[str, Any]]:
-    return [w for w in _when_rules_for_context(bundle, context_id) if _match_when(analysis, w)]
+def _active_when_rules(reading_model: dict, context_id: str, analysis: dict[str, Any]) -> list[dict[str, Any]]:
+    return [w for w in _when_rules_for_context(reading_model, context_id) if _match_when(analysis, w)]
 
 
 def _glyph_relevant(analysis: dict[str, Any], glyph: str, when: dict[str, Any]) -> bool:
@@ -189,9 +189,9 @@ def _infix_matches_context_when(ix: dict[str, Any], when: dict[str, Any]) -> boo
     return False
 
 
-def _contexts_for_infix(ix: dict[str, Any], bundle: dict) -> list[str]:
+def _contexts_for_infix(ix: dict[str, Any], reading_model: dict) -> list[str]:
     out: list[str] = []
-    for ctx in bundle.get("reading_contexts") or []:
+    for ctx in reading_model.get("reading_contexts") or []:
         cid = str(ctx.get("id") or "")
         if not cid:
             continue
@@ -201,9 +201,9 @@ def _contexts_for_infix(ix: dict[str, Any], bundle: dict) -> list[str]:
     return out
 
 
-def infix_reading_contexts(ix: dict[str, Any], bundle: dict) -> list[str]:
-    """Bundle-matched frames first, then surface fallbacks (pipe / number → arithmetic)."""
-    ctxs = _contexts_for_infix(ix, bundle)
+def infix_reading_contexts(ix: dict[str, Any], reading_model: dict) -> list[str]:
+    """Field-matched frames first, then surface fallbacks (pipe / number → arithmetic)."""
+    ctxs = _contexts_for_infix(ix, reading_model)
     if ctxs:
         return ctxs
     kinds = (ix.get("left_kind"), ix.get("right_kind"))
@@ -296,20 +296,13 @@ def score_field_glyph_numerals(
 def _sense_binds_op(
     op: str,
     context_id: str,
-    bundle: dict,
+    reading_model: dict,
     decoded: dict,
     *,
     concept_in_context: Any,
     grapheme_for_glyph: Any,
 ) -> bool:
-    for sense in bundle.get("symbol_senses") or []:
-        if str(sense.get("glyph") or "") != op:
-            continue
-        ctx = str(sense.get("context") or sense.get("context_id") or "")
-        if ctx != context_id:
-            continue
-        if str(sense.get("concept_id") or "").startswith("math."):
-            return True
+    _ = reading_model
     grapheme = grapheme_for_glyph(op) if grapheme_for_glyph else None
     sym = grapheme if grapheme and str(grapheme).startswith(("grapheme.", "punct.", "vk.")) else op
     return bool(concept_in_context(decoded, sym, context_id))
@@ -317,25 +310,25 @@ def _sense_binds_op(
 
 def unbound_operators(
     cue: str,
-    bundle: dict,
+    reading_model: dict,
     decoded: dict,
     *,
     concept_in_context: Any,
     grapheme_for_glyph: Any,
 ) -> list[dict[str, Any]]:
-    """Infix operators in an active reading frame with no field/bundle denotes binding."""
+    """Infix operators in an active reading frame with no field denotes binding."""
     analysis = analyze_cue(cue)
-    bundle = bundle or {}
+    reading_model = reading_model or {}
     seen: set[tuple[str, str]] = set()
     out: list[dict[str, Any]] = []
     for ix in analysis.get("infix") or []:
         op = str(ix.get("op") or "")
-        if op not in "+-=&":
+        if op not in "+-=*&":
             continue
         if op == "|":
             continue
-        contexts = infix_reading_contexts(ix, bundle)
-        if not contexts and op in "+-=&":
+        contexts = infix_reading_contexts(ix, reading_model)
+        if not contexts and op in "+-=*&":
             contexts = ["math.ctx.arithmetic"]
         field_bound = {ctx for _, ctx in field_bound_infix_operators(decoded, op, grapheme_for_glyph=grapheme_for_glyph)}
         for ctx in contexts:
@@ -345,7 +338,7 @@ def unbound_operators(
             seen.add(key)
             if ctx in field_bound:
                 continue
-            if _sense_binds_op(op, ctx, bundle, decoded, concept_in_context=concept_in_context, grapheme_for_glyph=grapheme_for_glyph):
+            if _sense_binds_op(op, ctx, reading_model, decoded, concept_in_context=concept_in_context, grapheme_for_glyph=grapheme_for_glyph):
                 continue
             grapheme = grapheme_for_glyph(op) if grapheme_for_glyph else None
             out.append(
@@ -362,7 +355,7 @@ def unbound_operators(
 
 def score_field_infix_operators(
     cue: str,
-    bundle: dict,
+    reading_model: dict,
     decoded: dict,
     contexts: dict[str, float],
     *,
@@ -381,7 +374,7 @@ def score_field_infix_operators(
                 weight = max(float(contexts.get(ctx, 0)), 10.0)
                 scores[concept_id] = scores.get(concept_id, 0) + int(weight * 1.5)
             continue
-        ctxs = infix_reading_contexts(ix, bundle)
+        ctxs = infix_reading_contexts(ix, reading_model)
         for ctx in ctxs:
             weight = max(float(contexts.get(ctx, 0)), 10.0)
             grapheme = grapheme_for_glyph(op) if grapheme_for_glyph else None
@@ -395,15 +388,24 @@ def score_field_infix_operators(
 def detect_reading_contexts(
     cue: str,
     *,
+    reading_model: dict | None = None,
     bundle: dict | None = None,
     unbound: list[dict[str, Any]] | None = None,
 ) -> dict[str, float]:
-    """Score reading frames from bundle rules (specific beats default)."""
+    """Score reading frames from field materialization (cartridge fallback optional)."""
+    model = reading_model
+    if model is None and bundle is not None:
+        model = {
+            "reading_contexts": list(bundle.get("reading_contexts") or []),
+            "symbol_senses": list(bundle.get("symbol_senses") or []),
+            "math_keywords": dict(bundle.get("math_keywords") or {}),
+        }
+    model = model or {}
     analysis = analyze_cue(cue)
     unbound_ops = {str(u.get("op") or "") for u in (unbound or [])}
     has_infix = bool(analysis.get("infix"))
     scores: dict[str, float] = {}
-    for ctx in bundle.get("reading_contexts") or [] if bundle else []:
+    for ctx in model.get("reading_contexts") or []:
         cid = str(ctx.get("id") or "")
         if not cid:
             continue
@@ -448,7 +450,7 @@ def _score_glyph_runs(cue: str, senses: list[dict], context_id: str) -> dict[str
 
 
 def score_contextual_senses(
-    bundle: dict,
+    reading_model: dict,
     decoded: dict,
     cue: str,
     contexts: dict[str, float],
@@ -457,10 +459,10 @@ def score_contextual_senses(
     grapheme_for_glyph: Any,
     unbound: list[dict[str, Any]] | None = None,
 ) -> dict[str, int]:
-    """Map active frames + symbol_senses → concept scores (field-backed)."""
+    """Map active frames + field denotes → concept scores."""
     analysis = analyze_cue(cue)
     scores: dict[str, int] = {}
-    senses = bundle.get("symbol_senses") or []
+    senses = reading_model.get("symbol_senses") or []
     unbound_ops = {str(u.get("op") or "") for u in (unbound or [])}
     has_infix = bool(analysis.get("infix"))
     has_arith_infix = any(str(ix.get("op") or "") in "+-" for ix in analysis.get("infix") or [])
@@ -477,7 +479,7 @@ def score_contextual_senses(
         if sense_when:
             rules = [sense_when] if _match_when(analysis, sense_when) else []
         else:
-            rules = _active_when_rules(bundle, context, analysis)
+            rules = _active_when_rules(reading_model, context, analysis)
         if not rules or not _sense_applies(analysis, glyph, rules):
             continue
         if unbound_ops and any(str(w.get("shape") or "") == "contains" for w in rules):

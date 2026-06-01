@@ -62,7 +62,8 @@ def boot_store(
 
     axes_path = store_dir / "lexicon_axes.jsonl"
     if axes_path.is_file():
-        attach_axes_to_state(state, load_axes_jsonl(axes_path))
+        sidecar = load_axes_jsonl(axes_path)
+        attach_axes_to_state(state, sidecar, materialize_field=True)
 
     nca_manifest = manifest.get("nca") or {}
     if nca_manifest:

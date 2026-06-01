@@ -103,6 +103,27 @@ def augment_bundle_symbol_links(bundle: dict) -> dict:
                 edges.append({"src": src, "relation": rel, "dst": dst})
                 seen.add(key)
 
+    for item in out.get("math_glyphs") or []:
+        glyph = str(item.get("glyph") or "")
+        context = str(item.get("context") or item.get("context_id") or "")
+        concept = str(item.get("concept_id") or "")
+        if not (glyph and context and concept.startswith("math.")):
+            continue
+        grapheme = str(item.get("grapheme") or "") or (_grapheme_for_glyph(glyph) if len(glyph) == 1 else "")
+        sym = grapheme if grapheme.startswith(_SYMBOL_PREFIXES) else glyph
+        if sym.startswith(_SYMBOL_PREFIXES):
+            symbols.add(sym)
+        sym_key = contextual_symbol_key(sym, context)
+        for src, rel, dst in ((sym, "in_context", context), (sym_key, "denotes", concept)):
+            key = (src, rel, dst)
+            if key not in seen:
+                edges.append({"src": src, "relation": rel, "dst": dst})
+                seen.add(key)
+
+    from casa.prisms.memory.f0_field_reading import materialize_reading_edges
+
+    edges.extend(materialize_reading_edges(out))
+
     if symbols:
         out["symbol_concepts"] = sorted(symbols)
     graph["edges"] = edges
@@ -226,30 +247,39 @@ def f0_digest(decoded: dict, *, prefix: str = "math.") -> list[tuple[str, int]]:
 _MATH_OP_GLYPH: dict[str, str] = {
     "math.op.add": "+",
     "math.op.sub": "-",
+    "math.op.mul": "*",
     "math.op.eq": "=",
     "math.op.concat": "+",
     "math.op.or": "|",
 }
 
 
-def analyze_f0_cue_ranking(bundle: dict, decoded: dict, cue: str) -> dict[str, Any]:
-    """Rank math.* plus unbound-operator coverage for schema predict."""
-    bundle = augment_bundle_symbol_links(bundle)
+def analyze_f0_cue_ranking(
+    decoded: dict,
+    cue: str,
+    *,
+    reading_model: dict | None = None,
+    bundle: dict | None = None,
+) -> dict[str, Any]:
+    """Rank math.* from field; reading frames from materialized edges (bundle ingest-only fallback)."""
+    from casa.prisms.memory.f0_field_reading import reading_model_for_predict
+
+    model = reading_model or reading_model_for_predict(decoded, bundle)
     cue = cue.strip()
     unbound = unbound_operators(
         cue,
-        bundle,
+        model,
         decoded,
         concept_in_context=concept_in_context,
         grapheme_for_glyph=_grapheme_for_glyph,
     )
-    contexts = detect_reading_contexts(cue, bundle=bundle, unbound=unbound)
+    contexts = detect_reading_contexts(cue, reading_model=model, unbound=unbound)
     cl = cue.lower()
     scores: dict[str, int] = {}
 
     scores.update(
         score_contextual_senses(
-            bundle,
+            model,
             decoded,
             cue,
             contexts,
@@ -261,7 +291,7 @@ def analyze_f0_cue_ranking(bundle: dict, decoded: dict, cue: str) -> dict[str, A
     scores.update(
         score_field_infix_operators(
             cue,
-            bundle,
+            model,
             decoded,
             contexts,
             concept_in_context=concept_in_context,
@@ -287,7 +317,7 @@ def analyze_f0_cue_ranking(bundle: dict, decoded: dict, cue: str) -> dict[str, A
         except ValueError:
             pass
 
-    for cid, words in (bundle.get("math_keywords") or {}).items():
+    for cid, words in (model.get("math_keywords") or {}).items():
         for w in words:
             ws = str(w).lower()
             if ws in cl or (len(ws) == 1 and ws in cue):
@@ -300,9 +330,13 @@ def analyze_f0_cue_ranking(bundle: dict, decoded: dict, cue: str) -> dict[str, A
             continue
         scores[cid] = scores.get(cid, 0) + min(v, 5)
 
+    from casa.prisms.memory.f0_cardinal_abstract import score_abstract_mul_cue
+    from casa.prisms.memory.f0_equiv_extract import score_equiv_cue
     from casa.prisms.memory.f0_pattern_extract import score_emerged_patterns_from_cue
 
     scores.update(score_emerged_patterns_from_cue(cue, decoded))
+    scores.update(score_abstract_mul_cue(cue, decoded))
+    scores.update(score_equiv_cue(cue, decoded, bundle=None))
 
     ranked = sorted(scores.items(), key=lambda x: (-x[1], x[0]))
     return {
@@ -313,9 +347,15 @@ def analyze_f0_cue_ranking(bundle: dict, decoded: dict, cue: str) -> dict[str, A
     }
 
 
-def rank_cue_on_f0(bundle: dict, decoded: dict, cue: str) -> list[tuple[str, int]]:
-    """Rank math.* — reading frames from bundle rules, not hardcoded examples."""
-    return analyze_f0_cue_ranking(bundle, decoded, cue)["ranked"]
+def rank_cue_on_f0(
+    decoded: dict,
+    cue: str,
+    *,
+    reading_model: dict | None = None,
+    bundle: dict | None = None,
+) -> list[tuple[str, int]]:
+    """Rank math.* — reading frames from field (cartridge optional fallback)."""
+    return analyze_f0_cue_ranking(decoded, cue, reading_model=reading_model, bundle=bundle)["ranked"]
 
 
 def strengthen_denotes_edge(
@@ -405,7 +445,7 @@ def mint_operator_denotes_from_episode(
     lattice_id: str,
     cue: str,
     concept_id: str,
-    bundle: dict,
+    bundle: dict | None = None,
     copies: int = 4,
 ) -> dict[str, Any] | None:
     """Sleep Extract: teacher math.op.* → contextual denotes for the operator glyph."""
@@ -415,12 +455,15 @@ def mint_operator_denotes_from_episode(
     if lattice_id not in lattices:
         return None
     decoded = decode_f0_lattice(lattices[lattice_id], min_votes=1)
+    from casa.prisms.memory.f0_field_reading import reading_model_for_predict
+
+    model = reading_model_for_predict(decoded, bundle)
     glyph = _MATH_OP_GLYPH.get(cid)
     if not glyph:
         return None
     unbound = unbound_operators(
         cue,
-        bundle,
+        model,
         decoded,
         concept_in_context=concept_in_context,
         grapheme_for_glyph=_grapheme_for_glyph,

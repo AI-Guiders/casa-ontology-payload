@@ -16,6 +16,7 @@ from casa.prisms.memory.f0_stack import decode_f0_lattice, analyze_f0_cue_rankin
 from casa.prisms.shared.lattice_names_v1 import PHRASES
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.lexicon_shard import L2_CONCEPT_PREFIX, is_l2_word_lattice, lattice_digest_l2_network
+from casa.prisms.memory.lexicon_field_oracle import lexicon_oracle_for_predict
 from casa.prisms.memory.lexicon_usage_axes import T9Policy, filter_ranked_for_t9, lemma_axis
 from casa.prisms.memory.segment import format_segment, norm_word, segment_hypothesis, verify_segment
 
@@ -232,7 +233,7 @@ def l2_prefix_candidates(
     weights: T9Weights = DEFAULT_T9_WEIGHTS,
 ) -> list[tuple[str, int]]:
     """Words from L2 network matching prefix — field-only (T9)."""
-    axes = state.get("lexicon_axes") or {}
+    axes = lexicon_oracle_for_predict(state)
     raw = _prefix_from_index(
         l2_prefix_index(state),
         prefix,
@@ -324,7 +325,7 @@ def focus_schema_from_anchors(cue: str, anchors: list[dict[str, Any]]) -> dict[s
 def predict_schema(
     state: dict,
     cue: str,
-    bundle: dict,
+    bundle: dict | None = None,
     *,
     lattice_id: str = "schema-math",
     top_k: int = 8,
@@ -332,10 +333,14 @@ def predict_schema(
     state = ensure_prisms(state)
     lattices = memory_lattices(state)
     if lattice_id not in lattices:
+        if bundle is None:
+            raise ValueError(
+                f"schema lattice {lattice_id!r} missing — boot store from ltm/ or run ingest (bundle optional bootstrap only)"
+            )
         ingest_math_bundle(state, bundle, lattice_id=lattice_id)
         lattices = memory_lattices(state)
     decoded = decode_f0_lattice(lattices[lattice_id], min_votes=1)
-    analysis = analyze_f0_cue_ranking(bundle, decoded, cue)
+    analysis = analyze_f0_cue_ranking(decoded, cue, bundle=bundle)
     ranked = analysis["ranked"][:top_k]
     unbound = analysis.get("unbound_operators") or []
     anchors = schema_anchors_from_ranked(ranked)
@@ -378,7 +383,7 @@ def predict_t9(
     state = ensure_prisms(state)
     prefix = norm_word(cue)
     ranked = l2_prefix_candidates(state, prefix, top_k=top_k, t9_policy=t9_policy, weights=weights)
-    axes = state.get("lexicon_axes") or {}
+    axes = lexicon_oracle_for_predict(state)
     anchors = word_anchors_from_ranked(ranked, cue=prefix)
     focus = focus_from_anchors(prefix, anchors)
     top = ranked[0][0] if ranked else None
@@ -429,8 +434,6 @@ def predict(
 
         return predict_script(state, cue)
     if mod == "schema":
-        if bundle is None:
-            raise ValueError("schema modality requires bundle")
         return predict_schema(state, cue, bundle, lattice_id=lattice_id or "schema-math")
     if mod == "segment":
         return predict_segment(state, cue)
