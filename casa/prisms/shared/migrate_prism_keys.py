@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.store_layout import use_compact_field_state
 from casa.prisms.shared.prism_state import normalize_prisms
 
 
@@ -28,7 +29,7 @@ def main() -> None:
         normalize_prisms(state)
         raw_after = json.dumps(state, ensure_ascii=False, sort_keys=True)
         if raw_before != raw_after:
-            save_field_state(fs, state, compact=args.compact or fs.parent.name.startswith("sss-"))
+            save_field_state(fs, state, compact=args.compact or use_compact_field_state(fs.parent))
             n += 1
             print(fs.parent.name, state.get("schema_version"))
     print(f"migrated {n} stores")

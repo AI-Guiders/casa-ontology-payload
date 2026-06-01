@@ -27,6 +27,7 @@ from casa.prisms.shared.store_layout import (
     agent_prism_root,
     field_state_path,
     runtime_checkpoint_paths,
+    use_compact_field_state,
 )
 
 
@@ -57,7 +58,7 @@ def save_runtime_state(
         }
 
     if compact is None:
-        compact = store_dir.name.startswith("sss-")
+        compact = use_compact_field_state(store_dir)
 
     checkpoints = runtime_checkpoint_paths(store_dir)
     fs = checkpoints["field_state"]

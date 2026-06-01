@@ -28,7 +28,7 @@ from casa.prisms.shared.field_write import load_field_state, save_field_state
 from casa.prisms.shared.ltm_pack import lattice_subdir
 from casa.prisms.shared.prism_state import normalize_prisms, prism_control, prism_hippo, prism_memory
 from casa.prisms.memory.memory_prisms import memory_lattices
-from casa.prisms.shared.store_layout import field_state_path, ltm_root, nca_root, nca_train_registry_path
+from casa.prisms.shared.store_layout import field_state_path, ltm_root, nca_root, nca_train_registry_path, use_compact_field_state
 
 _MAP_PATH = REPO_ROOT / "design" / "lattice-id-map.v1.json"
 
@@ -396,7 +396,7 @@ def main() -> None:
             dry_run=args.dry_run,
             skip_field_state=args.skip_field_state,
             skip_nca=args.skip_nca,
-            compact=args.compact or store.name.startswith("sss-"),
+            compact=args.compact or use_compact_field_state(store),
         )
         n = rep.get("renamed") or 0
         total += n

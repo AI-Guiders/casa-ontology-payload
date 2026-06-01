@@ -373,7 +373,7 @@ def _strengthen_concept(lattices: dict[str, dict], lattice_id: str, concept_id: 
 
 def run_sleep(
     state: dict,
-    bundle: dict,
+    bundle: dict | None = None,
     *,
     stack_path: Path | None = None,
     strength: int = 4,
@@ -383,6 +383,7 @@ def run_sleep(
     replay_value_weight: float = 0.0,
 ) -> dict:
     """T_sleep: merge hippo episodes → prism_memory; prune consolidated."""
+    bundle = bundle or {"claims": [], "graph": {"edges": []}}
     state = ensure_cylinders(state)
     from casa.prisms.hippo.sleep_replay import SleepReplayConfig, prepare_sleep_replay
 
@@ -500,9 +501,11 @@ def run_sleep(
             pending.append(ep)
 
     from casa.prisms.memory.f0_extract_gate import (
+        gate_mul_equiv_by_learning_gap,
         gate_names_by_learning_gap,
         gate_pattern_rows_by_predict_fail,
     )
+    from casa.prisms.memory.f0_equiv_extract import has_equiv_cardinality_for_num
     from casa.prisms.memory.f0_names_extract import names_edges_on_field
     from casa.prisms.memory.f0_pattern_extract import count_row_group_key, numeral_surface_to_int
 
@@ -527,6 +530,11 @@ def run_sleep(
         return any(e.startswith(prefix) for e in names_edges_on_field(lattices, "schema-math"))
 
     gate_names_by_learning_gap(state, episodes, has_names_edge=_has_names_edge)
+
+    def _has_equiv_edge(cid: str) -> bool:
+        return has_equiv_cardinality_for_num(lattices, "schema-math", cid)
+
+    gate_mul_equiv_by_learning_gap(state, episodes, has_equiv_edge=_has_equiv_edge)
 
     from casa.prisms.memory.f0_pattern_extract import extract_emergent_count_patterns
 
@@ -564,6 +572,25 @@ def run_sleep(
             {
                 "episode_id": item.get("episode_id"),
                 "kind": "emergent_names",
+                "lattice_id": "schema-math",
+                "concept_id": item.get("concept_id"),
+                "extract": item,
+            }
+        )
+
+    from casa.prisms.memory.f0_equiv_extract import extract_emergent_mul_equiv_from_episodes
+
+    for item in extract_emergent_mul_equiv_from_episodes(
+        lattices,
+        episodes,
+        state,
+        lattice_id="schema-math",
+        copies=strength,
+    ):
+        merged.append(
+            {
+                "episode_id": None,
+                "kind": "emergent_mul_equiv",
                 "lattice_id": "schema-math",
                 "concept_id": item.get("concept_id"),
                 "extract": item,

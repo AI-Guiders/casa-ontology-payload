@@ -149,7 +149,7 @@ def maybe_agent_remember_surprise(
 
 def maybe_sleep_phase(
     state: dict,
-    bundle: dict,
+    bundle: dict | None,
     *,
     sleep_every: int,
     sleep_on_value: float,
@@ -176,14 +176,15 @@ def maybe_sleep_phase(
     return rep
 
 
-def _fallback_bundle(store_dir: Path) -> dict:
+def _fallback_bundle(store_dir: Path) -> dict | None:
     bundle = _load_bundle(store_dir)
     if bundle is not None:
         return bundle
-    math_bundle = REPO_ROOT / "lab/exp_l/kb-math-concrete-schemas-l0.bundle.v1.json"
-    if math_bundle.is_file():
-        return json.loads(math_bundle.read_text(encoding="utf-8"))
-    return {"claims": [], "graph": {"edges": []}}
+    if store_dir.name == "math-l0-lab":
+        math_bundle = REPO_ROOT / "lab/exp_l/kb-math-concrete-schemas-l0.bundle.v1.json"
+        if math_bundle.is_file():
+            return json.loads(math_bundle.read_text(encoding="utf-8"))
+    return None
 
 
 def _load_tick_field(
@@ -231,6 +232,7 @@ def run_learning_tick(
     bundle_name, bundle, decoded, recovery, decode_ms, state = _load_tick_field(
         field_path, store_dir, min_votes=cfg.min_votes
     )
+    routing_bundle = bundle if bundle is not None else {"claims": [], "graph": {"edges": []}}
 
     act_report: dict[str, Any] | None = None
     if cfg.act_rollout:
@@ -243,9 +245,9 @@ def run_learning_tick(
     load_agent_bridges(store_dir, state)
     digest = merge_digest_with_agent_bridges(digest_from_decoded(decoded), state)
     bias = salience_mode_bias(wm, digest.concept_ids)
-    gated = sn_route(digest, bundle=bundle, wm_mode=wm.mode, wm_salience_bias=bias)
+    gated = sn_route(digest, bundle=routing_bundle, wm_mode=wm.mode, wm_salience_bias=bias)
     q = effective_user_query(wm, user_query)
-    task = cen_plan(gated, bundle=bundle, user_query=q)
+    task = cen_plan(gated, bundle=routing_bundle, user_query=q)
     wm_next = fpn_after_cen(wm, task, user_query=q)
 
     control = run_control_extensions(
@@ -295,7 +297,7 @@ def run_learning_tick(
         )
 
     sleep_rep: dict | None = None
-    if bundle_for_hippo and (cfg.sleep_every > 0 or cfg.sleep_on_value > 0):
+    if cfg.sleep_every > 0 or cfg.sleep_on_value > 0:
         sleep_rep = maybe_sleep_phase(
             state,
             bundle_for_hippo,

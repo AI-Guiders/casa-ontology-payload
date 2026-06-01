@@ -14,7 +14,7 @@ from pathlib import Path
 from casa.prisms.memory.alphabet_core import verify_alphabet_on_l0
 from casa.prisms.memory.boot_core_ltm import default_alphabet_core_ltm_dir, merge_alphabet_l0_from_ltm
 from casa.prisms.shared.field_write import load_field_state, save_field_state
-from casa.prisms.shared.store_layout import field_state_path
+from casa.prisms.shared.store_layout import field_state_path, use_compact_field_state
 from casa.prisms.memory.grapheme_ingest import L0_CYRL_ID, L0_LATN_ID
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.nca_codec import tokens_from_lattice
@@ -60,7 +60,7 @@ def main() -> None:
         boot = merge_alphabet_l0_from_ltm(state, altm)
         verify = verify_alphabet_on_l0(state)
         after = l0_token_count(state)
-        compact = args.compact or fs.parent.name.startswith("sss-")
+        compact = args.compact or use_compact_field_state(fs.parent)
         save_field_state(field_state_path(fs.parent), state, compact=compact)
         reports.append(
             {

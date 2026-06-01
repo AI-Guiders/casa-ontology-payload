@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.store_layout import use_compact_field_state
 from casa.prisms.memory.grapheme_ingest import migrate_legacy_l0_grapheme
 from casa.prisms.shared.prism_state import normalize_prisms, prism_memory
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
@@ -103,7 +104,7 @@ def main() -> None:
     for fs in paths:
         rep = migrate_field_state(
             fs,
-            compact=args.compact or fs.parent.name.startswith("sss-"),
+            compact=args.compact or use_compact_field_state(fs.parent),
         )
         if rep:
             n += 1

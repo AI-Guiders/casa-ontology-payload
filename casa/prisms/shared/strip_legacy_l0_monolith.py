@@ -16,6 +16,7 @@ from typing import Any
 from casa.prisms.memory.alphabet_core import verify_alphabet_on_l0
 from casa.prisms.shared.export_ltm_pack import export_pack
 from casa.prisms.shared.field_write import load_field_state, save_field_state
+from casa.prisms.shared.store_layout import use_compact_field_state
 from casa.prisms.memory.grapheme_ingest import L0_ID_LEGACY, strip_legacy_l0_monolith
 from casa.prisms.shared.migrate_l0_grapheme_split import patch_state_metadata
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
@@ -98,7 +99,7 @@ def main() -> None:
     p.add_argument("--store-dir", type=Path, required=True)
     p.add_argument("--compact", action="store_true", help="Compact field_state JSON")
     args = p.parse_args()
-    compact = args.compact or args.store_dir.name.startswith("sss-")
+    compact = args.compact or use_compact_field_state(args.store_dir)
     rep = strip_store(args.store_dir, compact=compact)
     print(json.dumps(rep, ensure_ascii=False, indent=2))
 

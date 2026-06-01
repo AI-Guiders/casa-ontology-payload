@@ -10,6 +10,7 @@ ensure_import_paths()
 import copy
 import hashlib
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -18,7 +19,7 @@ from casa.prisms.shared.field_version import memory_field_version, train_field_v
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.lexicon_shard import is_nca_trainable_lattice, l2_lexicon_lattice_ids, nca_model_registry
 from casa.prisms.memory.nca_codec import tokens_from_lattice
-from casa.prisms.shared.store_layout import nca_lattice_dir, nca_train_registry_path, rel_to_repo
+from casa.prisms.shared.store_layout import nca_lattice_dir, nca_root, nca_train_registry_path, rel_to_repo
 
 
 def _utc_now() -> str:
@@ -150,8 +151,43 @@ def mark_lattice_trained(
     return entry
 
 
+_LEGACY_RU_NCA = re.compile(r"^lexicon-ru-(\d+)$")
+_LEGACY_WORDS_RU = re.compile(r"^words-ru-(\d+)$")
+
+
+def wire_legacy_nca_paths(store_dir: Path, state: dict) -> int:
+    """Map on-disk legacy shard dirs (lexicon-ru-NN) → current L2_word_NN in nca.models."""
+    state = ensure_prisms(state)
+    models = state.setdefault("nca", {}).setdefault("models", {})
+    wired = 0
+    root = nca_root(store_dir)
+    if not root.is_dir():
+        return 0
+    for d in sorted(root.iterdir()):
+        if not d.is_dir():
+            continue
+        model = d / "model.pt"
+        if not model.is_file():
+            continue
+        name = d.name
+        lid: str | None = None
+        if name.startswith("L2_word"):
+            lid = name
+        else:
+            for pat in (_LEGACY_RU_NCA, _LEGACY_WORDS_RU):
+                m = pat.fullmatch(name)
+                if m:
+                    lid = f"L2_word_{int(m.group(1)):02d}"
+                    break
+        if lid and lid not in models:
+            models[lid] = rel_to_repo(model)
+            wired += 1
+    return wired
+
+
 def sync_registry_from_store(store_dir: Path, state: dict) -> dict[str, Any]:
     """Bootstrap registry entries for lattices that already have model.pt on disk."""
+    wire_legacy_nca_paths(store_dir, state)
     reg = load_registry(store_dir)
     state = ensure_prisms(state)
     for lid in l2_lexicon_lattice_ids(state):
