@@ -17,6 +17,7 @@ if str(_REPO) not in sys.path:
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.shared.compact_persist import compact_persist_store
 from casa.prisms.shared.field_write import load_field_state
+from casa.prisms.shared.migrate_progress import StepTimer, progress, set_progress_enabled
 from casa.prisms.shared.runtime_checkpoint import is_thin_checkpoint_file
 from casa.prisms.shared.store_layout import field_state_path, ltm_root
 from casa.prisms.shared.store_persist import save_runtime_state
@@ -32,6 +33,7 @@ def migrate_store(
     backup: bool,
     dry_run: bool,
     min_legacy_mb: float,
+    verbose: bool = True,
 ) -> dict:
     store_dir = store_dir.resolve()
     fs = field_state_path(store_dir)
@@ -44,6 +46,7 @@ def migrate_store(
     if is_thin_checkpoint_file(fs):
         rep["status"] = "already_thin"
         rep["field_state_mb"] = round(_mb(fs), 2)
+        progress(f"  already thin ({rep['field_state_mb']} MiB)")
         return rep
 
     before_mb = _mb(fs)
@@ -58,34 +61,74 @@ def migrate_store(
         return rep
 
     t0 = time.perf_counter()
-    state = ensure_prisms(load_field_state(fs, store_dir=store_dir))
+    with StepTimer("load field_state", f"{before_mb:.1f} MiB"):
+        state = ensure_prisms(load_field_state(fs, store_dir=store_dir))
     ltm_dir = ltm_root(store_dir)
     ltm_dir.mkdir(parents=True, exist_ok=True)
 
-    from casa.prisms.memory.l2_remigrate import ensure_l2_sharded_for_export
+    from casa.prisms.memory.l2_remigrate import ensure_l2_sharded_for_export, needs_l2_remigrate
+    from casa.prisms.memory.l3_remigrate import ensure_l3_sharded_for_export, needs_l3_remigrate
 
-    rem = ensure_l2_sharded_for_export(state)
+    if needs_l2_remigrate(state):
+        with StepTimer("L2 remigrate", "monolith → shards"):
+            rem = ensure_l2_sharded_for_export(
+                state,
+                on_word_progress=_remigrate_word_progress if verbose else None,
+            )
+    else:
+        progress("  L2 remigrate skipped (already sharded)")
+        rem = None
     if rem:
         rep["l2_remigrate"] = rem
+        progress(
+            f"  remigrate done: {rem.get('words_remigrated')} words, "
+            f"max_shard_vocab={rem.get('max_shard_vocab')}"
+        )
 
-    cp = compact_persist_store(
-        store_dir,
-        state,
-        reason="migrate_thin_checkpoint",
-        skip_vocab_over=65535,
-    )
+    if needs_l3_remigrate(state):
+        with StepTimer("L3 remigrate", "monolith → phrase shards"):
+            rem3 = ensure_l3_sharded_for_export(
+                state,
+                on_token_progress=_remigrate_token_progress if verbose else None,
+            )
+    else:
+        progress("  L3 remigrate skipped (already sharded)")
+        rem3 = None
+    if rem3:
+        rep["l3_remigrate"] = rem3
+        progress(
+            f"  L3 remigrate done: {rem3.get('tokens_remigrated')} tokens, "
+            f"max_shard_vocab={rem3.get('max_shard_vocab')}"
+        )
+
+    with StepTimer("compact_persist", "ltm/*.ltm"):
+        cp = compact_persist_store(
+            store_dir,
+            state,
+            reason="migrate_thin_checkpoint",
+            skip_vocab_over=65535,
+            progress=verbose,
+            remigrate_l2=False,
+            remigrate_l3=False,
+        )
     totals = cp.get("manifest_totals") or {}
     rep["compact_persist"] = {
         "lattice_count": totals.get("lattice_count"),
         "content_prisms": cp.get("content_prisms"),
     }
+    skipped = (cp.get("manifest") or {}).get("skipped_vocab_lattices") if isinstance(cp.get("manifest"), dict) else None
+    if skipped:
+        rep["skipped_vocab_lattices"] = skipped
+        progress(f"  skipped {len(skipped)} lattices over u16 vocab (see manifest)")
 
     legacy = store_dir / "field_state.legacy.json"
     if backup and not legacy.is_file():
-        shutil.copy2(fs, legacy)
+        with StepTimer("backup", "field_state.legacy.json"):
+            shutil.copy2(fs, legacy)
         rep["backup"] = str(legacy)
 
-    save_rep = save_runtime_state(store_dir, state, force=True, thin=True, sync_ltm_on_save=False)
+    with StepTimer("thin checkpoint", "field_state.json"):
+        save_rep = save_runtime_state(store_dir, state, force=True, thin=True, sync_ltm_on_save=False)
     rep["save_runtime"] = {
         "thin": save_rep.get("thin_checkpoint"),
         "format": save_rep.get("checkpoint_format"),
@@ -99,7 +142,16 @@ def migrate_store(
     )
     rep["elapsed_s"] = round(time.perf_counter() - t0, 1)
     rep["status"] = "ok"
+    progress(f"  done: field_state {before_mb:.1f} → {after_mb:.1f} MiB, ltm {rep['ltm_total_mb']} MiB")
     return rep
+
+
+def _remigrate_word_progress(done: int, total: int, shard: str) -> None:
+    progress(f"  remigrate words {done}/{total} (shard {shard})")
+
+
+def _remigrate_token_progress(done: int, total: int, shard: str) -> None:
+    progress(f"  remigrate L3 tokens {done}/{total} (shard {shard})")
 
 
 def main() -> None:
@@ -114,7 +166,10 @@ def main() -> None:
     p.add_argument("--backup", action="store_true", help="Keep field_state.legacy.json copy")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--min-mb", type=float, default=1.0, help="Only migrate if field_state >= N MiB")
+    p.add_argument("--quiet", action="store_true", help="No progress lines (JSON report only)")
     args = p.parse_args()
+
+    set_progress_enabled(not args.quiet)
 
     root = args.stores_root.resolve()
     if args.store:
@@ -124,8 +179,16 @@ def main() -> None:
 
     reports: list[dict] = []
     for sd in stores:
-        print(f"migrate {sd.name}...", flush=True)
-        reports.append(migrate_store(sd, backup=args.backup, dry_run=args.dry_run, min_legacy_mb=args.min_mb))
+        progress(f"migrate {sd.name}")
+        reports.append(
+            migrate_store(
+                sd,
+                backup=args.backup,
+                dry_run=args.dry_run,
+                min_legacy_mb=args.min_mb,
+                verbose=not args.quiet,
+            )
+        )
 
     print(json.dumps(reports, ensure_ascii=False, indent=2))
     failed = [r for r in reports if r.get("status") not in ("ok", "already_thin", "skipped", "dry_run")]
