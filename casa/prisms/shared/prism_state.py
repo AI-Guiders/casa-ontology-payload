@@ -159,6 +159,19 @@ def prism_kind(state: dict, prism_id: str) -> str:
     return PRISM_KIND_CONTENT
 
 
+def prism_supports_lattices(state: dict, prism_id: str) -> bool:
+    """True if prism holds **content** lattices (not hippo episodic surface)."""
+    if prism_id in (PRISM_HIPPO, PRISM_CONTROL, PRISM_AGENT, PRISM_HOT_CONTEXT, PRISM_ROUTER):
+        return False
+    k = prism_kind(state, prism_id)
+    if k in (PRISM_KIND_HOT_CONTEXT, PRISM_KIND_ROUTER, "hippo", "control"):
+        return False
+    if k == PRISM_KIND_CONTENT:
+        return True
+    block = prism_block(state, prism_id)
+    return isinstance(block.get("lattices"), dict)
+
+
 def active_prism_id(state: dict, *, default: str = PRISM_MEMORY) -> str:
     sn = state.get("sn") or {}
     return str(sn.get(_ACTIVE) or default)

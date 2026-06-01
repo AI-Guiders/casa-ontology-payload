@@ -148,6 +148,21 @@ def test_prism_memory_health_ok():
     assert any(c["id"] == "router_resolves" for c in rep["checks"])
 
 
+def test_spawn_agent_defined_kind():
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+    spawn_prism(state, "prism_workspace", kind="workspace_meta")
+    assert prism_kind(state, "prism_workspace") == "workspace_meta"
+    assert "payload" in state["prisms"]["prism_workspace"]
+
+
+def test_spawn_extra_router_prism():
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+    spawn_prism(state, "prism_nav_lab", kind="router")
+    block = state["prisms"]["prism_nav_lab"]
+    assert block["kind"] == "router"
+    assert block.get("routes") == []
+
+
 def test_prune_hot_context_ttl():
     state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 100})
     ensure_default_router_and_hot(state)

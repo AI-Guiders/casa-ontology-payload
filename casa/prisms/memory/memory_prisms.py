@@ -93,16 +93,16 @@ def content_prism_lattices(state: dict, prism_id: str | None = None) -> dict[str
     """Lattices for a content prism (default active or prism_memory)."""
     state = ensure_cylinders(state)
     from casa.prisms.shared.prism_state import (
-        PRISM_KIND_CONTENT,
         PRISM_MEMORY,
         active_prism_id,
-        prism_kind,
         prism_memory,
         prisms,
     )
 
+    from casa.prisms.shared.prism_state import prism_supports_lattices
+
     pid = prism_id or active_prism_id(state)
-    if prism_kind(state, pid) != PRISM_KIND_CONTENT:
+    if not prism_supports_lattices(state, pid):
         pid = PRISM_MEMORY
     if pid == PRISM_MEMORY:
         mem = prism_memory(state)

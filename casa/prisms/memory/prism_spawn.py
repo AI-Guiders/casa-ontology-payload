@@ -9,10 +9,12 @@ ensure_import_paths()
 
 import re
 import time
-from typing import Any, Literal
+from typing import Any
 
 from casa.prisms.shared.prism_state import (
     PRISM_AGENT,
+    PRISM_CONTROL,
+    PRISM_HIPPO,
     PRISM_HOT_CONTEXT,
     PRISM_KIND_CONTENT,
     PRISM_KIND_HOT_CONTEXT,
@@ -24,24 +26,17 @@ from casa.prisms.shared.prism_state import (
     prism_hot_context,
     prism_kind,
     prism_router,
+    prism_supports_lattices,
     prisms,
     set_active_prism,
 )
 from casa.prisms.memory.memory_prisms import ensure_prisms
 
-PrismKind = Literal["content", "hot_context", "router"]
+_PRISM_ID_RE = re.compile(r"^prism_[a-z][a-z0-9_]{0,47}$")
+_KIND_RE = re.compile(r"^[a-z][a-z0-9_]{0,47}$")
 
-_CONTENT_ID_RE = re.compile(r"^prism_[a-z][a-z0-9_]{0,47}$")
-_RESERVED = frozenset(
-    {
-        PRISM_MEMORY,
-        PRISM_HOT_CONTEXT,
-        PRISM_ROUTER,
-        PRISM_AGENT,
-        "prism_hippo",
-        "prism_control",
-    }
-)
+# Created only via ensure_* / migrate — not agent spawn.
+_SYSTEM_PRISM_IDS = frozenset({PRISM_HIPPO, PRISM_CONTROL, PRISM_AGENT})
 
 _DEFAULT_STACK: dict[str, str] = {
     PRISM_KIND_CONTENT: "design/prisms/memory/stack.json",
@@ -50,18 +45,34 @@ _DEFAULT_STACK: dict[str, str] = {
 }
 
 
-def _now_id() -> str:
-    return f"prism-{int(time.time() * 1000) % 10_000_000}"
+def normalize_prism_kind(kind: str | None) -> str:
+    """Open vocabulary: agent may introduce new kind slugs (not a closed enum)."""
+    k = (kind or PRISM_KIND_CONTENT).strip().lower()
+    if not _KIND_RE.fullmatch(k):
+        raise ValueError(f"prism kind must match [a-z][a-z0-9_]*: {kind!r}")
+    return k
 
 
 def validate_content_prism_id(prism_id: str) -> str:
+    """Content-route targets and lattice host ids."""
+    return validate_spawn_prism_id(prism_id, kind=PRISM_KIND_CONTENT)
+
+
+def validate_spawn_prism_id(prism_id: str, *, kind: str) -> str:
+    kind = normalize_prism_kind(kind)
     pid = str(prism_id or "").strip()
+    if kind == PRISM_KIND_HOT_CONTEXT and pid in ("", PRISM_HOT_CONTEXT):
+        return PRISM_HOT_CONTEXT
+    if kind == PRISM_KIND_ROUTER and pid in ("", PRISM_ROUTER):
+        return PRISM_ROUTER
+    if not pid:
+        raise ValueError("prism_id required for this kind")
+    if pid in _SYSTEM_PRISM_IDS:
+        raise ValueError(f"system prism {pid!r} is not created via spawn; use ensure_* paths")
     if pid == PRISM_MEMORY:
         return pid
-    if not _CONTENT_ID_RE.fullmatch(pid):
-        raise ValueError(f"content prism id must match prism_<slug>: {prism_id!r}")
-    if pid in (PRISM_HOT_CONTEXT, PRISM_ROUTER):
-        raise ValueError(f"reserved prism id for kind router/hot: {prism_id!r}")
+    if not _PRISM_ID_RE.fullmatch(pid):
+        raise ValueError(f"prism id must match prism_<slug>: {prism_id!r}")
     return pid
 
 
@@ -89,62 +100,98 @@ def empty_content_lattice(
     }
 
 
+def _new_hot_block(*, stack: str) -> dict[str, Any]:
+    return {
+        "kind": PRISM_KIND_HOT_CONTEXT,
+        "schema_version": 1,
+        "stack": stack,
+        "edges": [],
+        "max_edges": 4096,
+    }
+
+
+def _new_router_block(*, stack: str, default_content: str = PRISM_MEMORY) -> dict[str, Any]:
+    return {
+        "kind": PRISM_KIND_ROUTER,
+        "schema_version": 1,
+        "stack": stack,
+        "default_content_prism": default_content,
+        "routes": [],
+    }
+
+
+def _new_content_block(*, stack: str) -> dict[str, Any]:
+    return {
+        "kind": PRISM_KIND_CONTENT,
+        "subsystem": "memory",
+        "stack": stack,
+        "lattices": {},
+        "active_lattice": None,
+        "nca": {"models": {}},
+    }
+
+
+def _new_agent_kind_block(*, kind: str, stack: str) -> dict[str, Any]:
+    """Agent-defined kind — minimal shell; payload/lattices added by agent ops."""
+    return {
+        "kind": kind,
+        "stack": stack,
+        "payload": {},
+    }
+
+
 def spawn_prism(
     state: dict,
     prism_id: str,
     *,
-    kind: PrismKind = PRISM_KIND_CONTENT,
+    kind: str | None = None,
     stack: str | None = None,
     make_active: bool = False,
 ) -> dict[str, Any]:
-    """Create a prism block in field_state.prisms (idempotent if same kind)."""
-    normalize_prisms(state)
-    if kind == PRISM_KIND_CONTENT:
-        state = ensure_prisms(state)
-    kind = str(kind)
-    if kind == PRISM_KIND_HOT_CONTEXT:
-        pid = PRISM_HOT_CONTEXT
-    elif kind == PRISM_KIND_ROUTER:
-        pid = PRISM_ROUTER
-    else:
-        pid = validate_content_prism_id(prism_id)
+    """Create or refresh a prism block (open kind vocabulary).
 
+    Shipped bootstrap uses content / hot_context / router; agent may add e.g.
+    prism_workspace + kind=workspace_meta or prism_nav + kind=router.
+    """
+    normalize_prisms(state)
+    kind_n = normalize_prism_kind(kind)
+    if kind_n == PRISM_KIND_CONTENT:
+        state = ensure_prisms(state)
+
+    pid = validate_spawn_prism_id(prism_id, kind=kind_n)
     root = prisms(state)
-    if pid in root and root[pid].get("kind") not in (None, kind):
+    if pid in root and root[pid].get("kind") not in (None, kind_n):
         raise ValueError(f"prism {pid!r} exists with kind {root[pid].get('kind')!r}")
 
-    if kind == PRISM_KIND_HOT_CONTEXT:
+    stack_path = stack or _DEFAULT_STACK.get(kind_n) or f"design/prisms/{kind_n}/stack.json"
+
+    if pid == PRISM_HOT_CONTEXT and kind_n == PRISM_KIND_HOT_CONTEXT:
         block = prism_hot_context(state)
-    elif kind == PRISM_KIND_ROUTER:
+    elif pid == PRISM_ROUTER and kind_n == PRISM_KIND_ROUTER:
         block = prism_router(state)
         if prism_id and prism_id not in (PRISM_ROUTER, PRISM_HOT_CONTEXT):
             block["default_content_prism"] = validate_content_prism_id(prism_id)
+    elif kind_n == PRISM_KIND_HOT_CONTEXT:
+        block = root.setdefault(pid, _new_hot_block(stack=stack_path))
+    elif kind_n == PRISM_KIND_ROUTER:
+        block = root.setdefault(pid, _new_router_block(stack=stack_path))
+    elif kind_n == PRISM_KIND_CONTENT:
+        block = root.setdefault(pid, _new_content_block(stack=stack_path))
     else:
-        block = root.setdefault(
-            pid,
-            {
-                "kind": PRISM_KIND_CONTENT,
-                "subsystem": "memory",
-                "stack": stack or _DEFAULT_STACK[PRISM_KIND_CONTENT],
-                "lattices": {},
-                "active_lattice": None,
-                "nca": {"models": {}},
-            },
-        )
-        block["kind"] = PRISM_KIND_CONTENT
-        if stack:
-            block["stack"] = stack
-        block.setdefault("lattices", {})
-        block.setdefault("nca", {}).setdefault("models", {})
+        block = root.setdefault(pid, _new_agent_kind_block(kind=kind_n, stack=stack_path))
 
-    if make_active and kind == PRISM_KIND_CONTENT:
+    block["kind"] = kind_n
+    if stack:
+        block["stack"] = stack
+
+    if make_active and prism_supports_lattices(state, pid):
         set_active_prism(state, pid)
 
     state["field_version"] = int(state.get("field_version") or 0) + 1
     return {
         "prism_id": pid,
-        "kind": kind,
-        "stack": block.get("stack") if isinstance(block, dict) else _DEFAULT_STACK.get(kind),
+        "kind": kind_n,
+        "stack": block.get("stack"),
     }
 
 
@@ -159,12 +206,16 @@ def spawn_content_lattice(
     concept_prefix: str = "",
     make_active: bool = False,
 ) -> dict[str, Any]:
-    """Add a lattice inside a content prism."""
-    pid = validate_content_prism_id(prism_id)
+    """Add a lattice inside a prism that supports lattices (usually content)."""
+    pid = validate_spawn_prism_id(prism_id, kind=PRISM_KIND_CONTENT)
     lid = validate_lattice_id(lattice_id)
-    spawn_prism(state, pid, kind=PRISM_KIND_CONTENT)
+    if not prism_supports_lattices(state, pid):
+        spawn_prism(state, pid, kind=PRISM_KIND_CONTENT)
     block = prism_block(state, pid)
+    if not prism_supports_lattices(state, pid):
+        raise ValueError(f"prism {pid!r} (kind={prism_kind(state, pid)!r}) does not support lattices")
     lats = block.setdefault("lattices", {})
+    block.setdefault("nca", {}).setdefault("models", {})
     if lid in lats:
         raise ValueError(f"lattice already exists: {prism_id}/{lattice_id}")
     lats[lid] = empty_content_lattice(
@@ -187,7 +238,7 @@ def spawn_content_lattice(
 
 
 def ensure_default_router_and_hot(state: dict) -> dict[str, Any]:
-    """Bootstrap fixed hot + router prisms (no-op if present)."""
+    """Bootstrap canonical hot + router prisms (no-op if present)."""
     normalize_prisms(state)
     prism_hot_context(state)
     prism_router(state)
@@ -205,9 +256,10 @@ def list_content_prism_ids(state: dict) -> list[str]:
     for pid, block in prisms(state).items():
         if not isinstance(block, dict):
             continue
-        if prism_kind(state, pid) == PRISM_KIND_CONTENT and block.get("lattices") is not None:
-            if pid not in (PRISM_AGENT, "prism_hippo", "prism_control", PRISM_HOT_CONTEXT, PRISM_ROUTER):
-                out.append(pid)
+        if pid in (PRISM_AGENT, PRISM_HIPPO, PRISM_CONTROL, PRISM_HOT_CONTEXT, PRISM_ROUTER):
+            continue
+        if prism_supports_lattices(state, pid):
+            out.append(pid)
     if PRISM_MEMORY not in out:
         out.insert(0, PRISM_MEMORY)
     return sorted(set(out))
@@ -221,10 +273,17 @@ def main() -> None:
     from casa.prisms.shared.field_write import load_field_state, save_field_state
     from casa.prisms.shared.store_layout import field_state_path
 
-    p = argparse.ArgumentParser(description="Spawn prisms / bootstrap router+hot (ADR-0016)")
+    p = argparse.ArgumentParser(
+        description="Spawn agent prisms (open kind); canonical hot/router via --bootstrap-only",
+    )
     p.add_argument("--store-dir", type=Path, help="Agent store; load/save field_state when set")
-    p.add_argument("--spawn", metavar="PRISM_ID", help="spawn_prism id")
-    p.add_argument("--kind", choices=("content", "hot_context", "router"), default="content")
+    p.add_argument("--spawn", metavar="PRISM_ID", help="prism_<slug> id")
+    p.add_argument(
+        "--kind",
+        default=None,
+        metavar="KIND",
+        help="kind slug (default content); agent-defined kinds allowed, e.g. workspace_meta",
+    )
     p.add_argument("--lattice", metavar="LATTICE_ID", help="with --spawn: spawn_content_lattice")
     p.add_argument("--z-level", type=int, default=0)
     p.add_argument("--make-active", action="store_true")

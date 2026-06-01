@@ -42,7 +42,17 @@ prism_control                # CU (как было)
 
 ---
 
-## Три kind призм
+## Kind призм (открытый словарь)
+
+**`kind`** — метка агента (`content`, `hot_context`, `router`, или новая, напр. `workspace_meta`). В коде есть **шаблоны bootstrap** для shipped-слоёв, но **нет закрытого enum**: `spawn_prism(state, prism_id, kind=…)` принимает любой slug `[a-z][a-z0-9_]*`.
+
+| Shipped kind | Роль | Bootstrap |
+|--------------|------|-----------|
+| `content` | факты на решётках | `prism_memory`, spawn доменов |
+| `hot_context` | рёбра | `prism_hot_context` (+ agent may spawn `prism_*` с тем же kind) |
+| `router` | маршруты | `prism_router` (+ agent may spawn доп. router-призмы) |
+
+`prism_control` / `prism_hippo` — системные, через `ensure_*`, не через `spawn_prism`.
 
 ### 1. `content` (домен)
 
@@ -136,3 +146,4 @@ v0: content остаётся в `prism_memory` + legacy `ltm/l2/`; spawn нов�
 | 2026-06-01 | ADR + API v0 (`prism_spawn`, hot_context, router) |
 | 2026-06-01 | bootstrap routes on `ensure_prisms`; profile `default_content_prism`; T9 hot salience re-rank |
 | 2026-06-01 | `tick_prepare_memory` on orchestrator/predict_tick; `prism_memory_health` CLI; sleep hot prune |
+| 2026-06-01 | open `kind` vocabulary in `spawn_prism`; multi hot_context prisms in `hot_edges` |

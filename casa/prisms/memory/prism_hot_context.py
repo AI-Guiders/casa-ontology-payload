@@ -10,7 +10,7 @@ ensure_import_paths()
 import time
 from typing import Any
 
-from casa.prisms.shared.prism_state import PRISM_HOT_CONTEXT, normalize_prisms, prism_hot_context
+from casa.prisms.shared.prism_state import PRISM_KIND_HOT_CONTEXT, normalize_prisms, prism_kind, prisms
 from casa.prisms.memory.memory_prisms import ensure_prisms
 
 
@@ -23,8 +23,16 @@ def _norm_edge(src: str, relation: str, dst: str) -> tuple[str, str, str]:
 
 
 def hot_edges(state: dict) -> list[dict[str, Any]]:
+    """All edges from prisms with kind=hot_context (canonical + agent-spawned)."""
     normalize_prisms(state)
-    return list(prism_hot_context(state).get("edges") or [])
+    out: list[dict[str, Any]] = []
+    for pid, block in prisms(state).items():
+        if not isinstance(block, dict):
+            continue
+        if prism_kind(state, pid) != PRISM_KIND_HOT_CONTEXT:
+            continue
+        out.extend(block.get("edges") or [])
+    return out
 
 
 def add_hot_edge(
@@ -33,14 +41,20 @@ def add_hot_edge(
     relation: str,
     dst: str,
     *,
+    prism_id: str | None = None,
     salience: float = 1.0,
     ttl_ticks: int | None = None,
     provenance: str = "tick",
     dedupe: bool = True,
 ) -> dict[str, Any]:
-    """Append or bump salience on matching edge."""
+    """Append or bump salience on matching edge (default canonical hot prism)."""
     ensure_prisms(state)
-    block = prism_hot_context(state)
+    from casa.prisms.shared.prism_state import PRISM_HOT_CONTEXT, prism_block, prism_hot_context
+
+    pid = prism_id or PRISM_HOT_CONTEXT
+    block = prism_hot_context(state) if pid == PRISM_HOT_CONTEXT else prism_block(state, pid)
+    if prism_kind(state, pid) != PRISM_KIND_HOT_CONTEXT:
+        raise ValueError(f"prism {pid!r} is not kind hot_context")
     src_n, rel_n, dst_n = _norm_edge(src, relation, dst)
     if not src_n or not rel_n or not dst_n:
         raise ValueError("src, relation, dst required")
@@ -83,26 +97,37 @@ def prune_hot_context(
     max_edges: int = 2048,
     min_salience: float = 0.05,
 ) -> dict[str, Any]:
-    block = prism_hot_context(state)
-    edges = list(block.get("edges") or [])
+    normalize_prisms(state)
     fv = int(state.get("field_version") or 0)
-    kept: list[dict[str, Any]] = []
-    for row in edges:
-        sal = float(row.get("salience") or 0)
-        ttl = row.get("ttl_ticks")
-        created = int(row.get("created_field_version") or 0)
-        if sal < min_salience:
+    total_kept = 0
+    total_removed = 0
+    bumped = False
+    for pid, block in prisms(state).items():
+        if not isinstance(block, dict) or prism_kind(state, pid) != PRISM_KIND_HOT_CONTEXT:
             continue
-        if ttl is not None and fv - created > int(ttl):
-            continue
-        kept.append(row)
-    kept.sort(key=lambda r: float(r.get("salience") or 0), reverse=True)
-    kept = kept[:max_edges]
-    removed = len(edges) - len(kept)
-    block["edges"] = kept
-    if removed:
+        cap = int(block.get("max_edges") or max_edges)
+        edges = list(block.get("edges") or [])
+        kept: list[dict[str, Any]] = []
+        for row in edges:
+            sal = float(row.get("salience") or 0)
+            ttl = row.get("ttl_ticks")
+            created = int(row.get("created_field_version") or 0)
+            if sal < min_salience:
+                continue
+            if ttl is not None and fv - created > int(ttl):
+                continue
+            kept.append(row)
+        kept.sort(key=lambda r: float(r.get("salience") or 0), reverse=True)
+        kept = kept[: min(max_edges, cap)]
+        removed = len(edges) - len(kept)
+        block["edges"] = kept
+        total_kept += len(kept)
+        total_removed += removed
+        if removed:
+            bumped = True
+    if bumped:
         state["field_version"] = fv + 1
-    return {"kept": len(kept), "removed": removed}
+    return {"kept": total_kept, "removed": total_removed}
 
 
 def hot_neighbors(
