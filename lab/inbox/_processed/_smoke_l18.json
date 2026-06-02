@@ -1,0 +1,9 @@
+{
+  "kind": "lesson_class",
+  "class_dir": "lessons/math-palochki",
+  "lesson_ids": [
+    "lesson-18-fraction-heaps"
+  ],
+  "sleep_after_each_lesson": true,
+  "persist": true
+}

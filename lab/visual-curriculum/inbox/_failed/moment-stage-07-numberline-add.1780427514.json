@@ -1,0 +1,12 @@
+{
+  "kind": "lesson_moment",
+  "moment_id": "stage-07-numberline-add",
+  "class_dir": "lessons/visual-cards",
+  "stage_ids": ["stage-07-numberline-add"],
+  "math_episodes": [
+    {"cue": "2+3", "correct": "5", "concept_id": "math.op.add", "scene": "moment:add"}
+  ],
+  "interleave": "after_each_visual",
+  "sleep": true,
+  "persist": true
+}

@@ -1,0 +1,240 @@
+{
+  "store_id": "von-neumann",
+  "probe": "venn-region-quiz",
+  "matched": 1,
+  "total_with_hint": 7,
+  "items": [
+    {
+      "frame_id": "venn-region-intersect",
+      "vis_concept": "vis.lum.frame.venn-region-intersect",
+      "teacher_guess": "math.set.difference",
+      "top_score": 4,
+      "math_top": [
+        {
+          "concept_id": "math.set.difference",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.disjoint",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.intersect",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.subset",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.union",
+          "score": 4
+        }
+      ],
+      "teacher_hint": "math.set.intersect",
+      "matches_hint": false,
+      "is_num_not_set": false
+    },
+    {
+      "frame_id": "venn-region-union",
+      "vis_concept": "vis.lum.frame.venn-region-union",
+      "teacher_guess": "math.set.difference",
+      "top_score": 4,
+      "math_top": [
+        {
+          "concept_id": "math.set.difference",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.disjoint",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.intersect",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.subset",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.union",
+          "score": 4
+        }
+      ],
+      "teacher_hint": "math.set.union",
+      "matches_hint": false,
+      "is_num_not_set": false
+    },
+    {
+      "frame_id": "venn-region-subset",
+      "vis_concept": "vis.lum.frame.venn-region-subset",
+      "teacher_guess": "math.set.difference",
+      "top_score": 4,
+      "math_top": [
+        {
+          "concept_id": "math.set.difference",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.disjoint",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.intersect",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.subset",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.union",
+          "score": 4
+        }
+      ],
+      "teacher_hint": "math.set.subset",
+      "matches_hint": false,
+      "is_num_not_set": false
+    },
+    {
+      "frame_id": "venn-region-disjoint",
+      "vis_concept": "vis.lum.frame.venn-region-disjoint",
+      "teacher_guess": "math.set.difference",
+      "top_score": 4,
+      "math_top": [
+        {
+          "concept_id": "math.set.difference",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.disjoint",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.intersect",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.subset",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.union",
+          "score": 4
+        }
+      ],
+      "teacher_hint": "math.set.disjoint",
+      "matches_hint": false,
+      "is_num_not_set": false
+    },
+    {
+      "frame_id": "venn-region-a-only",
+      "vis_concept": "vis.lum.frame.venn-region-a-only",
+      "teacher_guess": "math.set.difference",
+      "top_score": 4,
+      "math_top": [
+        {
+          "concept_id": "math.set.difference",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.disjoint",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.intersect",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.subset",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.union",
+          "score": 4
+        }
+      ],
+      "teacher_hint": "math.set.difference",
+      "matches_hint": true,
+      "is_num_not_set": false
+    },
+    {
+      "frame_id": "venn-two-empty",
+      "vis_concept": "vis.lum.frame.venn-two-empty",
+      "teacher_guess": "math.num.one",
+      "top_score": 4,
+      "math_top": [
+        {
+          "concept_id": "math.num.one",
+          "score": 4
+        },
+        {
+          "concept_id": "math.num.three",
+          "score": 4
+        },
+        {
+          "concept_id": "math.num.two",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.difference",
+          "score": 4
+        },
+        {
+          "concept_id": "math.set.disjoint",
+          "score": 4
+        }
+      ],
+      "teacher_hint": null,
+      "matches_hint": false,
+      "is_num_not_set": true
+    },
+    {
+      "frame_id": "venn-intersect-1",
+      "vis_concept": "vis.lum.frame.venn-intersect-1",
+      "teacher_guess": "math.num.one",
+      "top_score": 4,
+      "math_top": [
+        {
+          "concept_id": "math.num.one",
+          "score": 4
+        },
+        {
+          "concept_id": "math.num.three",
+          "score": 4
+        },
+        {
+          "concept_id": "math.num.two",
+          "score": 4
+        }
+      ],
+      "teacher_hint": "math.set.intersect",
+      "matches_hint": false,
+      "is_num_not_set": true
+    },
+    {
+      "frame_id": "venn-a-only-2",
+      "vis_concept": "vis.lum.frame.venn-a-only-2",
+      "teacher_guess": "math.num.one",
+      "top_score": 4,
+      "math_top": [
+        {
+          "concept_id": "math.num.one",
+          "score": 4
+        },
+        {
+          "concept_id": "math.num.three",
+          "score": 4
+        },
+        {
+          "concept_id": "math.num.two",
+          "score": 4
+        }
+      ],
+      "teacher_hint": "math.set.difference",
+      "matches_hint": false,
+      "is_num_not_set": true
+    }
+  ]
+}

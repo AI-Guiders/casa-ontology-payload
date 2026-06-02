@@ -1,0 +1,217 @@
+{
+  "store_id": "von-neumann",
+  "class_id": "visual-cards",
+  "class_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lessons\\visual-cards",
+  "moment_id": "repeat-v2-stage-02-shapes",
+  "stage_ids": null,
+  "interleave": "explicit_steps",
+  "steps": 15,
+  "visual_episodes": 9,
+  "math_episodes": 6,
+  "step_trace": [
+    {
+      "kind": "visual",
+      "id": "count-2-shapes",
+      "path": "lesson-02-shapes/images/count-2-shapes.jpg",
+      "scene_label": "card:count:2-circle",
+      "stage_id": "stage-02-shapes",
+      "frame_id": "count-2-shapes",
+      "scene_hash": "12bb5c96b35400e1",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8832716"
+    },
+    {
+      "kind": "math",
+      "cue": "2",
+      "correct": "2",
+      "concept_id": "math.num.two",
+      "episode_id": "ep-8832716"
+    },
+    {
+      "kind": "visual",
+      "id": "count-3-shapes",
+      "path": "lesson-02-shapes/images/count-3-shapes.jpg",
+      "scene_label": "card:count:3-square",
+      "stage_id": "stage-02-shapes",
+      "frame_id": "count-3-shapes",
+      "scene_hash": "9401ae0423a63102",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8832994"
+    },
+    {
+      "kind": "math",
+      "cue": "3",
+      "correct": "3",
+      "concept_id": "math.num.three",
+      "episode_id": "ep-8832994"
+    },
+    {
+      "kind": "visual",
+      "id": "count-4-shapes",
+      "path": "lesson-02-shapes/images/count-4-shapes.jpg",
+      "scene_label": "card:count:4-rectangle",
+      "stage_id": "stage-02-shapes",
+      "frame_id": "count-4-shapes",
+      "scene_hash": "684ae9928cd00866",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8833274"
+    },
+    {
+      "kind": "math",
+      "cue": "4",
+      "correct": "4",
+      "concept_id": "math.num.four",
+      "episode_id": "ep-8833275"
+    },
+    {
+      "kind": "visual",
+      "id": "count-5-shapes",
+      "path": "lesson-02-shapes/images/count-5-shapes.jpg",
+      "scene_label": "card:count:5-circle",
+      "stage_id": "stage-02-shapes",
+      "frame_id": "count-5-shapes",
+      "scene_hash": "9937d2effeff92c4",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8833556"
+    },
+    {
+      "kind": "math",
+      "cue": "5",
+      "correct": "5",
+      "concept_id": "math.num.five",
+      "episode_id": "ep-8833556"
+    },
+    {
+      "kind": "visual",
+      "id": "count-mixed-3c-2s-2r",
+      "path": "lesson-02-shapes/images/count-mixed-3c-2s-2r.jpg",
+      "scene_label": "card:count:mixed-3circle-2square-2rect",
+      "stage_id": "stage-02-shapes",
+      "frame_id": "count-mixed-3c-2s-2r",
+      "scene_hash": "a460ffa01fe511cb",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8833846"
+    },
+    {
+      "kind": "math",
+      "cue": "3",
+      "correct": "3",
+      "concept_id": "math.num.three",
+      "episode_id": "ep-8833846"
+    },
+    {
+      "kind": "visual",
+      "id": "count-mixed-3c-2s-2r-labeled",
+      "path": "lesson-02-shapes/images/count-mixed-3c-2s-2r-labeled.jpg",
+      "scene_label": "card:count:mixed-3circle-2square-2rect-labeled",
+      "stage_id": "stage-02-shapes",
+      "frame_id": "count-mixed-3c-2s-2r-labeled",
+      "scene_hash": "27217d98937a3ced",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8834136"
+    },
+    {
+      "kind": "math",
+      "cue": "3+2+2",
+      "correct": "7",
+      "concept_id": "math.op.add",
+      "episode_id": "ep-8834136"
+    },
+    {
+      "kind": "visual",
+      "id": "shape-circle",
+      "path": "lesson-02-shapes/images/shape-circle.jpg",
+      "scene_label": "card:shape:circle",
+      "stage_id": "stage-02-shapes",
+      "frame_id": "shape-circle",
+      "scene_hash": "5ffc9bca72c4cd9a",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8834427"
+    },
+    {
+      "kind": "visual",
+      "id": "shape-rectangle",
+      "path": "lesson-02-shapes/images/shape-rectangle.jpg",
+      "scene_label": "card:shape:rectangle",
+      "stage_id": "stage-02-shapes",
+      "frame_id": "shape-rectangle",
+      "scene_hash": "6c0aef1c90aff40e",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8834710"
+    },
+    {
+      "kind": "visual",
+      "id": "shape-square",
+      "path": "lesson-02-shapes/images/shape-square.jpg",
+      "scene_label": "card:shape:square",
+      "stage_id": "stage-02-shapes",
+      "frame_id": "shape-square",
+      "scene_hash": "1f07aea27907200a",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8835127"
+    }
+  ],
+  "sleep": true,
+  "bridges_emergent": 35,
+  "token_counts": {
+    "V1_lum": 3856,
+    "V1_chrom_r": 3273,
+    "V1_chrom_g": 3249,
+    "V1_chrom_b": 4905
+  },
+  "sleep_merged": 50
+}

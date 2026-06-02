@@ -1,0 +1,142 @@
+{
+  "store_id": "von-neumann",
+  "class_id": "visual-cards",
+  "class_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lessons\\visual-cards",
+  "moment_id": "repeat-v2-stage-12-fraction",
+  "stage_ids": null,
+  "interleave": "explicit_steps",
+  "steps": 10,
+  "visual_episodes": 5,
+  "math_episodes": 5,
+  "step_trace": [
+    {
+      "kind": "visual",
+      "id": "fraction-half",
+      "path": "lesson-12-fraction/images/fraction-half.jpg",
+      "scene_label": "card:fraction:1over2",
+      "stage_id": "stage-12-fraction",
+      "frame_id": "fraction-half",
+      "scene_hash": "b3ceecc010be884d",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8843312"
+    },
+    {
+      "kind": "math",
+      "cue": "1/2",
+      "correct": "1/2",
+      "concept_id": "math.num.fraction",
+      "episode_id": "ep-8843313"
+    },
+    {
+      "kind": "visual",
+      "id": "fraction-third",
+      "path": "lesson-12-fraction/images/fraction-third.jpg",
+      "scene_label": "card:fraction:1over3",
+      "stage_id": "stage-12-fraction",
+      "frame_id": "fraction-third",
+      "scene_hash": "de833c9979da61ea",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8843591"
+    },
+    {
+      "kind": "math",
+      "cue": "1/3",
+      "correct": "1/3",
+      "concept_id": "math.num.fraction",
+      "episode_id": "ep-8843591"
+    },
+    {
+      "kind": "visual",
+      "id": "fraction-third-6strip",
+      "path": "lesson-12-fraction/images/fraction-third-6strip.jpg",
+      "scene_label": "card:fraction:1over3-strip6",
+      "stage_id": "stage-12-fraction",
+      "frame_id": "fraction-third-6strip",
+      "scene_hash": "ad4bd4d1bb2b4ecc",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8843871"
+    },
+    {
+      "kind": "math",
+      "cue": "6/3",
+      "correct": "2",
+      "concept_id": "math.op.div",
+      "episode_id": "ep-8843872"
+    },
+    {
+      "kind": "visual",
+      "id": "fraction-three-quarters",
+      "path": "lesson-12-fraction/images/fraction-three-quarters.jpg",
+      "scene_label": "card:fraction:3over4",
+      "stage_id": "stage-12-fraction",
+      "frame_id": "fraction-three-quarters",
+      "scene_hash": "492883cb61750e34",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8844150"
+    },
+    {
+      "kind": "math",
+      "cue": "3/4",
+      "correct": "3/4",
+      "concept_id": "math.num.fraction",
+      "episode_id": "ep-8844150"
+    },
+    {
+      "kind": "visual",
+      "id": "fraction-two-thirds",
+      "path": "lesson-12-fraction/images/fraction-two-thirds.jpg",
+      "scene_label": "card:fraction:2over3",
+      "stage_id": "stage-12-fraction",
+      "frame_id": "fraction-two-thirds",
+      "scene_hash": "e4e3520214fb1681",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8844523"
+    },
+    {
+      "kind": "math",
+      "cue": "2/3",
+      "correct": "2/3",
+      "concept_id": "math.num.fraction",
+      "episode_id": "ep-8844524"
+    }
+  ],
+  "sleep": true,
+  "bridges_emergent": 10,
+  "token_counts": {
+    "V1_lum": 4388,
+    "V1_chrom_r": 3306,
+    "V1_chrom_g": 3282,
+    "V1_chrom_b": 4905
+  },
+  "sleep_merged": 20
+}

@@ -1,0 +1,70 @@
+{
+  "store_id": "von-neumann",
+  "class_id": "visual-cards",
+  "class_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lessons\\visual-cards",
+  "moment_id": "repeat-v2-stage-09-commutative",
+  "stage_ids": null,
+  "interleave": "explicit_steps",
+  "steps": 4,
+  "visual_episodes": 2,
+  "math_episodes": 2,
+  "step_trace": [
+    {
+      "kind": "visual",
+      "id": "numberline-add-2plus3-comm",
+      "path": "lesson-09-commutative/images/numberline-add-2plus3.jpg",
+      "scene_label": "card:numberline:2plus3",
+      "stage_id": "stage-09-commutative",
+      "frame_id": "numberline-add-2plus3-comm",
+      "scene_hash": "341ca2f7b79dfd95",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8840818"
+    },
+    {
+      "kind": "math",
+      "cue": "2+3",
+      "correct": "5",
+      "concept_id": "math.op.add",
+      "episode_id": "ep-8840819"
+    },
+    {
+      "kind": "visual",
+      "id": "numberline-add-3plus2",
+      "path": "lesson-09-commutative/images/numberline-add-3plus2.jpg",
+      "scene_label": "card:numberline:3plus2",
+      "stage_id": "stage-09-commutative",
+      "frame_id": "numberline-add-3plus2",
+      "scene_hash": "e4555e6b0eba70ed",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8841101"
+    },
+    {
+      "kind": "math",
+      "cue": "3+2",
+      "correct": "5",
+      "concept_id": "math.op.add",
+      "episode_id": "ep-8841102"
+    }
+  ],
+  "sleep": true,
+  "bridges_emergent": 2,
+  "token_counts": {
+    "V1_lum": 4192,
+    "V1_chrom_r": 3306,
+    "V1_chrom_g": 3282,
+    "V1_chrom_b": 4905
+  },
+  "sleep_merged": 6
+}

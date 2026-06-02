@@ -1,0 +1,39 @@
+{
+  "stage_id": "stage-02-shapes",
+  "title": "Фигуры и счёт фигур",
+  "frame_ids": [
+    "shape-circle",
+    "shape-square",
+    "shape-rectangle",
+    "count-2-shapes",
+    "count-3-shapes",
+    "count-4-shapes",
+    "count-5-shapes"
+  ],
+  "ingest": {
+    "frames": 7,
+    "bridges_emergent": 0,
+    "sleep_runs": 7,
+    "s2a_ready": true
+  },
+  "life": {
+    "quanta": 20,
+    "macro_ticks": 173,
+    "kolb_runs": 39,
+    "last_self_drive": {
+      "kind": "sleep",
+      "reason": "hippo_full",
+      "at": "2026-06-02T17:57:28Z"
+    }
+  },
+  "bridges_total": 0,
+  "predict_vis_math": {
+    "shape-circle": [],
+    "shape-square": [],
+    "shape-rectangle": [],
+    "count-2-shapes": [],
+    "count-3-shapes": [],
+    "count-4-shapes": [],
+    "count-5-shapes": []
+  }
+}

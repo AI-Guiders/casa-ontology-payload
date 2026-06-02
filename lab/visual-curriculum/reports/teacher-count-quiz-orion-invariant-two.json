@@ -1,0 +1,328 @@
+{
+  "store_id": "von-neumann",
+  "session": "teacher-count-quiz",
+  "lesson": "orion-invariant-two",
+  "reinforce": {
+    "store_id": "von-neumann",
+    "class_id": "visual-cards",
+    "class_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lessons\\visual-cards",
+    "moment_id": "teacher-orion-invariant-two",
+    "stage_ids": null,
+    "interleave": "explicit_steps",
+    "steps": 4,
+    "visual_episodes": 2,
+    "math_episodes": 2,
+    "step_trace": [
+      {
+        "kind": "visual",
+        "id": "count-2-grains",
+        "path": "lesson-01-cardinality/images/count-2-grains.jpg",
+        "scene_label": "card:count:2-grain",
+        "stage_id": "stage-01-count",
+        "frame_id": "count-2-grains",
+        "scene_hash": "42422754ed009313",
+        "codec_id": "retinal_lrgb",
+        "placements": {
+          "V1_lum": 1024,
+          "V1_chrom_r": 1024,
+          "V1_chrom_g": 1024,
+          "V1_chrom_b": 1024
+        },
+        "episode_id": "ep-1495540"
+      },
+      {
+        "kind": "math",
+        "cue": "2",
+        "correct": "2",
+        "concept_id": "math.num.two",
+        "episode_id": "ep-1495540"
+      },
+      {
+        "kind": "visual",
+        "id": "count-2-cows",
+        "path": "lesson-01-cardinality/images/count-2-cows.jpg",
+        "scene_label": "card:count:2-cow",
+        "stage_id": "stage-01-count",
+        "frame_id": "count-2-cows",
+        "scene_hash": "681b70cdb7a6e54e",
+        "codec_id": "retinal_lrgb",
+        "placements": {
+          "V1_lum": 1024,
+          "V1_chrom_r": 1024,
+          "V1_chrom_g": 1024,
+          "V1_chrom_b": 1024
+        },
+        "episode_id": "ep-1495848"
+      },
+      {
+        "kind": "math",
+        "cue": "2",
+        "correct": "2",
+        "concept_id": "math.num.two",
+        "episode_id": "ep-1495849"
+      }
+    ],
+    "sleep": true,
+    "bridges_emergent": 0,
+    "token_counts": {
+      "V1_lum": 4416,
+      "V1_chrom_r": 3306,
+      "V1_chrom_g": 3282,
+      "V1_chrom_b": 1449
+    },
+    "sleep_merged": 2,
+    "report_path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lab\\visual-curriculum\\reports\\teacher-orion-invariant-two.json"
+  },
+  "quiz_frames": [
+    {
+      "frame_id": "count-2-grains",
+      "teacher_note": "зёрна"
+    },
+    {
+      "frame_id": "count-2-cows",
+      "teacher_note": "коровы"
+    },
+    {
+      "frame_id": "count-3-dots",
+      "teacher_note": "три точки (видели в закреплении — проверка)"
+    },
+    {
+      "frame_id": "count-2-shapes",
+      "teacher_note": "два круга"
+    },
+    {
+      "frame_id": "count-4-shapes",
+      "teacher_note": "четыре прямоугольника"
+    }
+  ],
+  "before_reinforce": {
+    "items": [
+      {
+        "frame_id": "count-2-grains",
+        "vis_cue": "vis:count-2-grains",
+        "vis_concept": "vis.lum.frame.count-2-grains",
+        "math_top": [
+          {
+            "concept_id": "math.num.one",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.three",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.two",
+            "score": 4
+          }
+        ],
+        "teacher_guess": "math.num.one",
+        "teacher_hint": "math.num.two",
+        "matches_hint": false
+      },
+      {
+        "frame_id": "count-2-cows",
+        "vis_cue": "vis:count-2-cows",
+        "vis_concept": "vis.lum.frame.count-2-cows",
+        "math_top": [
+          {
+            "concept_id": "math.num.one",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.three",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.two",
+            "score": 4
+          }
+        ],
+        "teacher_guess": "math.num.one",
+        "teacher_hint": "math.num.two",
+        "matches_hint": false
+      },
+      {
+        "frame_id": "count-3-dots",
+        "vis_cue": "vis:count-3-dots",
+        "vis_concept": "vis.lum.frame.count-3-dots",
+        "math_top": [
+          {
+            "concept_id": "math.num.one",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.three",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.two",
+            "score": 4
+          }
+        ],
+        "teacher_guess": "math.num.one",
+        "teacher_hint": "math.num.three",
+        "matches_hint": false
+      },
+      {
+        "frame_id": "count-2-shapes",
+        "vis_cue": "vis:count-2-shapes",
+        "vis_concept": "vis.lum.frame.count-2-shapes",
+        "math_top": [
+          {
+            "concept_id": "math.num.five",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.four",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.three",
+            "score": 4
+          }
+        ],
+        "teacher_guess": "math.num.five",
+        "teacher_hint": "math.num.two",
+        "matches_hint": false
+      },
+      {
+        "frame_id": "count-4-shapes",
+        "vis_cue": "vis:count-4-shapes",
+        "vis_concept": "vis.lum.frame.count-4-shapes",
+        "math_top": [
+          {
+            "concept_id": "math.num.five",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.four",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.three",
+            "score": 4
+          }
+        ],
+        "teacher_guess": "math.num.five",
+        "teacher_hint": "math.num.four",
+        "matches_hint": false
+      }
+    ],
+    "matched": 0
+  },
+  "after_reinforce": {
+    "items": [
+      {
+        "frame_id": "count-2-grains",
+        "vis_cue": "vis:count-2-grains",
+        "vis_concept": "vis.lum.frame.count-2-grains",
+        "math_top": [
+          {
+            "concept_id": "math.num.one",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.three",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.two",
+            "score": 4
+          }
+        ],
+        "teacher_guess": "math.num.one",
+        "teacher_hint": "math.num.two",
+        "matches_hint": false
+      },
+      {
+        "frame_id": "count-2-cows",
+        "vis_cue": "vis:count-2-cows",
+        "vis_concept": "vis.lum.frame.count-2-cows",
+        "math_top": [
+          {
+            "concept_id": "math.num.one",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.three",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.two",
+            "score": 4
+          }
+        ],
+        "teacher_guess": "math.num.one",
+        "teacher_hint": "math.num.two",
+        "matches_hint": false
+      },
+      {
+        "frame_id": "count-3-dots",
+        "vis_cue": "vis:count-3-dots",
+        "vis_concept": "vis.lum.frame.count-3-dots",
+        "math_top": [
+          {
+            "concept_id": "math.num.one",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.three",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.two",
+            "score": 4
+          }
+        ],
+        "teacher_guess": "math.num.one",
+        "teacher_hint": "math.num.three",
+        "matches_hint": false
+      },
+      {
+        "frame_id": "count-2-shapes",
+        "vis_cue": "vis:count-2-shapes",
+        "vis_concept": "vis.lum.frame.count-2-shapes",
+        "math_top": [
+          {
+            "concept_id": "math.num.five",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.four",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.three",
+            "score": 4
+          }
+        ],
+        "teacher_guess": "math.num.five",
+        "teacher_hint": "math.num.two",
+        "matches_hint": false
+      },
+      {
+        "frame_id": "count-4-shapes",
+        "vis_cue": "vis:count-4-shapes",
+        "vis_concept": "vis.lum.frame.count-4-shapes",
+        "math_top": [
+          {
+            "concept_id": "math.num.five",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.four",
+            "score": 4
+          },
+          {
+            "concept_id": "math.num.three",
+            "score": 4
+          }
+        ],
+        "teacher_guess": "math.num.five",
+        "teacher_hint": "math.num.four",
+        "matches_hint": false
+      }
+    ],
+    "matched": 0
+  }
+}

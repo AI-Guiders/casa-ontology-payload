@@ -1,0 +1,161 @@
+{
+  "store_id": "von-neumann",
+  "class_id": "visual-cards",
+  "class_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lessons\\visual-cards",
+  "moment_id": "stage-13-sets-venn-v2",
+  "stage_ids": [
+    "stage-13-sets"
+  ],
+  "interleave": "explicit_steps",
+  "steps": 11,
+  "visual_episodes": 6,
+  "math_episodes": 5,
+  "step_trace": [
+    {
+      "kind": "visual",
+      "id": "venn-region-a-only",
+      "path": "lesson-13-sets/images/venn-region-a-only.jpg",
+      "scene_label": "card:venn:region-a-only",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-region-a-only",
+      "scene_hash": "1a19bdeba56b05b3",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-6331929"
+    },
+    {
+      "kind": "math",
+      "cue": "A\\B",
+      "correct": "A\\B",
+      "concept_id": "math.set.difference",
+      "episode_id": "ep-6331930"
+    },
+    {
+      "kind": "visual",
+      "id": "venn-region-disjoint",
+      "path": "lesson-13-sets/images/venn-region-disjoint.jpg",
+      "scene_label": "card:venn:region-disjoint",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-region-disjoint",
+      "scene_hash": "8ff24d7c82356844",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-6332204"
+    },
+    {
+      "kind": "math",
+      "cue": "∅",
+      "correct": "∅",
+      "concept_id": "math.set.disjoint",
+      "episode_id": "ep-6332204"
+    },
+    {
+      "kind": "visual",
+      "id": "venn-region-intersect",
+      "path": "lesson-13-sets/images/venn-region-intersect.jpg",
+      "scene_label": "card:venn:region-intersect",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-region-intersect",
+      "scene_hash": "84e75283fa123285",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-6332480"
+    },
+    {
+      "kind": "math",
+      "cue": "∩",
+      "correct": "∩",
+      "concept_id": "math.set.intersect",
+      "episode_id": "ep-6332480"
+    },
+    {
+      "kind": "visual",
+      "id": "venn-region-subset",
+      "path": "lesson-13-sets/images/venn-region-subset.jpg",
+      "scene_label": "card:venn:region-subset",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-region-subset",
+      "scene_hash": "bc627efafe849ad8",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-6332755"
+    },
+    {
+      "kind": "math",
+      "cue": "⊂",
+      "correct": "⊂",
+      "concept_id": "math.set.subset",
+      "episode_id": "ep-6332755"
+    },
+    {
+      "kind": "visual",
+      "id": "venn-region-union",
+      "path": "lesson-13-sets/images/venn-region-union.jpg",
+      "scene_label": "card:venn:region-union",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-region-union",
+      "scene_hash": "7a349ceef779e009",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-6333036"
+    },
+    {
+      "kind": "math",
+      "cue": "∪",
+      "correct": "∪",
+      "concept_id": "math.set.union",
+      "episode_id": "ep-6333036"
+    },
+    {
+      "kind": "visual",
+      "id": "venn-two-empty",
+      "path": "lesson-13-sets/images/venn-two-empty.jpg",
+      "scene_label": "card:venn:two-empty",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-two-empty",
+      "scene_hash": "614cc57c0484c882",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-6333319"
+    }
+  ],
+  "sleep": true,
+  "bridges_emergent": 30,
+  "token_counts": {
+    "V1_lum": 5267,
+    "V1_chrom_r": 3572,
+    "V1_chrom_g": 3659,
+    "V1_chrom_b": 2033
+  },
+  "sleep_merged": 46
+}

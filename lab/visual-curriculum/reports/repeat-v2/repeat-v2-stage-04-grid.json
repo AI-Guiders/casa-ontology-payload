@@ -1,0 +1,118 @@
+{
+  "store_id": "von-neumann",
+  "class_id": "visual-cards",
+  "class_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lessons\\visual-cards",
+  "moment_id": "repeat-v2-stage-04-grid",
+  "stage_ids": null,
+  "interleave": "explicit_steps",
+  "steps": 8,
+  "visual_episodes": 4,
+  "math_episodes": 4,
+  "step_trace": [
+    {
+      "kind": "visual",
+      "id": "grid-rect-3x2",
+      "path": "lesson-04-grid/images/grid-rect-3x2.jpg",
+      "scene_label": "card:grid:rect-3x2",
+      "stage_id": "stage-04-grid",
+      "frame_id": "grid-rect-3x2",
+      "scene_hash": "a16a17e47022bccd",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8836035"
+    },
+    {
+      "kind": "math",
+      "cue": "6",
+      "correct": "6",
+      "concept_id": "math.num.six",
+      "episode_id": "ep-8836036"
+    },
+    {
+      "kind": "visual",
+      "id": "grid-rect-4x2",
+      "path": "lesson-04-grid/images/grid-rect-4x2.jpg",
+      "scene_label": "card:grid:rect-4x2",
+      "stage_id": "stage-04-grid",
+      "frame_id": "grid-rect-4x2",
+      "scene_hash": "a37dc7671fc7efb8",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8836331"
+    },
+    {
+      "kind": "math",
+      "cue": "8",
+      "correct": "8",
+      "concept_id": "math.num.eight",
+      "episode_id": "ep-8836331"
+    },
+    {
+      "kind": "visual",
+      "id": "grid-square-2x2",
+      "path": "lesson-04-grid/images/grid-square-2x2.jpg",
+      "scene_label": "card:grid:square-2x2",
+      "stage_id": "stage-04-grid",
+      "frame_id": "grid-square-2x2",
+      "scene_hash": "3c5357b6bf7f8029",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8836650"
+    },
+    {
+      "kind": "math",
+      "cue": "4",
+      "correct": "4",
+      "concept_id": "math.num.four",
+      "episode_id": "ep-8836650"
+    },
+    {
+      "kind": "visual",
+      "id": "grid-square-3x3",
+      "path": "lesson-04-grid/images/grid-square-3x3.jpg",
+      "scene_label": "card:grid:square-3x3",
+      "stage_id": "stage-04-grid",
+      "frame_id": "grid-square-3x3",
+      "scene_hash": "4bf39b6397e49282",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8837192"
+    },
+    {
+      "kind": "math",
+      "cue": "9",
+      "correct": "9",
+      "concept_id": "math.num.nine",
+      "episode_id": "ep-8837193"
+    }
+  ],
+  "sleep": true,
+  "bridges_emergent": 16,
+  "token_counts": {
+    "V1_lum": 4012,
+    "V1_chrom_r": 3306,
+    "V1_chrom_g": 3282,
+    "V1_chrom_b": 4905
+  },
+  "sleep_merged": 24
+}

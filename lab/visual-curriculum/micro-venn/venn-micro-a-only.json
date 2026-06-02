@@ -1,0 +1,4 @@
+[
+  {"visual_frame": "venn-region-a-only"},
+  {"math": {"cue": "A\\B", "correct": "A\\B", "concept_id": "math.set.difference"}}
+]

@@ -1,0 +1,4 @@
+[
+  {"visual_frame": "venn-region-subset"},
+  {"math": {"cue": "⊂", "correct": "⊂", "concept_id": "math.set.subset"}}
+]

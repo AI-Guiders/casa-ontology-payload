@@ -1,0 +1,6 @@
+{
+  "kind": "visual_lesson_class",
+  "stage_ids": ["stage-11-divide"],
+  "sleep_after_stage": true,
+  "persist": true
+}

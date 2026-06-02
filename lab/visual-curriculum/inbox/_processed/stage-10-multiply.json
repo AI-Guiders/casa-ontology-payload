@@ -1,0 +1,6 @@
+{
+  "kind": "visual_lesson_class",
+  "stage_ids": ["stage-10-multiply"],
+  "sleep_after_stage": true,
+  "persist": true
+}

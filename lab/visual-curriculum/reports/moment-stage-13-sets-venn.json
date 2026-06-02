@@ -1,0 +1,185 @@
+{
+  "store_id": "von-neumann",
+  "class_id": "visual-cards",
+  "class_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lessons\\visual-cards",
+  "moment_id": "stage-13-sets-venn",
+  "stage_ids": [
+    "stage-13-sets"
+  ],
+  "interleave": "explicit_steps",
+  "steps": 13,
+  "visual_episodes": 7,
+  "math_episodes": 6,
+  "step_trace": [
+    {
+      "kind": "visual",
+      "id": "venn-a-only-2",
+      "path": "lesson-13-sets/images/venn-a-only-2.jpg",
+      "scene_label": "card:venn:a-only-2",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-a-only-2",
+      "scene_hash": "9e9fa4cd5cceb72b",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-2802450"
+    },
+    {
+      "kind": "math",
+      "cue": "2",
+      "correct": "2",
+      "concept_id": "math.num.two",
+      "episode_id": "ep-2802451"
+    },
+    {
+      "kind": "visual",
+      "id": "venn-disjoint-2-2",
+      "path": "lesson-13-sets/images/venn-disjoint-2-2.jpg",
+      "scene_label": "card:venn:disjoint-2-2",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-disjoint-2-2",
+      "scene_hash": "400899476fbdf2d2",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-2802773"
+    },
+    {
+      "kind": "math",
+      "cue": "2",
+      "correct": "2",
+      "concept_id": "math.num.two",
+      "episode_id": "ep-2802773"
+    },
+    {
+      "kind": "visual",
+      "id": "venn-intersect-1",
+      "path": "lesson-13-sets/images/venn-intersect-1.jpg",
+      "scene_label": "card:venn:intersect-1",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-intersect-1",
+      "scene_hash": "b91e033dfcef9e1f",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-2803076"
+    },
+    {
+      "kind": "math",
+      "cue": "1",
+      "correct": "1",
+      "concept_id": "math.num.one",
+      "episode_id": "ep-2803077"
+    },
+    {
+      "kind": "visual",
+      "id": "venn-intersect-2",
+      "path": "lesson-13-sets/images/venn-intersect-2.jpg",
+      "scene_label": "card:venn:intersect-2",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-intersect-2",
+      "scene_hash": "9a4e9233944b608e",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-2803367"
+    },
+    {
+      "kind": "math",
+      "cue": "2",
+      "correct": "2",
+      "concept_id": "math.num.two",
+      "episode_id": "ep-2803367"
+    },
+    {
+      "kind": "visual",
+      "id": "venn-subset-2",
+      "path": "lesson-13-sets/images/venn-subset-2.jpg",
+      "scene_label": "card:venn:subset-a-in-b",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-subset-2",
+      "scene_hash": "97f9036055ee99a5",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-2803658"
+    },
+    {
+      "kind": "math",
+      "cue": "2",
+      "correct": "2",
+      "concept_id": "math.num.two",
+      "episode_id": "ep-2803658"
+    },
+    {
+      "kind": "visual",
+      "id": "venn-two-empty",
+      "path": "lesson-13-sets/images/venn-two-empty.jpg",
+      "scene_label": "card:venn:two-empty",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-two-empty",
+      "scene_hash": "614cc57c0484c882",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-2803958"
+    },
+    {
+      "kind": "visual",
+      "id": "venn-union-3",
+      "path": "lesson-13-sets/images/venn-union-3.jpg",
+      "scene_label": "card:venn:union-3",
+      "stage_id": "stage-13-sets",
+      "frame_id": "venn-union-3",
+      "scene_hash": "53896008888a7896",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-2804249"
+    },
+    {
+      "kind": "math",
+      "cue": "3",
+      "correct": "3",
+      "concept_id": "math.num.three",
+      "episode_id": "ep-2804249"
+    }
+  ],
+  "sleep": true,
+  "bridges_emergent": 21,
+  "token_counts": {
+    "V1_lum": 4769,
+    "V1_chrom_r": 3431,
+    "V1_chrom_g": 3439,
+    "V1_chrom_b": 1693
+  },
+  "sleep_merged": 36
+}

@@ -1,0 +1,4 @@
+[
+  {"visual_frame": "venn-region-intersect"},
+  {"math": {"cue": "∩", "correct": "∩", "concept_id": "math.set.intersect"}}
+]

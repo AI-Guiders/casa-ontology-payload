@@ -1,0 +1,94 @@
+{
+  "store_id": "von-neumann",
+  "class_id": "visual-cards",
+  "class_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lessons\\visual-cards",
+  "moment_id": "repeat-v2-stage-05-numberline-mark",
+  "stage_ids": null,
+  "interleave": "explicit_steps",
+  "steps": 6,
+  "visual_episodes": 3,
+  "math_episodes": 3,
+  "step_trace": [
+    {
+      "kind": "visual",
+      "id": "numberline-mark-1",
+      "path": "lesson-05-numberline-mark/images/numberline-mark-1.jpg",
+      "scene_label": "card:numberline:mark-1",
+      "stage_id": "stage-05-numberline-mark",
+      "frame_id": "numberline-mark-1",
+      "scene_hash": "d13eb8fabd181896",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8837803"
+    },
+    {
+      "kind": "math",
+      "cue": "1",
+      "correct": "1",
+      "concept_id": "math.num.one",
+      "episode_id": "ep-8837804"
+    },
+    {
+      "kind": "visual",
+      "id": "numberline-mark-2",
+      "path": "lesson-05-numberline-mark/images/numberline-mark-2.jpg",
+      "scene_label": "card:numberline:mark-2",
+      "stage_id": "stage-05-numberline-mark",
+      "frame_id": "numberline-mark-2",
+      "scene_hash": "802d2e93e7e305d2",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8838140"
+    },
+    {
+      "kind": "math",
+      "cue": "2",
+      "correct": "2",
+      "concept_id": "math.num.two",
+      "episode_id": "ep-8838142"
+    },
+    {
+      "kind": "visual",
+      "id": "numberline-mark-3",
+      "path": "lesson-05-numberline-mark/images/numberline-mark-3.jpg",
+      "scene_label": "card:numberline:mark-3",
+      "stage_id": "stage-05-numberline-mark",
+      "frame_id": "numberline-mark-3",
+      "scene_hash": "51cda2626b6f5f61",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8838480"
+    },
+    {
+      "kind": "math",
+      "cue": "3",
+      "correct": "3",
+      "concept_id": "math.num.three",
+      "episode_id": "ep-8838480"
+    }
+  ],
+  "sleep": true,
+  "bridges_emergent": 9,
+  "token_counts": {
+    "V1_lum": 4096,
+    "V1_chrom_r": 3306,
+    "V1_chrom_g": 3282,
+    "V1_chrom_b": 4905
+  },
+  "sleep_merged": 15
+}

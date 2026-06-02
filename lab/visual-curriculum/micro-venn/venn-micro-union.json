@@ -1,0 +1,4 @@
+[
+  {"visual_frame": "venn-region-union"},
+  {"math": {"cue": "∪", "correct": "∪", "concept_id": "math.set.union"}}
+]

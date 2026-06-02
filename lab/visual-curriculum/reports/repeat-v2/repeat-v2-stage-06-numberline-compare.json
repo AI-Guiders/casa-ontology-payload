@@ -1,0 +1,70 @@
+{
+  "store_id": "von-neumann",
+  "class_id": "visual-cards",
+  "class_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\lessons\\visual-cards",
+  "moment_id": "repeat-v2-stage-06-numberline-compare",
+  "stage_ids": null,
+  "interleave": "explicit_steps",
+  "steps": 4,
+  "visual_episodes": 2,
+  "math_episodes": 2,
+  "step_trace": [
+    {
+      "kind": "visual",
+      "id": "numberline-compare-2lt3",
+      "path": "lesson-06-numberline-compare/images/numberline-compare-2lt3.jpg",
+      "scene_label": "card:numberline:2lt3",
+      "stage_id": "stage-06-numberline-compare",
+      "frame_id": "numberline-compare-2lt3",
+      "scene_hash": "b2dbb8921b096357",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8838901"
+    },
+    {
+      "kind": "math",
+      "cue": "2<3",
+      "correct": "2<3",
+      "concept_id": "math.compare.lt",
+      "episode_id": "ep-8838902"
+    },
+    {
+      "kind": "visual",
+      "id": "numberline-compare-3gt2",
+      "path": "lesson-06-numberline-compare/images/numberline-compare-3gt2.jpg",
+      "scene_label": "card:numberline:3gt2",
+      "stage_id": "stage-06-numberline-compare",
+      "frame_id": "numberline-compare-3gt2",
+      "scene_hash": "ebf90ef527d77b5e",
+      "codec_id": "retinal_lrgb",
+      "placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "episode_id": "ep-8839191"
+    },
+    {
+      "kind": "math",
+      "cue": "3>2",
+      "correct": "3>2",
+      "concept_id": "math.compare.gt",
+      "episode_id": "ep-8839192"
+    }
+  ],
+  "sleep": true,
+  "bridges_emergent": 4,
+  "token_counts": {
+    "V1_lum": 4136,
+    "V1_chrom_r": 3306,
+    "V1_chrom_g": 3282,
+    "V1_chrom_b": 4905
+  },
+  "sleep_merged": 8
+}
