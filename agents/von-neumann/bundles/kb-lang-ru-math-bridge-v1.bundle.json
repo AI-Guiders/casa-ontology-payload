@@ -1,0 +1,558 @@
+{
+  "bundle_id": "kb-lang-ru-math-bridge-v1",
+  "title": "RU text bridge for math-palochki (roles, ops, sticks)",
+  "doc": "lessons/lang-ru-math-bridge/README.md",
+  "schema_version": 1,
+  "scenes": [
+    {
+      "id": "math_sticks",
+      "caption": "Палочки и кучки: одна палочка, кучка палочек, сколько палочек",
+      "words": [
+        "палочка",
+        "кучка",
+        "сколько"
+      ]
+    },
+    {
+      "id": "math_ops_ru",
+      "caption": "Четыре действия: плюс минус умножить делить",
+      "words": [
+        "плюс",
+        "минус",
+        "умножить",
+        "делить"
+      ]
+    },
+    {
+      "id": "math_add_roles",
+      "caption": "Сложение: слагаемое плюс слагаемое равно сумма",
+      "words": [
+        "слагаемое",
+        "плюс",
+        "сумма",
+        "сложить",
+        "равно"
+      ]
+    },
+    {
+      "id": "math_sub_roles",
+      "caption": "Вычитание: уменьшаемое минус вычитаемое равно разность",
+      "words": [
+        "уменьшаемое",
+        "минус",
+        "вычитаемое",
+        "разность",
+        "вычесть",
+        "равно"
+      ]
+    },
+    {
+      "id": "math_mul_roles",
+      "caption": "Умножение: множитель умножить множитель равно произведение",
+      "words": [
+        "множитель",
+        "умножить",
+        "произведение",
+        "равно"
+      ]
+    },
+    {
+      "id": "math_div_roles",
+      "caption": "Деление: делимое делить делитель равно частное поровну",
+      "words": [
+        "делимое",
+        "делить",
+        "делитель",
+        "частное",
+        "поровну",
+        "равно"
+      ]
+    },
+    {
+      "id": "math_formula_add",
+      "caption": "слагаемое + слагаемое = сумма",
+      "words": [
+        "слагаемое",
+        "сумма",
+        "равно"
+      ],
+      "punctuation": [
+        "+",
+        "="
+      ],
+      "math_episode": {
+        "cue": "слагаемое + слагаемое = сумма",
+        "correct": "сумма",
+        "concept_id": "math.role.sum",
+        "scene": "lang_bridge_formula_add"
+      }
+    },
+    {
+      "id": "math_formula_sub",
+      "caption": "уменьшаемое − вычитаемое = разность",
+      "words": [
+        "уменьшаемое",
+        "вычитаемое",
+        "разность",
+        "равно"
+      ],
+      "punctuation": [
+        "−",
+        "="
+      ],
+      "math_episode": {
+        "cue": "уменьшаемое − вычитаемое = разность",
+        "correct": "разность",
+        "concept_id": "math.role.difference",
+        "scene": "lang_bridge_formula_sub"
+      }
+    },
+    {
+      "id": "math_formula_mul",
+      "caption": "множитель × множитель = произведение",
+      "words": [
+        "множитель",
+        "произведение",
+        "равно"
+      ],
+      "punctuation": [
+        "×",
+        "="
+      ],
+      "math_episode": {
+        "cue": "множитель × множитель = произведение",
+        "correct": "произведение",
+        "concept_id": "math.role.product",
+        "scene": "lang_bridge_formula_mul"
+      }
+    },
+    {
+      "id": "math_formula_div",
+      "caption": "делимое ÷ делитель = частное",
+      "words": [
+        "делимое",
+        "делитель",
+        "частное",
+        "равно"
+      ],
+      "punctuation": [
+        "÷",
+        "="
+      ],
+      "math_episode": {
+        "cue": "делимое ÷ делитель = частное",
+        "correct": "частное",
+        "concept_id": "math.role.quotient",
+        "scene": "lang_bridge_formula_div"
+      }
+    },
+    {
+      "id": "math_formula_add_arrow",
+      "caption": "слагаемое + слагаемое → сумма",
+      "words": [
+        "слагаемое",
+        "сумма"
+      ],
+      "punctuation": [
+        "+",
+        "→"
+      ],
+      "math_episode": {
+        "cue": "слагаемое + слагаемое → сумма",
+        "correct": "сумма",
+        "concept_id": "math.role.sum",
+        "scene": "lang_bridge_formula_add_arrow"
+      }
+    },
+    {
+      "id": "math_formula_sub_arrow",
+      "caption": "уменьшаемое − вычитаемое → разность",
+      "words": [
+        "уменьшаемое",
+        "вычитаемое",
+        "разность"
+      ],
+      "punctuation": [
+        "−",
+        "→"
+      ],
+      "math_episode": {
+        "cue": "уменьшаемое − вычитаемое → разность",
+        "correct": "разность",
+        "concept_id": "math.role.difference",
+        "scene": "lang_bridge_formula_sub_arrow"
+      }
+    },
+    {
+      "id": "math_formula_mul_arrow",
+      "caption": "множитель × множитель → произведение",
+      "words": [
+        "множитель",
+        "произведение"
+      ],
+      "punctuation": [
+        "×",
+        "→"
+      ],
+      "math_episode": {
+        "cue": "множитель × множитель → произведение",
+        "correct": "произведение",
+        "concept_id": "math.role.product",
+        "scene": "lang_bridge_formula_mul_arrow"
+      }
+    },
+    {
+      "id": "math_formula_div_arrow",
+      "caption": "делимое ÷ делитель → частное",
+      "words": [
+        "делимое",
+        "делитель",
+        "частное"
+      ],
+      "punctuation": [
+        "÷",
+        "→"
+      ],
+      "math_episode": {
+        "cue": "делимое ÷ делитель → частное",
+        "correct": "частное",
+        "concept_id": "math.role.quotient",
+        "scene": "lang_bridge_formula_div_arrow"
+      }
+    },
+    {
+      "id": "math_frac_roles",
+      "caption": "числитель / знаменатель = дробь",
+      "words": [
+        "числитель",
+        "знаменатель",
+        "дробь"
+      ],
+      "punctuation": [
+        "/",
+        "="
+      ],
+      "math_episode": {
+        "cue": "числитель / знаменатель = дробь",
+        "correct": "дробь",
+        "concept_id": "math.concept.fraction",
+        "scene": "lang_bridge_frac_roles"
+      }
+    },
+    {
+      "id": "math_frac_roles_short",
+      "caption": "числитель / знаменатель",
+      "words": [
+        "числитель",
+        "знаменатель"
+      ],
+      "punctuation": [
+        "/"
+      ],
+      "math_episode": {
+        "cue": "числитель / знаменатель",
+        "correct": "дробь",
+        "concept_id": "math.concept.fraction",
+        "scene": "lang_bridge_frac_roles_short"
+      }
+    }
+  ],
+  "claims": [
+    {
+      "concept_id": "lang.word.слагаемое",
+      "text": "RU math bridge → math.role.addend"
+    },
+    {
+      "concept_id": "lang.word.сумма",
+      "text": "RU math bridge → math.role.sum"
+    },
+    {
+      "concept_id": "lang.word.уменьшаемое",
+      "text": "RU math bridge → math.role.minuend"
+    },
+    {
+      "concept_id": "lang.word.вычитаемое",
+      "text": "RU math bridge → math.role.subtrahend"
+    },
+    {
+      "concept_id": "lang.word.разность",
+      "text": "RU math bridge → math.role.difference"
+    },
+    {
+      "concept_id": "lang.word.множитель",
+      "text": "RU math bridge → math.role.factor"
+    },
+    {
+      "concept_id": "lang.word.произведение",
+      "text": "RU math bridge → math.role.product"
+    },
+    {
+      "concept_id": "lang.word.делимое",
+      "text": "RU math bridge → math.role.dividend"
+    },
+    {
+      "concept_id": "lang.word.делитель",
+      "text": "RU math bridge → math.role.divisor"
+    },
+    {
+      "concept_id": "lang.word.частное",
+      "text": "RU math bridge → math.role.quotient"
+    },
+    {
+      "concept_id": "lang.word.кучка",
+      "text": "RU math bridge → math.role.heap"
+    },
+    {
+      "concept_id": "lang.word.палочка",
+      "text": "RU math bridge → math.entity.stick"
+    },
+    {
+      "concept_id": "lang.word.плюс",
+      "text": "RU math bridge → math.op.add"
+    },
+    {
+      "concept_id": "lang.word.минус",
+      "text": "RU math bridge → math.op.sub"
+    },
+    {
+      "concept_id": "lang.word.умножить",
+      "text": "RU math bridge → math.op.mul"
+    },
+    {
+      "concept_id": "lang.word.делить",
+      "text": "RU math bridge → math.op.div"
+    },
+    {
+      "concept_id": "lang.word.дробь",
+      "text": "RU math bridge → math.concept.fraction"
+    },
+    {
+      "concept_id": "lang.word.числитель",
+      "text": "RU math bridge → math.role.numerator"
+    },
+    {
+      "concept_id": "lang.word.знаменатель",
+      "text": "RU math bridge → math.role.denominator"
+    },
+    {
+      "concept_id": "lang.word.сколько",
+      "text": "RU math bridge vocabulary"
+    },
+    {
+      "concept_id": "lang.word.равно",
+      "text": "RU math bridge vocabulary"
+    },
+    {
+      "concept_id": "lang.word.сложить",
+      "text": "RU math bridge vocabulary"
+    },
+    {
+      "concept_id": "lang.word.вычесть",
+      "text": "RU math bridge vocabulary"
+    },
+    {
+      "concept_id": "lang.word.разделить",
+      "text": "RU math bridge vocabulary"
+    },
+    {
+      "concept_id": "lang.word.поровну",
+      "text": "RU math bridge vocabulary"
+    }
+  ],
+  "graph": {
+    "edges": [
+      {
+        "src": "math.role.addend",
+        "relation": "denotes",
+        "dst": "lang.word.слагаемое"
+      },
+      {
+        "src": "math.role.sum",
+        "relation": "denotes",
+        "dst": "lang.word.сумма"
+      },
+      {
+        "src": "math.role.minuend",
+        "relation": "denotes",
+        "dst": "lang.word.уменьшаемое"
+      },
+      {
+        "src": "math.role.subtrahend",
+        "relation": "denotes",
+        "dst": "lang.word.вычитаемое"
+      },
+      {
+        "src": "math.role.difference",
+        "relation": "denotes",
+        "dst": "lang.word.разность"
+      },
+      {
+        "src": "math.role.factor",
+        "relation": "denotes",
+        "dst": "lang.word.множитель"
+      },
+      {
+        "src": "math.role.product",
+        "relation": "denotes",
+        "dst": "lang.word.произведение"
+      },
+      {
+        "src": "math.role.dividend",
+        "relation": "denotes",
+        "dst": "lang.word.делимое"
+      },
+      {
+        "src": "math.role.divisor",
+        "relation": "denotes",
+        "dst": "lang.word.делитель"
+      },
+      {
+        "src": "math.role.quotient",
+        "relation": "denotes",
+        "dst": "lang.word.частное"
+      },
+      {
+        "src": "math.role.heap",
+        "relation": "denotes",
+        "dst": "lang.word.кучка"
+      },
+      {
+        "src": "math.entity.stick",
+        "relation": "denotes",
+        "dst": "lang.word.палочка"
+      },
+      {
+        "src": "math.op.add",
+        "relation": "denotes",
+        "dst": "lang.word.плюс"
+      },
+      {
+        "src": "math.op.sub",
+        "relation": "denotes",
+        "dst": "lang.word.минус"
+      },
+      {
+        "src": "math.op.mul",
+        "relation": "denotes",
+        "dst": "lang.word.умножить"
+      },
+      {
+        "src": "math.op.div",
+        "relation": "denotes",
+        "dst": "lang.word.делить"
+      },
+      {
+        "src": "math.concept.fraction",
+        "relation": "denotes",
+        "dst": "lang.word.дробь"
+      },
+      {
+        "src": "math.role.numerator",
+        "relation": "denotes",
+        "dst": "lang.word.числитель"
+      },
+      {
+        "src": "math.role.denominator",
+        "relation": "denotes",
+        "dst": "lang.word.знаменатель"
+      }
+    ]
+  },
+  "math_role_links": [
+    {
+      "src": "math.role.addend",
+      "relation": "denotes",
+      "dst": "lang.word.слагаемое"
+    },
+    {
+      "src": "math.role.sum",
+      "relation": "denotes",
+      "dst": "lang.word.сумма"
+    },
+    {
+      "src": "math.role.minuend",
+      "relation": "denotes",
+      "dst": "lang.word.уменьшаемое"
+    },
+    {
+      "src": "math.role.subtrahend",
+      "relation": "denotes",
+      "dst": "lang.word.вычитаемое"
+    },
+    {
+      "src": "math.role.difference",
+      "relation": "denotes",
+      "dst": "lang.word.разность"
+    },
+    {
+      "src": "math.role.factor",
+      "relation": "denotes",
+      "dst": "lang.word.множитель"
+    },
+    {
+      "src": "math.role.product",
+      "relation": "denotes",
+      "dst": "lang.word.произведение"
+    },
+    {
+      "src": "math.role.dividend",
+      "relation": "denotes",
+      "dst": "lang.word.делимое"
+    },
+    {
+      "src": "math.role.divisor",
+      "relation": "denotes",
+      "dst": "lang.word.делитель"
+    },
+    {
+      "src": "math.role.quotient",
+      "relation": "denotes",
+      "dst": "lang.word.частное"
+    },
+    {
+      "src": "math.role.heap",
+      "relation": "denotes",
+      "dst": "lang.word.кучка"
+    },
+    {
+      "src": "math.entity.stick",
+      "relation": "denotes",
+      "dst": "lang.word.палочка"
+    },
+    {
+      "src": "math.op.add",
+      "relation": "denotes",
+      "dst": "lang.word.плюс"
+    },
+    {
+      "src": "math.op.sub",
+      "relation": "denotes",
+      "dst": "lang.word.минус"
+    },
+    {
+      "src": "math.op.mul",
+      "relation": "denotes",
+      "dst": "lang.word.умножить"
+    },
+    {
+      "src": "math.op.div",
+      "relation": "denotes",
+      "dst": "lang.word.делить"
+    },
+    {
+      "src": "math.concept.fraction",
+      "relation": "denotes",
+      "dst": "lang.word.дробь"
+    },
+    {
+      "src": "math.role.numerator",
+      "relation": "denotes",
+      "dst": "lang.word.числитель"
+    },
+    {
+      "src": "math.role.denominator",
+      "relation": "denotes",
+      "dst": "lang.word.знаменатель"
+    }
+  ]
+}

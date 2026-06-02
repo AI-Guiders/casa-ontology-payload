@@ -6,6 +6,14 @@ Arithmetic from sticks (palochki): action first, notation second, operand names 
 
 **Session length:** 15–25 min + optional 10 min stick play (repeat, no new words).
 
+## Цикл (Нейманн)
+
+```text
+Урок (ingest)  →  run_agent (выводит сам)  →  check_agent_mastery (ты проверяешь)
+```
+
+Подробно: [MASTERY.md](MASTERY.md). Цель агента: [../../agents/von-neumann/GOAL-arith-mastery.md](../../agents/von-neumann/GOAL-arith-mastery.md).
+
 ## Syllabus
 
 | # | Slug | Title | New terms |
@@ -23,7 +31,13 @@ Arithmetic from sticks (palochki): action first, notation second, operand names 
 | 10 | `operand-vocabulary` | Словарь операндов | one-page recap |
 | 11 | `paren-groups` | Группы в скобках | (), (\|), (IIIII) |
 | 12 | `compute-drill` | Вычисления: примеры | + − × ÷ на кучках и цифрах |
-| 13 | `kolb-count-rows` | Kolb: ряд счёта | count_row → emergent pattern |
+| 13 | `kolb-count-rows` | Teacher demo: ряд счёта | presentation, без oracle |
+| 14 | `commutative` | Перестановка + и × | `math.prop.commutative_*` |
+| 15 | `associative-distributive` | Группировка, распределение | assoc, distributive |
+| 16 | `identities-division` | 0, 1, ÷↔× | identity, inverse |
+| 17 | `roles-and-four-ops` | Роли + 4 действия | recap roles + op scenes |
+| 19 | `place-value-tens-ones` | Десятки и единицы | десяток, единица |
+| 18 | `fraction-heaps` | Дроби на кучках | числитель, знаменатель, 1/2 2/3 3/4 |
 
 ## Группы в скобках (lesson 11)
 
@@ -37,9 +51,9 @@ Arithmetic from sticks (palochki): action first, notation second, operand names 
 
 ## Kolb / «что если?» — часть жизни агента
 
-Не отдельная команда host'а. Когда агент живёт (`run_agent.py`), в idle он сам пробует ряды, скобки, sleep — см. `agent_curiosity` внутри `agent_life`.
+Не curriculum и не привязка к `math.num.*`. Когда агент живёт (`run_agent.py`), в idle он сам пробует cue → predict → sleep → re-probe.
 
-Teacher lesson-13 — то же через ingest-событие; дублировать runtime не обязан.
+Teacher lesson-13 — **демо** count_row через ingest; runtime Kolb от этого не зависит.
 
 ## Division canon (lesson 07)
 
@@ -47,25 +61,32 @@ Teacher lesson-13 — то же через ingest-событие; дублиро
 |||| ÷ 2  →  (||)(||)     # groups of 2 → 2 heaps → quotient = 2
 ```
 
-## Weekly rhythm (optional)
+## Дроби на кучках (lesson 18)
 
-| Day | Activity |
-|-----|----------|
-| Mon | new lesson |
-| Wed | sticks only, no new vocabulary |
-| Fri | 3 review tasks + one puzzle |
+Целое делим на **K равных кучек**. **Числитель** — сколько кучек взяли; **знаменатель** — на сколько кучек делили.
 
-## Ingest into von-neumann
+```text
+1/2 = (||) ||              # 1 кучка из 2
+2/3 = (||) [(||)(||)]      # 2 кучки из 3
+3/4 = ()[()()()]           # 3 взяли (в скобках), 1 доля снаружи — палочки не рисовали
+3/4 = (||) [(||)(||)(||)]  # то же: снаружи четверть, в […] три взятые кучки
+```
+
+`()` **в дроби** — не «ноль палочек» из lesson 11, а **слот одной кучки** (доли), когда внутри просто не стали рисовать `||`. Квадратные скобки `[…]` группируют несколько кучек одной порцией.
+
+Связь с делением (lesson 08): `|||| на 2 кучки` → каждая доля — половина.
+
+## Ingest + проверка
 
 ```powershell
 cd d:\Experiments\PersonalCursorFolder\Financial\software\open\casa-ontology-payload
 python casa/prisms/memory/gen_math_palochki_class.py
 python tools/ingest_lesson_class.py --store-dir agents/von-neumann
+python tools/run_agent.py --store-dir agents/von-neumann --once   # или жить дальше
+python tools/check_agent_mastery.py --store-dir agents/von-neumann
 ```
 
-Report: `lessons/math-palochki/last-ingest-report.json` (probe cues).
-
-Ingest — **событие учителя** в store агента. Дальше жизнь продолжается **внутри агента** после `run_agent.py` (rehearse, тетради, Kolb — не host CLI).
+Reports: `last-ingest-report.json`, `last-mastery-report.json`.
 
 Cold bootstrap (один раз): `python tools/init_agent_self.py --store-dir agents/von-neumann`
 
@@ -73,17 +94,14 @@ Cold bootstrap (один раз): `python tools/init_agent_self.py --store-dir a
 
 | Lesson | Layer |
 |--------|--------|
-| 00 | `math.num.zero`, digit `0`–`4` ↔ stick runs, RU count phrases |
-| 01–02 | `math.num.*`, `math.entity.stick`, `math.role.heap` |
-| 03–06 | `math.op.add` … `math.op.mul` + `math.role.*` |
-| 07–08 | `math.op.div` + dividend/divisor/quotient |
-| 10 | recap `math.role.*` ↔ `lang.word.*` |
-| 11 | `math.entity.group`, `math.ctx.group`, `()` … `(IIIII)` |
-| 12 | drill `math.op.*` on sticks, groups, digits |
-| 13 | `count_row:*` → Kolb emergent pattern hub |
+| 00–12 | numerals, ops, roles (legacy episodes with surface teaching) |
+| 13–17 | `presentation: true` — co-scenes, properties, no numeric oracle in correct |
+| 14–16 | `math.prop.*` on bundle; agent consolidates on sleep |
+| 17 | `math.role.*` + op scenes |
+| 18 | `math.frac.*` — дробь как доля кучек (числитель / знаменатель) |
 
-Target agent: `agents/von-neumann/` (lesson = teacher event → consolidate в **его** `ltm/`; workbook = `journal/` — агент пишет сам, когда живёт).
+Target agent: `agents/von-neumann/`.
 
 ## Agent workbook (not here)
 
-Teacher material stays in `lessons/`. Тетрадь — только в `agents/von-neumann/journal/`; создаёт и пишет **агент** в своей жизни, не host.
+Teacher material stays in `lessons/`. Тетрадь — только в `agents/von-neumann/journal/`.

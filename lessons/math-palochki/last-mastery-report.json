@@ -1,0 +1,350 @@
+{
+  "store_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\agents\\von-neumann",
+  "class_id": "math-palochki",
+  "field_version": 675,
+  "probes": [
+    {
+      "cue": "| + | = ?",
+      "expect": "math.num.two",
+      "tier": "compute",
+      "top": "math.op.add",
+      "top3": [
+        "math.op.add",
+        "math.op.concat",
+        "math.concept.fraction"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "(||) + (||) = ?",
+      "expect": "math.num.four",
+      "tier": "compute",
+      "top": "math.op.add",
+      "top3": [
+        "math.op.add",
+        "math.op.concat",
+        "math.concept.fraction"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "2 + 3 = ?",
+      "expect": "math.num.five",
+      "tier": "compute",
+      "top": "math.op.add",
+      "top3": [
+        "math.op.add",
+        "math.op.concat",
+        "math.concept.fraction"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "||| - || = ?",
+      "expect": "math.num.one",
+      "tier": "compute",
+      "top": "math.op.sub",
+      "top3": [
+        "math.op.sub",
+        "math.concept.fraction",
+        "math.frac.one_half"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "(|||) - (||) = ?",
+      "expect": "math.num.one",
+      "tier": "compute",
+      "top": "math.op.sub",
+      "top3": [
+        "math.op.sub",
+        "math.concept.fraction",
+        "math.frac.one_half"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "5 - 2 = ?",
+      "expect": "math.num.three",
+      "tier": "compute",
+      "top": "math.op.sub",
+      "top3": [
+        "math.op.sub",
+        "math.concept.fraction",
+        "math.frac.one_half"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "3 × 2 = ?",
+      "expect": "math.num.six",
+      "tier": "compute",
+      "top": "math.op.mul",
+      "top3": [
+        "math.op.mul",
+        "math.op.eq",
+        "math.concept.fraction"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "|| || || = ?",
+      "expect": "math.num.six",
+      "tier": "compute",
+      "top": "math.op.eq",
+      "top3": [
+        "math.op.eq",
+        "math.concept.fraction",
+        "math.frac.one_half"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "|||| / 2 = ?",
+      "expect": "math.num.two",
+      "tier": "compute",
+      "top": "math.op.div",
+      "top3": [
+        "math.op.div",
+        "math.op.eq",
+        "math.concept.fraction"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "6 / 3 = ?",
+      "expect": "math.num.two",
+      "tier": "compute",
+      "top": "math.op.div",
+      "top3": [
+        "math.op.div",
+        "math.op.eq",
+        "math.concept.fraction"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "слагаемое",
+      "expect": "math.role.addend",
+      "tier": "role",
+      "top": "math.role.addend",
+      "top3": [
+        "math.role.addend",
+        "math.concept.fraction",
+        "math.frac.one_half"
+      ],
+      "pass": true
+    },
+    {
+      "cue": "делимое",
+      "expect": "math.role.dividend",
+      "tier": "role",
+      "top": "math.role.dividend",
+      "top3": [
+        "math.role.dividend",
+        "math.concept.fraction",
+        "math.frac.one_half"
+      ],
+      "pass": true
+    },
+    {
+      "cue": "произведение",
+      "expect": "math.role.product",
+      "tier": "role",
+      "top": "math.concept.fraction",
+      "top3": [
+        "math.concept.fraction",
+        "math.frac.one_half",
+        "math.frac.three_fourths"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "разность",
+      "expect": "math.role.difference",
+      "tier": "role",
+      "top": "math.concept.fraction",
+      "top3": [
+        "math.concept.fraction",
+        "math.frac.one_half",
+        "math.frac.three_fourths"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "2 + 3",
+      "expect": "math.prop.commutative_add",
+      "tier": "property",
+      "top": "math.op.add",
+      "top3": [
+        "math.op.add",
+        "math.op.concat",
+        "math.concept.fraction"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "3 + 2",
+      "expect": "math.prop.commutative_add",
+      "tier": "property",
+      "top": "math.op.add",
+      "top3": [
+        "math.op.add",
+        "math.op.concat",
+        "math.concept.fraction"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "||| + () = |||",
+      "expect": "math.prop.identity_add_zero",
+      "tier": "property",
+      "top": "math.op.add",
+      "top3": [
+        "math.op.add",
+        "math.op.concat",
+        "math.num.zero"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "3 × 1",
+      "expect": "math.prop.identity_mul_one",
+      "tier": "property",
+      "top": "math.op.mul",
+      "top3": [
+        "math.op.mul",
+        "math.concept.fraction",
+        "math.frac.one_half"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "6 / 3",
+      "expect": "math.prop.division_inverse_mul",
+      "tier": "property",
+      "top": "math.op.div",
+      "top3": [
+        "math.op.div",
+        "math.concept.fraction",
+        "math.frac.one_half"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "1/2",
+      "expect": "math.frac.one_half",
+      "tier": "fraction",
+      "top": "math.op.div",
+      "top3": [
+        "math.op.div",
+        "math.frac.one_half",
+        "math.concept.fraction"
+      ],
+      "pass": true
+    },
+    {
+      "cue": "(||) ||",
+      "expect": "math.frac.one_half",
+      "tier": "fraction",
+      "top": "math.frac.one_half",
+      "top3": [
+        "math.frac.one_half",
+        "math.concept.fraction",
+        "math.frac.three_fourths"
+      ],
+      "pass": true
+    },
+    {
+      "cue": "(||) [(||)(||)]",
+      "expect": "math.frac.two_thirds",
+      "tier": "fraction",
+      "top": "math.frac.two_thirds",
+      "top3": [
+        "math.frac.two_thirds",
+        "math.entity.heap_bracket",
+        "math.concept.fraction"
+      ],
+      "pass": true
+    },
+    {
+      "cue": "()[()()()]",
+      "expect": "math.frac.three_fourths",
+      "tier": "fraction",
+      "top": "math.frac.three_fourths",
+      "top3": [
+        "math.frac.three_fourths",
+        "math.num.zero",
+        "math.entity.heap_bracket"
+      ],
+      "pass": true
+    },
+    {
+      "cue": "числитель",
+      "expect": "math.role.numerator",
+      "tier": "fraction",
+      "top": "math.role.numerator",
+      "top3": [
+        "math.role.numerator",
+        "math.concept.fraction",
+        "math.frac.one_half"
+      ],
+      "pass": true
+    },
+    {
+      "cue": "знаменатель",
+      "expect": "math.role.denominator",
+      "tier": "fraction",
+      "top": "math.role.denominator",
+      "top3": [
+        "math.role.denominator",
+        "math.concept.fraction",
+        "math.frac.one_half"
+      ],
+      "pass": true
+    },
+    {
+      "cue": "числитель / знаменатель",
+      "expect": "math.concept.fraction",
+      "tier": "fraction",
+      "top": "math.op.div",
+      "top3": [
+        "math.op.div",
+        "math.role.denominator",
+        "math.role.numerator"
+      ],
+      "pass": false
+    },
+    {
+      "cue": "числитель / знаменатель = дробь",
+      "expect": "math.concept.fraction",
+      "tier": "fraction",
+      "top": "math.op.eq",
+      "top3": [
+        "math.op.eq",
+        "math.op.div",
+        "math.concept.fraction"
+      ],
+      "pass": true
+    }
+  ],
+  "tier_scores": {
+    "compute": 0.0,
+    "role": 0.5,
+    "property": 0.0,
+    "fraction": 0.875
+  },
+  "tier_pass": {
+    "compute": false,
+    "role": false,
+    "property": false,
+    "fraction": true
+  },
+  "thresholds": {
+    "compute": 0.85,
+    "role": 0.9,
+    "property": 0.75,
+    "fraction": 0.75
+  },
+  "mastery_ok": false
+}

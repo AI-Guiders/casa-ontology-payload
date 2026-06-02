@@ -178,7 +178,63 @@ def _extend_bundle(base: dict) -> dict:
             b["symbol_concepts"].append(g)
     _add_counting_zero_and_digits(b)
     _add_paren_groups(b)
+    _add_paren_precedence(b)
+    _add_fraction_heaps(b)
+    _add_arithmetic_properties(b)
     return b
+
+
+def _add_arithmetic_properties(b: dict) -> None:
+    """Property schemas — agent extracts from co-presented lesson scenes (sleep), not runtime oracle."""
+    claims = list(b.get("claims") or [])
+    existing = {c["concept_id"] for c in claims}
+    prop_claims = [
+        ("math.prop.commutative_add", "Addition: reordering addends yields the same heap."),
+        ("math.prop.commutative_mul", "Multiplication: reordering factors yields the same product."),
+        ("math.prop.associative_add", "Addition: grouping of addends does not change the sum."),
+        ("math.prop.associative_mul", "Multiplication: grouping of factors does not change the product."),
+        ("math.prop.distributive_mul_over_add", "Multiplication distributes over addition on heaps."),
+        ("math.prop.identity_add_zero", "Adding zero leaves the heap unchanged."),
+        ("math.prop.identity_mul_one", "Multiplying by one leaves the heap unchanged."),
+        ("math.prop.division_inverse_mul", "Division and multiplication are inverse questions on same heaps."),
+    ]
+    for cid, text in prop_claims:
+        if cid not in existing:
+            claims.append({"concept_id": cid, "text": text})
+            existing.add(cid)
+    b["claims"] = claims
+
+    edges = list((b.get("graph") or {}).get("edges") or [])
+    edge_keys = {(e["src"], e["relation"], e["dst"]) for e in edges}
+    applies = [
+        ("math.prop.commutative_add", "math.op.add"),
+        ("math.prop.commutative_mul", "math.op.mul"),
+        ("math.prop.associative_add", "math.op.add"),
+        ("math.prop.associative_mul", "math.op.mul"),
+        ("math.prop.distributive_mul_over_add", "math.op.mul"),
+        ("math.prop.identity_add_zero", "math.op.add"),
+        ("math.prop.identity_mul_one", "math.op.mul"),
+        ("math.prop.division_inverse_mul", "math.op.div"),
+        ("math.prop.division_inverse_mul", "math.op.mul"),
+    ]
+    for src, dst in applies:
+        key = (src, "applies_to", dst)
+        if key not in edge_keys:
+            edges.append({"src": src, "relation": "applies_to", "dst": dst})
+            edge_keys.add(key)
+    b.setdefault("graph", {})["edges"] = edges
+
+    kw = dict(b.get("math_keywords") or {})
+    kw.update(
+        {
+            "math.prop.commutative_add": ["коммутатив", "перестановка", "от перестановки"],
+            "math.prop.commutative_mul": ["коммутатив", "перестановка множителей"],
+            "math.prop.identity_add_zero": ["ноль", "нейтральный", "+0", "пустая группа"],
+            "math.prop.identity_mul_one": ["единица", "×1", "один раз"],
+            "math.prop.division_inverse_mul": ["обратное", "деление и умножение"],
+        }
+    )
+    b["math_keywords"] = kw
 
 
 def _add_paren_groups(b: dict) -> None:
@@ -283,6 +339,216 @@ def _add_paren_groups(b: dict) -> None:
     b["symbol_concepts"] = sym
 
 
+def _add_paren_precedence(b: dict) -> None:
+    """Parentheses as precedence control in arithmetic expressions.
+
+    Separate from `math.ctx.group` where `()` is an empty heap (zero).
+    Here parentheses mean "compute inside first", e.g. (4 - 7) + 5.
+    """
+    claims = list(b.get("claims") or [])
+    existing = {c["concept_id"] for c in claims}
+    for cid, text in (
+        ("math.entity.parens", "Parentheses as delimiters in expressions (скобки)."),
+        ("math.ctx.precedence", "Reading: parentheses set priority of operations."),
+    ):
+        if cid not in existing:
+            claims.append({"concept_id": cid, "text": text})
+            existing.add(cid)
+    b["claims"] = claims
+
+    kw = dict(b.get("math_keywords") or {})
+    kw.setdefault("math.entity.parens", [])
+    for w in ("скобки", "(", ")", "приоритет", "сначала в скобках"):
+        if w not in kw["math.entity.parens"]:
+            kw["math.entity.parens"].append(w)
+    b["math_keywords"] = kw
+
+    contexts = list(b.get("reading_contexts") or [])
+    contexts.extend(
+        [
+            {
+                "id": "math.ctx.precedence",
+                "when": {"shape": "singleton", "glyph": "("},
+                "weight": 6,
+                "text": "Parentheses can change priority of operations.",
+            },
+            {
+                "id": "math.ctx.precedence",
+                "when": {"shape": "text", "contains": "(4 - 7) + 5"},
+                "weight": 9,
+                "text": "Parentheses change priority: (4 - 7) + 5.",
+            },
+        ]
+    )
+    b["reading_contexts"] = contexts
+
+
+# Дробь на кучках: числитель = сколько кучек взяли, знаменатель = на сколько кучек делили.
+FRAC_HALF_VIS = "(||) ||"
+FRAC_TWO_THIRDS_VIS = "(||) [(||)(||)]"
+FRAC_THREE_FOURTHS_VIS = "()[()()()]"
+# Полная отрисовка 3/4: та же схема, что ()[()()()] — снаружи 1/4 (не взяли), в […] три доли.
+FRAC_THREE_FOURTHS_FULL = "(||) [(||)(||)(||)]"
+
+
+def _add_fraction_heaps(b: dict) -> None:
+    """Fraction as heap-parts: 1/2 = (||) ||, 2/3 = (||) [(||)(||)], 3/4 = ()[()()()]."""
+    claims = list(b.get("claims") or [])
+    existing = {c["concept_id"] for c in claims}
+    frac_claims = [
+        ("math.concept.fraction", "Fraction: N heaps taken out of K equal heaps (дробь на кучках)."),
+        ("math.role.numerator", "Numerator: how many heaps were taken (числитель)."),
+        ("math.role.denominator", "Denominator: into how many heaps the whole was split (знаменатель)."),
+        ("math.entity.heap_bracket", "Square brackets group several equal heaps: [(||)(||)]."),
+        (
+            "math.entity.heap_slot",
+            "One heap-share in fraction notation: () marks a heap even without sticks drawn inside "
+            "(not lesson-11 zero — sticks omitted for brevity).",
+        ),
+        ("math.ctx.fraction_heap", "Reading: fraction as highlighted heap parts."),
+        ("math.frac.one_half", "One half: 1 heap of 2 — (||) ||."),
+        ("math.frac.two_thirds", "Two thirds: 2 heaps of 3 — (||) [(||)(||)]."),
+        (
+            "math.frac.three_fourths",
+            "Three fourths: 3 heaps of 4 — ()[()()()] (lazy) or (||) [(||)(||)(||)] (full sticks).",
+        ),
+    ]
+    for cid, text in frac_claims:
+        if cid not in existing:
+            claims.append({"concept_id": cid, "text": text})
+            existing.add(cid)
+
+    ru_frac = [
+        ("lang.word.дробь", "math.concept.fraction"),
+        ("lang.word.числитель", "math.role.numerator"),
+        ("lang.word.знаменатель", "math.role.denominator"),
+        ("lang.word.половина", "math.frac.one_half"),
+    ]
+    for word, role in ru_frac:
+        cid = word
+        if cid not in existing:
+            claims.append({"concept_id": cid, "text": f"RU word → {role}"})
+            existing.add(cid)
+    b["claims"] = claims
+
+    edges = list((b.get("graph") or {}).get("edges") or [])
+    edge_keys = {(e["src"], e["relation"], e["dst"]) for e in edges}
+    for role, word in ru_frac:
+        key = (role, "denotes", word)
+        if key not in edge_keys:
+            edges.append({"src": role, "relation": "denotes", "dst": word})
+            edge_keys.add(key)
+    for frac in ("math.frac.one_half", "math.frac.two_thirds", "math.frac.three_fourths"):
+        key = ("math.concept.fraction", "example_of", frac)
+        if key not in edge_keys:
+            edges.append({"src": frac, "relation": "instance_of", "dst": "math.concept.fraction"})
+            edge_keys.add(key)
+        key2 = ("math.role.heap", "part_of", frac)
+        if key2 not in edge_keys:
+            edges.append({"src": "math.role.heap", "relation": "models", "dst": frac})
+            edge_keys.add(key2)
+    b.setdefault("graph", {})["edges"] = edges
+
+    ctx = "math.ctx.fraction_heap"
+    senses = list(b.get("symbol_senses") or [])
+    sense_keys = {(s.get("glyph"), s.get("context"), s.get("concept_id")) for s in senses}
+    for glyph, concept in (
+        ("1/2", "math.frac.one_half"),
+        ("2/3", "math.frac.two_thirds"),
+        ("3/4", "math.frac.three_fourths"),
+        (FRAC_HALF_VIS, "math.frac.one_half"),
+        (FRAC_TWO_THIRDS_VIS, "math.frac.two_thirds"),
+        (FRAC_THREE_FOURTHS_VIS, "math.frac.three_fourths"),
+        (FRAC_THREE_FOURTHS_FULL, "math.frac.three_fourths"),
+    ):
+        key = (glyph, ctx, concept)
+        if key in sense_keys:
+            continue
+        row: dict[str, Any] = {
+            "glyph": glyph,
+            "context": ctx,
+            "concept_id": concept,
+            "when": {"shape": "fraction_heap"},
+        }
+        senses.append(row)
+        sense_keys.add(key)
+    b["symbol_senses"] = senses
+
+    glyphs = list(b.get("math_glyphs") or [])
+    glyph_keys = {(g.get("glyph"), g.get("concept_id")) for g in glyphs}
+    for glyph, concept in (
+        ("1/2", "math.frac.one_half"),
+        ("2/3", "math.frac.two_thirds"),
+        ("3/4", "math.frac.three_fourths"),
+    ):
+        if (glyph, concept) not in glyph_keys:
+            glyphs.append({"glyph": glyph, "concept_id": concept, "context": ctx})
+    b["math_glyphs"] = glyphs
+
+    kw = dict(b.get("math_keywords") or {})
+    kw.update(
+        {
+            "math.concept.fraction": ["дробь", "доля", "часть", "fraction"],
+            "math.role.numerator": ["числитель", "взяли", "сколько кучек взяли"],
+            "math.role.denominator": ["знаменатель", "на сколько кучек", "разделили"],
+            "math.frac.one_half": ["1/2", "половина", FRAC_HALF_VIS],
+            "math.frac.two_thirds": ["2/3", "две трети", FRAC_TWO_THIRDS_VIS],
+            "math.frac.three_fourths": [
+                "3/4",
+                "три четверти",
+                FRAC_THREE_FOURTHS_VIS,
+                FRAC_THREE_FOURTHS_FULL,
+            ],
+            "math.entity.heap_slot": ["кучка-доля", "слот кучки", "без палочек внутри"],
+            "math.entity.heap_bracket": ["скобки кучек", "[", "]"],
+        }
+    )
+    b["math_keywords"] = kw
+
+    contexts = list(b.get("reading_contexts") or [])
+    contexts.extend(
+        [
+            {
+                "id": ctx,
+                "when": {"shape": "fraction_heap"},
+                "weight": 14,
+                "text": "Fraction on heaps: numerator heaps taken, denominator total heaps.",
+            },
+            {
+                "id": ctx,
+                "when": {"shape": "fraction_heap", "glyph": FRAC_HALF_VIS},
+                "weight": 16,
+                "text": "Half: one heap of two — (||) ||.",
+            },
+            {
+                "id": ctx,
+                "when": {"shape": "fraction_heap", "glyph": FRAC_TWO_THIRDS_VIS},
+                "weight": 16,
+                "text": "Two thirds: (||) plus bracket of two heaps.",
+            },
+            {
+                "id": ctx,
+                "when": {"shape": "fraction_heap", "glyph": FRAC_THREE_FOURTHS_VIS},
+                "weight": 16,
+                "text": "Three fourths (lazy): () marks heap-shares without drawing sticks inside.",
+            },
+            {
+                "id": ctx,
+                "when": {"shape": "fraction_heap", "glyph": FRAC_THREE_FOURTHS_FULL},
+                "weight": 15,
+                "text": "Three fourths (full): (||) is the one heap left, bracket holds the three taken.",
+            },
+        ]
+    )
+    b["reading_contexts"] = contexts
+
+    sym = list(b.setdefault("symbol_concepts", []))
+    for g in ("grapheme.latn.[", "grapheme.latn.]", "grapheme.latn./"):
+        if g not in sym:
+            sym.append(g)
+    b["symbol_concepts"] = sym
+
+
 def _add_counting_zero_and_digits(b: dict) -> None:
     """Zero, sticks 1–4, digit glyphs ↔ math.num.* (lesson-00)."""
     senses = list(b.get("symbol_senses") or [])
@@ -372,6 +638,25 @@ def _ep(
     if structure_tag:
         row["structure_tag"] = structure_tag
     return row
+
+
+def _scene(cue: str, scene: str, concept_id: str) -> dict[str, Any]:
+    """Teacher presentation — visible structure in cue; no numeric oracle in correct."""
+    return {
+        "cue": cue,
+        "correct": "",
+        "surface_attempt": "",
+        "concept_id": concept_id,
+        "scene": scene,
+        "lattice_id": "schema-math",
+        "episode_source": "lesson",
+        "presentation": True,
+    }
+
+
+def _vocab(cue: str, concept_id: str, scene: str) -> dict[str, Any]:
+    """Role / property word — identity mapping, not arithmetic oracle."""
+    return _ep(cue, cue, concept_id, scene)
 
 
 def build_manifest() -> dict[str, Any]:
@@ -551,14 +836,215 @@ def build_manifest() -> dict[str, Any]:
         },
         {
             "id": "lesson-13-kolb-count-rows",
-            "title": "Kolb: ряд счёта → emergent pattern",
+            "title": "Kolb: ряд счёта (teacher demo)",
             "episodes": [
-                _ep("0", "0", "math.num.zero", "count_row:by_one"),
-                _ep("1", "1", "math.num.one", "count_row:by_one"),
-                _ep("2", "2", "math.num.two", "count_row:by_one"),
-                _ep("3", "3", "math.num.three", "count_row:by_one"),
-                _ep("4", "4", "math.num.four", "count_row:by_one"),
-                _ep("5", "5", "math.num.five", "count_row:by_one"),
+                _scene("0", "count_row:by_one", "math.num.zero"),
+                _scene("1", "count_row:by_one", "math.num.one"),
+                _scene("2", "count_row:by_one", "math.num.two"),
+                _scene("3", "count_row:by_one", "math.num.three"),
+                _scene("4", "count_row:by_one", "math.num.four"),
+                _scene("5", "count_row:by_one", "math.num.five"),
+            ],
+        },
+        {
+            "id": "lesson-14-commutative",
+            "title": "Свойства: перестановка (+ и ×)",
+            "episodes": [
+                _scene("| + || = |||", "prop:comm_add", "math.prop.commutative_add"),
+                _scene("|| + | = |||", "prop:comm_add", "math.prop.commutative_add"),
+                _scene("(||) + (|||) = (|||||)", "prop:comm_add", "math.prop.commutative_add"),
+                _scene("(|||) + (||) = (|||||)", "prop:comm_add", "math.prop.commutative_add"),
+                _scene("2 + 3", "prop:comm_add", "math.op.add"),
+                _scene("3 + 2", "prop:comm_add", "math.op.add"),
+                _scene("|| || ||", "prop:comm_mul", "math.op.mul"),
+                _scene("|| || || = 3 × 2", "prop:comm_mul", "math.prop.commutative_mul"),
+                _scene("3 × 2", "prop:comm_mul", "math.op.mul"),
+                _scene("2 × 3", "prop:comm_mul", "math.op.mul"),
+                _vocab("перестановка слагаемых", "math.prop.commutative_add", "lesson14_vocab"),
+                _vocab("перестановка множителей", "math.prop.commutative_mul", "lesson14_vocab"),
+            ],
+        },
+        {
+            "id": "lesson-15-associative-distributive",
+            "title": "Свойства: группировка и распределение",
+            "episodes": [
+                _scene("(| + ||) + ||| = |||||", "prop:assoc_add", "math.prop.associative_add"),
+                _scene("| + (|| + |||) = |||||", "prop:assoc_add", "math.prop.associative_add"),
+                _scene("(||) + (|| + |||) = (|||||)", "prop:assoc_add", "math.prop.associative_add"),
+                _scene("2 × (3 × 2)", "prop:assoc_mul", "math.prop.associative_mul"),
+                _scene("(2 × 3) × 2", "prop:assoc_mul", "math.prop.associative_mul"),
+                _scene("2 × (|| + ||)", "prop:distributive", "math.prop.distributive_mul_over_add"),
+                _scene("2 × || + 2 × ||", "prop:distributive", "math.prop.distributive_mul_over_add"),
+                _vocab("группировка слагаемых", "math.prop.associative_add", "lesson15_vocab"),
+                _vocab("распределительное", "math.prop.distributive_mul_over_add", "lesson15_vocab"),
+            ],
+        },
+        {
+            "id": "lesson-16-identities-division",
+            "title": "Свойства: ноль, единица, ÷ ↔ ×",
+            "episodes": [
+                _scene("||| + () = |||", "prop:identity_add_zero", "math.prop.identity_add_zero"),
+                _scene("|||| + () = ||||", "prop:identity_add_zero", "math.prop.identity_add_zero"),
+                _scene("5 + 0", "prop:identity_add_zero", "math.prop.identity_add_zero"),
+                _scene("| × 1 = |", "prop:identity_mul_one", "math.prop.identity_mul_one"),
+                _scene("|||| × 1 = ||||", "prop:identity_mul_one", "math.prop.identity_mul_one"),
+                _scene("3 × 1", "prop:identity_mul_one", "math.prop.identity_mul_one"),
+                _scene("|||| / 2 → (||)(||)", "prop:div_inverse_mul", "math.prop.division_inverse_mul"),
+                _scene("2 × 2 = ||||", "prop:div_inverse_mul", "math.prop.division_inverse_mul"),
+                _scene("6 / 3", "prop:div_inverse_mul", "math.op.div"),
+                _scene("2 × 3", "prop:div_inverse_mul", "math.op.mul"),
+                _vocab("нейтральный элемент сложения", "math.prop.identity_add_zero", "lesson16_vocab"),
+                _vocab("нейтральный элемент умножения", "math.prop.identity_mul_one", "lesson16_vocab"),
+            ],
+        },
+        {
+            "id": "lesson-17-roles-and-four-ops",
+            "title": "Роли операндов + четыре действия (сцены)",
+            "episodes": [
+                _scene("слагаемое + слагаемое → сумма", "lesson17_roles_add", "math.role.sum"),
+                _scene("уменьшаемое − вычитаемое → разность", "lesson17_roles_sub", "math.role.difference"),
+                _scene("множитель × множитель → произведение", "lesson17_roles_mul", "math.role.product"),
+                _scene("делимое ÷ делитель → частное", "lesson17_roles_div", "math.role.quotient"),
+                _vocab("слагаемое", "math.role.addend", "lesson17_vocab"),
+                _vocab("уменьшаемое", "math.role.minuend", "lesson17_vocab"),
+                _vocab("множитель", "math.role.factor", "lesson17_vocab"),
+                _vocab("делимое", "math.role.dividend", "lesson17_vocab"),
+                _scene("| + | = ||", "lesson17_op_add", "math.op.add"),
+                _scene("||| - || = |", "lesson17_op_sub", "math.op.sub"),
+                _scene("|| || ||", "lesson17_op_mul", "math.op.mul"),
+                _scene("|||| / 2 → (||)(||)", "lesson17_op_div", "math.op.div"),
+                _scene("2 + 3", "lesson17_expr", "math.op.add"),
+                _scene("5 - 2", "lesson17_expr", "math.op.sub"),
+                _scene("3 × 2", "lesson17_expr", "math.op.mul"),
+                _scene("6 / 3", "lesson17_expr", "math.op.div"),
+            ],
+        },
+        {
+            "id": "lesson-19-place-value-tens-ones",
+            "title": "Числа: десятки и единицы (10–99)",
+            "episodes": [
+                _scene("25 = 2 × 10 + 5 × 1", "lesson19_place_value", "math.num.25"),
+                _scene("34 = 3 × 10 + 4 × 1", "lesson19_place_value", "math.num.34"),
+                _scene("40 = 4 × 10 + 0 × 1", "lesson19_place_value", "math.num.40"),
+                _scene("99 = 9 × 10 + 9 × 1", "lesson19_place_value", "math.num.99"),
+                _scene("2 × 10 + 5 × 1 = 25", "lesson19_place_value", "math.num.25"),
+                _scene("3 × 10 + 4 × 1 = 34", "lesson19_place_value", "math.num.34"),
+                _vocab("десяток", "math.num.ten", "lesson19_vocab"),
+                _vocab("единица", "math.num.one", "lesson19_vocab"),
+            ],
+        },
+        {
+            "id": "lesson-18-fraction-heaps",
+            "title": "Дроби: доля кучек",
+            "episodes": [
+                _ep("дробь", "дробь", "math.concept.fraction", "lesson18_vocab"),
+                _ep("числитель", "числитель", "math.role.numerator", "lesson18_vocab"),
+                _ep("знаменатель", "знаменатель", "math.role.denominator", "lesson18_vocab"),
+                _scene(
+                    "числитель / знаменатель = дробь",
+                    "lesson18_frac_roles",
+                    "math.concept.fraction",
+                ),
+                _ep(
+                    "числитель / знаменатель = дробь",
+                    "дробь",
+                    "math.concept.fraction",
+                    "lesson18_frac_roles",
+                ),
+                _ep(
+                    "числитель / знаменатель",
+                    "дробь",
+                    "math.concept.fraction",
+                    "lesson18_frac_roles",
+                ),
+                _scene(
+                    "числитель — сколько кучек взяли, знаменатель — на сколько кучек разделили",
+                    "lesson18_rule",
+                    "math.concept.fraction",
+                ),
+                _scene(
+                    f"1/2 = {FRAC_HALF_VIS}",
+                    "lesson18_half",
+                    "math.frac.one_half",
+                ),
+                _ep(
+                    f"1/2 = {FRAC_HALF_VIS}",
+                    FRAC_HALF_VIS,
+                    "math.frac.one_half",
+                    "lesson18_half",
+                ),
+                _ep("1/2", "1/2", "math.frac.one_half", "lesson18_half_glyph"),
+                _ep("половина", "1/2", "math.frac.one_half", "lesson18_half_word"),
+                _ep(
+                    "1 из 2 кучек",
+                    "1/2",
+                    "math.frac.one_half",
+                    "lesson18_half_phrase",
+                ),
+                _scene(
+                    f"2/3 = {FRAC_TWO_THIRDS_VIS}",
+                    "lesson18_two_thirds",
+                    "math.frac.two_thirds",
+                ),
+                _ep(
+                    f"2/3 = {FRAC_TWO_THIRDS_VIS}",
+                    FRAC_TWO_THIRDS_VIS,
+                    "math.frac.two_thirds",
+                    "lesson18_two_thirds",
+                ),
+                _ep("2/3", "2/3", "math.frac.two_thirds", "lesson18_two_thirds_glyph"),
+                _ep(
+                    "2 из 3 кучек",
+                    "2/3",
+                    "math.frac.two_thirds",
+                    "lesson18_two_thirds_phrase",
+                ),
+                _scene(
+                    "() в дроби — одна кучка-доля; палочки внутри можно не рисовать (это не ноль из lesson 11)",
+                    "lesson18_heap_slot",
+                    "math.entity.heap_slot",
+                ),
+                _scene(
+                    f"3/4 = {FRAC_THREE_FOURTHS_VIS}",
+                    "lesson18_three_fourths",
+                    "math.frac.three_fourths",
+                ),
+                _ep(
+                    f"3/4 = {FRAC_THREE_FOURTHS_VIS}",
+                    FRAC_THREE_FOURTHS_VIS,
+                    "math.frac.three_fourths",
+                    "lesson18_three_fourths",
+                ),
+                _scene(
+                    f"3/4 = {FRAC_THREE_FOURTHS_FULL}",
+                    "lesson18_three_fourths_full",
+                    "math.frac.three_fourths",
+                ),
+                _ep(
+                    f"3/4 = {FRAC_THREE_FOURTHS_FULL}",
+                    FRAC_THREE_FOURTHS_FULL,
+                    "math.frac.three_fourths",
+                    "lesson18_three_fourths_full",
+                ),
+                _ep("3/4", "3/4", "math.frac.three_fourths", "lesson18_three_fourths_glyph"),
+                _ep(
+                    "3 из 4 кучек",
+                    "3/4",
+                    "math.frac.three_fourths",
+                    "lesson18_three_fourths_phrase",
+                ),
+                _ep(
+                    "|||| на 2 кучки → 1/2",
+                    "1/2",
+                    "math.frac.one_half",
+                    "lesson18_link_div",
+                ),
+                _ep(
+                    "|||| на 4 кучки, взяли 3 → 3/4",
+                    "3/4",
+                    "math.frac.three_fourths",
+                    "lesson18_link_div",
+                ),
             ],
         },
     ]
@@ -583,7 +1069,48 @@ def build_manifest() -> dict[str, Any]:
             {"cue": "|||| / 2", "expect": "math.op.div"},
             {"cue": "3 × 2", "expect": "math.op.mul"},
             {"cue": "||", "expect": "math.num.two"},
+            {"cue": "1/2", "expect": "math.frac.one_half"},
+            {"cue": FRAC_HALF_VIS, "expect": "math.frac.one_half"},
+            {"cue": "2/3", "expect": "math.frac.two_thirds"},
+            {"cue": "3/4", "expect": "math.frac.three_fourths"},
+            {"cue": "числитель / знаменатель", "expect": "math.concept.fraction"},
+            {"cue": "числитель / знаменатель = дробь", "expect": "math.concept.fraction"},
         ],
+        "mastery_probe": [
+            {"cue": "| + | = ?", "expect": "math.num.two", "tier": "compute", "op": "add"},
+            {"cue": "(||) + (||) = ?", "expect": "math.num.four", "tier": "compute", "op": "add"},
+            {"cue": "2 + 3 = ?", "expect": "math.num.five", "tier": "compute", "op": "add"},
+            {"cue": "||| - || = ?", "expect": "math.num.one", "tier": "compute", "op": "sub"},
+            {"cue": "(|||) - (||) = ?", "expect": "math.num.one", "tier": "compute", "op": "sub"},
+            {"cue": "5 - 2 = ?", "expect": "math.num.three", "tier": "compute", "op": "sub"},
+            {"cue": "3 × 2 = ?", "expect": "math.num.six", "tier": "compute", "op": "mul"},
+            {"cue": "|| || || = ?", "expect": "math.num.six", "tier": "compute", "op": "mul"},
+            {"cue": "|||| / 2 = ?", "expect": "math.num.two", "tier": "compute", "op": "div"},
+            {"cue": "6 / 3 = ?", "expect": "math.num.two", "tier": "compute", "op": "div"},
+            {"cue": "слагаемое", "expect": "math.role.addend", "tier": "role"},
+            {"cue": "делимое", "expect": "math.role.dividend", "tier": "role"},
+            {"cue": "произведение", "expect": "math.role.product", "tier": "role"},
+            {"cue": "разность", "expect": "math.role.difference", "tier": "role"},
+            {"cue": "2 + 3", "expect": "math.prop.commutative_add", "tier": "property"},
+            {"cue": "3 + 2", "expect": "math.prop.commutative_add", "tier": "property"},
+            {"cue": "||| + () = |||", "expect": "math.prop.identity_add_zero", "tier": "property"},
+            {"cue": "3 × 1", "expect": "math.prop.identity_mul_one", "tier": "property"},
+            {"cue": "6 / 3", "expect": "math.prop.division_inverse_mul", "tier": "property"},
+            {"cue": "1/2", "expect": "math.frac.one_half", "tier": "fraction"},
+            {"cue": FRAC_HALF_VIS, "expect": "math.frac.one_half", "tier": "fraction"},
+            {"cue": FRAC_TWO_THIRDS_VIS, "expect": "math.frac.two_thirds", "tier": "fraction"},
+            {"cue": FRAC_THREE_FOURTHS_VIS, "expect": "math.frac.three_fourths", "tier": "fraction"},
+            {"cue": "числитель", "expect": "math.role.numerator", "tier": "fraction"},
+            {"cue": "знаменатель", "expect": "math.role.denominator", "tier": "fraction"},
+            {"cue": "числитель / знаменатель", "expect": "math.concept.fraction", "tier": "fraction"},
+            {"cue": "числитель / знаменатель = дробь", "expect": "math.concept.fraction", "tier": "fraction"},
+        ],
+        "mastery_threshold": {
+            "compute": 0.85,
+            "role": 0.9,
+            "property": 0.75,
+            "fraction": 0.75,
+        },
         "lessons": lessons,
     }
 
