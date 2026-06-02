@@ -125,3 +125,19 @@ def test_predict_ranks_by_field_edges_not_name() -> None:
 def test_parse_comma_numeral_cue() -> None:
     assert parse_comma_numeral_cue("5, 10, 15, 20") == [5, 10, 15, 20]
     assert parse_comma_numeral_cue("5") is None
+
+
+def test_numeral_beyond_l0_named_range() -> None:
+    from casa.prisms.memory.f0_pattern_extract import (
+        numeral_concept_to_int,
+        numeral_int_to_concept_id,
+        numeral_surface_to_int,
+    )
+
+    assert numeral_int_to_concept_id(21) == "math.num.twenty_one"
+    assert numeral_int_to_concept_id(22) == "math.num.22"
+    assert numeral_int_to_concept_id(100) == "math.num.100"
+    assert numeral_surface_to_int("22") == 22
+    assert numeral_concept_to_int("math.num.22") == 22
+    assert numeral_concept_to_int("math.num.twenty_one") == 21
+    assert parse_comma_numeral_cue("20, 21, 22, 23") == [20, 21, 22, 23]
