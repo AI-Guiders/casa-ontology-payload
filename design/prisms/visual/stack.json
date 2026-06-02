@@ -1,39 +1,35 @@
 {
-  "schema_version": 1,
   "prism_id": "prism_visual",
+  "kind": "content",
   "semantic_namespace": "sensory.vis",
-  "description": "Vision modality v0 — visual anchors (vis.*), not raw pixels on SSS L2.",
   "lattices": [
     {
-      "lattice_id": "vis-object",
-      "legacy_id": "V1_object",
-      "semantic_id": "sensory.vis.object",
-      "z_level": 1,
-      "nca_profile": "vis",
-      "concept_prefix": "vis.",
-      "size": { "width": 32, "height": 32 }
+      "legacy_id": "V1_lum",
+      "z_level": 0,
+      "concept_prefix": "vis.lum.",
+      "size": { "width": 32, "height": 32 },
+      "status": "active"
     },
     {
-      "lattice_id": "vis-scene",
-      "legacy_id": "V2_scene",
-      "semantic_id": "sensory.vis.scene",
-      "z_level": 2,
-      "nca_profile": "vis",
-      "concept_prefix": "vis.scene.",
+      "legacy_id": "V1_chrom_r",
+      "z_level": 1,
+      "concept_prefix": "vis.chrom.r.",
       "size": { "width": 32, "height": 32 },
-      "status": "optional_v0"
-    }
-  ],
-  "bridges": [
+      "status": "active"
+    },
     {
-      "bridge_id": "x_bridge_vis_lang",
-      "kind": "cross_prism",
-      "from": "sensory.vis.object",
-      "to": "memory.lexicon.shard",
-      "relation": "ground",
-      "note": "vis.* ↔ lang.word.* via E: tokens and hot_context"
+      "legacy_id": "V1_chrom_g",
+      "z_level": 1,
+      "concept_prefix": "vis.chrom.g.",
+      "size": { "width": 32, "height": 32 },
+      "status": "active"
+    },
+    {
+      "legacy_id": "V1_chrom_b",
+      "z_level": 1,
+      "concept_prefix": "vis.chrom.b.",
+      "size": { "width": 32, "height": 32 },
+      "status": "active"
     }
-  ],
-  "ltm_path_template": "ltm/visual/{lattice_id}.ltm",
-  "nca_path_template": "nca/visual/{lattice_id}/"
+  ]
 }

@@ -23,13 +23,13 @@
     {
       "match": { "modality": "vis" },
       "target_prism": "prism_visual",
-      "lattice_hint": "V1_object",
+      "lattice_hint": "V1_lum",
       "priority": 95
     },
     {
       "match": { "modality": "image" },
       "target_prism": "prism_visual",
-      "lattice_hint": "V1_object",
+      "lattice_hint": "V1_lum",
       "priority": 95
     },
     {
