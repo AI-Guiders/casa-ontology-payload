@@ -1,0 +1,421 @@
+{
+  "schema_version": 1,
+  "class_id": "visual-cards",
+  "target_agent": "von-neumann",
+  "tract_id": "visual",
+  "codec_id": "retinal_lrgb",
+  "ingest_cli": "casa.cli.ingest_visual_class",
+  "requires_math_class": "math-palochki",
+  "_note": "concept_id/curriculum_tags — только для lab/mastery; runtime ingest не использует как oracle",
+  "stages": [
+    {
+      "id": "stage-01-count",
+      "title": "Счёт: точки и объекты",
+      "order": 1,
+      "lesson_ids": ["lesson-01-cardinality"]
+    },
+    {
+      "id": "stage-02-shapes",
+      "title": "Фигуры и счёт фигур",
+      "order": 2,
+      "lesson_ids": ["lesson-02-shapes"]
+    },
+    {
+      "id": "stage-03-numberline",
+      "title": "Числовая прямая 0–3",
+      "order": 3,
+      "lesson_ids": ["lesson-03-numberline"]
+    },
+    {
+      "id": "stage-04-grid",
+      "title": "Клеточная сетка",
+      "order": 4,
+      "lesson_ids": ["lesson-04-grid"]
+    },
+    {
+      "id": "stage-05-numberline-mark",
+      "title": "Прямая: точка на числе",
+      "order": 5,
+      "lesson_ids": ["lesson-05-numberline-mark"]
+    },
+    {
+      "id": "stage-06-numberline-compare",
+      "title": "Прямая: сравнение",
+      "order": 6,
+      "lesson_ids": ["lesson-06-numberline-compare"]
+    },
+    {
+      "id": "stage-07-numberline-add",
+      "title": "Прямая: сложение отрезков",
+      "order": 7,
+      "lesson_ids": ["lesson-07-numberline-add"]
+    },
+    {
+      "id": "stage-08-numberline-sub",
+      "title": "Прямая: вычитание отрезков",
+      "order": 8,
+      "lesson_ids": ["lesson-08-numberline-sub"]
+    },
+    {
+      "id": "stage-09-commutative",
+      "title": "Перестановка слагаемых: 2+3 и 3+2",
+      "order": 9,
+      "lesson_ids": ["lesson-09-commutative"]
+    },
+    {
+      "id": "stage-10-multiply",
+      "title": "Умножение: клетки прямоугольника",
+      "order": 10,
+      "lesson_ids": ["lesson-10-multiply"]
+    },
+    {
+      "id": "stage-11-divide",
+      "title": "Деление: доля квадрата",
+      "order": 11,
+      "lesson_ids": ["lesson-11-divide"]
+    },
+    {
+      "id": "stage-12-fraction",
+      "title": "Дроби: часть целого",
+      "order": 12,
+      "lesson_ids": ["lesson-12-fraction"]
+    },
+    {
+      "id": "stage-13-sets",
+      "title": "Множества: диаграммы Эйлера–Венна",
+      "order": 13,
+      "lesson_ids": ["lesson-13-sets"]
+    }
+  ],
+  "frames": [
+    {
+      "id": "count-1-dot",
+      "path": "lesson-01-cardinality/images/count-1-dot.jpg",
+      "scene_label": "card:count:1-dot",
+      "concept_id": "math.num.one",
+      "lesson_id": "lesson-01-cardinality"
+    },
+    {
+      "id": "count-2-dots",
+      "path": "lesson-01-cardinality/images/count-2-dots.jpg",
+      "scene_label": "card:count:2-dots",
+      "concept_id": "math.num.two",
+      "lesson_id": "lesson-01-cardinality"
+    },
+    {
+      "id": "count-3-dots",
+      "path": "lesson-01-cardinality/images/count-3-dots.jpg",
+      "scene_label": "card:count:3-dots",
+      "concept_id": "math.num.three",
+      "lesson_id": "lesson-01-cardinality"
+    },
+    {
+      "id": "count-2-grains",
+      "path": "lesson-01-cardinality/images/count-2-grains.jpg",
+      "scene_label": "card:count:2-grain",
+      "concept_id": "math.num.two",
+      "lesson_id": "lesson-01-cardinality"
+    },
+    {
+      "id": "count-2-cows",
+      "path": "lesson-01-cardinality/images/count-2-cows.jpg",
+      "scene_label": "card:count:2-cow",
+      "concept_id": "math.num.two",
+      "lesson_id": "lesson-01-cardinality"
+    },
+    {
+      "id": "shape-circle",
+      "path": "lesson-02-shapes/images/shape-circle.jpg",
+      "scene_label": "card:shape:circle",
+      "concept_id": "vis.shape.circle",
+      "lesson_id": "lesson-02-shapes"
+    },
+    {
+      "id": "shape-square",
+      "path": "lesson-02-shapes/images/shape-square.jpg",
+      "scene_label": "card:shape:square",
+      "concept_id": "vis.shape.square",
+      "lesson_id": "lesson-02-shapes"
+    },
+    {
+      "id": "shape-rectangle",
+      "path": "lesson-02-shapes/images/shape-rectangle.jpg",
+      "scene_label": "card:shape:rectangle",
+      "concept_id": "vis.shape.rectangle",
+      "lesson_id": "lesson-02-shapes"
+    },
+    {
+      "id": "count-2-shapes",
+      "path": "lesson-02-shapes/images/count-2-shapes.jpg",
+      "scene_label": "card:count:2-circle",
+      "concept_id": "math.num.two",
+      "lesson_id": "lesson-02-shapes"
+    },
+    {
+      "id": "count-3-shapes",
+      "path": "lesson-02-shapes/images/count-3-shapes.jpg",
+      "scene_label": "card:count:3-square",
+      "concept_id": "math.num.three",
+      "lesson_id": "lesson-02-shapes"
+    },
+    {
+      "id": "count-4-shapes",
+      "path": "lesson-02-shapes/images/count-4-shapes.jpg",
+      "scene_label": "card:count:4-rectangle",
+      "concept_id": "math.num.four",
+      "lesson_id": "lesson-02-shapes"
+    },
+    {
+      "id": "count-5-shapes",
+      "path": "lesson-02-shapes/images/count-5-shapes.jpg",
+      "scene_label": "card:count:5-circle",
+      "concept_id": "math.num.five",
+      "lesson_id": "lesson-02-shapes"
+    },
+    {
+      "id": "count-mixed-3c-2s-2r",
+      "path": "lesson-02-shapes/images/count-mixed-3c-2s-2r.jpg",
+      "scene_label": "card:count:mixed-3circle-2square-2rect",
+      "curriculum_tags": ["vis.shape.mixed_count"],
+      "lesson_id": "lesson-02-shapes"
+    },
+    {
+      "id": "count-mixed-3c-2s-2r-labeled",
+      "path": "lesson-02-shapes/images/count-mixed-3c-2s-2r-labeled.jpg",
+      "scene_label": "card:count:mixed-3circle-2square-2rect-labeled",
+      "curriculum_tags": ["vis.shape.mixed_count", "vis.notation.count_by_type"],
+      "lesson_id": "lesson-02-shapes"
+    },
+    {
+      "id": "numberline-0-3",
+      "path": "lesson-03-numberline/images/numberline-0-3.jpg",
+      "scene_label": "card:numberline:0-3",
+      "concept_id": "math.numberline.segment",
+      "lesson_id": "lesson-03-numberline"
+    },
+    {
+      "id": "grid-square-2x2",
+      "path": "lesson-04-grid/images/grid-square-2x2.jpg",
+      "scene_label": "card:grid:square-2x2",
+      "concept_id": "vis.grid.square",
+      "lesson_id": "lesson-04-grid"
+    },
+    {
+      "id": "grid-square-3x3",
+      "path": "lesson-04-grid/images/grid-square-3x3.jpg",
+      "scene_label": "card:grid:square-3x3",
+      "concept_id": "vis.grid.square",
+      "lesson_id": "lesson-04-grid"
+    },
+    {
+      "id": "grid-rect-4x2",
+      "path": "lesson-04-grid/images/grid-rect-4x2.jpg",
+      "scene_label": "card:grid:rect-4x2",
+      "concept_id": "vis.grid.rectangle",
+      "lesson_id": "lesson-04-grid"
+    },
+    {
+      "id": "grid-rect-3x2",
+      "path": "lesson-04-grid/images/grid-rect-3x2.jpg",
+      "scene_label": "card:grid:rect-3x2",
+      "concept_id": "vis.grid.rectangle",
+      "lesson_id": "lesson-04-grid"
+    },
+    {
+      "id": "numberline-mark-1",
+      "path": "lesson-05-numberline-mark/images/numberline-mark-1.jpg",
+      "scene_label": "card:numberline:mark-1",
+      "concept_id": "math.numberline.point",
+      "lesson_id": "lesson-05-numberline-mark"
+    },
+    {
+      "id": "numberline-mark-2",
+      "path": "lesson-05-numberline-mark/images/numberline-mark-2.jpg",
+      "scene_label": "card:numberline:mark-2",
+      "concept_id": "math.numberline.point",
+      "lesson_id": "lesson-05-numberline-mark"
+    },
+    {
+      "id": "numberline-mark-3",
+      "path": "lesson-05-numberline-mark/images/numberline-mark-3.jpg",
+      "scene_label": "card:numberline:mark-3",
+      "concept_id": "math.numberline.point",
+      "lesson_id": "lesson-05-numberline-mark"
+    },
+    {
+      "id": "numberline-compare-3gt2",
+      "path": "lesson-06-numberline-compare/images/numberline-compare-3gt2.jpg",
+      "scene_label": "card:numberline:3gt2",
+      "concept_id": "math.compare.gt",
+      "lesson_id": "lesson-06-numberline-compare"
+    },
+    {
+      "id": "numberline-compare-2lt3",
+      "path": "lesson-06-numberline-compare/images/numberline-compare-2lt3.jpg",
+      "scene_label": "card:numberline:2lt3",
+      "concept_id": "math.compare.lt",
+      "lesson_id": "lesson-06-numberline-compare"
+    },
+    {
+      "id": "numberline-lengths-2-and-3",
+      "path": "lesson-07-numberline-add/images/numberline-lengths-2-and-3.jpg",
+      "scene_label": "card:numberline:length-2-and-3",
+      "concept_id": "math.numberline.length",
+      "lesson_id": "lesson-07-numberline-add"
+    },
+    {
+      "id": "numberline-add-2plus3",
+      "path": "lesson-07-numberline-add/images/numberline-add-2plus3.jpg",
+      "scene_label": "card:numberline:2plus3",
+      "concept_id": "math.op.add",
+      "lesson_id": "lesson-07-numberline-add"
+    },
+    {
+      "id": "numberline-lengths-5-and-2",
+      "path": "lesson-08-numberline-sub/images/numberline-lengths-5-and-2.jpg",
+      "scene_label": "card:numberline:length-5-and-2",
+      "concept_id": "math.numberline.length",
+      "lesson_id": "lesson-08-numberline-sub"
+    },
+    {
+      "id": "numberline-sub-5minus2",
+      "path": "lesson-08-numberline-sub/images/numberline-sub-5minus2.jpg",
+      "scene_label": "card:numberline:5minus2",
+      "concept_id": "math.op.sub",
+      "lesson_id": "lesson-08-numberline-sub"
+    },
+    {
+      "id": "numberline-add-3plus2",
+      "path": "lesson-09-commutative/images/numberline-add-3plus2.jpg",
+      "scene_label": "card:numberline:3plus2",
+      "curriculum_tags": ["math.prop.commutative_add", "math.op.add"],
+      "lesson_id": "lesson-09-commutative"
+    },
+    {
+      "id": "numberline-add-2plus3-comm",
+      "path": "lesson-09-commutative/images/numberline-add-2plus3.jpg",
+      "scene_label": "card:numberline:2plus3",
+      "curriculum_tags": ["math.prop.commutative_add", "math.op.add"],
+      "lesson_id": "lesson-09-commutative"
+    },
+    {
+      "id": "grid-6x3",
+      "path": "lesson-10-multiply/images/grid-6x3.jpg",
+      "scene_label": "card:grid:6x3",
+      "curriculum_tags": ["vis.grid.rectangle"],
+      "lesson_id": "lesson-10-multiply"
+    },
+    {
+      "id": "grid-multiply-6x3",
+      "path": "lesson-10-multiply/images/grid-multiply-6x3.jpg",
+      "scene_label": "card:grid:multiply-6x3",
+      "curriculum_tags": ["math.op.mul"],
+      "lesson_id": "lesson-10-multiply"
+    },
+    {
+      "id": "grid-multiply-3x2",
+      "path": "lesson-10-multiply/images/grid-multiply-3x2.jpg",
+      "scene_label": "card:grid:multiply-3x2",
+      "curriculum_tags": ["math.op.mul"],
+      "lesson_id": "lesson-10-multiply"
+    },
+    {
+      "id": "grid-divide-6by3",
+      "path": "lesson-11-divide/images/grid-divide-6by3.jpg",
+      "scene_label": "card:grid:divide-6by3",
+      "curriculum_tags": ["math.op.div"],
+      "lesson_id": "lesson-11-divide"
+    },
+    {
+      "id": "grid-divide-6by2",
+      "path": "lesson-11-divide/images/grid-divide-6by2.jpg",
+      "scene_label": "card:grid:divide-6by2",
+      "curriculum_tags": ["math.op.div"],
+      "lesson_id": "lesson-11-divide"
+    },
+    {
+      "id": "grid-divide-8by4",
+      "path": "lesson-11-divide/images/grid-divide-8by4.jpg",
+      "scene_label": "card:grid:divide-8by4",
+      "curriculum_tags": ["math.op.div"],
+      "lesson_id": "lesson-11-divide"
+    },
+    {
+      "id": "fraction-half",
+      "path": "lesson-12-fraction/images/fraction-half.jpg",
+      "scene_label": "card:fraction:1over2",
+      "curriculum_tags": ["math.num.fraction"],
+      "lesson_id": "lesson-12-fraction"
+    },
+    {
+      "id": "fraction-third",
+      "path": "lesson-12-fraction/images/fraction-third.jpg",
+      "scene_label": "card:fraction:1over3",
+      "curriculum_tags": ["math.num.fraction"],
+      "lesson_id": "lesson-12-fraction"
+    },
+    {
+      "id": "fraction-two-thirds",
+      "path": "lesson-12-fraction/images/fraction-two-thirds.jpg",
+      "scene_label": "card:fraction:2over3",
+      "curriculum_tags": ["math.num.fraction"],
+      "lesson_id": "lesson-12-fraction"
+    },
+    {
+      "id": "fraction-three-quarters",
+      "path": "lesson-12-fraction/images/fraction-three-quarters.jpg",
+      "scene_label": "card:fraction:3over4",
+      "curriculum_tags": ["math.num.fraction"],
+      "lesson_id": "lesson-12-fraction"
+    },
+    {
+      "id": "fraction-third-6strip",
+      "path": "lesson-12-fraction/images/fraction-third-6strip.jpg",
+      "scene_label": "card:fraction:1over3-strip6",
+      "curriculum_tags": ["math.num.fraction", "math.op.div"],
+      "lesson_id": "lesson-12-fraction"
+    },
+    {
+      "id": "venn-two-empty",
+      "path": "lesson-13-sets/images/venn-two-empty.jpg",
+      "scene_label": "card:venn:two-empty",
+      "curriculum_tags": ["vis.set.venn"],
+      "lesson_id": "lesson-13-sets"
+    },
+    {
+      "id": "venn-region-disjoint",
+      "path": "lesson-13-sets/images/venn-region-disjoint.jpg",
+      "scene_label": "card:venn:region-disjoint",
+      "curriculum_tags": ["vis.set.disjoint", "math.set.disjoint"],
+      "lesson_id": "lesson-13-sets"
+    },
+    {
+      "id": "venn-region-intersect",
+      "path": "lesson-13-sets/images/venn-region-intersect.jpg",
+      "scene_label": "card:venn:region-intersect",
+      "curriculum_tags": ["vis.set.intersect", "math.set.intersect"],
+      "lesson_id": "lesson-13-sets"
+    },
+    {
+      "id": "venn-region-union",
+      "path": "lesson-13-sets/images/venn-region-union.jpg",
+      "scene_label": "card:venn:region-union",
+      "curriculum_tags": ["vis.set.union", "math.set.union"],
+      "lesson_id": "lesson-13-sets"
+    },
+    {
+      "id": "venn-region-subset",
+      "path": "lesson-13-sets/images/venn-region-subset.jpg",
+      "scene_label": "card:venn:region-subset",
+      "curriculum_tags": ["vis.set.subset", "math.set.subset"],
+      "lesson_id": "lesson-13-sets"
+    },
+    {
+      "id": "venn-region-a-only",
+      "path": "lesson-13-sets/images/venn-region-a-only.jpg",
+      "scene_label": "card:venn:region-a-only",
+      "curriculum_tags": ["vis.set.difference", "math.set.difference"],
+      "lesson_id": "lesson-13-sets"
+    }
+  ]
+}

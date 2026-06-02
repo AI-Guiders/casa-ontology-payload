@@ -1,0 +1,777 @@
+#!/usr/bin/env python3
+"""Download CC0/PD assets and build visual curriculum card JPEGs."""
+
+from __future__ import annotations
+
+import io
+import json
+import urllib.parse
+import urllib.request
+from pathlib import Path
+
+from PIL import Image, ImageChops, ImageDraw, ImageFont
+
+ROOT = Path(__file__).resolve().parents[1]
+CARD_W, CARD_H = 640, 480
+BG = (250, 250, 248)
+
+def _commons_url(file_title: str) -> str:
+    q = urllib.parse.urlencode(
+        {
+            "action": "query",
+            "titles": file_title,
+            "prop": "imageinfo",
+            "iiprop": "url",
+            "format": "json",
+        }
+    )
+    req = urllib.request.Request(
+        f"https://commons.wikimedia.org/w/api.php?{q}",
+        headers={"User-Agent": "casa-visual-cards/1.0 (curriculum build)"},
+    )
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        data = json.load(resp)
+    page = next(iter(data["query"]["pages"].values()))
+    info = page.get("imageinfo") or []
+    if not info or "url" not in info[0]:
+        raise RuntimeError(f"no url for {file_title}")
+    return str(info[0]["url"])
+
+
+ASSETS = {
+    "rice_grain": "File:Single_grain_of_rice.png",
+    "cow": "File:Spot_the_cow.png",
+}
+
+
+def _fetch(url: str) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent": "casa-visual-cards/1.0"})
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        return resp.read()
+
+
+def _load_raster(raw: bytes) -> Image.Image:
+    return Image.open(io.BytesIO(raw)).convert("RGBA")
+
+
+def _blank() -> Image.Image:
+    return Image.new("RGB", (CARD_W, CARD_H), BG)
+
+
+def _paste_centered(base: Image.Image, sprite: Image.Image, xy: tuple[int, int], size: int) -> None:
+    s = sprite.copy()
+    s.thumbnail((size, size), Image.Resampling.LANCZOS)
+    x = xy[0] - s.width // 2
+    y = xy[1] - s.height // 2
+    base.paste(s, (x, y), s)
+
+
+def _draw_dots(n: int, out: Path) -> None:
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    r = 28
+    gap = 120
+    cx = CARD_W // 2 - (n - 1) * gap // 2
+    cy = CARD_H // 2
+    for i in range(n):
+        x = cx + i * gap
+        draw.ellipse((x - r, cy - r, x + r, cy + r), fill=(20, 20, 20))
+    img.save(out, "JPEG", quality=92)
+
+
+def _centered_box(cx: int, cy: int, half_w: int, half_h: int) -> tuple[int, int, int, int]:
+    return (cx - half_w, cy - half_h, cx + half_w, cy + half_h)
+
+
+def _draw_one_shape(
+    draw: ImageDraw.ImageDraw,
+    cx: int,
+    cy: int,
+    kind: str,
+    *,
+    scale: float = 1.0,
+    stroke: tuple[int, int, int] = (25, 25, 25),
+    stroke_w: int = 6,
+) -> None:
+    if kind == "circle":
+        r = int(55 * scale)
+        draw.ellipse(_centered_box(cx, cy, r, r), outline=stroke, width=stroke_w)
+    elif kind == "square":
+        half = int(55 * scale)
+        draw.rectangle(_centered_box(cx, cy, half, half), outline=stroke, width=stroke_w)
+    elif kind == "rectangle":
+        draw.rectangle(
+            _centered_box(cx, cy, int(70 * scale), int(40 * scale)),
+            outline=stroke,
+            width=stroke_w,
+        )
+    else:
+        raise ValueError(kind)
+
+
+def _draw_shape_row(n: int, kind: str, out: Path) -> None:
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    scale = {2: 1.0, 3: 0.9, 4: 0.78, 5: 0.66}[n]
+    gap = {2: 190, 3: 145, 4: 118, 5: 98}[n]
+    cy = CARD_H // 2
+    start_x = CARD_W // 2 - (n - 1) * gap // 2
+    for i in range(n):
+        _draw_one_shape(draw, start_x + i * gap, cy, kind, scale=scale)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_mini_shape(
+    draw: ImageDraw.ImageDraw,
+    cx: int,
+    cy: int,
+    kind: str,
+    *,
+    size: int = 14,
+    stroke: tuple[int, int, int] = (25, 25, 25),
+    stroke_w: int = 3,
+) -> None:
+    scale = size / 55.0
+    _draw_one_shape(draw, cx, cy, kind, scale=scale, stroke=stroke, stroke_w=stroke_w)
+
+
+def _draw_count_term_glyph(
+    draw: ImageDraw.ImageDraw,
+    x: int,
+    y: int,
+    n: int,
+    kind: str,
+    *,
+    font: ImageFont.FreeTypeFont | ImageFont.ImageFont,
+) -> int:
+    """Draw `n` + mini shape glyph; return x after term."""
+    stroke = (25, 25, 25)
+    num = str(n)
+    draw.text((x, y), num, fill=stroke, font=font)
+    bbox = draw.textbbox((x, y), num, font=font)
+    gx = bbox[2] + 18
+    gy = y + (bbox[3] - bbox[1]) // 2 + 5
+    _draw_mini_shape(draw, gx, gy, kind, size=14)
+    return gx + 22
+
+
+def _shape_half_extents(kind: str, scale: float) -> tuple[int, int]:
+    if kind == "circle":
+        r = int(55 * scale)
+        return r, r
+    if kind == "square":
+        half = int(55 * scale)
+        return half, half
+    if kind == "rectangle":
+        return int(70 * scale), int(40 * scale)
+    raise ValueError(kind)
+
+
+def _group_row_xs(kind: str, n: int, *, scale: float, center_x: int, edge_gap: int = 30) -> list[int]:
+    """Center x for each shape in a row — clear gap between outlines."""
+    half_w, _ = _shape_half_extents(kind, scale)
+    gap = edge_gap + (6 if kind == "rectangle" else 0)
+    pitch = 2 * half_w + gap
+    start_x = center_x - (n - 1) * pitch // 2
+    return [start_x + i * pitch for i in range(n)]
+
+
+def _group_span_width(kind: str, n: int, scale: float) -> tuple[int, int]:
+    """Total width and max half-height for a row group centered at 0."""
+    xs = _group_row_xs(kind, n, scale=scale, center_x=0)
+    half_w, half_h = _shape_half_extents(kind, scale)
+    left = min(xs) - half_w
+    right = max(xs) + half_w
+    return right - left, half_h
+
+
+def _count_term_width(
+    draw: ImageDraw.ImageDraw,
+    n: int,
+    kind: str,
+    font: ImageFont.FreeTypeFont | ImageFont.ImageFont,
+) -> int:
+    bbox = draw.textbbox((0, 0), str(n), font=font)
+    return bbox[2] - bbox[0] + 40
+
+
+def _draw_mixed_shape_counts(out: Path, *, show_label: bool = False) -> None:
+    """3 circles + 2 squares + 2 rectangles in separate groups; optional n(shape) label."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    stroke = (25, 25, 25)
+    groups: list[tuple[str, int, float]] = [
+        ("circle", 3, 0.36),
+        ("square", 2, 0.40),
+        ("rectangle", 2, 0.38),
+    ]
+    sep = (190, 190, 188)
+    sep_pad = 56
+    cy = CARD_H // 2 - (50 if show_label else 20)
+
+    spans: list[tuple[int, int]] = [_group_span_width(k, n, s) for k, n, s in groups]
+    total_w = sum(w for w, _ in spans) + sep_pad * (len(groups) - 1)
+    x = (CARD_W - total_w) // 2
+    centers: list[int] = []
+    for width, _ in spans:
+        centers.append(x + width // 2)
+        x += width + sep_pad
+
+    for col, (kind, n, scale) in enumerate(groups):
+        for sx in _group_row_xs(kind, n, scale=scale, center_x=centers[col]):
+            _draw_one_shape(draw, sx, cy, kind, scale=scale, stroke=stroke, stroke_w=5)
+
+    max_h = max(h for _, h in spans)
+    for col in range(len(groups) - 1):
+        right = centers[col] + spans[col][0] // 2
+        left_next = centers[col + 1] - spans[col + 1][0] // 2
+        sx = (right + left_next) // 2
+        draw.line((sx, cy - max_h - 10, sx, cy + max_h + 10), fill=sep, width=2)
+
+    if show_label:
+        label_font = _font(34)
+        ly = cy + max_h + 36
+        for col, (kind, n, _) in enumerate(groups):
+            tw = _count_term_width(draw, n, kind, label_font)
+            _draw_count_term_glyph(draw, centers[col] - tw // 2, ly, n, kind, font=label_font)
+
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_shape(kind: str, out: Path) -> None:
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    stroke = (25, 25, 25)
+    stroke_w = 8
+    cx, cy = CARD_W // 2, CARD_H // 2
+    if kind == "circle":
+        r = 180
+        draw.ellipse(_centered_box(cx, cy, r, r), outline=stroke, width=stroke_w)
+    elif kind == "square":
+        half = 180
+        draw.rectangle(_centered_box(cx, cy, half, half), outline=stroke, width=stroke_w)
+    elif kind == "rectangle":
+        draw.rectangle(_centered_box(cx, cy, 240, 140), outline=stroke, width=stroke_w)
+    else:
+        raise ValueError(kind)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_gridded_rect(cols: int, rows: int, out: Path) -> None:
+    """cols × rows unit cells; square when cols == rows."""
+    _draw_gridded_rect_advanced(cols, rows, out)
+
+
+def _grid_geometry(cols: int, rows: int) -> tuple[int, int, int, int, int]:
+    margin = 56
+    cell = min((CARD_W - 2 * margin) // cols, (CARD_H - 2 * margin - 56) // rows)
+    grid_w = cols * cell
+    grid_h = rows * cell
+    x0 = (CARD_W - grid_w) // 2
+    y0 = (CARD_H - grid_h) // 2 - 20
+    return x0, y0, cell, grid_w, grid_h
+
+
+def _draw_gridded_rect_advanced(
+    cols: int,
+    rows: int,
+    out: Path,
+    *,
+    label: str = "",
+    fill_cols: tuple[int, int] | None = None,
+    fill_rows: tuple[int, int] | None = None,
+    fill_color: tuple[int, int, int] = (45, 95, 165),
+    strip_divisions: int = 0,
+    highlight_strip: int = 0,
+) -> None:
+    """Grid with optional shaded region, vertical strip partition, and label."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    x0, y0, cell, grid_w, grid_h = _grid_geometry(cols, rows)
+    x1 = x0 + grid_w
+    y1 = y0 + grid_h
+    outer = (25, 25, 25)
+    grid_line = (175, 175, 172)
+
+    if fill_cols and fill_rows:
+        c0, c1 = fill_cols
+        r0, r1 = fill_rows
+        draw.rectangle(
+            (x0 + c0 * cell, y0 + r0 * cell, x0 + c1 * cell, y0 + r1 * cell),
+            fill=fill_color,
+        )
+
+    if strip_divisions > 0:
+        strip_w = grid_w // strip_divisions
+        hi = max(0, min(highlight_strip, strip_divisions - 1))
+        sx0 = x0 + hi * strip_w
+        sx1 = x0 + (hi + 1) * strip_w if hi < strip_divisions - 1 else x1
+        draw.rectangle((sx0, y0, sx1, y1), fill=fill_color, outline=None)
+        for k in range(1, strip_divisions):
+            x = x0 + k * strip_w
+            draw.line((x, y0, x, y1), fill=outer, width=4)
+
+    for c in range(1, cols):
+        x = x0 + c * cell
+        draw.line((x, y0, x, y1), fill=grid_line, width=2)
+    for r in range(1, rows):
+        y = y0 + r * cell
+        draw.line((x0, y, x1, y), fill=grid_line, width=2)
+    draw.rectangle((x0, y0, x1, y1), outline=outer, width=8)
+
+    if label:
+        label_font = _font(44)
+        bbox = draw.textbbox((0, 0), label, font=label_font)
+        tw = bbox[2] - bbox[0]
+        draw.text((CARD_W // 2 - tw // 2, y1 + 24), label, fill=(20, 20, 20), font=label_font)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_multiply(cols: int, rows: int, out: Path) -> None:
+    """Area model: cols × rows unit cells with product label."""
+    _draw_gridded_rect_advanced(cols, rows, out, label=f"{cols}×{rows}")
+
+
+def _draw_division_square(side: int, parts: int, out: Path) -> None:
+    """Square side×side partitioned into `parts` equal vertical strips; one strip highlighted."""
+    _draw_gridded_rect_advanced(
+        side,
+        side,
+        out,
+        label=f"{side}÷{parts}",
+        strip_divisions=parts,
+        highlight_strip=0,
+        fill_color=(165, 75, 45),
+    )
+
+
+def _draw_fraction(numerator: int, denominator: int, out: Path) -> None:
+    """d×d cell grid; bottom `numerator` of `denominator` rows shaded (area = n/d)."""
+    d = denominator
+    _draw_gridded_rect_advanced(
+        d,
+        d,
+        out,
+        label=f"{numerator}/{denominator}",
+        fill_cols=(0, d),
+        fill_rows=(d - numerator, d),
+        fill_color=(45, 95, 165),
+    )
+
+
+def _draw_fraction_vertical_strip(side: int, parts: int, out: Path) -> None:
+    """Same geometry as division (one vertical strip); label n/d with n=1 — links ÷ and fractions."""
+    _draw_gridded_rect_advanced(
+        side,
+        side,
+        out,
+        label=f"1/{parts}",
+        strip_divisions=parts,
+        highlight_strip=0,
+        fill_color=(45, 95, 165),
+    )
+
+
+def _font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
+    try:
+        return ImageFont.truetype("arial.ttf", size)
+    except OSError:
+        return ImageFont.load_default()
+
+
+def _numberline_layout(*, max_n: int = 5, y: int | None = None) -> tuple[int, int, int, float]:
+    axis_y = CARD_H // 2 if y is None else y
+    x0, x1 = 70, CARD_W - 70
+    step = (x1 - x0) / max_n
+    return x0, x1, axis_y, step
+
+
+def _draw_numberline_axis(
+    draw: ImageDraw.ImageDraw,
+    *,
+    max_n: int = 5,
+    y: int | None = None,
+    font_size: int = 36,
+) -> tuple[int, int, float]:
+    x0, x1, axis_y, step = _numberline_layout(max_n=max_n, y=y)
+    font = _font(font_size)
+    draw.line((x0, axis_y, x1, axis_y), fill=(30, 30, 30), width=4)
+    for i in range(max_n + 1):
+        x = int(x0 + i * step)
+        draw.line((x, axis_y - 12, x, axis_y + 12), fill=(30, 30, 30), width=3)
+        draw.text((x - 10, axis_y + 18), str(i), fill=(20, 20, 20), font=font)
+    return x0, axis_y, step
+
+
+def _draw_numberline(out: Path) -> None:
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    _draw_numberline_axis(draw, max_n=3, y=CARD_H // 2 + 40)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_numberline_mark(n: int, out: Path, *, max_n: int = 5) -> None:
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    x0, axis_y, step = _draw_numberline_axis(draw, max_n=max_n, y=CARD_H // 2)
+    mx = int(x0 + n * step)
+    r = 16
+    draw.ellipse((mx - r, axis_y - r, mx + r, axis_y + r), fill=(20, 20, 20))
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_numberline_compare(a: int, b: int, relation: str, out: Path, *, max_n: int = 5) -> None:
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    axis_y = CARD_H // 2 - 40
+    x0, _, step = _draw_numberline_axis(draw, max_n=max_n, y=axis_y, font_size=32)
+    mark = (60, 60, 60)
+    for val in (a, b):
+        vx = int(x0 + val * step)
+        r = 11
+        draw.ellipse((vx - r, axis_y - r, vx + r, axis_y + r), fill=mark)
+    label = f"{a} > {b}" if relation == "gt" else f"{a} < {b}"
+    label_font = _font(44)
+    bbox = draw.textbbox((0, 0), label, font=label_font)
+    tw = bbox[2] - bbox[0]
+    draw.text((CARD_W // 2 - tw // 2, axis_y + 58), label, fill=(20, 20, 20), font=label_font)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_length_bar(
+    draw: ImageDraw.ImageDraw,
+    x0: float,
+    step: float,
+    y: int,
+    start: int,
+    end: int,
+    color: tuple[int, int, int],
+    *,
+    width: int = 12,
+) -> None:
+    xa = int(x0 + start * step)
+    xb = int(x0 + end * step)
+    draw.line((xa, y, xb, y), fill=color, width=width)
+
+
+def _draw_numberline_lengths_separate(a: int, b: int, out: Path, *, max_n: int = 5) -> None:
+    """Axis on top; two parallel bars from 0 of lengths a and b."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    axis_y = 95
+    x0, _, step = _draw_numberline_axis(draw, max_n=max_n, y=axis_y, font_size=28)
+    seg_y1 = 175
+    seg_y2 = 245
+    col_a = (45, 95, 165)
+    col_b = (165, 75, 45)
+    _draw_length_bar(draw, x0, step, seg_y1, 0, a, col_a)
+    _draw_length_bar(draw, x0, step, seg_y2, 0, b, col_b)
+    font = _font(30)
+    draw.text((int(x0 + a * step) + 10, seg_y1 - 24), str(a), fill=col_a, font=font)
+    draw.text((int(x0 + b * step) + 10, seg_y2 - 24), str(b), fill=col_b, font=font)
+    x_origin = int(x0)
+    draw.line((x_origin, axis_y - 10, x_origin, seg_y2 + 14), fill=(190, 190, 188), width=2)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_numberline_add(a: int, b: int, out: Path, *, max_n: int = 5) -> None:
+    """Concatenate lengths a then b from 0; label a+b."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    axis_y = 95
+    x0, _, step = _draw_numberline_axis(draw, max_n=max_n, y=axis_y, font_size=28)
+    seg_y = 190
+    total = a + b
+    col_a = (45, 95, 165)
+    col_b = (165, 75, 45)
+    _draw_length_bar(draw, x0, step, seg_y, 0, a, col_a)
+    _draw_length_bar(draw, x0, step, seg_y, a, total, col_b)
+    for n in (0, a, total):
+        x = int(x0 + n * step)
+        draw.line((x, seg_y - 20, x, seg_y + 20), fill=(30, 30, 30), width=3)
+    label = f"{a}+{b}"
+    label_font = _font(44)
+    bbox = draw.textbbox((0, 0), label, font=label_font)
+    tw = bbox[2] - bbox[0]
+    draw.text((CARD_W // 2 - tw // 2, seg_y + 48), label, fill=(20, 20, 20), font=label_font)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_numberline_sub(total: int, subtract: int, out: Path, *, max_n: int = 5) -> None:
+    """Full bar 0..total; rightmost `subtract` units marked removed; label total-subtract."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    axis_y = 95
+    x0, _, step = _draw_numberline_axis(draw, max_n=max_n, y=axis_y, font_size=28)
+    seg_y = 190
+    remain = total - subtract
+    col_keep = (45, 95, 165)
+    col_cut = (195, 175, 170)
+    col_ghost = (210, 210, 208)
+    _draw_length_bar(draw, x0, step, seg_y, 0, total, col_ghost, width=14)
+    _draw_length_bar(draw, x0, step, seg_y, 0, remain, col_keep)
+    _draw_length_bar(draw, x0, step, seg_y, remain, total, col_cut)
+    for n in (0, remain, total):
+        x = int(x0 + n * step)
+        draw.line((x, seg_y - 20, x, seg_y + 20), fill=(30, 30, 30), width=3)
+    label = f"{total}-{subtract}"
+    label_font = _font(44)
+    bbox = draw.textbbox((0, 0), label, font=label_font)
+    tw = bbox[2] - bbox[0]
+    draw.text((CARD_W // 2 - tw // 2, seg_y + 48), label, fill=(20, 20, 20), font=label_font)
+    img.save(out, "JPEG", quality=92)
+
+
+def _venn_geometry(*, disjoint: bool = False, subset: bool = False) -> dict[str, int]:
+    cy = CARD_H // 2 + 10
+    rx, ry = 130, 100
+    if subset:
+        return {
+            "cx_a": CARD_W // 2,
+            "cx_b": CARD_W // 2,
+            "cy": cy,
+            "rx_a": 55,
+            "ry_a": 45,
+            "rx_b": rx,
+            "ry_b": ry,
+            "disjoint": False,
+            "subset": True,
+        }
+    if disjoint:
+        return {
+            "cx_a": CARD_W // 2 - 150,
+            "cx_b": CARD_W // 2 + 150,
+            "cy": cy,
+            "rx_a": rx,
+            "ry_a": ry,
+            "rx_b": rx,
+            "ry_b": ry,
+            "disjoint": True,
+            "subset": False,
+        }
+    return {
+        "cx_a": CARD_W // 2 - 75,
+        "cx_b": CARD_W // 2 + 75,
+        "cy": cy,
+        "rx_a": rx,
+        "ry_a": ry,
+        "rx_b": rx,
+        "ry_b": ry,
+        "disjoint": False,
+        "subset": False,
+    }
+
+
+def _ellipse_mask(size: tuple[int, int], cx: int, cy: int, rx: int, ry: int) -> Image.Image:
+    mask = Image.new("L", size, 0)
+    ImageDraw.Draw(mask).ellipse((cx - rx, cy - ry, cx + rx, cy + ry), fill=255)
+    return mask
+
+
+def _draw_venn_regions(
+    out: Path,
+    *,
+    highlight: str = "none",
+    disjoint: bool = False,
+    subset: bool = False,
+    labels: bool = True,
+) -> None:
+    """Euler–Venn: заливка **областей** (не счёт точек). highlight: none|disjoint|intersect|union|subset|a_only."""
+    g = _venn_geometry(disjoint=disjoint, subset=subset)
+    size = (CARD_W, CARD_H)
+    img = _blank().convert("RGBA")
+    color_a = (55, 95, 175)
+    color_b = (195, 85, 65)
+    fill_a = (*color_a, 110)
+    fill_b = (*color_b, 110)
+    fill_both = (120, 70, 140, 130)
+
+    mask_a = _ellipse_mask(size, g["cx_a"], g["cy"], g["rx_a"], g["ry_a"])
+    mask_b = _ellipse_mask(size, g["cx_b"], g["cy"], g["rx_b"], g["ry_b"])
+    intersect = ImageChops.multiply(mask_a, mask_b)
+    union = ImageChops.add(mask_a, mask_b)
+    a_only = ImageChops.subtract(mask_a, mask_b)
+    b_only = ImageChops.subtract(mask_b, mask_a)
+
+    hl = highlight
+    if hl == "disjoint":
+        hl = "disjoint_ab"
+
+    layer = Image.new("RGBA", size, (0, 0, 0, 0))
+    if hl == "intersect":
+        layer.paste(Image.new("RGBA", size, fill_both), (0, 0), intersect)
+    elif hl == "union" or hl == "disjoint_ab":
+        layer.paste(Image.new("RGBA", size, fill_a), (0, 0), mask_a)
+        layer.paste(Image.new("RGBA", size, fill_b), (0, 0), mask_b)
+    elif hl == "subset":
+        layer.paste(Image.new("RGBA", size, fill_a), (0, 0), mask_a)
+    elif hl == "a_only":
+        layer.paste(Image.new("RGBA", size, fill_a), (0, 0), a_only)
+    elif hl == "b_only":
+        layer.paste(Image.new("RGBA", size, fill_b), (0, 0), b_only)
+
+    img = Image.alpha_composite(img, layer)
+    draw = ImageDraw.Draw(img)
+    if g["subset"]:
+        draw.ellipse(
+            (g["cx_b"] - g["rx_b"], g["cy"] - g["ry_b"], g["cx_b"] + g["rx_b"], g["cy"] + g["ry_b"]),
+            outline=color_b,
+            width=5,
+        )
+        draw.ellipse(
+            (g["cx_a"] - g["rx_a"], g["cy"] - g["ry_a"], g["cx_a"] + g["rx_a"], g["cy"] + g["ry_a"]),
+            outline=color_a,
+            width=5,
+        )
+    else:
+        draw.ellipse(
+            (g["cx_a"] - g["rx_a"], g["cy"] - g["ry_a"], g["cx_a"] + g["rx_a"], g["cy"] + g["ry_a"]),
+            outline=color_a,
+            width=5,
+        )
+        draw.ellipse(
+            (g["cx_b"] - g["rx_b"], g["cy"] - g["ry_b"], g["cx_b"] + g["rx_b"], g["cy"] + g["ry_b"]),
+            outline=color_b,
+            width=5,
+        )
+
+    if labels:
+        try:
+            font = ImageFont.truetype("arial.ttf", 28)
+        except OSError:
+            font = ImageFont.load_default()
+        if g["subset"]:
+            draw.text((g["cx_a"] - 8, g["cy"] - g["ry_a"] - 36), "A", fill=color_a, font=font)
+            draw.text((g["cx_b"] + g["rx_b"] - 24, g["cy"] - g["ry_b"] - 36), "B", fill=color_b, font=font)
+        else:
+            draw.text((g["cx_a"] - g["rx_a"] + 8, g["cy"] - g["ry_a"] - 36), "A", fill=color_a, font=font)
+            draw.text((g["cx_b"] + g["rx_b"] - 32, g["cy"] - g["ry_b"] - 36), "B", fill=color_b, font=font)
+
+    img.convert("RGB").save(out, "JPEG", quality=92)
+
+
+def _compose_sprites(
+    out: Path,
+    sprite: Image.Image,
+    count: int,
+    *,
+    size: int,
+    spread: int,
+) -> None:
+    img = _blank()
+    cx = CARD_W // 2
+    cy = CARD_H // 2
+    start_x = cx - (count - 1) * spread // 2
+    for i in range(count):
+        _paste_centered(img, sprite, (start_x + i * spread, cy), size)
+    img.save(out, "JPEG", quality=92)
+
+
+def main() -> None:
+    assets_dir = ROOT / "_assets"
+    assets_dir.mkdir(parents=True, exist_ok=True)
+
+    sprites: dict[str, Image.Image] = {}
+    for name, url in ASSETS.items():
+        ext = ".png"
+        raw_path = assets_dir / f"{name}{ext}"
+        if not raw_path.exists():
+            raw_path.write_bytes(_fetch(_commons_url(url)))
+        sprites[name] = _load_raster(raw_path.read_bytes())
+
+    lessons = {
+        "lesson-01-cardinality": [
+            ("count-1-dot.jpg", lambda p: _draw_dots(1, p)),
+            ("count-2-dots.jpg", lambda p: _draw_dots(2, p)),
+            ("count-3-dots.jpg", lambda p: _draw_dots(3, p)),
+            (
+                "count-2-grains.jpg",
+                lambda p: _compose_sprites(p, sprites["rice_grain"], 2, size=140, spread=160),
+            ),
+            (
+                "count-2-cows.jpg",
+                lambda p: _compose_sprites(p, sprites["cow"], 2, size=200, spread=220),
+            ),
+        ],
+        "lesson-02-shapes": [
+            ("shape-circle.jpg", lambda p: _draw_shape("circle", p)),
+            ("shape-square.jpg", lambda p: _draw_shape("square", p)),
+            ("shape-rectangle.jpg", lambda p: _draw_shape("rectangle", p)),
+            ("count-2-shapes.jpg", lambda p: _draw_shape_row(2, "circle", p)),
+            ("count-3-shapes.jpg", lambda p: _draw_shape_row(3, "square", p)),
+            ("count-4-shapes.jpg", lambda p: _draw_shape_row(4, "rectangle", p)),
+            ("count-5-shapes.jpg", lambda p: _draw_shape_row(5, "circle", p)),
+            ("count-mixed-3c-2s-2r.jpg", lambda p: _draw_mixed_shape_counts(p, show_label=False)),
+            ("count-mixed-3c-2s-2r-labeled.jpg", lambda p: _draw_mixed_shape_counts(p, show_label=True)),
+        ],
+        "lesson-03-numberline": [
+            ("numberline-0-3.jpg", _draw_numberline),
+        ],
+        "lesson-04-grid": [
+            ("grid-square-2x2.jpg", lambda p: _draw_gridded_rect(2, 2, p)),
+            ("grid-square-3x3.jpg", lambda p: _draw_gridded_rect(3, 3, p)),
+            ("grid-rect-4x2.jpg", lambda p: _draw_gridded_rect(4, 2, p)),
+            ("grid-rect-3x2.jpg", lambda p: _draw_gridded_rect(3, 2, p)),
+        ],
+        "lesson-05-numberline-mark": [
+            ("numberline-mark-1.jpg", lambda p: _draw_numberline_mark(1, p)),
+            ("numberline-mark-2.jpg", lambda p: _draw_numberline_mark(2, p)),
+            ("numberline-mark-3.jpg", lambda p: _draw_numberline_mark(3, p)),
+        ],
+        "lesson-06-numberline-compare": [
+            ("numberline-compare-3gt2.jpg", lambda p: _draw_numberline_compare(3, 2, "gt", p)),
+            ("numberline-compare-2lt3.jpg", lambda p: _draw_numberline_compare(2, 3, "lt", p)),
+        ],
+        "lesson-07-numberline-add": [
+            ("numberline-lengths-2-and-3.jpg", lambda p: _draw_numberline_lengths_separate(2, 3, p)),
+            ("numberline-add-2plus3.jpg", lambda p: _draw_numberline_add(2, 3, p)),
+        ],
+        "lesson-08-numberline-sub": [
+            ("numberline-lengths-5-and-2.jpg", lambda p: _draw_numberline_lengths_separate(5, 2, p)),
+            ("numberline-sub-5minus2.jpg", lambda p: _draw_numberline_sub(5, 2, p)),
+        ],
+        "lesson-09-commutative": [
+            ("numberline-add-2plus3.jpg", lambda p: _draw_numberline_add(2, 3, p)),
+            ("numberline-add-3plus2.jpg", lambda p: _draw_numberline_add(3, 2, p)),
+        ],
+        "lesson-10-multiply": [
+            ("grid-6x3.jpg", lambda p: _draw_gridded_rect(6, 3, p)),
+            ("grid-multiply-6x3.jpg", lambda p: _draw_multiply(6, 3, p)),
+            ("grid-multiply-3x2.jpg", lambda p: _draw_multiply(3, 2, p)),
+        ],
+        "lesson-11-divide": [
+            ("grid-divide-6by3.jpg", lambda p: _draw_division_square(6, 3, p)),
+            ("grid-divide-6by2.jpg", lambda p: _draw_division_square(6, 2, p)),
+            ("grid-divide-8by4.jpg", lambda p: _draw_division_square(8, 4, p)),
+        ],
+        "lesson-12-fraction": [
+            ("fraction-half.jpg", lambda p: _draw_fraction(1, 2, p)),
+            ("fraction-third.jpg", lambda p: _draw_fraction(1, 3, p)),
+            ("fraction-two-thirds.jpg", lambda p: _draw_fraction(2, 3, p)),
+            ("fraction-three-quarters.jpg", lambda p: _draw_fraction(3, 4, p)),
+            ("fraction-third-6strip.jpg", lambda p: _draw_fraction_vertical_strip(6, 3, p)),
+        ],
+        "lesson-13-sets": [
+            ("venn-two-empty.jpg", lambda p: _draw_venn_regions(p, highlight="none")),
+            ("venn-region-disjoint.jpg", lambda p: _draw_venn_regions(p, highlight="disjoint", disjoint=True)),
+            ("venn-region-intersect.jpg", lambda p: _draw_venn_regions(p, highlight="intersect")),
+            ("venn-region-union.jpg", lambda p: _draw_venn_regions(p, highlight="union")),
+            ("venn-region-subset.jpg", lambda p: _draw_venn_regions(p, highlight="subset", subset=True)),
+            ("venn-region-a-only.jpg", lambda p: _draw_venn_regions(p, highlight="a_only")),
+        ],
+    }
+
+    built: list[str] = []
+    for lesson_id, items in lessons.items():
+        img_dir = ROOT / lesson_id / "images"
+        img_dir.mkdir(parents=True, exist_ok=True)
+        for fname, fn in items:
+            path = img_dir / fname
+            fn(path)
+            built.append(str(path.relative_to(ROOT)).replace("\\", "/"))
+
+    print(json.dumps({"built": len(built), "files": built}, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

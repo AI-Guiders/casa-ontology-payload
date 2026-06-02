@@ -1,0 +1,680 @@
+{
+  "schema_version": 1,
+  "class_id": "lang-ru-math-bridge",
+  "target_agent": "von-neumann",
+  "requires_math_class": "math-palochki",
+  "bundle": "kb-lang-ru-math-bridge-v1.bundle.json",
+  "lessons": [
+    {
+      "id": "lesson-00-sticks",
+      "title": "Палочки и кучки",
+      "scene_ids": [
+        "math_sticks"
+      ],
+      "role_links": [
+        {
+          "src": "math.role.heap",
+          "relation": "denotes",
+          "dst": "lang.word.кучка"
+        },
+        {
+          "src": "math.entity.stick",
+          "relation": "denotes",
+          "dst": "lang.word.палочка"
+        }
+      ]
+    },
+    {
+      "id": "lesson-01-ops",
+      "title": "Слова для + − × ÷",
+      "scene_ids": [
+        "math_ops_ru"
+      ],
+      "role_links": [
+        {
+          "src": "math.op.add",
+          "relation": "denotes",
+          "dst": "lang.word.плюс"
+        },
+        {
+          "src": "math.op.sub",
+          "relation": "denotes",
+          "dst": "lang.word.минус"
+        },
+        {
+          "src": "math.op.mul",
+          "relation": "denotes",
+          "dst": "lang.word.умножить"
+        },
+        {
+          "src": "math.op.div",
+          "relation": "denotes",
+          "dst": "lang.word.делить"
+        }
+      ]
+    },
+    {
+      "id": "lesson-02-add",
+      "title": "Роли сложения",
+      "scene_ids": [
+        "math_add_roles"
+      ],
+      "role_links": [
+        {
+          "src": "math.role.addend",
+          "relation": "denotes",
+          "dst": "lang.word.слагаемое"
+        },
+        {
+          "src": "math.role.sum",
+          "relation": "denotes",
+          "dst": "lang.word.сумма"
+        },
+        {
+          "src": "math.op.add",
+          "relation": "denotes",
+          "dst": "lang.word.плюс"
+        }
+      ]
+    },
+    {
+      "id": "lesson-03-sub",
+      "title": "Роли вычитания",
+      "scene_ids": [
+        "math_sub_roles"
+      ],
+      "role_links": [
+        {
+          "src": "math.role.minuend",
+          "relation": "denotes",
+          "dst": "lang.word.уменьшаемое"
+        },
+        {
+          "src": "math.role.subtrahend",
+          "relation": "denotes",
+          "dst": "lang.word.вычитаемое"
+        },
+        {
+          "src": "math.role.difference",
+          "relation": "denotes",
+          "dst": "lang.word.разность"
+        },
+        {
+          "src": "math.op.sub",
+          "relation": "denotes",
+          "dst": "lang.word.минус"
+        }
+      ]
+    },
+    {
+      "id": "lesson-04-mul",
+      "title": "Роли умножения",
+      "scene_ids": [
+        "math_mul_roles"
+      ],
+      "role_links": [
+        {
+          "src": "math.role.factor",
+          "relation": "denotes",
+          "dst": "lang.word.множитель"
+        },
+        {
+          "src": "math.role.product",
+          "relation": "denotes",
+          "dst": "lang.word.произведение"
+        },
+        {
+          "src": "math.op.mul",
+          "relation": "denotes",
+          "dst": "lang.word.умножить"
+        }
+      ]
+    },
+    {
+      "id": "lesson-05-div",
+      "title": "Роли деления",
+      "scene_ids": [
+        "math_div_roles"
+      ],
+      "role_links": [
+        {
+          "src": "math.role.dividend",
+          "relation": "denotes",
+          "dst": "lang.word.делимое"
+        },
+        {
+          "src": "math.role.divisor",
+          "relation": "denotes",
+          "dst": "lang.word.делитель"
+        },
+        {
+          "src": "math.role.quotient",
+          "relation": "denotes",
+          "dst": "lang.word.частное"
+        },
+        {
+          "src": "math.op.div",
+          "relation": "denotes",
+          "dst": "lang.word.делить"
+        }
+      ]
+    },
+    {
+      "id": "lesson-06-formulas",
+      "title": "Формулы ролей (=), как в math-palochki",
+      "scene_ids": [
+        "math_formula_add",
+        "math_formula_sub",
+        "math_formula_mul",
+        "math_formula_div"
+      ],
+      "role_links": [
+        {
+          "src": "math.role.addend",
+          "relation": "denotes",
+          "dst": "lang.word.слагаемое"
+        },
+        {
+          "src": "math.role.sum",
+          "relation": "denotes",
+          "dst": "lang.word.сумма"
+        },
+        {
+          "src": "math.role.minuend",
+          "relation": "denotes",
+          "dst": "lang.word.уменьшаемое"
+        },
+        {
+          "src": "math.role.subtrahend",
+          "relation": "denotes",
+          "dst": "lang.word.вычитаемое"
+        },
+        {
+          "src": "math.role.difference",
+          "relation": "denotes",
+          "dst": "lang.word.разность"
+        },
+        {
+          "src": "math.role.factor",
+          "relation": "denotes",
+          "dst": "lang.word.множитель"
+        },
+        {
+          "src": "math.role.product",
+          "relation": "denotes",
+          "dst": "lang.word.произведение"
+        },
+        {
+          "src": "math.role.dividend",
+          "relation": "denotes",
+          "dst": "lang.word.делимое"
+        },
+        {
+          "src": "math.role.divisor",
+          "relation": "denotes",
+          "dst": "lang.word.делитель"
+        },
+        {
+          "src": "math.role.quotient",
+          "relation": "denotes",
+          "dst": "lang.word.частное"
+        }
+      ]
+    },
+    {
+      "id": "lesson-07-formulas-arrow",
+      "title": "Формулы ролей (→), как lesson-17",
+      "scene_ids": [
+        "math_formula_add_arrow",
+        "math_formula_sub_arrow",
+        "math_formula_mul_arrow",
+        "math_formula_div_arrow"
+      ],
+      "role_links": [
+        {
+          "src": "math.role.addend",
+          "relation": "denotes",
+          "dst": "lang.word.слагаемое"
+        },
+        {
+          "src": "math.role.sum",
+          "relation": "denotes",
+          "dst": "lang.word.сумма"
+        },
+        {
+          "src": "math.role.minuend",
+          "relation": "denotes",
+          "dst": "lang.word.уменьшаемое"
+        },
+        {
+          "src": "math.role.subtrahend",
+          "relation": "denotes",
+          "dst": "lang.word.вычитаемое"
+        },
+        {
+          "src": "math.role.difference",
+          "relation": "denotes",
+          "dst": "lang.word.разность"
+        },
+        {
+          "src": "math.role.factor",
+          "relation": "denotes",
+          "dst": "lang.word.множитель"
+        },
+        {
+          "src": "math.role.product",
+          "relation": "denotes",
+          "dst": "lang.word.произведение"
+        },
+        {
+          "src": "math.role.dividend",
+          "relation": "denotes",
+          "dst": "lang.word.делимое"
+        },
+        {
+          "src": "math.role.divisor",
+          "relation": "denotes",
+          "dst": "lang.word.делитель"
+        },
+        {
+          "src": "math.role.quotient",
+          "relation": "denotes",
+          "dst": "lang.word.частное"
+        }
+      ]
+    },
+    {
+      "id": "lesson-08-fractions",
+      "title": "Дробь: числитель / знаменатель",
+      "scene_ids": [
+        "math_frac_roles",
+        "math_frac_roles_short"
+      ],
+      "role_links": [
+        {
+          "src": "math.concept.fraction",
+          "relation": "denotes",
+          "dst": "lang.word.дробь"
+        },
+        {
+          "src": "math.role.numerator",
+          "relation": "denotes",
+          "dst": "lang.word.числитель"
+        },
+        {
+          "src": "math.role.denominator",
+          "relation": "denotes",
+          "dst": "lang.word.знаменатель"
+        }
+      ]
+    }
+  ],
+  "probe": [
+    {
+      "kind": "l2",
+      "word": "слагаемое",
+      "expect": "lang.word.слагаемое",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "слагаемое",
+      "expect": "math.role.addend"
+    },
+    {
+      "kind": "l2",
+      "word": "сумма",
+      "expect": "lang.word.сумма",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "сумма",
+      "expect": "math.role.sum"
+    },
+    {
+      "kind": "l2",
+      "word": "уменьшаемое",
+      "expect": "lang.word.уменьшаемое",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "уменьшаемое",
+      "expect": "math.role.minuend"
+    },
+    {
+      "kind": "l2",
+      "word": "вычитаемое",
+      "expect": "lang.word.вычитаемое",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "вычитаемое",
+      "expect": "math.role.subtrahend"
+    },
+    {
+      "kind": "l2",
+      "word": "разность",
+      "expect": "lang.word.разность",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "разность",
+      "expect": "math.role.difference"
+    },
+    {
+      "kind": "l2",
+      "word": "множитель",
+      "expect": "lang.word.множитель",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "множитель",
+      "expect": "math.role.factor"
+    },
+    {
+      "kind": "l2",
+      "word": "произведение",
+      "expect": "lang.word.произведение",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "произведение",
+      "expect": "math.role.product"
+    },
+    {
+      "kind": "l2",
+      "word": "делимое",
+      "expect": "lang.word.делимое",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "делимое",
+      "expect": "math.role.dividend"
+    },
+    {
+      "kind": "l2",
+      "word": "делитель",
+      "expect": "lang.word.делитель",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "делитель",
+      "expect": "math.role.divisor"
+    },
+    {
+      "kind": "l2",
+      "word": "частное",
+      "expect": "lang.word.частное",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "частное",
+      "expect": "math.role.quotient"
+    },
+    {
+      "kind": "l2",
+      "word": "кучка",
+      "expect": "lang.word.кучка",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "кучка",
+      "expect": "math.role.heap"
+    },
+    {
+      "kind": "l2",
+      "word": "палочка",
+      "expect": "lang.word.палочка",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "палочка",
+      "expect": "math.entity.stick"
+    },
+    {
+      "kind": "l2",
+      "word": "плюс",
+      "expect": "lang.word.плюс",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "плюс",
+      "expect": "math.op.add"
+    },
+    {
+      "kind": "l2",
+      "word": "минус",
+      "expect": "lang.word.минус",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "минус",
+      "expect": "math.op.sub"
+    },
+    {
+      "kind": "l2",
+      "word": "умножить",
+      "expect": "lang.word.умножить",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "умножить",
+      "expect": "math.op.mul"
+    },
+    {
+      "kind": "l2",
+      "word": "делить",
+      "expect": "lang.word.делить",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "делить",
+      "expect": "math.op.div"
+    },
+    {
+      "kind": "l2",
+      "word": "дробь",
+      "expect": "lang.word.дробь",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "дробь",
+      "expect": "math.concept.fraction"
+    },
+    {
+      "kind": "l2",
+      "word": "числитель",
+      "expect": "lang.word.числитель",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "числитель",
+      "expect": "math.role.numerator"
+    },
+    {
+      "kind": "l2",
+      "word": "знаменатель",
+      "expect": "lang.word.знаменатель",
+      "min_votes": 2
+    },
+    {
+      "kind": "math_f0",
+      "cue": "знаменатель",
+      "expect": "math.role.denominator"
+    },
+    {
+      "kind": "math_f0",
+      "cue": "числитель / знаменатель = дробь",
+      "expect": "math.concept.fraction"
+    },
+    {
+      "kind": "math_f0",
+      "cue": "числитель / знаменатель",
+      "expect": "math.concept.fraction"
+    },
+    {
+      "kind": "scene",
+      "scene_id": "math_add_roles",
+      "expect_words": [
+        "слагаемое",
+        "сумма",
+        "плюс"
+      ],
+      "min_c_votes": 1
+    },
+    {
+      "kind": "scene",
+      "scene_id": "math_div_roles",
+      "expect_words": [
+        "делимое",
+        "частное",
+        "делить"
+      ],
+      "min_c_votes": 1
+    },
+    {
+      "kind": "math_f0",
+      "cue": "слагаемое + слагаемое = сумма",
+      "expect": "math.role.sum",
+      "tier": "formula"
+    },
+    {
+      "kind": "scene",
+      "scene_id": "math_formula_add",
+      "expect_words": [
+        "слагаемое",
+        "сумма",
+        "равно"
+      ],
+      "min_c_votes": 1
+    },
+    {
+      "kind": "math_f0",
+      "cue": "уменьшаемое − вычитаемое = разность",
+      "expect": "math.role.difference",
+      "tier": "formula"
+    },
+    {
+      "kind": "scene",
+      "scene_id": "math_formula_sub",
+      "expect_words": [
+        "уменьшаемое",
+        "вычитаемое",
+        "разность"
+      ],
+      "min_c_votes": 1
+    },
+    {
+      "kind": "math_f0",
+      "cue": "множитель × множитель = произведение",
+      "expect": "math.role.product",
+      "tier": "formula"
+    },
+    {
+      "kind": "scene",
+      "scene_id": "math_formula_mul",
+      "expect_words": [
+        "множитель",
+        "произведение",
+        "равно"
+      ],
+      "min_c_votes": 1
+    },
+    {
+      "kind": "math_f0",
+      "cue": "делимое ÷ делитель = частное",
+      "expect": "math.role.quotient",
+      "tier": "formula"
+    },
+    {
+      "kind": "scene",
+      "scene_id": "math_formula_div",
+      "expect_words": [
+        "делимое",
+        "делитель",
+        "частное"
+      ],
+      "min_c_votes": 1
+    },
+    {
+      "kind": "math_f0",
+      "cue": "слагаемое + слагаемое → сумма",
+      "expect": "math.role.sum",
+      "tier": "formula"
+    },
+    {
+      "kind": "scene",
+      "scene_id": "math_formula_add_arrow",
+      "expect_words": [
+        "слагаемое",
+        "сумма"
+      ],
+      "min_c_votes": 1
+    },
+    {
+      "kind": "math_f0",
+      "cue": "уменьшаемое − вычитаемое → разность",
+      "expect": "math.role.difference",
+      "tier": "formula"
+    },
+    {
+      "kind": "scene",
+      "scene_id": "math_formula_sub_arrow",
+      "expect_words": [
+        "уменьшаемое",
+        "вычитаемое",
+        "разность"
+      ],
+      "min_c_votes": 1
+    },
+    {
+      "kind": "math_f0",
+      "cue": "множитель × множитель → произведение",
+      "expect": "math.role.product",
+      "tier": "formula"
+    },
+    {
+      "kind": "scene",
+      "scene_id": "math_formula_mul_arrow",
+      "expect_words": [
+        "множитель",
+        "произведение"
+      ],
+      "min_c_votes": 1
+    },
+    {
+      "kind": "math_f0",
+      "cue": "делимое ÷ делитель → частное",
+      "expect": "math.role.quotient",
+      "tier": "formula"
+    },
+    {
+      "kind": "scene",
+      "scene_id": "math_formula_div_arrow",
+      "expect_words": [
+        "делимое",
+        "делитель",
+        "частное"
+      ],
+      "min_c_votes": 1
+    }
+  ],
+  "probe_threshold": 0.75
+}

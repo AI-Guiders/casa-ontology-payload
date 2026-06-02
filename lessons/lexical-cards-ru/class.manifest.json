@@ -1,0 +1,518 @@
+{
+  "schema_version": 1,
+  "class_id": "lexical-cards-ru",
+  "class_kind": "lexical",
+  "target_agent": "von-neumann",
+  "tract_id": "visual",
+  "companion_tract": "alphabet-ru",
+  "codec_id": "retinal_lrgb",
+  "ingest_cli": "casa.cli.ingest_lesson_moment",
+  "_note": "letter/word/anchor — lab authoring only; не oracle на predict",
+  "stages": [
+    {
+      "id": "stage-01-a-ya",
+      "title": "Букварь: А–Я (field-native якоря)",
+      "order": 1,
+      "lesson_ids": [
+        "lesson-01-a-ya"
+      ]
+    }
+  ],
+  "frames": [
+    {
+      "id": "letter-а-арка",
+      "path": "lesson-01-a-ya/images/letter-а-арка.jpg",
+      "scene_label": "card:letter:А:арка",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "А",
+      "grapheme": "а",
+      "word": "арка",
+      "anchor": "arc",
+      "concept_id": "grapheme.cyrl.а",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.арка"
+      ]
+    },
+    {
+      "id": "letter-б-два",
+      "path": "lesson-01-a-ya/images/letter-б-два.jpg",
+      "scene_label": "card:letter:Б:два",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Б",
+      "grapheme": "б",
+      "word": "два",
+      "anchor": "two_dots",
+      "concept_id": "grapheme.cyrl.б",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.два"
+      ]
+    },
+    {
+      "id": "letter-в-вверх",
+      "path": "lesson-01-a-ya/images/letter-в-вверх.jpg",
+      "scene_label": "card:letter:В:вверх",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "В",
+      "grapheme": "в",
+      "word": "вверх",
+      "anchor": "letter_ve",
+      "concept_id": "grapheme.cyrl.в",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.вверх"
+      ]
+    },
+    {
+      "id": "letter-г-угол",
+      "path": "lesson-01-a-ya/images/letter-г-угол.jpg",
+      "scene_label": "card:letter:Г:угол",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Г",
+      "grapheme": "г",
+      "word": "угол",
+      "anchor": "corner",
+      "concept_id": "grapheme.cyrl.г",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.угол"
+      ]
+    },
+    {
+      "id": "letter-д-дом",
+      "path": "lesson-01-a-ya/images/letter-д-дом.jpg",
+      "scene_label": "card:letter:Д:дом",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Д",
+      "grapheme": "д",
+      "word": "дом",
+      "anchor": "house",
+      "concept_id": "grapheme.cyrl.д",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.дом"
+      ]
+    },
+    {
+      "id": "letter-е-три",
+      "path": "lesson-01-a-ya/images/letter-е-три.jpg",
+      "scene_label": "card:letter:Е:три",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Е",
+      "grapheme": "е",
+      "word": "три",
+      "anchor": "three_lines",
+      "concept_id": "grapheme.cyrl.е",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.три"
+      ]
+    },
+    {
+      "id": "letter-ё-ёж",
+      "path": "lesson-01-a-ya/images/letter-ё-ёж.jpg",
+      "scene_label": "card:letter:Ё:ёж",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Ё",
+      "grapheme": "ё",
+      "word": "ёж",
+      "anchor": "e_two_dots",
+      "concept_id": "grapheme.cyrl.ё",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.ёж"
+      ]
+    },
+    {
+      "id": "letter-ж-лучи",
+      "path": "lesson-01-a-ya/images/letter-ж-лучи.jpg",
+      "scene_label": "card:letter:Ж:лучи",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Ж",
+      "grapheme": "ж",
+      "word": "лучи",
+      "anchor": "star3",
+      "concept_id": "grapheme.cyrl.ж",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.лучи"
+      ]
+    },
+    {
+      "id": "letter-з-зигзаг",
+      "path": "lesson-01-a-ya/images/letter-з-зигзаг.jpg",
+      "scene_label": "card:letter:З:зигзаг",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "З",
+      "grapheme": "з",
+      "word": "зигзаг",
+      "anchor": "zigzag",
+      "concept_id": "grapheme.cyrl.з",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.зигзаг"
+      ]
+    },
+    {
+      "id": "letter-и-мост",
+      "path": "lesson-01-a-ya/images/letter-и-мост.jpg",
+      "scene_label": "card:letter:И:мост",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "И",
+      "grapheme": "и",
+      "word": "мост",
+      "anchor": "bridge",
+      "concept_id": "grapheme.cyrl.и",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.мост"
+      ]
+    },
+    {
+      "id": "letter-й-йод",
+      "path": "lesson-01-a-ya/images/letter-й-йод.jpg",
+      "scene_label": "card:letter:Й:йод",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Й",
+      "grapheme": "й",
+      "word": "йод",
+      "anchor": "bridge_dot",
+      "concept_id": "grapheme.cyrl.й",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.йод"
+      ]
+    },
+    {
+      "id": "letter-к-клин",
+      "path": "lesson-01-a-ya/images/letter-к-клин.jpg",
+      "scene_label": "card:letter:К:клин",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "К",
+      "grapheme": "к",
+      "word": "клин",
+      "anchor": "angle_k",
+      "concept_id": "grapheme.cyrl.к",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.клин"
+      ]
+    },
+    {
+      "id": "letter-л-луч",
+      "path": "lesson-01-a-ya/images/letter-л-луч.jpg",
+      "scene_label": "card:letter:Л:луч",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Л",
+      "grapheme": "л",
+      "word": "луч",
+      "anchor": "angle_l",
+      "concept_id": "grapheme.cyrl.л",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.луч"
+      ]
+    },
+    {
+      "id": "letter-м-гора",
+      "path": "lesson-01-a-ya/images/letter-м-гора.jpg",
+      "scene_label": "card:letter:М:гора",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "М",
+      "grapheme": "м",
+      "word": "гора",
+      "anchor": "mountain",
+      "concept_id": "grapheme.cyrl.м",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.гора"
+      ]
+    },
+    {
+      "id": "letter-н-на",
+      "path": "lesson-01-a-ya/images/letter-н-на.jpg",
+      "scene_label": "card:letter:Н:на",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Н",
+      "grapheme": "н",
+      "word": "на",
+      "anchor": "gate",
+      "concept_id": "grapheme.cyrl.н",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.на"
+      ]
+    },
+    {
+      "id": "letter-о-око",
+      "path": "lesson-01-a-ya/images/letter-о-око.jpg",
+      "scene_label": "card:letter:О:око",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "О",
+      "grapheme": "о",
+      "word": "око",
+      "anchor": "ring",
+      "concept_id": "grapheme.cyrl.о",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.око"
+      ]
+    },
+    {
+      "id": "letter-п-порог",
+      "path": "lesson-01-a-ya/images/letter-п-порог.jpg",
+      "scene_label": "card:letter:П:порог",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "П",
+      "grapheme": "п",
+      "word": "порог",
+      "anchor": "gate",
+      "concept_id": "grapheme.cyrl.п",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.порог"
+      ]
+    },
+    {
+      "id": "letter-р-рак",
+      "path": "lesson-01-a-ya/images/letter-р-рак.jpg",
+      "scene_label": "card:letter:Р:рак",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Р",
+      "grapheme": "р",
+      "word": "рак",
+      "anchor": "p_loop",
+      "concept_id": "grapheme.cyrl.р",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.рак"
+      ]
+    },
+    {
+      "id": "letter-с-серп",
+      "path": "lesson-01-a-ya/images/letter-с-серп.jpg",
+      "scene_label": "card:letter:С:серп",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "С",
+      "grapheme": "с",
+      "word": "серп",
+      "anchor": "c_curve",
+      "concept_id": "grapheme.cyrl.с",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.серп"
+      ]
+    },
+    {
+      "id": "letter-т-три",
+      "path": "lesson-01-a-ya/images/letter-т-три.jpg",
+      "scene_label": "card:letter:Т:три",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Т",
+      "grapheme": "т",
+      "word": "три",
+      "anchor": "t_bar",
+      "concept_id": "grapheme.cyrl.т",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.три"
+      ]
+    },
+    {
+      "id": "letter-у-узор",
+      "path": "lesson-01-a-ya/images/letter-у-узор.jpg",
+      "scene_label": "card:letter:У:узор",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "У",
+      "grapheme": "у",
+      "word": "узор",
+      "anchor": "u_cup",
+      "concept_id": "grapheme.cyrl.у",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.узор"
+      ]
+    },
+    {
+      "id": "letter-ф-фиг",
+      "path": "lesson-01-a-ya/images/letter-ф-фиг.jpg",
+      "scene_label": "card:letter:Ф:фиг",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Ф",
+      "grapheme": "ф",
+      "word": "фиг",
+      "anchor": "phi",
+      "concept_id": "grapheme.cyrl.ф",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.фиг"
+      ]
+    },
+    {
+      "id": "letter-х-крест",
+      "path": "lesson-01-a-ya/images/letter-х-крест.jpg",
+      "scene_label": "card:letter:Х:крест",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Х",
+      "grapheme": "х",
+      "word": "крест",
+      "anchor": "cross",
+      "concept_id": "grapheme.cyrl.х",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.крест"
+      ]
+    },
+    {
+      "id": "letter-ц-цеп",
+      "path": "lesson-01-a-ya/images/letter-ц-цеп.jpg",
+      "scene_label": "card:letter:Ц:цеп",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Ц",
+      "grapheme": "ц",
+      "word": "цеп",
+      "anchor": "box_tail",
+      "concept_id": "grapheme.cyrl.ц",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.цеп"
+      ]
+    },
+    {
+      "id": "letter-ч-чаша",
+      "path": "lesson-01-a-ya/images/letter-ч-чаша.jpg",
+      "scene_label": "card:letter:Ч:чаша",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Ч",
+      "grapheme": "ч",
+      "word": "чаша",
+      "anchor": "cup",
+      "concept_id": "grapheme.cyrl.ч",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.чаша"
+      ]
+    },
+    {
+      "id": "letter-ш-шаг",
+      "path": "lesson-01-a-ya/images/letter-ш-шаг.jpg",
+      "scene_label": "card:letter:Ш:шаг",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Ш",
+      "grapheme": "ш",
+      "word": "шаг",
+      "anchor": "w_shape",
+      "concept_id": "grapheme.cyrl.ш",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.шаг"
+      ]
+    },
+    {
+      "id": "letter-щ-щит",
+      "path": "lesson-01-a-ya/images/letter-щ-щит.jpg",
+      "scene_label": "card:letter:Щ:щит",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Щ",
+      "grapheme": "щ",
+      "word": "щит",
+      "anchor": "w_tail",
+      "concept_id": "grapheme.cyrl.щ",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.щит"
+      ]
+    },
+    {
+      "id": "letter-ъ-твёрдый",
+      "path": "lesson-01-a-ya/images/letter-ъ-твёрдый.jpg",
+      "scene_label": "card:letter:Ъ:твёрдый",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Ъ",
+      "grapheme": "ъ",
+      "word": "твёрдый",
+      "anchor": "one_dot",
+      "concept_id": "grapheme.cyrl.ъ",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.твёрдый"
+      ]
+    },
+    {
+      "id": "letter-ы-два",
+      "path": "lesson-01-a-ya/images/letter-ы-два.jpg",
+      "scene_label": "card:letter:Ы:два",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Ы",
+      "grapheme": "ы",
+      "word": "два",
+      "anchor": "two_vert",
+      "concept_id": "grapheme.cyrl.ы",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.два"
+      ]
+    },
+    {
+      "id": "letter-ь-мягкий",
+      "path": "lesson-01-a-ya/images/letter-ь-мягкий.jpg",
+      "scene_label": "card:letter:Ь:мягкий",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Ь",
+      "grapheme": "ь",
+      "word": "мягкий",
+      "anchor": "c_curve",
+      "concept_id": "grapheme.cyrl.ь",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.мягкий"
+      ]
+    },
+    {
+      "id": "letter-э-эхо",
+      "path": "lesson-01-a-ya/images/letter-э-эхо.jpg",
+      "scene_label": "card:letter:Э:эхо",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Э",
+      "grapheme": "э",
+      "word": "эхо",
+      "anchor": "e_rev",
+      "concept_id": "grapheme.cyrl.э",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.эхо"
+      ]
+    },
+    {
+      "id": "letter-ю-юла",
+      "path": "lesson-01-a-ya/images/letter-ю-юла.jpg",
+      "scene_label": "card:letter:Ю:юла",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Ю",
+      "grapheme": "ю",
+      "word": "юла",
+      "anchor": "yo_circle",
+      "concept_id": "grapheme.cyrl.ю",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.юла"
+      ]
+    },
+    {
+      "id": "letter-я-яма",
+      "path": "lesson-01-a-ya/images/letter-я-яма.jpg",
+      "scene_label": "card:letter:Я:яма",
+      "lesson_id": "lesson-01-a-ya",
+      "letter": "Я",
+      "grapheme": "я",
+      "word": "яма",
+      "anchor": "ya_bowl",
+      "concept_id": "grapheme.cyrl.я",
+      "curriculum_tags": [
+        "lex.grapheme.cyrl",
+        "lex.word.яма"
+      ]
+    }
+  ]
+}
