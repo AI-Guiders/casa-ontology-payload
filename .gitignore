@@ -10,5 +10,9 @@ agents/*/field_state*.json
 lab/snapshots/**/_parallel_shards/
 lab/snapshots/**/field_state*.json
 
+# Python
+__pycache__/
+*.py[cod]
+
 # Temp
 .tmp-pdf-read/
