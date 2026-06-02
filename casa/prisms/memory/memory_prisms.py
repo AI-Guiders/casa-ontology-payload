@@ -273,6 +273,8 @@ def append_episode(
     min_recurrence: int = 1,
     links: list[dict[str, Any]] | None = None,
     form_extract_allowed: bool = False,
+    allow_teacher_links: bool = False,
+    crosslink_hypotheses: list[dict[str, Any]] | None = None,
     episode_source: str = "wake",
 ) -> dict | None:
     state = ensure_cylinders(state)
@@ -306,6 +308,17 @@ def append_episode(
     }
     if form_extract_allowed:
         ep["form_extract_allowed"] = True
+    if allow_teacher_links:
+        ep["allow_teacher_links"] = True
+    if crosslink_hypotheses:
+        ep["crosslink_hypotheses"] = [
+            {
+                "relation": str(x.get("relation") or "denotes"),
+                "dst": str(x.get("dst") or ""),
+            }
+            for x in crosslink_hypotheses[:12]
+            if str(x.get("dst") or "").startswith("math.")
+        ]
     if links:
         ep["links"] = [
             {
@@ -797,6 +810,24 @@ def run_sleep(
                 "episode_id": None,
                 "kind": "emergent_successor",
                 "lattice_id": "schema-math",
+                "extract": item,
+            }
+        )
+
+    from casa.prisms.visual.bridge_math import extract_emergent_vis_math_bridges
+
+    for item in extract_emergent_vis_math_bridges(
+        lattices,
+        episodes,
+        state,
+        copies=strength,
+    ):
+        merged.append(
+            {
+                "episode_id": item.get("episode_id"),
+                "kind": "emergent_crosslink",
+                "lattice_id": "V1_lum",
+                "concept_id": item.get("vis_concept_id"),
                 "extract": item,
             }
         )

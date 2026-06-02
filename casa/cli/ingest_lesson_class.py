@@ -16,7 +16,7 @@ from casa.prisms.memory.f0_math_ingest import ingest_math_bundle
 from casa.prisms.memory.f0_stack import rank_cue_on_f0, decode_f0_lattice
 from casa.prisms.memory.memory_prisms import append_episode, ensure_prisms, memory_lattices, run_sleep
 from casa.prisms.shared.lattice_names_v1 import SCHEMA_MATH
-from casa.prisms.shared.store_boot import boot_store
+from casa.cli.ingest_state import resolve_ingest_state
 from casa.prisms.shared.store_layout import default_agent_store
 from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
 
@@ -26,8 +26,10 @@ def ingest_lesson_class(
     class_dir: Path,
     *,
     manifest_name: str = "class.manifest.json",
+    lesson_ids: list[str] | None = None,
     sleep_after_each_lesson: bool = True,
     persist: bool = True,
+    state: dict | None = None,
 ) -> dict[str, Any]:
     store_dir = store_dir.resolve()
     class_dir = class_dir.resolve()
@@ -36,16 +38,18 @@ def ingest_lesson_class(
     bundle_path = class_dir / str(manifest.get("bundle") or "kb-math-palochki-v1.bundle.json")
     bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
 
-    boot = boot_store(store_dir, prefer_field_state=True)
-    state = boot["state"]
-    state.setdefault("store", {})["store_id"] = store_dir.name
+    state = resolve_ingest_state(store_dir, state)
     state["store"]["last_class"] = manifest.get("class_id")
 
     math_rep = ingest_math_bundle(state, bundle, lattice_id=SCHEMA_MATH)
     lesson_reports: list[dict[str, Any]] = []
     episodes_total = 0
+    filter_ids = set(lesson_ids) if lesson_ids else None
+    all_lessons = list(manifest.get("lessons") or [])
 
-    for lesson in manifest.get("lessons") or []:
+    for lesson in all_lessons:
+        if filter_ids is not None and str(lesson.get("id") or "") not in filter_ids:
+            continue
         ep_ids: list[str] = []
         for raw in lesson.get("episodes") or []:
             ep = append_episode(
@@ -92,6 +96,7 @@ def ingest_lesson_class(
         "class_id": manifest.get("class_id"),
         "class_dir": str(class_dir),
         "math_ingest": math_rep,
+        "lesson_filter": list(filter_ids) if filter_ids else None,
         "lessons": lesson_reports,
         "episodes_total": episodes_total,
         "probe": probes,
@@ -124,11 +129,18 @@ def main() -> None:
     p.add_argument("--class-dir", type=Path, default=REPO_ROOT / "lessons/math-palochki")
     p.add_argument("--no-persist", action="store_true")
     p.add_argument("--no-sleep", action="store_true")
+    p.add_argument(
+        "--lesson-ids",
+        nargs="+",
+        default=None,
+        help="Ingest only these lesson ids (e.g. lesson-18-fraction-heaps)",
+    )
     args = p.parse_args()
 
     rep = ingest_lesson_class(
         args.store_dir or default_agent_store(),
         args.class_dir,
+        lesson_ids=args.lesson_ids,
         sleep_after_each_lesson=not args.no_sleep,
         persist=not args.no_persist,
     )

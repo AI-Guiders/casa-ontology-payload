@@ -17,31 +17,7 @@ _COMMA_NUM = re.compile(r"^\s*\d+(?:\s*,\s*\d+)+\s*$")
 _PATTERN_PREFIX = "math.pattern.emerged."
 _STRUCT_PREFIX = "math.struct.emerged."
 
-_NUMERAL_TO_INT: dict[str, int] = {
-    "0": 0,
-    "1": 1,
-    "2": 2,
-    "3": 3,
-    "4": 4,
-    "5": 5,
-    "6": 6,
-    "7": 7,
-    "8": 8,
-    "9": 9,
-    "10": 10,
-    "11": 11,
-    "12": 12,
-    "13": 13,
-    "14": 14,
-    "15": 15,
-    "16": 16,
-    "17": 17,
-    "18": 18,
-    "19": 19,
-    "20": 20,
-    "21": 21,
-}
-
+# L0 bundle canonical names (0…21); magnitudes beyond use math.num.N via cardinal abstraction.
 _INT_TO_NUMERAL_CID: dict[int, str] = {
     0: "math.num.zero",
     1: "math.num.one",
@@ -98,19 +74,27 @@ def count_row_group_key(scene: str) -> str | None:
 
 def numeral_surface_to_int(text: str) -> int | None:
     t = str(text or "").strip()
-    return _NUMERAL_TO_INT.get(t)
+    if not t.isdigit():
+        return None
+    return int(t)
 
 
 def numeral_int_to_concept_id(value: int) -> str | None:
-    return _INT_TO_NUMERAL_CID.get(value)
+    """Named L0 math.num.* when taught; otherwise abstract math.num.N (cardinal)."""
+    if value < 0:
+        return None
+    return _INT_TO_NUMERAL_CID.get(value) or f"math.num.{value}"
 
 
 def numeral_concept_to_int(concept_id: str | None) -> int | None:
     if not concept_id:
         return None
-    for val, cid in _INT_TO_NUMERAL_CID.items():
-        if cid == str(concept_id):
+    cid = str(concept_id)
+    for val, named in _INT_TO_NUMERAL_CID.items():
+        if named == cid:
             return val
+    if cid.startswith("math.num.") and cid[9:].isdigit():
+        return int(cid[9:])
     return None
 
 

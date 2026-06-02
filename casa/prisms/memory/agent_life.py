@@ -15,9 +15,10 @@ ensure_import_paths()
 
 import json
 import time
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from casa.prisms.memory.agent_curiosity import agent_first_wake_note, agent_self_tick, self_drive_state
 from casa.prisms.memory.agent_prism import load_agent_prism
@@ -29,6 +30,7 @@ from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_st
 _SESSION_VERSION = 1
 _DEFAULT_DISPLAY_NAME = "Нейманн"
 _IDLE_SLICE_S = 0.05
+_DEFAULT_PERSIST_EVERY = 8
 
 
 def _utc_now() -> str:
@@ -100,6 +102,44 @@ def agent_life_tick(
     return agent_self_tick(store_dir, state, session, bundle=bundle)
 
 
+@dataclass
+class AgentRuntime:
+    store_dir: Path
+    state: dict
+    session: dict[str, Any]
+    bundle: dict[str, Any] | None
+
+
+def load_agent_runtime(store_dir: Path) -> AgentRuntime:
+    """Load store once — shared by life ticks and inbox ingest in one process."""
+    store_dir = store_dir.resolve()
+    boot = boot_store(store_dir, prefer_field_state=True)
+    state = ensure_prisms(boot["state"])
+    load_agent_prism(store_dir, state)
+    bundle = resolve_agent_bundle(store_dir)
+    session = load_agent_session(store_dir)
+    if int(session.get("macro_ticks") or 0) == 0:
+        agent_first_wake_note(store_dir, state, display_name=_display_name_from_store(store_dir))
+    return AgentRuntime(store_dir=store_dir, state=state, session=session, bundle=bundle)
+
+
+def persist_agent_runtime(
+    runtime: AgentRuntime,
+    *,
+    force: bool = True,
+    sync_ltm: bool = False,
+) -> dict[str, Any]:
+    save_agent_session(runtime.store_dir, runtime.session)
+    mark_runtime_dirty(runtime.state)
+    return save_runtime_state(
+        runtime.store_dir,
+        runtime.state,
+        force=force,
+        thin=True,
+        sync_ltm_on_save=sync_ltm,
+    )
+
+
 def agent_live_loop(
     store_dir: Path,
     state: dict,
@@ -108,22 +148,31 @@ def agent_live_loop(
     bundle: dict | None,
     stop_after: int | None = None,
     idle_slice_s: float = _IDLE_SLICE_S,
-) -> list[dict[str, Any]]:
+    persist_checkpoint: bool = True,
+    persist_every: int = 1,
+) -> tuple[list[dict[str, Any]], bool]:
     """Жизненный цикл агента до stop_after quanta или Ctrl+C."""
     trace: list[dict[str, Any]] = []
     quanta = 0
+    persisted_last = False
+    every = max(1, persist_every)
     try:
         while stop_after is None or quanta < stop_after:
             trace.append(agent_life_tick(store_dir, state, session, bundle=bundle))
             quanta += 1
-            save_agent_session(store_dir, session)
-            mark_runtime_dirty(state)
-            save_runtime_state(store_dir, state, force=True, thin=True, sync_ltm_on_save=False)
+            at_boundary = stop_after is not None and quanta >= stop_after
+            if persist_checkpoint and (quanta % every == 0 or at_boundary):
+                save_agent_session(store_dir, session)
+                mark_runtime_dirty(state)
+                save_runtime_state(store_dir, state, force=True, thin=True, sync_ltm_on_save=False)
+                persisted_last = True
+            else:
+                persisted_last = False
             if stop_after is None or quanta < stop_after:
                 time.sleep(idle_slice_s)
     except KeyboardInterrupt:
         session["stopped"] = "host_interrupt"
-    return trace
+    return trace, persisted_last
 
 
 def agent_wake(
@@ -143,15 +192,16 @@ def agent_wake(
     if int(session.get("macro_ticks") or 0) == 0:
         agent_first_wake_note(store_dir, state, display_name=_display_name_from_store(store_dir))
 
-    trace = agent_live_loop(
+    trace, persisted_last = agent_live_loop(
         store_dir,
         state,
         session,
         bundle=bundle,
         stop_after=stop_after,
+        persist_every=1,
     )
 
-    if persist:
+    if persist and not persisted_last:
         save_agent_session(store_dir, session)
         mark_runtime_dirty(state)
         save_runtime_state(store_dir, state, force=True, thin=True, sync_ltm_on_save=False)
@@ -173,3 +223,46 @@ def agent_wake(
 
 def default_agent_wake(store_dir: Path | None = None, **kwargs: Any) -> dict[str, Any]:
     return agent_wake(store_dir or default_agent_store(), **kwargs)
+
+
+def agent_reactor_loop(
+    store_dir: Path,
+    *,
+    poll_inbox: Callable[[AgentRuntime], bool],
+    poll_ms: int = 500,
+    persist_every: int = _DEFAULT_PERSIST_EVERY,
+    idle_slice_s: float = _IDLE_SLICE_S,
+) -> None:
+    """Single-thread life + teacher inbox on one in-memory runtime."""
+    print(json.dumps({"life": "loading_store"}, ensure_ascii=False), flush=True)
+    runtime = load_agent_runtime(store_dir)
+    print(json.dumps({"life": "ready", "macro_ticks": runtime.session.get("macro_ticks")}, ensure_ascii=False), flush=True)
+    quanta = 0
+    try:
+        while True:
+            if poll_inbox(runtime):
+                _safe_persist(runtime, sync_ltm=True, reason="inbox")
+                continue
+
+            agent_life_tick(runtime.store_dir, runtime.state, runtime.session, bundle=runtime.bundle)
+            quanta += 1
+            if quanta % max(1, persist_every) == 0:
+                _safe_persist(runtime, sync_ltm=False, reason="tick")
+
+            time.sleep(max(0.05, idle_slice_s, poll_ms / 1000.0))
+    except KeyboardInterrupt:
+        runtime.session["stopped"] = "host_interrupt"
+        _safe_persist(runtime, sync_ltm=False, reason="interrupt")
+
+
+def _safe_persist(runtime: AgentRuntime, *, sync_ltm: bool, reason: str) -> None:
+    try:
+        persist_agent_runtime(runtime, force=True, sync_ltm=sync_ltm)
+    except (PermissionError, TimeoutError, OSError) as err:
+        print(
+            json.dumps(
+                {"persist_skipped": reason, "error": repr(err)},
+                ensure_ascii=False,
+            ),
+            flush=True,
+        )

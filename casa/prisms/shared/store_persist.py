@@ -74,22 +74,26 @@ def save_runtime_state(
         thin = use_thin_runtime_checkpoint(store_dir)
 
     compact_persist_report: dict[str, Any] | None = None
-    if thin and sync_ltm_on_save and (dirty or force):
-        from casa.prisms.shared.compact_persist import compact_persist_store
+    from casa.prisms.shared.store_lock import store_write_lock
 
-        compact_persist_report = compact_persist_store(store_dir, state, reason="checkpoint_sync")
+    holder = str(state.get("store", {}).get("last_moment") or state.get("store", {}).get("last_feed") or "runtime")
+    with store_write_lock(store_dir, holder=f"persist:{holder}"):
+        if thin and sync_ltm_on_save and (dirty or force):
+            from casa.prisms.shared.compact_persist import compact_persist_store
 
-    checkpoints = runtime_checkpoint_paths(store_dir)
-    fs = checkpoints["field_state"]
-    payload = build_thin_snapshot(state) if thin else state
-    save_field_state(fs, payload, compact=compact)
+            compact_persist_report = compact_persist_store(store_dir, state, reason="checkpoint_sync")
 
-    agent_saved = False
-    if save_agent and agent_prism_root(store_dir).is_dir():
-        from casa.prisms.memory.agent_prism import save_agent_prism
+        checkpoints = runtime_checkpoint_paths(store_dir)
+        fs = checkpoints["field_state"]
+        payload = build_thin_snapshot(state) if thin else state
+        save_field_state(fs, payload, compact=compact)
 
-        save_agent_prism(store_dir, state)
-        agent_saved = True
+        agent_saved = False
+        if save_agent and agent_prism_root(store_dir).is_dir():
+            from casa.prisms.memory.agent_prism import save_agent_prism
+
+            save_agent_prism(store_dir, state)
+            agent_saved = True
 
     return {
         "saved": True,

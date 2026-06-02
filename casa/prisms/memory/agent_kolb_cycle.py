@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Autonomous Kolb cycle — agent-initiated «а что будет, если?» (CE → sleep → AE)."""
+"""Autonomous Kolb cycle — agent-initiated «а что будет, если?» (CE → sleep → AE).
+
+Не привязан к curriculum, таблицам numerals или конкретным concept_id.
+Агент подаёт cue (поверхность), predict → hippo → sleep (Extract) → re-probe.
+Новые концепты — только то, что sleep вывел из опыта, не oracle в experiment rows.
+"""
 
 from __future__ import annotations
 
@@ -15,12 +20,6 @@ from casa.prisms.memory.agent_autonomous_retain import predict_modality, retain_
 from casa.prisms.memory.agent_journal import append_journal_entry
 from casa.prisms.memory.agent_memory_ops import agent_remember
 from casa.prisms.memory.agent_notebook import ensure_agent_notebook
-from casa.prisms.memory.f0_pattern_extract import (
-    is_emergent_pattern_id,
-    numeral_int_to_concept_id,
-    numeral_surface_to_int,
-    parse_comma_numeral_cue,
-)
 from casa.prisms.memory.memory_prisms import append_episode, ensure_prisms, run_sleep
 from casa.prisms.shared.lattice_names_v1 import SCHEMA_MATH
 from casa.prisms.shared.store_boot import boot_store
@@ -28,49 +27,32 @@ from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_st
 from casa.prisms.tick.predict_tick import predict_tick
 
 KolbPhase = Literal["concrete", "reflect", "abstract", "active"]
+_DEFAULT_SCENE = "what_if"
 
 
-def plan_count_row_what_if(
-    start: int = 0,
-    end: int = 6,
+def plan_what_if_probes(
+    cues: list[str],
     *,
-    scene: str = "count_row:what_if",
+    scene: str = _DEFAULT_SCENE,
+    lattice_id: str = SCHEMA_MATH,
 ) -> list[dict[str, Any]]:
-    """Agent hypothesis: «а что будет, если считать start…end по одному?»"""
-    if end <= start:
-        raise ValueError("count row end must be > start")
+    """Open probes — surfaces only; no teacher expect, no concept oracle."""
     rows: list[dict[str, Any]] = []
-    for value in range(start, end):
-        cid = numeral_int_to_concept_id(value)
-        if not cid:
+    for raw in cues:
+        cue = str(raw or "").strip()
+        if not cue:
             continue
-        surface = str(value)
-        rows.append(
-            {
-                "cue": surface,
-                "correct": surface,
-                "concept_id": cid,
-                "scene": scene,
-            }
-        )
+        rows.append({"cue": cue, "scene": scene, "lattice_id": lattice_id})
     return rows
 
 
-def plan_cue_what_if(cues: list[str], *, scene: str = "what_if") -> list[dict[str, Any]]:
-    """Open probes — no teacher expect; agent tries surface and records surprise."""
-    return [{"cue": c.strip(), "scene": scene} for c in cues if c.strip()]
-
-
-def _comma_probe_from_count_row(rows: list[dict[str, Any]]) -> str | None:
-    values: list[int] = []
-    for row in rows:
-        v = numeral_surface_to_int(str(row.get("cue") or row.get("correct") or ""))
-        if v is not None:
-            values.append(v)
-    if len(values) < 2:
+def _hypothesis_concept_id(hypothesis: str | None) -> str | None:
+    hyp = str(hypothesis or "").strip()
+    if not hyp or " " in hyp:
         return None
-    values.sort()
-    return ", ".join(str(v) for v in values)
+    if "." in hyp and not hyp[0].isdigit():
+        return hyp
+    return None
 
 
 def _kolb_concrete_experience(
@@ -93,19 +75,17 @@ def _kolb_concrete_experience(
         tick = predict_tick(state, cue, modality=modality, bundle=bundle)
         hyp = (tick.get("predict") or {}).get("hypothesis") or ""
         verdict = tick.get("verdict")
-        correct = str(row.get("correct") or row.get("expect") or "")
-        concept_id = row.get("concept_id")
-        scene = str(row.get("scene") or "what_if")
+        scene = str(row.get("scene") or _DEFAULT_SCENE)
+        lattice_id = str(row.get("lattice_id") or SCHEMA_MATH)
+        expect = str(row.get("expect") or row.get("correct") or "").strip() or None
         correction_kind = None
         structure_tag = None
-        semantic_ok = bool(concept_id and hyp == str(concept_id))
-        if semantic_ok:
-            pass
-        elif correct and hyp and hyp != correct:
+
+        if expect and hyp and hyp != expect:
             correction_kind = "predict_surprise"
             structure_tag = "predict_mismatch"
             surprises += 1
-        elif verdict not in ("pass", "provisional") and hyp:
+        elif verdict not in ("pass", "provisional"):
             correction_kind = "predict_surprise"
             structure_tag = "predict_mismatch"
             surprises += 1
@@ -114,13 +94,14 @@ def _kolb_concrete_experience(
             state,
             cue=cue,
             surface_attempt=str(hyp or "?"),
-            correct=correct or str(hyp or ""),
-            lattice_id=str(row.get("lattice_id") or SCHEMA_MATH),
-            concept_id=str(concept_id) if concept_id else None,
+            correct=expect or str(hyp or ""),
+            lattice_id=lattice_id,
+            concept_id=_hypothesis_concept_id(hyp),
             bundle=bundle,
             scene=scene,
             correction_kind=correction_kind,
             structure_tag=structure_tag,
+            form_extract_allowed=True,
             episode_source="wake",
         )
         if ep:
@@ -132,7 +113,6 @@ def _kolb_concrete_experience(
                 "hypothesis": hyp,
                 "episode_id": (ep or {}).get("id"),
                 "surprise": bool(correction_kind),
-                "semantic_ok": semantic_ok,
             }
         )
 
@@ -155,21 +135,15 @@ def _kolb_concrete_experience(
 
 
 def _concrete_journal_text(rows: list[dict[str, Any]], surprises: int) -> str:
-    scene = str(rows[0].get("scene") or "") if rows else ""
-    if scene.startswith("count_row"):
-        vals = [
-            str(r.get("cue"))
-            for r in rows
-            if numeral_surface_to_int(str(r.get("cue") or "")) is not None
-        ]
-        span = f"{vals[0]}…{vals[-1]}" if len(vals) >= 2 else (vals[0] if vals else "?")
-        return (
-            f"А что будет, если посчитать ряд {span}? "
-            f"Попробовал {len(rows)} шагов, сюрпризов: {surprises}."
-        )
-    cues = [str(r.get("cue")) for r in rows[:6]]
-    tail = f" (+{len(rows) - 6})" if len(rows) > 6 else ""
-    return f"А что будет, если: {', '.join(cues)}{tail}? Сюрпризов: {surprises}."
+    cues = [str(r.get("cue")) for r in rows if r.get("cue")][:8]
+    tail = f" (+{len(rows) - len(cues)})" if len(rows) > len(cues) else ""
+    joined = ", ".join(cues) if cues else "?"
+    return f"А что будет, если: {joined}{tail}? Попробовал {len(rows)} раз, сюрпризов: {surprises}."
+
+
+def _extract_item_concept_id(item: dict[str, Any]) -> str | None:
+    cid = item.get("concept_id") or (item.get("extract") or {}).get("concept_id")
+    return str(cid) if cid else None
 
 
 def _kolb_reflect_abstract(
@@ -178,17 +152,21 @@ def _kolb_reflect_abstract(
     bundle: dict | None,
 ) -> dict[str, Any]:
     sleep_rep = run_sleep(state, bundle)
-    emergent: list[dict[str, Any]] = []
+    extracted: list[dict[str, Any]] = []
     for item in sleep_rep.get("items") or []:
-        cid = item.get("concept_id") or (item.get("extract") or {}).get("concept_id")
-        if cid and is_emergent_pattern_id(str(cid)):
-            emergent.append(item)
+        cid = _extract_item_concept_id(item)
+        if not cid:
+            continue
+        extracted.append({**item, "concept_id": cid})
+    extracted_ids = [str(x["concept_id"]) for x in extracted]
     return {
         "sleep": sleep_rep,
         "merged": sleep_rep.get("merged"),
         "pending": sleep_rep.get("pending"),
-        "emergent": emergent,
-        "emergent_ids": [str(x.get("concept_id") or (x.get("extract") or {}).get("concept_id")) for x in emergent],
+        "extracted": extracted,
+        "extracted_ids": extracted_ids,
+        # compat alias for callers that looked for pattern hubs only
+        "emergent_ids": extracted_ids,
     }
 
 
@@ -206,7 +184,7 @@ def _kolb_active_experiment(
 
     for row in probe_rows:
         cue = str(row.get("cue") or "")
-        expect = str(row.get("expect") or "") or None
+        expect = str(row.get("expect") or row.get("correct") or "").strip() or None
         if not cue:
             continue
         rep = macro_tick(
@@ -242,7 +220,11 @@ def _kolb_active_experiment(
                 if extra and not extra.get("skipped"):
                     retained.append(extra)
 
-    passed = sum(1 for t in ticks if t.get("verdict") == "pass" or (t.get("retain") or {}).get("status") == "confirmed")
+    passed = sum(
+        1
+        for t in ticks
+        if t.get("verdict") == "pass" or (t.get("retain") or {}).get("status") == "confirmed"
+    )
     return {"ticks": ticks, "passed": passed, "retained": retained}
 
 
@@ -261,9 +243,9 @@ def kolb_cycle(
     """
     Full Kolb loop initiated by the agent (no teacher ingest).
 
-    CE: predict + hippo episodes (count_row / what_if scenes)
-    RO+AC: run_sleep → emergent math.pattern.emerged.*
-    AE: re-probe (comma row or explicit cues) → Self retain
+    CE: predict + hippo episodes (surprise-gated, form_extract_allowed)
+    RO+AC: run_sleep → whatever Extract mints from episodes
+    AE: re-probe same or follow-up cues → Self retain
     """
     store_dir = store_dir.resolve()
     if state is None:
@@ -299,11 +281,7 @@ def kolb_cycle(
 
     probe_rows = list(probe or [])
     if not probe_rows:
-        comma = _comma_probe_from_count_row(experiment)
-        if comma and parse_comma_numeral_cue(comma):
-            probe_rows = [{"cue": comma}]
-        else:
-            probe_rows = [{"cue": str(r.get("cue") or "")} for r in experiment if r.get("cue")]
+        probe_rows = [{"cue": str(r.get("cue") or ""), "scene": r.get("scene")} for r in experiment if r.get("cue")]
 
     active = _kolb_active_experiment(
         store_dir,
@@ -315,9 +293,9 @@ def kolb_cycle(
     )
 
     summary_id = None
+    extracted_ids = reflect.get("extracted_ids") or []
     if write_journal and notebook:
-        emergent_ids = reflect.get("emergent_ids") or []
-        em_line = f" Emergent: {', '.join(emergent_ids)}." if emergent_ids else ""
+        ex_line = f" Extract: {', '.join(extracted_ids)}." if extracted_ids else ""
         rem = agent_remember(
             store_dir,
             state,
@@ -326,13 +304,13 @@ def kolb_cycle(
                 "text": (
                     f"Kolb завершён: CE {concrete['episodes']} ep / {concrete['surprises']} surprise → "
                     f"sleep merged {reflect.get('merged')} → "
-                    f"AE {active['passed']}/{len(active['ticks'])} pass.{em_line}"
+                    f"AE {active['passed']}/{len(active['ticks'])} pass.{ex_line}"
                 ),
                 "notebook": notebook,
                 "tags": ["kolb", "cycle_done"],
                 "data": {
                     "concrete": concrete["surprises"],
-                    "emergent": emergent_ids,
+                    "extracted": extracted_ids,
                     "active_passed": active["passed"],
                 },
             },
@@ -354,7 +332,8 @@ def kolb_cycle(
             "reflect": {
                 "merged": reflect.get("merged"),
                 "pending": reflect.get("pending"),
-                "emergent_ids": reflect.get("emergent_ids"),
+                "extracted_ids": extracted_ids,
+                "emergent_ids": extracted_ids,
             },
             "active": {
                 "passed": active["passed"],
@@ -367,31 +346,24 @@ def kolb_cycle(
     }
 
 
-def kolb_count_row_what_if(
+def kolb_what_if(
     store_dir: Path,
     *,
-    start: int = 0,
-    end: int = 6,
+    cues: list[str],
     bundle: dict | None = None,
     notebook: str = "kolb",
     state: dict | None = None,
     **kwargs: Any,
 ) -> dict[str, Any]:
-    """Shortcut: «а что будет, если считать start…end-1 по одному?»"""
-    experiment = plan_count_row_what_if(start, end)
-    comma = _comma_probe_from_count_row(experiment)
-    probe = [{"cue": comma}] if comma else None
-    rep = kolb_cycle(
+    """Open «что если» — произвольные cue-строки, без oracle."""
+    return kolb_cycle(
         store_dir,
-        experiment=experiment,
+        experiment=plan_what_if_probes(cues),
         bundle=bundle,
-        probe=probe,
         notebook=notebook,
         state=state,
         **kwargs,
     )
-    rep["count_row"] = {"start": start, "end": end}
-    return rep
 
 
 def kolb_open_what_if(
@@ -403,12 +375,38 @@ def kolb_open_what_if(
     state: dict | None = None,
     **kwargs: Any,
 ) -> dict[str, Any]:
-    """Open «что если» on arbitrary cues (groups, ops, sticks)."""
-    return kolb_cycle(
+    """Alias for kolb_what_if (legacy name)."""
+    return kolb_what_if(
         store_dir,
-        experiment=plan_cue_what_if(cues),
+        cues=cues,
         bundle=bundle,
         notebook=notebook,
         state=state,
         **kwargs,
     )
+
+
+def kolb_count_row_what_if(
+    store_dir: Path,
+    *,
+    start: int = 0,
+    end: int = 6,
+    bundle: dict | None = None,
+    notebook: str = "kolb",
+    state: dict | None = None,
+    **kwargs: Any,
+) -> dict[str, Any]:
+    """[LAB] Count surfaces as cue strings only — no concept_id oracle (host instrumentation)."""
+    if end <= start:
+        raise ValueError("count row end must be > start")
+    cues = [str(v) for v in range(start, end)]
+    rep = kolb_what_if(
+        store_dir,
+        cues=cues,
+        bundle=bundle,
+        notebook=notebook,
+        state=state,
+        **kwargs,
+    )
+    rep["lab_count_row"] = {"start": start, "end": end, "cues": cues}
+    return rep

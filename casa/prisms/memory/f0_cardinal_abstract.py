@@ -34,11 +34,9 @@ def abstract_cardinal_magnitude(*, step: int, count: int) -> int:
 
 def cardinality_concept_id(magnitude: int) -> str | None:
     """Мощность N → math.num.*: выученное имя (one…twenty_one) или math.num.N из абстракции счёта."""
-    if magnitude < 0:
-        return None
     from casa.prisms.memory.f0_pattern_extract import numeral_int_to_concept_id
 
-    return numeral_int_to_concept_id(magnitude) or f"math.num.{magnitude}"
+    return numeral_int_to_concept_id(magnitude)
 
 
 def score_abstract_mul_cue(cue: str, decoded: dict, bundle: dict | None = None) -> dict[str, int]:

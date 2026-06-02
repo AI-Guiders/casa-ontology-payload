@@ -10,6 +10,7 @@ ensure_import_paths()
 import hashlib
 import json
 import os
+import time
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
@@ -27,8 +28,19 @@ def _write_json(path: Path, obj: dict, *, compact: bool = False) -> None:
     else:
         data = json.dumps(obj, ensure_ascii=False, indent=2)
     tmp = path.with_name(path.name + ".tmp")
-    tmp.write_text(data, encoding="utf-8")
-    os.replace(tmp, path)
+    last_err: PermissionError | None = None
+    for attempt in range(8):
+        try:
+            tmp.write_text(data, encoding="utf-8")
+            os.replace(tmp, path)
+            return
+        except PermissionError as err:
+            last_err = err
+            if attempt >= 7:
+                break
+            time.sleep(0.05 * (attempt + 1))
+    if last_err is not None:
+        raise last_err
 
 
 def _edge_key(e: dict) -> tuple[str, str, str]:

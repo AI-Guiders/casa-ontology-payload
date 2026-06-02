@@ -396,14 +396,14 @@ def ensure_vision_bootstrap(state: dict) -> dict[str, Any]:
         state,
         {"modality": "vis"},
         PRISM_VISUAL,
-        lattice_hint="V1_object",
+        lattice_hint="V1_lum",
         priority=90,
     )
     add_route(
         state,
         {"modality": "image"},
         PRISM_VISUAL,
-        lattice_hint="V1_object",
+        lattice_hint="V1_lum",
         priority=90,
     )
     return vis

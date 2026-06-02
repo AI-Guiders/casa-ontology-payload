@@ -44,10 +44,15 @@ def main() -> None:
     sp_reh.add_argument("--no-persist", action="store_true")
     sp_reh.add_argument("--no-summary", action="store_true")
 
-    sp_kolb = sub.add_parser("kolb", help="Autonomous Kolb cycle: what-if → sleep → re-probe")
+    sp_kolb = sub.add_parser("kolb", help="[LAB] Kolb debug: cue-only what-if → sleep → re-probe")
     sp_kolb.add_argument("--store-dir", type=Path, default=None)
     sp_kolb.add_argument("--class-dir", type=Path, default=None, help="Load bundle from class dir")
-    sp_kolb.add_argument("--count-row", default=None, metavar="START:END", help="e.g. 0:6 → try 0…5")
+    sp_kolb.add_argument(
+        "--count-row",
+        default=None,
+        metavar="START:END",
+        help="[LAB] cue strings START…END-1 only (no concept oracle)",
+    )
     sp_kolb.add_argument("--what-if", action="append", default=[], help="Open cue probes (repeatable)")
     sp_kolb.add_argument("--notebook", default="kolb")
     sp_kolb.add_argument("--no-create-notebook", action="store_true")
@@ -79,7 +84,7 @@ def main() -> None:
         elif args.what_if:
             rep = kolb_open_what_if(store, cues=args.what_if, **kw)
         else:
-            rep = kolb_count_row_what_if(store, start=0, end=6, **kw)
+            rep = kolb_open_what_if(store, cues=["()", "(|)", "2+2"], **kw)
         print(json.dumps(rep, ensure_ascii=False, indent=2))
         return
 

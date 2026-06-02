@@ -157,7 +157,7 @@ def retain_verified_predict(
         mark_runtime_dirty(state)
         save_runtime_state(store_dir, state)
 
-    return {
+    rep = {
         "retain_key": key,
         "journal_id": row["id"],
         "status": check.get("status"),
@@ -166,6 +166,24 @@ def retain_verified_predict(
         "source": source,
         "self_name": self_name,
     }
+    cue_s = str(cue or "").strip()
+    if cue_s.startswith("vis:") and str(expect).startswith("math.") and check.get("status") == "confirmed":
+        from casa.prisms.visual.bridge_math import self_promote_vis_math_bridge
+
+        frame_id = cue_s.split(":", 1)[-1]
+        promoted = self_promote_vis_math_bridge(
+            state,
+            frame_id=frame_id,
+            math_cid=str(expect),
+            provenance="self_retain",
+        )
+        if promoted:
+            rep["vis_math_bridge"] = promoted
+            if persist:
+                mark_runtime_dirty(state)
+                save_runtime_state(store_dir, state)
+
+    return rep
 
 
 def retain_from_check_row(
