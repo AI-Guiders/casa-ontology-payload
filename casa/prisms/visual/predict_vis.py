@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""predict(..., modality=vis) — decode prism_visual, optional vis_refs lookup."""
+"""predict(..., modality=vis) — decode prism_visual LRGB + vis_refs."""
 
 from __future__ import annotations
 
 from typing import Any
 
+from casa.domain.prism_ids import PRISM_VISUAL
+from casa.domain.visual_tract import LATTICE_V1_LUM, VISUAL_LATTICE_IDS
 from casa.prisms.memory.memory_prisms import content_prism_lattices, ensure_prisms
 from casa.prisms.memory.stack import decode_lattice
-from casa.domain.prism_ids import PRISM_VISUAL
-from casa.prisms.visual.ingest_vis import VIS_OBJECT, ensure_prism_visual
+from casa.prisms.visual.bootstrap import VIS_OBJECT, ensure_prism_visual
 
 
 def _resolve_cue_to_concept_id(state: dict, cue: str) -> str:
@@ -26,31 +27,54 @@ def _resolve_cue_to_concept_id(state: dict, cue: str) -> str:
     return ""
 
 
+def _rank_lattice_tokens(lat: dict, *, prefix: str = "") -> list[tuple[str, int]]:
+    dec = decode_lattice(lat, min_votes=1)
+    ranked: list[tuple[str, int]] = []
+    for c in dec.get("concepts") or []:
+        cid = str(c.get("concept_id") or "")
+        if prefix and not cid.startswith(prefix):
+            continue
+        ranked.append((cid, int(c.get("votes") or 0)))
+    for cell in lat.get("cells") or []:
+        if not isinstance(cell, list):
+            continue
+        for tok in cell:
+            if not isinstance(tok, str):
+                continue
+            if tok.startswith("V:") and (not prefix or "vis." in tok or tok.startswith("V:vis.")):
+                ranked.append((tok, 1))
+    ranked.sort(key=lambda x: (-x[1], x[0]))
+    return ranked
+
+
 def predict_vis(state: dict, cue: str, *, top_k: int = 8) -> dict[str, Any]:
     state = ensure_prisms(state)
     ensure_prism_visual(state)
     lats = content_prism_lattices(state, PRISM_VISUAL)
-    lat = lats.get(VIS_OBJECT)
-    if not lat:
+    lum = lats.get(LATTICE_V1_LUM) or lats.get(VIS_OBJECT)
+    if not lum:
         return {
             "schema_version": 1,
             "modality": "vis",
             "cue": cue,
             "hypothesis": None,
             "confidence": 0.0,
-            "digest": {"reason": "no_V1_object"},
+            "digest": {"reason": "no_V1_lum"},
         }
     target = _resolve_cue_to_concept_id(state, cue) or cue
-    dec = decode_lattice(lat, min_votes=1)
-    ranked: list[tuple[str, int]] = []
-    for c in dec.get("concepts") or []:
-        cid = str(c.get("concept_id") or "")
-        if not cid.startswith("vis."):
-            continue
-        ranked.append((cid, int(c.get("votes") or 0)))
-    ranked.sort(key=lambda x: (-x[1], x[0]))
+    ranked = _rank_lattice_tokens(lum, prefix="vis.")
+    if cue.startswith("vis:"):
+        frame_cue = cue.split(":", 1)[-1]
+        ranked = [(cid, v + (30 if frame_cue in cid else 0)) for cid, v in ranked]
+        ranked.sort(key=lambda x: (-x[1], x[0]))
     if target.startswith("vis."):
         ranked = [(cid, v + (50 if cid == target else 0)) for cid, v in ranked]
+        ranked.sort(key=lambda x: (-x[1], x[0]))
+    if not ranked:
+        for lid in VISUAL_LATTICE_IDS:
+            lat = lats.get(lid)
+            if lat:
+                ranked.extend(_rank_lattice_tokens(lat))
         ranked.sort(key=lambda x: (-x[1], x[0]))
     top = ranked[0][0] if ranked else (target if target.startswith("vis.") else None)
     return {
@@ -60,7 +84,7 @@ def predict_vis(state: dict, cue: str, *, top_k: int = 8) -> dict[str, Any]:
         "hypothesis": top,
         "hypothesis_tokens": [c for c, _ in ranked[:top_k]],
         "confidence": min(1.0, (ranked[0][1] / 10.0) if ranked else 0.0),
-        "digest": {"concepts": len(ranked), "lattice_id": VIS_OBJECT},
+        "digest": {"concepts": len(ranked), "lattice_id": LATTICE_V1_LUM},
         "ranked": ranked[:top_k],
-        "provenance": {"engine": "vis_lattice_decode_v0"},
+        "provenance": {"engine": "vis_lrgb_decode"},
     }

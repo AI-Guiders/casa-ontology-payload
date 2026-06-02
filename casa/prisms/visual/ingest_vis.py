@@ -3,51 +3,23 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Any
 
+from casa.domain.prism_ids import PRISM_VISUAL
+from casa.domain.prism_wire import prism_block
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.memory.prism_hot_context import add_hot_edge
-from casa.prisms.memory.prism_spawn import spawn_content_lattice, spawn_prism
 from casa.prisms.memory.stack import _place_token
 from casa.prisms.shared.codec_grid import Grid
-from casa.prisms.shared.config_io import load_config
-from casa.domain.prism_ids import PRISM_KIND_CONTENT, PRISM_VISUAL
-from casa.domain.prism_wire import prism_block
+from casa.prisms.visual.bootstrap import VIS_CONCEPT_PREFIX, VIS_OBJECT, ensure_prism_visual
 
-VIS_STACK = Path("design/prisms/visual/stack.json")
-VIS_OBJECT = "V1_object"
-VIS_CONCEPT_PREFIX = "vis."
-
-
-def _load_vis_stack() -> dict:
-    return load_config(VIS_STACK)
-
-
-def ensure_prism_visual(state: dict, *, include_scene: bool = False) -> dict[str, Any]:
-    """Bootstrap prism_visual + V1_object (and optional V2_scene) lattices."""
-    state = ensure_prisms(state)
-    spawn_prism(state, PRISM_VISUAL, kind=PRISM_KIND_CONTENT, stack=str(VIS_STACK))
-    stack = _load_vis_stack()
-    spawned: list[str] = []
-    existing = prism_block(state, PRISM_VISUAL).get("lattices") or {}
-    for lat in stack.get("lattices") or []:
-        if lat.get("status") == "optional_v0" and not include_scene:
-            continue
-        lid = str(lat.get("legacy_id") or lat.get("lattice_id") or "")
-        if not lid or lid in existing:
-            if lid:
-                spawned.append(lid)
-            continue
-        spawn_content_lattice(
-            state,
-            PRISM_VISUAL,
-            lid,
-            z_level=int(lat.get("z_level") or 1),
-            concept_prefix=str(lat.get("concept_prefix") or VIS_CONCEPT_PREFIX),
-        )
-        spawned.append(lid)
-    return {"prism_id": PRISM_VISUAL, "lattice_ids": spawned}
+__all__ = [
+    "VIS_OBJECT",
+    "VIS_CONCEPT_PREFIX",
+    "ensure_prism_visual",
+    "ingest_vis_claim",
+    "ingest_vis_batch",
+]
 
 
 def _strengthen_vis_on_lattice(
@@ -63,11 +35,11 @@ def _strengthen_vis_on_lattice(
     lat = lats.setdefault(
         lattice_id,
         {
-            "z_level": 1,
+            "z_level": 0,
             "width": 32,
             "height": 32,
             "cells": [[] for _ in range(32 * 32)],
-            "concept_prefix": VIS_CONCEPT_PREFIX,
+            "concept_prefix": "vis.lum.",
         },
     )
     g = Grid(width=int(lat["width"]), height=int(lat["height"]), cells=lat["cells"])

@@ -6,7 +6,8 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from casa.domain.prism_ids import PRISM_LANG_RU, PRISM_MATH, PRISM_MEMORY
+from casa.domain.prism_ids import PRISM_LANG_RU, PRISM_MATH, PRISM_MEMORY, PRISM_VISUAL
+from casa.domain.visual_tract import is_visual_lattice_id
 from casa.domain.prism_wire import prism_block, prism_memory, prisms
 from casa.prisms.shared.lattice_names_v1 import (
     CARDINAL_MATH,
@@ -59,6 +60,8 @@ _LANG_RU_PREFIXES = (
 def lattice_content_prism_target(lattice_id: str) -> str | None:
     """Target content prism for lattice_id, or None to keep in prism_memory."""
     lid = str(lattice_id)
+    if is_visual_lattice_id(lid):
+        return PRISM_VISUAL
     if lid in _MATH_LATTICES or lid in _LEGACY_MATH_EXACT:
         return PRISM_MATH
     if lid.startswith(("schema-", "compose-", "cardinal-")):
