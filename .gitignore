@@ -22,3 +22,41 @@ lab/visual-curriculum/generated/**
 lab/visual-curriculum/reports/**
 !lab/visual-curriculum/generated/
 !lab/visual-curriculum/generated/README.md
+
+# .NET build output
+**/bin/
+**/obj/
+
+# Generated lesson ingest reports
+**/last-ingest-report.json
+
+# Corpus derived artifacts (README/manifests stay tracked)
+lab/corpus/**/frequency*.jsonl
+lab/corpus/**/headwords*.txt
+lab/corpus/**/lexicon_axes*.jsonl
+lab/corpus/**/source/
+
+# NCA layout train scratch (model.pt may stay tracked)
+lab/agent-core/**/nca/**/final_grid.json
+lab/agent-core/**/nca/**/report.json
+
+# Lab experiments, scratch, and local train stores
+lab/exp_*/
+lab/nca_out*/
+lab/_bench*/
+lab/_tmp*/
+lab/layered_out/
+lab/mm/
+lab/sensory/
+lab/sources/
+lab/kb/_tmp*
+
+# Post-train pipeline logs (repo root)
+/post_train_ru_general.log
+/post_train_ru_general.status.json
+/post_train_ru_general.lock
+/train_*.log
+/train_*.err.log
+
+# Stray generated corpus copy
+casa/prisms/lab/
