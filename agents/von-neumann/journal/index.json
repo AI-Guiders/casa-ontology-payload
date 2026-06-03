@@ -2,8 +2,8 @@
   "schema_version": 1,
   "domains": {
     "self": {
-      "entry_count": 15,
-      "updated_at": "2026-06-01T23:40:42Z",
+      "entry_count": 26,
+      "updated_at": "2026-06-02T00:11:22Z",
       "entries_path": "entries.jsonl"
     },
     "math-palochki": {
@@ -17,8 +17,8 @@
       "entries_path": "entries.jsonl"
     },
     "kolb": {
-      "entry_count": 9,
-      "updated_at": "2026-06-01T23:40:42Z",
+      "entry_count": 117,
+      "updated_at": "2026-06-02T00:54:42Z",
       "entries_path": "entries.jsonl"
     }
   }

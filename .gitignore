@@ -19,5 +19,6 @@ __pycache__/
 
 # Visual-curriculum lab output (moment JSON, summaries, probe dumps)
 lab/visual-curriculum/generated/**
+lab/visual-curriculum/reports/**
 !lab/visual-curriculum/generated/
 !lab/visual-curriculum/generated/README.md

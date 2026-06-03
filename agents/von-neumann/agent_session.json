@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "started_at": "2026-06-01T23:32:50Z",
-  "macro_ticks": 3,
+  "macro_ticks": 6863,
   "kolb": {
     "runs": 1,
     "last_at": "2026-06-01T23:32:50Z",
@@ -18,16 +18,32 @@
     "reason": "first_what_if",
     "at": "2026-06-01T23:32:50Z"
   },
-  "updated_at": "2026-06-01T23:40:42Z",
+  "updated_at": "2026-06-02T22:04:18Z",
   "self_drive": {
-    "kolb_runs": 3,
+    "kolb_runs": 39,
     "last_count_row_end": 12,
     "last_emergent": "math.pattern.emerged.456ca2872ab3",
-    "last_at": "2026-06-01T23:40:42Z"
+    "last_at": "2026-06-02T00:54:42Z",
+    "want_kolb": true,
+    "last_extracted": "math.op.sub",
+    "surprise_cues": [
+      "1",
+      "3",
+      "2+2",
+      "()",
+      "(|)",
+      "(III)",
+      "(IIIII)",
+      "(|||) - (||)",
+      "2",
+      "3*2",
+      "(||)",
+      "(||) + (||)"
+    ]
   },
   "last_self_drive": {
-    "kind": "kolb_count_row",
-    "reason": "extend_count_row",
-    "at": "2026-06-01T23:40:42Z"
+    "kind": "sleep",
+    "reason": "hippo_full",
+    "at": "2026-06-02T22:04:18Z"
   }
 }

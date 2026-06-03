@@ -11,10 +11,10 @@ from typing import Any
 
 _REPO = Path(__file__).resolve().parents[1]
 _CURRICULUM = _REPO / "lab" / "visual-curriculum"
-if str(_REPO) not in sys.path:
-    sys.path.insert(0, str(_REPO))
-if str(_CURRICULUM) not in sys.path:
-    sys.path.insert(0, str(_CURRICULUM))
+for entry in (_REPO, _CURRICULUM):
+    s = str(entry)
+    if s not in sys.path:
+        sys.path.insert(0, s)
 
 from casa.prisms.memory.meta_concept_aliases import LEX_CONCEPT_RENAMES
 from curriculum_lab import CurriculumLabSession

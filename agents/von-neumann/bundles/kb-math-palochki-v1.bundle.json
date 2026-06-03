@@ -425,6 +425,106 @@
     {
       "concept_id": "lang.word.палочка",
       "text": "RU word → math.entity.stick"
+    },
+    {
+      "concept_id": "math.entity.group",
+      "text": "Grouping delimiter: parentheses around a heap (кучка в скобках)."
+    },
+    {
+      "concept_id": "math.ctx.group",
+      "text": "Reading: (|) (||) () as grouped stick cardinality."
+    },
+    {
+      "concept_id": "math.entity.parens",
+      "text": "Parentheses as delimiters in expressions (скобки)."
+    },
+    {
+      "concept_id": "math.ctx.precedence",
+      "text": "Reading: parentheses set priority of operations."
+    },
+    {
+      "concept_id": "math.concept.fraction",
+      "text": "Fraction: N heaps taken out of K equal heaps (дробь на кучках)."
+    },
+    {
+      "concept_id": "math.role.numerator",
+      "text": "Numerator: how many heaps were taken (числитель)."
+    },
+    {
+      "concept_id": "math.role.denominator",
+      "text": "Denominator: into how many heaps the whole was split (знаменатель)."
+    },
+    {
+      "concept_id": "math.entity.heap_bracket",
+      "text": "Square brackets group several equal heaps: [(||)(||)]."
+    },
+    {
+      "concept_id": "math.entity.heap_slot",
+      "text": "One heap-share in fraction notation: () marks a heap even without sticks drawn inside (not lesson-11 zero — sticks omitted for brevity)."
+    },
+    {
+      "concept_id": "math.ctx.fraction_heap",
+      "text": "Reading: fraction as highlighted heap parts."
+    },
+    {
+      "concept_id": "math.frac.one_half",
+      "text": "One half: 1 heap of 2 — (||) ||."
+    },
+    {
+      "concept_id": "math.frac.two_thirds",
+      "text": "Two thirds: 2 heaps of 3 — (||) [(||)(||)]."
+    },
+    {
+      "concept_id": "math.frac.three_fourths",
+      "text": "Three fourths: 3 heaps of 4 — ()[()()()] (lazy) or (||) [(||)(||)(||)] (full sticks)."
+    },
+    {
+      "concept_id": "lang.word.дробь",
+      "text": "RU word → math.concept.fraction"
+    },
+    {
+      "concept_id": "lang.word.числитель",
+      "text": "RU word → math.role.numerator"
+    },
+    {
+      "concept_id": "lang.word.знаменатель",
+      "text": "RU word → math.role.denominator"
+    },
+    {
+      "concept_id": "lang.word.половина",
+      "text": "RU word → math.frac.one_half"
+    },
+    {
+      "concept_id": "math.prop.commutative_add",
+      "text": "Addition: reordering addends yields the same heap."
+    },
+    {
+      "concept_id": "math.prop.commutative_mul",
+      "text": "Multiplication: reordering factors yields the same product."
+    },
+    {
+      "concept_id": "math.prop.associative_add",
+      "text": "Addition: grouping of addends does not change the sum."
+    },
+    {
+      "concept_id": "math.prop.associative_mul",
+      "text": "Multiplication: grouping of factors does not change the product."
+    },
+    {
+      "concept_id": "math.prop.distributive_mul_over_add",
+      "text": "Multiplication distributes over addition on heaps."
+    },
+    {
+      "concept_id": "math.prop.identity_add_zero",
+      "text": "Adding zero leaves the heap unchanged."
+    },
+    {
+      "concept_id": "math.prop.identity_mul_one",
+      "text": "Multiplying by one leaves the heap unchanged."
+    },
+    {
+      "concept_id": "math.prop.division_inverse_mul",
+      "text": "Division and multiplication are inverse questions on same heaps."
     }
   ],
   "graph": {
@@ -693,6 +793,101 @@
         "src": "math.entity.stick",
         "relation": "denotes",
         "dst": "lang.word.палочка"
+      },
+      {
+        "src": "lang.word.дробь",
+        "relation": "denotes",
+        "dst": "math.concept.fraction"
+      },
+      {
+        "src": "lang.word.числитель",
+        "relation": "denotes",
+        "dst": "math.role.numerator"
+      },
+      {
+        "src": "lang.word.знаменатель",
+        "relation": "denotes",
+        "dst": "math.role.denominator"
+      },
+      {
+        "src": "lang.word.половина",
+        "relation": "denotes",
+        "dst": "math.frac.one_half"
+      },
+      {
+        "src": "math.frac.one_half",
+        "relation": "instance_of",
+        "dst": "math.concept.fraction"
+      },
+      {
+        "src": "math.role.heap",
+        "relation": "models",
+        "dst": "math.frac.one_half"
+      },
+      {
+        "src": "math.frac.two_thirds",
+        "relation": "instance_of",
+        "dst": "math.concept.fraction"
+      },
+      {
+        "src": "math.role.heap",
+        "relation": "models",
+        "dst": "math.frac.two_thirds"
+      },
+      {
+        "src": "math.frac.three_fourths",
+        "relation": "instance_of",
+        "dst": "math.concept.fraction"
+      },
+      {
+        "src": "math.role.heap",
+        "relation": "models",
+        "dst": "math.frac.three_fourths"
+      },
+      {
+        "src": "math.prop.commutative_add",
+        "relation": "applies_to",
+        "dst": "math.op.add"
+      },
+      {
+        "src": "math.prop.commutative_mul",
+        "relation": "applies_to",
+        "dst": "math.op.mul"
+      },
+      {
+        "src": "math.prop.associative_add",
+        "relation": "applies_to",
+        "dst": "math.op.add"
+      },
+      {
+        "src": "math.prop.associative_mul",
+        "relation": "applies_to",
+        "dst": "math.op.mul"
+      },
+      {
+        "src": "math.prop.distributive_mul_over_add",
+        "relation": "applies_to",
+        "dst": "math.op.mul"
+      },
+      {
+        "src": "math.prop.identity_add_zero",
+        "relation": "applies_to",
+        "dst": "math.op.add"
+      },
+      {
+        "src": "math.prop.identity_mul_one",
+        "relation": "applies_to",
+        "dst": "math.op.mul"
+      },
+      {
+        "src": "math.prop.division_inverse_mul",
+        "relation": "applies_to",
+        "dst": "math.op.div"
+      },
+      {
+        "src": "math.prop.division_inverse_mul",
+        "relation": "applies_to",
+        "dst": "math.op.mul"
       }
     ]
   },
@@ -821,6 +1016,105 @@
       },
       "weight": 10,
       "text": "Digit zero in stick counting."
+    },
+    {
+      "id": "math.ctx.group",
+      "when": {
+        "shape": "group"
+      },
+      "weight": 12,
+      "text": "Parenthesized stick heap: (|) (||) ()."
+    },
+    {
+      "id": "math.ctx.group",
+      "when": {
+        "shape": "group",
+        "inner": "empty"
+      },
+      "weight": 14,
+      "text": "Empty group () counts as zero."
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": {
+        "shape": "infix",
+        "op": "+",
+        "operand": "pipe_group"
+      },
+      "weight": 11,
+      "text": "Add grouped heaps: (||) + (||)."
+    },
+    {
+      "id": "math.ctx.arithmetic",
+      "when": {
+        "shape": "infix",
+        "op": "-",
+        "operand": "pipe_group"
+      },
+      "weight": 11,
+      "text": "Subtract grouped heaps: (|||) - (||)."
+    },
+    {
+      "id": "math.ctx.precedence",
+      "when": {
+        "shape": "singleton",
+        "glyph": "("
+      },
+      "weight": 6,
+      "text": "Parentheses can change priority of operations."
+    },
+    {
+      "id": "math.ctx.precedence",
+      "when": {
+        "shape": "text",
+        "contains": "(4 - 7) + 5"
+      },
+      "weight": 9,
+      "text": "Parentheses change priority: (4 - 7) + 5."
+    },
+    {
+      "id": "math.ctx.fraction_heap",
+      "when": {
+        "shape": "fraction_heap"
+      },
+      "weight": 14,
+      "text": "Fraction on heaps: numerator heaps taken, denominator total heaps."
+    },
+    {
+      "id": "math.ctx.fraction_heap",
+      "when": {
+        "shape": "fraction_heap",
+        "glyph": "(||) ||"
+      },
+      "weight": 16,
+      "text": "Half: one heap of two — (||) ||."
+    },
+    {
+      "id": "math.ctx.fraction_heap",
+      "when": {
+        "shape": "fraction_heap",
+        "glyph": "(||) [(||)(||)]"
+      },
+      "weight": 16,
+      "text": "Two thirds: (||) plus bracket of two heaps."
+    },
+    {
+      "id": "math.ctx.fraction_heap",
+      "when": {
+        "shape": "fraction_heap",
+        "glyph": "()[()()()]"
+      },
+      "weight": 16,
+      "text": "Three fourths (lazy): () marks heap-shares without drawing sticks inside."
+    },
+    {
+      "id": "math.ctx.fraction_heap",
+      "when": {
+        "shape": "fraction_heap",
+        "glyph": "(||) [(||)(||)(||)]"
+      },
+      "weight": 15,
+      "text": "Three fourths (full): (||) is the one heap left, bracket holds the three taken."
     }
   ],
   "symbol_senses": [
@@ -921,6 +1215,152 @@
       "context": "math.ctx.cardinal",
       "concept_id": "math.num.four",
       "grapheme": "grapheme.latn.4"
+    },
+    {
+      "glyph": "()",
+      "context": "math.ctx.group",
+      "concept_id": "math.num.zero",
+      "when": {
+        "shape": "group",
+        "inner": "empty"
+      }
+    },
+    {
+      "glyph": "(|)",
+      "context": "math.ctx.group",
+      "concept_id": "math.num.one",
+      "when": {
+        "shape": "group",
+        "inner": "pipe_run"
+      }
+    },
+    {
+      "glyph": "(||)",
+      "context": "math.ctx.group",
+      "concept_id": "math.num.two",
+      "when": {
+        "shape": "group",
+        "inner": "pipe_run"
+      }
+    },
+    {
+      "glyph": "(|||)",
+      "context": "math.ctx.group",
+      "concept_id": "math.num.three",
+      "when": {
+        "shape": "group",
+        "inner": "pipe_run"
+      }
+    },
+    {
+      "glyph": "(||||)",
+      "context": "math.ctx.group",
+      "concept_id": "math.num.four",
+      "when": {
+        "shape": "group",
+        "inner": "pipe_run"
+      }
+    },
+    {
+      "glyph": "(I)",
+      "context": "math.ctx.group",
+      "concept_id": "math.num.one",
+      "when": {
+        "shape": "group",
+        "inner": "i_run"
+      }
+    },
+    {
+      "glyph": "(II)",
+      "context": "math.ctx.group",
+      "concept_id": "math.num.two",
+      "when": {
+        "shape": "group",
+        "inner": "i_run"
+      }
+    },
+    {
+      "glyph": "(III)",
+      "context": "math.ctx.group",
+      "concept_id": "math.num.three",
+      "when": {
+        "shape": "group",
+        "inner": "i_run"
+      }
+    },
+    {
+      "glyph": "(IIII)",
+      "context": "math.ctx.group",
+      "concept_id": "math.num.four",
+      "when": {
+        "shape": "group",
+        "inner": "i_run"
+      }
+    },
+    {
+      "glyph": "(IIIII)",
+      "context": "math.ctx.group",
+      "concept_id": "math.num.five",
+      "when": {
+        "shape": "group",
+        "inner": "i_run"
+      }
+    },
+    {
+      "glyph": "1/2",
+      "context": "math.ctx.fraction_heap",
+      "concept_id": "math.frac.one_half",
+      "when": {
+        "shape": "fraction_heap"
+      }
+    },
+    {
+      "glyph": "2/3",
+      "context": "math.ctx.fraction_heap",
+      "concept_id": "math.frac.two_thirds",
+      "when": {
+        "shape": "fraction_heap"
+      }
+    },
+    {
+      "glyph": "3/4",
+      "context": "math.ctx.fraction_heap",
+      "concept_id": "math.frac.three_fourths",
+      "when": {
+        "shape": "fraction_heap"
+      }
+    },
+    {
+      "glyph": "(||) ||",
+      "context": "math.ctx.fraction_heap",
+      "concept_id": "math.frac.one_half",
+      "when": {
+        "shape": "fraction_heap"
+      }
+    },
+    {
+      "glyph": "(||) [(||)(||)]",
+      "context": "math.ctx.fraction_heap",
+      "concept_id": "math.frac.two_thirds",
+      "when": {
+        "shape": "fraction_heap"
+      }
+    },
+    {
+      "glyph": "()[()()()]",
+      "context": "math.ctx.fraction_heap",
+      "concept_id": "math.frac.three_fourths",
+      "when": {
+        "shape": "fraction_heap"
+      }
+    },
+    {
+      "glyph": "(||) [(||)(||)(||)]",
+      "context": "math.ctx.fraction_heap",
+      "concept_id": "math.frac.three_fourths",
+      "when": {
+        "shape": "fraction_heap"
+      }
     }
   ],
   "symbol_concepts": [
@@ -935,7 +1375,12 @@
     "grapheme.latn.1",
     "grapheme.latn.2",
     "grapheme.latn.3",
-    "grapheme.latn.4"
+    "grapheme.latn.4",
+    "grapheme.latn.(",
+    "grapheme.latn.)",
+    "grapheme.latn.I",
+    "grapheme.latn.[",
+    "grapheme.latn.]"
   ],
   "keyboard_symbols": [
     {
@@ -1003,6 +1448,46 @@
       "glyph": "||||",
       "concept_id": "math.num.four",
       "context": "math.ctx.cardinal"
+    },
+    {
+      "glyph": "()",
+      "concept_id": "math.num.zero",
+      "context": "math.ctx.group"
+    },
+    {
+      "glyph": "(|)",
+      "concept_id": "math.num.one",
+      "context": "math.ctx.group"
+    },
+    {
+      "glyph": "(||)",
+      "concept_id": "math.num.two",
+      "context": "math.ctx.group"
+    },
+    {
+      "glyph": "(III)",
+      "concept_id": "math.num.three",
+      "context": "math.ctx.group"
+    },
+    {
+      "glyph": "(IIIII)",
+      "concept_id": "math.num.five",
+      "context": "math.ctx.group"
+    },
+    {
+      "glyph": "1/2",
+      "concept_id": "math.frac.one_half",
+      "context": "math.ctx.fraction_heap"
+    },
+    {
+      "glyph": "2/3",
+      "concept_id": "math.frac.two_thirds",
+      "context": "math.ctx.fraction_heap"
+    },
+    {
+      "glyph": "3/4",
+      "concept_id": "math.frac.three_fourths",
+      "context": "math.ctx.fraction_heap"
     }
   ],
   "math_keywords": {
@@ -1110,12 +1595,94 @@
       "пусто",
       "нет",
       "ноль палочек",
-      "0 палочек"
+      "0 палочек",
+      "()",
+      "пустая группа",
+      "пустые скобки"
     ],
     "math.num.four": [
       "four",
       "четыре",
       "четыре палочки"
+    ],
+    "math.entity.group": [
+      "группа",
+      "скобки",
+      "кучка в скобках",
+      "пустая группа"
+    ],
+    "math.entity.parens": [
+      "скобки",
+      "(",
+      ")",
+      "приоритет",
+      "сначала в скобках"
+    ],
+    "math.concept.fraction": [
+      "дробь",
+      "доля",
+      "часть",
+      "fraction"
+    ],
+    "math.role.numerator": [
+      "числитель",
+      "взяли",
+      "сколько кучек взяли"
+    ],
+    "math.role.denominator": [
+      "знаменатель",
+      "на сколько кучек",
+      "разделили"
+    ],
+    "math.frac.one_half": [
+      "1/2",
+      "половина",
+      "(||) ||"
+    ],
+    "math.frac.two_thirds": [
+      "2/3",
+      "две трети",
+      "(||) [(||)(||)]"
+    ],
+    "math.frac.three_fourths": [
+      "3/4",
+      "три четверти",
+      "()[()()()]",
+      "(||) [(||)(||)(||)]"
+    ],
+    "math.entity.heap_slot": [
+      "кучка-доля",
+      "слот кучки",
+      "без палочек внутри"
+    ],
+    "math.entity.heap_bracket": [
+      "скобки кучек",
+      "[",
+      "]"
+    ],
+    "math.prop.commutative_add": [
+      "коммутатив",
+      "перестановка",
+      "от перестановки"
+    ],
+    "math.prop.commutative_mul": [
+      "коммутатив",
+      "перестановка множителей"
+    ],
+    "math.prop.identity_add_zero": [
+      "ноль",
+      "нейтральный",
+      "+0",
+      "пустая группа"
+    ],
+    "math.prop.identity_mul_one": [
+      "единица",
+      "×1",
+      "один раз"
+    ],
+    "math.prop.division_inverse_mul": [
+      "обратное",
+      "деление и умножение"
     ]
   },
   "compose_scenarios": [
