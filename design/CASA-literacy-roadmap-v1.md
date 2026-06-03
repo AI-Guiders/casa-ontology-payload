@@ -23,6 +23,7 @@
 - **Moment** — один vis + один lexical → **один sleep** (не batch из десятков пар).
 - **Метаязык** — **отдельные** moment’ы на карточку-фразу; не смешивать с grapheme/буквой в том же sleep (lab: pure → probe **know** на фразе).
 - **`concept_id`** — semantic EN; мета-оси `lang.meta.{category}.{facet}` (`meta_concepts.py`), не транслит RU.
+- **Одна мета-категория** — много surface и языков (RU/EN фразы → один id); probe по категории, не по цитате. См. протокол § «Одна категория — много выражений».
 - **Локали параллельны** — RU и EN те же стадии, разные lattice (`alphabet-ru` / `alphabet-en`, `lexicon-ru` / `lexicon-en`).
 
 ---

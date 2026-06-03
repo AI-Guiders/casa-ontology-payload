@@ -72,14 +72,16 @@
 
 **Не смешивать:** `lang.word.zaglavnaya` ↔ `grapheme.cyrl.a.upper` (прилагательное ↔ одна буква).
 
+**Одна мета-категория — разные фразы и языки:** см. протокол § Семантическое именование («Одна категория — много выражений»). Пример сравнения размера на vis: id `lang.meta.size.comparative.greater`, surfaces «Этот круг больше других» / «This circle is bigger than the others» — **два** чистых moment’а (или episodic), **один** мост; не `concept_id` на каждую строку.
+
 **Размер на геометрии (идея):** `большая` / `маленкая` из w2 дублировать визуально на `visual-cards` — большой круг vs маленький круг, **чистые** moment’ы (мета отдельно от `geom.circle` и т.п.). См. [CASA-learning-protocol-vis-math-v1.md](CASA-learning-protocol-vis-math-v1.md) § Vis↔lex.
 
 **Категория регистра** — два имени одного инварианта, exemplar vis **без** `grapheme.*` в том же moment:
 
-| Инвариант | Имена (`lang.word.*`) | Exemplar (vis) |
-|-----------|------------------------|----------------|
-| верхний регистр | `lang.word.capital_letter` — surfaces «заглавная буква», «буква верхнего регистра» | exemplar `letter-{cue}-upper-sans` (**Б, В**, …; **а** — отдельно) |
-| нижний регистр | `lang.word.lowercase_letter` — surfaces «строчная буква», «буква нижнего регистра» | exemplar `letter-{cue}-lower-sans` (**б, в**, …) |
+| Инвариант | `concept_id` (канон) | surfaces (примеры) | Exemplar (vis) |
+|-----------|----------------------|----------------------|----------------|
+| верхний регистр | `lang.meta.letterCase.upper` | «заглавная буква», «буква верхнего регистра» | `letter-{cue}-upper-sans` (**Б, В**, …; **а** — отдельно) |
+| нижний регистр | `lang.meta.letterCase.lower` | «строчная буква», «буква нижнего регистра» | `letter-{cue}-lower-sans` (**б, в**, …) |
 
 **Контраст заглавных** (grapheme, без категории в том же moment): `run_upper_register_contrast.py` — чередование `letter-b-upper`, `letter-v-upper`, …
 
@@ -88,8 +90,8 @@
 ```json
 [
   {"visual_frame": "letter-a-upper-sans"},
-  {"lexical": {"concept_id": "lang.word.capital_letter", "correct": "заглавная буква"}},
-  {"lexical": {"concept_id": "lang.word.capital_letter", "correct": "буква верхнего регистра"}}
+  {"lexical": {"concept_id": "lang.meta.letterCase.upper", "correct": "заглавная буква"}},
+  {"lexical": {"concept_id": "lang.meta.letterCase.upper", "correct": "буква верхнего регистра"}}
 ]
 ```
 
