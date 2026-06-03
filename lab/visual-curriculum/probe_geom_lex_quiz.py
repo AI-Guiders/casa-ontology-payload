@@ -3,24 +3,7 @@
 
 from __future__ import annotations
 
-import json
-import sys
-from pathlib import Path
-
-_REPO = Path(__file__).resolve().parents[2]
-if str(_REPO) not in sys.path:
-    sys.path.insert(0, str(_REPO))
-
-from casa._paths import ensure_import_paths
-
-ensure_import_paths()
-
-from casa.cli.ingest_state import resolve_ingest_state
-from casa.cli.moment_plan import _FRAME_MATH
-from casa.prisms.shared.store_lock import store_session_lock
-from casa.prisms.visual.bridge_math import predict_math_for_vis_cue, vis_frame_concept_id
-
-from probe_lex_verdict import verdict_lex_probe
+from probe_infra import run_frame_probe
 
 FRAMES = (
     "geom-circle",
@@ -33,63 +16,27 @@ FRAMES = (
 
 
 def main() -> None:
-    store = (_REPO / "agents" / "von-neumann").resolve()
-    report_path = _REPO / "lab" / "visual-curriculum" / "generated" / "teacher-geom-lex-quiz.json"
+    def _hint(fid: str) -> str:
+        from casa.cli.moment_plan import _FRAME_MATH
 
-    with store_session_lock(store, holder="probe:geom-lex-quiz"):
-        state = resolve_ingest_state(store, None)
-        items = []
-        counts = {"know": 0, "ambiguous": 0, "wrong": 0, "empty": 0}
-        for fid in FRAMES:
-            row = _FRAME_MATH.get(fid)
-            hint = str(row[2]) if row else ""
-            preds = predict_math_for_vis_cue(state, fid, top_k=5)
-            v = verdict_lex_probe(preds, hint)
-            counts[str(v["verdict"])] = counts.get(str(v["verdict"]), 0) + 1
-            items.append(
-                {
-                    "frame_id": fid,
-                    "vis_concept": vis_frame_concept_id(fid),
-                    "teacher_hint": hint or None,
-                    "teacher_guess": v["teacher_guess"],
-                    "verdict": v["verdict"],
-                    "matches_hint": v["matches_hint"],
-                    "top_score": v["top_score"],
-                    "leaders": v["leaders"],
-                    "math_top": [{"concept_id": c, "score": s} for c, s in preds],
-                }
-            )
+        row = _FRAME_MATH.get(fid)
+        return str(row[2]) if row else ""
 
-    out = {
-        "store_id": "von-neumann",
-        "probe": "geom-lex-quiz",
-        "total": len(FRAMES),
-        "know": counts["know"],
-        "ambiguous": counts["ambiguous"],
-        "wrong": counts["wrong"],
-        "empty": counts["empty"],
-        "matched": counts["know"],
-        "items": items,
-    }
-    report_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(
-        json.dumps(
-            {
-                "know": counts["know"],
-                "ambiguous": counts["ambiguous"],
-                "wrong": counts["wrong"],
-                "total": len(FRAMES),
-                "path": str(report_path),
-            },
-            ensure_ascii=False,
-        )
+    def _predict(state, fid: str):
+        from casa.prisms.visual.bridge_math import predict_math_for_vis_cue
+
+        return predict_math_for_vis_cue(state, fid, top_k=5)
+
+    run_frame_probe(
+        probe="geom-lex-quiz",
+        frames=FRAMES,
+        hint_for_frame=_hint,
+        predict=_predict,
+        report_filename="teacher-geom-lex-quiz.json",
+        lock_holder="probe:geom-lex-quiz",
+        preds_field="math_top",
+        print_lines=True,
     )
-    for it in items:
-        mark = {"know": "OK", "ambiguous": "??", "wrong": "--", "empty": "  "}.get(str(it["verdict"]), "?")
-        print(
-            f"{mark} {it['frame_id']}: {it['teacher_guess']} "
-            f"(hint {it['teacher_hint']}, score {it['top_score']}, verdict {it['verdict']})"
-        )
 
 
 if __name__ == "__main__":

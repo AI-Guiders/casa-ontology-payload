@@ -4,31 +4,22 @@
 
 | Модуль | Назначение |
 |--------|------------|
-| `curriculum_lab.py` | `CurriculumLabSession` — load/ingest/save store, отчёты |
-| `lab_paths.py` | `setup_lab_paths(__file__)` для скриптов в `micro-*` |
-| `lex_steps.py` | `lex_step()` — vis↔lex (любой `class_dir` + lattice) |
-| `probe_lex_verdict.py` | вердикт probe по lexical |
-| `micro-literacy/` | runners для `lessons/literacy-cards` |
-| `micro-geom/` | runners для `lessons/visual-cards` |
-| `generated/<subdir>/` | JSON moment + summary (в .gitignore) |
+| `curriculum_lab.py` | `CurriculumLabSession`, `IngestJob`, `jobs_from_json_files` |
+| `runner_infra.py` | `LessonPack`, `jobs_*`, `run_*`, CLI (`cli_*`, `cli_lab_main`) |
+| `manifest_steps.py` | manifest frame → steps, `jobs_manifest_frame_rounds` |
+| `probe_infra.py` | teacher probe → `generated/*.json`, `verdict_lex_probe` |
+| `probe_lex_verdict.py` | know / ambiguous / wrong / empty |
+| `vc_paths.py` | `install(__file__)` — repo + lab на sys.path (micro `_ensure_paths` — shim) |
+| `lab_paths.py` | `setup_lab_paths` (+ `chdir` repo) в `bootstrap` |
+| `lex_steps.py` | `lex_step()` — vis↔lex |
+| `generated/` | moment/summary (в .gitignore); legacy `reports/` тоже ignored |
 
-**Классы уроков** (отдельные `lessons/…/class.manifest.json`):
+**Lesson packs:** `LITERACY`, `VISUAL`, `NLINE`, `VENN` — см. `runner_infra.py`.
 
-- `literacy-cards` — grapheme, слова, мета на JPEG (`lang.meta.*`, `grapheme.*`, `lang.word.*`)
-- `visual-cards` — vis↔math (`geom.*`) и (идея) meta size на фигурах
+**Runners:** `import _ensure_paths` → `bootstrap(__file__)` → `cli_*` или `cli_lab_main`.
 
-Метаязык (`lang.meta.*`) — ось **vis↔lex**, общая для literacy и geom; см. `design/CASA-learning-protocol-vis-math-v1.md` § Vis↔lex.
+**Probes:** `python lab/visual-curriculum/probe_grapheme_quiz.py` (и `probe_meta_pure`, geom, nline, venn).
 
-```python
-from lab_paths import setup_lab_paths
-_REPO, _ = setup_lab_paths(__file__)
-from curriculum_lab import CurriculumLabSession, IngestJob
-from lex_steps import lex_step
+**Smoke:** `python lab/visual-curriculum/_verify_runners.py`
 
-lab = CurriculumLabSession(
-    class_dir=_REPO / "lessons" / "literacy-cards",  # или visual-cards
-    generated_subdir="micro-literacy",
-)
-```
-
-Совместимость: `micro-literacy/literacy_steps.py` и `literacy_lab.py` — тонкие re-export.
+Совместимость: `literacy_steps.py`, `literacy_lab.py`, `literacy_moment.py` — re-export.
