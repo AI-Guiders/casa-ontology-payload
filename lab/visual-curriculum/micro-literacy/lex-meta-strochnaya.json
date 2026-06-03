@@ -1,0 +1,11 @@
+[
+  {"visual_frame": "word-strochnaya-sans"},
+  {
+    "lexical": {
+      "cue": "строчная",
+      "correct": "строчная",
+      "concept_id": "lang.word.strochnaya",
+      "lattice_id": "lexicon-ru"
+    }
+  }
+]

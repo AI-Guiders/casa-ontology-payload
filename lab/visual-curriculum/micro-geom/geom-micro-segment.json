@@ -1,0 +1,4 @@
+[
+  {"visual_frame": "geom-segment"},
+  {"math": {"cue": "отрезок", "correct": "отрезок", "concept_id": "math.geom.segment"}}
+]

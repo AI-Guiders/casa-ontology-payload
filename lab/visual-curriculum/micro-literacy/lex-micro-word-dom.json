@@ -1,0 +1,11 @@
+[
+  {"visual_frame": "word-dom-sans"},
+  {
+    "lexical": {
+      "cue": "дом",
+      "correct": "дом",
+      "concept_id": "lang.word.dom",
+      "lattice_id": "lexicon-ru"
+    }
+  }
+]

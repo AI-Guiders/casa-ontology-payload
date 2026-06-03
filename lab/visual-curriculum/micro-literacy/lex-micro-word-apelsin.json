@@ -1,0 +1,11 @@
+[
+  {"visual_frame": "word-apelsin-sans"},
+  {
+    "lexical": {
+      "cue": "апельсин",
+      "correct": "слово апельсин",
+      "concept_id": "lang.word.apelsin",
+      "lattice_id": "lexicon-ru"
+    }
+  }
+]

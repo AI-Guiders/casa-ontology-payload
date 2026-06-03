@@ -1,0 +1,11 @@
+[
+  {"visual_frame": "word-slovo-sans"},
+  {
+    "lexical": {
+      "cue": "слово",
+      "correct": "слово",
+      "concept_id": "lang.word.slovo",
+      "lattice_id": "lexicon-ru"
+    }
+  }
+]

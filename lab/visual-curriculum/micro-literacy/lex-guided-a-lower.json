@@ -1,0 +1,19 @@
+[
+  {"visual_frame": "letter-a-lower-sans"},
+  {
+    "lexical": {
+      "cue": "lower",
+      "correct": "строчная буква",
+      "concept_id": "lang.meta.letterCase.lower",
+      "lattice_id": "lexicon-ru"
+    }
+  },
+  {
+    "lexical": {
+      "cue": "lower",
+      "correct": "буква нижнего регистра",
+      "concept_id": "lang.meta.letterCase.lower",
+      "lattice_id": "lexicon-ru"
+    }
+  }
+]

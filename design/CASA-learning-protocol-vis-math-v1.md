@@ -7,6 +7,7 @@
 
 - [`CASA-ADR-0021-experience-agent-transfer.md`](CASA-ADR-0021-experience-agent-transfer.md) — опыт на поле, без oracle на read
 - [`CASA-ADR-0028-field-native-sensory-experience.md`](CASA-ADR-0028-field-native-sensory-experience.md) — тракт `visual`, predict `modality=vis`
+- [`CASA-literacy-class-v1.md`](CASA-literacy-class-v1.md) — vis↔lex, метаязык (дополнение ниже)
 - `casa/cli/ingest_lesson_moment.py` — lesson moment (visual + math → один sleep)
 - `casa/prisms/visual/bridge_math.py` — emergent bridges, `predict_math_for_vis_cue`
 - `tools/teacher_count_session.py` — teacher: закрепление → квиз «посчитай»
@@ -77,14 +78,63 @@ Teacher moment: картинка → число или символ множес
 
 ---
 
+## Семантическое именование `concept_id` (канон)
+
+**Правило:** id в онтологии — **английский semantic slug**, не транслит русской поверхности. На JPEG и в `correct` — **кириллица** (или glyph). `frame_id` / slug кадра — латиница для путей (`word-size-large-sans`), не `bolshaya`, не `zaglavnaya_bukva`.
+
+| Префикс | Назначение | Пример |
+|---------|------------|--------|
+| `grapheme.{locale}.{cue}.{register}` | буква как знак | `grapheme.cyrl.b.upper` |
+| `lang.word.{semantic}` | цельное слово корпуса / legacy мета-слово | `lang.word.mama`, `lang.word.ne_znayu` (→ миграция) |
+| **`lang.meta.{category}`** | **домен метаязыка** (ось учителя) | `lang.meta.size`, `lang.meta.register`, `lang.meta.epistemic` |
+| **`lang.meta.{category}.{facet}`** | конкретная метка в домене | `lang.meta.size.large`, `lang.meta.letterCase.upper` |
+
+**Категория vs facet:** домен `size` — ось «размер»; facets `large` / `small` — отдельные concept на карточках «большая» / «маленькая». Два синонима **одного** facet (как «заглавная буква» и «буква верхнего регистра») → **один** `concept_id`, два frame/surface.
+
+**Переименование без переучивания:** маршрут тот же (`lexicon-ru`), меняются только строки id в snapshot. Один раз: `python tools/migrate_lex_concept_store.py` (таблица `LEX_CONCEPT_RENAMES` в `meta_concept_aliases.py`). После миграции в store **нет** legacy id — probe/manifest только канон (`lang.meta.letterCase.upper`, …). До миграции read path нормализует legacy → canon в `predict` (не дублирует лидеров).
+
+Канон: `meta_concept_aliases.py`; карточки: `lessons/literacy-cards/tools/meta_concepts.py`.
+
+**Не использовать:** транслит поверхности в id (`bolshaya`, `ne_znayu` в новых доменах — только legacy до pure re-ingest).
+
+---
+
+## Vis↔lex: метаязык **отдельно** (lab 2026-06-03)
+
+Ось **vis↔lex** — общая для visual-curriculum (`literacy-cards`, `visual-cards`, …), не свойство только literacy. Lab: `lab/visual-curriculum/curriculum_lab.py`, `lex_steps.py`; отчёты по подклассу — `reports/micro-literacy`, `reports/micro-geom`, …
+
+Тот же принцип, что vis↔math: **мосты его**, учитель меняет **подачу**, не `bridge_lex` / sleep снаружи.
+
+**Вывод дня:** мета-слова (`lang.word.*` на карточке-фразе) и **гранулярность** (`grapheme.*`, категория регистра на кадре буквы) — **разные уроки**. Смешивать в одном moment / одном sleep (буква + «заглавная буква» + «А») даёт cartesian co-occurrence и probe **ambiguous** — это «не знаю» по протоколу, не miss для hotfix.
+
+| Подача | Probe (пример lab) | Смысл |
+|--------|-------------------|--------|
+| **Чистый мета-moment** — только фраза или `phrase_vis` (1 vis + 1 lex), **без** `letter-*` | `word-capital-*` → **know** `capital_letter`; `word-ne_znayu-sans` → **know** `ne_znayu` | метка на **своём** JPEG читается с поля |
+| **Exemplar** — `letter-Б` + фразы категории в одном sleep | `letter-b-upper` + hint `capital_letter` → **ambiguous** (grapheme + категория) | категория **рядом** с буквой, не вместо |
+| **Guided** vis буквы + метаслово + grapheme (старый путь) | часто шум, особенно **а/А** | не использовать как **единственный** путь метаязыка |
+
+**Правило curriculum (канон):**
+
+1. Сначала **чистые** moment’ы на карточку меты (`run_register_category_pure.py`, `run_meta_ne_znayu_pure.py`, …).
+2. Потом — контрасты **grapheme** (регистр, upper-only, cue Б/В без **а** в начале).
+3. Категорию регистра на букве — exemplar **не на а**; фразы категории — отдельно от grapheme в batch.
+4. **«Не знаю» как состояние** (связь с ambiguous на букве) — **не** уровень 1; отдельный guided-трек позже.
+
+**Размер (большой / маленький):** в literacy w2 уже есть lexical `большая` / `маленкая` на **текстовых** карточках. Дополнительно (идея) — тот же приём на **геометрии** `visual-cards`: круг большой vs круг маленький → `lang.meta.size.large` / `lang.meta.size.small` **чистыми** moment’ами (vis фигуры + episodic меты), без смешения с `geom.*` shape-id в одном sleep. Аналог контраста круг/квадрат, ось **масштаб**.
+
+Подробности и lab-команды: [CASA-literacy-class-v1.md](CASA-literacy-class-v1.md) § Метаязык отдельно.
+
+---
+
 ## Что считать успехом
 
 | Сигнал | Значение |
 |--------|----------|
 | `kind: hypothesis` в `entries.jsonl` | инициатива — сам увидел gap |
 | Агент сам mint `self_promote` vis↔math | связь **его**, не oracle |
-| Квиз: top-1 совпал с teacher hint | зрячий pass |
-| Квиз: tie / miss | **учитель меняет подачу**, не код |
+| Квиз: единственный лидер по score = teacher hint | **знаю** (know) |
+| Квиз: равный max score у нескольких concept | **не знаю** (ambiguous), не ошибка |
+| Квиз: единственный лидер ≠ hint | miss → **учитель меняет подачу**, не код |
 
 ---
 

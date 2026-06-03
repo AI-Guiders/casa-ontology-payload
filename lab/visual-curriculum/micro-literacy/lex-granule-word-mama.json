@@ -1,0 +1,11 @@
+[
+  {"visual_frame": "word-mama-sans"},
+  {
+    "lexical": {
+      "cue": "мама",
+      "correct": "слово мама",
+      "concept_id": "lang.word.mama",
+      "lattice_id": "lexicon-ru"
+    }
+  }
+]

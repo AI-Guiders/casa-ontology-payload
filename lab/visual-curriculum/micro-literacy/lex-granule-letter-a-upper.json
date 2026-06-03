@@ -1,0 +1,11 @@
+[
+  {"visual_frame": "letter-a-upper-sans"},
+  {
+    "lexical": {
+      "cue": "a-upper",
+      "correct": "буква А",
+      "register": "upper",
+      "concept_id": "grapheme.cyrl.a.upper"
+    }
+  }
+]

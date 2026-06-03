@@ -1,0 +1,19 @@
+[
+  {"visual_frame": "letter-a-upper-sans"},
+  {
+    "lexical": {
+      "cue": "upper",
+      "correct": "заглавная буква",
+      "concept_id": "lang.meta.letterCase.upper",
+      "lattice_id": "lexicon-ru"
+    }
+  },
+  {
+    "lexical": {
+      "cue": "upper",
+      "correct": "буква верхнего регистра",
+      "concept_id": "lang.meta.letterCase.upper",
+      "lattice_id": "lexicon-ru"
+    }
+  }
+]

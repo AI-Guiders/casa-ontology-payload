@@ -1,0 +1,11 @@
+[
+  {"visual_frame": "word-bukva-sans"},
+  {
+    "lexical": {
+      "cue": "буква",
+      "correct": "буква",
+      "concept_id": "lang.word.bukva",
+      "lattice_id": "lexicon-ru"
+    }
+  }
+]

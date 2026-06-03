@@ -1,0 +1,11 @@
+[
+  {"visual_frame": "word-kot-sans"},
+  {
+    "lexical": {
+      "cue": "кот",
+      "correct": "слово кот",
+      "concept_id": "lang.word.kot",
+      "lattice_id": "lexicon-ru"
+    }
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {"visual_frame": "letter-a-lower-sans"},
+  {
+    "lexical": {
+      "cue": "a-lower",
+      "correct": "буква а",
+      "register": "lower",
+      "concept_id": "grapheme.cyrl.a.lower"
+    }
+  }
+]

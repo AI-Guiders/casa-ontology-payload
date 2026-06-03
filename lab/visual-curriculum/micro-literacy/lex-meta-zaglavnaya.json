@@ -1,0 +1,11 @@
+[
+  {"visual_frame": "word-zaglavnaya-sans"},
+  {
+    "lexical": {
+      "cue": "заглавная",
+      "correct": "заглавная",
+      "concept_id": "lang.word.zaglavnaya",
+      "lattice_id": "lexicon-ru"
+    }
+  }
+]
