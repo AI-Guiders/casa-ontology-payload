@@ -82,7 +82,7 @@ def main() -> None:
 
     lab = CurriculumLabSession(
         class_dir=_LITERACY,
-        reports_subdir="micro-literacy",
+        generated_subdir="micro-literacy",
         extra_sys_paths=(_LITERACY / "tools",),
     )
     schedule = _jobs(cues, names_rounds=args.names_rounds, exemplar_rounds=args.exemplar_rounds)

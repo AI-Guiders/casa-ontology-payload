@@ -13,7 +13,7 @@ from curriculum_lab import CurriculumLabSession
 def main() -> None:
     from casa.prisms.visual.bridge_math import reinforce_vis_math_bridge
 
-    lab = CurriculumLabSession(reports_subdir="micro-geom")
+    lab = CurriculumLabSession(generated_subdir="micro-geom")
     with lab:
         row = reinforce_vis_math_bridge(
             lab.state,

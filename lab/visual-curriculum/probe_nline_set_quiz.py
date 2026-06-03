@@ -31,7 +31,7 @@ FRAMES = (
 
 def main() -> None:
     store = (_REPO / "agents" / "von-neumann").resolve()
-    report_path = _REPO / "lab" / "visual-curriculum" / "reports" / "teacher-nline-set-quiz.json"
+    report_path = _REPO / "lab" / "visual-curriculum" / "generated" / "teacher-nline-set-quiz.json"
 
     with store_session_lock(store, holder="probe:nline-set-quiz"):
         state = resolve_ingest_state(store, None)

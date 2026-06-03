@@ -25,7 +25,7 @@ def _schedule() -> list[tuple[str, str]]:
 
 def main() -> None:
     jobs = jobs_from_json_files(_STEPS, _schedule())
-    lab = CurriculumLabSession(class_dir=_LITERACY, reports_subdir="micro-literacy")
+    lab = CurriculumLabSession(class_dir=_LITERACY, generated_subdir="micro-literacy")
     def _run(session: CurriculumLabSession) -> None:
         session.log({"rounds": ROUNDS, "moments": len(jobs)})
         session.run_jobs(jobs)

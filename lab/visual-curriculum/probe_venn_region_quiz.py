@@ -22,7 +22,7 @@ from casa.prisms.visual.bridge_math import predict_math_for_vis_cue, vis_frame_c
 
 def main() -> None:
     store = (_REPO / "agents" / "von-neumann").resolve()
-    report_path = _REPO / "lab" / "visual-curriculum" / "reports" / "teacher-venn-region-quiz.json"
+    report_path = _REPO / "lab" / "visual-curriculum" / "generated" / "teacher-venn-region-quiz.json"
     old = json.loads(report_path.read_text(encoding="utf-8"))
     frames = [it["frame_id"] for it in old["items"]]
     hints = {it["frame_id"]: it.get("teacher_hint") for it in old["items"]}

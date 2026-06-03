@@ -13,6 +13,14 @@ from typing import Any, Self
 
 _CURRICULUM = Path(__file__).resolve().parent
 _REPO = _CURRICULUM.parents[1]
+GENERATED = _CURRICULUM / "generated"
+
+
+def visual_curriculum_generated(subdir: str = ".") -> Path:
+    """Каталог для moment/summary/quiz JSON (в .gitignore)."""
+    out = GENERATED / subdir
+    out.mkdir(parents=True, exist_ok=True)
+    return out
 
 
 def ensure_repo_paths(*, extra_sys_paths: tuple[Path, ...] = ()) -> Path:
@@ -76,7 +84,7 @@ class CurriculumLabSession:
         *,
         store_id: str = "von-neumann",
         class_dir: Path | str | None = None,
-        reports_subdir: str = ".",
+        generated_subdir: str = ".",
         extra_sys_paths: tuple[Path | str, ...] = (),
     ) -> None:
         extra = tuple(Path(p) for p in extra_sys_paths)
@@ -84,8 +92,7 @@ class CurriculumLabSession:
         self.repo = _REPO
         self.store_dir = (self.repo / "agents" / store_id).resolve()
         self.class_dir = Path(class_dir).resolve() if class_dir is not None else None
-        self.reports_dir = self.repo / "lab" / "visual-curriculum" / "reports" / reports_subdir
-        self.reports_dir.mkdir(parents=True, exist_ok=True)
+        self.generated_dir = visual_curriculum_generated(generated_subdir)
         self._state: dict[str, Any] | None = None
         self.summary_rows: list[dict[str, Any]] = []
 
@@ -144,7 +151,7 @@ class CurriculumLabSession:
             sleep=True,
             persist=False,
             state=self.state,
-            report_path=self.reports_dir / f"moment-{moment_id}.json",
+            report_path=self.generated_dir / f"moment-{moment_id}.json",
         )
         row = {
             "moment_id": moment_id,
@@ -161,7 +168,7 @@ class CurriculumLabSession:
         return list(self.summary_rows)
 
     def write_summary(self, filename: str, payload: dict[str, Any]) -> Path:
-        out = self.reports_dir / filename
+        out = self.generated_dir / filename
         out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         self.log({"done": len(self.summary_rows), "summary": str(out)})
         return out

@@ -24,7 +24,7 @@ MICRO = [
 
 def main() -> None:
     jobs = jobs_from_json_files(_STEPS, MICRO)
-    lab = CurriculumLabSession(class_dir=_VISUAL, reports_subdir="micro-geom")
+    lab = CurriculumLabSession(class_dir=_VISUAL, generated_subdir="micro-geom")
     lab.run_main(lambda s: s.run_jobs(jobs), summary_file="summary.json")
 
 

@@ -38,7 +38,7 @@ def main() -> None:
     store = (_REPO / "agents" / "von-neumann").resolve()
     class_dir = (_REPO / "lessons" / "visual-cards").resolve()
     steps_dir = Path(__file__).resolve().parent
-    reports_dir = _REPO / "lab" / "visual-curriculum" / "reports" / "micro-venn"
+    reports_dir = _REPO / "lab" / "visual-curriculum" / "generated" / "micro-venn"
     reports_dir.mkdir(parents=True, exist_ok=True)
 
     print(json.dumps({"phase": "load_store", "store": str(store)}, ensure_ascii=False), flush=True)

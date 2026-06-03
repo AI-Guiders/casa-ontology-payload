@@ -23,7 +23,7 @@ MICRO = [
 
 def main() -> None:
     jobs = jobs_from_json_files(_STEPS, MICRO)
-    lab = CurriculumLabSession(class_dir=_LITERACY, reports_subdir="micro-literacy")
+    lab = CurriculumLabSession(class_dir=_LITERACY, generated_subdir="micro-literacy")
     lab.run_main(lambda s: s.run_jobs(jobs), summary_file="summary-pilot-literacy-r2.json")
 
 

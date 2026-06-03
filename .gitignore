@@ -16,3 +16,8 @@ __pycache__/
 
 # Temp
 .tmp-pdf-read/
+
+# Visual-curriculum lab output (moment JSON, summaries, probe dumps)
+lab/visual-curriculum/generated/**
+!lab/visual-curriculum/generated/
+!lab/visual-curriculum/generated/README.md

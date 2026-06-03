@@ -34,7 +34,7 @@ FRAMES = (
 
 def main() -> None:
     store = (_REPO / "agents" / "von-neumann").resolve()
-    report_path = _REPO / "lab" / "visual-curriculum" / "reports" / "teacher-geom-lex-quiz.json"
+    report_path = _REPO / "lab" / "visual-curriculum" / "generated" / "teacher-geom-lex-quiz.json"
 
     with store_session_lock(store, holder="probe:geom-lex-quiz"):
         state = resolve_ingest_state(store, None)

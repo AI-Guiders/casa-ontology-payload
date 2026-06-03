@@ -39,7 +39,7 @@ def run_moment_curriculum(
     stages = stage_ids or stage_ids_in_order(manifest)
 
     state = resolve_ingest_state(store_dir, None)
-    reports_dir = REPO_ROOT / "lab" / "visual-curriculum" / "reports" / run_tag
+    reports_dir = REPO_ROOT / "lab" / "visual-curriculum" / "generated" / run_tag
     reports_dir.mkdir(parents=True, exist_ok=True)
 
     summary: list[dict] = []

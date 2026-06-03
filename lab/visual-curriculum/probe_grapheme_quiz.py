@@ -37,7 +37,7 @@ def main() -> None:
         (_REPO / "lessons" / "literacy-cards" / "class.manifest.json").read_text(encoding="utf-8")
     )
     hints = {str(f["id"]): str(f.get("concept_id") or "") for f in manifest.get("frames") or []}
-    report_path = _REPO / "lab" / "visual-curriculum" / "reports" / "teacher-grapheme-quiz.json"
+    report_path = _REPO / "lab" / "visual-curriculum" / "generated" / "teacher-grapheme-quiz.json"
 
     with store_session_lock(store, holder="probe:grapheme-quiz"):
         state = resolve_ingest_state(store, None)

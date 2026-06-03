@@ -102,7 +102,7 @@ def main() -> None:
             report["set_totals_from_region"][k] += v
 
     report["set_totals_from_region"] = dict(report["set_totals_from_region"])
-    out = _REPO / "lab/visual-curriculum/reports/inspect-venn-region-edges.json"
+    out = _REPO / "lab/visual-curriculum/generated/inspect-venn-region-edges.json"
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
 

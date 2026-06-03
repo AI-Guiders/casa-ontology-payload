@@ -101,7 +101,7 @@ Teacher moment: картинка → число или символ множес
 
 ## Vis↔lex: метаязык **отдельно** (lab 2026-06-03)
 
-Ось **vis↔lex** — общая для visual-curriculum (`literacy-cards`, `visual-cards`, …), не свойство только literacy. Lab: `lab/visual-curriculum/curriculum_lab.py`, `lex_steps.py`; отчёты по подклассу — `reports/micro-literacy`, `reports/micro-geom`, …
+Ось **vis↔lex** — общая для visual-curriculum (`literacy-cards`, `visual-cards`, …), не свойство только literacy. Lab: `lab/visual-curriculum/curriculum_lab.py`, `lex_steps.py`; отчёты по подклассу — `generated/micro-literacy`, `generated/micro-geom`, … (не в git)
 
 Тот же принцип, что vis↔math: **мосты его**, учитель меняет **подачу**, не `bridge_lex` / sleep снаружи.
 
@@ -161,7 +161,7 @@ Teacher moment: картинка → число или символ множес
 
 1. Один writer на store — `store_session_lock`
 2. Reentrant persist — не deadlock при session lock (инфраструктура, не pedagogy)
-3. Отчёт в `lab/visual-curriculum/reports/` **до** persist
+3. Отчёт в `lab/visual-curriculum/generated/` **до** persist
 
 ---
 

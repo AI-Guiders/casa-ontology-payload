@@ -10,7 +10,7 @@
 | `probe_lex_verdict.py` | вердикт probe по lexical |
 | `micro-literacy/` | runners для `lessons/literacy-cards` |
 | `micro-geom/` | runners для `lessons/visual-cards` |
-| `reports/<subdir>/` | JSON moment + summary |
+| `generated/<subdir>/` | JSON moment + summary (в .gitignore) |
 
 **Классы уроков** (отдельные `lessons/…/class.manifest.json`):
 
@@ -27,7 +27,7 @@ from lex_steps import lex_step
 
 lab = CurriculumLabSession(
     class_dir=_REPO / "lessons" / "literacy-cards",  # или visual-cards
-    reports_subdir="micro-literacy",
+    generated_subdir="micro-literacy",
 )
 ```
 

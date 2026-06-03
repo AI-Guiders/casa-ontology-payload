@@ -29,7 +29,7 @@ def _schedule() -> list[tuple[str, str, dict]]:
 
 def main() -> None:
     jobs = jobs_from_json_files(_STEPS, _schedule())
-    lab = CurriculumLabSession(class_dir=_LITERACY, reports_subdir="micro-literacy")
+    lab = CurriculumLabSession(class_dir=_LITERACY, generated_subdir="micro-literacy")
     lab.run_main(lambda s: s.run_jobs(jobs), summary_file="summary-guided-register-a.json")
 
 

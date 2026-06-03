@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Lesson moment — interleaved visual + math events, one sleep (co-occurrence bridges)."""
+"""Lesson moment — visual + math and/or lexical episodic, one sleep (co-occurrence bridges)."""
 
 from __future__ import annotations
 
@@ -15,14 +15,22 @@ from typing import Any, Literal
 from casa.cli.ingest_state import resolve_ingest_state
 from casa.cli.moment_plan import build_moment_steps
 from casa.cli.ingest_visual_class import (
-    _emergent_crosslink_count,
     _group_frames_by_stage,
     _lesson_ids_for_stages,
     _token_counts,
 )
+from casa.prisms.memory.lexical_lattice_bootstrap import ensure_lexical_lattices
 from casa.prisms.memory.f0_math_ingest import ingest_math_bundle
 from casa.prisms.memory.memory_prisms import append_episode, memory_lattices, run_sleep
-from casa.prisms.shared.lattice_names_v1 import ALPHABET_RU, SCHEMA_MATH
+from casa.prisms.shared.lattice_names_v1 import (
+    ALPHABET_EN,
+    ALPHABET_RU,
+    LEXICON_EN,
+    LEXICON_RU,
+    SCHEMA_MATH,
+    SYLLABLES_EN,
+    SYLLABLES_RU,
+)
 from casa.prisms.shared.store_layout import default_agent_store
 from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
 from casa.prisms.visual.bootstrap import ensure_prism_visual
@@ -38,6 +46,15 @@ def _ensure_schema_math(state: dict) -> None:
     if lat.get("cells") or lat.get("_cells_in_ltm"):
         return
     ingest_math_bundle(state, _EMPTY_BUNDLE, lattice_id=SCHEMA_MATH)
+
+
+def _emergent_bridge_count(sleep_rep: dict[str, Any]) -> int:
+    kinds = ("emergent_crosslink", "emergent_crosslink_lex")
+    return sum(1 for item in sleep_rep.get("items") or [] if item.get("kind") in kinds)
+
+
+def _steps_need_lexical(steps: list[dict[str, Any]] | None) -> bool:
+    return bool(steps and any("lexical" in s for s in steps))
 
 
 def _select_manifest_frames(
@@ -136,12 +153,31 @@ def _append_lexical_moment(
     word = str(spec.get("word") or spec.get("surface") or spec.get("correct") or cue)
     correct = str(spec.get("correct") if spec.get("correct") is not None else word)
     concept_id = str(spec.get("concept_id") or "").strip() or None
+    lattice_id = str(spec.get("lattice_id") or "").strip()
+    if not lattice_id and concept_id:
+        if concept_id.startswith("grapheme.latn."):
+            lattice_id = ALPHABET_EN
+        elif concept_id.startswith("grapheme."):
+            lattice_id = ALPHABET_RU
+        elif concept_id.startswith("syllable."):
+            lattice_id = SYLLABLES_RU
+        elif concept_id.startswith("lang.word.") or concept_id.startswith("lang.meta."):
+            lattice_id = LEXICON_RU
+        if str(spec.get("locale") or "").lower() == "en":
+            if concept_id.startswith("lang.word."):
+                lattice_id = LEXICON_EN
+            elif concept_id.startswith("grapheme."):
+                lattice_id = ALPHABET_EN
+            elif concept_id.startswith("syllable."):
+                lattice_id = SYLLABLES_EN
+    if not lattice_id:
+        lattice_id = ALPHABET_RU
     ep = append_episode(
         state,
         cue=cue,
         surface_attempt=word,
         correct=correct,
-        lattice_id=ALPHABET_RU,
+        lattice_id=lattice_id,
         concept_id=concept_id,
         scene=str(spec.get("scene") or scene),
         bundle=_EMPTY_BUNDLE,
@@ -192,6 +228,18 @@ def _run_explicit_steps(
                     spec,
                     scene=f"{scene_prefix}:step",
                     bundle=bundle,
+                )
+            )
+            continue
+        if "lexical" in step:
+            spec = step.get("lexical") or {}
+            if not isinstance(spec, dict):
+                raise ValueError("lexical step must be an object")
+            trace.append(
+                _append_lexical_moment(
+                    state,
+                    spec,
+                    scene=f"{scene_prefix}:step",
                 )
             )
             continue
@@ -271,6 +319,8 @@ def ingest_lesson_moment(
 
     ensure_prism_visual(state)
     _ensure_schema_math(state)
+    if _steps_need_lexical(steps):
+        ensure_lexical_lattices(state)
 
     scene_prefix = f"moment:{moment_id or (stage_ids[0] if stage_ids else 'custom')}"
     if steps:
@@ -304,7 +354,7 @@ def ingest_lesson_moment(
     bridges_emergent = 0
     if sleep and (vis_eps or math_eps):
         sleep_rep = run_sleep(state, bundle)
-        bridges_emergent = _emergent_crosslink_count(sleep_rep)
+        bridges_emergent = _emergent_bridge_count(sleep_rep)
 
     report: dict[str, Any] = {
         "store_id": store_dir.name,
@@ -325,7 +375,7 @@ def ingest_lesson_moment(
         report["sleep_merged"] = len(sleep_rep.get("items") or [])
 
     report_file = report_path or (
-        REPO_ROOT / "lab" / "visual-curriculum" / "reports" / f"moment-{report['moment_id']}.json"
+        REPO_ROOT / "lab" / "visual-curriculum" / "generated" / "_ingest" / f"moment-{report['moment_id']}.json"
     )
     report_file.parent.mkdir(parents=True, exist_ok=True)
     report_file.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
