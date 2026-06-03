@@ -43,8 +43,9 @@ lab/agent-core/**/nca/**/report.json
 # Lab experiments, scratch, and local train stores
 lab/exp_*/
 lab/nca_out*/
-lab/_bench*/
-lab/_tmp*/
+lab/_bench*
+lab/_tmp*
+lab/**/*.log
 lab/layered_out/
 lab/mm/
 lab/sensory/
