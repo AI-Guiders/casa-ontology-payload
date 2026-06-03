@@ -85,6 +85,18 @@
       "title": "Множества: диаграммы Эйлера–Венна",
       "order": 13,
       "lesson_ids": ["lesson-13-sets"]
+    },
+    {
+      "id": "stage-14-sets-interval",
+      "title": "Множества: интервалы на прямой",
+      "order": 14,
+      "lesson_ids": ["lesson-14-sets-interval"]
+    },
+    {
+      "id": "stage-15-geom-lex",
+      "title": "Геометрия: слово и фигура",
+      "order": 15,
+      "lesson_ids": ["lesson-15-geometry-words"]
     }
   ],
   "frames": [
@@ -416,6 +428,83 @@
       "scene_label": "card:venn:region-a-only",
       "curriculum_tags": ["vis.set.difference", "math.set.difference"],
       "lesson_id": "lesson-13-sets"
+    },
+    {
+      "id": "nline-set-intersect",
+      "path": "lesson-14-sets-interval/images/nline-set-intersect.jpg",
+      "scene_label": "card:nline-set:intersect",
+      "curriculum_tags": ["vis.set.intersect", "math.set.intersect"],
+      "lesson_id": "lesson-14-sets-interval"
+    },
+    {
+      "id": "nline-set-union",
+      "path": "lesson-14-sets-interval/images/nline-set-union.jpg",
+      "scene_label": "card:nline-set:union",
+      "curriculum_tags": ["vis.set.union", "math.set.union"],
+      "lesson_id": "lesson-14-sets-interval"
+    },
+    {
+      "id": "nline-set-subset",
+      "path": "lesson-14-sets-interval/images/nline-set-subset.jpg",
+      "scene_label": "card:nline-set:subset",
+      "curriculum_tags": ["vis.set.subset", "math.set.subset"],
+      "lesson_id": "lesson-14-sets-interval"
+    },
+    {
+      "id": "nline-set-disjoint",
+      "path": "lesson-14-sets-interval/images/nline-set-disjoint.jpg",
+      "scene_label": "card:nline-set:disjoint",
+      "curriculum_tags": ["vis.set.disjoint", "math.set.disjoint"],
+      "lesson_id": "lesson-14-sets-interval"
+    },
+    {
+      "id": "nline-set-a-only",
+      "path": "lesson-14-sets-interval/images/nline-set-a-only.jpg",
+      "scene_label": "card:nline-set:a-only",
+      "curriculum_tags": ["vis.set.difference", "math.set.difference"],
+      "lesson_id": "lesson-14-sets-interval"
+    },
+    {
+      "id": "geom-circle",
+      "path": "lesson-15-geometry-words/images/geom-circle.jpg",
+      "scene_label": "card:geom:circle",
+      "concept_id": "math.geom.circle",
+      "lesson_id": "lesson-15-geometry-words"
+    },
+    {
+      "id": "geom-square",
+      "path": "lesson-15-geometry-words/images/geom-square.jpg",
+      "scene_label": "card:geom:square",
+      "concept_id": "math.geom.square",
+      "lesson_id": "lesson-15-geometry-words"
+    },
+    {
+      "id": "geom-rectangle",
+      "path": "lesson-15-geometry-words/images/geom-rectangle.jpg",
+      "scene_label": "card:geom:rectangle",
+      "concept_id": "math.geom.rectangle",
+      "lesson_id": "lesson-15-geometry-words"
+    },
+    {
+      "id": "geom-stroke",
+      "path": "lesson-15-geometry-words/images/geom-stroke.jpg",
+      "scene_label": "card:geom:stroke",
+      "concept_id": "math.geom.stroke",
+      "lesson_id": "lesson-15-geometry-words"
+    },
+    {
+      "id": "geom-segment",
+      "path": "lesson-15-geometry-words/images/geom-segment.jpg",
+      "scene_label": "card:geom:segment",
+      "concept_id": "math.geom.segment",
+      "lesson_id": "lesson-15-geometry-words"
+    },
+    {
+      "id": "geom-line",
+      "path": "lesson-15-geometry-words/images/geom-line.jpg",
+      "scene_label": "card:geom:line",
+      "concept_id": "math.geom.line",
+      "lesson_id": "lesson-15-geometry-words"
     }
   ]
 }

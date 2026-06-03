@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import io
 import json
+import os
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -238,6 +239,32 @@ def _draw_mixed_shape_counts(out: Path, *, show_label: bool = False) -> None:
     img.save(out, "JPEG", quality=92)
 
 
+def _draw_geom_lex_circle(out: Path) -> None:
+    """Lesson-15: круг — крупная окружность (контраст с квадратом lex)."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    stroke = (25, 25, 25)
+    cx, cy = CARD_W // 2, CARD_H // 2
+    draw.ellipse(_centered_box(cx, cy, 210, 210), outline=stroke, width=9)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_lex_square(out: Path) -> None:
+    """Lesson-15: квадрат — меньше круга, точки в углах (отличие от окружности)."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    stroke = (25, 25, 25)
+    cx, cy = CARD_W // 2, CARD_H // 2
+    half = 148
+    box = _centered_box(cx, cy, half, half)
+    draw.rectangle(box, outline=stroke, width=9)
+    x0, y0, x1, y1 = box
+    r = 6
+    for px, py in ((x0, y0), (x1, y0), (x0, y1), (x1, y1)):
+        draw.ellipse((px - r, py - r, px + r, py + r), fill=stroke)
+    img.save(out, "JPEG", quality=92)
+
+
 def _draw_shape(kind: str, out: Path) -> None:
     img = _blank()
     draw = ImageDraw.Draw(img)
@@ -372,11 +399,50 @@ def _draw_fraction_vertical_strip(side: int, parts: int, out: Path) -> None:
     )
 
 
-def _font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
-    try:
-        return ImageFont.truetype("arial.ttf", size)
-    except OSError:
-        return ImageFont.load_default()
+_FONT_CACHE: dict[tuple[bool, int], ImageFont.FreeTypeFont | ImageFont.ImageFont] = {}
+
+
+def _font_paths(*, symbols: bool) -> list[Path | str]:
+    paths: list[Path | str] = []
+    if os.name == "nt":
+        fonts = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "Fonts"
+        if symbols:
+            paths.extend(
+                [
+                    fonts / "seguisym.ttf",
+                    fonts / "SegoeUISymbol.ttf",
+                    fonts / "Cambria.ttc",
+                    fonts / "cambria.ttc",
+                ]
+            )
+        paths.extend(
+            [
+                fonts / "segoeui.ttf",
+                fonts / "seguiui.ttf",
+                fonts / "arial.ttf",
+            ]
+        )
+    paths.extend(["arial.ttf", "DejaVuSans.ttf"])
+    return paths
+
+
+def _font(size: int, *, symbols: bool = False) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
+    key = (symbols, size)
+    if key in _FONT_CACHE:
+        return _FONT_CACHE[key]
+    for path in _font_paths(symbols=symbols):
+        try:
+            if str(path).lower().endswith(".ttc"):
+                loaded = ImageFont.truetype(str(path), size, index=0)
+            else:
+                loaded = ImageFont.truetype(str(path), size)
+        except OSError:
+            continue
+        _FONT_CACHE[key] = loaded
+        return loaded
+    loaded = ImageFont.load_default()
+    _FONT_CACHE[key] = loaded
+    return loaded
 
 
 def _numberline_layout(*, max_n: int = 5, y: int | None = None) -> tuple[int, int, int, float]:
@@ -650,6 +716,242 @@ def _draw_venn_regions(
     img.convert("RGB").save(out, "JPEG", quality=92)
 
 
+def _nline_set_interval_pair(*, variant: str) -> tuple[tuple[int, int], tuple[int, int]]:
+    """Return (A0, A1), (B0, B1) on axis ticks. variant: overlap|disjoint|subset."""
+    if variant == "disjoint":
+        return (1, 2), (4, 5)
+    if variant == "subset":
+        return (2, 3), (1, 4)
+    return (1, 4), (2, 5)
+
+
+def _interval_text(lo: int, hi: int) -> str:
+    return f"[{lo}; {hi}]"
+
+
+def _x_at_tick(x0: float, step: float, tick: int) -> int:
+    return int(x0 + tick * step)
+
+
+def _draw_numberline_axis_arrow(
+    draw: ImageDraw.ImageDraw,
+    *,
+    max_n: int = 6,
+    y: int = 250,
+    font_size: int = 30,
+) -> tuple[float, int, float]:
+    """Textbook-style axis with arrow; tick labels below (not covered by interval bar)."""
+    x0, x1, axis_y, step = _numberline_layout(max_n=max_n, y=y)
+    font = _font(font_size)
+    draw.line((x0, axis_y, x1 - 18, axis_y), fill=(30, 30, 30), width=3)
+    ax = x1 - 10
+    draw.polygon(
+        [(ax, axis_y), (ax - 14, axis_y - 7), (ax - 14, axis_y + 7)],
+        fill=(30, 30, 30),
+    )
+    for i in range(max_n + 1):
+        x = int(x0 + i * step)
+        draw.line((x, axis_y - 8, x, axis_y + 8), fill=(30, 30, 30), width=2)
+        draw.text((x - 8, axis_y + 14), str(i), fill=(20, 20, 20), font=font)
+    return x0, axis_y, step
+
+
+def _draw_endpoint_closed(
+    draw: ImageDraw.ImageDraw,
+    x: int,
+    axis_y: int,
+    *,
+    r: int = 7,
+    fill: tuple[int, int, int] = (25, 25, 25),
+) -> None:
+    draw.ellipse((x - r, axis_y - r, x + r, axis_y + r), fill=fill, outline=fill)
+
+
+def _draw_textbook_interval(
+    draw: ImageDraw.ImageDraw,
+    x0: float,
+    step: float,
+    axis_y: int,
+    lo: int,
+    hi: int,
+    *,
+    color: tuple[int, int, int],
+    bar_above: int = 20,
+    line_width: int = 7,
+    mark_endpoints: bool = True,
+    endpoint_fill: tuple[int, int, int] | None = None,
+) -> None:
+    """Interval like school reference: thick bar above axis; optional dots at endpoints on axis."""
+    xa = _x_at_tick(x0, step, lo)
+    xb = _x_at_tick(x0, step, hi)
+    bar_y = axis_y - bar_above
+    draw.line((xa, bar_y, xb, bar_y), fill=color, width=line_width)
+    if mark_endpoints:
+        dot = endpoint_fill if endpoint_fill is not None else (25, 25, 25)
+        _draw_endpoint_closed(draw, xa, axis_y, fill=dot)
+        _draw_endpoint_closed(draw, xb, axis_y, fill=dot)
+
+
+NLINE_SET_COL_A = (55, 120, 200)
+NLINE_SET_COL_B = (210, 105, 70)
+NLINE_SET_COL_RESULT = (128, 32, 48)  # бордовый — линия результата и подпись
+
+
+def _nline_set_highlight_range(
+    highlight: str,
+    a: tuple[int, int],
+    b: tuple[int, int],
+) -> list[tuple[int, int]]:
+    """Tick range lo..hi for the result interval (empty for disjoint)."""
+    a0, a1 = a
+    b0, b1 = b
+    hl = highlight
+    if hl == "intersect":
+        return [(max(a0, b0), min(a1, b1))]
+    if hl == "union":
+        return [(min(a0, b0), max(a1, b1))]
+    if hl == "subset":
+        return [(a0, a1)]
+    if hl == "a_only":
+        if a0 < b0:
+            return [(a0, min(a1, b0))]
+        if a1 > b1:
+            return [(max(a0, b1), a1)]
+        return []
+    if hl == "disjoint":
+        return []
+    return []
+
+
+def _draw_geom_line_infinite(out: Path) -> None:
+    """Прямая: линия со стрелками на обоих концах (бесконечность), без подписи на кадре."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    y = CARD_H // 2
+    x0, x1 = 72, CARD_W - 72
+    ink = (30, 30, 30)
+    draw.line((x0 + 18, y, x1 - 18, y), fill=ink, width=5)
+    draw.polygon([(x0, y), (x0 + 16, y - 8), (x0 + 16, y + 8)], fill=ink)
+    draw.polygon([(x1, y), (x1 - 16, y - 8), (x1 - 16, y + 8)], fill=ink)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_segment(out: Path) -> None:
+    """Отрезок: ограниченный отрезок с точками на концах, без подписи."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    y = CARD_H // 2
+    xa, xb = 150, CARD_W - 150
+    ink = (30, 30, 30)
+    draw.line((xa, y, xb, y), fill=ink, width=8)
+    _draw_endpoint_closed(draw, xa, y, r=8)
+    _draw_endpoint_closed(draw, xb, y, r=8)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_stroke(out: Path) -> None:
+    """Линия: чертёжный штрих без концов, без подписи."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    y = CARD_H // 2
+    ink = (30, 30, 30)
+    draw.line((120, y, CARD_W - 120, y), fill=ink, width=6)
+    img.save(out, "JPEG", quality=92)
+
+
+def _nline_set_op_caption(highlight: str, ranges: list[tuple[int, int]]) -> str:
+    if highlight == "disjoint":
+        return "A ∩ B = ∅"
+    if highlight == "intersect" and ranges:
+        lo, hi = ranges[0]
+        return f"A ∩ B = {_interval_text(lo, hi)}"
+    if highlight == "union" and ranges:
+        lo, hi = ranges[0]
+        return f"A ∪ B = {_interval_text(lo, hi)}"
+    if highlight == "subset":
+        return "A ⊂ B"
+    if highlight == "a_only" and ranges:
+        lo, hi = ranges[0]
+        return f"A \\ B = {_interval_text(lo, hi)}"
+    return {
+        "intersect": "A ∩ B",
+        "union": "A ∪ B",
+        "subset": "A ⊂ B",
+        "a_only": "A \\ B",
+    }.get(highlight, "")
+
+
+def _draw_nline_set_interval(
+    out: Path,
+    *,
+    highlight: str = "none",
+    variant: str = "overlap",
+    labels: bool = True,
+) -> None:
+    """Sets on number line — textbook style (bar above axis, dots at endpoints)."""
+    (a0, a1), (b0, b1) = _nline_set_interval_pair(variant=variant)
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    axis_y = 268
+    x0, axis_y, step = _draw_numberline_axis_arrow(draw, max_n=6, y=axis_y, font_size=30)
+
+    col_a = NLINE_SET_COL_A
+    col_b = NLINE_SET_COL_B
+    col_res = NLINE_SET_COL_RESULT
+    title_font = _font(26)
+    cap_font = _font(34, symbols=True)
+
+    if labels:
+        draw.text((36, 36), f"A = {_interval_text(a0, a1)}", fill=col_a, font=title_font)
+        draw.text((36, 68), f"B = {_interval_text(b0, b1)}", fill=col_b, font=title_font)
+        _draw_textbook_interval(
+            draw,
+            x0,
+            step,
+            axis_y,
+            a0,
+            a1,
+            color=col_a,
+            bar_above=58,
+            line_width=5,
+            mark_endpoints=False,
+        )
+        _draw_textbook_interval(
+            draw,
+            x0,
+            step,
+            axis_y,
+            b0,
+            b1,
+            color=col_b,
+            bar_above=42,
+            line_width=5,
+            mark_endpoints=False,
+        )
+
+    ranges = _nline_set_highlight_range(highlight, (a0, a1), (b0, b1))
+    for lo, hi in ranges:
+        _draw_textbook_interval(
+            draw,
+            x0,
+            step,
+            axis_y,
+            lo,
+            hi,
+            color=col_res,
+            bar_above=24,
+            line_width=9,
+            mark_endpoints=True,
+            endpoint_fill=col_res,
+        )
+
+    op = _nline_set_op_caption(highlight, ranges)
+    if op:
+        draw.text((36, 380), op, fill=col_res, font=cap_font)
+
+    img.save(out, "JPEG", quality=92)
+
+
 def _compose_sprites(
     out: Path,
     sprite: Image.Image,
@@ -758,6 +1060,27 @@ def main() -> None:
             ("venn-region-union.jpg", lambda p: _draw_venn_regions(p, highlight="union")),
             ("venn-region-subset.jpg", lambda p: _draw_venn_regions(p, highlight="subset", subset=True)),
             ("venn-region-a-only.jpg", lambda p: _draw_venn_regions(p, highlight="a_only")),
+        ],
+        "lesson-14-sets-interval": [
+            ("nline-set-intersect.jpg", lambda p: _draw_nline_set_interval(p, highlight="intersect")),
+            ("nline-set-union.jpg", lambda p: _draw_nline_set_interval(p, highlight="union")),
+            (
+                "nline-set-subset.jpg",
+                lambda p: _draw_nline_set_interval(p, highlight="subset", variant="subset"),
+            ),
+            (
+                "nline-set-disjoint.jpg",
+                lambda p: _draw_nline_set_interval(p, highlight="disjoint", variant="disjoint"),
+            ),
+            ("nline-set-a-only.jpg", lambda p: _draw_nline_set_interval(p, highlight="a_only")),
+        ],
+        "lesson-15-geometry-words": [
+            ("geom-circle.jpg", _draw_geom_lex_circle),
+            ("geom-square.jpg", _draw_geom_lex_square),
+            ("geom-rectangle.jpg", lambda p: _draw_shape("rectangle", p)),
+            ("geom-stroke.jpg", _draw_geom_stroke),
+            ("geom-segment.jpg", _draw_geom_segment),
+            ("geom-line.jpg", _draw_geom_line_infinite),
         ],
     }
 
