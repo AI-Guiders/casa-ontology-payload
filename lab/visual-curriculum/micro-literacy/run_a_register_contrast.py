@@ -1,36 +1,36 @@
 #!/usr/bin/env python3
-"""Contrast pass: а ↔ А — чередование register, отдельный sleep на каждую пару (без cartesian batch)."""
+"""Contrast pass: а ↔ А — чередование register, отдельный sleep на пару."""
 
 from __future__ import annotations
 
-import _ensure_paths  # noqa: F401
-from lab_paths import setup_lab_paths
-
-_REPO, _ = setup_lab_paths(__file__)
-from curriculum_lab import CurriculumLabSession, jobs_from_json_files
 from pathlib import Path
 
+import _ensure_paths  # noqa: F401
+from runner_infra import LITERACY, bootstrap, cli_run_jobs, jobs_json_round_pairs
+
+bootstrap(__file__)
 _STEPS = Path(__file__).resolve().parent
-_LITERACY = _REPO / "lessons" / "literacy-cards"
 ROUNDS = 8
-
-
-def _schedule() -> list[tuple[str, str]]:
-    out: list[tuple[str, str]] = []
-    for r in range(1, ROUNDS + 1):
-        out.append((f"lex-micro-a-contrast-r{r}-lower", "lex-micro-a-lower.json"))
-        out.append((f"lex-micro-a-contrast-r{r}-upper", "lex-micro-a-upper.json"))
-    return out
+_PAIRS = (
+    ("lower", "lex-micro-a-lower.json"),
+    ("upper", "lex-micro-a-upper.json"),
+)
 
 
 def main() -> None:
-    jobs = jobs_from_json_files(_STEPS, _schedule())
-    lab = CurriculumLabSession(class_dir=_LITERACY, generated_subdir="micro-literacy")
-    def _run(session: CurriculumLabSession) -> None:
-        session.log({"rounds": ROUNDS, "moments": len(jobs)})
-        session.run_jobs(jobs)
-
-    lab.run_main(_run, summary_file="summary-a-register-contrast.json")
+    cli_run_jobs(
+        LITERACY,
+        lambda: jobs_json_round_pairs(
+            _STEPS,
+            _PAIRS,
+            rounds=ROUNDS,
+            moment_id_fmt="lex-micro-a-contrast-r{round}-{tag}",
+        ),
+        summary_file="summary-a-register-contrast.json",
+        description=__doc__,
+        log_start={"rounds": ROUNDS},
+        micro_dir=_STEPS,
+    )
 
 
 if __name__ == "__main__":

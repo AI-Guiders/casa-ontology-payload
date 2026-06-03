@@ -3,15 +3,13 @@
 
 from __future__ import annotations
 
-import _ensure_paths  # noqa: F401
-from lab_paths import setup_lab_paths
-
-_REPO, _ = setup_lab_paths(__file__)
-from curriculum_lab import CurriculumLabSession, jobs_from_json_files
 from pathlib import Path
 
+import _ensure_paths  # noqa: F401
+from runner_infra import LITERACY, bootstrap, cli_json_batch
+
+bootstrap(__file__)
 _STEPS = Path(__file__).resolve().parent
-_LITERACY = _REPO / "lessons" / "literacy-cards"
 MICRO = [
     ("lex-micro-a-lower-r2", "lex-micro-a-lower.json"),
     ("lex-micro-a-upper-r2", "lex-micro-a-upper.json"),
@@ -22,9 +20,7 @@ MICRO = [
 
 
 def main() -> None:
-    jobs = jobs_from_json_files(_STEPS, MICRO)
-    lab = CurriculumLabSession(class_dir=_LITERACY, generated_subdir="micro-literacy")
-    lab.run_main(lambda s: s.run_jobs(jobs), summary_file="summary-pilot-literacy-r2.json")
+    cli_json_batch(LITERACY, _STEPS, MICRO, summary_file="summary-pilot-literacy-r2.json", description=__doc__)
 
 
 if __name__ == "__main__":

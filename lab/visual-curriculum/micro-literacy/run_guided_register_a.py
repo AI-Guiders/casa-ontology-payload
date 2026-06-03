@@ -3,15 +3,13 @@
 
 from __future__ import annotations
 
-import _ensure_paths  # noqa: F401
-from lab_paths import setup_lab_paths
-
-_REPO, _ = setup_lab_paths(__file__)
-from curriculum_lab import CurriculumLabSession, jobs_from_json_files
 from pathlib import Path
 
+import _ensure_paths  # noqa: F401
+from runner_infra import LITERACY, bootstrap, cli_run_jobs, jobs_from_round_files
+
+bootstrap(__file__)
 _STEPS = Path(__file__).resolve().parent
-_LITERACY = _REPO / "lessons" / "literacy-cards"
 ROUNDS = 4
 ROUND_FILES = (
     ("lex-guided-a-lower.json", "lower"),
@@ -19,18 +17,19 @@ ROUND_FILES = (
 )
 
 
-def _schedule() -> list[tuple[str, str, dict]]:
-    out: list[tuple[str, str, dict]] = []
-    for r in range(1, ROUNDS + 1):
-        for fname, tag in ROUND_FILES:
-            out.append((f"lex-guided-a-r{r}-{tag}"[:80], fname, {"tag": tag}))
-    return out
-
-
 def main() -> None:
-    jobs = jobs_from_json_files(_STEPS, _schedule())
-    lab = CurriculumLabSession(class_dir=_LITERACY, generated_subdir="micro-literacy")
-    lab.run_main(lambda s: s.run_jobs(jobs), summary_file="summary-guided-register-a.json")
+    cli_run_jobs(
+        LITERACY,
+        lambda: jobs_from_round_files(
+            _STEPS,
+            ROUND_FILES,
+            rounds=ROUNDS,
+            moment_id_fmt="lex-guided-a-r{round}-{tag}",
+        ),
+        summary_file="summary-guided-register-a.json",
+        description=__doc__,
+        micro_dir=_STEPS,
+    )
 
 
 if __name__ == "__main__":

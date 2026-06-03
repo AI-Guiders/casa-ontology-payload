@@ -4,27 +4,17 @@
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 
 import _ensure_paths  # noqa: F401
-from lab_paths import setup_lab_paths
+from curriculum_lab import IngestJob, jobs_from_steps
+from manifest_steps import frame_by_id, letter_frame_id, steps_for_frame
+from runner_infra import LITERACY, bootstrap, class_dir_for, cli_lab_main, import_tools_module
 
-_REPO, _ = setup_lab_paths(__file__)
-from curriculum_lab import CurriculumLabSession, IngestJob, jobs_from_steps
-from literacy_moment import steps_for_frame
-
-_LITERACY = _REPO / "lessons" / "literacy-cards"
-_MICRO = __import__("pathlib").Path(__file__).resolve().parent
+bootstrap(__file__)
+_MICRO = Path(__file__).resolve().parent
 DEFAULT_CUES = ("b", "k", "o", "m", "t")
 FINALE_CUE = "a"
-FACE = "sans"
-
-
-def _frame_for_cue(manifest: dict, cue: str, register: str) -> dict:
-    fid = f"letter-{cue}-{register}-{FACE}"
-    for f in manifest.get("frames") or []:
-        if str(f.get("id")) == fid:
-            return f
-    raise KeyError(fid)
 
 
 def _enrich_steps(
@@ -61,48 +51,46 @@ def _schedule(
         lo, up = glyph[cue]
         for r in range(1, rounds_per_cue + 1):
             for register in ("lower", "upper"):
-                frame = _frame_for_cue(manifest, cue, register)
+                frame = frame_by_id(manifest, letter_frame_id(cue, register))
                 steps = _enrich_steps(steps_for_frame(frame), lo, up, register, cue_slug=cue)
                 items.append((f"lex-reg-{cue}-r{r}-{register}"[:80], steps))
     return jobs_from_steps(items)
 
 
-def main() -> None:
-    p = argparse.ArgumentParser()
+def _parser(p: argparse.ArgumentParser) -> None:
     p.add_argument("--cues", nargs="*", default=list(DEFAULT_CUES))
     p.add_argument("--rounds", type=int, default=2, help="раундов lower↔upper на cue")
     p.add_argument("--finale-a-rounds", type=int, default=6, help="раундов для a после других (0=пропуск)")
     p.add_argument("--no-finale", action="store_true")
-    args = p.parse_args()
+
+
+def _run(session, args: argparse.Namespace) -> None:
     cues = tuple(args.cues)
-
-    lab = CurriculumLabSession(
-        class_dir=_LITERACY,
-        generated_subdir="micro-literacy",
-        extra_sys_paths=(_LITERACY / "tools", _MICRO),
-    )
-
-    def _run(session: CurriculumLabSession) -> None:
-        from build_letter_cards import CYRILLIC  # noqa: E402
-
-        manifest = session.load_manifest()
-        jobs = _schedule(manifest, cues, rounds_per_cue=args.rounds, tools_cyrillic=CYRILLIC)
-        if not args.no_finale and args.finale_a_rounds > 0:
-            jobs.extend(
-                _schedule(
-                    manifest,
-                    (FINALE_CUE,),
-                    rounds_per_cue=args.finale_a_rounds,
-                    tools_cyrillic=CYRILLIC,
-                )
+    build_letter_cards = import_tools_module(class_dir_for(LITERACY) / "tools", "build_letter_cards")
+    manifest = session.load_manifest()
+    jobs = _schedule(manifest, cues, rounds_per_cue=args.rounds, tools_cyrillic=build_letter_cards.CYRILLIC)
+    if not args.no_finale and args.finale_a_rounds > 0:
+        jobs.extend(
+            _schedule(
+                manifest,
+                (FINALE_CUE,),
+                rounds_per_cue=args.finale_a_rounds,
+                tools_cyrillic=build_letter_cards.CYRILLIC,
             )
-        session.log({"cues": cues, "moments": len(jobs), "finale_a": not args.no_finale})
-        session.run_jobs(jobs)
+        )
+    session.log({"cues": cues, "moments": len(jobs), "finale_a": not args.no_finale})
+    session.run_jobs(jobs)
 
-    lab.run_main(
+
+def main() -> None:
+    cli_lab_main(
+        LITERACY,
         _run,
         summary_file="summary-register-contrast-cues.json",
-        summary_builder=lambda s: {"cues": list(cues), "moments": s.summary_rows},
+        description=__doc__,
+        parser_setup=_parser,
+        summary_builder=lambda s, args: {"cues": list(args.cues), "moments": s.summary_rows},
+        micro_dir=_MICRO,
     )
 
 
