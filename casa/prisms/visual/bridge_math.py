@@ -13,7 +13,12 @@ from casa.prisms.memory.memory_prisms import append_episode, memory_lattices, pe
 from casa.prisms.memory.prism_hot_context import add_hot_edge
 from casa.prisms.memory.stack import _place_token
 from casa.prisms.shared.codec_grid import Grid
-from casa.prisms.shared.lattice_names_v1 import SCHEMA_MATH
+from casa.prisms.shared.lattice_names_v1 import (
+    ALPHABET_RU,
+    LEXICON_RU,
+    SCHEMA_MATH,
+    SYLLABLES_RU,
+)
 from casa.prisms.visual.bootstrap import ensure_prism_visual
 
 DEFAULT_RELATION = "co_occurs"
@@ -39,7 +44,7 @@ def bridge_exists_on_field(
     dst: str,
 ) -> bool:
     tok = _edge_token(src, relation, dst)
-    for lid in (LATTICE_V1_LUM, SCHEMA_MATH):
+    for lid in (LATTICE_V1_LUM, SCHEMA_MATH, ALPHABET_RU, LEXICON_RU, SYLLABLES_RU):
         lat = lattices.get(lid) or {}
         for cell in lat.get("cells") or []:
             if isinstance(cell, list) and tok in cell:
@@ -99,7 +104,7 @@ def mint_crosslink(
     copies: int = 5,
     provenance: str = "emergent",
 ) -> dict[str, str] | None:
-    """Mint cross-prism edge; vis↔math supported, math↔math on schema-math."""
+    """Mint cross-prism edge; vis↔math, vis↔grapheme, math/math on schema-math."""
     src, relation, dst = src.strip(), relation.strip(), dst.strip()
     if not (src and relation and dst):
         return None
@@ -108,11 +113,18 @@ def mint_crosslink(
         return None
     on_vis = False
     on_math = False
+    on_lex = False
     if src.startswith(PREFIX_VIS_LUM) or src.startswith("vis."):
         on_vis = _strengthen_on_visual_lum(state, src=src, relation=relation, dst=dst, copies=copies)
     if src.startswith("math.") or dst.startswith("math."):
         on_math = strengthen_graph_edge(lats, SCHEMA_MATH, src, relation, dst, copies=copies)
-    if not (on_vis or on_math):
+    from casa.prisms.memory.lexical_lattice_bootstrap import lattice_for_lex_concept
+
+    for cid in (src, dst):
+        lat_id = lattice_for_lex_concept(cid)
+        if lat_id:
+            on_lex = on_lex or strengthen_graph_edge(lats, lat_id, src, relation, dst, copies=copies)
+    if not (on_vis or on_math or on_lex):
         return None
     add_hot_edge(state, src, relation, dst, salience=1.0, provenance=provenance)
     persist_content_lattices(state, lats)
@@ -122,6 +134,41 @@ def mint_crosslink(
         "relation": relation,
         "dst": dst,
         "edge": _edge_token(src, relation, dst),
+        "on_visual": on_vis,
+        "on_math": on_math,
+        "on_lex": on_lex,
+        "provenance": provenance,
+    }
+
+
+def reinforce_vis_math_bridge(
+    state: dict,
+    *,
+    frame_id: str,
+    math_cid: str,
+    relation: str = DEFAULT_RELATION,
+    copies: int = 8,
+    provenance: str = "reinforce",
+) -> dict[str, str] | None:
+    """Add edge copies even when link exists (contrast / tie-break after co-occurrence)."""
+    if not str(math_cid).startswith("math."):
+        return None
+    vis_cid = vis_frame_concept_id(frame_id)
+    lats = memory_lattices(state)
+    on_vis = _strengthen_on_visual_lum(
+        state, src=vis_cid, relation=relation, dst=math_cid, copies=copies
+    )
+    on_math = strengthen_graph_edge(lats, SCHEMA_MATH, vis_cid, relation, math_cid, copies=copies)
+    if not (on_vis or on_math):
+        return None
+    add_hot_edge(state, vis_cid, relation, math_cid, salience=1.0, provenance=provenance)
+    persist_content_lattices(state, lats)
+    state["field_version"] = int(state.get("field_version") or 0) + 1
+    return {
+        "src": vis_cid,
+        "relation": relation,
+        "dst": math_cid,
+        "edge": _edge_token(vis_cid, relation, math_cid),
         "on_visual": on_vis,
         "on_math": on_math,
         "provenance": provenance,

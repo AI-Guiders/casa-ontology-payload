@@ -55,6 +55,18 @@ _FRAME_MATH: dict[str, tuple[str, str, str] | None] = {
     "venn-region-union": ("∪", "∪", "math.set.union"),
     "venn-region-subset": ("⊂", "⊂", "math.set.subset"),
     "venn-region-a-only": ("A\\B", "A\\B", "math.set.difference"),
+    "nline-set-intersect": ("∩", "∩", "math.set.intersect"),
+    "nline-set-union": ("∪", "∪", "math.set.union"),
+    "nline-set-subset": ("⊂", "⊂", "math.set.subset"),
+    "nline-set-disjoint": ("∅", "∅", "math.set.disjoint"),
+    "nline-set-a-only": ("A\\B", "A\\B", "math.set.difference"),
+    # geometry lexicon (lesson-15): Russian word ↔ figure
+    "geom-circle": ("круг", "круг", "math.geom.circle"),
+    "geom-square": ("квадрат", "квадрат", "math.geom.square"),
+    "geom-rectangle": ("прямоугольник", "прямоугольник", "math.geom.rectangle"),
+    "geom-stroke": ("линия", "линия", "math.geom.stroke"),
+    "geom-segment": ("отрезок", "отрезок", "math.geom.segment"),
+    "geom-line": ("прямая", "прямая", "math.geom.line"),
     # pure shape cards — visual only
     "shape-circle": None,
     "shape-square": None,
@@ -82,6 +94,12 @@ _CONCEPT_DEFAULTS: dict[str, tuple[str, str]] = {
     "math.set.subset": ("⊂", "⊂"),
     "math.set.disjoint": ("∅", "∅"),
     "math.set.difference": ("A\\B", "A\\B"),
+    "math.geom.circle": ("круг", "круг"),
+    "math.geom.square": ("квадрат", "квадрат"),
+    "math.geom.rectangle": ("прямоугольник", "прямоугольник"),
+    "math.geom.stroke": ("линия", "линия"),
+    "math.geom.segment": ("отрезок", "отрезок"),
+    "math.geom.line": ("прямая", "прямая"),
 }
 
 

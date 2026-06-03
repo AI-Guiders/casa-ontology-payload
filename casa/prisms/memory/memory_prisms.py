@@ -815,6 +815,7 @@ def run_sleep(
         )
 
     from casa.prisms.visual.bridge_math import extract_emergent_vis_math_bridges
+    from casa.prisms.visual.bridge_lex import extract_emergent_vis_lex_bridges
 
     for item in extract_emergent_vis_math_bridges(
         lattices,
@@ -828,6 +829,21 @@ def run_sleep(
                 "kind": "emergent_crosslink",
                 "lattice_id": "V1_lum",
                 "concept_id": item.get("vis_concept_id"),
+                "extract": item,
+            }
+        )
+
+    for item in extract_emergent_vis_lex_bridges(
+        lattices,
+        episodes,
+        state,
+        copies=strength,
+    ):
+        merged.append(
+            {
+                "episode_id": item.get("episode_id"),
+                "kind": "emergent_crosslink_lex",
+                "lattice_id": "V1_lum",
                 "extract": item,
             }
         )
