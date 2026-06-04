@@ -12,6 +12,8 @@ FRAMES = (
     "geom-stroke",
     "geom-segment",
     "geom-line",
+    "geom-circle-center",
+    "geom-circle-radius",
 )
 
 

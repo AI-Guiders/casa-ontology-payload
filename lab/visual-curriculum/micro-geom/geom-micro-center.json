@@ -1,0 +1,4 @@
+[
+  {"visual_frame": "geom-circle-center"},
+  {"math": {"cue": "центр", "correct": "центр", "concept_id": "math.geom.center"}}
+]

@@ -1,0 +1,4 @@
+[
+  {"visual_frame": "geom-circle-radius"},
+  {"math": {"cue": "радиус", "correct": "радиус", "concept_id": "math.geom.radius"}}
+]

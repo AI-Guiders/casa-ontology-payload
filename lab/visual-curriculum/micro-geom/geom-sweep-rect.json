@@ -1,0 +1,4 @@
+[
+  {"visual_frame": "geom-sweep-rect-ab"},
+  {"math": {"cue": "прямоугольник", "correct": "прямоугольник", "concept_id": "math.geom.rectangle"}}
+]
