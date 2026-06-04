@@ -505,6 +505,268 @@
       "scene_label": "card:geom:line",
       "concept_id": "math.geom.line",
       "lesson_id": "lesson-15-geometry-words"
+    },
+    {
+      "id": "geom-circle-large",
+      "path": "lesson-16-meta-size-geom/images/geom-circle-large.jpg",
+      "scene_label": "card:meta:size.large:geom",
+      "concept_id": "lang.meta.size.large",
+      "curriculum_tags": [
+        "lang.meta.size.large",
+        "deprecated:lesson-16-meta-size-geom"
+      ],
+      "lesson_id": "lesson-16-meta-size-geom"
+    },
+    {
+      "id": "geom-circle-small",
+      "path": "lesson-16-meta-size-geom/images/geom-circle-small.jpg",
+      "scene_label": "card:meta:size.small:geom",
+      "concept_id": "lang.meta.size.small",
+      "curriculum_tags": [
+        "lang.meta.size.small",
+        "deprecated:lesson-16-meta-size-geom"
+      ],
+      "lesson_id": "lesson-16-meta-size-geom"
+    },
+    {
+      "id": "geom-circles-left-greater",
+      "path": "lesson-16-geom-circle-compare/images/geom-circles-left-greater.jpg",
+      "scene_label": "card:meta:compare.greater:circles",
+      "concept_id": "lang.meta.compare.greater",
+      "curriculum_tags": [
+        "lang.meta.compare.greater",
+        "vis.compare.circles"
+      ],
+      "lesson_id": "lesson-16-geom-circle-compare"
+    },
+    {
+      "id": "geom-circles-left-less",
+      "path": "lesson-16-geom-circle-compare/images/geom-circles-left-less.jpg",
+      "scene_label": "card:meta:compare.less:circles",
+      "concept_id": "lang.meta.compare.less",
+      "curriculum_tags": [
+        "lang.meta.compare.less",
+        "vis.compare.circles"
+      ],
+      "lesson_id": "lesson-16-geom-circle-compare"
+    },
+    {
+      "id": "geom-circle-center",
+      "path": "lesson-17-circle-center-radius/images/geom-circle-center.jpg",
+      "scene_label": "card:geom:center",
+      "concept_id": "math.geom.center",
+      "lesson_id": "lesson-17-circle-center-radius"
+    },
+    {
+      "id": "geom-circle-radius",
+      "path": "lesson-17-circle-center-radius/images/geom-circle-radius.jpg",
+      "scene_label": "card:geom:radius",
+      "concept_id": "math.geom.radius",
+      "lesson_id": "lesson-17-circle-center-radius"
+    },
+    {
+      "id": "geom-segments-equal",
+      "path": "lesson-18-segment-compare/images/geom-segments-equal.jpg",
+      "scene_label": "card:meta:compare.equal:segments",
+      "concept_id": "lang.meta.compare.equal",
+      "curriculum_tags": [
+        "lang.meta.compare.equal",
+        "vis.compare.segments"
+      ],
+      "lesson_id": "lesson-18-segment-compare"
+    },
+    {
+      "id": "geom-segments-a-longer",
+      "path": "lesson-18-segment-compare/images/geom-segments-a-longer.jpg",
+      "scene_label": "card:meta:compare.greater:segments",
+      "concept_id": "lang.meta.compare.greater",
+      "curriculum_tags": [
+        "lang.meta.compare.greater",
+        "vis.compare.segments"
+      ],
+      "lesson_id": "lesson-18-segment-compare"
+    },
+    {
+      "id": "geom-segments-a-shorter",
+      "path": "lesson-18-segment-compare/images/geom-segments-a-shorter.jpg",
+      "scene_label": "card:meta:compare.less:segments",
+      "concept_id": "lang.meta.compare.less",
+      "curriculum_tags": [
+        "lang.meta.compare.less",
+        "vis.compare.segments"
+      ],
+      "lesson_id": "lesson-18-segment-compare"
+    },
+    {
+      "id": "geom-segments-a-left",
+      "path": "lesson-19-spatial-left-right/images/geom-segments-a-left.jpg",
+      "scene_label": "card:meta:spatial.leftOf:segments",
+      "concept_id": "lang.meta.spatial.leftOf",
+      "curriculum_tags": [
+        "lang.meta.spatial.leftOf",
+        "vis.spatial.segments"
+      ],
+      "lesson_id": "lesson-19-spatial-left-right"
+    },
+    {
+      "id": "geom-segments-a-right",
+      "path": "lesson-19-spatial-left-right/images/geom-segments-a-right.jpg",
+      "scene_label": "card:meta:spatial.rightOf:segments",
+      "concept_id": "lang.meta.spatial.rightOf",
+      "curriculum_tags": [
+        "lang.meta.spatial.rightOf",
+        "vis.spatial.segments"
+      ],
+      "lesson_id": "lesson-19-spatial-left-right"
+    },
+    {
+      "id": "geom-segments-a-above",
+      "path": "lesson-20-spatial-above-below/images/geom-segments-a-above.jpg",
+      "scene_label": "card:meta:spatial.aboveOf:segments",
+      "concept_id": "lang.meta.spatial.aboveOf",
+      "curriculum_tags": [
+        "lang.meta.spatial.aboveOf",
+        "vis.spatial.segments"
+      ],
+      "lesson_id": "lesson-20-spatial-above-below"
+    },
+    {
+      "id": "geom-segments-a-below",
+      "path": "lesson-20-spatial-above-below/images/geom-segments-a-below.jpg",
+      "scene_label": "card:meta:spatial.belowOf:segments",
+      "concept_id": "lang.meta.spatial.belowOf",
+      "curriculum_tags": [
+        "lang.meta.spatial.belowOf",
+        "vis.spatial.segments"
+      ],
+      "lesson_id": "lesson-20-spatial-above-below"
+    },
+    {
+      "id": "geom-points-b-between-ac",
+      "path": "lesson-21-spatial-between/images/geom-points-b-between-ac.jpg",
+      "scene_label": "card:meta:spatial.between:points",
+      "concept_id": "lang.meta.spatial.between",
+      "curriculum_tags": [
+        "lang.meta.spatial.between",
+        "vis.spatial.between"
+      ],
+      "lesson_id": "lesson-21-spatial-between"
+    },
+    {
+      "id": "numberline-2-between-1-3",
+      "path": "lesson-21-spatial-between/images/numberline-2-between-1-3.jpg",
+      "scene_label": "card:meta:spatial.between:nline",
+      "concept_id": "lang.meta.spatial.between",
+      "curriculum_tags": [
+        "lang.meta.spatial.between",
+        "vis.spatial.between"
+      ],
+      "lesson_id": "lesson-21-spatial-between"
+    },
+    {
+      "id": "numberline-length-pure-2",
+      "path": "lesson-22-numberline-length-pure/images/numberline-length-pure-2.jpg",
+      "scene_label": "card:numberline:length-pure-2",
+      "concept_id": "math.numberline.length",
+      "lesson_id": "lesson-22-numberline-length-pure"
+    },
+    {
+      "id": "numberline-length-pure-3",
+      "path": "lesson-22-numberline-length-pure/images/numberline-length-pure-3.jpg",
+      "scene_label": "card:numberline:length-pure-3",
+      "concept_id": "math.numberline.length",
+      "lesson_id": "lesson-22-numberline-length-pure"
+    },
+    {
+      "id": "geom-angle-generic",
+      "path": "lesson-23-geom-angles/images/geom-angle-generic.jpg",
+      "scene_label": "card:geom:angle:generic",
+      "concept_id": "lang.meta.geom.angle",
+      "lesson_id": "lesson-23-geom-angles"
+    },
+    {
+      "id": "geom-angle-right",
+      "path": "lesson-23-geom-angles/images/geom-angle-right.jpg",
+      "scene_label": "card:geom:angle:right",
+      "concept_id": "lang.meta.geom.angle.right",
+      "lesson_id": "lesson-23-geom-angles"
+    },
+    {
+      "id": "geom-angle-acute",
+      "path": "lesson-23-geom-angles/images/geom-angle-acute.jpg",
+      "scene_label": "card:geom:angle:acute",
+      "concept_id": "lang.meta.geom.angle.acute",
+      "lesson_id": "lesson-23-geom-angles"
+    },
+    {
+      "id": "geom-angle-obtuse",
+      "path": "lesson-23-geom-angles/images/geom-angle-obtuse.jpg",
+      "scene_label": "card:geom:angle:obtuse",
+      "concept_id": "lang.meta.geom.angle.obtuse",
+      "lesson_id": "lesson-23-geom-angles"
+    },
+    {
+      "id": "geom-lines-parallel",
+      "path": "lesson-24-geom-orientation/images/geom-lines-parallel.jpg",
+      "scene_label": "card:geom:parallel",
+      "concept_id": "lang.meta.geom.parallel",
+      "lesson_id": "lesson-24-geom-orientation"
+    },
+    {
+      "id": "geom-lines-perpendicular",
+      "path": "lesson-24-geom-orientation/images/geom-lines-perpendicular.jpg",
+      "scene_label": "card:geom:perpendicular",
+      "concept_id": "lang.meta.geom.perpendicular",
+      "lesson_id": "lesson-24-geom-orientation"
+    },
+    {
+      "id": "geom-sweep-segment-a",
+      "path": "lesson-25-geom-sweep/images/geom-sweep-segment-a.jpg",
+      "scene_label": "card:geom:sweep:segment",
+      "concept_id": "vis.geom.sweep.segment",
+      "lesson_id": "lesson-25-geom-sweep"
+    },
+    {
+      "id": "geom-sweep-translate-a",
+      "path": "lesson-25-geom-sweep/images/geom-sweep-translate-a.jpg",
+      "scene_label": "card:geom:sweep:translate",
+      "concept_id": "vis.geom.sweep.translate",
+      "lesson_id": "lesson-25-geom-sweep"
+    },
+    {
+      "id": "geom-sweep-square-a",
+      "path": "lesson-25-geom-sweep/images/geom-sweep-square-a.jpg",
+      "scene_label": "card:geom:sweep:square",
+      "concept_id": "math.geom.square",
+      "lesson_id": "lesson-25-geom-sweep"
+    },
+    {
+      "id": "geom-sweep-rect-ab",
+      "path": "lesson-25-geom-sweep/images/geom-sweep-rect-ab.jpg",
+      "scene_label": "card:geom:sweep:rect",
+      "concept_id": "math.geom.rectangle",
+      "lesson_id": "lesson-25-geom-sweep"
+    },
+    {
+      "id": "geom-rectangle-width",
+      "path": "lesson-26-geom-measure-width/images/geom-rectangle-width.jpg",
+      "scene_label": "card:geom:rectangle:width",
+      "concept_id": "lang.meta.measure.width",
+      "lesson_id": "lesson-26-geom-measure-width"
+    },
+    {
+      "id": "numberline-compare-pure-3gt2",
+      "path": "lesson-27-numberline-compare-pure/images/numberline-compare-pure-3gt2.jpg",
+      "scene_label": "card:numberline:compare-pure-3gt2",
+      "concept_id": "math.compare.gt",
+      "lesson_id": "lesson-27-numberline-compare-pure"
+    },
+    {
+      "id": "numberline-compare-pure-2lt3",
+      "path": "lesson-27-numberline-compare-pure/images/numberline-compare-pure-2lt3.jpg",
+      "scene_label": "card:numberline:compare-pure-2lt3",
+      "concept_id": "math.compare.lt",
+      "lesson_id": "lesson-27-numberline-compare-pure"
     }
   ]
 }

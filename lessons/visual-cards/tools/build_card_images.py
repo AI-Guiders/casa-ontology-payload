@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import io
 import json
+import math
 import os
 import urllib.parse
 import urllib.request
@@ -239,13 +240,93 @@ def _draw_mixed_shape_counts(out: Path, *, show_label: bool = False) -> None:
     img.save(out, "JPEG", quality=92)
 
 
-def _draw_geom_lex_circle(out: Path) -> None:
-    """Lesson-15: круг — крупная окружность (контраст с квадратом lex)."""
+def _draw_geom_circle_sized(out: Path, *, diameter: int) -> None:
+    """Окружность заданного диаметра (meta size on geom)."""
     img = _blank()
     draw = ImageDraw.Draw(img)
     stroke = (25, 25, 25)
     cx, cy = CARD_W // 2, CARD_H // 2
-    draw.ellipse(_centered_box(cx, cy, 210, 210), outline=stroke, width=9)
+    if diameter >= 300:
+        width = 10
+    elif diameter >= 160:
+        width = 9
+    elif diameter >= 80:
+        width = 7
+    else:
+        width = 5
+    draw.ellipse(_centered_box(cx, cy, diameter, diameter), outline=stroke, width=width)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_lex_circle(out: Path) -> None:
+    """Lesson-15: круг — крупная окружность (контраст с квадратом lex)."""
+    _draw_geom_circle_sized(out, diameter=210)
+
+
+def _draw_two_circles_compare(
+    out: Path,
+    *,
+    left_d: int,
+    right_d: int,
+    relation: str | None = None,
+) -> None:
+    """Два круга разного радиуса; relation greater/less — скобка только на левом (S6 pure)."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    stroke = (25, 25, 25)
+    cy = CARD_H // 2
+    left_cx = CARD_W // 2 - 110
+    right_cx = CARD_W // 2 + 110
+    for cx, d in ((left_cx, left_d), (right_cx, right_d)):
+        w = 9 if d >= 120 else 7
+        draw.ellipse(_centered_box(cx, cy, d, d), outline=stroke, width=w)
+    rel = (relation or "").strip().lower()
+    if rel in ("greater", "less"):
+        d = left_d
+        half = d // 2
+        x_lo = left_cx - half
+        x_hi = left_cx + half
+        if rel == "greater":
+            col = (45, 95, 165)
+            br_y = cy - half - 22
+            draw.line((x_lo, br_y, x_hi, br_y), fill=col, width=5)
+            draw.line((x_lo, br_y, x_lo, br_y + 12), fill=col, width=4)
+            draw.line((x_hi, br_y, x_hi, br_y + 12), fill=col, width=4)
+        else:
+            col = (165, 75, 45)
+            br_y = cy + half + 22
+            draw.line((x_lo, br_y, x_hi, br_y), fill=col, width=5)
+            draw.line((x_lo, br_y, x_lo, br_y - 12), fill=col, width=4)
+            draw.line((x_hi, br_y, x_hi, br_y - 12), fill=col, width=4)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_circle_center(out: Path) -> None:
+    """Круг с точкой в центре → math.geom.center."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    stroke = (25, 25, 25)
+    cx, cy = CARD_W // 2, CARD_H // 2
+    d = 200
+    draw.ellipse(_centered_box(cx, cy, d, d), outline=stroke, width=9)
+    r = 8
+    draw.ellipse((cx - r, cy - r, cx + r, cy + r), fill=stroke)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_circle_radius(out: Path) -> None:
+    """Круг, центр и отрезок центр→контур → math.geom.radius."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    stroke = (25, 25, 25)
+    cx, cy = CARD_W // 2, CARD_H // 2
+    half = 100
+    draw.ellipse(_centered_box(cx, cy, half * 2, half * 2), outline=stroke, width=9)
+    dot = 6
+    draw.ellipse((cx - dot, cy - dot, cx + dot, cy + dot), fill=stroke)
+    edge_x = cx + half
+    draw.line((cx, cy, edge_x, cy), fill=stroke, width=5)
+    draw.ellipse((edge_x - dot, cy - dot, edge_x + dot, cy + dot), fill=stroke)
     img.save(out, "JPEG", quality=92)
 
 
@@ -504,6 +585,60 @@ def _draw_numberline_compare(a: int, b: int, relation: str, out: Path, *, max_n:
     img.save(out, "JPEG", quality=92)
 
 
+def _draw_numberline_compare_pure_gt(greater: int, lesser: int, out: Path, *, max_n: int = 5) -> None:
+    """S1 pure: only > — bracket above axis, arrow at greater tick (no < on card)."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    axis_y = CARD_H // 2 + 24
+    x0, _, step = _draw_numberline_axis(draw, max_n=max_n, y=axis_y, font_size=28)
+    x_lo = int(x0 + lesser * step)
+    x_hi = int(x0 + greater * step)
+    col = (45, 95, 165)
+    br_y = axis_y - 48
+    draw.line((x_lo, br_y, x_hi, br_y), fill=col, width=6)
+    draw.line((x_lo, br_y, x_lo, br_y + 14), fill=col, width=4)
+    draw.line((x_hi, br_y, x_hi, br_y + 14), fill=col, width=4)
+    draw.polygon([(x_hi, br_y), (x_hi + 16, br_y + 9), (x_hi, br_y + 18)], fill=col)
+    mark = (70, 70, 70)
+    for val in (lesser, greater):
+        vx = int(x0 + val * step)
+        r = 10
+        draw.ellipse((vx - r, axis_y - r, vx + r, axis_y + r), fill=mark)
+    label = f"{greater} > {lesser}"
+    label_font = _font(42)
+    bbox = draw.textbbox((0, 0), label, font=label_font)
+    tw = bbox[2] - bbox[0]
+    draw.text((CARD_W // 2 - tw // 2, axis_y + 52), label, fill=(20, 20, 20), font=label_font)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_numberline_compare_pure_lt(lesser: int, greater: int, out: Path, *, max_n: int = 5) -> None:
+    """S1 pure: only < — bracket below axis, arrow at lesser tick (no > on card)."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    axis_y = CARD_H // 2 - 28
+    x0, _, step = _draw_numberline_axis(draw, max_n=max_n, y=axis_y, font_size=28)
+    x_lo = int(x0 + lesser * step)
+    x_hi = int(x0 + greater * step)
+    col = (165, 75, 45)
+    br_y = axis_y + 48
+    draw.line((x_hi, br_y, x_lo, br_y), fill=col, width=6)
+    draw.line((x_lo, br_y, x_lo, br_y - 14), fill=col, width=4)
+    draw.line((x_hi, br_y, x_hi, br_y - 14), fill=col, width=4)
+    draw.polygon([(x_lo, br_y), (x_lo - 16, br_y + 9), (x_lo, br_y + 18)], fill=col)
+    mark = (70, 70, 70)
+    for val in (lesser, greater):
+        vx = int(x0 + val * step)
+        r = 10
+        draw.ellipse((vx - r, axis_y - r, vx + r, axis_y + r), fill=mark)
+    label = f"{lesser} < {greater}"
+    label_font = _font(42)
+    bbox = draw.textbbox((0, 0), label, font=label_font)
+    tw = bbox[2] - bbox[0]
+    draw.text((CARD_W // 2 - tw // 2, 24), label, fill=(20, 20, 20), font=label_font)
+    img.save(out, "JPEG", quality=92)
+
+
 def _draw_length_bar(
     draw: ImageDraw.ImageDraw,
     x0: float,
@@ -537,6 +672,25 @@ def _draw_numberline_lengths_separate(a: int, b: int, out: Path, *, max_n: int =
     draw.text((int(x0 + b * step) + 10, seg_y2 - 24), str(b), fill=col_b, font=font)
     x_origin = int(x0)
     draw.line((x_origin, axis_y - 10, x_origin, seg_y2 + 14), fill=(190, 190, 188), width=2)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_numberline_length_pure(n: int, out: Path, *, max_n: int = 5) -> None:
+    """One bar 0→n on axis; no «+», no second segment (S4 length-only)."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    axis_y = 100
+    x0, _, step = _draw_numberline_axis(draw, max_n=max_n, y=axis_y, font_size=28)
+    seg_y = 200
+    col = (45, 95, 165)
+    _draw_length_bar(draw, x0, step, seg_y, 0, n, col)
+    for mark in (0, n):
+        x = int(x0 + mark * step)
+        draw.line((x, seg_y - 22, x, seg_y + 22), fill=(30, 30, 30), width=3)
+    x_origin = int(x0)
+    draw.line((x_origin, axis_y - 8, x_origin, seg_y + 16), fill=(190, 190, 188), width=2)
+    font = _font(32)
+    draw.text((int(x0 + n * step) + 12, seg_y - 18), str(n), fill=col, font=font)
     img.save(out, "JPEG", quality=92)
 
 
@@ -836,6 +990,141 @@ def _draw_geom_line_infinite(out: Path) -> None:
     img.save(out, "JPEG", quality=92)
 
 
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_angle(
+    out: Path,
+    *,
+    deg: float,
+    right_mark: bool = False,
+    vertex_label: str = "O",
+) -> None:
+    """Угол в вершине O: луч вдоль +x и второй луч; дуга; опционально маркер 90°."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    ink = (30, 30, 30)
+    arc_col = (45, 95, 165)
+    ox, oy = 300, 310
+    arm = 170
+    x1, y1 = ox + arm, oy
+    rad = math.radians(deg)
+    x2 = ox + int(arm * math.cos(rad))
+    y2 = oy - int(arm * math.sin(rad))
+    draw.line((ox, oy, x1, y1), fill=ink, width=7)
+    draw.line((ox, oy, x2, y2), fill=ink, width=7)
+    _draw_endpoint_closed(draw, ox, oy, r=7)
+    arc_r = 52
+    bbox = (ox - arc_r, oy - arc_r, ox + arc_r, oy + arc_r)
+    draw.arc(bbox, start=0, end=int(deg), fill=arc_col, width=4)
+    if right_mark:
+        s = 22
+        draw.line((ox + s, oy, ox + s, oy - s), fill=arc_col, width=3)
+        draw.line((ox + s, oy - s, ox, oy - s), fill=arc_col, width=3)
+    font = _font(36)
+    draw.text((ox - 18, oy + 14), vertex_label, fill=ink, font=font)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_lines_parallel(out: Path) -> None:
+    """Две параллельные прямые (один наклон — горизонталь), разные линии."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    ink = (30, 30, 30)
+    x0, x1 = 90, CARD_W - 90
+    for y in (175, 305):
+        draw.line((x0, y, x1, y), fill=ink, width=6)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_lines_perpendicular(out: Path) -> None:
+    """Перпендикулярные прямые + маркер прямого угла."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    ink = (30, 30, 30)
+    mark = (45, 95, 165)
+    cx, cy = 320, 250
+    draw.line((80, cy, CARD_W - 80, cy), fill=ink, width=6)
+    draw.line((cx, 70, cx, CARD_H - 70), fill=ink, width=6)
+    s = 26
+    draw.line((cx + s, cy, cx + s, cy - s), fill=mark, width=4)
+    draw.line((cx + s, cy - s, cx, cy - s), fill=mark, width=4)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_sweep_segment(out: Path) -> None:
+    """Исходный отрезок a (горизонталь внизу) — без подписи на JPEG."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    ink = (30, 30, 30)
+    y = 360
+    xa, xb = 180, 460
+    draw.line((xa, y, xb, y), fill=ink, width=8)
+    _draw_endpoint_closed(draw, xa, y, r=8)
+    _draw_endpoint_closed(draw, xb, y, r=8)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_sweep_translate(out: Path, *, shift: int) -> None:
+    """Отрезок a и копия после переноса вверх (стрелка ⊥). shift — длина переноса."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    ink = (30, 30, 30)
+    arrow = (165, 75, 45)
+    xa, xb = 180, 460
+    y0 = 360
+    y1 = y0 - shift
+    for y in (y0, y1):
+        draw.line((xa, y, xb, y), fill=ink, width=8)
+        _draw_endpoint_closed(draw, xa, y, r=8)
+        _draw_endpoint_closed(draw, xb, y, r=8)
+    mx = (xa + xb) // 2
+    draw.line((mx, y0 - 8, mx, y1 + 8), fill=arrow, width=4)
+    draw.polygon([(mx, y1 + 4), (mx - 10, y1 + 18), (mx + 10, y1 + 18)], fill=arrow)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_sweep_square(out: Path, *, side: int = 200) -> None:
+    """Контур квадрата после переноса a→a (⊥)."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    ink = (30, 30, 30)
+    cx, cy = 320, 250
+    h = side // 2
+    draw.rectangle((cx - h, cy - h, cx + h, cy + h), outline=ink, width=6)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_sweep_rect(out: Path, *, w: int = 280, h: int = 160) -> None:
+    """Контур прямоугольника a×b после переноса."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    ink = (30, 30, 30)
+    cx, cy = 320, 250
+    draw.rectangle((cx - w // 2, cy - h // 2, cx + w // 2, cy + h // 2), outline=ink, width=6)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_geom_rectangle_width(out: Path) -> None:
+    """Прямоугольник: выделена ширина (горизонтальный размер сверху)."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    ink = (30, 30, 30)
+    col = (165, 75, 45)
+    cx, cy = 320, 260
+    w, h = 300, 170
+    x0, y0 = cx - w // 2, cy - h // 2
+    x1, y1 = cx + w // 2, cy + h // 2
+    draw.rectangle((x0, y0, x1, y1), outline=ink, width=5)
+    wy = y0 - 36
+    draw.line((x0, wy, x1, wy), fill=col, width=4)
+    draw.line((x0, wy, x0, y0), fill=col, width=3)
+    draw.line((x1, wy, x1, y0), fill=col, width=3)
+    for x, dx in ((x0, 8), (x1, -8)):
+        draw.polygon([(x, wy), (x + dx, wy - 10), (x + dx, wy + 10)], fill=col)
+    img.save(out, "JPEG", quality=92)
+
+
 def _draw_geom_segment(out: Path) -> None:
     """Отрезок: ограниченный отрезок с точками на концах, без подписи."""
     img = _blank()
@@ -846,6 +1135,76 @@ def _draw_geom_segment(out: Path) -> None:
     draw.line((xa, y, xb, y), fill=ink, width=8)
     _draw_endpoint_closed(draw, xa, y, r=8)
     _draw_endpoint_closed(draw, xb, y, r=8)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_two_segments_compare(out: Path, *, len_a: int, len_b: int) -> None:
+    """Два отрезка A (сверху) и B (снизу), общее начало слева — compare длины."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    ink = (30, 30, 30)
+    x0 = 100
+    y_a, y_b = 170, 290
+    label_font = _font(40)
+    for y, length, label in ((y_a, len_a, "A"), (y_b, len_b, "B")):
+        xa, xb = x0, x0 + length
+        draw.line((xa, y, xb, y), fill=ink, width=8)
+        _draw_endpoint_closed(draw, xa, y, r=8)
+        _draw_endpoint_closed(draw, xb, y, r=8)
+        draw.text((x0 - 40, y - 16), label, fill=ink, font=label_font)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_spatial_lr_points(out: Path, *, x_a: int, x_b: int, y: int = 240) -> None:
+    """A и B на одной горизонтали — левее/правее (не два ряда отрезков)."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    ink = (30, 30, 30)
+    axis_y = y
+    draw.line((60, axis_y, CARD_W - 60, axis_y), fill=(210, 210, 208), width=3)
+    label_font = _font(40)
+    r = 10
+    for x, label in ((x_a, "A"), (x_b, "B")):
+        draw.ellipse((x - r, axis_y - r, x + r, axis_y + r), fill=ink)
+        draw.text((x - 12, axis_y - 52), label, fill=ink, font=label_font)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_spatial_ab_points(out: Path, *, y_a: int, y_b: int, x: int = 320) -> None:
+    """A и B на одной вертикали — выше/ниже (точки, не compare-длина)."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    ink = (30, 30, 30)
+    draw.line((x, 60, x, CARD_H - 60), fill=(210, 210, 208), width=3)
+    label_font = _font(40)
+    r = 10
+    for y, label in ((y_a, "A"), (y_b, "B")):
+        draw.ellipse((x - r, y - r, x + r, y + r), fill=ink)
+        draw.text((x + 24, y - 16), label, fill=ink, font=label_font)
+    img.save(out, "JPEG", quality=92)
+
+
+def _draw_spatial_between_points(
+    out: Path,
+    *,
+    labels: tuple[str, str, str],
+    xs: tuple[int, int, int],
+    y: int = 240,
+) -> None:
+    """Три метки на одной горизонтали — средняя «между» крайними (A, B, C или 1, 2, 3)."""
+    img = _blank()
+    draw = ImageDraw.Draw(img)
+    ink = (30, 30, 30)
+    axis_y = y
+    x0, x1 = min(xs) - 50, max(xs) + 50
+    draw.line((max(60, x0), axis_y, min(CARD_W - 60, x1), axis_y), fill=(210, 210, 208), width=3)
+    label_font = _font(40)
+    r = 10
+    for x, label in zip(xs, labels, strict=True):
+        draw.ellipse((x - r, axis_y - r, x + r, axis_y + r), fill=ink)
+        bbox = draw.textbbox((0, 0), label, font=label_font)
+        tw = bbox[2] - bbox[0]
+        draw.text((x - tw // 2, axis_y - 52), label, fill=ink, font=label_font)
     img.save(out, "JPEG", quality=92)
 
 
@@ -1081,6 +1440,76 @@ def main() -> None:
             ("geom-stroke.jpg", _draw_geom_stroke),
             ("geom-segment.jpg", _draw_geom_segment),
             ("geom-line.jpg", _draw_geom_line_infinite),
+        ],
+        "lesson-16-geom-circle-compare": [
+            (
+                "geom-circles-left-greater.jpg",
+                lambda p: _draw_two_circles_compare(p, left_d=160, right_d=72, relation="greater"),
+            ),
+            (
+                "geom-circles-left-less.jpg",
+                lambda p: _draw_two_circles_compare(p, left_d=72, right_d=160, relation="less"),
+            ),
+        ],
+        "lesson-17-circle-center-radius": [
+            ("geom-circle-center.jpg", _draw_geom_circle_center),
+            ("geom-circle-radius.jpg", _draw_geom_circle_radius),
+        ],
+        "lesson-18-segment-compare": [
+            ("geom-segments-equal.jpg", lambda p: _draw_two_segments_compare(p, len_a=280, len_b=280)),
+            ("geom-segments-a-longer.jpg", lambda p: _draw_two_segments_compare(p, len_a=320, len_b=180)),
+            ("geom-segments-a-shorter.jpg", lambda p: _draw_two_segments_compare(p, len_a=180, len_b=320)),
+        ],
+        "lesson-19-spatial-left-right": [
+            ("geom-segments-a-left.jpg", lambda p: _draw_spatial_lr_points(p, x_a=140, x_b=460)),
+            ("geom-segments-a-right.jpg", lambda p: _draw_spatial_lr_points(p, x_a=460, x_b=140)),
+        ],
+        "lesson-20-spatial-above-below": [
+            ("geom-segments-a-above.jpg", lambda p: _draw_spatial_ab_points(p, y_a=130, y_b=350)),
+            ("geom-segments-a-below.jpg", lambda p: _draw_spatial_ab_points(p, y_a=350, y_b=130)),
+        ],
+        "lesson-21-spatial-between": [
+            (
+                "geom-points-b-between-ac.jpg",
+                lambda p: _draw_spatial_between_points(p, labels=("A", "B", "C"), xs=(140, 320, 500)),
+            ),
+            (
+                "numberline-2-between-1-3.jpg",
+                lambda p: _draw_spatial_between_points(p, labels=("1", "2", "3"), xs=(140, 320, 500)),
+            ),
+        ],
+        "lesson-22-numberline-length-pure": [
+            ("numberline-length-pure-2.jpg", lambda p: _draw_numberline_length_pure(2, p)),
+            ("numberline-length-pure-3.jpg", lambda p: _draw_numberline_length_pure(3, p)),
+        ],
+        "lesson-23-geom-angles": [
+            ("geom-angle-generic.jpg", lambda p: _draw_geom_angle(p, deg=70)),
+            ("geom-angle-right.jpg", lambda p: _draw_geom_angle(p, deg=90, right_mark=True)),
+            ("geom-angle-acute.jpg", lambda p: _draw_geom_angle(p, deg=45)),
+            ("geom-angle-obtuse.jpg", lambda p: _draw_geom_angle(p, deg=135)),
+        ],
+        "lesson-24-geom-orientation": [
+            ("geom-lines-parallel.jpg", _draw_geom_lines_parallel),
+            ("geom-lines-perpendicular.jpg", _draw_geom_lines_perpendicular),
+        ],
+        "lesson-25-geom-sweep": [
+            ("geom-sweep-segment-a.jpg", _draw_geom_sweep_segment),
+            ("geom-sweep-translate-a.jpg", lambda p: _draw_geom_sweep_translate(p, shift=140)),
+            ("geom-sweep-square-a.jpg", lambda p: _draw_geom_sweep_square(p, side=200)),
+            ("geom-sweep-rect-ab.jpg", lambda p: _draw_geom_sweep_rect(p, w=280, h=160)),
+        ],
+        "lesson-26-geom-measure-width": [
+            ("geom-rectangle-width.jpg", _draw_geom_rectangle_width),
+        ],
+        "lesson-27-numberline-compare-pure": [
+            (
+                "numberline-compare-pure-3gt2.jpg",
+                lambda p: _draw_numberline_compare_pure_gt(3, 2, p),
+            ),
+            (
+                "numberline-compare-pure-2lt3.jpg",
+                lambda p: _draw_numberline_compare_pure_lt(2, 3, p),
+            ),
         ],
     }
 
