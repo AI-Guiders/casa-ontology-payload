@@ -1,0 +1,4 @@
+[
+  {"visual_frame": "numberline-compare-2lt3"},
+  {"math": {"cue": "2<3", "correct": "2<3", "concept_id": "math.compare.lt"}}
+]
