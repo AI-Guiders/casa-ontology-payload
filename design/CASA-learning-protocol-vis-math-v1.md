@@ -8,6 +8,7 @@
 - [`CASA-ADR-0021-experience-agent-transfer.md`](CASA-ADR-0021-experience-agent-transfer.md) — опыт на поле, без oracle на read
 - [`CASA-ADR-0028-field-native-sensory-experience.md`](CASA-ADR-0028-field-native-sensory-experience.md) — тракт `visual`, predict `modality=vis`
 - [`CASA-literacy-class-v1.md`](CASA-literacy-class-v1.md) — vis↔lex, метаязык (дополнение ниже)
+- [`CASA-visual-3D-tract-future.md`](CASA-visual-3D-tract-future.md) — черновик: lum v1 → depth v2 → spherical v3 (не канон lab v1)
 - `casa/cli/ingest_lesson_moment.py` — lesson moment (visual + math → один sleep)
 - `casa/prisms/visual/bridge_math.py` — emergent bridges, `predict_math_for_vis_cue`
 - `tools/teacher_count_session.py` — teacher: закрепление → квиз «посчитай»
@@ -133,19 +134,11 @@ Teacher moment: картинка → число или символ множес
 3. Категорию регистра на букве — exemplar **не на а**; фразы категории — отдельно от grapheme в batch.
 4. **«Не знаю» как состояние** (связь с ambiguous на букве) — **не** уровень 1; отдельный guided-трек позже.
 
-**Размер (большой / маленький):** в literacy w2 уже есть lexical `большая` / `маленкая` на **текстовых** карточках. Дополнительно (идея) — тот же приём на **геометрии** `visual-cards`: круг большой vs круг маленький → `lang.meta.size.large` / `lang.meta.size.small` **чистыми** moment’ами (vis фигуры + episodic меты), без смешения с `geom.*` shape-id в одном sleep. Аналог контраста круг/квадрат, ось **масштаб**.
+**Compare (больше / меньше):** канон — [CASA-compare-greater-less-v1.md](CASA-compare-greater-less-v1.md): `math.compare` на прямой → `lang.meta.compare.greater` / `.less` → два круга; **центр и радиус после compare**, не до.
 
-**Относительность и градации (маленький / большой / огромный):** это не то же, что синонимы одной категории. «Большой» без контекста — слабая метка; «огромный» и «больше других» опираются на **отношение** (к сцене, к эталону, к телу). У Неймана v1 нет полного физического воплощения — поле учит **2D-масштаб на кадре** и co-occurrence с фразой, не метрический мир.
+**Размер-прилагательное (большая / маленькая):** w2 на текстовых карточках → `lang.meta.size.large` / `.small` (отдельно от compare). Lab «один большой / один маленький круг» — **снят** (ambiguous без отношения).
 
-| Ступень | Что реалистично сейчас | Что отложить |
-|---------|------------------------|--------------|
-| 1 | `lang.meta.size.large` / `.small` на **изолированных** кадрах и бинарный vis-контраст (круг крупный vs мелкий) | «огромный» как отдельный facet без крайней vis-якоря |
-| 2 | `lang.meta.size.comparative.greater` при **явной** сцене (один объект крупнее других на том же JPEG) | градация big ↔ huge как тонкая шкала слов без опоры |
-| 3 | — | полная относительность «для человека большой, для слона маленький» — нужен embodied/мульти-масштабный контекст ([CASA-ADR-0028](CASA-ADR-0028-field-native-sensory-experience.md) ур. 2–3) |
-
-Не смешивать в одном sleep: прилагательное на карточке, сравнительную фразу и `geom.circle` — иначе probe ambiguous. Градации (`огромный`) — отдельные facet’ы **только** когда vis даёт крайний контраст или есть телесный/сценический эталон; иначе агент склеит всё в один «размерный» шум.
-
-Подробности и lab-команды: [CASA-literacy-class-v1.md](CASA-literacy-class-v1.md) § Метаязык отдельно.
+Подробности: [CASA-literacy-class-v1.md](CASA-literacy-class-v1.md) § Метаязык; compare: [CASA-compare-greater-less-v1.md](CASA-compare-greater-less-v1.md).
 
 ---
 

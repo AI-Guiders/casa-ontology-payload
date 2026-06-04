@@ -10,9 +10,20 @@
 | `stage-07b-meta-language-2` | `lesson-07-meta-language` | w2: не знаю, выбор, глагол, большая/маленькая, … |
 | **meta pure (lab)** | — | `run_*_pure.py` — мета **без** `letter-*` в moment (канон 2026-06-03) |
 | guided (lab) | — | vis + мета + grapheme — **не** единственный путь; а/А — шумный |
-| **meta size on geom (идея)** | `visual-cards` | большой/маленький круг → `lang.meta.size.large` / `.small`, чистые moment’ы |
+| **meta compare → measure → geom** | `visual-cards` | канон: [CASA-compare-greater-less-v1.md](CASA-compare-greater-less-v1.md) — nline gt/lt → meta → отрезки A/B (= / длиннее / короче) → длина на прямой → ширина на прямоугольниках → два круга → центр/радиус |
+| **meta size (w2 текст)** | `lesson-07-meta-language` | `большая`/`маленькая` → `lang.meta.size.*`; **не** путь «круг больше» |
 
 **Базовый протокол:** [CASA-literacy-class-v1.md](CASA-literacy-class-v1.md) · **общий принцип:** [CASA-learning-protocol-vis-math-v1.md](CASA-learning-protocol-vis-math-v1.md) § Vis↔lex
+
+**Грамматика → связный текст:** [CASA-ADR-0030-grammar-literacy-coherent-text.md](CASA-ADR-0030-grammar-literacy-coherent-text.md) — L1 закрытый класс, L2 `lang.meta.grammar.*`, L3 согласование, J0 write.  
+**Аналитическое чтение (слоги → слово, неологизмы):** [CASA-ADR-0032-analytic-syllable-reading.md](CASA-ADR-0032-analytic-syllable-reading.md) — R1 corpus bind, R2 «краш», R3 орфоварианты позже.  
+**Lab ingest (педагогика):** [CASA-literacy-pedagogy-lab-v1.md](CASA-literacy-pedagogy-lab-v1.md) — порядок wordlist, probe, reinforce-tail.
+
+| Стадия | lesson | Содержание |
+|--------|--------|------------|
+| `stage-08-meta-grammar-person` | `lesson-08-grammar-meta` | мета-лицо: `я`…`они` → `lang.meta.grammar.person.*` |
+| `stage-07-closed-class` (план) | `lesson-07-closed-class` | служебные слова как `lang.word.*` |
+| `stage-09-grammar-agreement-pilot` (план) | TBD | пары форм → `lang.meta.grammar.agreement.*` |
 
 ---
 
@@ -65,7 +76,7 @@
 |--------|--------|------------|---------|
 | `stage-05-syllable-cyrl` | `lesson-05-syllables-cyrl` | `syllable.{surface}` (напр. `ма`, `ко`) | `syllables-ru` |
 
-Не «собрать слово из слогов на predict» — отдельные узнаваемые формы.
+Не «собрать слово из слогов одним emergent predict» — на stage-05 отдельные узнаваемые формы; **композиция** на незнакомом целом кадре — [CASA-ADR-0032](CASA-ADR-0032-analytic-syllable-reading.md) (R1/R2).
 
 ### 4. Слова — современный корпус РЯ
 
@@ -130,6 +141,7 @@ Hints только в JSON отчёта; runtime без manifest-oracle.
 
 ## Очередь реализации (инженерия)
 
+0. **Мета-лицо (ADR-0030)** — `build_grammar_meta_cards.py` → `run_meta_grammar_person_pure.py` → `probe_meta_grammar_person_quiz.py`.
 1. **RU ingest алфавита** — micro-runner по всем 66 кадрам (ночной прогон, один persist в конце).
 2. **RU corpus v1** — wordlist 1k–5k + `build_word_cards --corpus`.
 3. **Faces** — generator + stage-02 / stage-04.
