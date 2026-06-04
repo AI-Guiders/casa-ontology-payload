@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
 import _ensure_paths  # noqa: F401
@@ -12,32 +13,42 @@ from runner_infra import LITERACY, bootstrap, lab_session
 
 bootstrap(__file__)
 _MICRO = Path(__file__).resolve().parent
+_CURRICULUM = _MICRO.parent
+if str(_CURRICULUM) not in sys.path:
+    sys.path.insert(0, str(_CURRICULUM))
+
+from literacy_pedagogy import default_wordlist_for_stage, frames_for_stage  # noqa: E402
 
 
 def _parser(p: argparse.ArgumentParser) -> None:
     p.add_argument("--stage", required=True, help="stage id from manifest")
     p.add_argument("--limit", type=int, default=0, help="max frames (0=all)")
     p.add_argument("--offset", type=int, default=0)
+    p.add_argument(
+        "--order",
+        choices=("wordlist", "frame_id", "manifest"),
+        default="frame_id",
+        help="wordlist — порядок ru-*-wordlist.txt (рекомендуется closed-class)",
+    )
+    p.add_argument("--wordlist", type=Path, default=None)
 
 
 def _run(session, args: argparse.Namespace) -> None:
     manifest = session.load_manifest()
-    lesson_ids: set[str] = set()
-    for st in manifest.get("stages") or []:
-        if str(st.get("id")) == args.stage:
-            lesson_ids = set(st.get("lesson_ids") or [])
-            break
-    if not lesson_ids:
-        raise SystemExit(f"unknown stage: {args.stage}")
+    wordlist = args.wordlist
+    if wordlist is None and args.order == "wordlist":
+        wordlist = default_wordlist_for_stage(args.stage)
 
-    frames = [f for f in manifest.get("frames") or [] if str(f.get("lesson_id")) in lesson_ids]
-    frames.sort(key=lambda f: str(f.get("id")))
-    if args.offset:
-        frames = frames[args.offset :]
-    if args.limit > 0:
-        frames = frames[: args.limit]
+    frames = frames_for_stage(
+        manifest,
+        args.stage,
+        limit=args.limit,
+        offset=args.offset,
+        order=args.order,
+        wordlist_path=wordlist,
+    )
 
-    session.log({"stage": args.stage, "frames": len(frames)})
+    session.log({"stage": args.stage, "frames": len(frames), "order": args.order})
     for i, frame in enumerate(frames):
         fid = str(frame.get("id"))
         session.ingest(f"lex-{args.stage}-{fid}"[:80], steps_for_frame(frame), i=i + 1, frame_id=fid)
