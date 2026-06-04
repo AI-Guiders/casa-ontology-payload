@@ -78,6 +78,22 @@
       "lesson_ids": [
         "lesson-07-meta-language"
       ]
+    },
+    {
+      "id": "stage-07-closed-class",
+      "title": "Закрытый класс (служебные слова)",
+      "order": 79,
+      "lesson_ids": [
+        "lesson-07-closed-class"
+      ]
+    },
+    {
+      "id": "stage-08-meta-grammar-person",
+      "title": "Мета-грамматика: грамматическое лицо",
+      "order": 80,
+      "lesson_ids": [
+        "lesson-08-grammar-meta"
+      ]
     }
   ],
   "frames": [
@@ -6343,6 +6359,832 @@
         "face:sans"
       ],
       "lesson_id": "lesson-07-meta-language"
+    },
+    {
+      "id": "word-person-1sg-sans",
+      "path": "lesson-08-grammar-meta/images/word-person-1sg-sans.jpg",
+      "scene_label": "card:grammar:grammar.person.1sg:sans",
+      "concept_id": "lang.meta.grammar.person.1sg",
+      "curriculum_tags": [
+        "lang.meta.grammar.person.1sg",
+        "surface:я",
+        "slug:person-1sg",
+        "face:sans",
+        "grammar:person"
+      ],
+      "lesson_id": "lesson-08-grammar-meta"
+    },
+    {
+      "id": "word-person-2sg-sans",
+      "path": "lesson-08-grammar-meta/images/word-person-2sg-sans.jpg",
+      "scene_label": "card:grammar:grammar.person.2sg:sans",
+      "concept_id": "lang.meta.grammar.person.2sg",
+      "curriculum_tags": [
+        "lang.meta.grammar.person.2sg",
+        "surface:ты",
+        "slug:person-2sg",
+        "face:sans",
+        "grammar:person"
+      ],
+      "lesson_id": "lesson-08-grammar-meta"
+    },
+    {
+      "id": "word-person-3sg-masc-sans",
+      "path": "lesson-08-grammar-meta/images/word-person-3sg-masc-sans.jpg",
+      "scene_label": "card:grammar:grammar.person.3sg.masc:sans",
+      "concept_id": "lang.meta.grammar.person.3sg.masc",
+      "curriculum_tags": [
+        "lang.meta.grammar.person.3sg.masc",
+        "surface:он",
+        "slug:person-3sg-masc",
+        "face:sans",
+        "grammar:person"
+      ],
+      "lesson_id": "lesson-08-grammar-meta"
+    },
+    {
+      "id": "word-person-3sg-fem-sans",
+      "path": "lesson-08-grammar-meta/images/word-person-3sg-fem-sans.jpg",
+      "scene_label": "card:grammar:grammar.person.3sg.fem:sans",
+      "concept_id": "lang.meta.grammar.person.3sg.fem",
+      "curriculum_tags": [
+        "lang.meta.grammar.person.3sg.fem",
+        "surface:она",
+        "slug:person-3sg-fem",
+        "face:sans",
+        "grammar:person"
+      ],
+      "lesson_id": "lesson-08-grammar-meta"
+    },
+    {
+      "id": "word-person-1pl-sans",
+      "path": "lesson-08-grammar-meta/images/word-person-1pl-sans.jpg",
+      "scene_label": "card:grammar:grammar.person.1pl:sans",
+      "concept_id": "lang.meta.grammar.person.1pl",
+      "curriculum_tags": [
+        "lang.meta.grammar.person.1pl",
+        "surface:мы",
+        "slug:person-1pl",
+        "face:sans",
+        "grammar:person"
+      ],
+      "lesson_id": "lesson-08-grammar-meta"
+    },
+    {
+      "id": "word-person-2pl-sans",
+      "path": "lesson-08-grammar-meta/images/word-person-2pl-sans.jpg",
+      "scene_label": "card:grammar:grammar.person.2pl:sans",
+      "concept_id": "lang.meta.grammar.person.2pl",
+      "curriculum_tags": [
+        "lang.meta.grammar.person.2pl",
+        "surface:вы",
+        "slug:person-2pl",
+        "face:sans",
+        "grammar:person"
+      ],
+      "lesson_id": "lesson-08-grammar-meta"
+    },
+    {
+      "id": "word-person-3pl-sans",
+      "path": "lesson-08-grammar-meta/images/word-person-3pl-sans.jpg",
+      "scene_label": "card:grammar:grammar.person.3pl:sans",
+      "concept_id": "lang.meta.grammar.person.3pl",
+      "curriculum_tags": [
+        "lang.meta.grammar.person.3pl",
+        "surface:они",
+        "slug:person-3pl",
+        "face:sans",
+        "grammar:person"
+      ],
+      "lesson_id": "lesson-08-grammar-meta"
+    },
+    {
+      "id": "word-b8012cb642c8-sans",
+      "path": "lesson-07-closed-class/images/word-b8012cb642c8-sans.jpg",
+      "scene_label": "card:word:b8012cb642c8:sans",
+      "concept_id": "lang.word.b8012cb642c8",
+      "curriculum_tags": [
+        "lang.word.b8012cb642c8",
+        "word:в",
+        "slug:b8012cb642c8",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-a1f5d39a12e8-sans",
+      "path": "lesson-07-closed-class/images/word-a1f5d39a12e8-sans.jpg",
+      "scene_label": "card:word:a1f5d39a12e8:sans",
+      "concept_id": "lang.word.a1f5d39a12e8",
+      "curriculum_tags": [
+        "lang.word.a1f5d39a12e8",
+        "word:с",
+        "slug:a1f5d39a12e8",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-5225a95b111d-sans",
+      "path": "lesson-07-closed-class/images/word-5225a95b111d-sans.jpg",
+      "scene_label": "card:word:5225a95b111d:sans",
+      "concept_id": "lang.word.5225a95b111d",
+      "curriculum_tags": [
+        "lang.word.5225a95b111d",
+        "word:к",
+        "slug:5225a95b111d",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-beee80c256b4-sans",
+      "path": "lesson-07-closed-class/images/word-beee80c256b4-sans.jpg",
+      "scene_label": "card:word:beee80c256b4:sans",
+      "concept_id": "lang.word.beee80c256b4",
+      "curriculum_tags": [
+        "lang.word.beee80c256b4",
+        "word:у",
+        "slug:beee80c256b4",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-50338c005c41-sans",
+      "path": "lesson-07-closed-class/images/word-50338c005c41-sans.jpg",
+      "scene_label": "card:word:50338c005c41:sans",
+      "concept_id": "lang.word.50338c005c41",
+      "curriculum_tags": [
+        "lang.word.50338c005c41",
+        "word:о",
+        "slug:50338c005c41",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-eead37caf818-sans",
+      "path": "lesson-07-closed-class/images/word-eead37caf818-sans.jpg",
+      "scene_label": "card:word:eead37caf818:sans",
+      "concept_id": "lang.word.eead37caf818",
+      "curriculum_tags": [
+        "lang.word.eead37caf818",
+        "word:и",
+        "slug:eead37caf818",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-823c4eb3e895-sans",
+      "path": "lesson-07-closed-class/images/word-823c4eb3e895-sans.jpg",
+      "scene_label": "card:word:823c4eb3e895:sans",
+      "concept_id": "lang.word.823c4eb3e895",
+      "curriculum_tags": [
+        "lang.word.823c4eb3e895",
+        "word:а",
+        "slug:823c4eb3e895",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-64c3fbb24895-sans",
+      "path": "lesson-07-closed-class/images/word-64c3fbb24895-sans.jpg",
+      "scene_label": "card:word:64c3fbb24895:sans",
+      "concept_id": "lang.word.64c3fbb24895",
+      "curriculum_tags": [
+        "lang.word.64c3fbb24895",
+        "word:за",
+        "slug:64c3fbb24895",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-51ad1397c225-sans",
+      "path": "lesson-07-closed-class/images/word-51ad1397c225-sans.jpg",
+      "scene_label": "card:word:51ad1397c225:sans",
+      "concept_id": "lang.word.51ad1397c225",
+      "curriculum_tags": [
+        "lang.word.51ad1397c225",
+        "word:по",
+        "slug:51ad1397c225",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-962b65e329ec-sans",
+      "path": "lesson-07-closed-class/images/word-962b65e329ec-sans.jpg",
+      "scene_label": "card:word:962b65e329ec:sans",
+      "concept_id": "lang.word.962b65e329ec",
+      "curriculum_tags": [
+        "lang.word.962b65e329ec",
+        "word:не",
+        "slug:962b65e329ec",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-3addecf4647f-sans",
+      "path": "lesson-07-closed-class/images/word-3addecf4647f-sans.jpg",
+      "scene_label": "card:word:3addecf4647f:sans",
+      "concept_id": "lang.word.3addecf4647f",
+      "curriculum_tags": [
+        "lang.word.3addecf4647f",
+        "word:ни",
+        "slug:3addecf4647f",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-9b21f5cf014c-sans",
+      "path": "lesson-07-closed-class/images/word-9b21f5cf014c-sans.jpg",
+      "scene_label": "card:word:9b21f5cf014c:sans",
+      "concept_id": "lang.word.9b21f5cf014c",
+      "curriculum_tags": [
+        "lang.word.9b21f5cf014c",
+        "word:я",
+        "slug:9b21f5cf014c",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-bca5722b5743-sans",
+      "path": "lesson-07-closed-class/images/word-bca5722b5743-sans.jpg",
+      "scene_label": "card:word:bca5722b5743:sans",
+      "concept_id": "lang.word.bca5722b5743",
+      "curriculum_tags": [
+        "lang.word.bca5722b5743",
+        "word:ты",
+        "slug:bca5722b5743",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-484518364fdb-sans",
+      "path": "lesson-07-closed-class/images/word-484518364fdb-sans.jpg",
+      "scene_label": "card:word:484518364fdb:sans",
+      "concept_id": "lang.word.484518364fdb",
+      "curriculum_tags": [
+        "lang.word.484518364fdb",
+        "word:он",
+        "slug:484518364fdb",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-0e338553d71f-sans",
+      "path": "lesson-07-closed-class/images/word-0e338553d71f-sans.jpg",
+      "scene_label": "card:word:0e338553d71f:sans",
+      "concept_id": "lang.word.0e338553d71f",
+      "curriculum_tags": [
+        "lang.word.0e338553d71f",
+        "word:она",
+        "slug:0e338553d71f",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-1329b0f09757-sans",
+      "path": "lesson-07-closed-class/images/word-1329b0f09757-sans.jpg",
+      "scene_label": "card:word:1329b0f09757:sans",
+      "concept_id": "lang.word.1329b0f09757",
+      "curriculum_tags": [
+        "lang.word.1329b0f09757",
+        "word:оно",
+        "slug:1329b0f09757",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-7a2d863933e1-sans",
+      "path": "lesson-07-closed-class/images/word-7a2d863933e1-sans.jpg",
+      "scene_label": "card:word:7a2d863933e1:sans",
+      "concept_id": "lang.word.7a2d863933e1",
+      "curriculum_tags": [
+        "lang.word.7a2d863933e1",
+        "word:мы",
+        "slug:7a2d863933e1",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-36c93704471d-sans",
+      "path": "lesson-07-closed-class/images/word-36c93704471d-sans.jpg",
+      "scene_label": "card:word:36c93704471d:sans",
+      "concept_id": "lang.word.36c93704471d",
+      "curriculum_tags": [
+        "lang.word.36c93704471d",
+        "word:вы",
+        "slug:36c93704471d",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-7575772fe433-sans",
+      "path": "lesson-07-closed-class/images/word-7575772fe433-sans.jpg",
+      "scene_label": "card:word:7575772fe433:sans",
+      "concept_id": "lang.word.7575772fe433",
+      "curriculum_tags": [
+        "lang.word.7575772fe433",
+        "word:они",
+        "slug:7575772fe433",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-d7d38096c460-sans",
+      "path": "lesson-07-closed-class/images/word-d7d38096c460-sans.jpg",
+      "scene_label": "card:word:d7d38096c460:sans",
+      "concept_id": "lang.word.d7d38096c460",
+      "curriculum_tags": [
+        "lang.word.d7d38096c460",
+        "word:меня",
+        "slug:d7d38096c460",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-5d3be07a0aa9-sans",
+      "path": "lesson-07-closed-class/images/word-5d3be07a0aa9-sans.jpg",
+      "scene_label": "card:word:5d3be07a0aa9:sans",
+      "concept_id": "lang.word.5d3be07a0aa9",
+      "curriculum_tags": [
+        "lang.word.5d3be07a0aa9",
+        "word:мне",
+        "slug:5d3be07a0aa9",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-dc375564246c-sans",
+      "path": "lesson-07-closed-class/images/word-dc375564246c-sans.jpg",
+      "scene_label": "card:word:dc375564246c:sans",
+      "concept_id": "lang.word.dc375564246c",
+      "curriculum_tags": [
+        "lang.word.dc375564246c",
+        "word:тебя",
+        "slug:dc375564246c",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-8a9fc9f17d93-sans",
+      "path": "lesson-07-closed-class/images/word-8a9fc9f17d93-sans.jpg",
+      "scene_label": "card:word:8a9fc9f17d93:sans",
+      "concept_id": "lang.word.8a9fc9f17d93",
+      "curriculum_tags": [
+        "lang.word.8a9fc9f17d93",
+        "word:тебе",
+        "slug:8a9fc9f17d93",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-c8124ad7c503-sans",
+      "path": "lesson-07-closed-class/images/word-c8124ad7c503-sans.jpg",
+      "scene_label": "card:word:c8124ad7c503:sans",
+      "concept_id": "lang.word.c8124ad7c503",
+      "curriculum_tags": [
+        "lang.word.c8124ad7c503",
+        "word:его",
+        "slug:c8124ad7c503",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-59b70b85c819-sans",
+      "path": "lesson-07-closed-class/images/word-59b70b85c819-sans.jpg",
+      "scene_label": "card:word:59b70b85c819:sans",
+      "concept_id": "lang.word.59b70b85c819",
+      "curriculum_tags": [
+        "lang.word.59b70b85c819",
+        "word:ему",
+        "slug:59b70b85c819",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-cc4191f658c9-sans",
+      "path": "lesson-07-closed-class/images/word-cc4191f658c9-sans.jpg",
+      "scene_label": "card:word:cc4191f658c9:sans",
+      "concept_id": "lang.word.cc4191f658c9",
+      "curriculum_tags": [
+        "lang.word.cc4191f658c9",
+        "word:её",
+        "slug:cc4191f658c9",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-cd19a83e0db7-sans",
+      "path": "lesson-07-closed-class/images/word-cd19a83e0db7-sans.jpg",
+      "scene_label": "card:word:cd19a83e0db7:sans",
+      "concept_id": "lang.word.cd19a83e0db7",
+      "curriculum_tags": [
+        "lang.word.cd19a83e0db7",
+        "word:ей",
+        "slug:cd19a83e0db7",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-5a131e9c2935-sans",
+      "path": "lesson-07-closed-class/images/word-5a131e9c2935-sans.jpg",
+      "scene_label": "card:word:5a131e9c2935:sans",
+      "concept_id": "lang.word.5a131e9c2935",
+      "curriculum_tags": [
+        "lang.word.5a131e9c2935",
+        "word:их",
+        "slug:5a131e9c2935",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-0d3963c6db63-sans",
+      "path": "lesson-07-closed-class/images/word-0d3963c6db63-sans.jpg",
+      "scene_label": "card:word:0d3963c6db63:sans",
+      "concept_id": "lang.word.0d3963c6db63",
+      "curriculum_tags": [
+        "lang.word.0d3963c6db63",
+        "word:им",
+        "slug:0d3963c6db63",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-9dfc032c3342-sans",
+      "path": "lesson-07-closed-class/images/word-9dfc032c3342-sans.jpg",
+      "scene_label": "card:word:9dfc032c3342:sans",
+      "concept_id": "lang.word.9dfc032c3342",
+      "curriculum_tags": [
+        "lang.word.9dfc032c3342",
+        "word:себя",
+        "slug:9dfc032c3342",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-f2a430fadbdc-sans",
+      "path": "lesson-07-closed-class/images/word-f2a430fadbdc-sans.jpg",
+      "scene_label": "card:word:f2a430fadbdc:sans",
+      "concept_id": "lang.word.f2a430fadbdc",
+      "curriculum_tags": [
+        "lang.word.f2a430fadbdc",
+        "word:себе",
+        "slug:f2a430fadbdc",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-9a5e17190116-sans",
+      "path": "lesson-07-closed-class/images/word-9a5e17190116-sans.jpg",
+      "scene_label": "card:word:9a5e17190116:sans",
+      "concept_id": "lang.word.9a5e17190116",
+      "curriculum_tags": [
+        "lang.word.9a5e17190116",
+        "word:та",
+        "slug:9a5e17190116",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-520e588e7dfc-sans",
+      "path": "lesson-07-closed-class/images/word-520e588e7dfc-sans.jpg",
+      "scene_label": "card:word:520e588e7dfc:sans",
+      "concept_id": "lang.word.520e588e7dfc",
+      "curriculum_tags": [
+        "lang.word.520e588e7dfc",
+        "word:те",
+        "slug:520e588e7dfc",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-c272323b3c9d-sans",
+      "path": "lesson-07-closed-class/images/word-c272323b3c9d-sans.jpg",
+      "scene_label": "card:word:c272323b3c9d:sans",
+      "concept_id": "lang.word.c272323b3c9d",
+      "curriculum_tags": [
+        "lang.word.c272323b3c9d",
+        "word:чем",
+        "slug:c272323b3c9d",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-4e7b9e434ae4-sans",
+      "path": "lesson-07-closed-class/images/word-4e7b9e434ae4-sans.jpg",
+      "scene_label": "card:word:4e7b9e434ae4:sans",
+      "concept_id": "lang.word.4e7b9e434ae4",
+      "curriculum_tags": [
+        "lang.word.4e7b9e434ae4",
+        "word:кого",
+        "slug:4e7b9e434ae4",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-69ff5bf0d28d-sans",
+      "path": "lesson-07-closed-class/images/word-69ff5bf0d28d-sans.jpg",
+      "scene_label": "card:word:69ff5bf0d28d:sans",
+      "concept_id": "lang.word.69ff5bf0d28d",
+      "curriculum_tags": [
+        "lang.word.69ff5bf0d28d",
+        "word:чего",
+        "slug:69ff5bf0d28d",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-8361ca8151a8-sans",
+      "path": "lesson-07-closed-class/images/word-8361ca8151a8-sans.jpg",
+      "scene_label": "card:word:8361ca8151a8:sans",
+      "concept_id": "lang.word.8361ca8151a8",
+      "curriculum_tags": [
+        "lang.word.8361ca8151a8",
+        "word:кому",
+        "slug:8361ca8151a8",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-618b81cb4658-sans",
+      "path": "lesson-07-closed-class/images/word-618b81cb4658-sans.jpg",
+      "scene_label": "card:word:618b81cb4658:sans",
+      "concept_id": "lang.word.618b81cb4658",
+      "curriculum_tags": [
+        "lang.word.618b81cb4658",
+        "word:чему",
+        "slug:618b81cb4658",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-2e500a486f87-sans",
+      "path": "lesson-07-closed-class/images/word-2e500a486f87-sans.jpg",
+      "scene_label": "card:word:2e500a486f87:sans",
+      "concept_id": "lang.word.2e500a486f87",
+      "curriculum_tags": [
+        "lang.word.2e500a486f87",
+        "word:либо",
+        "slug:2e500a486f87",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-1a4fb8750ecb-sans",
+      "path": "lesson-07-closed-class/images/word-1a4fb8750ecb-sans.jpg",
+      "scene_label": "card:word:1a4fb8750ecb:sans",
+      "concept_id": "lang.word.1a4fb8750ecb",
+      "curriculum_tags": [
+        "lang.word.1a4fb8750ecb",
+        "word:чтобы",
+        "slug:1a4fb8750ecb",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-7e0a4193736b-sans",
+      "path": "lesson-07-closed-class/images/word-7e0a4193736b-sans.jpg",
+      "scene_label": "card:word:7e0a4193736b:sans",
+      "concept_id": "lang.word.7e0a4193736b",
+      "curriculum_tags": [
+        "lang.word.7e0a4193736b",
+        "word:вот",
+        "slug:7e0a4193736b",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-50e1af79b3d9-sans",
+      "path": "lesson-07-closed-class/images/word-50e1af79b3d9-sans.jpg",
+      "scene_label": "card:word:50e1af79b3d9:sans",
+      "concept_id": "lang.word.50e1af79b3d9",
+      "curriculum_tags": [
+        "lang.word.50e1af79b3d9",
+        "word:ведь",
+        "slug:50e1af79b3d9",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-e5269fe6612e-sans",
+      "path": "lesson-07-closed-class/images/word-e5269fe6612e-sans.jpg",
+      "scene_label": "card:word:e5269fe6612e:sans",
+      "concept_id": "lang.word.e5269fe6612e",
+      "curriculum_tags": [
+        "lang.word.e5269fe6612e",
+        "word:уж",
+        "slug:e5269fe6612e",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-cb35fe0433e5-sans",
+      "path": "lesson-07-closed-class/images/word-cb35fe0433e5-sans.jpg",
+      "scene_label": "card:word:cb35fe0433e5:sans",
+      "concept_id": "lang.word.cb35fe0433e5",
+      "curriculum_tags": [
+        "lang.word.cb35fe0433e5",
+        "word:лишь",
+        "slug:cb35fe0433e5",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-589a5647c5b0-sans",
+      "path": "lesson-07-closed-class/images/word-589a5647c5b0-sans.jpg",
+      "scene_label": "card:word:589a5647c5b0:sans",
+      "concept_id": "lang.word.589a5647c5b0",
+      "curriculum_tags": [
+        "lang.word.589a5647c5b0",
+        "word:тут",
+        "slug:589a5647c5b0",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-e42faa066a23-sans",
+      "path": "lesson-07-closed-class/images/word-e42faa066a23-sans.jpg",
+      "scene_label": "card:word:e42faa066a23:sans",
+      "concept_id": "lang.word.e42faa066a23",
+      "curriculum_tags": [
+        "lang.word.e42faa066a23",
+        "word:ко",
+        "slug:e42faa066a23",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-4b7c90b8f6cf-sans",
+      "path": "lesson-07-closed-class/images/word-4b7c90b8f6cf-sans.jpg",
+      "scene_label": "card:word:4b7c90b8f6cf:sans",
+      "concept_id": "lang.word.4b7c90b8f6cf",
+      "curriculum_tags": [
+        "lang.word.4b7c90b8f6cf",
+        "word:со",
+        "slug:4b7c90b8f6cf",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-c0f622cbe8f9-sans",
+      "path": "lesson-07-closed-class/images/word-c0f622cbe8f9-sans.jpg",
+      "scene_label": "card:word:c0f622cbe8f9:sans",
+      "concept_id": "lang.word.c0f622cbe8f9",
+      "curriculum_tags": [
+        "lang.word.c0f622cbe8f9",
+        "word:во",
+        "slug:c0f622cbe8f9",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-6f4bf04be222-sans",
+      "path": "lesson-07-closed-class/images/word-6f4bf04be222-sans.jpg",
+      "scene_label": "card:word:6f4bf04be222:sans",
+      "concept_id": "lang.word.6f4bf04be222",
+      "curriculum_tags": [
+        "lang.word.6f4bf04be222",
+        "word:никто",
+        "slug:6f4bf04be222",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-9ca0ffb64c9b-sans",
+      "path": "lesson-07-closed-class/images/word-9ca0ffb64c9b-sans.jpg",
+      "scene_label": "card:word:9ca0ffb64c9b:sans",
+      "concept_id": "lang.word.9ca0ffb64c9b",
+      "curriculum_tags": [
+        "lang.word.9ca0ffb64c9b",
+        "word:ничего",
+        "slug:9ca0ffb64c9b",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-d773164367fa-sans",
+      "path": "lesson-07-closed-class/images/word-d773164367fa-sans.jpg",
+      "scene_label": "card:word:d773164367fa:sans",
+      "concept_id": "lang.word.d773164367fa",
+      "curriculum_tags": [
+        "lang.word.d773164367fa",
+        "word:никому",
+        "slug:d773164367fa",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "word-9e44d3fa369d-sans",
+      "path": "lesson-07-closed-class/images/word-9e44d3fa369d-sans.jpg",
+      "scene_label": "card:word:9e44d3fa369d:sans",
+      "concept_id": "lang.word.9e44d3fa369d",
+      "curriculum_tags": [
+        "lang.word.9e44d3fa369d",
+        "word:ничему",
+        "slug:9e44d3fa369d",
+        "face:sans",
+        "closed-class"
+      ],
+      "lesson_id": "lesson-07-closed-class"
     }
   ]
 }
