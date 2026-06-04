@@ -38,6 +38,13 @@ def manifest_hints(class_rel: str = "lessons/literacy-cards") -> dict[str, str]:
     return {str(f["id"]): str(f.get("concept_id") or "") for f in manifest.get("frames") or []}
 
 
+def manifest_hints_merged(*class_rels: str) -> dict[str, str]:
+    hints: dict[str, str] = {}
+    for rel in class_rels:
+        hints.update(manifest_hints(rel))
+    return hints
+
+
 def run_frame_probe(
     *,
     probe: str,

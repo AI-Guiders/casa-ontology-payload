@@ -3,9 +3,9 @@
 
 from __future__ import annotations
 
-from probe_infra import manifest_hints, run_frame_probe
+from probe_infra import manifest_hints_merged, run_frame_probe
 
-META_PURE_FRAMES = (
+META_PURE_LITERACY_FRAMES = (
     "word-capital-zaglavnaya-bukva-sans",
     "word-capital-verhnego-registra-sans",
     "word-lowercase-strochnaya-bukva-sans",
@@ -15,9 +15,11 @@ META_PURE_FRAMES = (
     "word-size-small-sans",
 )
 
+META_PURE_FRAMES = META_PURE_LITERACY_FRAMES
+
 
 def main() -> None:
-    hints = manifest_hints()
+    hints = manifest_hints_merged("lessons/literacy-cards")
 
     def _hint(fid: str) -> str:
         from casa.prisms.memory.meta_concept_aliases import canonical_lex_concept_id

@@ -15,6 +15,8 @@ LEX_CONCEPT_RENAMES: dict[str, str] = {
     "lang.word.bolshaya": "lang.meta.size.large",
     "lang.word.malenkaya": "lang.meta.size.small",
     "lang.word.ne_znayu": "lang.meta.epistemic.unknown",
+    "lang.meta.size.comparative.greater": "lang.meta.compare.greater",
+    "lang.meta.size.comparative.less": "lang.meta.compare.less",
 }
 
 
