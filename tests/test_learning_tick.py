@@ -12,7 +12,9 @@ from casa.prisms.shared.field_write import save_field_state
 from casa.prisms.shared.store_layout import field_state_path
 from casa.prisms.tick.act_rollout import act_rollout_phase, merge_decoded_digests, resolve_nca_model_path
 from casa.prisms.memory.memory_prisms import append_episode
-from casa.prisms.tick.orchestrator import LearningTickConfig, maybe_sleep_phase, surprise_to_hippo_episode
+from casa.prisms.tick.orchestrator import LearningTickConfig
+from casa.prisms.tick.pdca_act_tick import maybe_sleep_phase
+from casa.prisms.tick.pdca_check_tick import surprise_to_hippo_episode
 
 
 def _minimal_store(tmp_path: Path) -> tuple[Path, dict]:
@@ -105,7 +107,7 @@ def test_surprise_dedup_hippo(tmp_path: Path) -> None:
     from casa.prisms.control.fpn_state import WorkingMemory
     from casa.prisms.control.tick import run_control_extensions
     from casa.prisms.memory.memory_prisms import prism_hippo
-    from casa.prisms.tick.orchestrator import surprise_to_hippo_episode
+    from casa.prisms.tick.pdca_check_tick import surprise_to_hippo_episode
 
     _, state = _minimal_store(tmp_path)
     control = run_control_extensions(

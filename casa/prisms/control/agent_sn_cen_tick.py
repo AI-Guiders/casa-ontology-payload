@@ -45,29 +45,19 @@ from casa.prisms.tick.orchestrator import LearningTickConfig, run_learning_tick
 
 
 def run_tick(
-
     *,
-
     store_dir: Path,
-
     user_query: str | None,
-
     wm,
-
     config: LearningTickConfig | None = None,
-
+    state: dict | None = None,
 ) -> tuple[dict, object, dict]:
-
     return run_learning_tick(
-
         store_dir=store_dir,
-
         user_query=user_query,
-
         wm=wm,
-
         config=config,
-
+        state=state,
     )
 
 
@@ -78,7 +68,7 @@ def main() -> None:
 
     p = argparse.ArgumentParser()
 
-    p.add_argument("--store-dir", type=Path, default=Path("lab/agent-stores/language-agent-lab"))
+    p.add_argument("--store-dir", type=Path, default=Path("agents/von-neumann"))
 
     p.add_argument("--query", default=None, help="External query; if omitted uses WM goal or probe")
 
@@ -120,6 +110,24 @@ def main() -> None:
 
     p.add_argument("--kolb-session", type=Path, default=None, help="Optional Kolb session JSON (batch hook)")
 
+    p.add_argument(
+        "--no-retro-on-wake",
+        action="store_true",
+        help="Skip Scrum retrospective (keep/stop/try) before first tick (default: run on wake)",
+    )
+
+    p.add_argument(
+        "--body-check-on-wake",
+        action="store_true",
+        help="Run subject diagnostics snapshot before first tick (ADR-0037)",
+    )
+
+    p.add_argument(
+        "--no-sync-ltm",
+        action="store_true",
+        help="Skip compact_persist ltm/ sync on final field save (faster tick batch)",
+    )
+
     args = p.parse_args()
 
 
@@ -133,24 +141,41 @@ def main() -> None:
 
 
     config = LearningTickConfig(
-
         act_rollout=not args.no_act_rollout,
-
         surprise_episode=not args.no_surprise_episode,
-
         remember_on_surprise=not args.no_remember_surprise,
-
         sleep_every=max(0, int(args.sleep_every)),
-
         sleep_on_value=float(args.sleep_on_value),
-
         kolb_session=kolb_session,
-
+        agent_self_drive=True,
+        goal_from_surprise=True,
+        metacog_gate=True,
+        spacing_on_wake=True,
+        tick_log=True,
+        retro_after_sleep=True,
     )
 
 
 
     store = args.store_dir.resolve()
+
+    if args.body_check_on_wake:
+        from casa.cli.ingest_state import resolve_ingest_state
+        from casa.domain.subject_diagnostics import persist_diagnostics_snapshot, run_subject_diagnostics
+        from casa.prisms.shared.store_lock import store_session_lock
+
+        with store_session_lock(store, holder="subject:wake_body_check"):
+            state = resolve_ingest_state(store, None)
+            wm_wake = load_session(store)
+            diag = run_subject_diagnostics(state, store, wm=wm_wake)
+            persist_diagnostics_snapshot(store, diag)
+
+    if not args.no_retro_on_wake:
+        from casa.domain.subject_retrospective import maybe_run_retrospective_on_wake
+        from casa.prisms.shared.store_lock import store_session_lock
+
+        with store_session_lock(store, holder="subject:wake_retro"):
+            maybe_run_retrospective_on_wake(store, force=False)
 
     wm = load_session(store)
 
@@ -164,19 +189,25 @@ def main() -> None:
 
     history: list[dict] = []
 
-    last_state: dict | None = None
+    tick_state: dict | None = None
 
-    for _ in range(max(1, args.ticks)):
+    import sys
+
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+    for tick_i in range(max(1, args.ticks)):
 
         t0 = time.perf_counter()
 
-        row, wm, last_state = run_tick(
+        row, wm, tick_state = run_tick(
 
             store_dir=store,
 
             user_query=args.query if len(history) == 0 else None,
 
             wm=wm,
+
+            state=tick_state,
 
             config=config if len(history) == 0 else LearningTickConfig(
 
@@ -200,6 +231,18 @@ def main() -> None:
 
                 kolb_session=None,
 
+                agent_self_drive=config.agent_self_drive,
+
+                goal_from_surprise=config.goal_from_surprise,
+
+                metacog_gate=config.metacog_gate,
+
+                spacing_on_wake=False,
+
+                tick_log=config.tick_log,
+
+                retro_after_sleep=config.retro_after_sleep,
+
             ),
 
         )
@@ -209,6 +252,42 @@ def main() -> None:
         history.append(row)
 
         args.query = None
+
+        promote = (row.get("agent_self_drive") or {}).get("skill_promote")
+
+        print(
+
+            json.dumps(
+
+                {
+
+                    "tick": tick_i + 1,
+
+                    "elapsed_ms": row["elapsed_ms"],
+
+                    "wm_tick": wm.tick,
+
+                    "step_index": wm.step_index,
+
+                    "step_capability": wm.step_capability,
+
+                    "skill_promote": promote,
+
+                },
+
+                ensure_ascii=False,
+
+            ),
+
+            file=sys.stderr,
+
+            flush=True,
+
+        )
+
+
+
+    last_state = tick_state
 
 
 
@@ -228,7 +307,11 @@ def main() -> None:
 
     if not args.no_write_field and last_state is not None:
 
-        persist = save_runtime_state(store, last_state)
+        persist = save_runtime_state(
+            store,
+            last_state,
+            sync_ltm_on_save=not args.no_sync_ltm,
+        )
 
 
 

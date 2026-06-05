@@ -22,7 +22,7 @@ from typing import Any
 from casa.prisms.shared.field_write import save_field_state
 from casa.prisms.shared.runtime_checkpoint import (
     THIN_CHECKPOINT_FORMAT,
-    build_thin_snapshot,
+    build_thin_stub,
     use_thin_runtime_checkpoint,
 )
 from casa.prisms.shared.store_layout import (
@@ -85,8 +85,8 @@ def save_runtime_state(
 
         checkpoints = runtime_checkpoint_paths(store_dir)
         fs = checkpoints["field_state"]
-        payload = build_thin_snapshot(state) if thin else state
-        save_field_state(fs, payload, compact=compact)
+        payload = build_thin_stub(state) if thin else state
+        save_field_state(fs, payload, compact=compact, field_db_state=state if thin else None)
 
         agent_saved = False
         if save_agent and agent_prism_root(store_dir).is_dir():
@@ -95,7 +95,7 @@ def save_runtime_state(
             save_agent_prism(store_dir, state)
             agent_saved = True
 
-    return {
+    rep: dict[str, Any] = {
         "saved": True,
         "tier": STORE_TIER_RUNTIME,
         "field_state": str(fs),
@@ -106,6 +106,11 @@ def save_runtime_state(
         "compact_persist": compact_persist_report,
         "self_tier": {STORE_TIER_SELF: agent_saved},
     }
+    from casa.domain.agent_field import FIELD_DB_NAME, field_db_path
+
+    if field_db_path(store_dir).is_file():
+        rep["field_db"] = FIELD_DB_NAME
+    return rep
 
 
 def load_runtime_state(store_dir: Path, *, prefer_field_state: bool = True) -> dict[str, Any]:

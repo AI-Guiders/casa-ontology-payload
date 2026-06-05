@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "agent_prism",
-  "updated_at": "2026-06-05T00:05:03Z",
+  "updated_at": "2026-06-05T22:45:12Z",
   "active_lattice": "agent-self-default",
   "lattices": {
     "agent-self-default": {
@@ -9,7 +9,7 @@
       "width": 32,
       "height": 32,
       "token_count": 0,
-      "updated_at": "2026-06-05T00:05:03Z"
+      "updated_at": "2026-06-05T22:45:12Z"
     }
   },
   "nca": {

@@ -265,19 +265,34 @@ def new_field_state(*, agent_id: str, cluster: str | None = None) -> dict:
 
 
 def load_field_state(path: Path, *, store_dir: Path | None = None) -> dict:
-    if not path.is_file():
-        return {}
     sd = store_dir if store_dir is not None else path.parent
     from casa.prisms.shared.runtime_checkpoint import is_thin_checkpoint_file, load_state_with_thin_checkpoint
 
-    if is_thin_checkpoint_file(path):
+    if path.is_file() and is_thin_checkpoint_file(path):
         return load_state_with_thin_checkpoint(sd.resolve(), path)
+
+    from casa.domain.agent_field import load_field_from_db
+
+    db_state = load_field_from_db(sd.resolve())
+    if db_state is not None:
+        return db_state
+    if not path.is_file():
+        return {}
     return _read_json(path)
 
 
-def save_field_state(path: Path, state: dict, *, compact: bool = False) -> None:
+def save_field_state(
+    path: Path,
+    state: dict,
+    *,
+    compact: bool = False,
+    field_db_state: dict | None = None,
+) -> None:
     state["updated_at"] = datetime.now(timezone.utc).isoformat()
     _write_json(path, state, compact=compact)
+    from casa.domain.agent_field import save_field_to_db
+
+    save_field_to_db(path.parent, field_db_state if field_db_state is not None else state)
 
 
 def write_bundle_to_field(

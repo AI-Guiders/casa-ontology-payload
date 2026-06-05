@@ -389,6 +389,43 @@ def strengthen_denotes_edge(
     return True
 
 
+def graph_edge_token(src: str, relation: str, dst: str) -> str:
+    return f"E:{str(src or '').strip()}|{str(relation or '').strip()}|{str(dst or '').strip()}"
+
+
+def count_edge_copies(lat: dict[str, Any], src: str, relation: str, dst: str) -> int:
+    tok = graph_edge_token(src, relation, dst)
+    return sum(cell.count(tok) for cell in lat.get("cells") or [] if isinstance(cell, list))
+
+
+def weaken_graph_edge(
+    lattices: dict[str, dict],
+    lattice_id: str,
+    src: str,
+    relation: str,
+    dst: str,
+    *,
+    copies: int | None = None,
+) -> int:
+    """Remove edge token copies from lattice. copies=None → remove all."""
+    src, relation, dst = str(src or "").strip(), str(relation or "").strip(), str(dst or "").strip()
+    if not (src and relation and dst):
+        return 0
+    lat = lattices.get(lattice_id)
+    if not lat:
+        return 0
+    tok = graph_edge_token(src, relation, dst)
+    removed = 0
+    budget = copies
+    for cell in lat.get("cells") or []:
+        if not isinstance(cell, list):
+            continue
+        while tok in cell and (budget is None or removed < budget):
+            cell.remove(tok)
+            removed += 1
+    return removed
+
+
 def strengthen_graph_edge(
     lattices: dict[str, dict],
     lattice_id: str,

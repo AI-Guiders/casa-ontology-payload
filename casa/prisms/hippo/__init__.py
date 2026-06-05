@@ -1,1 +1,1 @@
-"""prism_hippo: wake / sleep / episodic surface (migration pending)."""
+"""Hippo batch hooks (Kolb sessions)."""

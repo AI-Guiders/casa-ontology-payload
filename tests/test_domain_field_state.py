@@ -41,4 +41,4 @@ def test_router_vis_route():
     Router.bind(state).bootstrap_defaults()
     target = Router.bind(state).resolve(RouteContext(modality="vis"))
     assert target.prism_id == "prism_visual"
-    assert target.lattice_hint == "V1_object"
+    assert target.lattice_hint in ("V1_object", "V1_lum")

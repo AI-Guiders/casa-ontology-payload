@@ -93,6 +93,41 @@ def add_hot_edge(
     return row
 
 
+def remove_hot_edge(
+    state: dict,
+    src: str,
+    relation: str,
+    dst: str,
+    *,
+    prism_id: str | None = None,
+) -> bool:
+    """Drop matching hot edge (Kolb relink / cleanup)."""
+    normalize_prisms(state)
+    from casa.domain.prism_ids import PRISM_HOT_CONTEXT
+    from casa.domain.prism_wire import prism_block, prism_hot_context
+
+    pid = prism_id or PRISM_HOT_CONTEXT
+    block = prism_hot_context(state) if pid == PRISM_HOT_CONTEXT else prism_block(state, pid)
+    if prism_kind(state, pid) != PRISM_KIND_HOT_CONTEXT:
+        return False
+    src_n, rel_n, dst_n = _norm_edge(src, relation, dst)
+    edges: list[dict[str, Any]] = block.get("edges") or []
+    kept = [
+        row
+        for row in edges
+        if not (
+            row.get("src") == src_n
+            and row.get("relation") == rel_n
+            and row.get("dst") == dst_n
+        )
+    ]
+    if len(kept) == len(edges):
+        return False
+    block["edges"] = kept
+    state["field_version"] = int(state.get("field_version") or 0) + 1
+    return True
+
+
 def prune_hot_context(
     state: dict,
     *,

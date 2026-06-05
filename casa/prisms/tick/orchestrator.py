@@ -24,20 +24,12 @@ from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn
 from casa.prisms.control.tick import ControlExtensions, run_control_extensions
 from casa.prisms.memory.agent_bridges import load_agent_bridges, merge_digest_with_agent_bridges
 from casa.prisms.memory.agent_prism import load_agent_prism
-from casa.prisms.memory.memory_prisms import append_episode, ensure_prisms, memory_lattices, run_sleep
+from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.stack import decode_lattice
 from casa.prisms.shared.field_write import decode_field_grid, load_field_state
 from casa.prisms.shared.canonical import CANONICAL_FIELD_MIN_VOTES
-from casa.domain.prism_wire import prism_hippo
 from casa.prisms.shared.store_persist import mark_runtime_dirty
 from casa.prisms.tick.act_rollout import act_rollout_phase, active_memory_lattice_id, merge_decoded_digests
-from casa.prisms.tick.surprise_policy import (
-    bump_episode_recurrence,
-    find_predict_mismatch_episode,
-    normalize_cue,
-    should_skip_journal_surprise,
-    surprise_signature,
-)
 
 
 @dataclass(frozen=True, slots=True)
@@ -55,6 +47,16 @@ class LearningTickConfig:
     compact_persist_on_sleep: bool = False
     sleep_batch_size: int = 0
     kolb_session: dict[str, Any] | None = None
+    kolb_relink_on_surprise: bool = True
+    kolb_relink_min_value: float = 0.4
+    agent_self_drive: bool = True
+    agent_self_drive_min_value: float = 0.25
+    goal_from_surprise: bool = True
+    metacog_gate: bool = True
+    spacing_on_wake: bool = True
+    tick_log: bool = True
+    tick_log_max: int = 64
+    retro_after_sleep: bool = True
 
 
 def _load_bundle(store_dir: Path) -> dict | None:
@@ -66,139 +68,6 @@ def _load_bundle(store_dir: Path) -> dict | None:
     return json.loads(bs[0].read_text(encoding="utf-8"))
 
 
-def surprise_to_hippo_episode(
-    state: dict,
-    *,
-    control: ControlExtensions,
-    wm: WorkingMemory,
-    user_query: str | None,
-    lattice_id: str,
-    bundle: dict | None,
-    min_value: float,
-) -> dict | None:
-    if not control.surprise or control.value < min_value:
-        return None
-    cue = (user_query or wm.goal or "macro_tick")[:120]
-    norm = normalize_cue(cue)
-    existing = find_predict_mismatch_episode(state, norm_cue=norm)
-    if existing:
-        updated = bump_episode_recurrence(existing)
-        updated["cue"] = cue
-        episodes = prism_hippo(state).get("episodes") or []
-        for i, row in enumerate(episodes):
-            if row.get("id") == existing.get("id"):
-                episodes[i] = updated
-                break
-        mark_runtime_dirty(state)
-        return updated
-
-    predicted = ", ".join(control.predicted[:8]) or "?"
-    observed = ", ".join(control.surprise[:8]) or "?"
-    ep = append_episode(
-        state,
-        cue=cue,
-        surface_attempt=predicted,
-        correct=observed,
-        lattice_id=lattice_id,
-        bundle=bundle,
-        scene="predict_surprise",
-        structure_tag="predict_mismatch",
-    )
-    mark_runtime_dirty(state)
-    return ep
-
-
-def maybe_agent_remember_surprise(
-    store_dir: Path,
-    state: dict,
-    *,
-    control: ControlExtensions,
-    concept_ids: list[str],
-    min_value: float,
-    user_query: str | None = None,
-    wm: WorkingMemory | None = None,
-) -> dict[str, Any] | None:
-    if control.value < min_value or not control.surprise:
-        return None
-    sig = surprise_signature(control.surprise)
-    if should_skip_journal_surprise(store_dir, sig=sig):
-        return None
-    cue = (user_query or (wm.goal if wm else "") or "macro_tick")[:120]
-    norm = normalize_cue(cue)
-    from casa.prisms.memory.agent_memory_ops import agent_remember
-
-    return agent_remember(
-        store_dir,
-        state,
-        {
-            "kind": "observation",
-            "text": (
-                f"cue «{cue}»; predict mismatch: expected {', '.join(control.predicted[:5]) or '?'}; "
-                f"surprise {', '.join(control.surprise[:5])}"
-            ),
-            "concepts": list(concept_ids[:8]),
-            "tags": ["implicit", "surprise", f"cue:{norm[:48]}"],
-            "data": {
-                "prediction_error": control.prediction_error,
-                "value": control.value,
-                "surprise_signature": sig,
-                "cue_normalized": norm,
-            },
-        },
-        persist=False,
-    )
-
-
-def maybe_sleep_phase(
-    state: dict,
-    bundle: dict | None,
-    *,
-    sleep_every: int,
-    sleep_on_value: float,
-    control: ControlExtensions,
-    store_dir: Path | None = None,
-    compact_persist: bool | None = None,
-    sleep_batch_size: int = 0,
-) -> dict[str, Any] | None:
-    from casa.prisms.memory.memory_prisms import hippo_episodes
-    from casa.prisms.memory.sleep_job import clear_sleep_interrupt, note_sleep_batch, sleep_job_should_yield
-
-    if sleep_job_should_yield(state):
-        return None
-
-    episodes = [e for e in hippo_episodes(state) if not e.get("consolidated")]
-    if not episodes:
-        return None
-
-    cons = state.setdefault("consolidation", {})
-    ticks_since = int(cons.get("ticks_since_sleep") or 0) + 1
-    cons["ticks_since_sleep"] = ticks_since
-
-    do_sleep = sleep_every > 0 and ticks_since >= sleep_every
-    if not do_sleep and control.value >= sleep_on_value:
-        do_sleep = True
-    if not do_sleep:
-        return None
-
-    batch = max(0, int(sleep_batch_size))
-    max_ep = batch if batch > 0 else None
-    rep = run_sleep(
-        state,
-        bundle,
-        store_dir=store_dir,
-        compact_persist=compact_persist,
-        max_episodes=max_ep,
-    )
-    pending_after = len(hippo_episodes(state))
-    if batch > 0:
-        note_sleep_batch(state, pending_after=pending_after, merged=int(rep.get("merged") or 0), max_episodes=max_ep)
-    if pending_after == 0:
-        cons["ticks_since_sleep"] = 0
-        clear_sleep_interrupt(state)
-    mark_runtime_dirty(state)
-    return rep
-
-
 def _fallback_bundle(store_dir: Path) -> dict | None:
     bundle = _load_bundle(store_dir)
     if bundle is not None:
@@ -208,6 +77,32 @@ def _fallback_bundle(store_dir: Path) -> dict | None:
         if math_bundle.is_file():
             return json.loads(math_bundle.read_text(encoding="utf-8"))
     return None
+
+
+def _decode_tick_field(
+    state: dict,
+    store_dir: Path,
+    *,
+    min_votes: int,
+) -> tuple[str, dict, dict, dict, float]:
+    """Decode already-loaded field state (no disk load)."""
+    t0 = time.perf_counter()
+    state = ensure_prisms(state)
+    decoded: dict[str, Any] = {"concepts": {}, "tokens": {}}
+    try:
+        decoded = decode_field_grid(state, min_votes=min_votes)
+    except ValueError:
+        pass
+    lats = memory_lattices(state)
+    lid = active_memory_lattice_id(state)
+    if lid in lats:
+        decoded = merge_decoded_digests(decoded, decode_lattice(lats[lid], min_votes=1))
+    elif lats:
+        for lat in lats.values():
+            decoded = merge_decoded_digests(decoded, decode_lattice(lat, min_votes=1))
+    bundle = _fallback_bundle(store_dir)
+    ms = (time.perf_counter() - t0) * 1000
+    return "memory_field", bundle or {"claims": [], "graph": {"edges": []}}, decoded, {}, ms
 
 
 def _load_tick_field(
@@ -245,16 +140,23 @@ def run_learning_tick(
     user_query: str | None,
     wm: WorkingMemory,
     config: LearningTickConfig | None = None,
+    state: dict | None = None,
 ) -> tuple[dict[str, Any], WorkingMemory, dict]:
     """One macro tick T with implicit learning loop closed."""
     cfg = config or LearningTickConfig()
     store_dir = store_dir.resolve()
     field_path = store_dir / "field_state.json"
-
     t0 = time.perf_counter()
-    bundle_name, bundle, decoded, recovery, decode_ms, state = _load_tick_field(
-        field_path, store_dir, min_votes=cfg.min_votes
-    )
+
+    if state is not None:
+        bundle_name, bundle, decoded, recovery, decode_ms = _decode_tick_field(
+            state, store_dir, min_votes=cfg.min_votes
+        )
+    else:
+        bundle_name, bundle, decoded, recovery, decode_ms, state = _load_tick_field(
+            field_path, store_dir, min_votes=cfg.min_votes
+        )
+        _ = bundle_name
     routing_bundle = bundle if bundle is not None else {"claims": [], "graph": {"edges": []}}
 
     act_report: dict[str, Any] | None = None
@@ -270,8 +172,22 @@ def run_learning_tick(
     from casa.prisms.memory.prism_router import tick_prepare_memory
 
     q_preview = effective_user_query(wm, user_query)
-    mem_prep = tick_prepare_memory(state, cue=q_preview or "", modality="segment")
+    mem_prep = tick_prepare_memory(
+        state, cue=q_preview or "", modality="segment", wm=wm, store_dir=store_dir
+    )
     route_target = mem_prep["route"]
+    routing_chain = mem_prep.get("routing_chain")
+    plan_tick = mem_prep.get("plan_tick")
+
+    from casa.prisms.tick.self_check_tick import maybe_self_check_before_cen
+
+    self_check_rep = maybe_self_check_before_cen(
+        state,
+        wm=wm,
+        mem_prep=mem_prep,
+        cue=q_preview or "",
+        bundle=routing_bundle,
+    )
 
     digest = merge_digest_with_agent_bridges(digest_from_decoded(decoded), state)
     bias = salience_mode_bias(wm, digest.concept_ids)
@@ -290,56 +206,74 @@ def run_learning_tick(
     bundle_for_hippo = bundle or _load_bundle(store_dir)
     lattice_id = active_memory_lattice_id(state)
 
-    hippo_ep: dict | None = None
-    if cfg.surprise_episode:
-        hippo_ep = surprise_to_hippo_episode(
-            state,
+    from casa.domain.pdca_cycle import infer_pdca_phase
+    from casa.domain.spacing_policy import record_spacing_seen
+    from casa.prisms.control.session_log import append_tick_log
+    from casa.prisms.tick.pdca_check_tick import PdcaCheckConfig, PdcaCheckContext, maybe_pdca_check_tick
+
+    pdca_check_rep = maybe_pdca_check_tick(
+        PdcaCheckContext(
+            store_dir=store_dir,
+            state=state,
+            wm=wm_next,
             control=control,
-            wm=wm,
-            user_query=q,
+            cue=q or "",
             lattice_id=lattice_id,
             bundle=bundle_for_hippo,
-            min_value=cfg.surprise_min_value,
+            mem_prep=mem_prep,
+            cfg=PdcaCheckConfig(
+                surprise_episode=cfg.surprise_episode,
+                surprise_min_value=cfg.surprise_min_value,
+                goal_from_surprise=cfg.goal_from_surprise,
+                metacog_gate=cfg.metacog_gate,
+            ),
+        )
+    )
+    hippo_ep = pdca_check_rep.get("hippo_episode")
+    if digest.concept_ids:
+        record_spacing_seen(
+            state,
+            digest.concept_ids[0],
+            tick=wm_next.tick,
+            passed=bool(pdca_check_rep.get("check_passed")),
         )
 
-    remember_rep: dict | None = None
-    if cfg.remember_on_surprise:
-        remember_rep = maybe_agent_remember_surprise(
-            store_dir,
-            state,
-            control=control,
-            concept_ids=digest.concept_ids,
-            min_value=cfg.remember_min_value,
-            user_query=q,
-            wm=wm,
-        )
+    from casa.prisms.tick.pdca_act_tick import PdcaActConfig, PdcaActContext, maybe_pdca_act_tick
 
-    retain_rep: dict | None = None
-    if cfg.retain_on_verified_predict and q and bundle_for_hippo:
-        from casa.prisms.memory.agent_autonomous_retain import maybe_autonomous_retain_tick
-
-        retain_rep = maybe_autonomous_retain_tick(
-            store_dir,
-            state,
-            cue=q,
-            bundle=bundle_for_hippo,
-            persist=False,
-        )
-
-    sleep_rep: dict | None = None
-    if cfg.sleep_every > 0 or cfg.sleep_on_value > 0:
-        if cfg.compact_persist_on_sleep:
-            state.setdefault("store", {})["compact_persist_on_sleep"] = True
-        sleep_rep = maybe_sleep_phase(
-            state,
-            bundle_for_hippo,
-            sleep_every=cfg.sleep_every,
-            sleep_on_value=cfg.sleep_on_value,
-            control=control,
+    pdca_act_rep = maybe_pdca_act_tick(
+        PdcaActContext(
             store_dir=store_dir,
-            compact_persist=True if cfg.compact_persist_on_sleep else None,
-            sleep_batch_size=cfg.sleep_batch_size,
+            state=state,
+            wm=wm,
+            wm_next=wm_next,
+            control=control,
+            mem_prep=mem_prep,
+            cue=q or "",
+            bundle=bundle_for_hippo,
+            hippo_ep=hippo_ep,
+            concept_ids=tuple(digest.concept_ids),
+            cfg=PdcaActConfig(
+                remember_on_surprise=cfg.remember_on_surprise,
+                remember_min_value=cfg.remember_min_value,
+                retain_on_verified_predict=cfg.retain_on_verified_predict,
+                sleep_every=cfg.sleep_every,
+                sleep_on_value=cfg.sleep_on_value,
+                compact_persist_on_sleep=cfg.compact_persist_on_sleep,
+                sleep_batch_size=cfg.sleep_batch_size,
+                kolb_relink_on_surprise=cfg.kolb_relink_on_surprise,
+                kolb_relink_min_value=cfg.kolb_relink_min_value,
+                agent_self_drive=cfg.agent_self_drive,
+                agent_self_drive_min_value=cfg.agent_self_drive_min_value,
+                surprise_min_value=cfg.surprise_min_value,
+            ),
         )
+    )
+    remember_rep = pdca_act_rep.get("remember")
+    retain_rep = pdca_act_rep.get("retain")
+    sleep_rep = pdca_act_rep.get("sleep")
+    kolb_relink_rep = pdca_act_rep.get("adjust")
+    self_drive_rep = pdca_act_rep.get("self_drive")
+    pdca_act = pdca_act_rep.get("act_kind")
 
     kolb_rep: dict | None = None
     if cfg.kolb_session:
@@ -347,12 +281,32 @@ def run_learning_tick(
 
         kolb_rep = kolb_cycle(state, cfg.kolb_session, bundle=bundle_for_hippo)
 
+    retro_rep: dict[str, Any] | None = None
+    if sleep_rep and cfg.retro_after_sleep:
+        from casa.domain.subject_retrospective import maybe_run_retrospective_after_sleep
+
+        retro_rep = maybe_run_retrospective_after_sleep(store_dir)
+
+    pdca_phase = infer_pdca_phase(
+        plan_tick=plan_tick,
+        control=control.to_dict(),
+        kolb_revised=bool(kolb_relink_rep and not kolb_relink_rep.get("skipped")),
+        skill_promoted=bool(
+            self_drive_rep
+            and (self_drive_rep.get("skill_promote") or {}).get("promoted")
+        ),
+        sleep_ran=sleep_rep is not None,
+    )
+
     wm_next.last_concepts = list(digest.concept_ids)
     state["sn"] = {
         **(state.get("sn") or {}),
         "last_tick": wm_next.tick,
         "last_sn_mode": gated.gate.mode,
         "kolb_phase": "active_experimentation" if kolb_rep else None,
+        "pdca_phase": pdca_phase.value,
+        "pdca_act": pdca_act,
+        "metacog": (pdca_check_rep.get("metacog") or {}).get("scaffold_level"),
     }
     if kolb_rep:
         state["sn"]["mode"] = "wake"
@@ -370,6 +324,8 @@ def run_learning_tick(
             "lattice_hint": route_target.lattice_hint,
             "matched": route_target.matched,
         },
+        "routing_chain": routing_chain.to_dict() if routing_chain is not None else None,
+        "plan_tick": plan_tick,
         "field_version": state.get("field_version"),
         "recovery_concepts_f1": (recovery or {}).get("concepts", {}).get("f1"),
         "sn_mode": gated.gate.mode,
@@ -380,11 +336,61 @@ def run_learning_tick(
         "agent_remember": remember_rep,
         "agent_retain": retain_rep,
         "sleep": sleep_rep,
+        "retrospective": retro_rep,
         "kolb": kolb_rep,
+        "kolb_relink": kolb_relink_rep,
+        "agent_self_drive": self_drive_rep,
+        "pdca": {
+            "phase": pdca_phase.value,
+            "act": pdca_act,
+            "check_tick": pdca_check_rep,
+            "act_tick": pdca_act_rep,
+        },
+        "spacing_goal": mem_prep.get("spacing_goal"),
+        "progression_goal": mem_prep.get("progression_goal"),
+        "scaffold_level": pdca_check_rep.get("scaffold_level"),
+        "goal_emergent": pdca_check_rep.get("goal_emergent"),
+        "deliberate_practice": pdca_check_rep.get("deliberate_practice"),
+        "metacog": pdca_check_rep.get("metacog"),
+        "self_organization": {
+            "plan_arbiter": mem_prep.get("goal_arbiter"),
+            "check_arbiter": pdca_check_rep.get("goal_arbiter"),
+            "hypothesis": pdca_check_rep.get("hypothesis"),
+            "self_model": pdca_check_rep.get("self_model_summary"),
+            "cognitive_load": (mem_prep.get("goal_arbiter") or {}).get("load")
+            or (pdca_check_rep.get("goal_arbiter") or {}).get("load"),
+            "autonomy_seed": mem_prep.get("autonomy_seed"),
+            "self_check": self_check_rep,
+        },
         "learning_cycle": {
             "extract": {"field_decode": True, "act_rollout": bool(act_report and not act_report.get("skipped"))},
             "remember": {"hippo_episode": hippo_ep is not None, "sleep": sleep_rep is not None},
-            "use": {"sn_cen": True, "explicit_remember": remember_rep is not None, "self_retain": retain_rep is not None},
+            "reflect": {"retrospective": retro_rep is not None},
+            "use": {
+                "sn_cen": True,
+                "explicit_remember": remember_rep is not None,
+                "self_retain": retain_rep is not None,
+                "kolb_relink": kolb_relink_rep is not None and not kolb_relink_rep.get("skipped"),
+                "agent_self_drive": self_drive_rep is not None,
+            },
         },
     }
+    if cfg.tick_log:
+        append_tick_log(store_dir, wm=wm_next, report=report, max_entries=cfg.tick_log_max)
+        from casa.domain.experience_ledger import record_experience_from_tick
+
+        record_experience_from_tick(store_dir, wm=wm_next, report=report)
+        from casa.domain.skill_trace import record_skill_trace_from_tick
+
+        record_skill_trace_from_tick(store_dir, wm=wm_next, report=report)
+
+    from casa.domain.intent_checkpoint import save_intent_checkpoint
+
+    if wm_next.goal_id or wm_next.step_capability:
+        save_intent_checkpoint(
+            store_dir,
+            wm_next,
+            why=q or wm_next.goal_id or "macro_tick",
+            tick=wm_next.tick,
+        )
     return report, wm_next, state

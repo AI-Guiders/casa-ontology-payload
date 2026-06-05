@@ -23,10 +23,25 @@ from casa.prisms.visual.bootstrap import ensure_prism_visual
 
 DEFAULT_RELATION = "co_occurs"
 AGENT_RELATION = "denotes"
+VIS_CUE_PREFIX = "vis:"
+
+
+def frame_id_from_vis_cue(cue_or_frame_id: str) -> str:
+    """Bare frame id from WM cue (`vis:word-x-sans`) or already-bare id."""
+    s = str(cue_or_frame_id or "").strip()
+    if s.casefold().startswith(VIS_CUE_PREFIX):
+        return s[len(VIS_CUE_PREFIX) :].strip()
+    return s
+
+
+def vis_cue_from_frame_id(frame_id: str) -> str:
+    """Predict/imprint cue for a bare frame id."""
+    fid = frame_id_from_vis_cue(frame_id)
+    return f"{VIS_CUE_PREFIX}{fid}" if fid else VIS_CUE_PREFIX
 
 
 def vis_frame_concept_id(frame_id: str) -> str:
-    fid = str(frame_id or "").strip()
+    fid = frame_id_from_vis_cue(frame_id)
     if fid.startswith(PREFIX_VIS_LUM):
         return fid
     return f"{PREFIX_VIS_LUM}frame.{fid}"
@@ -65,6 +80,28 @@ def math_concept_votes(lattices: dict[str, dict], math_cid: str, *, min_votes: i
     tok = f"C:{math_cid}"
     votes = sum(cell.count(tok) for cell in lat.get("cells") or [] if isinstance(cell, list))
     return votes if votes >= min_votes else 0
+
+
+def _weaken_on_visual_lum(
+    state: dict,
+    *,
+    src: str,
+    relation: str,
+    dst: str,
+    copies: int | None = None,
+) -> int:
+    from casa.prisms.memory.f0_stack import weaken_graph_edge
+
+    ensure_prism_visual(state)
+    block = prism_block(state, PRISM_VISUAL)
+    lat = (block.get("lattices") or {}).get(LATTICE_V1_LUM)
+    if not lat:
+        return 0
+    lats = {LATTICE_V1_LUM: lat}
+    removed = weaken_graph_edge(lats, LATTICE_V1_LUM, src, relation, dst, copies=copies)
+    if removed:
+        persist_content_lattices(state, lats)
+    return removed
 
 
 def _strengthen_on_visual_lum(
@@ -197,6 +234,187 @@ def mint_vis_math_bridge(
         if row:
             minted.append(row)
     return minted
+
+
+def weaken_crosslink(
+    state: dict,
+    *,
+    src: str,
+    relation: str,
+    dst: str,
+    copies: int | None = None,
+) -> dict[str, Any]:
+    """Remove lattice + hot copies of E:src|relation|dst (Kolb cleanup)."""
+    from casa.prisms.memory.f0_stack import graph_edge_token, weaken_graph_edge
+    from casa.prisms.memory.lexical_lattice_bootstrap import lattice_for_lex_concept
+    from casa.prisms.memory.prism_hot_context import remove_hot_edge
+    from casa.prisms.shared.lattice_names_v1 import SCHEMA_MATH
+
+    src, relation, dst = src.strip(), relation.strip(), dst.strip()
+    if not (src and relation and dst):
+        return {"removed_lattice": 0, "removed_hot": False, "edge": ""}
+
+    lats = memory_lattices(state)
+    removed = 0
+    if src.startswith(PREFIX_VIS_LUM) or src.startswith("vis."):
+        removed += _weaken_on_visual_lum(state, src=src, relation=relation, dst=dst, copies=copies)
+    if src.startswith("math.") or dst.startswith("math."):
+        removed += weaken_graph_edge(lats, SCHEMA_MATH, src, relation, dst, copies=copies)
+    for cid in (src, dst):
+        lat_id = lattice_for_lex_concept(cid)
+        if lat_id:
+            removed += weaken_graph_edge(lats, lat_id, src, relation, dst, copies=copies)
+    if removed:
+        persist_content_lattices(state, lats)
+        state["field_version"] = int(state.get("field_version") or 0) + 1
+    hot_removed = remove_hot_edge(state, src, relation, dst)
+    return {
+        "removed_lattice": removed,
+        "removed_hot": hot_removed,
+        "edge": graph_edge_token(src, relation, dst),
+    }
+
+
+def agent_relink_crosslink(
+    state: dict,
+    *,
+    old_src: str,
+    old_relation: str,
+    old_dst: str,
+    new_src: str,
+    new_relation: str,
+    new_dst: str,
+    gate: str,
+    cue: str = "",
+    scene: str = "",
+    weaken_copies: int | None = None,
+    mint_copies: int = 5,
+) -> dict[str, Any]:
+    """Kolb relink: weaken old triple, mint new (after verify gate)."""
+    gate_id = str(gate or "").strip()
+    if not gate_id:
+        raise ValueError("gate required for agent_relink_crosslink")
+
+    from casa.prisms.memory.meta_concept_aliases import canonical_lex_concept_id
+
+    old_dst_c = canonical_lex_concept_id(old_dst.strip())
+    new_dst_c = canonical_lex_concept_id(new_dst.strip())
+    weakened = weaken_crosslink(
+        state,
+        src=old_src.strip(),
+        relation=old_relation.strip(),
+        dst=old_dst_c,
+        copies=weaken_copies,
+    )
+    minted = mint_crosslink(
+        state,
+        src=new_src.strip(),
+        relation=new_relation.strip(),
+        dst=new_dst_c,
+        copies=mint_copies,
+        provenance="kolb_relink",
+    )
+    if minted is None:
+        minted = strengthen_relink_crosslink(
+            state,
+            src=new_src.strip(),
+            relation=new_relation.strip(),
+            dst=new_dst_c,
+            copies=mint_copies,
+        )
+    ep = append_episode(
+        state,
+        cue=(cue or f"relink:{old_src}:{new_dst_c}")[:120],
+        surface_attempt=old_dst_c[:120],
+        correct=new_dst_c[:120],
+        lattice_id=LATTICE_V1_LUM,
+        concept_id=new_src.strip() if new_src.strip().startswith(PREFIX_VIS_LUM) else None,
+        scene=scene or f"kolb:{gate_id}",
+        links=[
+            {"src": old_src.strip(), "relation": old_relation.strip(), "dst": old_dst_c, "op": "weaken"},
+            {"src": new_src.strip(), "relation": new_relation.strip(), "dst": new_dst_c, "op": "mint"},
+        ],
+        structure_tag="kolb_relink",
+        episode_source="wake",
+    )
+    return {
+        "gate": gate_id,
+        "weakened": weakened,
+        "minted": minted,
+        "episode_id": ep.get("id") if ep else None,
+    }
+
+
+def strengthen_relink_crosslink(
+    state: dict,
+    *,
+    src: str,
+    relation: str,
+    dst: str,
+    copies: int = 5,
+) -> dict[str, str] | None:
+    """Mint new edge even when a weak duplicate may remain (post-weaken relink)."""
+    from casa.prisms.memory.lexical_lattice_bootstrap import lattice_for_lex_concept
+    from casa.prisms.shared.lattice_names_v1 import SCHEMA_MATH
+
+    src, relation, dst = src.strip(), relation.strip(), dst.strip()
+    if not (src and relation and dst):
+        return None
+    lats = memory_lattices(state)
+    on_vis = False
+    on_math = False
+    on_lex = False
+    if src.startswith(PREFIX_VIS_LUM) or src.startswith("vis."):
+        on_vis = _strengthen_on_visual_lum(state, src=src, relation=relation, dst=dst, copies=copies)
+    if src.startswith("math.") or dst.startswith("math."):
+        on_math = strengthen_graph_edge(lats, SCHEMA_MATH, src, relation, dst, copies=copies)
+    for cid in (src, dst):
+        lat_id = lattice_for_lex_concept(cid)
+        if lat_id:
+            on_lex = on_lex or strengthen_graph_edge(lats, lat_id, src, relation, dst, copies=copies)
+    if not (on_vis or on_math or on_lex):
+        return None
+    add_hot_edge(state, src, relation, dst, salience=1.0, provenance="kolb_relink")
+    persist_content_lattices(state, lats)
+    state["field_version"] = int(state.get("field_version") or 0) + 1
+    return {
+        "src": src,
+        "relation": relation,
+        "dst": dst,
+        "edge": _edge_token(src, relation, dst),
+        "on_visual": on_vis,
+        "on_math": on_math,
+        "on_lex": on_lex,
+        "provenance": "kolb_relink",
+    }
+
+
+def relink_vis_lex_bridge(
+    state: dict,
+    *,
+    frame_id: str,
+    old_lex_cid: str,
+    new_lex_cid: str,
+    gate: str,
+    old_relation: str = DEFAULT_RELATION,
+    new_relation: str = AGENT_RELATION,
+    weaken_copies: int | None = None,
+    mint_copies: int = 5,
+) -> dict[str, Any]:
+    """Common literacy case: retarget vis frame from wrong lex to learned name."""
+    vis_cid = vis_frame_concept_id(frame_id)
+    return agent_relink_crosslink(
+        state,
+        old_src=vis_cid,
+        old_relation=old_relation,
+        old_dst=old_lex_cid,
+        new_src=vis_cid,
+        new_relation=new_relation,
+        new_dst=new_lex_cid,
+        gate=gate,
+        weaken_copies=weaken_copies,
+        mint_copies=mint_copies,
+    )
 
 
 def agent_promote_crosslink(
@@ -382,7 +600,7 @@ def predict_math_for_vis_cue(
     if not lum.get("cells"):
         return []
     cue = str(cue or "").strip()
-    vis_cid = vis_frame_concept_id(cue.removeprefix("vis:"))
+    vis_cid = vis_frame_concept_id(frame_id_from_vis_cue(cue))
     prefix = f"E:{vis_cid}|"
     scores: dict[str, int] = {}
     for cell in lum.get("cells") or []:

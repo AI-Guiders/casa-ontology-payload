@@ -167,10 +167,10 @@ def retain_verified_predict(
         "self_name": self_name,
     }
     cue_s = str(cue or "").strip()
-    if cue_s.startswith("vis:") and str(expect).startswith("math.") and check.get("status") == "confirmed":
-        from casa.prisms.visual.bridge_math import self_promote_vis_math_bridge
+    from casa.prisms.visual.bridge_math import VIS_CUE_PREFIX, frame_id_from_vis_cue, self_promote_vis_math_bridge
 
-        frame_id = cue_s.split(":", 1)[-1]
+    if cue_s.startswith(VIS_CUE_PREFIX) and str(expect).startswith("math.") and check.get("status") == "confirmed":
+        frame_id = frame_id_from_vis_cue(cue_s)
         promoted = self_promote_vis_math_bridge(
             state,
             frame_id=frame_id,

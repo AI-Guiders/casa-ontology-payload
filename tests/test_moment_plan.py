@@ -11,8 +11,8 @@ def test_stage_order() -> None:
     manifest = load_manifest(Path("lessons/visual-cards"))
     ids = stage_ids_in_order(manifest)
     assert ids[0] == "stage-01-count"
-    assert ids[-1] == "stage-13-sets"
-    assert len(ids) == 13
+    assert ids[-1] == "stage-15-geom-lex"
+    assert len(ids) == 15
 
 
 def test_stage_07_has_paired_math() -> None:

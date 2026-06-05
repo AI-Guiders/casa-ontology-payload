@@ -3,7 +3,7 @@
 **Статус:** принято (design + v0 code `casa/domain/`)  
 **Дата:** 2026-06-01  
 **Область:** рефакторинг к объектной модели поверх `field_state` dict  
-**Связано:** [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`CASA-ADR-0016`](CASA-ADR-0016-prism-domains-hot-router.md), [`prism-memory-architecture-v1.json`](prism-memory-architecture-v1.json), stack JSON в `design/prisms/`
+**Связано:** [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`CASA-ADR-0016`](CASA-ADR-0016-prism-domains-hot-router.md), [`CASA-ADR-0035-multi-layer-routing.md`](CASA-ADR-0035-multi-layer-routing.md), [`prism-memory-architecture-v1.json`](prism-memory-architecture-v1.json), stack JSON в `design/prisms/`
 
 ---
 
@@ -41,7 +41,7 @@ StackSpec (read-only SSOT)        ← design/prisms/*/stack.json
 Lattice                           ← value object
 └── Grid (cells[][] tokens)
 
-Route / RouteContext / RouteTarget
+Route / RouteContext / RouteTarget / RoutingChain / PlanTick
 ```
 
 **Инвариант:** `StackSpec` не живёт в runtime — только bootstrap/spawn читает JSON.
@@ -56,7 +56,30 @@ Route / RouteContext / RouteTarget
 | `casa.domain.prism` | `Prism`, `ContentPrism`, `HotContextPrism`, `RouterPrism`, `ControlPrism`, factory |
 | `casa.domain.field_state` | `FieldState`, `SessionFocus`, `PrismCatalog` |
 | `casa.domain.stack` | `StackSpec`, `load_stack` |
-| `casa.domain.routing` | `Router`, `Route`, `RouteContext`, `RouteTarget` |
+| `casa.domain.routing` | `Router`, `Route`, `RouteContext`, `RouteTarget`, `RoutingChain` (`route_kind`: knowledge / capability / goal / applicability — ADR-0035) |
+| `casa.domain.plan_tick` | `PlanTick`, `promote_*_route` (emergent after gate) |
+| `casa.domain.emergent_promote` | `promote_from_probe_report`, `suggest_trial_plan`, Critic dedup |
+| `casa.domain.kolb_cycle` | `KolbPhase`, `maybe_kolb_revise_tick` — META; домены в `kolb_handlers` |
+| `casa.domain.pdca_cycle` | `PdcaPhase`, `infer_pdca_phase` — META; оболочка tick 1–5 |
+| `casa.prisms.tick.pdca_act_tick` | `maybe_pdca_act_tick` — централизованный Act после Check |
+| `casa.prisms.tick.pdca_check_tick` | `maybe_pdca_check_tick` — Check: hippo, goal, metacog |
+| `casa.domain.spacing_policy` | retrieval schedule → rehearsal goal |
+| `casa.domain.goal_emergent` | goal из surprise |
+| `casa.domain.metacog_gate` | tract readiness pre-check |
+| `casa.domain.scaffold` | ZPD scaffold levels |
+| `casa.prisms.hippo.kolb_cycle` | batch Kolb (`kolb_count_row`) |
+| `casa.domain.knowledge_tracing` | `p_known`, retrieval interval |
+| `casa.domain.mastery_gate` | CBE streak before promote |
+| `casa.domain.deliberate_practice` | `weakest_link`, JIT focus |
+| `casa.domain.progression_ring` | spiral L0→L4 goals |
+| `casa.domain.scaffold_fading` | ZPD scaffold level in state |
+| `casa.domain.goal_arbiter` | единый арбитр намерения Plan/Check |
+| `casa.domain.hypothesis_queue` | гипотезы expect→verify |
+| `casa.domain.self_model` | tract confidence из gate |
+| `casa.domain.intent_checkpoint` | WM после прерывания |
+| `casa.domain.load_governor` | cognitive load policy |
+| `casa.domain.edge_relink` | `agent_relink_crosslink`, `relink_vis_lex_bridge`, `supersede_emergent_route` (Kolb AE) |
+| `casa.prisms.tick.agent_self_drive_tick` | `seek_agent_knowledge`, `maybe_promote_skill_on_verify` (conscious life) |
 | `casa.domain.persistence` | `field_state_from_dict`, `field_state_to_dict` |
 
 **Application services** (постепенно): `casa.prisms.*` вызывают domain; не наоборот.
@@ -82,3 +105,4 @@ Route / RouteContext / RouteTarget
 | Дата | Изменение |
 |------|-----------|
 | 2026-06-01 | ADR-0020 + `casa/domain` v0, router delegate |
+| 2026-06-05 | `route_kind`, `RoutingChain`, `PlanTick`; `prism_router.tick_prepare_memory` → vertical resolve (ADR-0035) |

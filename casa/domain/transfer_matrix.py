@@ -50,6 +50,7 @@ def routes_from_transfer_matrix(*, locale: str = "ru", path: Path | None = None)
         out.append(
             Route(
                 match=_subst_locale({str(k): str(v) for k, v in raw_match.items() if v}, locale),
+                route_kind="knowledge",
                 target_prism=str(row.get("target_prism") or "prism_memory"),
                 lattice_hint=str(hint) if hint else None,
                 priority=int(row.get("priority") or 0),

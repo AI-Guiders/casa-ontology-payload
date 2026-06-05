@@ -1,94 +1,123 @@
-"""Agent journal — independent from ltm/ cartridges."""
+#!/usr/bin/env python3
+"""ADR-0038 agent journal tests."""
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
-import pytest
-
-from casa.prisms.memory.agent_journal import (
-    DEFAULT_JOURNAL_DOMAIN,
-    append_journal_entry,
-    delete_journal_entry,
-    find_journal_entry,
-    get_journal_entry,
-    journal_stats,
-    notebook_tag,
-    patch_journal_entry,
-    read_journal_entries,
-    safe_journal_domain,
-    search_journal_entries,
+from casa.domain.agent_journal import (
+    JOURNAL_NAME,
+    append_skill_trace,
+    journal_path,
+    migrate_legacy_session_arrays,
+    query_skill_trace,
 )
+from casa.domain.experience_ledger import record_experience_from_tick
+from casa.domain.skill_trace import record_skill_trace_from_tick
+from casa.domain.subject_retrospective import maybe_run_retrospective, persist_retrospective, run_retrospective
+from casa.prisms.control.fpn_state import SESSION_NAME, WorkingMemory, read_session_meta, save_session
+from casa.prisms.control.session_log import append_tick_log
 
 
-def test_safe_domain_rejects_bad_names() -> None:
-    assert safe_journal_domain("math") == "math"
-    assert safe_journal_domain("self") == "self"
-    with pytest.raises(ValueError):
-        safe_journal_domain("../escape")
-
-
-def test_journal_roundtrip(tmp_path: Path) -> None:
-    store = tmp_path / "store"
+def test_journal_skill_trace_query(tmp_path: Path):
+    store = tmp_path / "agent"
     store.mkdir()
-
-    row = append_journal_entry(
-        store,
-        {
-            "kind": "law",
-            "text": "two sticks + two sticks = four sticks",
-            "concepts": ["math.op.add"],
-            "tokens": ["M:qty:2×entity:stick"],
-        },
-    )
-    assert row["id"].startswith("j-")
-
-    rows = read_journal_entries(store, concept="math.op.add")
+    entry = {
+        "at": "2026-06-05T12:00:00Z",
+        "situation": {"goal_id": "goal.read.phrase"},
+        "skill": "skill.read.analytic",
+        "plan_step": 0,
+        "outcome": "verified",
+    }
+    append_skill_trace(store, entry)
+    rows = query_skill_trace(store, skill="analytic", outcome="verified")
     assert len(rows) == 1
-    assert rows[0]["text"].startswith("two sticks")
-
-    got = get_journal_entry(store, row["id"])
-    assert got is not None
-    assert got["kind"] == "law"
-
-    patched = patch_journal_entry(store, row["id"], {"text": "updated law"})
-    assert patched is not None
-    assert patched["text"] == "updated law"
-
-    assert delete_journal_entry(store, row["id"]) is True
-    assert read_journal_entries(store) == []
+    assert journal_path(store).is_file()
 
 
-def test_journal_stats_and_notebook_search(tmp_path: Path) -> None:
-    store = tmp_path / "store"
+def test_legacy_session_migration(tmp_path: Path):
+    store = tmp_path / "agent"
     store.mkdir()
-    append_journal_entry(
-        store,
-        {
-            "text": "note a",
-            "tags": [notebook_tag("zettel-a")],
-            "meta": {"notebook": "zettel-a"},
-        },
-        domain="self",
-    )
-    append_journal_entry(store, {"text": "note b"}, domain="math")
-    stats = journal_stats(store)
-    assert stats["entry_count"] == 2
-    assert stats["domain_count"] == 2
+    legacy = {
+        "schema_version": 1,
+        "wm": {"goal_id": "goal.test"},
+        "skill_trace": [
+            {
+                "at": "t",
+                "situation": {"goal_id": "goal.test"},
+                "skill": "skill.read.analytic",
+                "plan_step": 0,
+                "outcome": "fail",
+            }
+        ],
+    }
+    (store / SESSION_NAME).write_text(json.dumps(legacy), encoding="utf-8")
+    imported = migrate_legacy_session_arrays(store)
+    assert imported.get("skill_trace") == 1
+    meta = read_session_meta(store)
+    assert meta.get("journal") == JOURNAL_NAME
+    assert meta.get("journal_migrated") is True
+    assert "skill_trace" not in meta or not isinstance(meta.get("skill_trace"), list)
 
-    found = search_journal_entries(store, notebook="zettel-a")
-    assert len(found) == 1
-    assert found[0]["_domain"] == "self"
 
-    cross = search_journal_entries(store, domain=None, query="note b")
-    assert len(cross) == 1
-    assert find_journal_entry(store, cross[0]["id"]) is not None
-
-
-def test_default_domain_is_self(tmp_path: Path) -> None:
-    store = tmp_path / "store"
+def test_tick_log_writes_journal_not_session_arrays(tmp_path: Path):
+    store = tmp_path / "agent"
     store.mkdir()
-    row = append_journal_entry(store, {"text": "hello"})
-    found = find_journal_entry(store, row["id"])
-    assert found is not None
-    assert found[1] == DEFAULT_JOURNAL_DOMAIN
+    wm = WorkingMemory(goal_id="goal.test", step_capability="skill.read.analytic")
+    report = {
+        "tick": 1,
+        "query": "q",
+        "pdca": {"phase": "check", "check_tick": {"check_passed": False}},
+        "control": {},
+    }
+    append_tick_log(store, wm=wm, report=report)
+    meta = read_session_meta(store)
+    assert meta.get("macro_ticks") == 1
+    assert meta.get("journal") == JOURNAL_NAME
+    session_raw = json.loads((store / SESSION_NAME).read_text(encoding="utf-8"))
+    assert "tick_log" not in session_raw
+
+
+def test_save_session_compact_and_preserves_meta(tmp_path: Path):
+    store = tmp_path / "agent"
+    store.mkdir()
+    meta = {"schema_version": 2, "journal": JOURNAL_NAME, "macro_ticks": 5}
+    from casa.prisms.control.fpn_state import write_session_meta
+
+    write_session_meta(store, meta)
+    save_session(store, WorkingMemory(goal_id="goal.x"))
+    text = (store / SESSION_NAME).read_text(encoding="utf-8")
+    assert "\n  " not in text
+    loaded = read_session_meta(store)
+    assert loaded["macro_ticks"] == 5
+    assert loaded["wm"]["goal_id"] == "goal.x"
+
+
+def test_retrospective_from_journal(tmp_path: Path):
+    store = tmp_path / "agent"
+    store.mkdir()
+    for _ in range(3):
+        append_skill_trace(
+            store,
+            {
+                "at": "t",
+                "situation": {"goal_id": "goal.read.phrase"},
+                "skill": "skill.read.analytic",
+                "plan_step": 0,
+                "outcome": "surprise",
+                "weak_link": {"concept_id": "syllable.ла"},
+            },
+        )
+    retro = maybe_run_retrospective(store, force=False)
+    assert retro is not None
+    assert retro.get("stop")
+
+
+def test_record_skill_trace_from_tick(tmp_path: Path):
+    store = tmp_path / "agent"
+    store.mkdir()
+    wm = WorkingMemory(goal_id="goal.read.phrase", step_capability="skill.read.analytic")
+    report = {"tick": 2, "pdca": {"check_tick": {"check_passed": True}}, "control": {}}
+    record_skill_trace_from_tick(store, wm=wm, report=report)
+    assert len(query_skill_trace(store)) == 1

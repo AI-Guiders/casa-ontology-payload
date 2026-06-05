@@ -2,7 +2,7 @@
 
 **Статус:** принято (design + API v0, 2026-06-01)  
 **Область:** `field_state.prisms`, predict/sleep, store layout  
-**Связано:** [`memory-hierarchy.md`](memory-hierarchy.md), [`prism-memory-architecture-v1.md`](prism-memory-architecture-v1.md) (KB L0–L3 parity, compaction, maintenance), [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`context-axis.md`](context-axis.md), [`predictor.md`](predictor.md) (multi-anchor, focus), [`second-signal-system.md`](second-signal-system.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md)
+**Связано:** [`memory-hierarchy.md`](memory-hierarchy.md), [`prism-memory-architecture-v1.md`](prism-memory-architecture-v1.md) (KB L0–L3 parity, compaction, maintenance), [`prism-layout-and-naming-v1.md`](prism-layout-and-naming-v1.md), [`multi-cylinder-memory.md`](multi-cylinder-memory.md), [`context-axis.md`](context-axis.md), [`predictor.md`](predictor.md) (multi-anchor, focus), [`second-signal-system.md`](second-signal-system.md), [`CASA-ADR-0002-agent-memory-ltm-nca.md`](CASA-ADR-0002-agent-memory-ltm-nca.md), [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md), [`CASA-ADR-0035-multi-layer-routing.md`](CASA-ADR-0035-multi-layer-routing.md) — `prism_router` = **слой 1** (knowledge); умения/цели/применимость — отдельные матрицы
 
 ---
 

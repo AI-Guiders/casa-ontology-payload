@@ -32,6 +32,9 @@ _RUNTIME_TOP_KEYS = (
     "grid",
     "agent_id",
     "cluster",
+    "knowledge_trace",
+    "last_weakest_link",
+    "wake_decompose",
     "_checkpoint",
 )
 
@@ -110,6 +113,54 @@ def build_thin_snapshot(state: dict) -> dict[str, Any]:
     return thin
 
 
+def build_thin_stub(state: dict) -> dict[str, Any]:
+    """Minimal JSON overlay when lattice bodies live in agent_field.db."""
+    state = ensure_prisms(state)
+    stub: dict[str, Any] = {"checkpoint_format": THIN_CHECKPOINT_FORMAT}
+    for key in _RUNTIME_TOP_KEYS:
+        if key in state and state[key] is not None:
+            stub[key] = copy.deepcopy(state[key])
+    stub["_checkpoint"] = {
+        **(stub.get("_checkpoint") if isinstance(stub.get("_checkpoint"), dict) else {}),
+        "bodies_in": "agent_field.db",
+    }
+    prisms_out: dict[str, Any] = {}
+    root = state.get("prisms") or {}
+    for pid, block in root.items():
+        if not isinstance(block, dict):
+            continue
+        if pid == PRISM_HIPPO:
+            slim: dict[str, Any] = {}
+            if "episodes" in block:
+                slim["episodes"] = copy.deepcopy(block["episodes"])
+            if slim:
+                prisms_out[pid] = slim
+            continue
+        if pid == PRISM_HOT_CONTEXT or prism_kind(state, pid) == "hot_context":
+            slim = {}
+            if "edges" in block:
+                slim["edges"] = copy.deepcopy(block["edges"])
+            for k in ("max_edges", "stack", "kind", "schema_version"):
+                if k in block:
+                    slim[k] = copy.deepcopy(block[k])
+            if slim:
+                prisms_out[pid] = slim
+            continue
+        if pid == PRISM_ROUTER or prism_kind(state, pid) == "router":
+            slim = {}
+            if "routes" in block:
+                slim["routes"] = copy.deepcopy(block["routes"])
+            if "default_content_prism" in block:
+                slim["default_content_prism"] = block["default_content_prism"]
+            if slim:
+                prisms_out[pid] = slim
+            continue
+    if prisms_out:
+        stub["prisms"] = prisms_out
+    _trim_consolidation_for_checkpoint(stub)
+    return stub
+
+
 def merge_thin_overlay(state: dict, thin: dict) -> dict:
     """Apply runtime-only fields from a thin checkpoint onto ltm-booted state."""
     normalize_prisms(state)
@@ -161,11 +212,60 @@ def merge_thin_overlay(state: dict, thin: dict) -> dict:
     return state
 
 
-def load_state_with_thin_checkpoint(store_dir: Path, thin_path: Path) -> dict[str, Any]:
-    """Boot shipped ltm/ then merge thin field_state overlay."""
+def _peek_field_version(path: Path) -> int | None:
+    """Read field_version from thin checkpoint without full JSON parse."""
+    if not path.is_file():
+        return None
+    try:
+        head = path.read_text(encoding="utf-8")[:16384]
+        import re
+
+        m = re.search(r'"field_version"\s*:\s*(\d+)', head)
+        return int(m.group(1)) if m else None
+    except OSError:
+        return None
+
+
+def _hydrate_ltm_cells(state: dict, store_dir: Path) -> None:
+    """Fill lattice cells from ltm/ into an existing field body (db or thin overlay)."""
     import json
 
-    from casa.prisms.shared.store_boot import boot_store
+    from casa.prisms.shared.import_ltm_pack import import_pack
+    from casa.prisms.shared.store_layout import ltm_root
+
+    ltm = ltm_root(store_dir)
+    manifest_path = ltm / "pack.manifest.json"
+    if not manifest_path.is_file():
+        return
+    fv = int(state.get("field_version") or 0)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    import_pack(state, ltm, manifest=manifest)
+    if fv:
+        state["field_version"] = fv
+
+
+def load_state_with_thin_checkpoint(store_dir: Path, thin_path: Path) -> dict[str, Any]:
+    """Boot ltm/ + runtime overlay; prefer agent_field.db when fresh vs thin JSON."""
+    import json
+
+    from casa.domain.agent_field import field_db_path, load_field_from_db
+    from casa.prisms.shared.store_boot import apply_store_boot_profile, boot_store
+
+    store_dir = store_dir.resolve()
+    thin_fv = _peek_field_version(thin_path)
+    db_state: dict[str, Any] | None = None
+    db_fv = 0
+    if field_db_path(store_dir).is_file():
+        db_state = load_field_from_db(store_dir)
+        if db_state is not None:
+            db_fv = int(db_state.get("field_version") or 0)
+
+    if db_state is not None and (thin_fv is None or db_fv >= thin_fv):
+        _hydrate_ltm_cells(db_state, store_dir)
+        apply_store_boot_profile(store_dir, db_state)
+        db_state.setdefault("store", {})["boot_source"] = "ltm+field_db"
+        db_state["store"]["checkpoint_format"] = THIN_CHECKPOINT_FORMAT
+        return ensure_prisms(db_state)
 
     thin = json.loads(thin_path.read_text(encoding="utf-8"))
     if thin.get("checkpoint_format") != THIN_CHECKPOINT_FORMAT:
