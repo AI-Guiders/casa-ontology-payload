@@ -197,5 +197,6 @@ PROBE_BY_STAGE: dict[str, str] = {
     "stage-05-syllable-cyrl": "probe_syllable_quiz.py",
     "stage-06-words-cyrl-corpus": "probe_literacy_corpus_quiz.py",
     "stage-07-closed-class": "probe_literacy_closed_class_quiz.py",
+    "stage-04-meta-phonology-vowel-consonant": "probe_meta_phonology_quiz.py",
     "stage-08-meta-grammar-person": "probe_meta_grammar_person_quiz.py",
 }

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "title": "Analytic read pilot R1 — syllable chains ⊆ stage-05",
+  "notes": "Teacher segmentation v0 (sidecar). Probe frame_id = analytic-probe-{slug}-sans (no ingest).",
+  "entries": [
+    {
+      "surface": "мама",
+      "slug": "d2a8dc30e406",
+      "syllables": ["ма", "ма"],
+      "syllable_concept_ids": ["syllable.ма", "syllable.ма"]
+    },
+    {
+      "surface": "папа",
+      "slug": "8faf32f66966",
+      "syllables": ["па", "па"],
+      "syllable_concept_ids": ["syllable.па", "syllable.па"]
+    },
+    {
+      "surface": "вода",
+      "slug": "0611a1b7ac68",
+      "syllables": ["во", "да"],
+      "syllable_concept_ids": ["syllable.во", "syllable.да"]
+    },
+    {
+      "surface": "рука",
+      "slug": "d7121c802ddd",
+      "syllables": ["ру", "ка"],
+      "syllable_concept_ids": ["syllable.ру", "syllable.ка"]
+    },
+    {
+      "surface": "молоко",
+      "slug": "69f91741a4c2",
+      "syllables": ["мо", "ло", "ко"],
+      "syllable_concept_ids": ["syllable.мо", "syllable.ло", "syllable.ко"]
+    }
+  ]
+}
