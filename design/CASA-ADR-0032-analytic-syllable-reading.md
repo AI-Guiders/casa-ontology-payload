@@ -8,9 +8,11 @@
 - [CASA-literacy-roadmap-v1.md](CASA-literacy-roadmap-v1.md) — stage-05 слоги, stage-06 корпус; § «не собирать слово в runtime» уточняется **этим** ADR
 - [CASA-literacy-font-legibility-experiment-v1.md](CASA-literacy-font-legibility-experiment-v1.md) — L1/L2/L3 probe; здесь — **R4** аналитический read
 - [CASA-ADR-0030-grammar-literacy-coherent-text.md](CASA-ADR-0030-grammar-literacy-coherent-text.md) — связный текст, L3 согласование; **после** устойчивого аналитического read на коротких формах
+- [CASA-ADR-0033-russian-phrase-structure-free-order.md](CASA-ADR-0033-russian-phrase-structure-free-order.md) — phrase compose P1: несколько слов R1 + слоты; перестановки RU не ломают event gate
+- [CASA-ADR-0034-executor-learning-loop.md](CASA-ADR-0034-executor-learning-loop.md) — META: R1 = тракт read + compose + verify
 - [CASA-learning-protocol-vis-math-v1.md](CASA-learning-protocol-vis-math-v1.md) — один vis + один lex → один sleep; композиция — **отдельные** moment’ы и probe, не cartesian batch
 - [memory-hierarchy.md](memory-hierarchy.md) — `L1_syllable`, `L2_word_*`, substrate repair (lab); visual tract — `syllables-ru`, `lexicon-ru`
-- KB: [cursor-session-f4a4bba6-casa-lab-arc-v0.md](../../knowledge/work/cursor-session-f4a4bba6-casa-lab-arc-v0.md) — слог на полке L2↔L1, «волк» = один слог
+- [CASA-ADR-0040-auditory-phonology-tract.md](CASA-ADR-0040-auditory-phonology-tract.md) — A3 слух / фонология; не блокирует R1 `corpus_align`
 
 ---
 
@@ -73,6 +75,73 @@ flowchart TD
 
 **Порядок lab v1:** A1 (есть) → A2 пилот на 5–10 слов → **R1** probe → R2 только после стабильного R1 на тех же слогах.
 
+**Реализация A2/R1 (2026-06):** `rule.syllabify.ru` v0 (`casa/prisms/visual/syllabify_ru.py`) + corpus index (`corpus_lexicon.py`) + **`corpus_align`** в `analytic_read.py`. Единственный lookup — manifest corpus + rule syllabify. См. § «Сегментация: v0 ≠ школьный слоговой алфавит».
+
+---
+
+## Сегментация: v0 ≠ школьный слоговой алфавит
+
+### Что такое `syllabify_ru` v0
+
+**Графотактический tract**, не фонологический стандарт:
+
+1. NFC + lower surface;
+2. гласные (`аеёиоуыэюя`) = ядро слога;
+3. согласные между гласными: **одна** в конец текущего слога, остальные — в начало следующего (v0 heuristic).
+
+Это **не** школьные правила слогоделения и **не** переносы по морфемам. Слог в языке — фонологическая единица; одна запись может требовать «слуха» или морфологии (см. таблицу ниже).
+
+### Зачем v0 достаточно для R1 `corpus_align`
+
+| Компонент | Роль |
+|-----------|------|
+| `corpus_lexicon` | surface → slug → `lang.word.*` (manifest) |
+| `syllabify_ru` | проверка `join(syllables) == surface`; опциональная цепочка для `novel_compose` |
+| `corpus_align` | lex в LTM + ink на novel frame — **без** know всех слогов stage-05 |
+
+Для **W1** (слово в корпусе, novel vis) v0 rule — **инженерный fallback**, не лингвистический oracle.
+
+### Приоритет источников сегментации (runtime)
+
+```text
+corpus_lexicon (manifest headword)
+  → syllabify_ru (rule v0, join == surface)
+```
+
+Authoring metadata в manifest / `data/` — **предпочтительнее** rule для headwords с неоднозначной сегментацией (v1).
+
+### Таблица: v0 ok / v1 target / нужен слух (A3)
+
+| Surface | v0 (`syllabify_ru`) | Школа / фонология | v1 rule/metadata | Аудио (ADR-0040) |
+|---------|---------------------|-------------------|------------------|------------------|
+| `государство` | `го\|су\|дар\|ство` ✓ | то же | metadata optional | optional |
+| `молоко` | `мо\|ло\|ко` ✓ | то же | — | optional |
+| `кабель` | `ка\|бель` ✓ | `ка-бель` (л слоговой) | sonorant coda rule | **да** (л как слог) |
+| `ритм` | `ритм` (1 слог) | 1 слог ✓ | sonorant + no vowel tail | **да** |
+| `встреча` | `вс\|тре\|ча` | `встре\|ча` | cluster onset (встр-) | **да** |
+| `подъезд` | `по\|дъ\|езд` | `подъ-\|езд` | `ъ/ь` boundary | metadata + audio |
+| `мягкий` | `мя\|г\|кий` | `мяг\|кий` | ь palatalization | **да** |
+| `рассказ` | `ра\|с\|каз` | `рас-\|сказ` (морфема) | morpheme hints | metadata |
+| `краш` (R2) | `кра\|ш` | `краш` (заимств.) | stage-05 ∩ + G2P | **да** |
+
+**Legenda:** ✓ = совпадает с приемлемым pedagogy для R1; **да** = без фонологии или metadata v1 будет систематически ошибаться.
+
+### Verdict `via` (R1 bind)
+
+| `via` | Условие |
+|-------|---------|
+| `novel_whole` | top-1 на novel = `lang.word.*` |
+| `novel_compose` | полная цепочка stage-05 know + ink |
+| `corpus_align` | surface match + lex в LTM + ink; **chain_know не обязателен** |
+| `chain_plus_corpus_bridge` | corpus frame hit + полная цепочка (legacy strong path) |
+
+### Открытые v1 задачи (сегментация)
+
+- [ ] `syllabify_ru` v1: sonorants (`лмнр`), `ь/ъ`, стартовые кластеры (`вз-`, `встр-`);
+- [ ] optional `syllables[]` в manifest / corpus export при ingest;
+- [ ] пересечение с stage-05: valid segment ⇔ substring ∈ выученных `syllable.*` (constraint decode);
+- [ ] A3 auditory tract — [CASA-ADR-0040-auditory-phonology-tract.md](CASA-ADR-0040-auditory-phonology-tract.md).
+
 ---
 
 ## R1: слово в памяти, визуально не учили
@@ -80,7 +149,7 @@ flowchart TD
 ### Поведение (north star)
 
 1. Показать JPEG с surface `государство`, `frame_id` **без** урока на этот id.
-2. Сегментатор выдаёт цепочку слогов, совместимую с русской слогоделением и с **пересечением** выученных `syllable.*` (пилот: ручная разметка в manifest / sidecar JSON).
+2. Сегментатор выдаёт цепочку слогов ( **`corpus_lexicon` + `syllabify_ru` v0** ; sidecar — fallback) совместимую с **пересечением** выученных `syllable.*` когда нужен `novel_compose`.
 3. По каждому сегменту (или по скользящему окну lum — v2) — predict → `syllable.*` / `grapheme.*` с порогом know.
 4. Агрегатор: если цепочка слогов **сошлась** с headword, голос `lang.word.государство` из **lexicon lattice** (уже в LTM) перевешивает пустой whole-word vis-мост.
 5. Verdict probe: **analytic_know** — не тот же механизм, что L1 `trained_bridge`, но тот же **lexical id** в top-1.
@@ -135,7 +204,7 @@ cue = vis.lum.frame.{novel_frame_id}
 
 | Компонент | Роль | Где живёт (план) |
 |-----------|------|------------------|
-| **Segmenter** | строка → слоги | `data/analytic-syllables-v1.json` / rule episode |
+| **Segmenter** | строка → слоги | `corpus_lexicon` + `syllabify_ru.py` / sidecar fallback / metadata |
 | **Chunk predict** | vis фрагмент или proxy-cue на слог | lab: crop windows или **отдельные** syllable JPEG в lesson «разбор слова» |
 | **Compose** | согласованность цепочки + слово из LTM | `casa/prisms/visual/analytic_read.py` (новый модуль) |
 | **Probe** | `probe_analytic_read_corpus.py`, `probe_analytic_read_neologism.py` | `lab/visual-curriculum/` |
@@ -160,7 +229,7 @@ cue = vis.lum.frame.{novel_frame_id}
 
 | Probe | Вход | Pass |
 |-------|------|------|
-| `probe_analytic_read_corpus` | слова ∈ LTM, **не** ingested на `frame_id`; sidecar слогов | top-1 `lang.word.*` == teacher; `via=analytic`; слоги ≥ порога know |
+| `probe_analytic_read_corpus` | слова ∈ LTM, **не** ingested на `frame_id`; corpus + rule syllables | `analytic_know`; `via` ∈ {`novel_compose`, `corpus_align`, …} |
 | `probe_analytic_read_neologism` | surface ∉ corpus; слоги выучены | chain know; допускается новый slug после promote |
 | (diag) | как сейчас | `probe_word_recognition_modes` L3 — только «всплыли ли syllable в top-k» |
 
@@ -172,7 +241,7 @@ cue = vis.lum.frame.{novel_frame_id}
 
 | # | Задача |
 |---|--------|
-| 1 | `data/literacy/analytic-segments-ru-pilot-v1.json` — 5–10 headwords, слоги, пересечение со stage-05 |
+| 1 | Corpus manifest headwords + `syllabify_ru` — пересечение слогов со stage-05 |
 | 2 | JPEG «длинное слово» с novel `frame_id` (как font sweep) |
 | 3 | `probe_analytic_read_corpus.py` — R1 без правок `bridge_lex` |
 | 4 | Док: ссылка из roadmap § stage-05 |
@@ -192,14 +261,42 @@ cue = vis.lum.frame.{novel_frame_id}
 
 ## Открытые вопросы
 
-- [ ] Сегментация v0: только sidecar vs `rule.syllabify.ru` на поле?
+- [x] Сегментация v0: corpus + `rule.syllabify.ru` (2026-06).
 - [ ] Chunk vis на 32×32: crop по bbox vs отдельные кадры в lesson «разбор»?
 - [ ] Голос L2 без vis: достаточно ли prefix / lattice decode для R1?
 - [ ] Neologism: сразу `lang.word.*` или сначала episodic surface + promote?
 - [ ] R3: один sense-id vs несколько `lang.word.*` — отдельный ADR?
+- [ ] A3 auditory: [ADR-0040](CASA-ADR-0040-auditory-phonology-tract.md).
 
 ---
 
 ## Статус принятия
 
 Пока **черновик**. Lab не стартует без явного «go» на пилот R1; stage-06 corpus ingest **параллелен**, не заменяется.
+
+---
+
+## Четыре слоя: знание → умение → план (ADR-0035)
+
+**Ingest** кладёт **эпистемику** (LTM: `grapheme.*`, `syllable.*`, `lang.word.*`). **Probe green** → mastery journal (`record_probe_gate`); **routes на поле** — агент на macro tick (`maybe_promote_skill_on_verify`), не if-per-probe в lab.
+
+| Ступень | Знание (LTM / ingest) | Probe | Capability (`skill.*`) | Promote routes |
+|---------|------------------------|-------|--------------------------|----------------|
+| Буквы | `grapheme.cyrl.*` stage-01–04 | `probe_grapheme_quiz` → `literacy-quiz` | `skill.read.grapheme` | agent tick |
+| Фонология | `lang.meta.phonology.*` | `probe_meta_phonology_quiz` | `skill.lang.phonology_meta` | agent tick |
+| Слоги | `syllable.*` stage-05 | `probe_syllable_quiz` | `skill.read.syllable` | agent tick |
+| Слово whole | `lang.word.*` corpus | corpus quiz / stage-06 | `skill.read.whole` | agent tick / `promote_routes_from_probe_report` |
+| **R1 analytic** | corpus + слоги (breakdown) | `probe_analytic_read_corpus` | **`skill.read.analytic`** | agent tick / `promote_routes_from_probe_report` |
+| Phrase P1 | phrase-events sidecar (roles/agreement) | `probe_phrase_compose_pilot` | `skill.read.phrase`, `skill.compose.slots` | agent tick / `promote_routes_from_probe_report` |
+| Падежи L2+ | `lang.meta.grammar.case.*` | `meta-grammar-case-quiz` (план) | `skill.lang.grammar_case` | agent tick (план) |
+
+Applicability / goal после promote: whole → `goal.learn.corpus`; R1 → `plan.analytic_read_*` + `goal.read.word`; phrase → `plan.phrase_compose_*`.
+
+**Закрытие R1 на store (чеклист):**
+
+1. `run_analytic_breakdown_pilot` (или `run_phrase_pilot_words` для пробелов).
+2. `probe_analytic_read_corpus` → все `analytic_know` → **gate + mastery** (lab); **promote routes** — 2× pass + agent tick или deprecated bootstrap.
+3. Проверка: `capabilities_on_field` содержит `skill.read.analytic`; applicability `goal.read.word`.
+4. Wake: `goal.read.word` / phrase → trial plan из routes, не sidecar.
+
+**Lex-only compose** (wake без vis на слог) — отдельный шаг после green lab R1; см. § открытые вопросы.

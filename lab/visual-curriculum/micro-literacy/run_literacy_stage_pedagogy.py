@@ -20,6 +20,7 @@ from literacy_pedagogy import (  # noqa: E402
     frames_for_stage,
     hippo_pending_surface_episodes,
     probe_issues,
+    promote_emergent_routes_after_probe,
     reinforce_from_probe_report,
     run_probe_script,
     surface_from_frame,
@@ -118,6 +119,9 @@ def _run(session, args: argparse.Namespace) -> None:
                 "issues": len(issues),
             }
         )
+        promote = promote_emergent_routes_after_probe(session.state, report)
+        if promote.get("promoted_count") or promote.get("passed"):
+            session.log({"emergent_promote": promote})
 
     if args.reinforce_tail and report is not None and issues and probe_script:
         reinforced = reinforce_from_probe_report(

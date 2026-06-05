@@ -57,7 +57,6 @@ def test_sleep_cooccurrence_lex_same_scene(tmp_path) -> None:
         frame,
         frame_id="word-alpha-sans",
         scene_label="card:word:alpha",
-        scene=scene,
     )
     assert rep.get("episode_id")
     vis_cid = vis_frame_concept_id("word-alpha-sans")
@@ -114,7 +113,6 @@ def test_sleep_cooccurrence_lex_no_cross_scene(tmp_path) -> None:
         load_rgb_frame(ppm_b),
         frame_id="word-beta-sans",
         scene_label="card:word:beta",
-        scene="moment:test:p1",
     )
     vis_b = vis_frame_concept_id("word-beta-sans")
 

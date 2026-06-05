@@ -13,9 +13,12 @@
 | **meta compare → measure → geom** | `visual-cards` | канон: [CASA-compare-greater-less-v1.md](CASA-compare-greater-less-v1.md) — nline gt/lt → meta → отрезки A/B (= / длиннее / короче) → длина на прямой → ширина на прямоугольниках → два круга → центр/радиус |
 | **meta size (w2 текст)** | `lesson-07-meta-language` | `большая`/`маленькая` → `lang.meta.size.*`; **не** путь «круг больше» |
 
+**META (цикл исполнителя):** [CASA-ADR-0034-executor-learning-loop.md](CASA-ADR-0034-executor-learning-loop.md) — цель → классификация → метод → синтез → проверка; доменные ADR ниже — частные случаи.  
+**META (роутинг):** [CASA-ADR-0035-multi-layer-routing.md](CASA-ADR-0035-multi-layer-routing.md) — знания / умения / цели / применимость + декомпозиция.  
 **Базовый протокол:** [CASA-literacy-class-v1.md](CASA-literacy-class-v1.md) · **общий принцип:** [CASA-learning-protocol-vis-math-v1.md](CASA-learning-protocol-vis-math-v1.md) § Vis↔lex
 
 **Грамматика → связный текст:** [CASA-ADR-0030-grammar-literacy-coherent-text.md](CASA-ADR-0030-grammar-literacy-coherent-text.md) — L1 закрытый класс, L2 `lang.meta.grammar.*`, L3 согласование, J0 write.  
+**Русская фраза (слоты, перестановки):** [CASA-ADR-0033-russian-phrase-structure-free-order.md](CASA-ADR-0033-russian-phrase-structure-free-order.md) — event-схема, не SVO; phrase compose P1 после analytic R1.  
 **Аналитическое чтение (слоги → слово, неологизмы):** [CASA-ADR-0032-analytic-syllable-reading.md](CASA-ADR-0032-analytic-syllable-reading.md) — R1 corpus bind, R2 «краш», R3 орфоварианты позже.  
 **Lab ingest (педагогика):** [CASA-literacy-pedagogy-lab-v1.md](CASA-literacy-pedagogy-lab-v1.md) — порядок wordlist, probe, reinforce-tail.
 
@@ -86,7 +89,9 @@
 
 Не «собрать слово из слогов одним emergent predict» — на stage-05 отдельные узнаваемые формы; **композиция** на незнакомом целом кадре — [CASA-ADR-0032](CASA-ADR-0032-analytic-syllable-reading.md) (R1/R2).
 
-**Пилот R1 (lab):** `data/literacy/analytic-segments-ru-pilot-v1.json` · `probe_analytic_read_corpus.py` · `micro-literacy/run_analytic_breakdown_pilot.py` · `casa/prisms/visual/analytic_read.py`.
+**Пилот R1 (lab):** corpus manifest + `syllabify_ru` · `probe_analytic_read_corpus.py` · `micro-literacy/run_analytic_breakdown_pilot.py` · `casa/prisms/visual/analytic_read.py`.
+
+**Promote (4 слоя):** ingest = знание; probe green → `skill.read.grapheme` / `.syllable` / `.whole` / **`.analytic`** / `.phrase` + plan routes — таблица в [ADR-0032](CASA-ADR-0032-analytic-syllable-reading.md) § «Четыре слоя».
 
 ### 4. Слова — современный корпус РЯ
 

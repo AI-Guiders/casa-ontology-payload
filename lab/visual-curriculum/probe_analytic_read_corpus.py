@@ -14,27 +14,19 @@ from font_legibility_lab import (
     restore_visual_cells,
     snapshot_visual_cells,
 )
+from literacy_lab_io import analytic_entries_for_slugs, slugs_from_phrase_events
 from probe_infra import default_store, generated_report_path, setup_probe_imports
 
 _REPO = Path(__file__).resolve().parents[2]
-_DEFAULT_SEGMENTS = (
-    _REPO / "lessons" / "literacy-cards" / "data" / "literacy" / "analytic-segments-ru-pilot-v1.json"
-)
-
-
-def _load_entries(path: Path) -> list[dict[str, Any]]:
-    from casa.prisms.visual.analytic_read import load_pilot_segments
-
-    return load_pilot_segments(path)
 
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--segments", type=Path, default=_DEFAULT_SEGMENTS)
     p.add_argument("--store", default="von-neumann")
     p.add_argument("--font-pt", type=int, default=0, help="0 = production size per word")
     p.add_argument("--min-syllable-votes", type=int, default=2)
     p.add_argument("--min-lex-votes", type=int, default=2)
+    p.add_argument("--slug", action="append", default=[], help="Corpus slug(s); default = phrase P1")
     args = p.parse_args()
 
     setup_probe_imports()
@@ -43,7 +35,8 @@ def main() -> None:
     from casa.prisms.visual.analytic_read import compose_analytic_read
     from casa.prisms.visual.bridge_lex import predict_lex_for_vis_cue
 
-    entries = _load_entries(args.segments)
+    slugs = [str(s).strip() for s in args.slug] if args.slug else slugs_from_phrase_events()
+    entries = analytic_entries_for_slugs(slugs)
     store = default_store(args.store)
     report_path = generated_report_path("teacher-analytic-read.json")
     counts: dict[str, int] = {}
@@ -92,13 +85,25 @@ def main() -> None:
     out = {
         "store_id": args.store,
         "probe": "analytic-read-corpus-r1",
-        "segments_path": str(args.segments),
+        "segments_path": "corpus:phrase-p1",
         "counts": counts,
         "r1_novel_bind": novel_counts,
         "total": len(items),
         "items": items,
     }
     report_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    from casa.domain.emergent_promote import record_probe_gate
+    from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
+
+    gate = record_probe_gate(state, out, store_dir=store)
+    out["probe_gate"] = {"gate": gate.gate, "passed": gate.passed}
+    if gate.passed:
+        mark_runtime_dirty(state)
+        save_runtime_state(store, state, force=True, sync_ltm_on_save=False)
+
+    report_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+
     print(
         json.dumps(
             {"counts": counts, "r1_novel_bind": novel_counts, "total": len(items), "path": str(report_path)},

@@ -7431,6 +7431,32 @@
         "phonology:letter_class"
       ],
       "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "word-27dae5010f7e-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-27dae5010f7e-sans.jpg",
+      "scene_label": "card:word:27dae5010f7e:sans",
+      "concept_id": "lang.word.27dae5010f7e",
+      "curriculum_tags": [
+        "lang.word.27dae5010f7e",
+        "word:мыла",
+        "slug:27dae5010f7e",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-c6eebd8384e6-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-c6eebd8384e6-sans.jpg",
+      "scene_label": "card:word:c6eebd8384e6:sans",
+      "concept_id": "lang.word.c6eebd8384e6",
+      "curriculum_tags": [
+        "lang.word.c6eebd8384e6",
+        "word:раму",
+        "slug:c6eebd8384e6",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
     }
   ]
 }

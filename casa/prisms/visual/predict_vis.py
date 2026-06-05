@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from casa.prisms.visual.bridge_math import frame_id_from_vis_cue
 from casa.domain.prism_ids import PRISM_VISUAL
 from casa.domain.visual_tract import LATTICE_V1_LUM, VISUAL_LATTICE_IDS
 from casa.prisms.memory.memory_prisms import content_prism_lattices, ensure_prisms
@@ -63,8 +64,8 @@ def predict_vis(state: dict, cue: str, *, top_k: int = 8) -> dict[str, Any]:
         }
     target = _resolve_cue_to_concept_id(state, cue) or cue
     ranked = _rank_lattice_tokens(lum, prefix="vis.")
-    if cue.startswith("vis:"):
-        frame_cue = cue.split(":", 1)[-1]
+    frame_cue = frame_id_from_vis_cue(cue)
+    if frame_cue:
         ranked = [(cid, v + (30 if frame_cue in cid else 0)) for cid, v in ranked]
         ranked.sort(key=lambda x: (-x[1], x[0]))
     if target.startswith("vis."):

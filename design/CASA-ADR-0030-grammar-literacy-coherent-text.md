@@ -8,6 +8,7 @@
 - [CASA-literacy-class-v1.md](CASA-literacy-class-v1.md) — pure meta, без cartesian sleep
 - [CASA-learning-protocol-vis-math-v1.md](CASA-learning-protocol-vis-math-v1.md) — vis↔lex, один vis + один lex → один sleep
 - [CASA-ADR-0029-logical-composition.md](CASA-ADR-0029-logical-composition.md) — connectives («и», «не») — **отдельный** трек от согласования
+- [CASA-ADR-0034-executor-learning-loop.md](CASA-ADR-0034-executor-learning-loop.md) — META: общий цикл исполнителя; этот ADR — L1–L4 literacy
 - [experiment-j0-russian-literacy-v1.md](experiment-j0-russian-literacy-v1.md) — articulation / write@sketch поверх поля
 
 ---
@@ -118,6 +119,8 @@ flowchart TD
 2. **Не** класть обе формы в один sleep с посторонним lex в hippo.
 3. При ambiguous — менять **подачу**, не `bridge_lex` в проде.
 4. Долгий горизонт: **rule tract** (ticks) для вывода формы — не замена L2.
+
+**Русский: фраза и свободный порядок слов** — не фиксированный SVO; роли в падеже/согласовании, перестановки одной тройки форм → одна event-схема. Канон: [CASA-ADR-0033-russian-phrase-structure-free-order.md](CASA-ADR-0033-russian-phrase-structure-free-order.md) (phrase compose P1, `lang.event.*`, probe без проверки linear order на v0).
 
 ---
 

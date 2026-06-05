@@ -187,10 +187,39 @@ def run_probe_script(
         raise RuntimeError(
             f"probe failed ({script.name}): {proc.stderr or proc.stdout}"
         )
-    summary = json.loads(proc.stdout.strip().splitlines()[-1])
+    summary: dict[str, Any] | None = None
+    for line in reversed(proc.stdout.strip().splitlines()):
+        stripped = line.strip()
+        if stripped.startswith("{"):
+            summary = json.loads(stripped)
+            break
+    if summary is None:
+        raise RuntimeError(
+            f"probe stdout has no JSON summary ({script.name}): {proc.stderr or proc.stdout!r}"
+        )
     report_name = Path(str(summary.get("path") or "")).name
     report = json.loads((cwd / "generated" / report_name).read_text(encoding="utf-8"))
     return report
+
+
+def promote_emergent_routes_after_probe(
+    state: dict[str, Any],
+    report: dict[str, Any],
+) -> dict[str, Any]:
+    """Probe gate → mastery journal only (routes: agent tick)."""
+    from casa.domain.emergent_promote import record_probe_gate
+    from casa.prisms.shared.store_persist import mark_runtime_dirty
+
+    result = record_probe_gate(state, report)
+    if result.passed or result.promoted:
+        mark_runtime_dirty(state)
+    return {
+        "gate": result.gate,
+        "passed": result.passed,
+        "promoted_count": len(result.promoted),
+        "promoted": result.promoted,
+        "skipped": result.skipped,
+    }
 
 
 PROBE_BY_STAGE: dict[str, str] = {

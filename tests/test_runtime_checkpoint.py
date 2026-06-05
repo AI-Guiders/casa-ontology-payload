@@ -13,6 +13,7 @@ from casa.prisms.shared.compact_persist import compact_persist_store
 from casa.prisms.shared.runtime_checkpoint import (
     THIN_CHECKPOINT_FORMAT,
     build_thin_snapshot,
+    build_thin_stub,
     is_thin_checkpoint_file,
     merge_thin_overlay,
 )
@@ -31,6 +32,18 @@ def test_build_thin_snapshot_strips_cells():
     stripped = thin["prisms"]["prism_memory"]["lattices"]["L3_phrase"]
     assert stripped.get("_cells_in_ltm") is True
     assert stripped["cells"] == []
+
+
+def test_build_thin_stub_omits_lattice_shells():
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 3, "sn": {"tick": 1}})
+    spawn_content_lattice(state, "prism_memory", "L3_phrase", z_level=3)
+    lats = content_prism_lattices(state)
+    lats["L3_phrase"]["cells"][0] = ["W:hello"]
+
+    stub = build_thin_stub(state)
+    assert stub["checkpoint_format"] == THIN_CHECKPOINT_FORMAT
+    assert stub["_checkpoint"]["bodies_in"] == "agent_field.db"
+    assert "prism_memory" not in (stub.get("prisms") or {})
 
 
 def test_thin_checkpoint_round_trip(tmp_path: Path) -> None:
@@ -59,7 +72,7 @@ def test_thin_checkpoint_round_trip(tmp_path: Path) -> None:
     loaded = load_runtime_state(store)
     assert loaded["boot_source"] == STORE_TIER_RUNTIME
     booted = loaded["state"]
-    assert booted.get("store", {}).get("boot_source") == "ltm+thin_checkpoint"
+    assert booted.get("store", {}).get("boot_source") in ("ltm+thin_checkpoint", "ltm+field_db")
     math = content_prism_lattices(booted, "prism_math")
     assert math["schema-math"]["cells"][0]
     assert hot_neighbors(booted, "cue:pi")

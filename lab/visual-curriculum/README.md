@@ -28,6 +28,8 @@
 
 **Аналитическое чтение R1:** после stage-05 + corpus-слова в LTM — `run_analytic_breakdown_pilot.py` (цепочка слогов + corpus frame), затем `probe_analytic_read_corpus.py` (novel `analytic-probe-*`, без правок `bridge_lex`). В отчёте: `r1_novel_bind` / `r1_novel_via` (`novel_whole` = мост на probe-id; `novel_compose` = chain know + ink + LTM). См. ADR-0032.
 
+**Phrase pilot (RU P1):** закрытие R1 для «мыла»/«раму» — `micro-literacy/run_phrase_pilot_words.py` → `probe_phrase_compose_pilot.py --store von-neumann`. Слоты agent/verb/patient — ADR-0033; согласование как «вопрос→ответ» — §6 того же ADR (L2+, не v1 gate).
+
 **Compare (больше/меньше):** [CASA-compare-greater-less-v1.md](../../design/CASA-compare-greater-less-v1.md)
 
 | S | Runner |

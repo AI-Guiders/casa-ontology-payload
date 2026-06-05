@@ -95,19 +95,35 @@ def run_frame_probe(
                     row.update(extra)
             items.append(row)
 
-    out: dict[str, Any] = {
-        "store_id": store_id,
-        "probe": probe,
-        "total": len(frames),
-        "know": counts["know"],
-        "ambiguous": counts["ambiguous"],
-        "wrong": counts["wrong"],
-        "empty": counts["empty"],
-        "matched": counts["know"],
-        "items": items,
-    }
-    if extra_out:
-        out.update(extra_out)
+        out_inner: dict[str, Any] = {
+            "store_id": store_id,
+            "probe": probe,
+            "total": len(frames),
+            "know": counts["know"],
+            "ambiguous": counts["ambiguous"],
+            "wrong": counts["wrong"],
+            "empty": counts["empty"],
+            "matched": counts["know"],
+            "items": items,
+        }
+        if extra_out:
+            out_inner.update(extra_out)
+
+        from casa.domain.emergent_promote import record_probe_gate
+        from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
+
+        from casa.domain.mastery_gate import mastery_status
+
+        gate = record_probe_gate(state, out_inner, store_dir=store)
+        out_inner["mastery"] = mastery_status(state, str(out_inner.get("probe") or probe))
+        out_inner["probe_gate"] = {"gate": gate.gate, "passed": gate.passed}
+        if gate.passed:
+            mark_runtime_dirty(state)
+            save_runtime_state(store, state, force=True, sync_ltm_on_save=False)
+        if gate.skipped:
+            out_inner["probe_gate"]["skipped"] = gate.skipped
+
+    out = out_inner
     report_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     summary = {
         "know": counts["know"],

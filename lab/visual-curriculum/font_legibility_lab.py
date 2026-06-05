@@ -266,13 +266,14 @@ def predict_lex_variant(
     )
     from casa.prisms.visual.bootstrap import ensure_prism_visual
     from casa.prisms.visual.bridge_lex import _LEX_DST_PREFIXES, vis_frame_concept_id
+    from casa.prisms.visual.bridge_math import frame_id_from_vis_cue
 
     ensure_prism_visual(state)
     lats = memory_lattices(state)
     lum = (prism_block(state, PRISM_VISUAL).get("lattices") or {}).get("V1_lum") or {}
     if not lum.get("cells"):
         return []
-    vis_cid = vis_frame_concept_id(str(cue or "").strip().removeprefix("vis:"))
+    vis_cid = vis_frame_concept_id(frame_id_from_vis_cue(str(cue or "")))
     prefix = f"E:{vis_cid}|"
     scores: dict[str, int] = {}
 

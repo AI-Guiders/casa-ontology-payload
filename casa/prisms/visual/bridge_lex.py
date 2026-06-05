@@ -28,6 +28,8 @@ from casa.prisms.visual.bridge_math import (
     DEFAULT_RELATION,
     _edge_token,
     _strengthen_on_visual_lum,
+    bridge_exists_on_field,
+    frame_id_from_vis_cue,
     mint_crosslink,
     vis_frame_concept_id,
 )
@@ -74,6 +76,26 @@ def _lex_episodes(episodes: list[dict[str, Any]]) -> list[dict[str, Any]]:
         if cid.startswith(_LEX_DST_PREFIXES):
             out.append(ep)
     return out
+
+
+def _vis_lex_episode_pair(vep: dict[str, Any], lep: dict[str, Any]) -> bool:
+    """Co-occur only when same scene or vis cue matches lex concept slug."""
+    vs = str(vep.get("scene") or "").strip()
+    ls = str(lep.get("scene") or "").strip()
+    if vs and ls and vs == ls:
+        return True
+    cue = str(vep.get("cue") or "")
+    lex_cid = str(lep.get("concept_id") or "").lower()
+    if not cue.startswith("vis:") or not lex_cid:
+        return False
+    frame_id = cue[4:].lower()
+    skip = frozenset({"word", "sans", "phrase", "probe", "syllable", "frame", "vis"})
+    for token in frame_id.replace("phrase-probe-", "").replace("-sans", "").split("-"):
+        if token in skip or len(token) < 2:
+            continue
+        if token in lex_cid:
+            return True
+    return False
 
 
 def _lexical_ready(lattices: dict[str, dict], episodes: list[dict[str, Any]]) -> bool:
@@ -136,6 +158,8 @@ def extract_emergent_vis_lex_bridges(
     for vep in vis_eps:
         vis_cid = str(vep.get("concept_id") or "")
         for lep in lex_eps:
+            if not _vis_lex_episode_pair(vep, lep):
+                continue
             lex_cid = str(lep.get("concept_id") or "")
             if lex_concept_votes(lattices, lex_cid, min_votes=min_lex_votes) < min_lex_votes:
                 continue
@@ -201,7 +225,7 @@ def predict_lex_for_vis_cue(
     lum = (prism_block(state, PRISM_VISUAL).get("lattices") or {}).get(LATTICE_V1_LUM) or {}
     if not lum.get("cells"):
         return []
-    vis_cid = vis_frame_concept_id(str(cue or "").strip().removeprefix("vis:"))
+    vis_cid = vis_frame_concept_id(frame_id_from_vis_cue(cue))
     prefix = f"E:{vis_cid}|"
     scores: dict[str, int] = {}
 

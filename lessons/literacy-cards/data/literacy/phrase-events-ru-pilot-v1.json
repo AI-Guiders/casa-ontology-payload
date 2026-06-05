@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "title": "Phrase events pilot P1 — transitive wash (ADR-0033)",
+  "notes": "Event registry: roles, agreement, surface permutations. Syllables from corpus + syllabify at runtime.",
+  "entries": [
+    {
+      "event_id": "lang.event.transitive.wash.v0",
+      "surfaces": [
+        "Мама мыла раму",
+        "Мыла раму мама",
+        "Раму мама мыла"
+      ],
+      "words": [
+        {
+          "role": "agent",
+          "surface": "мама",
+          "slug": "d2a8dc30e406"
+        },
+        {
+          "role": "verb",
+          "surface": "мыла",
+          "slug": "27dae5010f7e"
+        },
+        {
+          "role": "patient",
+          "surface": "раму",
+          "slug": "c6eebd8384e6"
+        }
+      ],
+      "agreement": [
+        {
+          "agent": "мама",
+          "verb": "мыла",
+          "kind": "subjectVerb.fem.sg.past"
+        }
+      ]
+    }
+  ]
+}
