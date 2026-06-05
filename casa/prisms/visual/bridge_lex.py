@@ -21,7 +21,16 @@ from casa.prisms.shared.lattice_names_v1 import (
 )
 from casa.prisms.visual.bootstrap import ensure_prism_visual
 from casa.prisms.memory.meta_concept_aliases import canonical_lex_concept_id, lex_concept_id_variants
-from casa.prisms.visual.bridge_math import DEFAULT_RELATION, mint_crosslink, vis_frame_concept_id
+from casa.prisms.memory.f0_stack import strengthen_graph_edge
+from casa.prisms.memory.memory_prisms import persist_content_lattices
+from casa.prisms.memory.prism_hot_context import add_hot_edge
+from casa.prisms.visual.bridge_math import (
+    DEFAULT_RELATION,
+    _edge_token,
+    _strengthen_on_visual_lum,
+    mint_crosslink,
+    vis_frame_concept_id,
+)
 
 _LEX_DST_PREFIXES = ("grapheme.", "lang.word.", "lang.meta.", "syllable.")
 
@@ -141,6 +150,44 @@ def extract_emergent_vis_lex_bridges(
                 break
 
     return out
+
+
+def reinforce_vis_lex_bridge(
+    state: dict,
+    *,
+    frame_id: str,
+    lex_cid: str,
+    relation: str = DEFAULT_RELATION,
+    copies: int = 8,
+    provenance: str = "reinforce",
+) -> dict[str, str] | None:
+    """Add vis↔lex edge copies even when link exists (lab tie-break)."""
+    lex_cid = canonical_lex_concept_id(str(lex_cid).strip())
+    if not lex_cid.startswith(_LEX_DST_PREFIXES):
+        return None
+    vis_cid = vis_frame_concept_id(frame_id)
+    lats = memory_lattices(state)
+    on_vis = _strengthen_on_visual_lum(
+        state, src=vis_cid, relation=relation, dst=lex_cid, copies=copies
+    )
+    lat_id = lattice_for_lex_concept(lex_cid)
+    on_lex = False
+    if lat_id:
+        on_lex = strengthen_graph_edge(lats, lat_id, vis_cid, relation, lex_cid, copies=copies)
+    if not (on_vis or on_lex):
+        return None
+    add_hot_edge(state, vis_cid, relation, lex_cid, salience=1.0, provenance=provenance)
+    persist_content_lattices(state, lats)
+    state["field_version"] = int(state.get("field_version") or 0) + 1
+    return {
+        "src": vis_cid,
+        "relation": relation,
+        "dst": lex_cid,
+        "edge": _edge_token(vis_cid, relation, lex_cid),
+        "on_visual": on_vis,
+        "on_lex": on_lex,
+        "provenance": provenance,
+    }
 
 
 def predict_lex_for_vis_cue(
