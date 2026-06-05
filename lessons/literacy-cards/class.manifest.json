@@ -24,6 +24,14 @@
       ]
     },
     {
+      "id": "stage-04-meta-phonology-vowel-consonant",
+      "title": "Мета-фонология: гласная и согласная",
+      "order": 4,
+      "lesson_ids": [
+        "lesson-09-phonology-meta"
+      ]
+    },
+    {
       "id": "stage-05-syllable-cyrl",
       "title": "Слоги: кириллица (целые)",
       "order": 5,
@@ -7185,6 +7193,244 @@
         "closed-class"
       ],
       "lesson_id": "lesson-07-closed-class"
+    },
+    {
+      "id": "meta-phonology-vowel-sans",
+      "path": "lesson-09-phonology-meta/images/meta-phonology-vowel-sans.jpg",
+      "scene_label": "card:phonology:meta:vowel:sans",
+      "concept_id": "lang.meta.phonology.vowel",
+      "curriculum_tags": [
+        "lang.meta.phonology.vowel",
+        "surface:гласная",
+        "slug:phonology-vowel",
+        "face:sans",
+        "phonology:meta"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "meta-phonology-consonant-sans",
+      "path": "lesson-09-phonology-meta/images/meta-phonology-consonant-sans.jpg",
+      "scene_label": "card:phonology:meta:consonant:sans",
+      "concept_id": "lang.meta.phonology.consonant",
+      "curriculum_tags": [
+        "lang.meta.phonology.consonant",
+        "surface:согласная",
+        "slug:phonology-consonant",
+        "face:sans",
+        "phonology:meta"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-a-vowel-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-a-vowel-sans.jpg",
+      "scene_label": "card:phonology:letter:a:vowel:sans",
+      "concept_id": "lang.meta.phonology.vowel",
+      "curriculum_tags": [
+        "lang.meta.phonology.vowel",
+        "surface:а",
+        "cue:a",
+        "face:sans",
+        "phonology:vowel",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-e-vowel-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-e-vowel-sans.jpg",
+      "scene_label": "card:phonology:letter:e:vowel:sans",
+      "concept_id": "lang.meta.phonology.vowel",
+      "curriculum_tags": [
+        "lang.meta.phonology.vowel",
+        "surface:е",
+        "cue:e",
+        "face:sans",
+        "phonology:vowel",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-eh-vowel-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-eh-vowel-sans.jpg",
+      "scene_label": "card:phonology:letter:eh:vowel:sans",
+      "concept_id": "lang.meta.phonology.vowel",
+      "curriculum_tags": [
+        "lang.meta.phonology.vowel",
+        "surface:э",
+        "cue:eh",
+        "face:sans",
+        "phonology:vowel",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-i-vowel-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-i-vowel-sans.jpg",
+      "scene_label": "card:phonology:letter:i:vowel:sans",
+      "concept_id": "lang.meta.phonology.vowel",
+      "curriculum_tags": [
+        "lang.meta.phonology.vowel",
+        "surface:и",
+        "cue:i",
+        "face:sans",
+        "phonology:vowel",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-k-consonant-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-k-consonant-sans.jpg",
+      "scene_label": "card:phonology:letter:k:consonant:sans",
+      "concept_id": "lang.meta.phonology.consonant",
+      "curriculum_tags": [
+        "lang.meta.phonology.consonant",
+        "surface:к",
+        "cue:k",
+        "face:sans",
+        "phonology:consonant",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-m-consonant-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-m-consonant-sans.jpg",
+      "scene_label": "card:phonology:letter:m:consonant:sans",
+      "concept_id": "lang.meta.phonology.consonant",
+      "curriculum_tags": [
+        "lang.meta.phonology.consonant",
+        "surface:м",
+        "cue:m",
+        "face:sans",
+        "phonology:consonant",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-o-vowel-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-o-vowel-sans.jpg",
+      "scene_label": "card:phonology:letter:o:vowel:sans",
+      "concept_id": "lang.meta.phonology.vowel",
+      "curriculum_tags": [
+        "lang.meta.phonology.vowel",
+        "surface:о",
+        "cue:o",
+        "face:sans",
+        "phonology:vowel",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-s-consonant-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-s-consonant-sans.jpg",
+      "scene_label": "card:phonology:letter:s:consonant:sans",
+      "concept_id": "lang.meta.phonology.consonant",
+      "curriculum_tags": [
+        "lang.meta.phonology.consonant",
+        "surface:с",
+        "cue:s",
+        "face:sans",
+        "phonology:consonant",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-t-consonant-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-t-consonant-sans.jpg",
+      "scene_label": "card:phonology:letter:t:consonant:sans",
+      "concept_id": "lang.meta.phonology.consonant",
+      "curriculum_tags": [
+        "lang.meta.phonology.consonant",
+        "surface:т",
+        "cue:t",
+        "face:sans",
+        "phonology:consonant",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-u-vowel-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-u-vowel-sans.jpg",
+      "scene_label": "card:phonology:letter:u:vowel:sans",
+      "concept_id": "lang.meta.phonology.vowel",
+      "curriculum_tags": [
+        "lang.meta.phonology.vowel",
+        "surface:у",
+        "cue:u",
+        "face:sans",
+        "phonology:vowel",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-y-vowel-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-y-vowel-sans.jpg",
+      "scene_label": "card:phonology:letter:y:vowel:sans",
+      "concept_id": "lang.meta.phonology.vowel",
+      "curriculum_tags": [
+        "lang.meta.phonology.vowel",
+        "surface:ы",
+        "cue:y",
+        "face:sans",
+        "phonology:vowel",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-ya-vowel-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-ya-vowel-sans.jpg",
+      "scene_label": "card:phonology:letter:ya:vowel:sans",
+      "concept_id": "lang.meta.phonology.vowel",
+      "curriculum_tags": [
+        "lang.meta.phonology.vowel",
+        "surface:я",
+        "cue:ya",
+        "face:sans",
+        "phonology:vowel",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-yo-vowel-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-yo-vowel-sans.jpg",
+      "scene_label": "card:phonology:letter:yo:vowel:sans",
+      "concept_id": "lang.meta.phonology.vowel",
+      "curriculum_tags": [
+        "lang.meta.phonology.vowel",
+        "surface:ё",
+        "cue:yo",
+        "face:sans",
+        "phonology:vowel",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
+    },
+    {
+      "id": "phonology-letter-yu-vowel-sans",
+      "path": "lesson-09-phonology-meta/images/phonology-letter-yu-vowel-sans.jpg",
+      "scene_label": "card:phonology:letter:yu:vowel:sans",
+      "concept_id": "lang.meta.phonology.vowel",
+      "curriculum_tags": [
+        "lang.meta.phonology.vowel",
+        "surface:ю",
+        "cue:yu",
+        "face:sans",
+        "phonology:vowel",
+        "phonology:letter_class"
+      ],
+      "lesson_id": "lesson-09-phonology-meta"
     }
   ]
 }

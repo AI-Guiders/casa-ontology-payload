@@ -1,0 +1,17 @@
+# Категории → пилот чередованием → остальные гласные (по одному sleep)
+meta-phonology-vowel-sans
+meta-phonology-consonant-sans
+phonology-letter-a-vowel-sans
+phonology-letter-m-consonant-sans
+phonology-letter-o-vowel-sans
+phonology-letter-k-consonant-sans
+phonology-letter-u-vowel-sans
+phonology-letter-s-consonant-sans
+phonology-letter-i-vowel-sans
+phonology-letter-t-consonant-sans
+phonology-letter-e-vowel-sans
+phonology-letter-yo-vowel-sans
+phonology-letter-y-vowel-sans
+phonology-letter-eh-vowel-sans
+phonology-letter-yu-vowel-sans
+phonology-letter-ya-vowel-sans

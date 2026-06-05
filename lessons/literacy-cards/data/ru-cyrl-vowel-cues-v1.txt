@@ -1,0 +1,11 @@
+# Cue slug (lesson-01) — гласные для stage-04 phonology (v1, lower)
+a
+e
+yo
+i
+o
+u
+y
+eh
+yu
+ya
