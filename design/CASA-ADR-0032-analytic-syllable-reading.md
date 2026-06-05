@@ -65,6 +65,7 @@ flowchart TD
 |---------|------------|-------------|
 | **A0** | Whole-word JPEG, micro-ingest | `stage-03` / `stage-06` |
 | **A1** | Слоговые карточки целиком | `stage-05-syllable-cyrl` |
+| **A1b** | Гласная / согласная (мета на букве) | `stage-04-meta-phonology-vowel-consonant` → сегментация «по гласным» |
 | **A2** | Таблица слогов для headword (authoring) или раскладка на полке L2→L1 | substrate ingest / `data/` metadata |
 | **R1** | Длинное слово на **новом** `frame_id` → сегменты ⊆ выученных слогов → top-1 = ожидаемый `lang.word.*` **уже в store** | A0 частично не нужен для **этого** слова; A1 + A2 + lexicon |
 | **R2** | Та же цепочка; итог — **новый** `lang.word.{slug}` или episodic surface + sleep | lazy lexicon / promote; **не** manifest-oracle |

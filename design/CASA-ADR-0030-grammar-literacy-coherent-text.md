@@ -78,6 +78,7 @@ flowchart TD
 | **Число** (план) | `lang.meta.grammar.number.sg` / `.pl` | `единственное число` / `множественное число` |
 | **Род** (план) | `lang.meta.grammar.gender.masc` / `.fem` / `.neut` | мета-фразы, не одна буква |
 | **Согласование** (план) | `lang.meta.grammar.agreement.subjectVerb` | два JPEG: «он идёт» / «она идёт» → **один** id |
+| **Фонология** (v1) | `lang.meta.phonology.vowel` / `.consonant` | «гласная», «согласная»; буква + подпись категории (`stage-04`) |
 
 **Одна категория — много выражений:** несколько фраз/языков → один `concept_id`; probe по категории ([протокол § Vis↔lex](CASA-learning-protocol-vis-math-v1.md)).
 

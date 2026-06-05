@@ -22,7 +22,11 @@
 
 **Font legibility (32×32 sweep):** `probe_font_legibility_sweep.py` — порог PIL pt без записи в store. Канон: [CASA-literacy-font-legibility-experiment-v1.md](../../design/CASA-literacy-font-legibility-experiment-v1.md).
 
+**Фонология (гласная/согласная):** `build_phonology_meta_cards.py` → `run_phonology_meta_stage.py` → `probe_meta_phonology_quiz.py` (`lang.meta.phonology.*`). Порядок ingest — `data/ru-phonology-ingest-order-v1.txt`.
+
 **Слоги (отдельный трек):** `stage-05-syllable-cyrl` → `run_micro_stage.py` + `probe_syllable_quiz.py` (`syllable.*`, lattice `syllables-ru`). Не сборка слова из слогов в runtime.
+
+**Аналитическое чтение R1:** после stage-05 + corpus-слова в LTM — `run_analytic_breakdown_pilot.py` (цепочка слогов + corpus frame), затем `probe_analytic_read_corpus.py` (novel `analytic-probe-*`, без правок `bridge_lex`). В отчёте: `r1_novel_bind` / `r1_novel_via` (`novel_whole` = мост на probe-id; `novel_compose` = chain know + ink + LTM). См. ADR-0032.
 
 **Compare (больше/меньше):** [CASA-compare-greater-less-v1.md](../../design/CASA-compare-greater-less-v1.md)
 

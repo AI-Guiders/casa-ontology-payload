@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "started_at": "2026-06-01T23:32:50Z",
-  "macro_ticks": 6863,
+  "macro_ticks": 74127,
   "kolb": {
     "runs": 1,
     "last_at": "2026-06-01T23:32:50Z",
@@ -18,7 +18,7 @@
     "reason": "first_what_if",
     "at": "2026-06-01T23:32:50Z"
   },
-  "updated_at": "2026-06-02T22:04:18Z",
+  "updated_at": "2026-06-04T19:14:54Z",
   "self_drive": {
     "kolb_runs": 39,
     "last_count_row_end": 12,
@@ -44,6 +44,6 @@
   "last_self_drive": {
     "kind": "sleep",
     "reason": "hippo_full",
-    "at": "2026-06-02T22:04:18Z"
+    "at": "2026-06-04T19:14:54Z"
   }
 }

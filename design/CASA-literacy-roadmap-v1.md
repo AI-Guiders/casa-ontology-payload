@@ -70,6 +70,14 @@
 
 Контраст как круг/квадрат: не смешивать в один sleep шесть букв.
 
+### 2b. Мета-фонология: гласная / согласная
+
+| Стадия | lesson | Кадры | concept_id |
+|--------|--------|-------|------------|
+| `stage-04-meta-phonology-vowel-consonant` | `lesson-09-phonology-meta` | «гласная», «согласная» + буква с подписью категории | `lang.meta.phonology.vowel` / `.consonant` |
+
+**Сборка:** `tools/build_phonology_meta_cards.py` (пилот 12 кадров или `--all-letters` 35). **Ingest:** `micro-literacy/run_phonology_meta_stage.py` (порядок `data/ru-phonology-ingest-order-v1.txt`). **Probe:** `probe_meta_phonology_quiz.py`. Между алфавитом (stage-01) и слогами (stage-05); один moment = один sleep.
+
 ### 3. Слоги (опционально, целые кадры)
 
 | Стадия | lesson | concept_id | lattice |
@@ -77,6 +85,8 @@
 | `stage-05-syllable-cyrl` | `lesson-05-syllables-cyrl` | `syllable.{surface}` (напр. `ма`, `ко`) | `syllables-ru` |
 
 Не «собрать слово из слогов одним emergent predict» — на stage-05 отдельные узнаваемые формы; **композиция** на незнакомом целом кадре — [CASA-ADR-0032](CASA-ADR-0032-analytic-syllable-reading.md) (R1/R2).
+
+**Пилот R1 (lab):** `data/literacy/analytic-segments-ru-pilot-v1.json` · `probe_analytic_read_corpus.py` · `micro-literacy/run_analytic_breakdown_pilot.py` · `casa/prisms/visual/analytic_read.py`.
 
 ### 4. Слова — современный корпус РЯ
 
