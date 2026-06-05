@@ -1,7 +1,7 @@
 {
-  "schema_version": 1,
-  "title": "Phrase events pilot P1 — transitive wash (ADR-0033)",
-  "notes": "Event registry: roles, agreement, surface permutations. Syllables from corpus + syllabify at runtime.",
+  "schema_version": 2,
+  "title": "Phrase events pilot — wash P1 + give ditransitive (ADR-0033)",
+  "notes": "Roles, agreement, permutations, question_frames. Syllables from corpus + syllabify at runtime.",
   "entries": [
     {
       "event_id": "lang.event.transitive.wash.v0",
@@ -32,6 +32,81 @@
           "agent": "мама",
           "verb": "мыла",
           "kind": "subjectVerb.fem.sg.past"
+        }
+      ],
+      "question_frames": [
+        {
+          "anchor_surface": "мыла",
+          "question_id": "lang.meta.grammar.question.who",
+          "expected_surface": "мама",
+          "expected_role": "agent"
+        },
+        {
+          "anchor_surface": "мама",
+          "question_id": "lang.meta.grammar.question.what_do",
+          "expected_surface": "мыла",
+          "expected_role": "verb"
+        },
+        {
+          "anchor_surface": "мыла",
+          "question_id": "lang.meta.grammar.question.what",
+          "expected_surface": "раму",
+          "expected_role": "patient"
+        }
+      ]
+    },
+    {
+      "event_id": "lang.event.ditransitive.give.v0",
+      "surfaces": [
+        "Мама дала Маше книгу"
+      ],
+      "words": [
+        {
+          "role": "agent",
+          "surface": "мама",
+          "slug": "d2a8dc30e406"
+        },
+        {
+          "role": "verb",
+          "surface": "дала",
+          "slug": "give-verb-dala"
+        },
+        {
+          "role": "recipient",
+          "surface": "Маше",
+          "slug": "give-recipient-masha"
+        },
+        {
+          "role": "patient",
+          "surface": "книгу",
+          "slug": "give-patient-knigu"
+        }
+      ],
+      "agreement": [
+        {
+          "agent": "мама",
+          "verb": "дала",
+          "kind": "subjectVerb.fem.sg.past"
+        }
+      ],
+      "question_frames": [
+        {
+          "anchor_surface": "дала",
+          "question_id": "lang.meta.grammar.question.who",
+          "expected_surface": "мама",
+          "expected_role": "agent"
+        },
+        {
+          "anchor_surface": "дала",
+          "question_id": "lang.meta.grammar.question.to_whom",
+          "expected_surface": "Маше",
+          "expected_role": "recipient"
+        },
+        {
+          "anchor_surface": "дала",
+          "question_id": "lang.meta.grammar.question.what",
+          "expected_surface": "книгу",
+          "expected_role": "patient"
         }
       ]
     }

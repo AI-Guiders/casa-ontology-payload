@@ -121,8 +121,12 @@ def check_agreement(
 def compose_phrase_verdict(
     word_reads: list[dict[str, Any]],
     entry: dict[str, Any],
+    *,
+    check_questions: bool = True,
 ) -> dict[str, Any]:
     """Aggregate per-word R1 reads into phrase-level gate (order ignored)."""
+    from casa.prisms.visual.phrase_question import compose_question_verdict
+
     words_spec = list(entry.get("words") or [])
     bind = bind_slots(word_reads, words_spec)
     slots = bind["slots"]
@@ -144,7 +148,13 @@ def compose_phrase_verdict(
     else:
         verdict = "phrase_know"
 
-    return {
+    question_out: dict[str, Any] | None = None
+    if check_questions and verdict == "phrase_know" and entry.get("question_frames"):
+        question_out = compose_question_verdict(slots, entry)
+        if not question_out.get("question_know"):
+            verdict = "question_fail"
+
+    out = {
         "event_id": str(entry.get("event_id") or ""),
         "verdict": verdict,
         "word_reads": word_reads,
@@ -153,3 +163,6 @@ def compose_phrase_verdict(
         "agreement": agr,
         "phrase_know": verdict == "phrase_know",
     }
+    if question_out is not None:
+        out["question"] = question_out
+    return out
