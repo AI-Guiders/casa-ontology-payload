@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from collections.abc import Callable, Sequence
 from pathlib import Path
@@ -20,6 +21,7 @@ def setup_probe_imports() -> Path:
     from casa._paths import ensure_import_paths
 
     ensure_import_paths()
+    os.chdir(_REPO)
     return _REPO
 
 

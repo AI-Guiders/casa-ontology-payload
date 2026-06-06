@@ -102,6 +102,22 @@
       "lesson_ids": [
         "lesson-08-grammar-meta"
       ]
+    },
+    {
+      "id": "stage-08b-meta-grammar-case",
+      "title": "Мета-грамматика: падеж (им / вин)",
+      "order": 81,
+      "lesson_ids": [
+        "lesson-08b-grammar-case-meta"
+      ]
+    },
+    {
+      "id": "stage-09-grammar-agreement-pilot",
+      "title": "Согласование: пары форм",
+      "order": 82,
+      "lesson_ids": [
+        "lesson-09-grammar-agreement-meta"
+      ]
     }
   ],
   "frames": [
@@ -7457,6 +7473,129 @@
         "face:sans"
       ],
       "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-8fb19cdaf03f-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-8fb19cdaf03f-sans.jpg",
+      "scene_label": "card:word:8fb19cdaf03f:sans",
+      "concept_id": "lang.word.8fb19cdaf03f",
+      "curriculum_tags": [
+        "lang.word.8fb19cdaf03f",
+        "word:дала",
+        "slug:8fb19cdaf03f",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-3b2d49d43df5-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-3b2d49d43df5-sans.jpg",
+      "scene_label": "card:word:3b2d49d43df5:sans",
+      "concept_id": "lang.word.3b2d49d43df5",
+      "curriculum_tags": [
+        "lang.word.3b2d49d43df5",
+        "word:маше",
+        "slug:3b2d49d43df5",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-974d6c14655c-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-974d6c14655c-sans.jpg",
+      "scene_label": "card:word:974d6c14655c:sans",
+      "concept_id": "lang.word.974d6c14655c",
+      "curriculum_tags": [
+        "lang.word.974d6c14655c",
+        "word:книгу",
+        "slug:974d6c14655c",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-case-nom-sans",
+      "path": "lesson-08b-grammar-case-meta/images/word-case-nom-sans.jpg",
+      "scene_label": "card:grammar:grammar.case.nom:sans",
+      "concept_id": "lang.meta.grammar.case.nom",
+      "curriculum_tags": [
+        "lang.meta.grammar.case.nom",
+        "surface:именительный падеж",
+        "slug:case-nom",
+        "face:sans",
+        "grammar:case"
+      ],
+      "lesson_id": "lesson-08b-grammar-case-meta"
+    },
+    {
+      "id": "word-case-acc-sans",
+      "path": "lesson-08b-grammar-case-meta/images/word-case-acc-sans.jpg",
+      "scene_label": "card:grammar:grammar.case.acc:sans",
+      "concept_id": "lang.meta.grammar.case.acc",
+      "curriculum_tags": [
+        "lang.meta.grammar.case.acc",
+        "surface:винительный падеж",
+        "slug:case-acc",
+        "face:sans",
+        "grammar:case"
+      ],
+      "lesson_id": "lesson-08b-grammar-case-meta"
+    },
+    {
+      "id": "word-agr-mama-myla-sans",
+      "path": "lesson-09-grammar-agreement-meta/images/word-agr-mama-myla-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.subjectVerb.fem.sg.past:sans",
+      "concept_id": "lang.meta.grammar.agreement.subjectVerb.fem.sg.past",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.subjectVerb.fem.sg.past",
+        "surface:мама мыла",
+        "slug:agr-mama-myla",
+        "face:sans",
+        "grammar:agreement"
+      ],
+      "lesson_id": "lesson-09-grammar-agreement-meta"
+    },
+    {
+      "id": "word-agr-sestra-myla-sans",
+      "path": "lesson-09-grammar-agreement-meta/images/word-agr-sestra-myla-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.subjectVerb.fem.sg.past:sans",
+      "concept_id": "lang.meta.grammar.agreement.subjectVerb.fem.sg.past",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.subjectVerb.fem.sg.past",
+        "surface:сестра мыла",
+        "slug:agr-sestra-myla",
+        "face:sans",
+        "grammar:agreement"
+      ],
+      "lesson_id": "lesson-09-grammar-agreement-meta"
+    },
+    {
+      "id": "word-agr-brat-myl-sans",
+      "path": "lesson-09-grammar-agreement-meta/images/word-agr-brat-myl-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.subjectVerb.masc.sg.past:sans",
+      "concept_id": "lang.meta.grammar.agreement.subjectVerb.masc.sg.past",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.subjectVerb.masc.sg.past",
+        "surface:брат мыл",
+        "slug:agr-brat-myl",
+        "face:sans",
+        "grammar:agreement"
+      ],
+      "lesson_id": "lesson-09-grammar-agreement-meta"
+    },
+    {
+      "id": "word-agr-papa-myl-sans",
+      "path": "lesson-09-grammar-agreement-meta/images/word-agr-papa-myl-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.subjectVerb.masc.sg.past:sans",
+      "concept_id": "lang.meta.grammar.agreement.subjectVerb.masc.sg.past",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.subjectVerb.masc.sg.past",
+        "surface:папа мыл",
+        "slug:agr-papa-myl",
+        "face:sans",
+        "grammar:agreement"
+      ],
+      "lesson_id": "lesson-09-grammar-agreement-meta"
     }
   ]
 }

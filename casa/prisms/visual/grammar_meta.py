@@ -20,33 +20,57 @@ def _nfc(s: str) -> str:
     return unicodedata.normalize("NFC", s.strip())
 
 
-def _load_meta_tables() -> dict[str, Any]:
+def _load_meta_module() -> Any:
     path = _META_CONCEPTS
     if not path.is_file():
-        return {
-            "GRAMMAR_PERSON_CARDS": (),
-            "GRAMMAR_AGREEMENT_PAIRS": (),
-            "GRAMMAR_CASE_CARDS": (),
-            "QUESTION_FRAME_IDS": (),
-        }
+        return None
     spec = importlib.util.spec_from_file_location("casa_grammar_meta_concepts", path)
     if spec is None or spec.loader is None:
-        return {}
+        return None
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    return vars(mod)
+    return mod
+
+
+def _meta_cards(attr: str) -> list[tuple[str, str, str]]:
+    mod = _load_meta_module()
+    if mod is None:
+        return []
+    raw = getattr(mod, attr, ()) or ()
+    out: list[tuple[str, str, str]] = []
+    for row in raw:
+        if isinstance(row, dict):
+            slug = str(row.get("frame_id") or row.get("slug") or "").removeprefix("grammar-").removeprefix("word-")
+            out.append((slug, str(row.get("surface") or ""), str(row.get("concept_id") or "")))
+        else:
+            slug, surface, cid = row
+            out.append((str(slug), str(surface), str(cid)))
+    return out
 
 
 def person_cards() -> list[dict[str, str]]:
-    return list(_load_meta_tables().get("GRAMMAR_PERSON_CARDS") or ())
+    return [
+        {"slug": slug, "surface": surface, "concept_id": cid, "frame_id": f"word-{slug}-sans"}
+        for slug, surface, cid in _meta_cards("GRAMMAR_PERSON_CARDS")
+    ]
 
 
 def agreement_pairs() -> list[dict[str, Any]]:
-    return list(_load_meta_tables().get("GRAMMAR_AGREEMENT_PAIRS") or ())
+    groups: dict[str, list[dict[str, str]]] = {}
+    for _slug, surface, cid in _meta_cards("GRAMMAR_AGREEMENT_PHRASE_CARDS"):
+        parts = _nfc(surface).split()
+        if len(parts) < 2:
+            continue
+        agent, verb = parts[0], parts[1]
+        groups.setdefault(cid, []).append({"agent": agent, "verb": verb})
+    return [{"concept_id": cid, "pairs": tuple(pairs)} for cid, pairs in groups.items()]
 
 
 def case_cards() -> list[dict[str, str]]:
-    return list(_load_meta_tables().get("GRAMMAR_CASE_CARDS") or ())
+    return [
+        {"slug": slug, "surface": surface, "concept_id": cid, "frame_id": f"word-{slug}-sans"}
+        for slug, surface, cid in _meta_cards("GRAMMAR_CASE_CARDS")
+    ]
 
 
 def person_concept_for_surface(surface: str) -> str | None:
@@ -102,8 +126,17 @@ def check_case_registry() -> dict[str, Any]:
 
 def quiz_person_surface(surface: str, *, hint: str | None = None) -> dict[str, Any]:
     expected = person_concept_for_surface(surface)
-    got = hint or expected
-    verdict = "know" if expected and got == expected else "wrong" if expected else "empty"
+    got = hint if hint is not None else expected
+    if expected and got == expected:
+        verdict = "know"
+    elif hint is not None and expected and got != expected:
+        verdict = "wrong"
+    elif hint is not None and not expected:
+        verdict = "wrong"
+    elif expected:
+        verdict = "know"
+    else:
+        verdict = "empty"
     return {"surface": surface, "expected": expected, "got": got, "verdict": verdict}
 
 
@@ -131,8 +164,17 @@ def quiz_agreement_pair(agent: str, verb: str, *, hint: str | None = None) -> di
 
 def quiz_case_surface(surface: str, *, hint: str | None = None) -> dict[str, Any]:
     expected = case_concept_for_surface(surface)
-    got = hint or expected
-    verdict = "know" if expected and got == expected else "wrong" if expected else "empty"
+    got = hint if hint is not None else expected
+    if expected and got == expected:
+        verdict = "know"
+    elif hint is not None and expected and got != expected:
+        verdict = "wrong"
+    elif hint is not None and not expected:
+        verdict = "wrong"
+    elif expected:
+        verdict = "know"
+    else:
+        verdict = "empty"
     return {"surface": surface, "expected": expected, "got": got, "verdict": verdict}
 
 

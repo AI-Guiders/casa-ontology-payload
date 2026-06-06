@@ -69,17 +69,17 @@
         {
           "role": "verb",
           "surface": "дала",
-          "slug": "give-verb-dala"
+          "slug": "8fb19cdaf03f"
         },
         {
           "role": "recipient",
           "surface": "Маше",
-          "slug": "give-recipient-masha"
+          "slug": "3b2d49d43df5"
         },
         {
           "role": "patient",
           "surface": "книгу",
-          "slug": "give-patient-knigu"
+          "slug": "974d6c14655c"
         }
       ],
       "agreement": [

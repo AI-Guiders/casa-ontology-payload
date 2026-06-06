@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Мета-грамматика literacy: лицо (ADR-0030) → lesson-08-grammar-meta."""
+"""Мета-грамматика literacy: лицо, падеж, согласование (ADR-0030)."""
 
 from __future__ import annotations
 
@@ -12,15 +12,16 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_word_cards import merge_manifest, word_frame_id  # noqa: E402
 from literacy_render import draw_text_centered  # noqa: E402
-from meta_concepts import GRAMMAR_PERSON_CARDS  # noqa: E402
-
-LESSON_ID = "lesson-08-grammar-meta"
-FACE = "sans"
-STAGE_PERSON = (
-    "stage-08-meta-grammar-person",
-    "Мета-грамматика: грамматическое лицо",
-    80,
+from meta_concepts import (  # noqa: E402
+    GRAMMAR_AGREEMENT_PHRASE_CARDS,
+    GRAMMAR_CASE_CARDS,
+    GRAMMAR_PERSON_CARDS,
 )
+
+LESSON_PERSON = "lesson-08-grammar-meta"
+LESSON_CASE = "lesson-08b-grammar-case-meta"
+LESSON_AGREEMENT = "lesson-09-grammar-agreement-meta"
+FACE = "sans"
 
 
 def _font_size(surface: str) -> int:
@@ -29,22 +30,31 @@ def _font_size(surface: str) -> int:
         return 200
     if n <= 8:
         return 140
-    return 110
+    if n <= 14:
+        return 110
+    return 90
 
 
-def build_person_cards() -> list[str]:
-    stage_id, stage_title, stage_order = STAGE_PERSON
-    img_dir = ROOT / LESSON_ID / "images"
+def _build_cards(
+    cards: list[tuple[str, str, str]],
+    *,
+    lesson_id: str,
+    stage_id: str,
+    stage_title: str,
+    stage_order: int,
+    grammar_tag: str,
+) -> list[str]:
+    img_dir = ROOT / lesson_id / "images"
     img_dir.mkdir(parents=True, exist_ok=True)
     frames: list[dict] = []
-    for slug, surface, concept_id in GRAMMAR_PERSON_CARDS:
+    for slug, surface, concept_id in cards:
         fid = word_frame_id(slug, face=FACE)
         draw_text_centered(surface, img_dir / f"{fid}.jpg", size=_font_size(surface))
         meta_tag = concept_id.removeprefix("lang.meta.")
         frames.append(
             {
                 "id": fid,
-                "path": f"{LESSON_ID}/images/{fid}.jpg",
+                "path": f"{lesson_id}/images/{fid}.jpg",
                 "scene_label": f"card:grammar:{meta_tag}:{FACE}",
                 "concept_id": concept_id,
                 "curriculum_tags": [
@@ -52,9 +62,9 @@ def build_person_cards() -> list[str]:
                     f"surface:{surface}",
                     f"slug:{slug}",
                     f"face:{FACE}",
-                    "grammar:person",
+                    f"grammar:{grammar_tag}",
                 ],
-                "lesson_id": LESSON_ID,
+                "lesson_id": lesson_id,
             }
         )
     merge_manifest(
@@ -62,23 +72,61 @@ def build_person_cards() -> list[str]:
         stage_id=stage_id,
         stage_title=stage_title,
         stage_order=stage_order,
-        lesson_id=LESSON_ID,
+        lesson_id=lesson_id,
     )
-    return [word_frame_id(s, face=FACE) for s, _, _ in GRAMMAR_PERSON_CARDS]
+    return [word_frame_id(slug, face=FACE) for slug, _, _ in cards]
+
+
+def build_person_cards() -> list[str]:
+    return _build_cards(
+        GRAMMAR_PERSON_CARDS,
+        lesson_id=LESSON_PERSON,
+        stage_id="stage-08-meta-grammar-person",
+        stage_title="Мета-грамматика: грамматическое лицо",
+        stage_order=80,
+        grammar_tag="person",
+    )
+
+
+def build_case_cards() -> list[str]:
+    return _build_cards(
+        GRAMMAR_CASE_CARDS,
+        lesson_id=LESSON_CASE,
+        stage_id="stage-08b-meta-grammar-case",
+        stage_title="Мета-грамматика: падеж (им / вин)",
+        stage_order=81,
+        grammar_tag="case",
+    )
+
+
+def build_agreement_cards() -> list[str]:
+    return _build_cards(
+        GRAMMAR_AGREEMENT_PHRASE_CARDS,
+        lesson_id=LESSON_AGREEMENT,
+        stage_id="stage-09-grammar-agreement-pilot",
+        stage_title="Согласование: пары форм",
+        stage_order=82,
+        grammar_tag="agreement",
+    )
 
 
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--person", action="store_true", help="build stage-08 person cards (default)")
+    p.add_argument("--person", action="store_true")
+    p.add_argument("--case", action="store_true")
+    p.add_argument("--agreement", action="store_true")
+    p.add_argument("--all", action="store_true", help="person + case + agreement")
     args = p.parse_args()
-    _ = args
-    ids = build_person_cards()
-    print(
-        json.dumps(
-            {"lesson": LESSON_ID, "stage": STAGE_PERSON[0], "frames": ids},
-            ensure_ascii=False,
-        )
-    )
+    if args.all or not (args.person or args.case or args.agreement):
+        args.person = args.case = args.agreement = True
+    out: dict[str, list[str]] = {}
+    if args.person:
+        out["person"] = build_person_cards()
+    if args.case:
+        out["case"] = build_case_cards()
+    if args.agreement:
+        out["agreement"] = build_agreement_cards()
+    print(json.dumps(out, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":

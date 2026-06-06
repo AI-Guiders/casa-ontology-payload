@@ -21,6 +21,7 @@ _DEFAULT_EVENTS = (
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--events", type=Path, default=_DEFAULT_EVENTS)
+    p.add_argument("--event-id", default="", help="lang.event.* from registry (default: first entry)")
     p.add_argument("--store", default="von-neumann")
     p.add_argument("--surface-index", type=int, default=0, help="index into entry.surfaces[]")
     p.add_argument("--font-pt", type=int, default=0)
@@ -46,7 +47,12 @@ def main() -> None:
     if not entries:
         raise SystemExit(f"no entries in {args.events}")
 
-    entry = entries[0]
+    if args.event_id:
+        entry = next((e for e in entries if e.get("event_id") == args.event_id), None)
+        if entry is None:
+            raise SystemExit(f"event not found: {args.event_id}")
+    else:
+        entry = entries[0]
     surfaces = list(entry.get("surfaces") or [])
     if not surfaces:
         raise SystemExit("entry has no surfaces")
@@ -56,17 +62,20 @@ def main() -> None:
     store = default_store(args.store)
     report_path = generated_report_path("teacher-phrase-compose-pilot.json")
 
+    event_entry = entry
     with store_session_lock(store, holder="probe:phrase-compose-pilot"):
         state = resolve_ingest_state(store, None)
         vis_snap = snapshot_visual_cells(state)
 
         font_pt = int(args.font_pt) if int(args.font_pt) > 0 else int(production_font_pt(phrase))
+        if len(phrase) > 18 and font_pt > 48:
+            font_pt = 48
         phrase_rgb = render_phrase_rgb(phrase, font_pt)
         boxes = phrase_word_boxes(phrase, font_pt)
         box_by_word = {_normalize_word(b["word"]): b for b in boxes}
 
         word_reads: list[dict[str, Any]] = []
-        for spec in entry.get("words") or []:
+        for spec in event_entry.get("words") or []:
             surface = str(spec.get("surface") or "")
             key = _normalize_word(surface)
             box = box_by_word.get(key)
@@ -87,8 +96,8 @@ def main() -> None:
             metrics = lum_imprint_metrics(crop_rgb)
             novel_preds = predict_lex_for_vis_cue(state, fid, top_k=8)
 
-            entry = analytic_entry_from_word(spec)
-            if entry is None:
+            analytic_ent = analytic_entry_from_word(spec)
+            if analytic_ent is None:
                 word_reads.append(
                     {
                         "surface": spec.get("surface"),
@@ -100,7 +109,7 @@ def main() -> None:
 
             row = compose_analytic_read(
                 state,
-                entry,
+                analytic_ent,
                 novel_preds=novel_preds,
                 novel_metrics=metrics,
                 min_syllable_votes=args.min_syllable_votes,
@@ -112,37 +121,37 @@ def main() -> None:
             word_reads.append(row)
             restore_visual_cells(state, vis_snap)
 
-        composed = compose_phrase_verdict(word_reads, entry)
+        composed = compose_phrase_verdict(word_reads, event_entry)
 
-    out = {
-        "store_id": args.store,
-        "probe": "phrase-compose-pilot",
-        "events_path": str(args.events),
-        "event_id": entry.get("event_id"),
-        "phrase": phrase,
-        "surface_index": idx,
-        "font_pt": font_pt,
-        "verdict": composed["verdict"],
-        "phrase_know": composed["phrase_know"],
-        "slots": composed["slots"],
-        "agreement": composed["agreement"],
-        "word_reads": word_reads,
-        "total_words": len(word_reads),
-        "know_words": sum(1 for r in word_reads if r.get("verdict") == "analytic_know"),
-    }
-    report_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
-    from casa.domain.emergent_promote import record_probe_gate
-    from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
-
-    gate = record_probe_gate(state, out, tick=int(state.get("field_version") or 0), store_dir=store)
-    out["probe_gate"] = {"gate": gate.gate, "passed": gate.passed}
-    if gate.skipped:
-        out["probe_gate"]["skipped"] = gate.skipped
-    if gate.passed:
-        mark_runtime_dirty(state)
-        save_runtime_state(store, state, force=True, sync_ltm_on_save=False)
+        out = {
+            "store_id": args.store,
+            "probe": "phrase-compose-pilot",
+            "events_path": str(args.events),
+            "event_id": event_entry.get("event_id"),
+            "phrase": phrase,
+            "surface_index": idx,
+            "font_pt": font_pt,
+            "verdict": composed["verdict"],
+            "phrase_know": composed["phrase_know"],
+            "slots": composed["slots"],
+            "agreement": composed["agreement"],
+            "word_reads": word_reads,
+            "total_words": len(word_reads),
+            "know_words": sum(1 for r in word_reads if r.get("verdict") == "analytic_know"),
+        }
         report_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+        from casa.domain.emergent_promote import record_probe_gate
+        from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
+
+        gate = record_probe_gate(state, out, tick=int(state.get("field_version") or 0), store_dir=store)
+        out["probe_gate"] = {"gate": gate.gate, "passed": gate.passed}
+        if gate.skipped:
+            out["probe_gate"]["skipped"] = gate.skipped
+        if gate.passed:
+            mark_runtime_dirty(state)
+            save_runtime_state(store, state, force=True, sync_ltm_on_save=False)
+            report_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     print(
         json.dumps(

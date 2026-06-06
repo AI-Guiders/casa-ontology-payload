@@ -60,7 +60,11 @@ def crop_word_rgb(
     from literacy_render import BG, CARD_H, CARD_W
     from PIL import Image
 
-    x1, y1, x2, y2 = bbox
+    x1, y1, x2, y2 = (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))
+    if x2 < x1:
+        x1, x2 = x2, x1
+    if y2 < y1:
+        y1, y2 = y2, y1
     x1 = max(0, x1 - pad)
     y1 = max(0, y1 - pad)
     if not isinstance(phrase_rgb, RgbFrame):

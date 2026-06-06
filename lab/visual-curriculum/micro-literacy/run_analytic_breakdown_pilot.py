@@ -48,7 +48,11 @@ def run_analytic_breakdown(
         slug = str(entry.get("slug") or "")
         for i, surf in enumerate(entry.get("syllables") or []):
             fid = syllable_frame_id(str(surf))
-            frame = frame_by_id(manifest, fid)
+            try:
+                frame = frame_by_id(manifest, fid)
+            except KeyError:
+                session.log({"warn": "no_syllable_frame", "slug": slug, "syllable": surf, "frame_id": fid})
+                continue
             mid = f"analytic-syl-{slug}-{surf}-{i}"[:80]
             session.ingest(mid, steps_for_frame(frame), frame_id=fid)
         corp = _corpus_frame_for_slug(manifest, slug)
