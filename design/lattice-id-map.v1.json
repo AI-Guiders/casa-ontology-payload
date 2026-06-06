@@ -47,6 +47,7 @@
   "pattern_legacy_to_v1": [
     { "match": "^L2_word_(\\d{2})$", "replace": "lexicon-ru-\\1" },
     { "match": "^L2_en_word_(\\d{2})$", "replace": "lexicon-en-\\1" },
+    { "match": "^L3_phrase_(\\d{2})$", "replace": "phrases-\\1" },
     { "match": "^words-ru-(\\d{2})$", "replace": "lexicon-ru-\\1" },
     { "match": "^words-en-(\\d{2})$", "replace": "lexicon-en-\\1" }
   ],

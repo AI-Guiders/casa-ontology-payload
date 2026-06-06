@@ -28,6 +28,7 @@ from casa.prisms.shared.field_write import load_field_state, save_field_state
 from casa.prisms.shared.ltm_pack import lattice_subdir
 from casa.domain.prism_wire import normalize_prisms, prism_control, prism_hippo, prism_memory
 from casa.prisms.memory.memory_prisms import memory_lattices
+from casa.domain.agent_field import field_db_path
 from casa.prisms.shared.store_layout import field_state_path, ltm_root, nca_root, nca_train_registry_path, use_compact_field_state
 
 _MAP_PATH = REPO_ROOT / "design" / "lattice-id-map.v1.json"
@@ -140,16 +141,21 @@ def _rename_dict_keys(d: dict[str, Any], rename_map: dict[str, str]) -> dict[str
     for k, v in d.items():
         nk = rename_map.get(str(k), str(k))
         if nk in out and nk != k:
-            raise ValueError(f"key collision after rename: {k!r} → {nk!r}")
+            continue
         out[nk] = v
     return out
 
 
 def _ltm_file_for(ltm_dir: Path, lattice_id: str) -> Path | None:
-    for subdir in ("l0", "l1", "l2", "l3", "h0", "lat", "ctrl"):
-        d = ltm_dir / subdir
-        if not d.is_dir():
+    from casa.prisms.shared.store_paths_v1 import ltm_scan_subdirs
+
+    subdirs = [ltm_dir / s for s in ("l0", "l1", "l2", "l3", "h0", "lat", "ctrl")]
+    subdirs.extend(ltm_scan_subdirs(ltm_dir))
+    seen: set[Path] = set()
+    for d in subdirs:
+        if not d.is_dir() or d in seen:
             continue
+        seen.add(d)
         for path in d.iterdir():
             if not path.is_file():
                 continue
@@ -229,6 +235,13 @@ def migrate_manifest(store_dir: Path, rename_map: dict[str, str], *, dry_run: bo
         elif sh.get("shard_prefix") == "L2_word_":
             sh["shard_prefix"] = "lexicon-ru-"
         manifest["l2_sharding"] = _rewrite_strings(sh, rename_map)
+    if isinstance(manifest.get("l3_sharding"), dict):
+        sh3 = manifest["l3_sharding"]
+        if sh3.get("legacy_lattice") in rename_map:
+            sh3["legacy_lattice"] = rename_map[str(sh3["legacy_lattice"])]
+        if sh3.get("shard_prefix") == "L3_phrase_":
+            sh3["shard_prefix"] = "phrases-"
+        manifest["l3_sharding"] = _rewrite_strings(sh3, rename_map)
     manifest["lattice_naming"] = {"version": 1, "migrated_at": _now_iso()}
     after = json.dumps(manifest, ensure_ascii=False, sort_keys=True)
     actions: list[str] = []
@@ -284,9 +297,9 @@ def migrate_registry(store_dir: Path, rename_map: dict[str, str], *, dry_run: bo
 
 def migrate_field_state(store_dir: Path, rename_map: dict[str, str], *, dry_run: bool, compact: bool) -> list[str]:
     fs_path = field_state_path(store_dir)
-    if not fs_path.is_file():
+    if not fs_path.is_file() and not field_db_path(store_dir).is_file():
         return []
-    state = normalize_prisms(load_field_state(fs_path))
+    state = normalize_prisms(load_field_state(fs_path, store_dir=store_dir))
     before = json.dumps(state, ensure_ascii=False, sort_keys=True)
 
     mem = prism_memory(state)
@@ -327,6 +340,14 @@ def migrate_field_state(store_dir: Path, rename_map: dict[str, str], *, dry_run:
             sh["en"] = en
         state["l2_sharding"] = _rewrite_strings(sh, rename_map)
 
+    if state.get("l3_sharding"):
+        sh3 = dict(state["l3_sharding"])
+        if sh3.get("legacy_lattice") in rename_map:
+            sh3["legacy_lattice"] = rename_map[str(sh3["legacy_lattice"])]
+        if sh3.get("shard_prefix") == "L3_phrase_":
+            sh3["shard_prefix"] = "phrases-"
+        state["l3_sharding"] = _rewrite_strings(sh3, rename_map)
+
     state = _rewrite_strings(state, rename_map)
     state["lattice_naming_version"] = 1
     after = json.dumps(state, ensure_ascii=False, sort_keys=True)
@@ -334,7 +355,7 @@ def migrate_field_state(store_dir: Path, rename_map: dict[str, str], *, dry_run:
     if before != after:
         actions.append(f"field_state.json")
         if not dry_run:
-            save_field_state(fs_path, state, compact=compact)
+            save_field_state(fs_path, state, compact=compact, field_db_state=state)
     return actions
 
 

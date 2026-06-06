@@ -34,7 +34,19 @@ Remigrate **copies (x,y) placements** from monolith (does not re-listen).
 
 CLI (lab): `python tools/remigrate_l3_phrase.py --store-dir … --write`
 
+## Semantic shard ids (token_range)
+
+Like L2 `lexicon-ru-{word_lo}-{word_hi}`:
+
+| Field | Value |
+|-------|--------|
+| **Canonical id** | `phrases-{token_lo_slug}-{token_hi_slug}` (~20+20 chars from field token heads) |
+| **Numeric idx** | `token_ranges[].shard` only (sort key `#07` in MEMORY.md — **not** in id) |
+| **Label** | full `E:lang.word.*\|…` heads in manifest `label` + hint `entity/word/meta` |
+| **Tool** | `python tools/rename_phrase_shards_semantic.py --store-dir … --write-memory` |
+
+Interim v1 kebab `phrases-07` (migrate-only) is superseded by token-range slugs on production stores.
+
 ## Not in v0
 
 - Auto-split when a single shard exceeds u16 (bump `num_shards` + re-shard manually)
-- v1 kebab id `phrases-07` only in [`lattice-naming-v1.md`](lattice-naming-v1.md) roadmap

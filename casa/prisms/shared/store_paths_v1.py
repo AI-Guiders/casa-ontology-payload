@@ -37,6 +37,8 @@ def ltm_tier_for_lattice(lattice_id: str) -> str:
         return "memory/syllable"
     if lid in ("phrases",):
         return "memory/phrase"
+    if lid.startswith("phrases-"):
+        return "memory/phrase"
     if lid.startswith(("schema-", "compose-", "cardinal-", "quantity-")):
         return "memory/math"
     if lid.startswith("episodic-"):
@@ -92,6 +94,8 @@ def canonical_nca_relpath(lattice_id: str) -> Path:
     if lid.startswith("syllables-"):
         return Path("memory") / "syllable" / lid
     if lid in ("phrases",):
+        return Path("memory") / "phrase" / lid
+    if lid.startswith("phrases-"):
         return Path("memory") / "phrase" / lid
     if lid.startswith(("schema-", "compose-", "cardinal-")):
         return Path("memory") / "math" / lid
