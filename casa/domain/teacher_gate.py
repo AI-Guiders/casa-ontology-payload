@@ -43,6 +43,11 @@ PROBE_REGISTRY: dict[str, ProbeSpec] = {
     "probe_block04_early_words_held_out": ProbeSpec(GateKind.AGENT_KSA, "block 4 early whole-word held-out"),
     "probe_block05_corpus_held_out": ProbeSpec(GateKind.AGENT_KSA, "block 5 corpus held-out 20%"),
     "probe_block06_closed_class_held_out": ProbeSpec(GateKind.AGENT_KSA, "block 6 closed-class held-out"),
+    "probe_block06b_meta_language_held_out": ProbeSpec(GateKind.AGENT_KSA, "block 6b meta-language held-out"),
+    "probe_block07_grammar_held_out": ProbeSpec(GateKind.AGENT_KSA, "block 7 grammar person/case held-out"),
+    "probe_block08_grammar_phrase_meta_held_out": ProbeSpec(
+        GateKind.AGENT_KSA, "block 8 agreement/possessive/numeral meta held-out"
+    ),
     "probe_passage_comprehend_ru_v0": ProbeSpec(GateKind.AGENT_KSA, "passage comprehension held-out"),
     "probe_oov_word_recall_v0": ProbeSpec(GateKind.AGENT_KSA, "OOV remember recall"),
     "probe_orthography_ru_v0": ProbeSpec(GateKind.AGENT_KSA, "orthography in context"),

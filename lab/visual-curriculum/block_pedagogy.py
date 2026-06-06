@@ -19,6 +19,10 @@ _BLOCK_SPECS: dict[str, Path] = {
     "block-04-early-words-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-04-early-words-cyrl-v1.json",
     "block-05-corpus-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-05-corpus-cyrl-v1.json",
     "block-06-closed-class-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-06-closed-class-cyrl-v1.json",
+    "block-06b-meta-language-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-06b-meta-language-cyrl-v1.json",
+    "block-07-grammar-person-case-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-07-grammar-person-case-cyrl-v1.json",
+    "block-08-grammar-phrase-meta-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-08-grammar-phrase-meta-cyrl-v1.json",
+    "block-09-phrase-exit-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-09-phrase-exit-cyrl-v1.json",
 }
 
 
@@ -38,6 +42,13 @@ def load_block_spec(path: Path | str | None = None, *, block_id: str = "block-01
 
 
 def block_kind(spec: dict[str, Any]) -> str:
+    explicit = str(spec.get("kind") or "").strip().lower()
+    if explicit in ("phrase", "corpus", "frames", "grapheme"):
+        return explicit
+    if spec.get("held_out_event_ids") or any(
+        isinstance(w, dict) and w.get("event_ids") for w in (spec.get("waves") or [])
+    ):
+        return "phrase"
     if spec.get("held_out_corpus") or any(
         isinstance(w, dict) and w.get("corpus_batch") for w in (spec.get("waves") or [])
     ):
@@ -47,6 +58,38 @@ def block_kind(spec: dict[str, Any]) -> str:
     ):
         return "frames"
     return "grapheme"
+
+
+def phrase_events_path(spec: dict[str, Any]) -> Path:
+    rel = str(
+        spec.get("events_path")
+        or "lessons/literacy-cards/data/literacy/phrase-events-ru-pilot-v1.json"
+    )
+    return (_REPO / rel).resolve()
+
+
+def phrase_wave_event_ids(
+    spec: dict[str, Any],
+    *,
+    waves: list[int] | None = None,
+) -> list[str]:
+    want = set(waves) if waves else None
+    out: list[str] = []
+    for wave in spec.get("waves") or []:
+        if not isinstance(wave, dict):
+            continue
+        wno = int(wave.get("wave") or 0)
+        if want is not None and wno not in want:
+            continue
+        for eid in wave.get("event_ids") or []:
+            eid = str(eid)
+            if eid not in out:
+                out.append(eid)
+    return out
+
+
+def held_out_phrase_event_ids(spec: dict[str, Any]) -> list[str]:
+    return [str(e) for e in (spec.get("held_out_event_ids") or [])]
 
 
 def _manifest(spec: dict[str, Any]) -> dict[str, Any]:
@@ -199,7 +242,21 @@ def all_wave_jobs(
     return jobs
 
 
+def gate_pass_phrase(spec: dict[str, Any], report: dict[str, Any]) -> bool:
+    gate = (spec.get("gate") or {}).get("pass") or {}
+    if gate.get("phrase_know") is True:
+        return bool(report.get("phrase_know"))
+    total = int(report.get("total_events") or report.get("total") or 0)
+    if total <= 0:
+        return False
+    know = int(report.get("phrase_know_count") or report.get("know") or 0)
+    min_ratio = float(gate.get("phrase_know_min_ratio") or 1.0)
+    return know / total >= min_ratio
+
+
 def gate_pass(spec: dict[str, Any], report: dict[str, Any]) -> bool:
+    if block_kind(spec) == "phrase":
+        return gate_pass_phrase(spec, report)
     gate = (spec.get("gate") or {}).get("pass") or {}
     total = int(report.get("total") or 0)
     if total <= 0:

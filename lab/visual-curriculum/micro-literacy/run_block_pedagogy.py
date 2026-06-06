@@ -13,7 +13,12 @@ _CURRICULUM = Path(__file__).resolve().parents[1]
 if str(_CURRICULUM) not in sys.path:
     sys.path.insert(0, str(_CURRICULUM))
 
-from block_pedagogy import all_wave_jobs, load_block_spec  # noqa: E402
+from block_pedagogy import (  # noqa: E402
+    all_wave_jobs,
+    block_kind,
+    load_block_spec,
+    phrase_wave_event_ids,
+)
 from literacy_pedagogy import (  # noqa: E402
     hippo_pending_surface_episodes,
     probe_issues,
@@ -40,28 +45,43 @@ def _parser(p: argparse.ArgumentParser) -> None:
     p.add_argument("--reinforce-copies", type=int, default=12)
 
 
+def _ingest_phrase_waves(session, spec: dict, *, waves: list[int] | None) -> None:
+    from phrase_self_drive_core import run_phrase_self_drive_event
+
+    event_ids = phrase_wave_event_ids(spec, waves=waves)
+    session.log({"phrase_ingest": "start", "events": event_ids})
+    for i, eid in enumerate(event_ids, start=1):
+        goal = f"goal.read.phrase#{eid}"
+        row = run_phrase_self_drive_event(session.store_dir, session.state, goal=goal)
+        session.log({"phrase_event": eid, "wake_complete": row.get("wake_complete"), "i": i})
+
+
 def _run(session, args: argparse.Namespace) -> None:
     spec = load_block_spec(args.spec, block_id=args.block)
     block_id = str(spec.get("block_id") or args.block)
+    kind = block_kind(spec)
     waves = args.wave or None
-    jobs = all_wave_jobs(spec, waves=waves)
     pending_before = hippo_pending_surface_episodes(session.state)
+    jobs = all_wave_jobs(spec, waves=waves) if kind != "phrase" else []
     session.log(
         {
             "pedagogy": "block-start",
             "block": block_id,
-            "kind": spec.get("block_id"),
-            "moments": len(jobs),
+            "kind": kind,
+            "moments": len(jobs) if kind != "phrase" else len(phrase_wave_event_ids(spec, waves=waves)),
             "waves": waves or "all",
             "hippo_pending_lex": len(pending_before),
         }
     )
 
     if not args.skip_ingest and not args.probe_only:
-        for i, (mid, steps) in enumerate(jobs):
-            session.ingest(mid, steps, i=i + 1)
-            if (i + 1) % 20 == 0 or i + 1 == len(jobs):
-                session.log(session.summary_rows[-1])
+        if kind == "phrase":
+            _ingest_phrase_waves(session, spec, waves=waves)
+        else:
+            for i, (mid, steps) in enumerate(jobs):
+                session.ingest(mid, steps, i=i + 1)
+                if (i + 1) % 20 == 0 or i + 1 == len(jobs):
+                    session.log(session.summary_rows[-1])
 
     report: dict | None = None
     issues: list[dict] = []
@@ -70,15 +90,14 @@ def _run(session, args: argparse.Namespace) -> None:
             "probe_block_held_out.py",
             extra_args=["--block", block_id, "--store", args.store],
         )
-        issues = probe_issues(report)
+        if kind != "phrase":
+            issues = probe_issues(report)
         session.log(
             {
                 "probe": report.get("probe"),
                 "gate_pass": report.get("gate_pass"),
-                "know": report.get("know"),
-                "ambiguous": report.get("ambiguous"),
-                "empty": report.get("empty"),
-                "total": report.get("total"),
+                "know": report.get("know") or report.get("phrase_know_count"),
+                "total": report.get("total") or report.get("total_events"),
                 "issues": len(issues),
             }
         )
