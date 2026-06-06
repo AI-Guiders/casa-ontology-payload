@@ -32,12 +32,14 @@ def test_tick_gate_and_probe_both_count():
 
 def test_promote_from_probe_report_syncs_skill_gate():
     state: dict = {}
+    event = {"phrase_know": True, "know_words": 3, "total_words": 3}
     report = {
-        "probe": "phrase-compose-pilot",
+        "probe": "phrase-agent-store",
         "promoted_skill": "skill.read.phrase",
         "phrase_know": True,
         "know_words": 3,
         "total_words": 3,
+        "events": [event],
     }
     record_probe_gate(state, report, tick=1)
     record_probe_gate(state, report, tick=2)

@@ -55,15 +55,21 @@ def test_compose_word_fail():
     assert out["verdict"] == "word_fail"
 
 
-def test_promote_phrase_compose_gate():
-    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0, "store": {"store_id": "von-neumann"}})
-    report = {
-        "probe": "phrase-compose-pilot",
+def _phrase_agent_store_report() -> dict:
+    event = {"phrase_know": True, "total_words": 3, "know_words": 3}
+    return {
+        "probe": "phrase-agent-store",
         "phrase_know": True,
         "verdict": "phrase_know",
         "total_words": 3,
         "know_words": 3,
+        "events": [event],
     }
+
+
+def test_promote_phrase_compose_gate():
+    state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0, "store": {"store_id": "von-neumann"}})
+    report = _phrase_agent_store_report()
     first = promote_from_probe_report(state, report, tick=1)
     assert first.passed
     pending = promote_routes_from_probe_report(state, report, min_mastery_streak=2)

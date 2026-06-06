@@ -15,11 +15,12 @@ from casa.prisms.memory.memory_prisms import ensure_prisms
 def test_promote_pending_after_streak():
     state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0, "store": {"store_id": "von-neumann"}})
     report = {
-        "probe": "phrase-compose-pilot",
+        "probe": "phrase-agent-store",
         "phrase_know": True,
         "verdict": "phrase_know",
         "total_words": 3,
         "know_words": 3,
+        "events": [{"phrase_know": True, "total_words": 3, "know_words": 3}],
     }
     promote_from_probe_report(state, report, tick=1)
     pending = promote_pending_bootstrap_routes(state, min_mastery_streak=2)

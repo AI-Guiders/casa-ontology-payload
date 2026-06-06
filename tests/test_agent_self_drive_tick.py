@@ -101,7 +101,14 @@ def test_phrase_compose_slots_verify_on_probe_mastery():
     )
     from casa.domain.emergent_promote import promote_from_probe_report
 
-    report = {"probe": "phrase-compose-pilot", "phrase_know": True, "verdict": "phrase_know"}
+    report = {
+        "probe": "phrase-agent-store",
+        "phrase_know": True,
+        "verdict": "phrase_know",
+        "total_words": 3,
+        "know_words": 3,
+        "events": [{"phrase_know": True, "total_words": 3, "know_words": 3}],
+    }
     promote_from_probe_report(state, report, tick=1)
     promote_from_probe_report(state, report, tick=2)
 
@@ -127,7 +134,14 @@ def test_self_drive_prepares_phrase_plan():
 
     for report in (
         {"probe": "analytic-read-corpus-r1", "items": [{"verdict": "analytic_know"}]},
-        {"probe": "phrase-compose-pilot", "phrase_know": True, "verdict": "phrase_know"},
+        {
+            "probe": "phrase-agent-store",
+            "phrase_know": True,
+            "verdict": "phrase_know",
+            "total_words": 3,
+            "know_words": 3,
+            "events": [{"phrase_know": True, "total_words": 3, "know_words": 3}],
+        },
     ):
         promote_from_probe_report(state, report, tick=1)
         promote_from_probe_report(state, report, tick=2)
