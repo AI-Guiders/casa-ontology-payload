@@ -47,7 +47,44 @@ GRAMMAR_PERSON_CARDS: list[MetaCard] = [
     ("person-3pl", "они", GRAMMAR_PERSON_3PL),
 ]
 
-# План ADR-0030: lang.meta.grammar.number.*, .gender.*, .case.*, .agreement.*
+# Phrase vis: местоимение + глагол (L2 person в phrase flow, как agreement)
+GRAMMAR_PERSON_PHRASE_CARDS: list[MetaCard] = [
+    ("person-ona-myla", "она мыла", GRAMMAR_PERSON_3SG_FEM),
+    ("person-on-myl", "он мыл", GRAMMAR_PERSON_3SG_MASC),
+]
+
+# Род и число (ADR-0030) — явные meta id + phrase vis через притяжательное
+GRAMMAR_GENDER_MASC = "lang.meta.grammar.gender.masc"
+GRAMMAR_GENDER_FEM = "lang.meta.grammar.gender.fem"
+GRAMMAR_GENDER_NEUT = "lang.meta.grammar.gender.neut"
+GRAMMAR_NUMBER_SG = "lang.meta.grammar.number.sg"
+GRAMMAR_NUMBER_PL = "lang.meta.grammar.number.pl"
+
+GRAMMAR_POSSESSIVE_MASC_SG = "lang.meta.grammar.agreement.possessive.masc.sg"
+GRAMMAR_POSSESSIVE_FEM_SG = "lang.meta.grammar.agreement.possessive.fem.sg"
+GRAMMAR_POSSESSIVE_NEUT_SG = "lang.meta.grammar.agreement.possessive.neut.sg"
+GRAMMAR_POSSESSIVE_PL = "lang.meta.grammar.agreement.possessive.pl"
+
+GRAMMAR_GENDER_CARDS: list[MetaCard] = [
+    ("gender-masc", "мужской род", GRAMMAR_GENDER_MASC),
+    ("gender-fem", "женский род", GRAMMAR_GENDER_FEM),
+    ("gender-neut", "средний род", GRAMMAR_GENDER_NEUT),
+]
+
+GRAMMAR_NUMBER_CARDS: list[MetaCard] = [
+    ("number-sg", "единственное число", GRAMMAR_NUMBER_SG),
+    ("number-pl", "множественное число", GRAMMAR_NUMBER_PL),
+]
+
+# Он мой / Она моя / Оно моё + head+modifier (моя книга)
+GRAMMAR_POSSESSIVE_PHRASE_CARDS: list[MetaCard] = [
+    ("poss-rule-sg", "ед.ч.: мой / моя / моё", GRAMMAR_POSSESSIVE_MASC_SG),
+    ("poss-rule-pl", "мн.ч.: мои (все роды)", GRAMMAR_POSSESSIVE_PL),
+    ("poss-on-moy", "он мой", GRAMMAR_POSSESSIVE_MASC_SG),
+    ("poss-ona-moya", "она моя", GRAMMAR_POSSESSIVE_FEM_SG),
+    ("poss-ono-moyo", "оно моё", GRAMMAR_POSSESSIVE_NEUT_SG),
+    ("poss-oni-moi", "они мои", GRAMMAR_POSSESSIVE_PL),
+]
 
 # Синонимы surface (отдельные moment'ы, тот же concept_id):
 #   leftOf  — «левее» / «слева»     rightOf — «правее» / «справа»
@@ -76,6 +113,7 @@ REGISTER_LOWERCASE = LETTER_CASE_LOWER
 # L2+ грамматика (ADR-0030 / ADR-0033)
 GRAMMAR_CASE_NOM = "lang.meta.grammar.case.nom"
 GRAMMAR_CASE_ACC = "lang.meta.grammar.case.acc"
+GRAMMAR_CASE_DAT = "lang.meta.grammar.case.dat"
 GRAMMAR_AGREEMENT_FEM_SG_PAST = "lang.meta.grammar.agreement.subjectVerb.fem.sg.past"
 GRAMMAR_AGREEMENT_MASC_SG_PAST = "lang.meta.grammar.agreement.subjectVerb.masc.sg.past"
 
@@ -100,4 +138,18 @@ QUESTION_FRAME_IDS: tuple[str, ...] = (
     "lang.meta.grammar.question.to_whom",
     "lang.meta.grammar.question.when",
     "lang.meta.grammar.question.how",
+    "lang.meta.grammar.question.whose",
+    "lang.meta.grammar.question.whose_pl",
+    "lang.meta.grammar.question.which_gender",
 )
+
+# Agent surface (lower) → person meta id for agreement cross-check
+AGENT_PERSON_BY_SURFACE: dict[str, str] = {
+    "я": GRAMMAR_PERSON_1SG,
+    "ты": GRAMMAR_PERSON_2SG,
+    "он": GRAMMAR_PERSON_3SG_MASC,
+    "она": GRAMMAR_PERSON_3SG_FEM,
+    "мы": GRAMMAR_PERSON_1PL,
+    "вы": GRAMMAR_PERSON_2PL,
+    "они": GRAMMAR_PERSON_3PL,
+}

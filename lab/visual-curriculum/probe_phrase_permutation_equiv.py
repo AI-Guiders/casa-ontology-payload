@@ -20,22 +20,32 @@ def main() -> None:
     args = p.parse_args()
 
     setup_probe_imports()
-    from casa.prisms.visual.phrase_compose import compose_phrase_verdict, load_phrase_events
+    from casa.prisms.visual.phrase_compose import _nfc, compose_phrase_verdict, load_phrase_events
     from casa.prisms.visual.phrase_permutation import check_permutation_equiv
+    from casa.prisms.visual.phrase_possessive import resolve_possessive_entry
 
     entries = load_phrase_events(args.events)
     entry = next((e for e in entries if e.get("event_id") == args.event_id), None)
     if entry is None:
         raise SystemExit(f"event not found: {args.event_id}")
 
-    def compose(_surface: str) -> dict:
-        reads = [
-            {"surface": w.get("surface"), "verdict": "analytic_know"}
-            for w in entry.get("words") or []
-        ]
+    examples = entry.get("examples")
+    if isinstance(examples, list) and examples:
+        probe_entry = resolve_possessive_entry(entry, None)
+    else:
+        probe_entry = entry
+
+    spec = {_nfc(str(w.get("surface") or "")).lower(): w.get("surface") for w in probe_entry.get("words") or []}
+
+    def compose(surface: str) -> dict:
+        reads = []
+        for token in surface.split():
+            key = _nfc(token).lower()
+            if key in spec:
+                reads.append({"surface": spec[key], "verdict": "analytic_know"})
         return compose_phrase_verdict(reads, entry, check_questions=True)
 
-    report = check_permutation_equiv(entry, compose)
+    report = check_permutation_equiv(probe_entry, compose)
     report["probe"] = "phrase-permutation-equiv"
     report_path = generated_report_path("teacher-phrase-permutation-equiv.json")
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")

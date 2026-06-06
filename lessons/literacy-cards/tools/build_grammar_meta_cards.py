@@ -15,12 +15,17 @@ from literacy_render import draw_text_centered  # noqa: E402
 from meta_concepts import (  # noqa: E402
     GRAMMAR_AGREEMENT_PHRASE_CARDS,
     GRAMMAR_CASE_CARDS,
+    GRAMMAR_GENDER_CARDS,
+    GRAMMAR_NUMBER_CARDS,
     GRAMMAR_PERSON_CARDS,
+    GRAMMAR_PERSON_PHRASE_CARDS,
+    GRAMMAR_POSSESSIVE_PHRASE_CARDS,
 )
 
 LESSON_PERSON = "lesson-08-grammar-meta"
 LESSON_CASE = "lesson-08b-grammar-case-meta"
 LESSON_AGREEMENT = "lesson-09-grammar-agreement-meta"
+LESSON_POSSESSIVE = "lesson-09b-grammar-possessive-meta"
 FACE = "sans"
 
 
@@ -79,7 +84,7 @@ def _build_cards(
 
 def build_person_cards() -> list[str]:
     return _build_cards(
-        GRAMMAR_PERSON_CARDS,
+        [*GRAMMAR_PERSON_CARDS, *GRAMMAR_PERSON_PHRASE_CARDS],
         lesson_id=LESSON_PERSON,
         stage_id="stage-08-meta-grammar-person",
         stage_title="Мета-грамматика: грамматическое лицо",
@@ -110,15 +115,27 @@ def build_agreement_cards() -> list[str]:
     )
 
 
+def build_possessive_cards() -> list[str]:
+    return _build_cards(
+        [*GRAMMAR_POSSESSIVE_PHRASE_CARDS, *GRAMMAR_GENDER_CARDS, *GRAMMAR_NUMBER_CARDS],
+        lesson_id=LESSON_POSSESSIVE,
+        stage_id="stage-09b-grammar-possessive",
+        stage_title="Род/число: притяжательное (мой/моя/моё)",
+        stage_order=83,
+        grammar_tag="possessive",
+    )
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--person", action="store_true")
     p.add_argument("--case", action="store_true")
     p.add_argument("--agreement", action="store_true")
-    p.add_argument("--all", action="store_true", help="person + case + agreement")
+    p.add_argument("--possessive", action="store_true")
+    p.add_argument("--all", action="store_true", help="person + case + agreement + possessive")
     args = p.parse_args()
-    if args.all or not (args.person or args.case or args.agreement):
-        args.person = args.case = args.agreement = True
+    if args.all or not (args.person or args.case or args.agreement or args.possessive):
+        args.person = args.case = args.agreement = args.possessive = True
     out: dict[str, list[str]] = {}
     if args.person:
         out["person"] = build_person_cards()
@@ -126,6 +143,8 @@ def main() -> None:
         out["case"] = build_case_cards()
     if args.agreement:
         out["agreement"] = build_agreement_cards()
+    if args.possessive:
+        out["possessive"] = build_possessive_cards()
     print(json.dumps(out, ensure_ascii=False, indent=2))
 
 
