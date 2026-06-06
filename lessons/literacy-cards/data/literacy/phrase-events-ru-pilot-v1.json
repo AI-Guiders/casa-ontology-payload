@@ -205,6 +205,16 @@
           "expected_surface": "книгу",
           "expected_role": "patient"
         }
+      ],
+      "examples": [
+        {
+          "lemma": "книга",
+          "notes": "W5 paradigm co-sleep: nom + acc forms in curriculum",
+          "words": [
+            {"role": "form_nom", "surface": "книга", "slug": "695b9685757a"},
+            {"role": "form_acc", "surface": "книгу", "slug": "974d6c14655c"}
+          ]
+        }
       ]
     },
     {

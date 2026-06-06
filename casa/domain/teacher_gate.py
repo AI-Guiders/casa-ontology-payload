@@ -32,6 +32,7 @@ PROBE_REGISTRY: dict[str, ProbeSpec] = {
     "analytic-read-corpus-r1": ProbeSpec(GateKind.AGENT_KSA, "R1 analytic read on store"),
     "phrase-compose-pilot": ProbeSpec(GateKind.AGENT_KSA, "phrase compose single event on store"),
     "phrase-agent-store": ProbeSpec(GateKind.AGENT_KSA, "phrase batch held-out on agent store"),
+    "paradigm-select": ProbeSpec(GateKind.AGENT_KSA, "pilot paradigm forms known in agent LTM"),
     "syllable-cyrl-quiz": ProbeSpec(GateKind.AGENT_KSA, "syllable frames"),
     "meta-phonology-quiz": ProbeSpec(GateKind.AGENT_KSA, "phonology meta category"),
     "meta-pure-quiz": ProbeSpec(GateKind.AGENT_KSA, "meta language pure cards"),
@@ -155,6 +156,10 @@ def _gate_phrase_agent_store(report: dict[str, Any]) -> bool:
     return all(_gate_phrase_compose(ev) for ev in events)
 
 
+def _gate_paradigm_select(report: dict[str, Any]) -> bool:
+    return bool(report.get("paradigm_select"))
+
+
 def probe_gate_passed(report: dict[str, Any], gate_id: str = "") -> bool:
     """Probe verdict — independent of mastery credit (see credits_mastery + record path)."""
     probe = str(report.get("probe") or gate_id)
@@ -171,6 +176,8 @@ def probe_gate_passed(report: dict[str, Any], gate_id: str = "") -> bool:
         return _gate_phrase_compose(report)
     if probe == "phrase-agent-store":
         return _gate_phrase_agent_store(report)
+    if probe == "paradigm-select":
+        return _gate_paradigm_select(report)
     if ":" in probe and report.get("class_id"):
         return _gate_stage_full_know(report)
     if "total" in report and int(report.get("total") or 0) > 0:

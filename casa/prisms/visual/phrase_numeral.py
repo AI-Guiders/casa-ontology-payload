@@ -136,6 +136,8 @@ def resolve_numeral_entry(
     entry: dict[str, Any],
     word_reads: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
+    if not (entry.get("numeral_agreement") or entry.get("numeral_schema")):
+        return entry
     examples = entry.get("examples")
     if not isinstance(examples, list) or not examples:
         return entry

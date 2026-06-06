@@ -93,8 +93,11 @@ def co_occur_groups_from_events(entries: list[dict[str, Any]]) -> list[dict[str,
 
 
 def form_known_in_ltm(state: dict, slug: str, *, min_votes: int = 2) -> bool:
+    from casa.prisms.memory.memory_prisms import memory_lattices
+
     cid = canonical_lex_concept_id(f"lang.word.{slug}")
-    return lex_concept_votes(state, cid, min_votes=min_votes) >= min_votes
+    lattices = memory_lattices(state)
+    return lex_concept_votes(lattices, cid, min_votes=min_votes) >= min_votes
 
 
 def paradigm_ltm_report(
@@ -119,6 +122,36 @@ def paradigm_ltm_report(
     return {
         "total_clusters": len(rows),
         "complete_clusters": sum(1 for r in rows if r.get("complete")),
+        "clusters": rows,
+    }
+
+
+# Pilot paradigm clusters (slug sets) — ADR-0036 W5
+PILOT_PARADIGM_SLUG_SETS: tuple[frozenset[str], ...] = (
+    frozenset({"695b9685757a", "974d6c14655c"}),  # книга / книгу
+    frozenset({"731d5322d47c", "94b7ef274867", "3ccb174c7b7c"}),  # палка / палки / палок
+)
+
+
+def pilot_paradigm_gate(
+    state: dict,
+    *,
+    pilot_slug_sets: tuple[frozenset[str], ...] = PILOT_PARADIGM_SLUG_SETS,
+    min_votes: int = 2,
+) -> dict[str, Any]:
+    """True when each pilot slug set has all forms known in LTM."""
+    rows: list[dict[str, Any]] = []
+    ok = True
+    for slugs in pilot_slug_sets:
+        known = {s: form_known_in_ltm(state, s, min_votes=min_votes) for s in slugs}
+        complete = all(known.values())
+        if not complete:
+            ok = False
+        rows.append({"slugs": sorted(slugs), "known": known, "complete": complete})
+    return {
+        "ok": ok,
+        "pilot_sets": len(rows),
+        "complete_sets": sum(1 for r in rows if r.get("complete")),
         "clusters": rows,
     }
 

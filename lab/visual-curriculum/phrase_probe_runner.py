@@ -39,7 +39,9 @@ def merge_phrase_event_example(entry: dict[str, Any], example: dict[str, Any]) -
 
 
 def phrase_event_probe_slices(entry: dict[str, Any]) -> list[tuple[dict[str, Any], int]]:
-    """One held-out slice per event — first surface of first example (or flat event)."""
+    """One held-out slice per event — flat words/surfaces, else first example."""
+    if entry.get("words") and phrase_event_surfaces(entry):
+        return [(entry, 0)]
     examples = entry.get("examples")
     if isinstance(examples, list) and examples:
         ex = next((x for x in examples if isinstance(x, dict)), None)

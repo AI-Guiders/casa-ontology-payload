@@ -84,6 +84,8 @@ def resolve_possessive_entry(
     word_reads: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Слить examples[] в плоский entry для probe (иллюстрация ≠ правило)."""
+    if not (entry.get("possessive_agreement") or entry.get("possessive_schema")):
+        return entry
     examples = entry.get("examples")
     if not isinstance(examples, list) or not examples:
         return entry

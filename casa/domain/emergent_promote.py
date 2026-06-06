@@ -30,6 +30,7 @@ _BOOTSTRAP_PROBES = frozenset(
         "analytic-read-corpus-r1",
         "phrase-compose-pilot",
         "phrase-agent-store",
+        "paradigm-select",
     }
 )
 
@@ -299,6 +300,16 @@ def _probe_route_actions(report: dict[str, Any], gate_id: str, agent_id: str) ->
                     "skill.compose.slots",
                     "skill.verify.phrase",
                 ],
+            }
+        )
+    if probe == "paradigm-select":
+        if not report.get("paradigm_select"):
+            return []
+        actions.append(
+            {
+                "kind": "capability",
+                "match": {"modality": "vis", "surface_class": "word", "locale": locale},
+                "target_skill": "skill.select.form",
             }
         )
     return actions

@@ -6,7 +6,11 @@ from __future__ import annotations
 from typing import Any
 
 from casa.domain.plan_tick import PlanTick
-from casa.prisms.visual.phrase_compose import load_phrase_events, phrase_probe_frame_id
+from casa.prisms.visual.phrase_compose import (
+    load_phrase_events,
+    phrase_compose_slice,
+    phrase_probe_frame_id,
+)
 
 _DEFAULT_EVENT_ID = "lang.event.transitive.wash.v0"
 
@@ -28,6 +32,10 @@ def phrase_entry_for_goal(goal_id: str, *, events_path: str | None = None) -> di
     return entries[0] if entries else {}
 
 
+def phrase_compose_entry_for_goal(goal_id: str, *, events_path: str | None = None) -> dict[str, Any]:
+    return phrase_compose_slice(phrase_entry_for_goal(goal_id, events_path=events_path))
+
+
 def _decompose_state(state: dict) -> dict[str, Any]:
     raw = state.setdefault("wake_decompose", {})
     return raw if isinstance(raw, dict) else {}
@@ -38,7 +46,7 @@ def phrase_words_for_goal(goal_id: str, *, events_path: str | None = None) -> li
     gid = str(goal_id or "").strip()
     if not gid.startswith("goal.read.phrase"):
         return []
-    entry = phrase_entry_for_goal(gid, events_path=events_path)
+    entry = phrase_compose_entry_for_goal(gid, events_path=events_path)
     words = entry.get("words")
     if isinstance(words, list) and words:
         return [w for w in words if isinstance(w, dict) and w.get("surface")]

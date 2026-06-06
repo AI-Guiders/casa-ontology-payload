@@ -27,6 +27,74 @@ def load_phrase_events(path: Path | str | None = None) -> list[dict[str, Any]]:
     return list(doc.get("entries") or [])
 
 
+def merge_phrase_event_example(entry: dict[str, Any], example: dict[str, Any]) -> dict[str, Any]:
+    """Flat view for one lab illustration (possessive/numeral examples[])."""
+    merged = dict(entry)
+    for key in ("surfaces", "words", "gender_id", "lemma", "question_frames"):
+        if key in example:
+            merged[key] = example[key]
+    if example.get("gender_id"):
+        merged["example_gender_id"] = example["gender_id"]
+    if example.get("lemma"):
+        merged["example_lemma"] = example["lemma"]
+    return merged
+
+
+def phrase_compose_slice(entry: dict[str, Any]) -> dict[str, Any]:
+    """Flat event for compose/self-drive — first example if no top-level words."""
+    words = entry.get("words")
+    if isinstance(words, list) and words:
+        return entry
+    examples = entry.get("examples")
+    if isinstance(examples, list):
+        ex = next((x for x in examples if isinstance(x, dict)), None)
+        if ex is not None:
+            return merge_phrase_event_example(entry, ex)
+    return entry
+
+
+def phrase_entry_by_id(event_id: str, *, events_path: Path | str | None = None) -> dict[str, Any]:
+    for entry in load_phrase_events(events_path):
+        if str(entry.get("event_id") or "") == event_id:
+            return entry
+    entries = load_phrase_events(events_path)
+    return entries[0] if entries else {}
+
+
+def check_modifier_agreement(
+    slots: dict[str, dict[str, Any]],
+    entry: dict[str, Any],
+) -> dict[str, Any]:
+    """Possessive / numeral agreement on already-bound slots (W6)."""
+    from casa.prisms.visual.phrase_numeral import (
+        agreement_rows_for_entry as numeral_rows,
+        check_numeral_agreement,
+    )
+    from casa.prisms.visual.phrase_possessive import (
+        agreement_rows_for_entry as possessive_rows,
+        check_possessive_agreement,
+    )
+
+    poss_rows = possessive_rows(entry)
+    if poss_rows:
+        out = check_possessive_agreement(
+            slots,
+            poss_rows,
+            example_gender_id=str(entry.get("example_gender_id") or ""),
+        )
+        return {"kind": "possessive", **out}
+    num_rows = numeral_rows(entry)
+    if num_rows:
+        out = check_numeral_agreement(
+            slots,
+            num_rows,
+            example_gender_id=str(entry.get("example_gender_id") or ""),
+            example_lemma=str(entry.get("example_lemma") or ""),
+        )
+        return {"kind": "numeral", **out}
+    return {"ok": True, "checked": 0, "kind": None}
+
+
 def phrase_probe_frame_id(slug: str) -> str:
     """Novel per-word crop frame inside a phrase probe (not corpus id)."""
     return f"phrase-probe-{slug}-sans"
