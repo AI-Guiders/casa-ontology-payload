@@ -68,11 +68,16 @@ def maybe_agent_remember_surprise(
 ) -> dict[str, Any] | None:
     if control.value < min_value or not control.surprise:
         return None
-    sig = surprise_signature(control.surprise)
-    if should_skip_journal_surprise(store_dir, sig=sig):
+    from casa.domain.partner_cue_policy import skip_deliberate_practice_for_cue
+
+    cue = (user_query or (wm.goal if wm else "") or "macro_tick")[:120]
+    if skip_deliberate_practice_for_cue(cue):
         return None
     cue = (user_query or (wm.goal if wm else "") or "macro_tick")[:120]
     norm = normalize_cue(cue)
+    sig = surprise_signature(control.surprise)
+    if should_skip_journal_surprise(store_dir, sig=sig):
+        return None
     from casa.prisms.memory.agent_memory_ops import agent_remember
 
     return agent_remember(
@@ -125,8 +130,19 @@ def maybe_sleep_phase(
     do_sleep = sleep_every > 0 and ticks_since >= sleep_every
     if not do_sleep and control.value >= sleep_on_value:
         do_sleep = True
+    if not do_sleep and store_dir is not None:
+        from casa.domain.load_governor import should_force_sleep_on_overload
+
+        if should_force_sleep_on_overload(state):
+            do_sleep = True
     if not do_sleep:
         return None
+
+    if store_dir is not None:
+        from casa.domain.load_governor import cognitive_load_from_state, retire_stuck_surprise_episodes
+
+        load_rep = cognitive_load_from_state(state)
+        retire_stuck_surprise_episodes(state, overloaded=bool(load_rep.get("overloaded")))
 
     batch = max(0, int(sleep_batch_size))
     max_ep = batch if batch > 0 else None

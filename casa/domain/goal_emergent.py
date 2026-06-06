@@ -16,11 +16,9 @@ from casa.prisms.tick.surprise_policy import normalize_cue
 
 
 def _primary_surprise_concept(control: ControlExtensions) -> str | None:
-    for cid in control.surprise:
-        s = str(cid).strip()
-        if s.startswith(("lang.", "math.", "skill.", "vis.")):
-            return s
-    return str(control.surprise[0]).strip() if control.surprise else None
+    from casa.domain.episode_bind import primary_surprise_concept as _psc
+
+    return _psc(control)
 
 
 def _revise_goal_id(concept_id: str) -> str:
@@ -40,6 +38,10 @@ def propose_goal_from_surprise(
     min_value: float = 0.25,
 ) -> dict[str, Any] | None:
     """Proposal only — arbiter applies (ADR-0036)."""
+    from casa.domain.partner_cue_policy import skip_deliberate_practice_for_cue
+
+    if skip_deliberate_practice_for_cue(cue):
+        return None
     if wm.goal_id or not control.surprise:
         return None
     if control.value < min_value and not hippo_ep:
@@ -47,6 +49,8 @@ def propose_goal_from_surprise(
 
     concept = _primary_surprise_concept(control)
     if not concept:
+        return None
+    if concept.startswith("grapheme.") and skip_deliberate_practice_for_cue(cue):
         return None
 
     gid = _revise_goal_id(concept)

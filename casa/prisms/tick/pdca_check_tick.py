@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from casa.domain.episode_bind import primary_surprise_concept
 from casa.domain.goal_emergent import propose_goal_from_surprise
 from casa.domain.goal_arbiter import arbitrate_check_intent
 from casa.domain.hypothesis_queue import hypothesis_from_check, prune_hypothesis_queue
@@ -62,6 +63,10 @@ def surprise_to_hippo_episode(
     bundle: dict | None,
     min_value: float,
 ) -> dict | None:
+    from casa.domain.partner_cue_policy import skip_hippo_surprise_for_partner_cue
+
+    if skip_hippo_surprise_for_partner_cue(user_query or "", bundle):
+        return None
     if not control.surprise or control.value < min_value:
         return None
     cue = (user_query or wm.goal or "macro_tick")[:120]
@@ -70,6 +75,11 @@ def surprise_to_hippo_episode(
     if existing:
         updated = bump_episode_recurrence(existing)
         updated["cue"] = cue
+        if not updated.get("concept_id"):
+            cid = primary_surprise_concept(control, user_query=user_query, bundle=bundle)
+            if cid:
+                updated["concept_id"] = cid
+                updated["bind_class"] = "bindable_surprise"
         episodes = prism_hippo(state).get("episodes") or []
         for i, row in enumerate(episodes):
             if row.get("id") == existing.get("id"):
@@ -80,15 +90,18 @@ def surprise_to_hippo_episode(
 
     predicted = ", ".join(control.predicted[:8]) or "?"
     observed = ", ".join(control.surprise[:8]) or "?"
+    concept_id = primary_surprise_concept(control, user_query=user_query, bundle=bundle)
     ep = append_episode(
         state,
         cue=cue,
         surface_attempt=predicted,
         correct=observed,
         lattice_id=lattice_id,
+        concept_id=concept_id,
         bundle=bundle,
         scene="predict_surprise",
         structure_tag="predict_mismatch",
+        bind_class="bindable_surprise",
     )
     mark_runtime_dirty(state)
     return ep
@@ -165,11 +178,14 @@ def maybe_pdca_check_tick(ctx: PdcaCheckContext) -> dict[str, Any]:
 
     deliberate: dict[str, Any] | None = None
     if cfg.deliberate_practice and not rep["check_passed"]:
-        weak = weakest_link_from_surprise(ctx.control, hippo_ep=rep["hippo_episode"])
-        if weak is None:
-            stored = ctx.state.get("last_weakest_link")
-            weak = stored if isinstance(stored, dict) else None
-        deliberate = apply_deliberate_practice(ctx.wm, weak)
+        from casa.domain.partner_cue_policy import skip_deliberate_practice_for_cue
+
+        if not skip_deliberate_practice_for_cue(ctx.cue):
+            weak = weakest_link_from_surprise(ctx.control, hippo_ep=rep["hippo_episode"])
+            if weak is None:
+                stored = ctx.state.get("last_weakest_link")
+                weak = stored if isinstance(stored, dict) else None
+            deliberate = apply_deliberate_practice(ctx.wm, weak)
 
     rep["deliberate_practice"] = deliberate
     if str(ctx.wm.goal_id or "").startswith("goal.read.phrase") and rep["check_passed"]:

@@ -20,7 +20,7 @@ from typing import Any
 
 from casa.prisms.control.fpn_state import WorkingMemory, effective_user_query, fpn_after_cen, salience_mode_bias
 from casa.prisms.control.sn_cen_infer import _run_from_field
-from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict
+from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict, TaskEmit
 from casa.prisms.control.tick import ControlExtensions, run_control_extensions
 from casa.prisms.memory.agent_bridges import load_agent_bridges, merge_digest_with_agent_bridges
 from casa.prisms.memory.agent_prism import load_agent_prism
@@ -60,12 +60,9 @@ class LearningTickConfig:
 
 
 def _load_bundle(store_dir: Path) -> dict | None:
-    bs = list((store_dir / "bundles").glob("*.json"))
-    if not bs:
-        return None
-    import json
+    from casa.prisms.shared.store_bundles import load_store_bundle
 
-    return json.loads(bs[0].read_text(encoding="utf-8"))
+    return load_store_bundle(store_dir)
 
 
 def _fallback_bundle(store_dir: Path) -> dict | None:
@@ -172,6 +169,9 @@ def run_learning_tick(
     from casa.prisms.memory.prism_router import tick_prepare_memory
 
     q_preview = effective_user_query(wm, user_query)
+    from casa.domain.partner_cue_policy import prepare_wm_for_partner_cue
+
+    prepare_wm_for_partner_cue(wm, q_preview or "")
     mem_prep = tick_prepare_memory(
         state, cue=q_preview or "", modality="segment", wm=wm, store_dir=store_dir
     )
@@ -196,12 +196,35 @@ def run_learning_tick(
     task = cen_plan(gated, bundle=routing_bundle, user_query=q)
     wm_next = fpn_after_cen(wm, task, user_query=q)
 
+    from casa.domain.dialogue_tick import apply_subject_answer_text, process_dialogue_on_tick
+
+    subject_answer = apply_subject_answer_text(
+        task, user_query=q, state=state, wm=wm_next, store_dir=store_dir
+    )
+    if subject_answer != task.answer_text:
+        task = TaskEmit(
+            intent=task.intent,
+            action=task.action,
+            concepts=task.concepts,
+            edges=task.edges,
+            targets=task.targets,
+            query_to_dmn=task.query_to_dmn,
+            confidence=task.confidence,
+            notes=task.notes,
+            llm_probe=task.llm_probe,
+            answer_blocks=task.answer_blocks,
+            answer_text=subject_answer,
+        )
+
     control = run_control_extensions(
         prior_digest=wm.last_concepts,
         current_digest=digest.concept_ids,
         goal=[wm.goal] if wm.goal else digest.concept_ids[:8],
         task_relevant=bool(wm.goal or q),
     )
+    from casa.domain.partner_cue_policy import adjust_control_for_partner_cue
+
+    control = adjust_control_for_partner_cue(q or "", control, bundle=routing_bundle)
 
     bundle_for_hippo = bundle or _load_bundle(store_dir)
     lattice_id = active_memory_lattice_id(state)
@@ -287,6 +310,18 @@ def run_learning_tick(
 
         retro_rep = maybe_run_retrospective_after_sleep(store_dir)
 
+    dialogue_rep = process_dialogue_on_tick(
+        store_dir,
+        state,
+        wm=wm,
+        wm_next=wm_next,
+        user_query=q,
+        task=task,
+        mem_prep=mem_prep,
+        self_drive_rep=self_drive_rep,
+        retro_rep=retro_rep,
+    )
+
     pdca_phase = infer_pdca_phase(
         plan_tick=plan_tick,
         control=control.to_dict(),
@@ -362,6 +397,7 @@ def run_learning_tick(
             "autonomy_seed": mem_prep.get("autonomy_seed"),
             "self_check": self_check_rep,
         },
+        "dialogue": dialogue_rep,
         "learning_cycle": {
             "extract": {"field_decode": True, "act_rollout": bool(act_report and not act_report.get("skipped"))},
             "remember": {"hippo_episode": hippo_ep is not None, "sleep": sleep_rep is not None},
