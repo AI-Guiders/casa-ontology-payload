@@ -34,8 +34,18 @@ def main() -> None:
     wordlist = _REPO / "lessons" / "literacy-cards" / "data" / "phrase-pilot-words-v1.txt"
 
     if not args.skip_build:
-        _run([py, str(_TOOLS / "build_word_cards.py"), "--wordlist", str(wordlist), "--limit", "20"])
-        _run([py, str(_TOOLS / "build_grammar_meta_cards.py"), "--person", "--case", "--agreement", "--possessive"])
+        _run([py, str(_TOOLS / "build_word_cards.py"), "--wordlist", str(wordlist)])
+        _run(
+            [
+                py,
+                str(_TOOLS / "build_grammar_meta_cards.py"),
+                "--person",
+                "--case",
+                "--agreement",
+                "--possessive",
+                "--numeral",
+            ]
+        )
 
     if not args.skip_ingest:
         _run([py, str(_MICRO / "run_phrase_pilot_words.py"), "--phrase-p1"])
@@ -45,6 +55,7 @@ def main() -> None:
                 "run_meta_grammar_case_pure.py",
                 "run_meta_grammar_agreement_pure.py",
                 "run_meta_grammar_possessive_pure.py",
+                "run_meta_grammar_numeral_pure.py",
             ):
                 _run([py, str(_MICRO / script), "--rounds", "1", "--modes", "phrase_vis"])
 
@@ -121,6 +132,8 @@ def main() -> None:
             ],
             [py, str(_CURRICULUM / "probe_possessive_pilot.py")],
             [py, str(_CURRICULUM / "probe_possessive_rule.py")],
+            [py, str(_CURRICULUM / "probe_numeral_pilot.py")],
+            [py, str(_CURRICULUM / "probe_numeral_rule.py")],
             [
                 py,
                 str(_CURRICULUM / "probe_phrase_permutation_equiv.py"),

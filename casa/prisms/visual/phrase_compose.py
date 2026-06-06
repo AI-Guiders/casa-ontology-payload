@@ -138,7 +138,14 @@ def compose_phrase_verdict(
     )
     from casa.prisms.visual.phrase_question import compose_question_verdict
 
+    from casa.prisms.visual.phrase_numeral import (
+        agreement_rows_for_entry as numeral_agreement_rows_for_entry,
+        check_numeral_agreement,
+        resolve_numeral_entry,
+    )
+
     entry = resolve_possessive_entry(entry, word_reads)
+    entry = resolve_numeral_entry(entry, word_reads)
     words_spec = list(entry.get("words") or [])
     bind = bind_slots(word_reads, words_spec)
     slots = bind["slots"]
@@ -157,6 +164,18 @@ def compose_phrase_verdict(
             example_gender_id=str(entry.get("example_gender_id") or ""),
         )
         if not poss_out.get("ok"):
+            agreement_ok = False
+
+    num_agr_rows = numeral_agreement_rows_for_entry(entry)
+    num_out: dict[str, Any] | None = None
+    if num_agr_rows:
+        num_out = check_numeral_agreement(
+            slots,
+            num_agr_rows,
+            example_gender_id=str(entry.get("example_gender_id") or ""),
+            example_lemma=str(entry.get("example_lemma") or ""),
+        )
+        if not num_out.get("ok"):
             agreement_ok = False
 
     verdict = "empty"
@@ -204,6 +223,8 @@ def compose_phrase_verdict(
     }
     if poss_out is not None:
         out["possessive_agreement"] = poss_out
+    if num_out is not None:
+        out["numeral_agreement"] = num_out
     if question_out is not None:
         out["question"] = question_out
     if case_out is not None:

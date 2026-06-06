@@ -19,6 +19,8 @@ from meta_concepts import (  # noqa: E402
     GRAMMAR_NUMBER_CARDS,
     GRAMMAR_PERSON_CARDS,
     GRAMMAR_PERSON_PHRASE_CARDS,
+    GRAMMAR_NUMERAL_CLASS_CARDS,
+    GRAMMAR_NUMERAL_PHRASE_CARDS,
     GRAMMAR_POSSESSIVE_PHRASE_CARDS,
 )
 
@@ -26,6 +28,7 @@ LESSON_PERSON = "lesson-08-grammar-meta"
 LESSON_CASE = "lesson-08b-grammar-case-meta"
 LESSON_AGREEMENT = "lesson-09-grammar-agreement-meta"
 LESSON_POSSESSIVE = "lesson-09b-grammar-possessive-meta"
+LESSON_NUMERAL = "lesson-09c-grammar-numeral-meta"
 FACE = "sans"
 
 
@@ -115,6 +118,17 @@ def build_agreement_cards() -> list[str]:
     )
 
 
+def build_numeral_cards() -> list[str]:
+    return _build_cards(
+        [*GRAMMAR_NUMERAL_CLASS_CARDS, *GRAMMAR_NUMERAL_PHRASE_CARDS],
+        lesson_id=LESSON_NUMERAL,
+        stage_id="stage-09c-grammar-numeral",
+        stage_title="Числительное + существительное (классы 1 / 2–4 / 5+)",
+        stage_order=84,
+        grammar_tag="numeral",
+    )
+
+
 def build_possessive_cards() -> list[str]:
     return _build_cards(
         [*GRAMMAR_POSSESSIVE_PHRASE_CARDS, *GRAMMAR_GENDER_CARDS, *GRAMMAR_NUMBER_CARDS],
@@ -132,10 +146,11 @@ def main() -> None:
     p.add_argument("--case", action="store_true")
     p.add_argument("--agreement", action="store_true")
     p.add_argument("--possessive", action="store_true")
-    p.add_argument("--all", action="store_true", help="person + case + agreement + possessive")
+    p.add_argument("--numeral", action="store_true")
+    p.add_argument("--all", action="store_true", help="person + case + agreement + possessive + numeral")
     args = p.parse_args()
-    if args.all or not (args.person or args.case or args.agreement or args.possessive):
-        args.person = args.case = args.agreement = args.possessive = True
+    if args.all or not (args.person or args.case or args.agreement or args.possessive or args.numeral):
+        args.person = args.case = args.agreement = args.possessive = args.numeral = True
     out: dict[str, list[str]] = {}
     if args.person:
         out["person"] = build_person_cards()
@@ -145,6 +160,8 @@ def main() -> None:
         out["agreement"] = build_agreement_cards()
     if args.possessive:
         out["possessive"] = build_possessive_cards()
+    if args.numeral:
+        out["numeral"] = build_numeral_cards()
     print(json.dumps(out, ensure_ascii=False, indent=2))
 
 

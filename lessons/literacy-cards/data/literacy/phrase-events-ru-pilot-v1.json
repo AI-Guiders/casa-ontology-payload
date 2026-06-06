@@ -493,6 +493,66 @@
           ]
         }
       ]
+    },
+    {
+      "event_id": "lang.event.numeral.head.v0",
+      "notes": "Правило: класс числительного → форма head; палка — иллюстрация (fem_a_palatal).",
+      "numeral_agreement": [
+        {
+          "kind": "numeral.head",
+          "gender_id": "lang.meta.grammar.gender.fem",
+          "declension_id": "fem_a_palatal",
+          "head_role": "head",
+          "numeral_role": "numeral"
+        }
+      ],
+      "examples": [
+        {
+          "gender_id": "lang.meta.grammar.gender.fem",
+          "lemma": "палка",
+          "surfaces": ["Одна палка", "Палка одна"],
+          "words": [
+            {"role": "numeral", "surface": "одна", "slug": "4e469ca0a530"},
+            {"role": "head", "surface": "палка", "slug": "731d5322d47c"}
+          ]
+        },
+        {
+          "gender_id": "lang.meta.grammar.gender.fem",
+          "lemma": "палка",
+          "surfaces": ["Две палки", "Палки две"],
+          "words": [
+            {"role": "numeral", "surface": "две", "slug": "5e90d8f1014b"},
+            {"role": "head", "surface": "палки", "slug": "94b7ef274867"}
+          ]
+        },
+        {
+          "gender_id": "lang.meta.grammar.gender.fem",
+          "lemma": "палка",
+          "surfaces": ["Три палки", "Палки три"],
+          "words": [
+            {"role": "numeral", "surface": "три", "slug": "cbbb1ed220df"},
+            {"role": "head", "surface": "палки", "slug": "94b7ef274867"}
+          ]
+        },
+        {
+          "gender_id": "lang.meta.grammar.gender.fem",
+          "lemma": "палка",
+          "surfaces": ["Четыре палки", "Палки четыре"],
+          "words": [
+            {"role": "numeral", "surface": "четыре", "slug": "fd4bca526fa9"},
+            {"role": "head", "surface": "палки", "slug": "94b7ef274867"}
+          ]
+        },
+        {
+          "gender_id": "lang.meta.grammar.gender.fem",
+          "lemma": "палка",
+          "surfaces": ["Пять палок", "Палок пять"],
+          "words": [
+            {"role": "numeral", "surface": "пять", "slug": "abd18920076c"},
+            {"role": "head", "surface": "палок", "slug": "3ccb174c7b7c"}
+          ]
+        }
+      ]
     }
   ]
 }

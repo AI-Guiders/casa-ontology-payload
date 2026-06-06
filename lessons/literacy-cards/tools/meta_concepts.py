@@ -114,6 +114,24 @@ REGISTER_LOWERCASE = LETTER_CASE_LOWER
 GRAMMAR_CASE_NOM = "lang.meta.grammar.case.nom"
 GRAMMAR_CASE_ACC = "lang.meta.grammar.case.acc"
 GRAMMAR_CASE_DAT = "lang.meta.grammar.case.dat"
+GRAMMAR_CASE_GEN = "lang.meta.grammar.case.gen"
+
+GRAMMAR_NUMERAL_CLASS_ONE = "lang.meta.grammar.numeral.class.one"
+GRAMMAR_NUMERAL_CLASS_FEW = "lang.meta.grammar.numeral.class.few"
+GRAMMAR_NUMERAL_CLASS_MANY = "lang.meta.grammar.numeral.class.many"
+
+GRAMMAR_NUMERAL_CLASS_CARDS: list[MetaCard] = [
+    ("numeral-class-one", "1, 21… → им. ед.", GRAMMAR_NUMERAL_CLASS_ONE),
+    ("numeral-class-few", "2–4 → им. мн.", GRAMMAR_NUMERAL_CLASS_FEW),
+    ("numeral-class-many", "5+, 11–14 → род. мн.", GRAMMAR_NUMERAL_CLASS_MANY),
+]
+
+GRAMMAR_NUMERAL_PHRASE_CARDS: list[MetaCard] = [
+    ("num-rule-palka", "одна палка … пять палок", GRAMMAR_NUMERAL_CLASS_ONE),
+    ("num-one-palka", "одна палка", GRAMMAR_NUMERAL_CLASS_ONE),
+    ("num-two-palki", "две палки", GRAMMAR_NUMERAL_CLASS_FEW),
+    ("num-five-palok", "пять палок", GRAMMAR_NUMERAL_CLASS_MANY),
+]
 GRAMMAR_AGREEMENT_FEM_SG_PAST = "lang.meta.grammar.agreement.subjectVerb.fem.sg.past"
 GRAMMAR_AGREEMENT_MASC_SG_PAST = "lang.meta.grammar.agreement.subjectVerb.masc.sg.past"
 

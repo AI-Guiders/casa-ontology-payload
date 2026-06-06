@@ -22,6 +22,7 @@ def main() -> None:
     setup_probe_imports()
     from casa.prisms.visual.phrase_compose import _nfc, compose_phrase_verdict, load_phrase_events
     from casa.prisms.visual.phrase_permutation import check_permutation_equiv
+    from casa.prisms.visual.phrase_numeral import resolve_numeral_entry
     from casa.prisms.visual.phrase_possessive import resolve_possessive_entry
 
     entries = load_phrase_events(args.events)
@@ -31,7 +32,7 @@ def main() -> None:
 
     examples = entry.get("examples")
     if isinstance(examples, list) and examples:
-        probe_entry = resolve_possessive_entry(entry, None)
+        probe_entry = resolve_numeral_entry(resolve_possessive_entry(entry, None), None)
     else:
         probe_entry = entry
 
