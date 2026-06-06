@@ -331,5 +331,7 @@ Interleave literacy / math / meta — только когда WM пуст и pha
 - Категории: [CASA-ru-native-categories-v0.md](CASA-ru-native-categories-v0.md)
 - Fluency: [CASA-ADR-0049-ru-lexical-fluency-orthography-v0.md](CASA-ADR-0049-ru-lexical-fluency-orthography-v0.md)
 - Visual class: `lessons/literacy-cards/class.manifest.json`
+- Block 1 plan: `lessons/literacy-cards/data/block-01-grapheme-cyrl-v1.json`
 - Agent store: `agents/von-neumann/`
-- Code: `casa/domain/teacher_gate.py`, `casa/prisms/tick/semantic_read.py`, `casa/domain/subject_dialogue_bind.py`
+- Native bootstrap: `python -m casa.domain.native_ru_bootstrap --store-dir agents/von-neumann`
+- Code: `casa/domain/teacher_gate.py`, `casa/domain/partner_cue_policy.py`, `casa/prisms/tick/semantic_read.py`, `casa/domain/subject_dialogue_bind.py`

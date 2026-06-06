@@ -1,0 +1,24 @@
+{
+  "tract_id": "ru-text-dialog",
+  "version": 1,
+  "block": 12,
+  "gate_probe": "dialogue_acceptance",
+  "scenarios": [
+    {
+      "scenario_id": "greeting-privet",
+      "query": "Привет!",
+      "expect_no_grapheme_surprise": true,
+      "expect_concept_any": ["lang.word.привет", "ru.dialog.greeting"]
+    },
+    {
+      "scenario_id": "thanks",
+      "query": "Спасибо за помощь",
+      "expect_in_reply": ["спасибо"]
+    },
+    {
+      "scenario_id": "norm-check-defer",
+      "query": "Проверь орфографию в абзаце про квантовую физику",
+      "expect_honest_partial": true
+    }
+  ]
+}

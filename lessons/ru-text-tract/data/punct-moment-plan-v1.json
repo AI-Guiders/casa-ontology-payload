@@ -1,0 +1,14 @@
+{
+  "tract_id": "ru-text-punct",
+  "version": 1,
+  "block": 11,
+  "gate_probe": "probe_grammar_punct_ru_v0",
+  "cases": [
+    {
+      "case_id": "comma-chto",
+      "query": "Нужна ли запятая в «я знаю что он придёт»?",
+      "expect_cid_prefix": "ru.grammar.punct",
+      "expect_in_reply": ["запят", "что"]
+    }
+  ]
+}

@@ -58,10 +58,19 @@
 
 ### Teacher (moment plan)
 
+**Spec:** `lessons/literacy-cards/data/block-01-grapheme-cyrl-v1.json`  
+**README / lab:** `lessons/literacy-cards/block-01-grapheme-cyrl/README.md`
+
 1. **Goal:** «узнай букву на карточке» — vis cue → `grapheme.cyrl.{letter}.{case}`.
 2. **Classify:** surface_class=letter, modality=vis.
-3. **Methods:** I-do: 3 demo frames; we-do: mixed register pairs (а/А); you-do: held-out letters **не из текущей сессии**.
-4. **Ingest:** `casa.cli.ingest_visual_class` по manifest; co-occurrence grapheme↔vis.
+3. **Methods:** I-do: wave 1 (a o m e n i lower); we-do: wave 2 register pairs; you-do: waves 3–5 batches; spacing: wave 6 revisit.
+4. **Train / held-out:** 25 cues in waves; **8 cues never ingested** — `yo`, `zh`, `ts`, `ch`, `sch`, `hard`, `soft`, `eh` (16 frames).
+5. **Ingest:** `run_block01_grapheme_pedagogy.py` (или `casa.cli.ingest_visual_class` по manifest).
+
+```bash
+python lab/visual-curriculum/micro-literacy/run_block01_grapheme_pedagogy.py --store von-neumann
+python lab/visual-curriculum/probe_block01_grapheme_held_out.py --store von-neumann
+```
 
 ### Agent (поле)
 
@@ -73,7 +82,9 @@
 
 | Probe | Pass |
 |-------|------|
-| `literacy-quiz` | held-out grapheme ≥ threshold (stage spec) |
+| `probe_block01_grapheme_held_out` | held-out 8 cues (16 frames): ≥85% know, 0 empty, ≤10% ambiguous |
+
+*(Pilot `literacy-quiz` на 5 frames — smoke only, не block exit.)*
 
 ### Типичные ошибки (teacher response)
 
@@ -96,8 +107,16 @@
 
 ### Teacher
 
+**Spec:** `lessons/literacy-cards/data/block-02-meta-phonology-cyrl-v1.json`  
+**README:** `lessons/literacy-cards/block-02-meta-phonology-cyrl/README.md`
+
 - Meta-cards: `lang.meta.phonology.vowel` / `consonant` на **знакомых** graphemes из Блок 1.
-- Held-out: буквы, не участвовавшие в meta-ingest этой сессии.
+- Waves: category cards + a o m k → e i u y → spacing revisit.
+- **Held-out (6):** eh, ya, yo, yu, s, t letter-class frames.
+
+```bash
+python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-02-meta-phonology-cyrl
+```
 
 ### Agent
 
@@ -108,7 +127,9 @@
 
 | Probe | Pass |
 |-------|------|
-| `meta-phonology-quiz` | meta classify on held-out grapheme set |
+| `probe_block02_meta_phonology_held_out` | 100% know on held-out letter-class frames |
+
+*(Smoke: `meta-phonology-quiz` на full stage — не block exit.)*
 
 ---
 
@@ -124,8 +145,16 @@
 
 ### Teacher
 
-- Слоги из частых CV/VC шаблонов (ма, па, дом → по слогам в corpus list).
+**Spec:** `lessons/literacy-cards/data/block-03-syllable-cyrl-v1.json`  
+**README:** `lessons/literacy-cards/block-03-syllable-cyrl/README.md`
+
+- Слоги из частых CV/VC шаблонов (ма, па, …); wave 3 — open/bound batch.
+- **Held-out (11):** над, под, от, … -ость — prefix/affix syllables.
 - Явно: syllable success **≠** promote `skill.read.whole`.
+
+```bash
+python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-03-syllable-cyrl
+```
 
 ### Agent
 
@@ -135,7 +164,7 @@
 
 | Probe | Pass |
 |-------|------|
-| `syllable-cyrl-quiz` | syllable frames held-out |
+| `probe_block03_syllable_held_out` | ≥85% know on held-out syllable frames |
 
 ---
 
@@ -179,9 +208,18 @@
 
 ### Teacher
 
-- Corpus ingest: частотные lemmas → lexicon shards.
-- Held-out: 20% words **never in train frames** for gate.
+**Spec:** `lessons/literacy-cards/data/block-05-corpus-cyrl-v1.json`  
+**README:** `lessons/literacy-cards/block-05-corpus-cyrl/README.md`
+
+- Corpus ingest: 331 lemmas (`ru-wordlist-v1.txt`) → 4 batch waves (265 train).
+- **Held-out:** offset 265, limit 66 (20%) — never in block ingest.
 - Spacing: revisit Блок 1–3 failures only if probe red.
+- **После Phase I:** новые слова — OOV (L2), не расширение corpus teacher'ом (см. § Corpus bootstrap vs emergent).
+
+```bash
+python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-05-corpus-cyrl
+python lab/visual-curriculum/probe_block_held_out.py --block block-05-corpus-cyrl
+```
 
 ### Agent
 
@@ -193,8 +231,8 @@
 
 | # | Criterion |
 |---|-----------|
-| 1 | `literacy-corpus-quiz` held-out whole-word pass |
-| 2 | `probe_lexical_read_fluent_ru` (when registered) green |
+| 1 | `probe_block05_corpus_held_out` — 20% held-out ≥85% know |
+| 2 | `probe_lexical_read_fluent_ru` (same held-out slice) green |
 | 3 | «Привет» → social bind, **no** grapheme surprise (ADR-0049 #1) |
 
 ---
@@ -304,6 +342,40 @@
 
 ---
 
+## Блок 9b — Связное понимание (Castles §3, SVR C)
+
+| | |
+|---|---|
+| **Цель** | **Discourse C:** прочитал короткий passage → ответ по смыслу (не пересказ §) |
+| **Tract** | `lessons/ru-text-tract/data/passage-comprehend-pilot-v1.json` |
+| **Ориентир** | 2–4 moments (text); после phrase gate, до ortho |
+| **Evidence tag** | Castles §3 · Hoover–Gough SVR · Hwang 2021 (passage in context) |
+
+### Teacher
+
+- Passage + вопрос в одном turn: «Маша купила хлеб… / Что купила Маша?»
+- Held-out: events **не** из phrase-agent-store pilot.
+- **Не gate:** three-cueing, «перескажи абзац учебника».
+
+### Agent
+
+- `semantic_read` → recall/general; bind journal + known `lang.word.*`.
+- `compose_subject_utterance` — duck test: ответ содержит target token из passage.
+
+### Gate
+
+| Probe | Pass |
+|-------|------|
+| `probe_passage_comprehend_ru_v0` | all held-out cases: `expect_in_reply` in articulate |
+
+```bash
+python lab/visual-curriculum/probe_passage_comprehend_ru_v0.py
+```
+
+**Статус v0:** spec + probe wired; green на store — после corpus/journal coverage (волна 2).
+
+---
+
 ## Блок 10 — Орфография в контексте (B8, L3)
 
 | | |
@@ -389,6 +461,19 @@
 
 ---
 
+## Corpus bootstrap vs emergent lexicon
+
+| Режим | Когда | Кто | Как |
+|-------|-------|-----|-----|
+| **Bootstrap corpus** | Blocks 4–5, Phase I | Teacher | `ru-wordlist-v1` + held-out gate; цель — `skill.read.whole` |
+| **Domain packs** | Phase II (6–9) | Teacher точечно | closed-class, phrase events, morphemics — не «ещё 5000 слов» |
+| **Emergent / OOV** | Phase I exit+ | **Агент** | partner/text → remember → `lang.word.*`; optional KB promote |
+| **Life reading** | Phase III+ | **Агент** | dialogue, passages, periphery — Block 9b, Blocks 10–12 |
+
+**Инвариант:** частотный corpus — **потолок teacher ingest**, не весь язык. Полный словарь в bundle до OOV — non-goal (ADR-0049).
+
+---
+
 ## OOV (сквозной тракт L2)
 
 Не отдельный блок — **в каждом блоке после Блок 4**:
@@ -430,8 +515,13 @@ Gate: `probe_oov_word_recall_v0` (Блок 10+).
 
 | Блок | Manifest / path | Status |
 |------|-------------------|--------|
-| 1–9 | `lessons/literacy-cards/class.manifest.json` | **exists** |
-| 10–12 text | `lessons/ru-text-tract/` (planned) | not yet |
+| 1 | `data/block-01-grapheme-cyrl-v1.json` | **done** |
+| 2 | `data/block-02-meta-phonology-cyrl-v1.json` | **done** |
+| 3 | `data/block-03-syllable-cyrl-v1.json` | **done** |
+| 4–9 | `lessons/literacy-cards/class.manifest.json` | **exists** |
+| 5 | `data/block-05-corpus-cyrl-v1.json` | **done** |
+| 9b | `ru-text-tract/data/passage-comprehend-pilot-v1.json` | **draft** |
+| 10–12 text | `lessons/ru-text-tract/data/*.json` | **draft** |
 | KB dialog | `lessons/lang-ru-grammar-dialog/README.md` | draft |
 | Store | `agents/von-neumann/` | active lab |
 

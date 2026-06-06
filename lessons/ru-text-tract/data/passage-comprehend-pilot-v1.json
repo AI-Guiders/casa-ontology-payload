@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "title": "Passage comprehension pilot — Block 9b (Castles §3 / SVR C)",
+  "cases": [
+    {
+      "case_id": "who-bought-bread",
+      "passage": "Маша пошла в магазин. Она купила хлеб и молоко.",
+      "query": "Что купила Маша?",
+      "expect_in_reply": ["хлеб"],
+      "expect_concept_prefix": "lang.word."
+    },
+    {
+      "case_id": "where-went",
+      "passage": "Папа утром ушёл на работу. Вечером он вернулся домой.",
+      "query": "Куда папа ушёл утром?",
+      "expect_in_reply": ["работ"],
+      "expect_concept_prefix": "lang.word."
+    },
+    {
+      "case_id": "dialogue-intent",
+      "passage": "— Привет! — сказала Маша. — Как дела?",
+      "query": "Что сказала Маша?",
+      "expect_in_reply": ["привет"],
+      "expect_concept_prefix": "lang.word."
+    }
+  ]
+}

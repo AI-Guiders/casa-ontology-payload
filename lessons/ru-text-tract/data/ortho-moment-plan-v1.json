@@ -1,0 +1,20 @@
+{
+  "tract_id": "ru-text-ortho",
+  "version": 1,
+  "block": 10,
+  "gate_probe": "probe_orthography_ru_v0",
+  "cases": [
+    {
+      "case_id": "dative-prikaz",
+      "query": "Согласно приказа верно?",
+      "expect_cid_prefix": "ru.grammar.case.dative",
+      "expect_in_reply": ["приказу", "датель"]
+    },
+    {
+      "case_id": "v-techenie",
+      "query": "Как пишется: в течении или в течение дня?",
+      "expect_cid_prefix": "ru.grammar.spelling",
+      "expect_in_reply": ["течение"]
+    }
+  ]
+}
