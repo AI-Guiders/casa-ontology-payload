@@ -36,6 +36,10 @@ LEXICON_RU = "lexicon-ru"
 LEXICON_EN = "lexicon-en"
 
 LEXICON_V1_RE = re.compile(r"^lexicon-([a-z]{2,3}(?:-[a-z0-9]+)?)-(\d{2})$")
+# Corpus-range shards: lexicon-ru-а-андрейкин (dictionary word_lo–word_hi slugs)
+LEXICON_RANGE_RE = re.compile(
+    r"^lexicon-([a-z]{2,3}(?:-[a-z0-9]+)?)-([\da-z\u0400-\u04FF]+(?:-[\da-z\u0400-\u04FF]+)*)$"
+)
 
 # Math (prism_memory)
 SCHEMA_MATH = "schema-math"
@@ -130,7 +134,15 @@ def is_lexicon_lattice(lattice_id: str) -> bool:
     lid = str(lattice_id)
     if lid in (LEXICON_RU, LEXICON_EN):
         return True
-    return LEXICON_V1_RE.fullmatch(lid) is not None
+    return LEXICON_V1_RE.fullmatch(lid) is not None or LEXICON_RANGE_RE.fullmatch(lid) is not None
+
+
+def parse_lexicon_range_lattice(lattice_id: str) -> tuple[str, str] | None:
+    """Return (locale, range_slug) for lexicon-ru-wordlo-wordhi ids."""
+    m = LEXICON_RANGE_RE.fullmatch(str(lattice_id))
+    if not m:
+        return None
+    return m.group(1), m.group(2)
 
 
 def parse_lexicon_shard(lattice_id: str) -> tuple[str, int] | None:

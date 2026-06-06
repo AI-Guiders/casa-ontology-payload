@@ -15,7 +15,7 @@ import zlib
 from collections.abc import Iterable
 from typing import Any
 
-from casa.prisms.shared.lattice_names_v1 import lexicon_shard_id, parse_lexicon_shard
+from casa.prisms.shared.lattice_names_v1 import lexicon_shard_id, parse_lexicon_range_lattice, parse_lexicon_shard
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.stack import decode_lattice, lattice_digest
 
@@ -32,6 +32,10 @@ RU_DICT_ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыь
 SHARD_MODE_HASH = "hash"
 SHARD_MODE_LEXICOGRAPHIC = "lexicographic"
 DEFAULT_SHARD_MODE = SHARD_MODE_LEXICOGRAPHIC
+
+SHARD_NAMING_NUMERIC = "numeric"
+SHARD_NAMING_CORPUS_RANGE = "corpus_range"
+DEFAULT_SHARD_NAMING = SHARD_NAMING_NUMERIC
 
 LEX_PLAN_ALPHA = "alpha"
 LEX_PLAN_CORPUS_QUANTILE = "corpus_quantile"
@@ -89,7 +93,10 @@ def is_l2_word_lattice(lattice_id: str) -> bool:
     if lid == LEGACY_L2 or lid.startswith(L2_SHARD_PREFIX):
         return True
     parsed = parse_lexicon_shard(lid)
-    return parsed is not None and parsed[0] == "ru"
+    if parsed is not None and parsed[0] in ("ru", "en"):
+        return True
+    range_parsed = parse_lexicon_range_lattice(lid)
+    return range_parsed is not None and range_parsed[0] in ("ru", "en", "uk", "be")
 
 
 def first_letter_index(char: str) -> int:
@@ -106,6 +113,89 @@ def lex_sort_key(word: str) -> tuple[int, str]:
     if not w:
         return (len(RU_DICT_ALPHABET) + 1, "")
     return (first_letter_index(w[0]), w)
+
+
+def lexicon_range_slug_part(word: str, *, max_len: int = 24) -> str:
+    """Filesystem-safe slug from a headword (Cyrillic + hyphen allowed)."""
+    s = norm_word(word)
+    chars: list[str] = []
+    for ch in s:
+        if ch.isalnum() or ch == "-":
+            chars.append(ch)
+        elif ch.isspace():
+            chars.append("-")
+    out = "".join(chars).strip("-")
+    if not out:
+        return "empty"
+    return out[:max_len] if len(out) > max_len else out
+
+
+def lexicon_range_slug(word_lo: str, word_hi: str) -> str:
+    lo = lexicon_range_slug_part(word_lo)
+    hi = lexicon_range_slug_part(word_hi)
+    if lo == hi:
+        return lo
+    return f"{lo}-{hi}"
+
+
+def lexicon_corpus_range_lattice_id(locale: str, word_lo: str, word_hi: str) -> str:
+    loc = str(locale).strip().lower().replace("_", "-").split("-", 1)[0]
+    return f"lexicon-{loc}-{lexicon_range_slug(word_lo, word_hi)}"
+
+
+def attach_corpus_range_shard_ids(
+    ranges: list[dict[str, Any]],
+    *,
+    locale: str = "ru",
+) -> list[dict[str, Any]]:
+    """Fill shard_id on each quantile range row (dictionary lo–hi slug)."""
+    out: list[dict[str, Any]] = []
+    seen: dict[str, int] = {}
+    for row in ranges:
+        r = dict(row)
+        lo = str(r.get("word_lo") or "")
+        hi = str(r.get("word_hi") or "")
+        base = lexicon_corpus_range_lattice_id(locale, lo, hi)
+        if base in seen:
+            seen[base] += 1
+            r["shard_id"] = f"{base}-{seen[base]}"
+        else:
+            seen[base] = 0
+            r["shard_id"] = base
+        out.append(r)
+    return out
+
+
+def corpus_range_shard_id(cfg: dict[str, Any], shard_index: int) -> str | None:
+    ranges = cfg.get("letter_ranges") or []
+    if shard_index < 0 or shard_index >= len(ranges):
+        return None
+    row = ranges[shard_index]
+    sid = row.get("shard_id")
+    if sid:
+        return str(sid)
+    lo = str(row.get("word_lo") or "")
+    hi = str(row.get("word_hi") or "")
+    if lo or hi:
+        return lexicon_corpus_range_lattice_id(str(cfg.get("locale") or "ru"), lo, hi)
+    return None
+
+
+def build_semantic_l2_rename_map(cfg: dict[str, Any], *, locale: str = "ru") -> dict[str, str]:
+    """Map legacy numeric shard ids → corpus-range lexicon ids."""
+    ranges = attach_corpus_range_shard_ids(list(cfg.get("letter_ranges") or []), locale=locale)
+    mapping: dict[str, str] = {}
+    for row in ranges:
+        idx = int(row.get("shard", -1))
+        if idx < 0:
+            continue
+        new_id = str(row.get("shard_id") or "")
+        if not new_id:
+            continue
+        for old in (f"{L2_SHARD_PREFIX}{idx:02d}", lexicon_shard_id(locale, idx)):
+            if old != new_id:
+                mapping[old] = new_id
+    return mapping
 
 
 def _range_label(lo: str, hi: str, *, max_len: int = 40) -> str:
@@ -273,6 +363,8 @@ def sharding_config(state: dict) -> dict[str, Any]:
     cfg.setdefault("num_shards", DEFAULT_NUM_SHARDS)
     cfg.setdefault("legacy_lattice", LEGACY_L2)
     cfg.setdefault("shard_prefix", L2_SHARD_PREFIX)
+    cfg.setdefault("shard_naming", DEFAULT_SHARD_NAMING)
+    cfg.setdefault("locale", "ru")
     cfg.setdefault("mode", DEFAULT_SHARD_MODE)
     cfg.setdefault("lex_plan", DEFAULT_LEX_PLAN)
     cfg.setdefault("word_index", {})
@@ -377,6 +469,7 @@ def l2_shard_id(
     lex_plan: str = DEFAULT_LEX_PLAN,
     shard_starts: list[str] | None = None,
     shard_prefix: str | None = None,
+    sharding_cfg: dict[str, Any] | None = None,
 ) -> str:
     idx = l2_shard_index(
         word,
@@ -386,7 +479,12 @@ def l2_shard_id(
         lex_plan=lex_plan,
         shard_starts=shard_starts,
     )
-    prefix = shard_prefix or L2_SHARD_PREFIX
+    cfg = sharding_cfg or {}
+    if str(cfg.get("shard_naming") or DEFAULT_SHARD_NAMING) == SHARD_NAMING_CORPUS_RANGE:
+        sid = corpus_range_shard_id(cfg, idx)
+        if sid:
+            return sid
+    prefix = shard_prefix or str(cfg.get("shard_prefix") or L2_SHARD_PREFIX)
     if prefix.startswith("lexicon-"):
         locale = prefix.removeprefix("lexicon-").rstrip("-")
         return lexicon_shard_id(locale, idx)
@@ -467,6 +565,7 @@ def route_l2_lattice(state: dict, word: str) -> str:
         lex_plan=str(cfg.get("lex_plan") or DEFAULT_LEX_PLAN),
         shard_starts=cfg.get("lex_shard_starts"),
         shard_prefix=str(cfg.get("shard_prefix") or L2_SHARD_PREFIX),
+        sharding_cfg=cfg,
     )
     ensure_l2_lattice(state, shard)
     register_word_shard(state, w, shard)
@@ -532,7 +631,17 @@ def set_nca_model(state: dict, lattice_id: str, model_path: str) -> None:
     reg[lattice_id] = model_path
 
 
-def _shard_index_from_lattice_id(lattice_id: str) -> int | None:
+def _shard_index_from_lattice_id(
+    lattice_id: str,
+    letter_ranges: list[dict[str, Any]] | None = None,
+) -> int | None:
+    if letter_ranges:
+        for row in letter_ranges:
+            if str(row.get("shard_id") or "") == lattice_id:
+                return int(row.get("shard", -1))
+    parsed = parse_lexicon_shard(lattice_id)
+    if parsed is not None and parsed[0] == "ru":
+        return parsed[1]
     if not lattice_id.startswith(L2_SHARD_PREFIX):
         return None
     try:
@@ -554,17 +663,38 @@ def shard_stats(state: dict) -> dict[str, Any]:
     cfg = sharding_config(state)
     mode = str(cfg.get("mode") or DEFAULT_SHARD_MODE)
     ranges = list(cfg.get("letter_ranges") or [])
-    rows = []
-    for lid in l2_word_lattice_ids(state):
-        lat = memory_lattices(state).get(lid) or {}
-        toks = tokens_from_lattice(lat)
-        words = sum(1 for t in toks if t.startswith("C:lang.word."))
-        row: dict[str, Any] = {"lattice_id": lid, "token_count": len(toks), "word_concepts": words}
-        sid = _shard_index_from_lattice_id(lid)
-        if sid is not None and sid < len(ranges):
-            row["lex_range"] = ranges[sid].get("label")
-            row["lex_word_count"] = ranges[sid].get("word_count")
-        rows.append(row)
+    lattices = memory_lattices(state)
+    rows: list[dict[str, Any]] = []
+    naming = str(cfg.get("shard_naming") or DEFAULT_SHARD_NAMING)
+    if naming == SHARD_NAMING_CORPUS_RANGE and ranges:
+        for row in ranges:
+            sid = int(row.get("shard", -1))
+            lid = str(row.get("shard_id") or "")
+            if not lid and sid >= 0:
+                lid = corpus_range_shard_id(cfg, sid) or f"{cfg.get('shard_prefix', L2_SHARD_PREFIX)}{sid:02d}"
+            lat = lattices.get(lid) or {}
+            toks = tokens_from_lattice(lat)
+            words = sum(1 for t in toks if t.startswith("C:lang.word."))
+            rows.append(
+                {
+                    "lattice_id": lid,
+                    "token_count": len(toks),
+                    "word_concepts": words,
+                    "lex_range": row.get("label"),
+                    "lex_word_count": row.get("word_count"),
+                }
+            )
+    else:
+        for lid in l2_word_lattice_ids(state):
+            lat = lattices.get(lid) or {}
+            toks = tokens_from_lattice(lat)
+            words = sum(1 for t in toks if t.startswith("C:lang.word."))
+            row: dict[str, Any] = {"lattice_id": lid, "token_count": len(toks), "word_concepts": words}
+            sid = _shard_index_from_lattice_id(lid, ranges)
+            if sid is not None and sid < len(ranges):
+                row["lex_range"] = ranges[sid].get("label")
+                row["lex_word_count"] = ranges[sid].get("word_count")
+            rows.append(row)
     return {
         "enabled": cfg.get("enabled"),
         "mode": mode,
@@ -575,6 +705,7 @@ def shard_stats(state: dict) -> dict[str, Any]:
         "attested_initial_letters": list((cfg.get("initial_letter_counts") or {}).keys()),
         "initial_letter_counts": cfg.get("initial_letter_counts"),
         "letter_ranges": ranges if mode == SHARD_MODE_LEXICOGRAPHIC else None,
+        "shard_naming": cfg.get("shard_naming"),
         "lattices": rows,
     }
 
