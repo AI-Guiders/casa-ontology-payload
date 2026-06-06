@@ -19,6 +19,7 @@ from casa.prisms.tick.agent_self_drive_tick import (
     agent_active_intent,
     maybe_agent_self_drive_tick,
     maybe_promote_skill_on_verify,
+    prepare_phrase_agent_tick,
     seek_agent_knowledge,
 )
 from casa.prisms.visual.bridge_math import vis_frame_concept_id
@@ -116,6 +117,27 @@ def test_phrase_compose_slots_verify_on_probe_mastery():
     rep = maybe_promote_skill_on_verify(state, wm=wm, mem_prep=mem_prep, knowledge=knowledge)
     assert rep is not None
     assert not rep.get("skipped")
+
+
+def test_self_drive_prepares_phrase_plan():
+    state = ensure_prisms(
+        {"schema_version": "multi_prism_v1", "field_version": 0, "store": {"store_id": "t"}}
+    )
+    from casa.domain.emergent_promote import promote_from_probe_report, promote_routes_from_probe_report
+
+    for report in (
+        {"probe": "analytic-read-corpus-r1", "items": [{"verdict": "analytic_know"}]},
+        {"probe": "phrase-compose-pilot", "phrase_know": True, "verdict": "phrase_know"},
+    ):
+        promote_from_probe_report(state, report, tick=1)
+        promote_from_probe_report(state, report, tick=2)
+        promote_routes_from_probe_report(state, report, min_mastery_streak=2)
+
+    wm = WorkingMemory(goal_id="goal.read.phrase#lang.event.transitive.wash.v0")
+    mem_prep: dict = {"plan_tick": {}, "routing_chain": None}
+    plan = prepare_phrase_agent_tick(state, wm, mem_prep)
+    assert plan.plan_steps
+    assert wm.step_focus
 
 
 def test_maybe_agent_self_drive_with_want_kolb(tmp_path: Path):

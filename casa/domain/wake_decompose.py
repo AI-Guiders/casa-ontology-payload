@@ -8,6 +8,25 @@ from typing import Any
 from casa.domain.plan_tick import PlanTick
 from casa.prisms.visual.phrase_compose import load_phrase_events, phrase_probe_frame_id
 
+_DEFAULT_EVENT_ID = "lang.event.transitive.wash.v0"
+
+
+def phrase_event_id_from_goal(goal_id: str) -> str:
+    """Parse event from goal.read.phrase#lang.event.* suffix."""
+    gid = str(goal_id or "").strip()
+    if "#" in gid:
+        return gid.split("#", 1)[1].strip()
+    return _DEFAULT_EVENT_ID
+
+
+def phrase_entry_for_goal(goal_id: str, *, events_path: str | None = None) -> dict[str, Any]:
+    eid = phrase_event_id_from_goal(goal_id)
+    for entry in load_phrase_events(events_path):
+        if str(entry.get("event_id") or "") == eid:
+            return entry
+    entries = load_phrase_events(events_path)
+    return entries[0] if entries else {}
+
 
 def _decompose_state(state: dict) -> dict[str, Any]:
     raw = state.setdefault("wake_decompose", {})
@@ -19,10 +38,10 @@ def phrase_words_for_goal(goal_id: str, *, events_path: str | None = None) -> li
     gid = str(goal_id or "").strip()
     if not gid.startswith("goal.read.phrase"):
         return []
-    for entry in load_phrase_events(events_path):
-        words = entry.get("words")
-        if isinstance(words, list) and words:
-            return [w for w in words if isinstance(w, dict) and w.get("surface")]
+    entry = phrase_entry_for_goal(gid, events_path=events_path)
+    words = entry.get("words")
+    if isinstance(words, list) and words:
+        return [w for w in words if isinstance(w, dict) and w.get("surface")]
     return []
 
 
@@ -32,6 +51,7 @@ def init_phrase_queue(state: dict, goal_id: str) -> list[dict[str, Any]]:
         return []
     dec = _decompose_state(state)
     dec["goal_id"] = goal_id
+    dec["event_id"] = phrase_event_id_from_goal(goal_id)
     dec["words"] = [
         {
             "surface": str(w.get("surface") or ""),
@@ -69,7 +89,12 @@ def advance_word_queue(state: dict, *, passed: bool = True) -> dict[str, Any]:
     if passed and idx < len(words) - 1:
         dec["word_index"] = idx + 1
         state["wake_decompose"] = dec
-        return {"advanced": True, "word_index": idx + 1, "frame_id": current_word_focus(state)}
+        gid = str(dec.get("goal_id") or "")
+        return {
+            "advanced": True,
+            "word_index": idx + 1,
+            "frame_id": current_word_focus(state, goal_id=gid),
+        }
     return {
         "advanced": False,
         "word_index": idx,

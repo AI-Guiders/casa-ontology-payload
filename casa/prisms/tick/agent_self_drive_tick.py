@@ -81,6 +81,23 @@ def _seek_cue(plan: PlanTick, cue: str) -> str:
     return "macro_tick"
 
 
+def prepare_phrase_agent_tick(
+    state: dict,
+    wm: WorkingMemory,
+    mem_prep: dict[str, Any],
+) -> PlanTick:
+    """Fill trial plan + wake decompose focus when agent pursues phrase goal."""
+    plan = _plan_from_mem_prep(mem_prep)
+    if not plan.goal_id:
+        plan = PlanTick.from_wm(wm)
+    from casa.domain.emergent_promote import fill_trial_plan_if_needed
+
+    filled = fill_trial_plan_if_needed(state, plan)
+    filled.apply_to_wm(wm)
+    mem_prep["plan_tick"] = filled.to_dict()
+    return filled
+
+
 def agent_active_intent(wm: WorkingMemory, store_dir: Path) -> bool:
     """Agent drives this tick (goal, plan, or explicit want_kolb)."""
     return bool(
@@ -317,6 +334,9 @@ def maybe_agent_self_drive_tick(
         return None
     if control.value < min_drive_value and not agent_wants_kolb(store_dir) and not wm.goal_id:
         return None
+
+    if str(wm.goal_id or "").startswith("goal.read.phrase"):
+        prepare_phrase_agent_tick(state, wm, mem_prep)
 
     knowledge = seek_agent_knowledge(state, wm=wm, mem_prep=mem_prep, cue=cue, bundle=bundle)
     skill = maybe_promote_skill_on_verify(
