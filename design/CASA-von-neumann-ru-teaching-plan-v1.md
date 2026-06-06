@@ -256,11 +256,12 @@ python lab/visual-curriculum/probe_block_held_out.py --block block-05-corpus-cyr
 
 ### Teacher
 
-**Closed-class spec:** `lessons/literacy-cards/data/block-06-closed-class-cyrl-v1.json`  
-**README:** `lessons/literacy-cards/block-06-closed-class-cyrl/README.md`
+**Closed-class:** `data/block-06-closed-class-cyrl-v1.json`  
+**Meta-language:** `data/block-06b-meta-language-cyrl-v1.json`
 
-- Text + vis meta (`lesson-07-meta-language`) — **не** exam «назови часть речи».
-- Closed class: 52 function words → 3 batch waves; held-out last 10 (`ru-closed-class-v1.txt`).
+- Text + vis meta — **не** exam «назови часть речи».
+- Closed class: 52 function words → 3 waves; held-out last 10.
+- Meta-language: 20 cards → 3 waves; held-out 4 (size/epistemic).
 
 ```bash
 python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-06-closed-class-cyrl
@@ -275,7 +276,7 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 | Probe | Pass |
 |-------|------|
 | `probe_block06_closed_class_held_out` | ≥85% know on held-out closed-class |
-| `meta-pure-quiz` | meta language cards (отдельный tract) |
+| `probe_block06b_meta_language_held_out` | ≥85% on held-out meta cards |
 
 ---
 
@@ -291,8 +292,12 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 
 ### Teacher
 
-- JPEG pairs: «она мыла» / «*она мыл» — contrast, не lecture.
-- Agent KSA stage gate spec in manifest.
+**Spec:** `data/block-07-grammar-person-case-cyrl-v1.json`  
+JPEG pairs: «она мыла» / «*она мыл» — contrast, не lecture.
+
+```bash
+python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-07-grammar-person-case-cyrl
+```
 
 ### Agent
 
@@ -302,7 +307,7 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 
 | Probe | Pass |
 |-------|------|
-| `literacy-cards:stage-08-*` stage gates | agent KSA on held-out forms |
+| `probe_block07_grammar_held_out` | person/case held-out frames |
 
 ---
 
@@ -317,18 +322,22 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 
 ### Teacher
 
-- Phrase events sidecar: slots + grammeme tags.
-- Ingest phrase compose pilot JSON.
+**Spec:** `data/block-08-grammar-phrase-meta-cyrl-v1.json`  
+Agreement / possessive / numeral meta JPEG waves.
+
+```bash
+python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-08-grammar-phrase-meta-cyrl
+```
 
 ### Agent
 
-- `phrase_compose` / `phrase-agent-store` events; sleep on high-value phrase errors.
+- `phrase_compose` prep; sidecar meta-grammar quizzes = lint only.
 
 ### Gate (Phase II partial)
 
 | Probe | Pass |
 |-------|------|
-| stage-09* gates | held-out agreement pairs |
+| `probe_block08_grammar_phrase_meta_held_out` | held-out meta phrase frames |
 
 ---
 
@@ -342,8 +351,12 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 
 ### Teacher
 
-- Phrase held-out: 6 events min (phrase-agent-store spec).
-- Morphemics: 10–15 root/affix contrasts for B8 prep.
+**Spec:** `data/block-09-phrase-exit-cyrl-v1.json` (`kind: phrase`)  
+6 events → 4 self-drive waves; gate = `phrase-agent-store`.
+
+```bash
+python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-09-phrase-exit-cyrl
+```
 
 ### Agent
 
@@ -353,8 +366,8 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 
 | # | Criterion |
 |---|-----------|
-| 1 | `phrase-agent-store` held-out pass |
-| 2 | Person+case — agent KSA, not sidecar only |
+| 1 | `phrase-agent-store` 6/6 (`probe_block_held_out --block block-09-phrase-exit-cyrl`) |
+| 2 | Block 7 grammar held-out — agent KSA, not sidecar only |
 
 ---
 
@@ -404,8 +417,8 @@ python lab/visual-curriculum/probe_passage_comprehend_ru_v0.py
 
 ### Teacher
 
-- Text cues: «в течение дня», «по-русски», «также» — held-out sentences.
-- KB = orient only; gate on field bind.
+**Moment plan:** `lessons/ru-text-tract/data/ortho-moment-plan-v1.json`  
+Text cues + KB orient; gate on field bind.
 
 ### Agent
 
@@ -430,8 +443,8 @@ python lab/visual-curriculum/probe_passage_comprehend_ru_v0.py
 
 ### Teacher
 
-- Intent cues: «проверь запятые», «верно ли».
-- Separate from ortho: **structure**, not graphemes.
+**Moment plan:** `lessons/ru-text-tract/data/punct-moment-plan-v1.json`  
+Intent cues: «проверь запятые», «верно ли».
 
 ### Agent
 
@@ -457,8 +470,8 @@ python lab/visual-curriculum/probe_passage_comprehend_ru_v0.py
 
 ### Teacher
 
-- Scenarios: greeting, thanks, simple question-answer, norm check request.
-- OOV in dialogue → remember tract (L2).
+**Moment plan:** `lessons/ru-text-tract/data/dialog-moment-plan-v1.json`  
+Scenarios: greeting, thanks, norm check; OOV → remember tract (L2).
 
 ### Agent
 
@@ -536,10 +549,15 @@ Gate: `probe_oov_word_recall_v0` (Блок 10+).
 | 3 | `data/block-03-syllable-cyrl-v1.json` | **done** |
 | 4 | `data/block-04-early-words-cyrl-v1.json` | **done** |
 | 5 | `data/block-05-corpus-cyrl-v1.json` | **done** |
-| 6 | `data/block-06-closed-class-cyrl-v1.json` | **done** (closed-class tract) |
-| 7–9 | `lessons/literacy-cards/class.manifest.json` | **exists** |
+| 6 | `data/block-06-closed-class-cyrl-v1.json` | **done** |
+| 6b | `data/block-06b-meta-language-cyrl-v1.json` | **done** |
+| 7 | `data/block-07-grammar-person-case-cyrl-v1.json` | **done** |
+| 8 | `data/block-08-grammar-phrase-meta-cyrl-v1.json` | **done** |
+| 9 | `data/block-09-phrase-exit-cyrl-v1.json` | **done** |
 | 9b | `ru-text-tract/data/passage-comprehend-pilot-v1.json` | **draft** |
-| 10–12 text | `lessons/ru-text-tract/data/*.json` | **draft** |
+| 10 | `ru-text-tract/data/ortho-moment-plan-v1.json` | **draft** |
+| 11 | `ru-text-tract/data/punct-moment-plan-v1.json` | **draft** |
+| 12 | `ru-text-tract/data/dialog-moment-plan-v1.json` | **draft** |
 | KB dialog | `lessons/lang-ru-grammar-dialog/README.md` | draft |
 | Store | `agents/von-neumann/` | active lab |
 
