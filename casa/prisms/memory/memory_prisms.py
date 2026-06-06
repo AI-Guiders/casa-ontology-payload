@@ -908,6 +908,14 @@ def run_sleep(
                 report=cons["last_sleep"],
             )
 
+        from casa.domain.boot_repair_scheduler import repair_pending, run_consistency_repair_on_sleep
+
+        if repair_pending(state):
+            cons["last_sleep"]["consistency_repair"] = run_consistency_repair_on_sleep(
+                state,
+                store_dir,
+            )
+
     if store_dir is not None and compact_persist is not False:
         from casa.prisms.shared.compact_persist import maybe_compact_persist_after_sleep
 

@@ -172,7 +172,7 @@ def agent_self_tick(
     rep: dict[str, Any] = {"self_drive": action}
 
     if kind == "sleep":
-        sleep_rep = run_sleep(state, bundle)
+        sleep_rep = run_sleep(state, bundle, store_dir=store_dir)
         rep["sleep"] = {"merged": sleep_rep.get("merged"), "pending": sleep_rep.get("pending")}
         extracted = [
             str(x.get("concept_id") or (x.get("extract") or {}).get("concept_id"))

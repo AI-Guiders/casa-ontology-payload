@@ -353,7 +353,7 @@ def ingest_lesson_moment(
     sleep_rep: dict[str, Any] | None = None
     bridges_emergent = 0
     if sleep and (vis_eps or math_eps):
-        sleep_rep = run_sleep(state, bundle)
+        sleep_rep = run_sleep(state, bundle, store_dir=store_dir)
         bridges_emergent = _emergent_bridge_count(sleep_rep)
 
     report: dict[str, Any] = {
