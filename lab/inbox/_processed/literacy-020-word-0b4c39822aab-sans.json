@@ -1,0 +1,19 @@
+{
+  "kind": "lesson_moment",
+  "class_dir": "lessons/literacy-cards",
+  "moment_id": "lex-stage-06-words-cyrl-corpus-word-0b4c39822aab-sans",
+  "steps": [
+    {
+      "visual_frame": "word-0b4c39822aab-sans"
+    },
+    {
+      "lexical": {
+        "cue": "0b4c39822aab",
+        "correct": "солнце",
+        "concept_id": "lang.word.0b4c39822aab",
+        "lattice_id": "lexicon-ru"
+      }
+    }
+  ],
+  "sleep": true
+}

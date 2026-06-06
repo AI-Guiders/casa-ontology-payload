@@ -1,0 +1,19 @@
+{
+  "kind": "lesson_moment",
+  "class_dir": "lessons/literacy-cards",
+  "moment_id": "lex-stage-06-words-cyrl-corpus-word-088178cdc913-sans",
+  "steps": [
+    {
+      "visual_frame": "word-088178cdc913-sans"
+    },
+    {
+      "lexical": {
+        "cue": "088178cdc913",
+        "correct": "огонь",
+        "concept_id": "lang.word.088178cdc913",
+        "lattice_id": "lexicon-ru"
+      }
+    }
+  ],
+  "sleep": true
+}

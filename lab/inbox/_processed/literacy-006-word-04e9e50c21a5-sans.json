@@ -1,0 +1,19 @@
+{
+  "kind": "lesson_moment",
+  "class_dir": "lessons/literacy-cards",
+  "moment_id": "lex-stage-06-words-cyrl-corpus-word-04e9e50c21a5-sans",
+  "steps": [
+    {
+      "visual_frame": "word-04e9e50c21a5-sans"
+    },
+    {
+      "lexical": {
+        "cue": "04e9e50c21a5",
+        "correct": "предыдущий",
+        "concept_id": "lang.word.04e9e50c21a5",
+        "lattice_id": "lexicon-ru"
+      }
+    }
+  ],
+  "sleep": true
+}

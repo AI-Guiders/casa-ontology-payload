@@ -1,0 +1,19 @@
+{
+  "kind": "lesson_moment",
+  "class_dir": "lessons/literacy-cards",
+  "moment_id": "lex-stage-06-words-cyrl-corpus-word-0226196a1880-sans",
+  "steps": [
+    {
+      "visual_frame": "word-0226196a1880-sans"
+    },
+    {
+      "lexical": {
+        "cue": "0226196a1880",
+        "correct": "самый",
+        "concept_id": "lang.word.0226196a1880",
+        "lattice_id": "lexicon-ru"
+      }
+    }
+  ],
+  "sleep": true
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "lesson_moment",
+  "class_dir": "lessons/literacy-cards",
+  "moment_id": "lex-stage-06-words-cyrl-corpus-word-07469a761b43-sans",
+  "steps": [
+    {
+      "visual_frame": "word-07469a761b43-sans"
+    },
+    {
+      "lexical": {
+        "cue": "07469a761b43",
+        "correct": "примерно",
+        "concept_id": "lang.word.07469a761b43",
+        "lattice_id": "lexicon-ru"
+      }
+    }
+  ],
+  "sleep": true
+}

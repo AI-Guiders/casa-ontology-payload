@@ -1,0 +1,19 @@
+{
+  "kind": "lesson_moment",
+  "class_dir": "lessons/literacy-cards",
+  "moment_id": "lex-stage-06-words-cyrl-corpus-word-02c1fcbe67b2-sans",
+  "steps": [
+    {
+      "visual_frame": "word-02c1fcbe67b2-sans"
+    },
+    {
+      "lexical": {
+        "cue": "02c1fcbe67b2",
+        "correct": "фрукт",
+        "concept_id": "lang.word.02c1fcbe67b2",
+        "lattice_id": "lexicon-ru"
+      }
+    }
+  ],
+  "sleep": true
+}
