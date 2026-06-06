@@ -13,8 +13,11 @@
 | **meta compare → measure → geom** | `visual-cards` | канон: [CASA-compare-greater-less-v1.md](CASA-compare-greater-less-v1.md) — nline gt/lt → meta → отрезки A/B (= / длиннее / короче) → длина на прямой → ширина на прямоугольниках → два круга → центр/радиус |
 | **meta size (w2 текст)** | `lesson-07-meta-language` | `большая`/`маленькая` → `lang.meta.size.*`; **не** путь «круг больше» |
 
-**META (цикл исполнителя):** [CASA-ADR-0034-executor-learning-loop.md](CASA-ADR-0034-executor-learning-loop.md) — цель → классификация → метод → синтез → проверка; доменные ADR ниже — частные случаи.  
-**META (роутинг):** [CASA-ADR-0035-multi-layer-routing.md](CASA-ADR-0035-multi-layer-routing.md) — знания / умения / цели / применимость + декомпозиция.  
+**META (цикл исполнителя):** [CASA-ADR-0034-executor-learning-loop.md](CASA-ADR-0034-executor-learning-loop.md) — цель → … → проверка.  
+**Teacher framework (канон lab + gate):** [CASA-teacher-framework-v1.md](CASA-teacher-framework-v1.md) — **начинать здесь** для authoring / probe / «oracle или нет».  
+**META (роутинг):** [CASA-ADR-0035-multi-layer-routing.md](CASA-ADR-0035-multi-layer-routing.md) — знания / умения / цели.  
+**Базовая рамка literacy (формы, meta, согласование):** [CASA-ADR-0036-emergent-morph-agreement.md](CASA-ADR-0036-emergent-morph-agreement.md).  
+**Gate (проверка ЗУН):** [CASA-ADR-0037-gate-zun-verification.md](CASA-ADR-0037-gate-zun-verification.md) — все probe; promote только после честного gate.  
 **Базовый протокол:** [CASA-literacy-class-v1.md](CASA-literacy-class-v1.md) · **общий принцип:** [CASA-learning-protocol-vis-math-v1.md](CASA-learning-protocol-vis-math-v1.md) § Vis↔lex
 
 **Грамматика → связный текст:** [CASA-ADR-0030-grammar-literacy-coherent-text.md](CASA-ADR-0030-grammar-literacy-coherent-text.md) — L1 закрытый класс, L2 `lang.meta.grammar.*`, L3 согласование, J0 write.  

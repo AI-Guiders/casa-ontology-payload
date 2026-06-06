@@ -5,8 +5,9 @@
 **Область:** как **учить** агента считать по картинкам — педагогика, не ML-bench  
 **Связано:**
 
-- [`CASA-ADR-0021-experience-agent-transfer.md`](CASA-ADR-0021-experience-agent-transfer.md) — опыт на поле, без oracle на read
+- [CASA-ADR-0021-experience-agent-transfer.md](CASA-ADR-0021-experience-agent-transfer.md) — опыт на поле, без oracle на read
 - [`CASA-ADR-0028-field-native-sensory-experience.md`](CASA-ADR-0028-field-native-sensory-experience.md) — тракт `visual`, predict `modality=vis`
+- [CASA-ADR-0037-gate-zun-verification.md](CASA-ADR-0037-gate-zun-verification.md) — gate = проверка ЗУН (META)
 - [`CASA-literacy-class-v1.md`](CASA-literacy-class-v1.md) — vis↔lex, метаязык (дополнение ниже)
 - [`CASA-visual-3D-tract-future.md`](CASA-visual-3D-tract-future.md) — черновик: lum v1 → depth v2 → spherical v3 (не канон lab v1)
 - `casa/cli/ingest_lesson_moment.py` — lesson moment (visual + math → один sleep)
@@ -42,7 +43,7 @@
 |------|--------|-----------|
 | **Учитель** (inbox / CLI moment) | Показывает картинку, называет число **рядом**, даёт закрепление, задаёт held-out «посчитай» | Не подсказывает ответ через manifest на predict; не штрафует gradient clip; **не лезет в mint/reinforce** |
 | **Агент** (von-neumann) | Импринт LRGB, episodic math, sleep, **свои** emergent / self_promote мосты | Не обязан угадывать форму онтологии дизайнера |
-| **Probe** (teacher report) | `predict_math_for_vis_cue(state, frame_id)` — что **само** на поле | Не сравнивает с manifest **в runtime** (hints только в отчёте учителя) |
+| **Probe** | `predict_math_for_vis_cue(state, frame_id)` — что **само** на поле | Gate **З/Н** на held-out ([ADR-0037](CASA-ADR-0037-gate-zun-verification.md)); hint в отчёте — не substitute predict |
 
 ---
 
@@ -139,6 +140,8 @@ Teacher moment: картинка → число или символ множес
 **Размер-прилагательное (большая / маленькая):** w2 на текстовых карточках → `lang.meta.size.large` / `.small` (отдельно от compare). Lab «один большой / один маленький круг» — **снят** (ambiguous без отношения).
 
 Подробности: [CASA-literacy-class-v1.md](CASA-literacy-class-v1.md) § Метаязык; compare: [CASA-compare-greater-less-v1.md](CASA-compare-greater-less-v1.md).
+
+**Грамматика, формы, согласование (канон):** [CASA-ADR-0036-emergent-morph-agreement.md](CASA-ADR-0036-emergent-morph-agreement.md). **Gate (шаг 5):** [CASA-ADR-0037-gate-zun-verification.md](CASA-ADR-0037-gate-zun-verification.md) — проверка ЗУН на held-out; sidecar `phrase_*` v0 без store — не gate.
 
 ---
 

@@ -1,7 +1,7 @@
 # Literacy lab: педагогика ingest (v1)
 
 **Статус:** канон lab  
-**Связано:** [CASA-ADR-0030-grammar-literacy-coherent-text.md](CASA-ADR-0030-grammar-literacy-coherent-text.md), [CASA-learning-protocol-vis-math-v1.md](CASA-learning-protocol-vis-math-v1.md)
+**Связано:** [CASA-teacher-framework-v1.md](CASA-teacher-framework-v1.md), [CASA-ADR-0037-gate-zun-verification.md](CASA-ADR-0037-gate-zun-verification.md), [CASA-ADR-0030-grammar-literacy-coherent-text.md](CASA-ADR-0030-grammar-literacy-coherent-text.md), [CASA-learning-protocol-vis-math-v1.md](CASA-learning-protocol-vis-math-v1.md)
 
 ---
 
@@ -49,7 +49,7 @@
 | `run_micro_stage.py` | только ingest (`--order wordlist`) |
 | `enqueue_literacy_inbox.py` | очередь в `lab/inbox/` (**wordlist** по умолчанию) |
 | `reinforce_literacy_*_tail.py` | ручной хвост после probe |
-| `probe_literacy_*.py` | teacher gate |
+| `probe_literacy_*.py` | gate ЗУН (held-out + store); см. teacher-framework |
 
 ### Closed-class (полный цикл)
 

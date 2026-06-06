@@ -278,7 +278,7 @@ cue = vis.lum.frame.{novel_frame_id}
 
 ## Четыре слоя: знание → умение → план (ADR-0035)
 
-**Ingest** кладёт **эпистемику** (LTM: `grapheme.*`, `syllable.*`, `lang.word.*`). **Probe green** → mastery journal (`record_probe_gate`); **routes на поле** — агент на macro tick (`maybe_promote_skill_on_verify`), не if-per-probe в lab.
+**Ingest** кладёт **эпистемику** (LTM: `grapheme.*`, `syllable.*`, `lang.word.*`). **Gate** = проверка ЗУН ([ADR-0037](CASA-ADR-0037-gate-zun-verification.md)): probe green → mastery journal; **routes** — после честного gate + agent tick.
 
 | Ступень | Знание (LTM / ingest) | Probe | Capability (`skill.*`) | Promote routes |
 |---------|------------------------|-------|--------------------------|----------------|

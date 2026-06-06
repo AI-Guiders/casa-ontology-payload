@@ -137,7 +137,7 @@ flowchart TB
 | `skill.vis.saccade` | fovea chain | ADR-0031 |
 | `skill.write.j0` | articulation / write@sketch | J0 bench |
 
-Умение — **не** NCA weights сами по себе; это **доступная процедура + достаточный след** на поле (bridges, LTM).
+Умение — **не** NCA weights сами по себе; это **доступная процедура + достаточный след** на поле (bridges, LTM). **Gate** = проверка ЗУН на held-out ([CASA-ADR-0037-gate-zun-verification.md](CASA-ADR-0037-gate-zun-verification.md)); sidecar без store — не gate.
 
 ### Матрица capability (эмерджентно, тот же паттерн)
 

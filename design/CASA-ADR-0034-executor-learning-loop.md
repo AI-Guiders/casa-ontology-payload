@@ -8,6 +8,7 @@
 
 **Связано:**
 
+- [CASA-teacher-framework-v1.md](CASA-teacher-framework-v1.md) — **META entry point** (curriculum vs gate, oracle, sidecar)
 - [CASA-learning-protocol-vis-math-v1.md](CASA-learning-protocol-vis-math-v1.md) — педагогика среды, без oracle на read
 - [CASA-ADR-0021-experience-agent-transfer.md](CASA-ADR-0021-experience-agent-transfer.md) — опыт на поле
 - [CASA-ADR-0028-field-native-sensory-experience.md](CASA-ADR-0028-field-native-sensory-experience.md) — сенсорные тракты
@@ -16,7 +17,9 @@
 - [CASA-ADR-0033-russian-phrase-structure-free-order.md](CASA-ADR-0033-russian-phrase-structure-free-order.md) — phrase/event P1
 - [CASA-ADR-0031-foveated-saccadic-visual-sampling.md](CASA-ADR-0031-foveated-saccadic-visual-sampling.md) — инструмент «видеть на листе»
 - [CASA-ADR-0035-multi-layer-routing.md](CASA-ADR-0035-multi-layer-routing.md) — вертикаль: знания / умения / цели / применимость
-- [CASA-ADR-0036-agent-self-organization.md](CASA-ADR-0036-agent-self-organization.md) — самоорганизация: arbiter, hypothesis, self_model
+- [CASA-ADR-0037-gate-zun-verification.md](CASA-ADR-0037-gate-zun-verification.md) — gate = проверка ЗУН (META)
+- [CASA-ADR-0037-gate-zun-verification.md](CASA-ADR-0037-gate-zun-verification.md) — gate = проверка ЗУН (META)
+- [CASA-ADR-0036-emergent-morph-agreement.md](CASA-ADR-0036-emergent-morph-agreement.md) — literacy: формы, meta, agree
 - [memory-hierarchy.md](memory-hierarchy.md) — lattice / LTM как **след** цикла
 
 ---
@@ -88,9 +91,9 @@ flowchart LR
 | Роль | Делает | Не делает |
 |------|--------|-----------|
 | **Учитель / lab** | шаг 1 (постановка), authoring sidecar v0, среда (картинки, порядок moment’ов) | oracle на read path; подмена шага 4 готовым ответом в predict |
-| **Агент (исполнитель шагов; субъект на поле)** | 2–4 в жизни; emergent bridges на sleep; **macro tick**: knowledge seek, skill promote, Kolb relink; defer/refuse внешней цели (`subject_agency`) | не «знать ключ ЕГЭ» без поля; lab probe — gate среды, не подмена wake |
+| **Агент (исполнитель шагов; субъект на поле)** | 2–4 в жизни; emergent bridges на sleep; **macro tick**: knowledge seek, skill promote, Kolb relink; defer/refuse внешней цели (`subject_agency`) | не «знать ключ ЕГЭ» без поля; **gate = ЗУН** только с store/predict (ADR-0037) |
 | **Lattice / cells** | хранит **результат** co-occurrence, promote, reinforce (если ADR разрешает) | не заменяет классификатор задач |
-| **Probe / bench** | шаг 5 для lab-gate | не единственный критерий «умеет жить» (J0, inbox) |
+| **Probe / bench** | шаг 5: **проверка ЗУН** на held-out | sidecar regression без store — **не** gate; не подмена wake |
 
 ---
 
@@ -142,13 +145,23 @@ flowchart LR
 
 ---
 
-## Шаг 5: проверка (честная)
+## Шаг 5: проверка (честная) = **Gate = ЗУН**
+
+**Канон:** [CASA-ADR-0037-gate-zun-verification.md](CASA-ADR-0037-gate-zun-verification.md) — gate это не «отчёт учителя», а проверка **знаний, умений, навыков** агента на held-out через store + predict / capability.
+
+| ЗУН | Шаг 5 проверяет |
+|-----|-----------------|
+| **З** знания | LTM: верный `concept_id` на held-out vis |
+| **У** умения | исполнение `skill.*` на поле (compose, agree, read, …) |
+| **Н** навыки | устойчивость: mastery streak → promote |
 
 | Тип gate | Когда | Пример |
 |----------|-------|--------|
-| **Probe JPEG** | lab, доменный критерий | `analytic_know`, closed-class 52/52 |
-| **Compose gate** | нет прямого моста на novel id | `novel_compose` ok, `novel_whole` отдельный рубеж |
-| **Event gate** | фраза | все слова + слоты; порядок слов **не** gate (ADR-0033) |
+| **Probe JPEG (З/У)** | lab, held-out frame | `analytic_know`, meta quiz, `predict_math_for_vis_cue` |
+| **Capability gate (У)** | tick / probe с store | phrase slots, agree из LTM |
+| **Mastery gate (Н)** | N× pass → promote | `mastery_gate.record_gate_attempt` |
+| **Sidecar regression** | lint curriculum spec | `phrase_*` v0 **без** store — **не** gate ЗУН, см. ADR-0037 |
+| **Event gate** | фраза на **agent store** | слоты + grammeme; порядок слов **не** gate (ADR-0033) |
 | **Bench / J0** | связный текст, смысл | не заменяется quiz по кадрам |
 | **Жизнь / inbox** | долгий горизонт | `want_kolb`, emergent extract |
 

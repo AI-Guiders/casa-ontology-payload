@@ -9,6 +9,7 @@
 - [CASA-ADR-0032-analytic-syllable-reading.md](CASA-ADR-0032-analytic-syllable-reading.md) — R1 слово из слогов; **phrase compose** опирается на тот же compose, не на OCR
 - [CASA-ADR-0031-foveated-saccadic-visual-sampling.md](CASA-ADR-0031-foveated-saccadic-visual-sampling.md) — длинный vis: серия фиксаций, не один 32×32
 - [CASA-literacy-roadmap-v1.md](CASA-literacy-roadmap-v1.md) — стадии literacy
+- [CASA-ADR-0037-gate-zun-verification.md](CASA-ADR-0037-gate-zun-verification.md) — gate = проверка ЗУН (META)
 - [CASA-learning-protocol-vis-math-v1.md](CASA-learning-protocol-vis-math-v1.md) § «Одна категория — много выражений»
 - [experiment-j0-russian-literacy-v1.md](experiment-j0-russian-literacy-v1.md) — articulation / write@sketch
 
