@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "bundle_id": "kb-lang-ru-grammar-dialog-v1",
+  "title": "RU dialogue + grammar norms v1",
+  "doc": "lessons/lang-ru-grammar-dialog/README.md",
+  "claims": [
+    {
+      "concept_id": "ru.dialog.greeting",
+      "text": "«Привет» — неформальное приветствие при встрече знакомых.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": { "word": "привет" }
+    },
+    {
+      "concept_id": "ru.dialog.greeting.formal",
+      "text": "«Здравствуйте» — нейтрально-вежливое приветствие; «здравствуй» — к одному знакомому.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": { "word": "здравствуйте" }
+    },
+    {
+      "concept_id": "ru.dialog.how_are_you",
+      "text": "«Как дела?» — разговорный вопрос о самочувствии; ответ короткий: «Нормально», «Хорошо», «Спасибо».",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md"
+    },
+    {
+      "concept_id": "ru.dialog.thanks",
+      "text": "«Спасибо» — благодарность; «пожалуйста» — ответ на спасибо или просьба.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": { "word": "спасибо" }
+    },
+    {
+      "concept_id": "ru.dialog.farewell",
+      "text": "«До свидания» — прощание; «пока» — неформально.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md"
+    },
+    {
+      "concept_id": "lang.word.привет",
+      "text": "«привет» — целое слово-приветствие, не разбор по буквам.",
+      "section": "lexicon",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": { "word": "привет" }
+    },
+    {
+      "concept_id": "lang.word.здравствуйте",
+      "text": "«здравствуйте» — вежливое приветствие.",
+      "section": "lexicon",
+      "slots": { "word": "здравствуйте" }
+    },
+    {
+      "concept_id": "lang.word.спасибо",
+      "text": "«спасибо» — слово благодарности.",
+      "section": "lexicon",
+      "slots": { "word": "спасибо" }
+    },
+    {
+      "concept_id": "ru.grammar.punct.comma",
+      "text": "Правильно: запятая перед придаточным с «что»: «Я знаю, что он придёт».",
+      "section": "punctuation",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md"
+    },
+    {
+      "concept_id": "ru.grammar.case.dative.soglasno",
+      "text": "согласно приказа → ошибка; Правильно: согласно приказу (дательный падеж).",
+      "section": "case",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md"
+    },
+    {
+      "concept_id": "ru.grammar.paronym.nadet_odet",
+      "text": "«надеть» — на себя или на кого-то вещь; «одеть» — облечь другого (одеть ребёнка).",
+      "section": "paronyms",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md"
+    },
+    {
+      "concept_id": "ru.grammar.adverb.po-russki",
+      "text": "Правильно: по-русски, по-английски — слитно с дефисом; «по русски» — ошибка.",
+      "section": "spelling",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md"
+    },
+    {
+      "concept_id": "ru.grammar.adverb.takzhe",
+      "text": "«также» слитно — «и ещё»; «так же» раздельно — «тем же образом».",
+      "section": "spelling",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md"
+    },
+    {
+      "concept_id": "ru.grammar.spelling.v_techenie",
+      "text": "в течении → ошибка; Правильно: в течение часа, в течение дня (слитно, без «и»).",
+      "section": "spelling",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md"
+    }
+  ],
+  "graph": {
+    "edges": [
+      { "from": "lang.word.привет", "to": "ru.dialog.greeting", "rel": "same_as" },
+      { "from": "lang.word.здравствуйте", "to": "ru.dialog.greeting.formal", "rel": "same_as" },
+      { "from": "lang.word.спасибо", "to": "ru.dialog.thanks", "rel": "same_as" }
+    ]
+  }
+}

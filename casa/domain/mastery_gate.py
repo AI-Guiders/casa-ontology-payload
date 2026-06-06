@@ -16,7 +16,7 @@ DEFAULT_MASTERY_STREAK = 2
 
 # Lab probe id → capability promoted on tick (unified gate credit).
 PROBE_GATE_BY_SKILL: dict[str, str] = {
-    "skill.read.whole": "literacy-corpus-quiz",
+    "skill.read.whole": "probe_lexical_read_fluent_ru",
     "skill.read.analytic": "analytic-read-corpus-r1",
     "skill.read.phrase": "phrase-agent-store",
     "skill.compose.slots": "phrase-agent-store",

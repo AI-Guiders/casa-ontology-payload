@@ -27,6 +27,7 @@ from casa.domain.routing import (
 _BOOTSTRAP_PROBES = frozenset(
     {
         "literacy-corpus-quiz",
+        "probe_lexical_read_fluent_ru",
         "analytic-read-corpus-r1",
         "phrase-compose-pilot",
         "phrase-agent-store",
@@ -227,16 +228,31 @@ def _probe_route_actions(report: dict[str, Any], gate_id: str, agent_id: str) ->
     locale = "ru"
     actions: list[dict[str, Any]] = []
 
-    if probe in ("literacy-corpus-quiz",) or stage == "stage-06-words-cyrl-corpus":
+    if probe in ("literacy-corpus-quiz", "probe_lexical_read_fluent_ru") or stage == "stage-06-words-cyrl-corpus":
         if not _gate_corpus_whole(report):
             return []
         actions.append(
             {
                 "kind": "capability",
-                "match": {"modality": "vis", "surface_class": "word", "trained_frame": "true"},
+                "match": {"modality": "vis", "surface_class": "word", "novel": "false", "locale": locale},
                 "target_skill": "skill.read.whole",
             }
         )
+        actions.append(
+            {
+                "kind": "capability",
+                "match": {"modality": "t9", "surface_class": "word", "novel": "false", "locale": locale},
+                "target_skill": "skill.read.whole",
+            }
+        )
+        if probe == "literacy-corpus-quiz":
+            actions.append(
+                {
+                    "kind": "capability",
+                    "match": {"modality": "vis", "surface_class": "word", "trained_frame": "true"},
+                    "target_skill": "skill.read.whole",
+                }
+            )
         actions.append(
             {
                 "kind": "goal",

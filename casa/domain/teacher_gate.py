@@ -36,6 +36,10 @@ PROBE_REGISTRY: dict[str, ProbeSpec] = {
     "syllable-cyrl-quiz": ProbeSpec(GateKind.AGENT_KSA, "syllable frames"),
     "meta-phonology-quiz": ProbeSpec(GateKind.AGENT_KSA, "phonology meta category"),
     "meta-pure-quiz": ProbeSpec(GateKind.AGENT_KSA, "meta language pure cards"),
+    "probe_lexical_read_fluent_ru": ProbeSpec(GateKind.AGENT_KSA, "whole-word fluent read held-out"),
+    "probe_oov_word_recall_v0": ProbeSpec(GateKind.AGENT_KSA, "OOV remember recall"),
+    "probe_orthography_ru_v0": ProbeSpec(GateKind.AGENT_KSA, "orthography in context"),
+    "probe_grammar_punct_ru_v0": ProbeSpec(GateKind.AGENT_KSA, "punctuation in context"),
     "nline-compare-quiz": ProbeSpec(GateKind.AGENT_KSA, "numberline compare"),
     "venn-region-quiz": ProbeSpec(GateKind.AGENT_KSA, "venn region math"),
     "geom-lex-quiz": ProbeSpec(GateKind.AGENT_KSA, "geometry lex on field"),
@@ -170,7 +174,7 @@ def probe_gate_passed(report: dict[str, Any], gate_id: str = "") -> bool:
     stage = str(report.get("stage") or "")
     if probe == "analytic-read-corpus-r1":
         return _gate_analytic_r1(report)
-    if probe in ("literacy-corpus-quiz",) or stage == "stage-06-words-cyrl-corpus":
+    if probe in ("literacy-corpus-quiz", "probe_lexical_read_fluent_ru") or stage == "stage-06-words-cyrl-corpus":
         return _gate_corpus_whole(report)
     if probe == "phrase-compose-pilot":
         return _gate_phrase_compose(report)
@@ -178,6 +182,8 @@ def probe_gate_passed(report: dict[str, Any], gate_id: str = "") -> bool:
         return _gate_phrase_agent_store(report)
     if probe == "paradigm-select":
         return _gate_paradigm_select(report)
+    if probe in ("probe_orthography_ru_v0", "probe_grammar_punct_ru_v0"):
+        return int(report.get("know") or 0) == int(report.get("total") or 0) and int(report.get("total") or 0) > 0
     if ":" in probe and report.get("class_id"):
         return _gate_stage_full_know(report)
     if "total" in report and int(report.get("total") or 0) > 0:
