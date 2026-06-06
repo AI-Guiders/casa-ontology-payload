@@ -180,19 +180,27 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 
 ### Teacher
 
-- Frames: `word-{slug}-sans.jpg` → `lang.word.{lemma}`.
-- Social word «Привет» — **можно** здесь как whole-word (ADR-0049): **без** grapheme surprise path.
+**Spec:** `lessons/literacy-cards/data/block-04-early-words-cyrl-v1.json`  
+**README:** `lessons/literacy-cards/block-04-early-words-cyrl/README.md`
+
+- Frames: `word-{slug}-sans` → `lang.word.{lemma}`; waves 8 train + spacing revisit.
+- **Held-out (2):** `word-apelsin-sans`, `word-apelsin_cap-sans`.
+- Social «Привет» — `native_ru_bootstrap` (ADR-0049), **не** JPEG ingest в этом блоке.
+
+```bash
+python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-04-early-words-cyrl
+```
 
 ### Agent
 
-- `predict_lex` whole; known → `skill.read.whole` route (partial — full promote после corpus).
+- `predict_lex` whole; known → `skill.read.whole` route (partial — full promote после Блок 5).
 - Dialogue bind: greeting → `ru.dialog.greeting` if journal confirms.
 
 ### Gate
 
 | Probe | Pass |
 |-------|------|
-| `literacy-corpus-quiz` (subset) | held-out on **lesson-03** word set only |
+| `probe_block04_early_words_held_out` | 100% know on held-out lesson-03 words |
 
 ---
 
@@ -248,8 +256,15 @@ python lab/visual-curriculum/probe_block_held_out.py --block block-05-corpus-cyr
 
 ### Teacher
 
-- Text + vis meta; **не** exam «назови часть речи».
-- Closed class: и, в, на, не — whole-word like content words.
+**Closed-class spec:** `lessons/literacy-cards/data/block-06-closed-class-cyrl-v1.json`  
+**README:** `lessons/literacy-cards/block-06-closed-class-cyrl/README.md`
+
+- Text + vis meta (`lesson-07-meta-language`) — **не** exam «назови часть речи».
+- Closed class: 52 function words → 3 batch waves; held-out last 10 (`ru-closed-class-v1.txt`).
+
+```bash
+python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-06-closed-class-cyrl
+```
 
 ### Agent
 
@@ -259,7 +274,8 @@ python lab/visual-curriculum/probe_block_held_out.py --block block-05-corpus-cyr
 
 | Probe | Pass |
 |-------|------|
-| `meta-pure-quiz`, `literacy-closed-class-quiz` | held-out per stage spec |
+| `probe_block06_closed_class_held_out` | ≥85% know on held-out closed-class |
+| `meta-pure-quiz` | meta language cards (отдельный tract) |
 
 ---
 
@@ -518,8 +534,10 @@ Gate: `probe_oov_word_recall_v0` (Блок 10+).
 | 1 | `data/block-01-grapheme-cyrl-v1.json` | **done** |
 | 2 | `data/block-02-meta-phonology-cyrl-v1.json` | **done** |
 | 3 | `data/block-03-syllable-cyrl-v1.json` | **done** |
-| 4–9 | `lessons/literacy-cards/class.manifest.json` | **exists** |
+| 4 | `data/block-04-early-words-cyrl-v1.json` | **done** |
 | 5 | `data/block-05-corpus-cyrl-v1.json` | **done** |
+| 6 | `data/block-06-closed-class-cyrl-v1.json` | **done** (closed-class tract) |
+| 7–9 | `lessons/literacy-cards/class.manifest.json` | **exists** |
 | 9b | `ru-text-tract/data/passage-comprehend-pilot-v1.json` | **draft** |
 | 10–12 text | `lessons/ru-text-tract/data/*.json` | **draft** |
 | KB dialog | `lessons/lang-ru-grammar-dialog/README.md` | draft |

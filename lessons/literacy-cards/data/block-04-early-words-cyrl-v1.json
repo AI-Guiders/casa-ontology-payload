@@ -1,0 +1,58 @@
+{
+  "block_id": "block-04-early-words-cyrl",
+  "version": 1,
+  "title": "Блок 4 — первые слова целиком (Ehri OM, A3)",
+  "stage_id": "stage-03-words-cyrl",
+  "class_rel": "lessons/literacy-cards",
+  "lesson_id": "lesson-03-words-cyrl",
+  "held_out_frame_ids": [
+    "word-apelsin-sans",
+    "word-apelsin_cap-sans"
+  ],
+  "gate": {
+    "probe_id": "probe_block04_early_words_held_out",
+    "pass": {
+      "know_min_ratio": 1.0,
+      "empty_max": 0,
+      "ambiguous_max_ratio": 0.0
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "I-do: мама папа кот дом",
+      "frame_ids": [
+        "word-mama-sans",
+        "word-papa-sans",
+        "word-kot-sans",
+        "word-dom-sans"
+      ],
+      "repeats": 2,
+      "moment_prefix": "b04-w1"
+    },
+    {
+      "wave": 2,
+      "label": "We-do: сок мир рука вода",
+      "frame_ids": [
+        "word-sok-sans",
+        "word-mir-sans",
+        "word-ruka-sans",
+        "word-voda-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b04-w2"
+    },
+    {
+      "wave": 3,
+      "label": "Spacing revisit: мама кот дом",
+      "frame_ids": [
+        "word-mama-sans",
+        "word-kot-sans",
+        "word-dom-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b04-revisit"
+    }
+  ],
+  "notes": "«Привет» — native_ru_bootstrap / ADR-0049 social path, не JPEG ingest здесь."
+}

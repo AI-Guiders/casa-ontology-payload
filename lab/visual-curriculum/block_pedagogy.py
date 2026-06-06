@@ -16,7 +16,9 @@ _BLOCK_SPECS: dict[str, Path] = {
     "block-01-grapheme-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-01-grapheme-cyrl-v1.json",
     "block-02-meta-phonology-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-02-meta-phonology-cyrl-v1.json",
     "block-03-syllable-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-03-syllable-cyrl-v1.json",
+    "block-04-early-words-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-04-early-words-cyrl-v1.json",
     "block-05-corpus-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-05-corpus-cyrl-v1.json",
+    "block-06-closed-class-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-06-closed-class-cyrl-v1.json",
 }
 
 
