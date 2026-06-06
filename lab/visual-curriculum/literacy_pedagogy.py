@@ -11,6 +11,15 @@ from typing import Any, Literal
 _CURRICULUM = Path(__file__).resolve().parent
 _REPO = _CURRICULUM.parents[1]
 
+from teacher_pedagogy import (  # noqa: E402
+    LITERACY_STAGE_PROBES,
+    LEXICAL_STAGE_PROBES,
+    PROBE_BY_STAGE,
+    STAGE_PROBE_SPECS,
+    VISUAL_STAGE_PROBES,
+    stage_probe_for,
+)
+
 OrderMode = Literal["frame_id", "wordlist", "manifest"]
 
 
@@ -221,13 +230,3 @@ def promote_emergent_routes_after_probe(
         "skipped": result.skipped,
     }
 
-
-PROBE_BY_STAGE: dict[str, str] = {
-    "stage-05-syllable-cyrl": "probe_syllable_quiz.py",
-    "stage-06-words-cyrl-corpus": "probe_literacy_corpus_quiz.py",
-    "stage-07-closed-class": "probe_literacy_closed_class_quiz.py",
-    "stage-04-meta-phonology-vowel-consonant": "probe_meta_phonology_quiz.py",
-    "stage-08-meta-grammar-person": "probe_meta_grammar_person_quiz.py",
-    "stage-08b-meta-grammar-case": "probe_meta_grammar_case_quiz.py",
-    "stage-09-grammar-agreement-pilot": "probe_meta_grammar_agreement_quiz.py",
-}

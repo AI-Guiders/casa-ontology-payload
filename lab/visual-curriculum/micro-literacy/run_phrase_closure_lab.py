@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Phrase P1 closure on von-neumann: corpus words → R1 breakdown → grammar meta pure."""
+"""Phrase P1 closure: sidecar lint → agent KSA capstone (`phrase-agent-store`)."""
 
 from __future__ import annotations
 
@@ -60,37 +60,14 @@ def main() -> None:
                 _run([py, str(_MICRO / script), "--rounds", "1", "--modes", "phrase_vis"])
 
     if not args.skip_probes:
-        probes = [
+        # Agent KSA — store + predict
+        agent_ksa = [
             [py, str(_CURRICULUM / "probe_analytic_read_corpus.py"), "--store", args.store],
             [py, str(_CURRICULUM / "probe_phrase_compose_pilot.py"), "--store", args.store],
-            [
-                py,
-                str(_CURRICULUM / "probe_phrase_compose_pilot.py"),
-                "--store",
-                args.store,
-                "--event-id",
-                "lang.event.transitive.wash.circ.v0",
-                "--font-pt",
-                "36",
-            ],
-            [
-                py,
-                str(_CURRICULUM / "probe_phrase_compose_pilot.py"),
-                "--store",
-                args.store,
-                "--event-id",
-                "lang.event.ditransitive.give.v0",
-                "--font-pt",
-                "40",
-            ],
-            [
-                py,
-                str(_CURRICULUM / "probe_phrase_compose_pilot.py"),
-                "--store",
-                args.store,
-                "--event-id",
-                "lang.event.transitive.wash.3sg_fem.v0",
-            ],
+            [py, str(_CURRICULUM / "probe_phrase_agent_store.py"), "--store", args.store],
+        ]
+        # Sidecar — teacher-side curriculum lint only
+        sidecar = [
             [py, str(_CURRICULUM / "probe_phrase_permutation_equiv.py")],
             [
                 py,
@@ -110,6 +87,12 @@ def main() -> None:
                 "--event-id",
                 "lang.event.transitive.wash.circ.v0",
             ],
+            [
+                py,
+                str(_CURRICULUM / "probe_phrase_permutation_equiv.py"),
+                "--event-id",
+                "lang.event.possessive.pronoun.sg.v0",
+            ],
             [py, str(_CURRICULUM / "probe_question_frame_pilot.py")],
             [
                 py,
@@ -124,26 +107,15 @@ def main() -> None:
                 "--event-id",
                 "lang.event.ditransitive.give.v0",
             ],
-            [
-                py,
-                str(_CURRICULUM / "probe_question_frame_pilot.py"),
-                "--event-id",
-                "lang.event.transitive.wash.3sg_fem.v0",
-            ],
             [py, str(_CURRICULUM / "probe_possessive_pilot.py")],
             [py, str(_CURRICULUM / "probe_possessive_rule.py")],
             [py, str(_CURRICULUM / "probe_numeral_pilot.py")],
             [py, str(_CURRICULUM / "probe_numeral_rule.py")],
-            [
-                py,
-                str(_CURRICULUM / "probe_phrase_permutation_equiv.py"),
-                "--event-id",
-                "lang.event.possessive.pronoun.sg.v0",
-            ],
             [py, str(_CURRICULUM / "probe_meta_grammar_person_quiz.py")],
+            [py, str(_CURRICULUM / "probe_meta_grammar_case_quiz.py")],
             [py, str(_CURRICULUM / "probe_meta_grammar_agreement_quiz.py")],
         ]
-        for cmd in probes:
+        for cmd in agent_ksa + sidecar:
             _run(cmd)
 
         _run([py, str(_MICRO / "run_promote_bootstrap_routes.py"), "--store", args.store])

@@ -15,7 +15,7 @@ if str(_CURRICULUM) not in sys.path:
     sys.path.insert(0, str(_CURRICULUM))
 
 from literacy_pedagogy import (  # noqa: E402
-    PROBE_BY_STAGE,
+    STAGE_PROBE_SPECS,
     default_wordlist_for_stage,
     frames_for_stage,
     hippo_pending_surface_episodes,
@@ -100,17 +100,18 @@ def _run(session, args: argparse.Namespace) -> None:
                 session.log(session.summary_rows[-1])
 
     report: dict | None = None
-    probe_script: str | None = None
+    spec = STAGE_PROBE_SPECS.get(args.stage)
     issues: list[dict] = []
     if not args.skip_probe and not args.ingest_only:
-        probe_script = PROBE_BY_STAGE.get(args.stage)
-        if not probe_script:
-            raise SystemExit(f"no probe script for stage {args.stage!r}; add to PROBE_BY_STAGE")
-        report = run_probe_script(probe_script)
+        spec = STAGE_PROBE_SPECS.get(args.stage)
+        if spec is None:
+            raise SystemExit(f"no probe script for stage {args.stage!r}; add to teacher_pedagogy")
+        report = run_probe_script(spec.script, extra_args=list(spec.extra_args))
         issues = probe_issues(report)
         session.log(
             {
                 "probe": report.get("probe"),
+                "gate_kind": report.get("gate_kind"),
                 "know": report.get("know"),
                 "ambiguous": report.get("ambiguous"),
                 "empty": report.get("empty"),
@@ -123,14 +124,20 @@ def _run(session, args: argparse.Namespace) -> None:
         if promote.get("promoted_count") or promote.get("passed"):
             session.log({"emergent_promote": promote})
 
-    if args.reinforce_tail and report is not None and issues and probe_script:
+    if (
+        args.reinforce_tail
+        and report is not None
+        and issues
+        and spec is not None
+        and spec.reinforce_tail
+    ):
         reinforced = reinforce_from_probe_report(
             session.state,
             report,
             copies=args.reinforce_copies,
         )
         session.log({"reinforce_tail": reinforced})
-        report2 = run_probe_script(probe_script)
+        report2 = run_probe_script(spec.script, extra_args=list(spec.extra_args))
         session.log(
             {
                 "probe_after_reinforce": {
