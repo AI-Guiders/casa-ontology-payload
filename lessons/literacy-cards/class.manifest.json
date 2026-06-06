@@ -7596,6 +7596,19 @@
         "grammar:agreement"
       ],
       "lesson_id": "lesson-09-grammar-agreement-meta"
+    },
+    {
+      "id": "word-dcd85bada23a-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-dcd85bada23a-sans.jpg",
+      "scene_label": "card:word:dcd85bada23a:sans",
+      "concept_id": "lang.word.dcd85bada23a",
+      "curriculum_tags": [
+        "lang.word.dcd85bada23a",
+        "word:быстро",
+        "slug:dcd85bada23a",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
     }
   ]
 }
