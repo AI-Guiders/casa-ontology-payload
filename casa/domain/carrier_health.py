@@ -43,6 +43,10 @@ def assess_carrier_health(
             stale_nca = -1
 
     warnings: list[str] = []
+    if store_dir is not None:
+        from casa.domain.store_recovery import recovery_warnings_from_session
+
+        warnings.extend(recovery_warnings_from_session(store_dir))
     if load.get("overloaded"):
         warnings.append("cognitive_overload")
     if pending >= 8:

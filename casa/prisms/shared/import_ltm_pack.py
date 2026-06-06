@@ -79,11 +79,18 @@ def _resolve_prism_id(
 
 
 def _apply_router_manifest(state: dict, manifest: dict[str, Any], ltm_dir: Path) -> bool:
+    from casa.domain.store_recovery import is_unreadable_json_file, quarantine_file
+
     router_path = ltm_dir / "meta" / "router.json"
     payload: dict[str, Any] | None = None
-    if router_path.is_file():
-        payload = json.loads(router_path.read_text(encoding="utf-8"))
-    elif manifest.get("default_content_prism"):
+    if router_path.is_file() and not is_unreadable_json_file(router_path):
+        try:
+            payload = json.loads(router_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+            payload = None
+    elif router_path.is_file():
+        quarantine_file(ltm_dir.parent, router_path, tag="corrupt")
+    if payload is None and manifest.get("default_content_prism"):
         payload = {
             "default_content_prism": manifest.get("default_content_prism"),
             "routes": [],

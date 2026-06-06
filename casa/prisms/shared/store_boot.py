@@ -62,13 +62,16 @@ def boot_store(
 ) -> dict[str, Any]:
     """Load agent store: **shipped** tier (ltm/) or resume **runtime checkpoint** (field_state)."""
     store_dir = store_dir.resolve()
+    from casa.domain.store_recovery import load_ltm_pack_manifest, recover_store_checkpoints
+
+    recovery = recover_store_checkpoints(store_dir, persist_thin=False)
     ltm = ltm_dir or ltm_root(store_dir)
     manifest_path = ltm / "pack.manifest.json"
     if not manifest_path.is_file():
-        raise FileNotFoundError(f"ltm pack missing: {manifest_path}")
+        load_ltm_pack_manifest(ltm, store_dir=store_dir)
 
     fs_path = field_state_path(store_dir)
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest = load_ltm_pack_manifest(ltm, store_dir=store_dir)
     if prefer_field_state and fs_path.is_file():
         state = ensure_prisms(load_field_state(fs_path, store_dir=store_dir))
         source = "field_state"
@@ -119,6 +122,7 @@ def boot_store(
         "field_version": state.get("field_version"),
         "agent_prism": agent_load,
         "state": state,
+        "store_recovery": recovery,
     }
 
 

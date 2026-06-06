@@ -63,9 +63,11 @@ def load_agent_session(store_dir: Path) -> dict[str, Any]:
 
 
 def save_agent_session(store_dir: Path, session: dict[str, Any]) -> None:
+    from casa.prisms.shared.field_write import _write_json
+
     path = runtime_checkpoint_paths(store_dir)["agent_session"]
     session["updated_at"] = _utc_now()
-    path.write_text(json.dumps(session, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    _write_json(path, session)
 
 
 def resolve_agent_bundle(store_dir: Path) -> dict[str, Any] | None:
@@ -113,6 +115,9 @@ class AgentRuntime:
 def load_agent_runtime(store_dir: Path) -> AgentRuntime:
     """Load store once — shared by life ticks and inbox ingest in one process."""
     store_dir = store_dir.resolve()
+    from casa.domain.store_recovery import maybe_recover_store_on_wake
+
+    maybe_recover_store_on_wake(store_dir)
     boot = boot_store(store_dir, prefer_field_state=True)
     state = ensure_prisms(boot["state"])
     load_agent_prism(store_dir, state)
@@ -183,6 +188,9 @@ def agent_wake(
 ) -> dict[str, Any]:
     """Единственная prod-точка для host: загрузить store → агент живёт сам."""
     store_dir = store_dir.resolve()
+    from casa.domain.store_recovery import maybe_recover_store_on_wake
+
+    store_recovery = maybe_recover_store_on_wake(store_dir)
     boot = boot_store(store_dir, prefer_field_state=True)
     state = ensure_prisms(boot["state"])
     load_agent_prism(store_dir, state)
@@ -209,6 +217,7 @@ def agent_wake(
     drive = self_drive_state(session)
     return {
         "store_dir": str(store_dir),
+        "store_recovery": store_recovery,
         "macro_ticks": session.get("macro_ticks"),
         "last_self_drive": session.get("last_self_drive"),
         "self_drive": {
