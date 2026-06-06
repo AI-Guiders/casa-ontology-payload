@@ -27,6 +27,33 @@ def phrase_event_surfaces(entry: dict[str, Any]) -> list[str]:
     return []
 
 
+def merge_phrase_event_example(entry: dict[str, Any], example: dict[str, Any]) -> dict[str, Any]:
+    """Flat view for one lab illustration (possessive/numeral examples[])."""
+    merged = dict(entry)
+    for key in ("surfaces", "words", "gender_id", "lemma", "question_frames"):
+        if key in example:
+            merged[key] = example[key]
+    if example.get("gender_id"):
+        merged["example_gender_id"] = example["gender_id"]
+    return merged
+
+
+def phrase_event_probe_slices(entry: dict[str, Any]) -> list[tuple[dict[str, Any], int]]:
+    """One held-out slice per event — first surface of first example (or flat event)."""
+    examples = entry.get("examples")
+    if isinstance(examples, list) and examples:
+        ex = next((x for x in examples if isinstance(x, dict)), None)
+        if ex is None:
+            return []
+        merged = merge_phrase_event_example(entry, ex)
+        if not phrase_event_surfaces(merged):
+            return []
+        return [(merged, 0)]
+    if not phrase_event_surfaces(entry):
+        return []
+    return [(entry, 0)]
+
+
 def read_phrase_on_store(
     state: dict[str, Any],
     *,
@@ -137,23 +164,27 @@ def run_phrase_cases_on_store(
         entry = by_id.get(eid)
         if entry is None:
             continue
-        surfaces = phrase_event_surfaces(entry)
-        if not surfaces:
-            continue
-        indices = list(surface_indices) if surface_indices and len(event_ids or []) == 1 else [0]
-        for idx in indices:
-            idx = max(0, min(idx, len(surfaces) - 1))
-            phrase = surfaces[idx]
-            fp = int(font_map.get(eid) or default_font_pt)
-            row = read_phrase_on_store(
-                state,
-                event_entry=entry,
-                phrase=phrase,
-                min_syllable_votes=min_syllable_votes,
-                min_lex_votes=min_lex_votes,
-                font_pt=fp,
-            )
-            row["event_id"] = eid
-            row["surface_index"] = idx
-            rows.append(row)
+        for compose_entry, default_idx in phrase_event_probe_slices(entry):
+            surfaces = phrase_event_surfaces(compose_entry)
+            if not surfaces:
+                continue
+            if surface_indices and len(event_ids or []) == 1:
+                indices = list(surface_indices)
+            else:
+                indices = [default_idx]
+            for idx in indices:
+                idx = max(0, min(idx, len(surfaces) - 1))
+                phrase = surfaces[idx]
+                fp = int(font_map.get(eid) or default_font_pt)
+                row = read_phrase_on_store(
+                    state,
+                    event_entry=compose_entry,
+                    phrase=phrase,
+                    min_syllable_votes=min_syllable_votes,
+                    min_lex_votes=min_lex_votes,
+                    font_pt=fp,
+                )
+                row["event_id"] = eid
+                row["surface_index"] = idx
+                rows.append(row)
     return rows

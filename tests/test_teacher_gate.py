@@ -61,3 +61,13 @@ def test_phrase_compose_requires_word_reads():
     assert not probe_gate_passed(report)
     report["know_words"] = 3
     assert probe_gate_passed(report)
+
+
+def test_phrase_agent_store_events_have_probe_slices():
+    from casa.prisms.visual.phrase_compose import load_phrase_events
+    from phrase_probe_runner import phrase_event_probe_slices
+    from teacher_pedagogy import PHRASE_AGENT_STORE_EVENTS
+
+    by_id = {str(e.get("event_id") or ""): e for e in load_phrase_events()}
+    missing = [eid for eid in PHRASE_AGENT_STORE_EVENTS if not phrase_event_probe_slices(by_id[eid])]
+    assert not missing, missing
