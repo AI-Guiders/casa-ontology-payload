@@ -16,8 +16,15 @@ from typing import Any
 from casa.prisms.shared.field_write import load_field_state
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.lexicon_shard import LEGACY_L2, is_l2_word_lattice, l2_word_lattice_ids, nca_model_registry, shard_stats
+from casa.prisms.memory.phrase_shard import LEGACY_L3, is_l3_phrase_lattice, phrase_shard_stats
 from casa.prisms.memory.agent_journal import journal_stats
 from casa.prisms.memory.nca_codec import tokens_from_lattice
+from casa.prisms.shared.memory_layer_names import (
+    layer_sort_key,
+    memory_layer_for_lattice_id,
+    memory_layer_heading,
+    z_level_for_memory_layer,
+)
 from casa.prisms.shared.store_layout import rel_to_repo
 from casa.prisms.shared.store_paths_v1 import manifest_layout_block
 
@@ -60,11 +67,15 @@ def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
         toks = tokens_from_lattice(lat)
         nca_path = nca_model_registry(state).get(lid)
         nca_bytes = Path(nca_path).stat().st_size if nca_path and Path(nca_path).is_file() else 0
+        mem_layer = memory_layer_for_lattice_id(lid)
         layers.append(
             {
                 "id": lid,
-                "z_level": lat.get("z_level"),
-                "role": "L2_shard" if is_l2_word_lattice(lid) and lid != LEGACY_L2 else "core",
+                "z_level": lat.get("z_level") if lat.get("z_level") is not None else z_level_for_memory_layer(mem_layer),
+                "memory_layer": mem_layer,
+                "role": "L2_shard" if is_l2_word_lattice(lid) and lid != LEGACY_L2 else (
+                    "L3_shard" if is_l3_phrase_lattice(lid) and lid not in (LEGACY_L3, "phrases") else "core"
+                ),
                 "width": lat.get("width"),
                 "height": lat.get("height"),
                 "token_count": len(toks),
@@ -96,6 +107,7 @@ def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
         "field_version": state.get("field_version"),
         "schema": state.get("schema_version"),
         "l2_sharding": shard_stats(state),
+        "l3_sharding": phrase_shard_stats(state),
         "prisms": ["prism_memory", "prism_hippo"],
         "lattice_stack": layers,
         "l2_network_ids": l2_word_lattice_ids(state),
@@ -122,13 +134,70 @@ def render_memory_md(manifest: dict[str, Any]) -> str:
         "",
         "## Hierarchy (prism_memory)",
         "",
+        "Слои: **memory.grapheme** (T0) → **memory.syllable** (T1) → **memory.lexicon** (T2) → **memory.phrase** (T3).",
+        "Legacy L0…L3 / lattice_id в скобках — только для migrate.",
+        "",
         "```text",
         "prism_memory",
     ]
+    l3_by_id = {
+        str(r.get("lattice_id")): r
+        for r in (manifest.get("l3_sharding") or {}).get("lattices") or []
+    }
+    by_layer: dict[str, list[dict[str, Any]]] = {}
     for row in manifest["lattice_stack"]:
-        indent = "  " * (int(row.get("z_level") or 0) + 1)
-        nca = " + NCA" if row.get("nca_model") else ""
-        lines.append(f"{indent}{row['id']}  (tokens={row['token_count']}){nca}")
+        r = dict(row)
+        l3 = l3_by_id.get(str(r.get("id") or ""))
+        if l3:
+            r.setdefault("token_range", l3.get("token_range"))
+            r.setdefault("token_hint", l3.get("token_hint"))
+            r.setdefault("shard_index", l3.get("shard_index"))
+        layer = str(r.get("memory_layer") or memory_layer_for_lattice_id(str(r.get("id") or "")))
+        by_layer.setdefault(layer, []).append(r)
+    for shard_row in (manifest.get("l2_sharding") or {}).get("lattices") or []:
+        lid = str(shard_row.get("lattice_id") or "")
+        if not lid or any(r.get("id") == lid for r in manifest["lattice_stack"]):
+            continue
+        layer = memory_layer_for_lattice_id(lid)
+        by_layer.setdefault(layer, []).append(
+            {
+                "id": lid,
+                "token_count": shard_row.get("token_count", 0),
+                "nca_model": None,
+                "lex_range": shard_row.get("lex_range"),
+            }
+        )
+    for shard_row in (manifest.get("l3_sharding") or {}).get("lattices") or []:
+        lid = str(shard_row.get("lattice_id") or "")
+        if not lid or any(r.get("id") == lid for r in manifest["lattice_stack"]):
+            continue
+        layer = memory_layer_for_lattice_id(lid)
+        by_layer.setdefault(layer, []).append(
+            {
+                "id": lid,
+                "token_count": shard_row.get("token_count", 0),
+                "nca_model": None,
+                "token_range": shard_row.get("token_range"),
+                "token_hint": shard_row.get("token_hint"),
+            }
+        )
+    def _shard_row_sort(row: dict[str, Any]) -> tuple:
+        sid = row.get("shard_index")
+        if sid is not None:
+            return (0, int(sid), str(row.get("id") or ""))
+        return (1, str(row.get("id") or ""))
+
+    for layer in sorted(by_layer.keys(), key=layer_sort_key):
+        lines.append(f"  {memory_layer_heading(layer)}")
+        for row in sorted(by_layer[layer], key=_shard_row_sort):
+            nca = " + NCA" if row.get("nca_model") else ""
+            extra = f" · {row['lex_range']}" if row.get("lex_range") else ""
+            if row.get("token_range"):
+                hint = row.get("token_hint") or "entity/word tokens"
+                extra = f" · {row['token_range']} ({hint})"
+            idx = row.get("shard_index")
+            idx_s = f" [#{idx:02d}]" if idx is not None else ""
+            lines.append(f"    {row['id']}{idx_s}  (tokens={row.get('token_count', 0)}){nca}{extra}")
     lines.append("```")
     lines.append("")
     journal = manifest.get("journal") or {}
@@ -140,7 +209,7 @@ def render_memory_md(manifest: dict[str, Any]) -> str:
             lines.append(f"- `{row.get('domain')}`: {row.get('entry_count')} entries")
         lines.append("")
     sh = manifest.get("l2_sharding") or {}
-    lines.append("## L2 sharding")
+    lines.append("## memory.lexicon — sharding")
     lines.append("")
     lines.append(f"- enabled: {sh.get('enabled')}")
     lines.append(f"- mode: **{sh.get('mode', 'lexicographic')}**")
@@ -152,20 +221,59 @@ def render_memory_md(manifest: dict[str, Any]) -> str:
         preview = ", ".join(str(c) for c in initials[:24])
         suffix = "…" if len(initials) > 24 else ""
         lines.append(f"- attested word-initial letters ({len(initials)}): {preview}{suffix}")
-    active = [x for x in (sh.get("lattices") or []) if str(x.get("lattice_id", "")).startswith("L2_word_")]
+    active = [
+        x
+        for x in (sh.get("lattices") or [])
+        if is_l2_word_lattice(str(x.get("lattice_id", "")))
+        and str(x.get("lattice_id", "")) not in (LEGACY_L2, "lexicon-ru", "lexicon-en")
+    ]
     lines.append(f"- active shard lattices: {len(active)}")
     if sh.get("mode") == "lexicographic":
         lines.append("")
-        lines.append("| Shard | Headword range (lex) | words in plan | tokens on grid |")
-        lines.append("|-------|----------------------|---------------|----------------|")
+        naming = sh.get("shard_naming") or "numeric"
+        lines.append(f"- shard naming: **{naming}**")
+        lines.append("")
+        lines.append("| Shard id | Headword range (lex) | words in plan | tokens on grid |")
+        lines.append("|----------|----------------------|---------------|----------------|")
         for row in active:
             lid = str(row.get("lattice_id", ""))
-            if lid == "L2_word":
-                continue
             label = row.get("lex_range") or "?"
             wc = row.get("lex_word_count")
             wc_s = str(wc) if wc is not None else "?"
             lines.append(f"| `{lid}` | {label} | {wc_s} | {row.get('token_count', 0)} |")
+    l3 = manifest.get("l3_sharding") or {}
+    if l3.get("lattices"):
+        lines.append("")
+        lines.append("## memory.phrase — sharding")
+        lines.append("")
+        lines.append(f"- enabled: {l3.get('enabled')}")
+        lines.append(f"- mode: **{l3.get('mode', 'lexicographic')}**")
+        lines.append(f"- plan: **{l3.get('lex_plan', 'corpus_quantile')}**")
+        lines.append(f"- shards: {l3.get('num_shards')}")
+        lines.append(f"- indexed tokens: {l3.get('indexed_tokens')}")
+        lines.append(f"- shard naming: **{l3.get('shard_naming') or 'numeric'}**")
+        lines.append(f"- hint: field **entity / word / meta** tokens (not headwords)")
+        active_l3 = [
+            x
+            for x in (l3.get("lattices") or [])
+            if is_l3_phrase_lattice(str(x.get("lattice_id", "")))
+            and str(x.get("lattice_id", "")) not in (LEGACY_L3, "phrases")
+        ]
+        lines.append(f"- active shard lattices: {len(active_l3)}")
+        lines.append("")
+        lines.append("| idx | Shard id | Token range (label) | kind | plan | on grid |")
+        lines.append("|-----|----------|---------------------|------|------|---------|")
+        for row in sorted(active_l3, key=lambda r: int(r.get("shard_index") if r.get("shard_index") is not None else 999)):
+            lid = str(row.get("lattice_id", ""))
+            idx = row.get("shard_index")
+            idx_s = f"{idx:02d}" if idx is not None else "?"
+            label = row.get("token_range") or "?"
+            hint = row.get("token_hint") or "entity/word"
+            plan = row.get("plan_token_count")
+            plan_s = str(plan) if plan is not None else "?"
+            lines.append(
+                f"| {idx_s} | `{lid}` | {label} | {hint} | {plan_s} | {row.get('token_count', 0)} |"
+            )
     lines.append("")
     lines.append("Regenerate: `python tools/memory_manifest.py --store-dir ... --write`")
     lines.append("")
@@ -180,7 +288,7 @@ def main() -> None:
     args = p.parse_args()
 
     path = args.store_dir / "field_state.json"
-    state = ensure_prisms(load_field_state(path))
+    state = ensure_prisms(load_field_state(path, store_dir=args.store_dir))
     manifest = build_manifest(args.store_dir, state)
 
     compare: list[dict[str, Any]] = []
