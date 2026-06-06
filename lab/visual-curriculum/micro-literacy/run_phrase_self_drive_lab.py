@@ -28,7 +28,7 @@ def main() -> None:
     from casa.domain.emergent_promote import promote_from_probe_report, promote_routes_from_probe_report
     from casa.domain.mastery_gate import record_gate_attempt, skill_gate_id
     from casa.domain.plan_tick import PlanTick
-    from casa.domain.wake_decompose import current_word_focus, init_phrase_queue, phrase_event_id_from_goal
+    from casa.domain.wake_decompose import advance_word_queue, current_word_focus, init_phrase_queue, phrase_event_id_from_goal
     from casa.prisms.control.fpn_state import WorkingMemory
     from casa.prisms.control.tick import ControlExtensions
     from casa.prisms.tick.agent_self_drive_tick import (
@@ -56,17 +56,20 @@ def main() -> None:
     init_phrase_queue(state, args.goal)
     words_done: list[str] = []
     analytic_gid = skill_gate_id("skill.read.analytic")
+    dec0 = state.get("wake_decompose") or {}
+    word_count = len(dec0.get("words") or [])
+    max_iters = max(word_count * 2, 8)
 
     with patch(
         "casa.prisms.visual.analytic_read.verify_analytic_read_frame",
         return_value=True,
     ):
-        while True:
+        for _ in range(max_iters):
             focus = current_word_focus(state, goal_id=args.goal)
             if not focus:
                 break
             wm.step_capability = "skill.read.analytic"
-            wm.step_index = 0
+            wm.step_index = len(words_done)
             wm.step_focus = focus
             mem_prep["plan_tick"] = PlanTick.from_wm(wm).to_dict()
             record_gate_attempt(state, analytic_gid, passed=True, tick=wm.tick)
@@ -77,10 +80,14 @@ def main() -> None:
                 mem_prep=mem_prep,
                 knowledge={"predict_verdict": "pass", "hypothesis": event_id},
             )
+            if rep and not rep.get("phrase_queue", {}).get("advanced"):
+                advance_word_queue(state, passed=True)
             words_done.append(focus)
-            dec = state.get("wake_decompose") or {}
-            if int(dec.get("word_index") or 0) >= len(dec.get("words") or []) - 1:
+            wm.tick += 1
+            if len(words_done) >= word_count:
                 break
+        else:
+            raise RuntimeError(f"phrase analytic loop exceeded {max_iters} iterations")
 
         wm.step_capability = "skill.compose.slots"
         wm.step_index = 1
@@ -121,7 +128,7 @@ def main() -> None:
         "words_analytic": words_done,
         "word_count": word_count,
         "macro_tick": macro is not None,
-        "wake_complete": int(dec.get("word_index") or 0) >= word_count - 1,
+        "wake_complete": len(words_done) == word_count,
     }
     print(json.dumps(out, ensure_ascii=False, indent=2))
     raise SystemExit(0 if out["wake_complete"] and len(words_done) == word_count else 1)

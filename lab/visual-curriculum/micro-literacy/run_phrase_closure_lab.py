@@ -118,8 +118,8 @@ def main() -> None:
         for cmd in agent_ksa + sidecar:
             _run(cmd)
 
-        _run([py, str(_MICRO / "run_promote_bootstrap_routes.py"), "--store", args.store])
-        _run([py, str(_MICRO / "run_phrase_self_drive_lab.py"), "--store", args.store])
+    _run([py, str(_MICRO / "run_promote_bootstrap_routes.py"), "--store", args.store])
+    _run([py, str(_MICRO / "run_phrase_self_drive_lab.py"), "--store", args.store])
 
 
 if __name__ == "__main__":
