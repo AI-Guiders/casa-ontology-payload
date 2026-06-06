@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Чистое мета-лицо: 1 vis + 1 lex → lang.meta.grammar.person.* (ADR-0030)."""
+"""L2 лицо: pronoun cards + phrase vis pairs (она мыла) — ADR-0030 / ADR-0033."""
 
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ PERSON_PURE: tuple[PureMetaPhrase, ...] = tuple(
         frame_id=f"word-{slug}-sans",
         slug=slug,
     )
-    for slug, surface, cid in meta.GRAMMAR_PERSON_CARDS
+    for slug, surface, cid in (*meta.GRAMMAR_PERSON_CARDS, *meta.GRAMMAR_PERSON_PHRASE_CARDS)
 )
 
 

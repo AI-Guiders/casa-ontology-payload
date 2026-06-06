@@ -118,6 +118,14 @@
       "lesson_ids": [
         "lesson-09-grammar-agreement-meta"
       ]
+    },
+    {
+      "id": "stage-09b-grammar-possessive",
+      "title": "Род/число: притяжательное (мой/моя/моё)",
+      "order": 83,
+      "lesson_ids": [
+        "lesson-09b-grammar-possessive-meta"
+      ]
     }
   ],
   "frames": [
@@ -7609,6 +7617,362 @@
         "face:sans"
       ],
       "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-39c5324ff684-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-39c5324ff684-sans.jpg",
+      "scene_label": "card:word:39c5324ff684:sans",
+      "concept_id": "lang.word.39c5324ff684",
+      "curriculum_tags": [
+        "lang.word.39c5324ff684",
+        "word:мыл",
+        "slug:39c5324ff684",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-person-ona-myla-sans",
+      "path": "lesson-08-grammar-meta/images/word-person-ona-myla-sans.jpg",
+      "scene_label": "card:grammar:grammar.person.3sg.fem:sans",
+      "concept_id": "lang.meta.grammar.person.3sg.fem",
+      "curriculum_tags": [
+        "lang.meta.grammar.person.3sg.fem",
+        "surface:она мыла",
+        "slug:person-ona-myla",
+        "face:sans",
+        "grammar:person"
+      ],
+      "lesson_id": "lesson-08-grammar-meta"
+    },
+    {
+      "id": "word-person-on-myl-sans",
+      "path": "lesson-08-grammar-meta/images/word-person-on-myl-sans.jpg",
+      "scene_label": "card:grammar:grammar.person.3sg.masc:sans",
+      "concept_id": "lang.meta.grammar.person.3sg.masc",
+      "curriculum_tags": [
+        "lang.meta.grammar.person.3sg.masc",
+        "surface:он мыл",
+        "slug:person-on-myl",
+        "face:sans",
+        "grammar:person"
+      ],
+      "lesson_id": "lesson-08-grammar-meta"
+    },
+    {
+      "id": "word-3c2978b9f561-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-3c2978b9f561-sans.jpg",
+      "scene_label": "card:word:3c2978b9f561:sans",
+      "concept_id": "lang.word.3c2978b9f561",
+      "curriculum_tags": [
+        "lang.word.3c2978b9f561",
+        "word:мой",
+        "slug:3c2978b9f561",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-7286b88cb3f9-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-7286b88cb3f9-sans.jpg",
+      "scene_label": "card:word:7286b88cb3f9:sans",
+      "concept_id": "lang.word.7286b88cb3f9",
+      "curriculum_tags": [
+        "lang.word.7286b88cb3f9",
+        "word:моя",
+        "slug:7286b88cb3f9",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-2ecc4fc4cf64-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-2ecc4fc4cf64-sans.jpg",
+      "scene_label": "card:word:2ecc4fc4cf64:sans",
+      "concept_id": "lang.word.2ecc4fc4cf64",
+      "curriculum_tags": [
+        "lang.word.2ecc4fc4cf64",
+        "word:моё",
+        "slug:2ecc4fc4cf64",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-poss-on-moy-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-on-moy-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.masc.sg:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.masc.sg",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.masc.sg",
+        "surface:он мой",
+        "slug:poss-on-moy",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-poss-ona-moya-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-ona-moya-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.fem.sg:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.fem.sg",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.fem.sg",
+        "surface:она моя",
+        "slug:poss-ona-moya",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-poss-ono-moyo-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-ono-moyo-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.neut.sg:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.neut.sg",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.neut.sg",
+        "surface:оно моё",
+        "slug:poss-ono-moyo",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-poss-dom-moy-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-dom-moy-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.masc.sg:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.masc.sg",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.masc.sg",
+        "surface:мой дом",
+        "slug:poss-dom-moy",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-poss-kniga-moya-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-kniga-moya-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.fem.sg:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.fem.sg",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.fem.sg",
+        "surface:моя книга",
+        "slug:poss-kniga-moya",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-poss-okno-moyo-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-okno-moyo-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.neut.sg:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.neut.sg",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.neut.sg",
+        "surface:моё окно",
+        "slug:poss-okno-moyo",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-gender-masc-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-gender-masc-sans.jpg",
+      "scene_label": "card:grammar:grammar.gender.masc:sans",
+      "concept_id": "lang.meta.grammar.gender.masc",
+      "curriculum_tags": [
+        "lang.meta.grammar.gender.masc",
+        "surface:мужской род",
+        "slug:gender-masc",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-gender-fem-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-gender-fem-sans.jpg",
+      "scene_label": "card:grammar:grammar.gender.fem:sans",
+      "concept_id": "lang.meta.grammar.gender.fem",
+      "curriculum_tags": [
+        "lang.meta.grammar.gender.fem",
+        "surface:женский род",
+        "slug:gender-fem",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-gender-neut-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-gender-neut-sans.jpg",
+      "scene_label": "card:grammar:grammar.gender.neut:sans",
+      "concept_id": "lang.meta.grammar.gender.neut",
+      "curriculum_tags": [
+        "lang.meta.grammar.gender.neut",
+        "surface:средний род",
+        "slug:gender-neut",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-number-sg-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-number-sg-sans.jpg",
+      "scene_label": "card:grammar:grammar.number.sg:sans",
+      "concept_id": "lang.meta.grammar.number.sg",
+      "curriculum_tags": [
+        "lang.meta.grammar.number.sg",
+        "surface:единственное число",
+        "slug:number-sg",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-number-pl-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-number-pl-sans.jpg",
+      "scene_label": "card:grammar:grammar.number.pl:sans",
+      "concept_id": "lang.meta.grammar.number.pl",
+      "curriculum_tags": [
+        "lang.meta.grammar.number.pl",
+        "surface:множественное число",
+        "slug:number-pl",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-fa7fc2960cfa-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-fa7fc2960cfa-sans.jpg",
+      "scene_label": "card:word:fa7fc2960cfa:sans",
+      "concept_id": "lang.word.fa7fc2960cfa",
+      "curriculum_tags": [
+        "lang.word.fa7fc2960cfa",
+        "word:мои",
+        "slug:fa7fc2960cfa",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-56f89eb50742-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-56f89eb50742-sans.jpg",
+      "scene_label": "card:word:56f89eb50742:sans",
+      "concept_id": "lang.word.56f89eb50742",
+      "curriculum_tags": [
+        "lang.word.56f89eb50742",
+        "word:книги",
+        "slug:56f89eb50742",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-172631f03731-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-172631f03731-sans.jpg",
+      "scene_label": "card:word:172631f03731:sans",
+      "concept_id": "lang.word.172631f03731",
+      "curriculum_tags": [
+        "lang.word.172631f03731",
+        "word:дома",
+        "slug:172631f03731",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-7b3f8d58a163-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-7b3f8d58a163-sans.jpg",
+      "scene_label": "card:word:7b3f8d58a163:sans",
+      "concept_id": "lang.word.7b3f8d58a163",
+      "curriculum_tags": [
+        "lang.word.7b3f8d58a163",
+        "word:окна",
+        "slug:7b3f8d58a163",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-poss-oni-moi-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-oni-moi-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.pl:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.pl",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.pl",
+        "surface:они мои",
+        "slug:poss-oni-moi",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-poss-doma-moi-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-doma-moi-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.pl:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.pl",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.pl",
+        "surface:мои дома",
+        "slug:poss-doma-moi",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-poss-knigi-moi-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-knigi-moi-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.pl:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.pl",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.pl",
+        "surface:мои книги",
+        "slug:poss-knigi-moi",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-poss-okna-moi-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-okna-moi-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.pl:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.pl",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.pl",
+        "surface:мои окна",
+        "slug:poss-okna-moi",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-poss-moi-all-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-moi-all-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.pl:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.pl",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.pl",
+        "surface:мои (все роды)",
+        "slug:poss-moi-all",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
     }
   ]
 }

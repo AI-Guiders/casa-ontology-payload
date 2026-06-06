@@ -35,7 +35,7 @@ def main() -> None:
 
     if not args.skip_build:
         _run([py, str(_TOOLS / "build_word_cards.py"), "--wordlist", str(wordlist), "--limit", "20"])
-        _run([py, str(_TOOLS / "build_grammar_meta_cards.py"), "--case", "--agreement"])
+        _run([py, str(_TOOLS / "build_grammar_meta_cards.py"), "--person", "--case", "--agreement", "--possessive"])
 
     if not args.skip_ingest:
         _run([py, str(_MICRO / "run_phrase_pilot_words.py"), "--phrase-p1"])
@@ -44,6 +44,7 @@ def main() -> None:
                 "run_meta_grammar_person_pure.py",
                 "run_meta_grammar_case_pure.py",
                 "run_meta_grammar_agreement_pure.py",
+                "run_meta_grammar_possessive_pure.py",
             ):
                 _run([py, str(_MICRO / script), "--rounds", "1", "--modes", "phrase_vis"])
 
@@ -71,7 +72,27 @@ def main() -> None:
                 "--font-pt",
                 "40",
             ],
+            [
+                py,
+                str(_CURRICULUM / "probe_phrase_compose_pilot.py"),
+                "--store",
+                args.store,
+                "--event-id",
+                "lang.event.transitive.wash.3sg_fem.v0",
+            ],
             [py, str(_CURRICULUM / "probe_phrase_permutation_equiv.py")],
+            [
+                py,
+                str(_CURRICULUM / "probe_phrase_permutation_equiv.py"),
+                "--event-id",
+                "lang.event.ditransitive.give.v0",
+            ],
+            [
+                py,
+                str(_CURRICULUM / "probe_phrase_permutation_equiv.py"),
+                "--event-id",
+                "lang.event.transitive.wash.3sg_fem.v0",
+            ],
             [
                 py,
                 str(_CURRICULUM / "probe_phrase_permutation_equiv.py"),
@@ -85,14 +106,35 @@ def main() -> None:
                 "--event-id",
                 "lang.event.transitive.wash.circ.v0",
             ],
+            [py, str(_CURRICULUM / "probe_phrase_case_frames.py")],
+            [
+                py,
+                str(_CURRICULUM / "probe_phrase_case_frames.py"),
+                "--event-id",
+                "lang.event.ditransitive.give.v0",
+            ],
+            [
+                py,
+                str(_CURRICULUM / "probe_question_frame_pilot.py"),
+                "--event-id",
+                "lang.event.transitive.wash.3sg_fem.v0",
+            ],
+            [py, str(_CURRICULUM / "probe_possessive_pilot.py")],
+            [py, str(_CURRICULUM / "probe_possessive_rule.py")],
+            [
+                py,
+                str(_CURRICULUM / "probe_phrase_permutation_equiv.py"),
+                "--event-id",
+                "lang.event.possessive.pronoun.sg.v0",
+            ],
             [py, str(_CURRICULUM / "probe_meta_grammar_person_quiz.py")],
             [py, str(_CURRICULUM / "probe_meta_grammar_agreement_quiz.py")],
-            [py, str(_CURRICULUM / "probe_meta_grammar_case_quiz.py")],
         ]
         for cmd in probes:
             _run(cmd)
 
         _run([py, str(_MICRO / "run_promote_bootstrap_routes.py"), "--store", args.store])
+        _run([py, str(_MICRO / "run_phrase_self_drive_lab.py"), "--store", args.store])
 
 
 if __name__ == "__main__":

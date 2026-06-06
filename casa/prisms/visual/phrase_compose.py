@@ -99,15 +99,21 @@ def check_agreement(
 
     details: list[dict[str, Any]] = []
     ok = True
+    from casa.prisms.visual.phrase_person import check_person_agreement
+
     for row in agreement:
         exp_agent = _nfc(str(row.get("agent") or "")).lower()
         exp_verb = _nfc(str(row.get("verb") or "")).lower()
         row_ok = agent_surf == exp_agent and verb_surf == exp_verb
+        person_id = str(row.get("person_id") or "").strip()
+        if row_ok and person_id and not check_person_agreement(agent_surf, person_id):
+            row_ok = False
         if not row_ok:
             ok = False
         details.append(
             {
                 "kind": row.get("kind"),
+                "person_id": person_id or None,
                 "expected_agent": exp_agent,
                 "expected_verb": exp_verb,
                 "got_agent": agent_surf,
@@ -125,8 +131,14 @@ def compose_phrase_verdict(
     check_questions: bool = True,
 ) -> dict[str, Any]:
     """Aggregate per-word R1 reads into phrase-level gate (order ignored)."""
+    from casa.prisms.visual.phrase_possessive import (
+        agreement_rows_for_entry,
+        check_possessive_agreement,
+        resolve_possessive_entry,
+    )
     from casa.prisms.visual.phrase_question import compose_question_verdict
 
+    entry = resolve_possessive_entry(entry, word_reads)
     words_spec = list(entry.get("words") or [])
     bind = bind_slots(word_reads, words_spec)
     slots = bind["slots"]
@@ -135,6 +147,17 @@ def compose_phrase_verdict(
     slot_ok = bool(bind["complete"])
     agr = check_agreement(slots, list(entry.get("agreement") or []))
     agreement_ok = bool(agr["ok"])
+
+    poss_agr_rows = agreement_rows_for_entry(entry)
+    poss_out: dict[str, Any] | None = None
+    if poss_agr_rows:
+        poss_out = check_possessive_agreement(
+            slots,
+            poss_agr_rows,
+            example_gender_id=str(entry.get("example_gender_id") or ""),
+        )
+        if not poss_out.get("ok"):
+            agreement_ok = False
 
     verdict = "empty"
     if not word_reads:
@@ -154,6 +177,14 @@ def compose_phrase_verdict(
         if not question_out.get("question_know"):
             verdict = "question_fail"
 
+    case_out: dict[str, Any] | None = None
+    if verdict == "phrase_know" and entry.get("case_frames"):
+        from casa.prisms.visual.phrase_case import compose_case_verdict
+
+        case_out = compose_case_verdict(slots, entry)
+        if not case_out.get("case_know"):
+            verdict = "case_fail"
+
     circ_out: dict[str, Any] | None = None
     if verdict == "phrase_know" and entry.get("circumstantials"):
         from casa.prisms.visual.phrase_circumstantial import check_circumstantials
@@ -171,8 +202,12 @@ def compose_phrase_verdict(
         "agreement": agr,
         "phrase_know": verdict == "phrase_know",
     }
+    if poss_out is not None:
+        out["possessive_agreement"] = poss_out
     if question_out is not None:
         out["question"] = question_out
+    if case_out is not None:
+        out["case"] = case_out
     if circ_out is not None:
         out["circumstantials"] = circ_out
     return out

@@ -34,6 +34,20 @@
           "kind": "subjectVerb.fem.sg.past"
         }
       ],
+      "case_frames": [
+        {
+          "role": "agent",
+          "case_id": "lang.meta.grammar.case.nom",
+          "question_id": "lang.meta.grammar.question.who",
+          "anchor_surface": "мыла"
+        },
+        {
+          "role": "patient",
+          "case_id": "lang.meta.grammar.case.acc",
+          "question_id": "lang.meta.grammar.question.what",
+          "anchor_surface": "мыла"
+        }
+      ],
       "question_frames": [
         {
           "anchor_surface": "мыла",
@@ -56,9 +70,72 @@
       ]
     },
     {
+      "event_id": "lang.event.transitive.wash.3sg_fem.v0",
+      "surfaces": [
+        "Она мыла раму",
+        "Мыла раму она",
+        "Раму она мыла"
+      ],
+      "words": [
+        {
+          "role": "agent",
+          "surface": "она",
+          "slug": "0e338553d71f"
+        },
+        {
+          "role": "verb",
+          "surface": "мыла",
+          "slug": "27dae5010f7e"
+        },
+        {
+          "role": "patient",
+          "surface": "раму",
+          "slug": "c6eebd8384e6"
+        }
+      ],
+      "agreement": [
+        {
+          "agent": "она",
+          "verb": "мыла",
+          "kind": "subjectVerb.fem.sg.past",
+          "person_id": "lang.meta.grammar.person.3sg.fem"
+        }
+      ],
+      "case_frames": [
+        {
+          "role": "agent",
+          "case_id": "lang.meta.grammar.case.nom",
+          "question_id": "lang.meta.grammar.question.who",
+          "anchor_surface": "мыла"
+        },
+        {
+          "role": "patient",
+          "case_id": "lang.meta.grammar.case.acc",
+          "question_id": "lang.meta.grammar.question.what",
+          "anchor_surface": "мыла"
+        }
+      ],
+      "question_frames": [
+        {
+          "anchor_surface": "мыла",
+          "question_id": "lang.meta.grammar.question.who",
+          "expected_surface": "она",
+          "expected_role": "agent"
+        },
+        {
+          "anchor_surface": "мыла",
+          "question_id": "lang.meta.grammar.question.what",
+          "expected_surface": "раму",
+          "expected_role": "patient"
+        }
+      ]
+    },
+    {
       "event_id": "lang.event.ditransitive.give.v0",
       "surfaces": [
-        "Мама дала Маше книгу"
+        "Мама дала Маше книгу",
+        "Маше мама дала книгу",
+        "Книгу мама дала Маше"
       ],
       "words": [
         {
@@ -87,6 +164,26 @@
           "agent": "мама",
           "verb": "дала",
           "kind": "subjectVerb.fem.sg.past"
+        }
+      ],
+      "case_frames": [
+        {
+          "role": "agent",
+          "case_id": "lang.meta.grammar.case.nom",
+          "question_id": "lang.meta.grammar.question.who",
+          "anchor_surface": "дала"
+        },
+        {
+          "role": "patient",
+          "case_id": "lang.meta.grammar.case.acc",
+          "question_id": "lang.meta.grammar.question.what",
+          "anchor_surface": "дала"
+        },
+        {
+          "role": "recipient",
+          "case_id": "lang.meta.grammar.case.dat",
+          "question_id": "lang.meta.grammar.question.to_whom",
+          "anchor_surface": "дала"
         }
       ],
       "question_frames": [
@@ -189,6 +286,211 @@
           "question_id": "lang.meta.grammar.question.what",
           "expected_surface": "раму",
           "expected_role": "patient"
+        }
+      ]
+    },
+    {
+      "event_id": "lang.event.possessive.pronoun.sg.v0",
+      "notes": "Правило: referent→род, ед.ч.→ мой/моя/моё. Слова — иллюстрации для lab.",
+      "possessive_agreement": [
+        {
+          "kind": "possessive.sg",
+          "number_id": "lang.meta.grammar.number.sg",
+          "infer_gender_from": "referent",
+          "head_role": "referent"
+        }
+      ],
+      "examples": [
+        {
+          "gender_id": "lang.meta.grammar.gender.masc",
+          "surfaces": ["Он мой", "Мой он"],
+          "words": [
+            {"role": "referent", "surface": "он", "slug": "484518364fdb"},
+            {"role": "possessive", "surface": "мой", "slug": "3c2978b9f561"}
+          ],
+          "question_frames": [
+            {
+              "anchor_surface": "он",
+              "question_id": "lang.meta.grammar.question.whose",
+              "expected_surface": "мой",
+              "expected_role": "possessive"
+            }
+          ]
+        },
+        {
+          "gender_id": "lang.meta.grammar.gender.fem",
+          "surfaces": ["Она моя", "Моя она"],
+          "words": [
+            {"role": "referent", "surface": "она", "slug": "0e338553d71f"},
+            {"role": "possessive", "surface": "моя", "slug": "7286b88cb3f9"}
+          ],
+          "question_frames": [
+            {
+              "anchor_surface": "она",
+              "question_id": "lang.meta.grammar.question.whose",
+              "expected_surface": "моя",
+              "expected_role": "possessive"
+            }
+          ]
+        },
+        {
+          "gender_id": "lang.meta.grammar.gender.neut",
+          "surfaces": ["Оно моё", "Моё оно"],
+          "words": [
+            {"role": "referent", "surface": "оно", "slug": "1329b0f09757"},
+            {"role": "possessive", "surface": "моё", "slug": "2ecc4fc4cf64"}
+          ],
+          "question_frames": [
+            {
+              "anchor_surface": "оно",
+              "question_id": "lang.meta.grammar.question.whose",
+              "expected_surface": "моё",
+              "expected_role": "possessive"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "event_id": "lang.event.possessive.head.sg.v0",
+      "notes": "Правило: gender_id примера + ед.ч. → притяжательное; head — любая иллюстрация.",
+      "possessive_agreement": [
+        {
+          "kind": "possessive.sg",
+          "number_id": "lang.meta.grammar.number.sg",
+          "infer_gender_from": "example",
+          "head_role": "head"
+        }
+      ],
+      "examples": [
+        {
+          "gender_id": "lang.meta.grammar.gender.masc",
+          "surfaces": ["Мой дом", "Дом мой"],
+          "words": [
+            {"role": "head", "surface": "дом", "slug": "f5b3d757a732"},
+            {"role": "possessive", "surface": "мой", "slug": "3c2978b9f561"}
+          ],
+          "question_frames": [
+            {
+              "anchor_surface": "дом",
+              "question_id": "lang.meta.grammar.question.whose",
+              "expected_surface": "мой",
+              "expected_role": "possessive"
+            }
+          ]
+        },
+        {
+          "gender_id": "lang.meta.grammar.gender.fem",
+          "surfaces": ["Моя книга", "Книга моя"],
+          "words": [
+            {"role": "head", "surface": "книга", "slug": "695b9685757a"},
+            {"role": "possessive", "surface": "моя", "slug": "7286b88cb3f9"}
+          ],
+          "question_frames": [
+            {
+              "anchor_surface": "книга",
+              "question_id": "lang.meta.grammar.question.whose",
+              "expected_surface": "моя",
+              "expected_role": "possessive"
+            }
+          ]
+        },
+        {
+          "gender_id": "lang.meta.grammar.gender.neut",
+          "surfaces": ["Моё окно", "Окно моё"],
+          "words": [
+            {"role": "head", "surface": "окно", "slug": "5943c4045eb8"},
+            {"role": "possessive", "surface": "моё", "slug": "2ecc4fc4cf64"}
+          ],
+          "question_frames": [
+            {
+              "anchor_surface": "окно",
+              "question_id": "lang.meta.grammar.question.whose",
+              "expected_surface": "моё",
+              "expected_role": "possessive"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "event_id": "lang.event.possessive.pronoun.pl.v0",
+      "notes": "Мн.ч.: всегда мои; род не кодируется в притяжательном.",
+      "possessive_agreement": [
+        {"kind": "possessive.pl", "number_id": "lang.meta.grammar.number.pl", "head_role": "referent"}
+      ],
+      "examples": [
+        {
+          "surfaces": ["Они мои", "Мои они"],
+          "words": [
+            {"role": "referent", "surface": "они", "slug": "7575772fe433"},
+            {"role": "possessive", "surface": "мои", "slug": "fa7fc2960cfa"}
+          ],
+          "question_frames": [
+            {
+              "anchor_surface": "они",
+              "question_id": "lang.meta.grammar.question.whose_pl",
+              "expected_surface": "мои",
+              "expected_role": "possessive"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "event_id": "lang.event.possessive.head.pl.v0",
+      "notes": "Мн.ч.: мои для любого head; дом/книги/окна — иллюстрации, не таблица.",
+      "possessive_agreement": [
+        {"kind": "possessive.pl", "number_id": "lang.meta.grammar.number.pl", "head_role": "head"}
+      ],
+      "examples": [
+        {
+          "gender_id": "lang.meta.grammar.gender.masc",
+          "surfaces": ["Мои дома", "Дома мои"],
+          "words": [
+            {"role": "head", "surface": "дома", "slug": "172631f03731"},
+            {"role": "possessive", "surface": "мои", "slug": "fa7fc2960cfa"}
+          ],
+          "question_frames": [
+            {
+              "anchor_surface": "дома",
+              "question_id": "lang.meta.grammar.question.whose_pl",
+              "expected_surface": "мои",
+              "expected_role": "possessive"
+            }
+          ]
+        },
+        {
+          "gender_id": "lang.meta.grammar.gender.fem",
+          "surfaces": ["Мои книги", "Книги мои"],
+          "words": [
+            {"role": "head", "surface": "книги", "slug": "56f89eb50742"},
+            {"role": "possessive", "surface": "мои", "slug": "fa7fc2960cfa"}
+          ],
+          "question_frames": [
+            {
+              "anchor_surface": "книги",
+              "question_id": "lang.meta.grammar.question.whose_pl",
+              "expected_surface": "мои",
+              "expected_role": "possessive"
+            }
+          ]
+        },
+        {
+          "gender_id": "lang.meta.grammar.gender.neut",
+          "surfaces": ["Мои окна", "Окна мои"],
+          "words": [
+            {"role": "head", "surface": "окна", "slug": "7b3f8d58a163"},
+            {"role": "possessive", "surface": "мои", "slug": "fa7fc2960cfa"}
+          ],
+          "question_frames": [
+            {
+              "anchor_surface": "окна",
+              "question_id": "lang.meta.grammar.question.whose_pl",
+              "expected_surface": "мои",
+              "expected_role": "possessive"
+            }
+          ]
         }
       ]
     }
