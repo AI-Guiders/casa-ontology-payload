@@ -48,7 +48,7 @@ def main() -> None:
         )
 
     if not args.skip_ingest:
-        _run([py, str(_MICRO / "run_phrase_pilot_words.py"), "--phrase-p1"])
+        _run([py, str(_MICRO / "run_phrase_pilot_words.py"), "--wordlist"])
         if not args.skip_grammar:
             for script in (
                 "run_meta_grammar_person_pure.py",

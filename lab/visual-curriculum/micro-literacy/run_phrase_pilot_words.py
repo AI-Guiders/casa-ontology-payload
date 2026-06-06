@@ -24,13 +24,14 @@ _WORDLIST = _REPO / "lessons" / "literacy-cards" / "data" / "phrase-pilot-words-
 
 
 def _slugs_from_wordlist() -> list[str]:
-    from build_word_cards import slug_for_surface
+    from runner_infra import class_dir_for, import_tools_module
 
+    build = import_tools_module(class_dir_for(LITERACY) / "tools", "build_word_cards")
     slugs: list[str] = []
     for ln in _WORDLIST.read_text(encoding="utf-8").splitlines():
         w = ln.strip()
         if w:
-            slugs.append(slug_for_surface(w))
+            slugs.append(build.slug_for_surface(w))
     return slugs
 
 

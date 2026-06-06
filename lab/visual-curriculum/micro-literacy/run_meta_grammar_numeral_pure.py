@@ -38,10 +38,16 @@ def main() -> None:
             NUMERAL_PURE,
             rounds=rounds,
             modes=modes,
-            stage_id="stage-09c-grammar-numeral",
-            lesson_id="lesson-09c-grammar-numeral-meta",
+            moment_prefix="lex-grammar-numeral-pure",
         ),
+        summary_file="summary-meta-grammar-numeral-pure.json",
         description=__doc__,
+        summary_builder=lambda s, rounds, modes: {
+            "modes": list(modes),
+            "rounds": rounds,
+            "numeral_cards": len(NUMERAL_PURE),
+            "moments": s.summary_rows,
+        },
     )
 
 
