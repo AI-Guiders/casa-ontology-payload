@@ -94,6 +94,30 @@ def test_skill_promote_after_lex_verify(tmp_path: Path):
     assert any(r.target_skill == "skill.read.analytic" for r in caps)
 
 
+def test_phrase_compose_slots_verify_on_probe_mastery():
+    state = ensure_prisms(
+        {"schema_version": "multi_prism_v1", "field_version": 0, "store": {"store_id": "t"}}
+    )
+    from casa.domain.emergent_promote import promote_from_probe_report
+
+    report = {"probe": "phrase-compose-pilot", "phrase_know": True, "verdict": "phrase_know"}
+    promote_from_probe_report(state, report, tick=1)
+    promote_from_probe_report(state, report, tick=2)
+
+    wm = WorkingMemory(
+        goal_id="goal.read.phrase",
+        active_plan_id="plan.trial.phrase_compose",
+        plan_steps=["skill.read.analytic", "skill.compose.slots", "skill.verify.phrase"],
+        step_index=1,
+        step_capability="skill.compose.slots",
+    )
+    mem_prep = {"plan_tick": wm.to_dict(), "routing_chain": None}
+    knowledge = {"predict_verdict": "pass", "hypothesis": "lang.event.transitive.wash.v0"}
+    rep = maybe_promote_skill_on_verify(state, wm=wm, mem_prep=mem_prep, knowledge=knowledge)
+    assert rep is not None
+    assert not rep.get("skipped")
+
+
 def test_maybe_agent_self_drive_with_want_kolb(tmp_path: Path):
     (tmp_path / "agent_session.json").write_text(
         json.dumps({"self_drive": {"want_kolb": True}}, ensure_ascii=False),

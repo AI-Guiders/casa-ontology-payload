@@ -171,6 +171,16 @@ def _verify_plan_step(
 
         return verify_analytic_read_frame(state, frame_id)
 
+    if cap in ("skill.compose.slots", "skill.verify.phrase") and str(plan.goal_id or "").startswith(
+        "goal.read.phrase"
+    ):
+        if knowledge.get("predict_verdict") == "pass":
+            return True
+        from casa.domain.mastery_gate import mastery_ready, probe_gate_for_skill
+
+        pg = probe_gate_for_skill(cap)
+        return bool(pg and mastery_ready(state, pg, min_streak=1))
+
     if cap in ("skill.read.whole", "skill.verify.lex") and ref is not None and ref.kind in (
         FrameKind.WORD,
         FrameKind.SYLLABLE,
@@ -317,9 +327,13 @@ def maybe_agent_self_drive_tick(
         cue=cue,
         store_dir=store_dir,
     )
+    from casa.domain.emergent_promote import promote_pending_bootstrap_routes
+
+    route_promote = promote_pending_bootstrap_routes(state)
     return {
         "agent_controlled": True,
         "knowledge_seek": knowledge,
         "skill_promote": skill,
+        "bootstrap_route_promote": [r.promoted for r in route_promote if r.promoted],
         "want_kolb": agent_wants_kolb(store_dir),
     }

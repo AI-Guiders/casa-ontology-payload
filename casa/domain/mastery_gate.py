@@ -15,6 +15,8 @@ PROBE_GATE_BY_SKILL: dict[str, str] = {
     "skill.read.whole": "literacy-corpus-quiz",
     "skill.read.analytic": "analytic-read-corpus-r1",
     "skill.read.phrase": "phrase-compose-pilot",
+    "skill.compose.slots": "phrase-compose-pilot",
+    "skill.verify.phrase": "phrase-compose-pilot",
 }
 
 SKILL_GATE_BY_PROBE: dict[str, str] = {v: k for k, v in PROBE_GATE_BY_SKILL.items()}

@@ -420,11 +420,63 @@ def promote_from_probe_report(
         sync_probe_pass_to_skill_gate(state, gid, tick=tick, store_dir=store_dir)
 
     result = PromoteResult(gate=gid, passed=criteria_pass)
-    if not criteria_pass:
+    if criteria_pass:
+        _stash_probe_report(state, report)
+    else:
         weak = weakest_link_from_probe_report(report)
         if weak:
             state.setdefault("last_weakest_link", weak)
     return result
+
+
+def _stash_probe_report(state: dict, report: dict[str, Any]) -> None:
+    probe = str(report.get("probe") or "").strip()
+    if not probe:
+        return
+    sn = state.setdefault("sn", {})
+    stash: dict[str, Any] = sn.setdefault("last_probe_reports", {})
+    stash[probe] = {
+        k: report[k]
+        for k in (
+            "probe",
+            "phrase_know",
+            "verdict",
+            "know",
+            "total",
+            "empty",
+            "wrong",
+            "items",
+            "event_id",
+            "know_words",
+            "total_words",
+        )
+        if k in report
+    }
+
+
+def promote_pending_bootstrap_routes(
+    state: dict,
+    *,
+    agent_id: str = "",
+    min_mastery_streak: int = 2,
+) -> list[PromoteResult]:
+    """Apply bootstrap routes when probe mastery streak is ready (tick / lab closure)."""
+    stash = (state.get("sn") or {}).get("last_probe_reports") or {}
+    out: list[PromoteResult] = []
+    for probe in sorted(_BOOTSTRAP_PROBES):
+        report = stash.get(probe)
+        if not isinstance(report, dict):
+            continue
+        row = promote_routes_from_probe_report(
+            state,
+            report,
+            gate_id=probe,
+            agent_id=agent_id,
+            min_mastery_streak=min_mastery_streak,
+        )
+        if row.promoted:
+            out.append(row)
+    return out
 
 
 def promote_routes_from_probe_report(
