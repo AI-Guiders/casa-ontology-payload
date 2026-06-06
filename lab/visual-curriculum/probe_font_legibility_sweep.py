@@ -173,8 +173,10 @@ def main() -> None:
     )
 
     out_path = args.out or generated_report_path("teacher-font-legibility-sweep.json")
-    out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    report["probe"] = "font-legibility-sweep"
+    from probe_infra import run_lab_experiment_report
 
+    run_lab_experiment_report(report, report_filename=out_path.name)
     print(
         json.dumps(
             {
@@ -183,10 +185,8 @@ def main() -> None:
                 "font_steps": len(font_sizes),
                 "stored_know": report["stored_baseline"],
                 "threshold": report["threshold_heuristic"],
-                "by_font_pt": report["by_font_pt"],
             },
             ensure_ascii=False,
-            indent=2,
         )
     )
 

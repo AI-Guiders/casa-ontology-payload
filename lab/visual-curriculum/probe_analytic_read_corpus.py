@@ -82,25 +82,23 @@ def main() -> None:
                 f"via={row.get('via')} r1={nv}"
             )
 
-    out = {
-        "store_id": args.store,
-        "probe": "analytic-read-corpus-r1",
-        "segments_path": "corpus:phrase-p1",
-        "counts": counts,
-        "r1_novel_bind": novel_counts,
-        "total": len(items),
-        "items": items,
-    }
-    report_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+        out = {
+            "store_id": args.store,
+            "probe": "analytic-read-corpus-r1",
+            "segments_path": "corpus:phrase-p1",
+            "counts": counts,
+            "r1_novel_bind": novel_counts,
+            "total": len(items),
+            "items": items,
+        }
+        from probe_infra import finalize_honest_probe_report
 
-    from casa.domain.emergent_promote import record_probe_gate
-    from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
-
-    gate = record_probe_gate(state, out, store_dir=store)
-    out["probe_gate"] = {"gate": gate.gate, "passed": gate.passed}
-    if gate.passed:
-        mark_runtime_dirty(state)
-        save_runtime_state(store, state, force=True, sync_ltm_on_save=False)
+        out = finalize_honest_probe_report(
+            state,
+            out,
+            store=store,
+            probe_id="analytic-read-corpus-r1",
+        )
 
     report_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
 

@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from probe_infra import generated_report_path, setup_probe_imports
+from probe_infra import run_spec_regression, setup_probe_imports
 
 
 def main() -> None:
@@ -55,17 +55,17 @@ def main() -> None:
             }
         )
 
-    report = {
-        "probe": "numeral-rule",
-        "pass": ok,
-        "rule_rows": list(NUMERAL_RULE_ROWS),
-        "class_samples": {str(n): numeral_form_class(n) for n in (1, 2, 5, 11, 21, 22)},
-        "cases": rows,
-    }
-    path = generated_report_path("teacher-numeral-rule.json")
-    path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps(report, ensure_ascii=False, indent=2))
-    raise SystemExit(0 if report["pass"] else 1)
+    report = run_spec_regression(
+        {
+            "probe": "numeral-rule",
+            "pass": ok,
+            "rule_rows": list(NUMERAL_RULE_ROWS),
+            "class_samples": {str(n): numeral_form_class(n) for n in (1, 2, 5, 11, 21, 22)},
+            "cases": rows,
+        },
+        report_filename="teacher-numeral-rule.json",
+    )
+    raise SystemExit(0 if report.get("verdict_pass") else 1)
 
 
 if __name__ == "__main__":

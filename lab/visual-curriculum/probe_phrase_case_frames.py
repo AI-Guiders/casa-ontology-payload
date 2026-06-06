@@ -7,7 +7,7 @@ import argparse
 import json
 from pathlib import Path
 
-from probe_infra import generated_report_path, setup_probe_imports
+from probe_infra import run_spec_regression, setup_probe_imports
 
 _REPO = Path(__file__).resolve().parents[2]
 _DEFAULT_EVENTS = _REPO / "lessons" / "literacy-cards" / "data" / "literacy" / "phrase-events-ru-pilot-v1.json"
@@ -32,13 +32,10 @@ def main() -> None:
 
     reads = [{"surface": w.get("surface"), "verdict": "analytic_know"} for w in entry.get("words") or []]
     slots = bind_slots(reads, list(entry.get("words") or []))["slots"]
-    report = compose_case_verdict(slots, entry)
-    report["probe"] = "phrase-case-frames"
-    report_path = generated_report_path("teacher-phrase-case-frames.json")
-    report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps(report, ensure_ascii=False, indent=2))
-    print(f"wrote {report_path}")
-    raise SystemExit(0 if report.get("case_know") else 1)
+    raw = compose_case_verdict(slots, entry)
+    raw["probe"] = "phrase-case-frames"
+    report = run_spec_regression(raw, report_filename="teacher-phrase-case-frames.json")
+    raise SystemExit(0 if report.get("verdict_pass") else 1)
 
 
 if __name__ == "__main__":

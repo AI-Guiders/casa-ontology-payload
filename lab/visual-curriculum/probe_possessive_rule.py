@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from probe_infra import generated_report_path, setup_probe_imports
+from probe_infra import run_spec_regression, setup_probe_imports
 
 
 def main() -> None:
@@ -58,16 +58,16 @@ def main() -> None:
         if r.get("gender_id")
     ) or True
 
-    report = {
-        "probe": "possessive-rule",
-        "pass": ok and canon_ok,
-        "rule_rows": list(POSSESSIVE_RULE_ROWS),
-        "cases": rows,
-    }
-    path = generated_report_path("teacher-possessive-rule.json")
-    path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps(report, ensure_ascii=False, indent=2))
-    raise SystemExit(0 if report["pass"] else 1)
+    report = run_spec_regression(
+        {
+            "probe": "possessive-rule",
+            "pass": ok and canon_ok,
+            "rule_rows": list(POSSESSIVE_RULE_ROWS),
+            "cases": rows,
+        },
+        report_filename="teacher-possessive-rule.json",
+    )
+    raise SystemExit(0 if report.get("verdict_pass") else 1)
 
 
 if __name__ == "__main__":

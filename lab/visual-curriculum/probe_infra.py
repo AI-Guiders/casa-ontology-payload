@@ -35,6 +35,98 @@ def generated_report_path(filename: str) -> Path:
     return out
 
 
+def run_spec_regression(
+    report: dict[str, Any],
+    *,
+    report_filename: str,
+    print_summary: bool = True,
+) -> dict[str, Any]:
+    """Sidecar curriculum lint — write report, no mastery credit on agent store."""
+    from casa.domain.teacher_gate import annotate_sidecar_report
+
+    out = annotate_sidecar_report(report)
+    report_path = generated_report_path(report_filename)
+    report_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if print_summary:
+        summary = {
+            "probe": out.get("probe"),
+            "pass": out.get("verdict_pass"),
+            "gate_kind": out.get("gate_kind"),
+            "path": str(report_path),
+        }
+        print(json.dumps(summary, ensure_ascii=False))
+        print(f"wrote {report_path}")
+    return out
+
+
+def run_phrase_sidecar_probe(
+    *,
+    probe_id: str,
+    rows: list[dict[str, Any]],
+    report_filename: str,
+    row_pass_key: str = "phrase_know",
+) -> dict[str, Any]:
+    """Phrase sidecar — synthetic analytic_know reads, rule compose only."""
+    ok = bool(rows) and all(bool(r.get(row_pass_key)) for r in rows)
+    report = {
+        "probe": probe_id,
+        "total": len(rows),
+        "know": sum(1 for r in rows if r.get(row_pass_key)),
+        "pass": ok,
+        "rows": rows,
+    }
+    return run_spec_regression(report, report_filename=report_filename)
+
+
+def finalize_honest_probe_report(
+    state: dict[str, Any],
+    report: dict[str, Any],
+    *,
+    store: Path,
+    probe_id: str | None = None,
+    tick: int | None = None,
+    save_on_pass: bool = True,
+) -> dict[str, Any]:
+    """Annotate + record mastery for agent KSA probes (store + predict)."""
+    from casa.domain.emergent_promote import record_probe_gate
+    from casa.domain.mastery_gate import mastery_status
+    from casa.domain.teacher_gate import gate_kind_for_probe
+    from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
+
+    pid = probe_id or str(report.get("probe") or "")
+    kind = gate_kind_for_probe(pid, report)
+    out = dict(report)
+    out["gate_kind"] = kind.value
+    out["credits_mastery"] = kind.value == "agent_ksa"
+    t = int(tick if tick is not None else state.get("field_version") or 0)
+    gate = record_probe_gate(state, out, tick=t, store_dir=store)
+    out["mastery"] = mastery_status(state, pid)
+    out["probe_gate"] = {"gate": gate.gate, "passed": gate.passed}
+    if gate.skipped:
+        out["probe_gate"]["skipped"] = list(gate.skipped)
+    if save_on_pass and gate.passed and kind.value == "agent_ksa":
+        mark_runtime_dirty(state)
+        save_runtime_state(store, state, force=True, sync_ltm_on_save=False)
+    return out
+
+
+def run_lab_experiment_report(
+    report: dict[str, Any],
+    *,
+    report_filename: str,
+) -> dict[str, Any]:
+    """Lab sweep / experiment — no mastery credit."""
+    from casa.domain.teacher_gate import GateKind, annotate_sidecar_report
+
+    out = annotate_sidecar_report(report)
+    out["gate_kind"] = GateKind.SIDECAR_SPEC.value
+    out["credits_mastery"] = False
+    path = generated_report_path(report_filename)
+    path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({"probe": out.get("probe"), "path": str(path)}, ensure_ascii=False))
+    return out
+
+
 def manifest_hints(class_rel: str = "lessons/literacy-cards") -> dict[str, str]:
     manifest = json.loads((_REPO / class_rel / "class.manifest.json").read_text(encoding="utf-8"))
     return {str(f["id"]): str(f.get("concept_id") or "") for f in manifest.get("frames") or []}
@@ -111,19 +203,12 @@ def run_frame_probe(
         if extra_out:
             out_inner.update(extra_out)
 
-        from casa.domain.emergent_promote import record_probe_gate
-        from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
-
-        from casa.domain.mastery_gate import mastery_status
-
-        gate = record_probe_gate(state, out_inner, store_dir=store)
-        out_inner["mastery"] = mastery_status(state, str(out_inner.get("probe") or probe))
-        out_inner["probe_gate"] = {"gate": gate.gate, "passed": gate.passed}
-        if gate.passed:
-            mark_runtime_dirty(state)
-            save_runtime_state(store, state, force=True, sync_ltm_on_save=False)
-        if gate.skipped:
-            out_inner["probe_gate"]["skipped"] = gate.skipped
+        out_inner = finalize_honest_probe_report(
+            state,
+            out_inner,
+            store=store,
+            probe_id=probe,
+        )
 
     out = out_inner
     report_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

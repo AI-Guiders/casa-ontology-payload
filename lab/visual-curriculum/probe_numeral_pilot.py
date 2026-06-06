@@ -7,7 +7,7 @@ import argparse
 import json
 from pathlib import Path
 
-from probe_infra import generated_report_path, setup_probe_imports
+from probe_infra import run_phrase_sidecar_probe, setup_probe_imports
 
 _REPO = Path(__file__).resolve().parents[2]
 _DEFAULT_EVENTS = _REPO / "lessons" / "literacy-cards" / "data" / "literacy" / "phrase-events-ru-pilot-v1.json"
@@ -62,17 +62,11 @@ def main() -> None:
                 }
             )
 
-    report = {
-        "probe": "numeral-pilot",
-        "total": len(rows),
-        "know": sum(1 for r in rows if r.get("phrase_know")),
-        "pass": ok,
-        "rows": rows,
-    }
-    path = generated_report_path("teacher-numeral-pilot.json")
-    path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps(report, ensure_ascii=False, indent=2))
-    print(f"wrote {path}")
+    run_phrase_sidecar_probe(
+        probe_id="numeral-pilot",
+        rows=rows,
+        report_filename="teacher-numeral-pilot.json",
+    )
     raise SystemExit(0 if ok else 1)
 
 

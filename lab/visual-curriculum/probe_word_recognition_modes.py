@@ -172,9 +172,11 @@ def main() -> None:
     font_sizes = parse_font_sizes(args.font_sizes)
     report = _run(words=words, font_sizes=font_sizes, store_id=args.store_id, modes=modes)
 
-    out = args.out or generated_report_path("teacher-word-recognition-modes.json")
-    out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"path": str(out), "words": len(words), "items": len(report["items"])}, ensure_ascii=False))
+    out_path = args.out or generated_report_path("teacher-word-recognition-modes.json")
+    from probe_infra import run_lab_experiment_report
+
+    run_lab_experiment_report(report, report_filename=out_path.name)
+    print(json.dumps({"path": str(out_path), "words": len(words), "items": len(report["items"])}, ensure_ascii=False))
 
 
 if __name__ == "__main__":
