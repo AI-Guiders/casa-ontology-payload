@@ -1,0 +1,64 @@
+{
+  "block_id": "block-02-meta-phonology-cyrl",
+  "version": 1,
+  "title": "Блок 2 — гласная / согласная (meta-phonology, Ehri OM)",
+  "stage_id": "stage-04-meta-phonology-vowel-consonant",
+  "class_rel": "lessons/literacy-cards",
+  "lesson_id": "lesson-09-phonology-meta",
+  "held_out_frame_ids": [
+    "phonology-letter-eh-vowel-sans",
+    "phonology-letter-ya-vowel-sans",
+    "phonology-letter-yo-vowel-sans",
+    "phonology-letter-yu-vowel-sans",
+    "phonology-letter-s-consonant-sans",
+    "phonology-letter-t-consonant-sans"
+  ],
+  "gate": {
+    "probe_id": "probe_block02_meta_phonology_held_out",
+    "pass": {
+      "know_min_ratio": 1.0,
+      "empty_max": 0,
+      "ambiguous_max_ratio": 0.0
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "I-do: category cards + a o m k",
+      "frame_ids": [
+        "meta-phonology-vowel-sans",
+        "meta-phonology-consonant-sans",
+        "phonology-letter-a-vowel-sans",
+        "phonology-letter-o-vowel-sans",
+        "phonology-letter-m-consonant-sans",
+        "phonology-letter-k-consonant-sans"
+      ],
+      "repeats": 2,
+      "moment_prefix": "b02-w1"
+    },
+    {
+      "wave": 2,
+      "label": "We-do: e i u y vowels",
+      "frame_ids": [
+        "phonology-letter-e-vowel-sans",
+        "phonology-letter-i-vowel-sans",
+        "phonology-letter-u-vowel-sans",
+        "phonology-letter-y-vowel-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b02-w2"
+    },
+    {
+      "wave": 3,
+      "label": "Spacing revisit: category + a m",
+      "frame_ids": [
+        "meta-phonology-vowel-sans",
+        "meta-phonology-consonant-sans",
+        "phonology-letter-a-vowel-sans",
+        "phonology-letter-m-consonant-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b02-revisit"
+    }
+  ]
+}

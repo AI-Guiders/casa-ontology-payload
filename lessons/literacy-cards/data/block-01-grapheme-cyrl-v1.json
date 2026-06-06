@@ -1,0 +1,72 @@
+{
+  "block_id": "block-01-grapheme-cyrl",
+  "version": 1,
+  "title": "Блок 1 — кириллические графемы (Castles §1)",
+  "stage_id": "stage-01-grapheme-cyrl",
+  "class_rel": "lessons/literacy-cards",
+  "lesson_id": "lesson-01-letters-cyrl",
+  "face": "sans",
+  "held_out_cues": ["yo", "zh", "ts", "ch", "sch", "hard", "soft", "eh"],
+  "gate": {
+    "probe_id": "probe_block01_grapheme_held_out",
+    "pass": {
+      "know_min_ratio": 0.85,
+      "empty_max": 0,
+      "ambiguous_max_ratio": 0.1
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "I-do: частые гласные/согласные, lower",
+      "cues": ["a", "o", "m", "e", "n", "i"],
+      "registers": ["lower"],
+      "repeats": 2,
+      "moment_prefix": "b01-w1"
+    },
+    {
+      "wave": 2,
+      "label": "We-do: контраст lower/upper на знакомых",
+      "cues": ["a", "o", "m", "e", "n", "i"],
+      "registers": ["lower", "upper"],
+      "interleave_registers": true,
+      "repeats": 1,
+      "moment_prefix": "b01-w2"
+    },
+    {
+      "wave": 3,
+      "label": "You-do batch: b v g d k l",
+      "cues": ["b", "v", "g", "d", "k", "l"],
+      "registers": ["lower", "upper"],
+      "interleave_registers": true,
+      "repeats": 1,
+      "moment_prefix": "b01-w3"
+    },
+    {
+      "wave": 4,
+      "label": "You-do batch: p r s t u f h",
+      "cues": ["p", "r", "s", "t", "u", "f", "h"],
+      "registers": ["lower", "upper"],
+      "interleave_registers": true,
+      "repeats": 1,
+      "moment_prefix": "b01-w4"
+    },
+    {
+      "wave": 5,
+      "label": "You-do batch: y j z sh ya yu",
+      "cues": ["y", "j", "z", "sh", "ya", "yu"],
+      "registers": ["lower", "upper"],
+      "interleave_registers": true,
+      "repeats": 1,
+      "moment_prefix": "b01-w5"
+    },
+    {
+      "wave": 6,
+      "label": "Spacing revisit: a m o lower",
+      "cues": ["a", "m", "o"],
+      "registers": ["lower"],
+      "repeats": 1,
+      "moment_prefix": "b01-revisit"
+    }
+  ]
+}

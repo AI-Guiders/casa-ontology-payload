@@ -1,0 +1,48 @@
+{
+  "block_id": "block-05-corpus-cyrl",
+  "version": 1,
+  "title": "Блок 5 — частотный корпус (Phase I exit, Castles §2→§3)",
+  "stage_id": "stage-06-words-cyrl-corpus",
+  "class_rel": "lessons/literacy-cards",
+  "lesson_id": "lesson-06-words-cyrl-corpus",
+  "wordlist": "lessons/literacy-cards/data/ru-wordlist-v1.txt",
+  "held_out_corpus": {
+    "offset": 265,
+    "limit": 66
+  },
+  "gate": {
+    "probe_id": "probe_block05_corpus_held_out",
+    "pass": {
+      "know_min_ratio": 0.85,
+      "empty_max": 0,
+      "ambiguous_max_ratio": 0.05
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "Batch 1: words 0–65",
+      "corpus_batch": {"offset": 0, "limit": 66},
+      "moment_prefix": "b05-w1"
+    },
+    {
+      "wave": 2,
+      "label": "Batch 2: words 66–131",
+      "corpus_batch": {"offset": 66, "limit": 66},
+      "moment_prefix": "b05-w2"
+    },
+    {
+      "wave": 3,
+      "label": "Batch 3: words 132–197",
+      "corpus_batch": {"offset": 132, "limit": 66},
+      "moment_prefix": "b05-w3"
+    },
+    {
+      "wave": 4,
+      "label": "Batch 4: words 198–264",
+      "corpus_batch": {"offset": 198, "limit": 67},
+      "moment_prefix": "b05-w4"
+    }
+  ],
+  "notes": "После Phase I exit — новая лексика через OOV (L2), не расширение corpus teacher'ом."
+}

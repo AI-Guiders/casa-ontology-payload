@@ -1,0 +1,100 @@
+{
+  "block_id": "block-03-syllable-cyrl",
+  "version": 1,
+  "title": "Блок 3 — слоги (analytic bootstrap, Castles §2)",
+  "stage_id": "stage-05-syllable-cyrl",
+  "class_rel": "lessons/literacy-cards",
+  "lesson_id": "lesson-05-syllables-cyrl",
+  "held_out_frame_ids": [
+    "syllable-над-sans",
+    "syllable-под-sans",
+    "syllable-от-sans",
+    "syllable-из-sans",
+    "syllable-об-sans",
+    "syllable-ста-sans",
+    "syllable-ско-sans",
+    "syllable-ство-sans",
+    "syllable-ние-sans",
+    "syllable-ение-sans",
+    "syllable-ость-sans"
+  ],
+  "gate": {
+    "probe_id": "probe_block03_syllable_held_out",
+    "pass": {
+      "know_min_ratio": 0.85,
+      "empty_max": 0,
+      "ambiguous_max_ratio": 0.1
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "I-do: CV ma pa na ta sa",
+      "frame_ids": [
+        "syllable-ма-sans",
+        "syllable-па-sans",
+        "syllable-на-sans",
+        "syllable-та-sans",
+        "syllable-са-sans"
+      ],
+      "repeats": 2,
+      "moment_prefix": "b03-w1"
+    },
+    {
+      "wave": 2,
+      "label": "We-do: ra la ka va da",
+      "frame_ids": [
+        "syllable-ра-sans",
+        "syllable-ла-sans",
+        "syllable-ка-sans",
+        "syllable-ва-sans",
+        "syllable-да-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b03-w2"
+    },
+    {
+      "wave": 3,
+      "label": "You-do: open + bound syllables (manifest order 10–44)",
+      "frame_ids": [
+        "syllable-мо-sans",
+        "syllable-по-sans",
+        "syllable-но-sans",
+        "syllable-то-sans",
+        "syllable-со-sans",
+        "syllable-ро-sans",
+        "syllable-ло-sans",
+        "syllable-ко-sans",
+        "syllable-во-sans",
+        "syllable-до-sans",
+        "syllable-му-sans",
+        "syllable-пу-sans",
+        "syllable-ну-sans",
+        "syllable-ту-sans",
+        "syllable-су-sans",
+        "syllable-ру-sans",
+        "syllable-лу-sans",
+        "syllable-ку-sans",
+        "syllable-ву-sans",
+        "syllable-ду-sans",
+        "syllable-мы-sans",
+        "syllable-вы-sans",
+        "syllable-ни-sans",
+        "syllable-ти-sans",
+        "syllable-си-sans",
+        "syllable-ри-sans",
+        "syllable-ли-sans",
+        "syllable-ки-sans",
+        "syllable-ви-sans",
+        "syllable-ди-sans",
+        "syllable-при-sans",
+        "syllable-про-sans",
+        "syllable-пре-sans",
+        "syllable-раз-sans",
+        "syllable-без-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b03-w3"
+    }
+  ]
+}
