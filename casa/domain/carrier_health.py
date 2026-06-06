@@ -50,6 +50,11 @@ def assess_carrier_health(
         from casa.domain.journal_wal import recovery_warnings_from_session as journal_wal_warnings
 
         warnings.extend(journal_wal_warnings(store_dir))
+        from casa.domain.consistency_oracle import recovery_warnings_from_consistency
+
+        warnings.extend(recovery_warnings_from_consistency(store_dir))
+    if state.get("consolidation", {}).get("repair_pending"):
+        warnings.append("repair_pending")
     if load.get("overloaded"):
         warnings.append("cognitive_overload")
     if pending >= 8:

@@ -212,12 +212,21 @@ def field_db_stats(store_dir: Path) -> dict[str, Any]:
     with open_field_db(store_dir) as conn:
         routes = conn.execute("SELECT COUNT(*) AS c FROM routes").fetchone()["c"]
         chunk = conn.execute("SELECT LENGTH(blob) AS n FROM chunks WHERE name='field_body'").fetchone()
-    return {
+        meta_rows = conn.execute("SELECT key, value_text FROM meta").fetchall()
+    meta = {row["key"]: row["value_text"] for row in meta_rows}
+    fv_raw = meta.get("field_version")
+    out: dict[str, Any] = {
         "ok": True,
         "path": str(field_db_path(store_dir)),
         "routes": int(routes),
         "body_bytes": int(chunk["n"] if chunk else 0),
     }
+    if fv_raw is not None:
+        try:
+            out["field_version"] = int(fv_raw)
+        except (TypeError, ValueError):
+            pass
+    return out
 
 
 def import_field_from_json(store_dir: Path, json_path: Path) -> dict[str, Any]:

@@ -113,6 +113,18 @@ def boot_store(
     if agent_prism_root(store_dir).is_dir():
         agent_load = load_agent_prism(store_dir, state)
 
+    from casa.domain.consistency_oracle import (
+        apply_repair_homeostasis,
+        assess_field_consistency,
+        persist_consistency_note,
+    )
+    from casa.domain.router_boot_probe import run_router_boot_probe
+
+    consistency = assess_field_consistency(store_dir, state)
+    router_probe = run_router_boot_probe(state, store_dir=store_dir)
+    repair = apply_repair_homeostasis(state, consistency)
+    persist_consistency_note(store_dir, consistency)
+
     return {
         "source": source,
         "import": imp,
@@ -123,6 +135,9 @@ def boot_store(
         "agent_prism": agent_load,
         "state": state,
         "store_recovery": recovery,
+        "consistency": consistency,
+        "router_probe": router_probe,
+        "repair_homeostasis": repair,
     }
 
 
