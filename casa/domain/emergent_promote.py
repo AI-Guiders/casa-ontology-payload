@@ -29,6 +29,7 @@ _BOOTSTRAP_PROBES = frozenset(
         "literacy-corpus-quiz",
         "analytic-read-corpus-r1",
         "phrase-compose-pilot",
+        "phrase-agent-store",
     }
 )
 
@@ -186,55 +187,23 @@ def fill_trial_plan_if_needed(state: dict, plan: PlanTick) -> PlanTick:
     return apply_wake_decompose(state, out)
 
 
+def probe_gate_passed(report: dict[str, Any], gate_id: str = "") -> bool:
+    """Honest lab gate — independent of route promote (see teacher_gate)."""
+    from casa.domain.teacher_gate import probe_gate_passed as _teacher_probe_gate_passed
+
+    return _teacher_probe_gate_passed(report, gate_id)
+
+
 def _gate_corpus_whole(report: dict[str, Any]) -> bool:
-    total = int(report.get("total") or 0)
-    if total <= 0:
-        return False
-    know = int(report.get("know") or 0)
-    empty = int(report.get("empty") or 0)
-    wrong = int(report.get("wrong") or 0)
-    return know == total and empty == 0 and wrong == 0
+    from casa.domain.teacher_gate import _gate_corpus_whole as _fn
+
+    return _fn(report)
 
 
 def _gate_analytic_r1(report: dict[str, Any]) -> bool:
-    items = report.get("items") or []
-    if not items:
-        return False
-    ok = 0
-    for row in items:
-        v = str(row.get("verdict") or "")
-        if v == "analytic_know":
-            ok += 1
-            continue
-        if row.get("r1_novel_bind") and str(row.get("r1_novel_via") or "") in (
-        "novel_compose",
-        "corpus_align",
-    ):
-            ok += 1
-    return ok == len(items)
+    from casa.domain.teacher_gate import _gate_analytic_r1 as _fn
 
-
-def _gate_stage_full_know(report: dict[str, Any]) -> bool:
-    total = int(report.get("total") or 0)
-    know = int(report.get("know") or 0)
-    return total > 0 and know == total and int(report.get("empty") or 0) == 0
-
-
-def probe_gate_passed(report: dict[str, Any], gate_id: str = "") -> bool:
-    """Honest lab gate — independent of route promote."""
-    if report.get("phrase_know") is True:
-        return True
-    probe = str(report.get("probe") or gate_id)
-    stage = str(report.get("stage") or "")
-    if probe == "analytic-read-corpus-r1":
-        return _gate_analytic_r1(report)
-    if probe in ("literacy-corpus-quiz",) or stage == "stage-06-words-cyrl-corpus":
-        return _gate_corpus_whole(report)
-    if probe == "phrase-compose-pilot":
-        return bool(report.get("phrase_know"))
-    if "total" in report and int(report.get("total") or 0) > 0:
-        return _gate_stage_full_know(report)
-    return bool(report.get("items") and _gate_analytic_r1(report))
+    return _fn(report)
 
 
 def _actions_from_promote_hints(report: dict[str, Any]) -> list[dict[str, Any]]:
@@ -298,6 +267,20 @@ def _probe_route_actions(report: dict[str, Any], gate_id: str, agent_id: str) ->
 
     if probe == "phrase-compose-pilot":
         if not report.get("phrase_know"):
+            return []
+        actions.append(
+            {
+                "kind": "capability",
+                "match": {"modality": "vis", "surface_class": "phrase", "locale": locale},
+                "target_skill": "skill.read.phrase",
+            }
+        )
+        return actions
+
+    if probe == "phrase-agent-store":
+        from casa.domain.teacher_gate import _gate_phrase_agent_store
+
+        if not _gate_phrase_agent_store(report):
             return []
         actions.append(
             {
@@ -413,11 +396,25 @@ def promote_from_probe_report(
     from casa.domain.deliberate_practice import weakest_link_from_probe_report
     from casa.domain.mastery_gate import record_gate_attempt, sync_probe_pass_to_skill_gate
 
+    from casa.domain.teacher_gate import credits_mastery, gate_kind_for_probe
+
     gid = gate_id or str(report.get("probe") or "probe")
+    kind = gate_kind_for_probe(gid, report)
     criteria_pass = probe_gate_passed(report, gid)
-    record_gate_attempt(state, gid, passed=criteria_pass, tick=tick, store_dir=store_dir)
-    if criteria_pass:
-        sync_probe_pass_to_skill_gate(state, gid, tick=tick, store_dir=store_dir)
+    if credits_mastery(kind):
+        record_gate_attempt(state, gid, passed=criteria_pass, tick=tick, store_dir=store_dir)
+        if criteria_pass:
+            sync_probe_pass_to_skill_gate(state, gid, tick=tick, store_dir=store_dir)
+    else:
+        result = PromoteResult(gate=gid, passed=criteria_pass)
+        result.skipped.append("sidecar_no_mastery_credit")
+        if criteria_pass:
+            _stash_probe_report(state, report)
+        else:
+            weak = weakest_link_from_probe_report(report)
+            if weak:
+                state.setdefault("last_weakest_link", weak)
+        return result
 
     result = PromoteResult(gate=gid, passed=criteria_pass)
     if criteria_pass:
@@ -449,6 +446,10 @@ def _stash_probe_report(state: dict, report: dict[str, Any]) -> None:
             "event_id",
             "know_words",
             "total_words",
+            "events",
+            "event_ids",
+            "phrase_know_count",
+            "total_events",
         )
         if k in report
     }

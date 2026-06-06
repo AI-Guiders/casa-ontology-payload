@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Competency-based mastery — N honest gate passes before promote (CBE)."""
+"""Gate = KSA verification (ADR-0037): mastery streak before promote (CBE).
+
+Agent gate: held-out + verdict from store/predict.
+Sidecar probe without store — no credit in gate:skill.* (see casa/domain/teacher_gate.py).
+"""
 
 from __future__ import annotations
 
@@ -14,9 +18,9 @@ DEFAULT_MASTERY_STREAK = 2
 PROBE_GATE_BY_SKILL: dict[str, str] = {
     "skill.read.whole": "literacy-corpus-quiz",
     "skill.read.analytic": "analytic-read-corpus-r1",
-    "skill.read.phrase": "phrase-compose-pilot",
-    "skill.compose.slots": "phrase-compose-pilot",
-    "skill.verify.phrase": "phrase-compose-pilot",
+    "skill.read.phrase": "phrase-agent-store",
+    "skill.compose.slots": "phrase-agent-store",
+    "skill.verify.phrase": "phrase-agent-store",
 }
 
 SKILL_GATE_BY_PROBE: dict[str, str] = {v: k for k, v in PROBE_GATE_BY_SKILL.items()}
