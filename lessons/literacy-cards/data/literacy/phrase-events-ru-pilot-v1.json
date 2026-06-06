@@ -109,6 +109,88 @@
           "expected_role": "patient"
         }
       ]
+    },
+    {
+      "event_id": "lang.event.transitive.wash.circ.v0",
+      "surfaces": [
+        "Мама вчера быстро мыла раму",
+        "Вчера мама быстро мыла раму",
+        "Мама быстро мыла раму вчера"
+      ],
+      "words": [
+        {
+          "role": "agent",
+          "surface": "мама",
+          "slug": "d2a8dc30e406"
+        },
+        {
+          "role": "circumstantial.time",
+          "surface": "вчера",
+          "slug": "ae808fbec3ba"
+        },
+        {
+          "role": "circumstantial.manner",
+          "surface": "быстро",
+          "slug": "dcd85bada23a"
+        },
+        {
+          "role": "verb",
+          "surface": "мыла",
+          "slug": "27dae5010f7e"
+        },
+        {
+          "role": "patient",
+          "surface": "раму",
+          "slug": "c6eebd8384e6"
+        }
+      ],
+      "agreement": [
+        {
+          "agent": "мама",
+          "verb": "мыла",
+          "kind": "subjectVerb.fem.sg.past"
+        }
+      ],
+      "circumstantials": [
+        {
+          "kind": "time",
+          "role": "circumstantial.time",
+          "surface": "вчера",
+          "question_id": "lang.meta.grammar.question.when"
+        },
+        {
+          "kind": "manner",
+          "role": "circumstantial.manner",
+          "surface": "быстро",
+          "question_id": "lang.meta.grammar.question.how"
+        }
+      ],
+      "question_frames": [
+        {
+          "anchor_surface": "мыла",
+          "question_id": "lang.meta.grammar.question.who",
+          "expected_surface": "мама",
+          "expected_role": "agent"
+        },
+        {
+          "anchor_surface": "мыла",
+          "question_id": "lang.meta.grammar.question.when",
+          "expected_surface": "вчера",
+          "expected_role": "circumstantial.time"
+        },
+        {
+          "anchor_surface": "мыла",
+          "question_id": "lang.meta.grammar.question.how",
+          "expected_surface": "быстро",
+          "expected_role": "circumstantial.manner"
+        },
+        {
+          "anchor_surface": "мыла",
+          "question_id": "lang.meta.grammar.question.what",
+          "expected_surface": "раму",
+          "expected_role": "patient"
+        }
+      ]
     }
   ]
 }

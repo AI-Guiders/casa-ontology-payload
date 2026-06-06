@@ -98,4 +98,6 @@ QUESTION_FRAME_IDS: tuple[str, ...] = (
     "lang.meta.grammar.question.what_do",
     "lang.meta.grammar.question.which",
     "lang.meta.grammar.question.to_whom",
+    "lang.meta.grammar.question.when",
+    "lang.meta.grammar.question.how",
 )

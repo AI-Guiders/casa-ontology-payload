@@ -51,14 +51,48 @@ def main() -> None:
         probes = [
             [py, str(_CURRICULUM / "probe_analytic_read_corpus.py"), "--store", args.store],
             [py, str(_CURRICULUM / "probe_phrase_compose_pilot.py"), "--store", args.store],
+            [
+                py,
+                str(_CURRICULUM / "probe_phrase_compose_pilot.py"),
+                "--store",
+                args.store,
+                "--event-id",
+                "lang.event.transitive.wash.circ.v0",
+                "--font-pt",
+                "36",
+            ],
+            [
+                py,
+                str(_CURRICULUM / "probe_phrase_compose_pilot.py"),
+                "--store",
+                args.store,
+                "--event-id",
+                "lang.event.ditransitive.give.v0",
+                "--font-pt",
+                "40",
+            ],
             [py, str(_CURRICULUM / "probe_phrase_permutation_equiv.py")],
+            [
+                py,
+                str(_CURRICULUM / "probe_phrase_permutation_equiv.py"),
+                "--event-id",
+                "lang.event.transitive.wash.circ.v0",
+            ],
             [py, str(_CURRICULUM / "probe_question_frame_pilot.py")],
+            [
+                py,
+                str(_CURRICULUM / "probe_question_frame_pilot.py"),
+                "--event-id",
+                "lang.event.transitive.wash.circ.v0",
+            ],
             [py, str(_CURRICULUM / "probe_meta_grammar_person_quiz.py")],
             [py, str(_CURRICULUM / "probe_meta_grammar_agreement_quiz.py")],
             [py, str(_CURRICULUM / "probe_meta_grammar_case_quiz.py")],
         ]
         for cmd in probes:
             _run(cmd)
+
+        _run([py, str(_MICRO / "run_promote_bootstrap_routes.py"), "--store", args.store])
 
 
 if __name__ == "__main__":

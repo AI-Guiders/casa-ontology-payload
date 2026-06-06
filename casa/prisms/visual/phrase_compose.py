@@ -154,6 +154,14 @@ def compose_phrase_verdict(
         if not question_out.get("question_know"):
             verdict = "question_fail"
 
+    circ_out: dict[str, Any] | None = None
+    if verdict == "phrase_know" and entry.get("circumstantials"):
+        from casa.prisms.visual.phrase_circumstantial import check_circumstantials
+
+        circ_out = check_circumstantials(slots, list(entry.get("circumstantials") or []))
+        if not circ_out.get("ok"):
+            verdict = "circumstantial_fail"
+
     out = {
         "event_id": str(entry.get("event_id") or ""),
         "verdict": verdict,
@@ -165,4 +173,6 @@ def compose_phrase_verdict(
     }
     if question_out is not None:
         out["question"] = question_out
+    if circ_out is not None:
+        out["circumstantials"] = circ_out
     return out
