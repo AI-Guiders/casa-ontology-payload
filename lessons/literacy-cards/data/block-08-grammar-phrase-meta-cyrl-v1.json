@@ -1,0 +1,59 @@
+{
+  "block_id": "block-08-grammar-phrase-meta-cyrl",
+  "version": 1,
+  "title": "Блок 8 — согласование, притяж., числительные (meta JPEG)",
+  "class_rel": "lessons/literacy-cards",
+  "held_out_frame_ids": [
+    "word-agr-brat-myl-sans",
+    "word-agr-papa-myl-sans",
+    "word-poss-kniga-moya-sans",
+    "word-num-five-palok-sans"
+  ],
+  "gate": {
+    "probe_id": "probe_block08_grammar_phrase_meta_held_out",
+    "pass": {
+      "know_min_ratio": 0.85,
+      "empty_max": 0,
+      "ambiguous_max_ratio": 0.1
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "Agreement: мама/сестра мыла",
+      "frame_ids": [
+        "word-agr-mama-myla-sans",
+        "word-agr-sestra-myla-sans"
+      ],
+      "repeats": 2,
+      "moment_prefix": "b08-w1"
+    },
+    {
+      "wave": 2,
+      "label": "Possessive: он/она/оно мой",
+      "frame_ids": [
+        "word-poss-on-moy-sans",
+        "word-poss-ona-moya-sans",
+        "word-poss-ono-moyo-sans",
+        "word-gender-masc-sans",
+        "word-gender-fem-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b08-w2"
+    },
+    {
+      "wave": 3,
+      "label": "Numeral: class + одна палка",
+      "frame_ids": [
+        "word-numeral-class-one-sans",
+        "word-numeral-class-few-sans",
+        "word-numeral-class-many-sans",
+        "word-num-one-palka-sans",
+        "word-num-two-palki-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b08-w3"
+    }
+  ],
+  "notes": "Phrase-level compose — Block 9; sidecar meta-grammar quizzes — lint only."
+}

@@ -1,0 +1,62 @@
+{
+  "block_id": "block-06b-meta-language-cyrl",
+  "version": 1,
+  "title": "Блок 6b — метаязык (регистр, эпистемика)",
+  "stage_id": "stage-07-meta-language",
+  "class_rel": "lessons/literacy-cards",
+  "lesson_id": "lesson-07-meta-language",
+  "held_out_frame_ids": [
+    "word-size-large-sans",
+    "word-size-small-sans",
+    "word-zameshatelstvo-sans",
+    "word-deystvie-sans"
+  ],
+  "gate": {
+    "probe_id": "probe_block06b_meta_language_held_out",
+    "pass": {
+      "know_min_ratio": 0.85,
+      "empty_max": 0,
+      "ambiguous_max_ratio": 0.1
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "I-do: буква слово регистр",
+      "frame_ids": [
+        "word-bukva-sans",
+        "word-slovo-sans",
+        "word-zaglavnaya-sans",
+        "word-strochnaya-sans"
+      ],
+      "repeats": 2,
+      "moment_prefix": "b06b-w1"
+    },
+    {
+      "wave": 2,
+      "label": "We-do: не знаю выбор + грамм. метки",
+      "frame_ids": [
+        "word-ne_znayu-sans",
+        "word-vybor-sans",
+        "word-glagol-sans",
+        "word-sushchestvennoe-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b06b-w2"
+    },
+    {
+      "wave": 3,
+      "label": "You-do: register phrases",
+      "frame_ids": [
+        "word-zaglavnaya_bukva-sans",
+        "word-bukva_verhnego_registra-sans",
+        "word-strochnaya_bukva-sans",
+        "word-bukva_nizhnego_registra-sans",
+        "word-capital-zaglavnaya-bukva-sans",
+        "word-lowercase-strochnaya-bukva-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b06b-w3"
+    }
+  ]
+}

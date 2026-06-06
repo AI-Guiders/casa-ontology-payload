@@ -1,0 +1,46 @@
+{
+  "block_id": "block-07-grammar-person-case-cyrl",
+  "version": 1,
+  "title": "Блок 7 — лицо и падеж (operational meta)",
+  "stage_id": "stage-08-meta-grammar-person",
+  "class_rel": "lessons/literacy-cards",
+  "held_out_frame_ids": [
+    "word-case-acc-sans",
+    "word-person-on-myl-sans"
+  ],
+  "gate": {
+    "probe_id": "probe_block07_grammar_held_out",
+    "pass": {
+      "know_min_ratio": 1.0,
+      "empty_max": 0,
+      "ambiguous_max_ratio": 0.0
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "I-do: person 1–3 sg/pl cards",
+      "frame_ids": [
+        "word-person-1sg-sans",
+        "word-person-2sg-sans",
+        "word-person-3sg-masc-sans",
+        "word-person-3sg-fem-sans",
+        "word-person-1pl-sans",
+        "word-person-2pl-sans",
+        "word-person-3pl-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b07-w1"
+    },
+    {
+      "wave": 2,
+      "label": "We-do: contrast она мыла + case nom",
+      "frame_ids": [
+        "word-person-ona-myla-sans",
+        "word-case-nom-sans"
+      ],
+      "repeats": 2,
+      "moment_prefix": "b07-w2"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "block_id": "block-09-phrase-exit-cyrl",
+  "version": 1,
+  "kind": "phrase",
+  "title": "Блок 9 — Phase II exit (phrase-agent-store)",
+  "events_path": "lessons/literacy-cards/data/literacy/phrase-events-ru-pilot-v1.json",
+  "held_out_event_ids": [
+    "lang.event.transitive.wash.v0",
+    "lang.event.transitive.wash.circ.v0",
+    "lang.event.ditransitive.give.v0",
+    "lang.event.transitive.wash.3sg_fem.v0",
+    "lang.event.possessive.pronoun.sg.v0",
+    "lang.event.numeral.head.v0"
+  ],
+  "gate": {
+    "probe_id": "phrase-agent-store",
+    "pass": {
+      "phrase_know": true
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "wash linear",
+      "event_ids": ["lang.event.transitive.wash.v0"],
+      "moment_prefix": "b09-w1"
+    },
+    {
+      "wave": 2,
+      "label": "wash circ + 3sg fem",
+      "event_ids": [
+        "lang.event.transitive.wash.circ.v0",
+        "lang.event.transitive.wash.3sg_fem.v0"
+      ],
+      "moment_prefix": "b09-w2"
+    },
+    {
+      "wave": 3,
+      "label": "give ditransitive",
+      "event_ids": ["lang.event.ditransitive.give.v0"],
+      "moment_prefix": "b09-w3"
+    },
+    {
+      "wave": 4,
+      "label": "possessive + numeral",
+      "event_ids": [
+        "lang.event.possessive.pronoun.sg.v0",
+        "lang.event.numeral.head.v0"
+      ],
+      "moment_prefix": "b09-w4"
+    }
+  ]
+}
