@@ -126,6 +126,14 @@
       "lesson_ids": [
         "lesson-09b-grammar-possessive-meta"
       ]
+    },
+    {
+      "id": "stage-09c-grammar-numeral",
+      "title": "Числительное + существительное (классы 1 / 2–4 / 5+)",
+      "order": 84,
+      "lesson_ids": [
+        "lesson-09c-grammar-numeral-meta"
+      ]
     }
   ],
   "frames": [
@@ -7973,6 +7981,197 @@
         "grammar:possessive"
       ],
       "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-4e469ca0a530-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-4e469ca0a530-sans.jpg",
+      "scene_label": "card:word:4e469ca0a530:sans",
+      "concept_id": "lang.word.4e469ca0a530",
+      "curriculum_tags": [
+        "lang.word.4e469ca0a530",
+        "word:одна",
+        "slug:4e469ca0a530",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-5e90d8f1014b-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-5e90d8f1014b-sans.jpg",
+      "scene_label": "card:word:5e90d8f1014b:sans",
+      "concept_id": "lang.word.5e90d8f1014b",
+      "curriculum_tags": [
+        "lang.word.5e90d8f1014b",
+        "word:две",
+        "slug:5e90d8f1014b",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-731d5322d47c-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-731d5322d47c-sans.jpg",
+      "scene_label": "card:word:731d5322d47c:sans",
+      "concept_id": "lang.word.731d5322d47c",
+      "curriculum_tags": [
+        "lang.word.731d5322d47c",
+        "word:палка",
+        "slug:731d5322d47c",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-94b7ef274867-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-94b7ef274867-sans.jpg",
+      "scene_label": "card:word:94b7ef274867:sans",
+      "concept_id": "lang.word.94b7ef274867",
+      "curriculum_tags": [
+        "lang.word.94b7ef274867",
+        "word:палки",
+        "slug:94b7ef274867",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-3ccb174c7b7c-sans",
+      "path": "lesson-06-words-cyrl-corpus/images/word-3ccb174c7b7c-sans.jpg",
+      "scene_label": "card:word:3ccb174c7b7c:sans",
+      "concept_id": "lang.word.3ccb174c7b7c",
+      "curriculum_tags": [
+        "lang.word.3ccb174c7b7c",
+        "word:палок",
+        "slug:3ccb174c7b7c",
+        "face:sans"
+      ],
+      "lesson_id": "lesson-06-words-cyrl-corpus"
+    },
+    {
+      "id": "word-poss-rule-sg-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-rule-sg-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.masc.sg:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.masc.sg",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.masc.sg",
+        "surface:ед.ч.: мой / моя / моё",
+        "slug:poss-rule-sg",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-poss-rule-pl-sans",
+      "path": "lesson-09b-grammar-possessive-meta/images/word-poss-rule-pl-sans.jpg",
+      "scene_label": "card:grammar:grammar.agreement.possessive.pl:sans",
+      "concept_id": "lang.meta.grammar.agreement.possessive.pl",
+      "curriculum_tags": [
+        "lang.meta.grammar.agreement.possessive.pl",
+        "surface:мн.ч.: мои (все роды)",
+        "slug:poss-rule-pl",
+        "face:sans",
+        "grammar:possessive"
+      ],
+      "lesson_id": "lesson-09b-grammar-possessive-meta"
+    },
+    {
+      "id": "word-numeral-class-one-sans",
+      "path": "lesson-09c-grammar-numeral-meta/images/word-numeral-class-one-sans.jpg",
+      "scene_label": "card:grammar:grammar.numeral.class.one:sans",
+      "concept_id": "lang.meta.grammar.numeral.class.one",
+      "curriculum_tags": [
+        "lang.meta.grammar.numeral.class.one",
+        "surface:1, 21… → им. ед.",
+        "slug:numeral-class-one",
+        "face:sans",
+        "grammar:numeral"
+      ],
+      "lesson_id": "lesson-09c-grammar-numeral-meta"
+    },
+    {
+      "id": "word-numeral-class-few-sans",
+      "path": "lesson-09c-grammar-numeral-meta/images/word-numeral-class-few-sans.jpg",
+      "scene_label": "card:grammar:grammar.numeral.class.few:sans",
+      "concept_id": "lang.meta.grammar.numeral.class.few",
+      "curriculum_tags": [
+        "lang.meta.grammar.numeral.class.few",
+        "surface:2–4 → им. мн.",
+        "slug:numeral-class-few",
+        "face:sans",
+        "grammar:numeral"
+      ],
+      "lesson_id": "lesson-09c-grammar-numeral-meta"
+    },
+    {
+      "id": "word-numeral-class-many-sans",
+      "path": "lesson-09c-grammar-numeral-meta/images/word-numeral-class-many-sans.jpg",
+      "scene_label": "card:grammar:grammar.numeral.class.many:sans",
+      "concept_id": "lang.meta.grammar.numeral.class.many",
+      "curriculum_tags": [
+        "lang.meta.grammar.numeral.class.many",
+        "surface:5+, 11–14 → род. мн.",
+        "slug:numeral-class-many",
+        "face:sans",
+        "grammar:numeral"
+      ],
+      "lesson_id": "lesson-09c-grammar-numeral-meta"
+    },
+    {
+      "id": "word-num-rule-palka-sans",
+      "path": "lesson-09c-grammar-numeral-meta/images/word-num-rule-palka-sans.jpg",
+      "scene_label": "card:grammar:grammar.numeral.class.one:sans",
+      "concept_id": "lang.meta.grammar.numeral.class.one",
+      "curriculum_tags": [
+        "lang.meta.grammar.numeral.class.one",
+        "surface:одна палка … пять палок",
+        "slug:num-rule-palka",
+        "face:sans",
+        "grammar:numeral"
+      ],
+      "lesson_id": "lesson-09c-grammar-numeral-meta"
+    },
+    {
+      "id": "word-num-one-palka-sans",
+      "path": "lesson-09c-grammar-numeral-meta/images/word-num-one-palka-sans.jpg",
+      "scene_label": "card:grammar:grammar.numeral.class.one:sans",
+      "concept_id": "lang.meta.grammar.numeral.class.one",
+      "curriculum_tags": [
+        "lang.meta.grammar.numeral.class.one",
+        "surface:одна палка",
+        "slug:num-one-palka",
+        "face:sans",
+        "grammar:numeral"
+      ],
+      "lesson_id": "lesson-09c-grammar-numeral-meta"
+    },
+    {
+      "id": "word-num-two-palki-sans",
+      "path": "lesson-09c-grammar-numeral-meta/images/word-num-two-palki-sans.jpg",
+      "scene_label": "card:grammar:grammar.numeral.class.few:sans",
+      "concept_id": "lang.meta.grammar.numeral.class.few",
+      "curriculum_tags": [
+        "lang.meta.grammar.numeral.class.few",
+        "surface:две палки",
+        "slug:num-two-palki",
+        "face:sans",
+        "grammar:numeral"
+      ],
+      "lesson_id": "lesson-09c-grammar-numeral-meta"
+    },
+    {
+      "id": "word-num-five-palok-sans",
+      "path": "lesson-09c-grammar-numeral-meta/images/word-num-five-palok-sans.jpg",
+      "scene_label": "card:grammar:grammar.numeral.class.many:sans",
+      "concept_id": "lang.meta.grammar.numeral.class.many",
+      "curriculum_tags": [
+        "lang.meta.grammar.numeral.class.many",
+        "surface:пять палок",
+        "slug:num-five-palok",
+        "face:sans",
+        "grammar:numeral"
+      ],
+      "lesson_id": "lesson-09c-grammar-numeral-meta"
     }
   ]
 }
