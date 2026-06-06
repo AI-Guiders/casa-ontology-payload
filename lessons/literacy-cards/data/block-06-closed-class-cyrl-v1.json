@@ -1,0 +1,42 @@
+{
+  "block_id": "block-06-closed-class-cyrl",
+  "version": 1,
+  "title": "Блок 6 (partial) — служебные слова whole-word",
+  "stage_id": "stage-07-closed-class",
+  "class_rel": "lessons/literacy-cards",
+  "lesson_id": "lesson-07-closed-class",
+  "wordlist": "lessons/literacy-cards/data/ru-closed-class-v1.txt",
+  "held_out_corpus": {
+    "offset": 42,
+    "limit": 10
+  },
+  "gate": {
+    "probe_id": "probe_block06_closed_class_held_out",
+    "pass": {
+      "know_min_ratio": 0.85,
+      "empty_max": 0,
+      "ambiguous_max_ratio": 0.1
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "Batch 1: в с к у о…",
+      "corpus_batch": {"offset": 0, "limit": 14},
+      "moment_prefix": "b06-w1"
+    },
+    {
+      "wave": 2,
+      "label": "Batch 2: местоимения",
+      "corpus_batch": {"offset": 14, "limit": 14},
+      "moment_prefix": "b06-w2"
+    },
+    {
+      "wave": 3,
+      "label": "Batch 3: формы местоимений",
+      "corpus_batch": {"offset": 28, "limit": 14},
+      "moment_prefix": "b06-w3"
+    }
+  ],
+  "notes": "Meta-language stages (07-meta) — отдельные waves; этот block только closed-class JPEG tract."
+}
