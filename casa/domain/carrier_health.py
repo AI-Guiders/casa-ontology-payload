@@ -47,6 +47,9 @@ def assess_carrier_health(
         from casa.domain.store_recovery import recovery_warnings_from_session
 
         warnings.extend(recovery_warnings_from_session(store_dir))
+        from casa.domain.journal_wal import recovery_warnings_from_session as journal_wal_warnings
+
+        warnings.extend(journal_wal_warnings(store_dir))
     if load.get("overloaded"):
         warnings.append("cognitive_overload")
     if pending >= 8:

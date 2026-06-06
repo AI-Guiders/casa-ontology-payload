@@ -175,7 +175,14 @@ def maybe_recover_store_on_wake(store_dir: Path) -> dict[str, Any]:
     store_dir = store_dir.resolve()
     fs = field_state_path(store_dir)
     persist_thin = not fs.is_file() or is_unreadable_json_file(fs)
-    return recover_store_checkpoints(store_dir, persist_thin=persist_thin)
+    report = recover_store_checkpoints(store_dir, persist_thin=persist_thin)
+    from casa.domain.journal_wal import replay_journal_wal
+
+    wal = replay_journal_wal(store_dir)
+    report["journal_wal"] = wal
+    if wal.get("recovered"):
+        report["recovered"] = True
+    return report
 
 
 def recovery_warnings_from_session(store_dir: Path) -> list[str]:

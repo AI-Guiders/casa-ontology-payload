@@ -71,16 +71,9 @@ def _save_index(store_dir: Path, index: dict[str, Any]) -> None:
 
 
 def _load_entries(store_dir: Path, domain: str) -> list[dict[str, Any]]:
-    path = journal_entries_path(store_dir, domain)
-    if not path.is_file():
-        return []
-    rows: list[dict[str, Any]] = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        rows.append(json.loads(line))
-    return rows
+    from casa.domain.journal_wal import load_entries_safe
+
+    return load_entries_safe(store_dir, domain)
 
 
 def _write_entries(store_dir: Path, domain: str, rows: list[dict[str, Any]]) -> None:
@@ -265,7 +258,10 @@ def append_journal_entry(
     entry: dict[str, Any],
     *,
     domain: str = DEFAULT_JOURNAL_DOMAIN,
+    field_version: int | None = None,
 ) -> dict[str, Any]:
+    from casa.domain.journal_wal import append_entry_line, wal_append_pending, wal_commit_append
+
     domain = safe_journal_domain(domain)
     kind = str(entry.get("kind") or "note")
     if kind not in _ENTRY_KINDS:
@@ -291,9 +287,10 @@ def append_journal_entry(
     if any(r.get("id") == row["id"] for r in rows):
         raise ValueError(f"duplicate entry id: {row['id']}")
 
-    rows.append(row)
-    _write_entries(store_dir, domain, rows)
-    _touch_domain_index(store_dir, domain, entry_count=len(rows))
+    seq = wal_append_pending(store_dir, domain, row, field_version=field_version)
+    append_entry_line(store_dir, domain, row)
+    wal_commit_append(store_dir, domain, seq, row, field_version=field_version)
+    _touch_domain_index(store_dir, domain, entry_count=len(rows) + 1)
     return row
 
 
