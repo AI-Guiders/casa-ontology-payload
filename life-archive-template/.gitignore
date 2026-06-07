@@ -1,0 +1,3 @@
+# Ephemeral inside archive working tree (not part of von-neumann store mirror)
+.sync-staging/
+*.tmp
