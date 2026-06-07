@@ -8,8 +8,9 @@ from casa._paths import ensure_import_paths
 ensure_import_paths()
 
 import re
-from dataclasses import dataclass, field
 from typing import Any
+
+from casa.prisms.tick.articulation.model import GrammarAtom, UtterancePlan
 
 
 def _intent_label(query: str) -> str:
@@ -48,24 +49,6 @@ def _ascii_safe(text: str) -> str:
         .replace("\u2014", "-")
         .replace("\u2026", "...")
     )
-
-
-@dataclass
-class GrammarAtom:
-    """Короткая норма, выжатая из claim — не весь абзац."""
-
-    kind: str  # rule | compare | example
-    headline: str
-    detail: str = ""
-
-
-@dataclass
-class UtterancePlan:
-    act: str
-    intent: str
-    lexemes: dict[str, str] = field(default_factory=dict)
-    atoms: list[GrammarAtom] = field(default_factory=list)
-    concept_ids: list[str] = field(default_factory=list)
 
 
 def _lemma_from_word_cid(cid: str, text: str) -> str | None:
@@ -199,6 +182,10 @@ def _act_from_cid(cid: str) -> str | None:
         return "phrase_help"
     if cid.startswith("ru.dialog.soft_miss"):
         return "soft_miss"
+    if cid.startswith("ru.dialog.thanks"):
+        return "thanks"
+    if cid.startswith("ru.dialog.farewell"):
+        return "farewell"
     return None
 
 
@@ -223,6 +210,10 @@ def build_plan(
         act = "greeting"
     elif any(x in ql for x in ("что умеешь", "кто ты", "как ты")):
         act = "intro"
+    elif any(x in ql for x in ("спасибо", "благодар")):
+        act = "thanks"
+    elif any(x in ql for x in ("до свидания", "пока")):
+        act = "farewell"
     elif "мама" in ql or "папа" in ql:
         if any(x in ql for x in ("позвонить", "набрать", "сказать", "сформулировать", "написать")):
             act = "phrase_call_mama"
