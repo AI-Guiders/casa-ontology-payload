@@ -49,7 +49,7 @@ casa/prisms/affect/
   __init__.py
 ```
 
-Field roadmap: Emotional Zone ([ADR-0060](CASA-ADR-0060-emotional-zone-v1.md)) — `agent-limbic-core` + `agent-affect-sandbox` in `prism_agent.emotional_zone`; Python package `casa/prisms/affect/`.
+Field roadmap: Emotional Zone ([ADR-0060](CASA-ADR-0060-emotional-zone.md)) — `agent-limbic-core` + `agent-affect-sandbox` in `prism_agent.intelligence_zones.emotional`; Python package `casa/prisms/affect/`.
 
 ### 2. Модель состояния (v0)
 
@@ -209,6 +209,6 @@ Tests: `tests/test_affect_prism_dialogue.py` — event deltas, repair scenario, 
 
 ## Links
 
-- [CASA-ADR-0057-dialogue-situations-character-v1.md](CASA-ADR-0057-dialogue-situations-character-v1.md)
+- [CASA-ADR-0057-dialogue-situations-character.md](CASA-ADR-0057-dialogue-situations-character.md)
 - [CASA-ADR-0010-control-zone-predict-attention-value.md](CASA-ADR-0010-control-zone-predict-attention-value.md)
 - [CASA-ADR-0024-control-thalamus.md](CASA-ADR-0024-control-thalamus.md)

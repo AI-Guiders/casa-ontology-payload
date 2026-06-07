@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "agent_bootstrap_manifest",
   "title": "Agent cold boot — Self tier + agent-owned prisms (declarative)",
-  "doc": "design/CASA-ADR-0055-working-memory-prism-v1.md",
+  "doc": "design/CASA-ADR-0061-intelligence-zones.md",
   "self_tier": {
     "default_lattice": {
       "lattice_id": "agent-self-default",
@@ -161,6 +161,94 @@
       "concept_prefix_core": "agent.spatial.",
       "concept_prefix_sandbox": "agent.spatial.lab.",
       "note": "Vis/spatial stub — enable when prism_visual active"
+    },
+    "genetic_zone": {
+      "enabled": true,
+      "adr": "0062",
+      "spawn_on_bootstrap": true,
+      "species_id": "casa.von-neumann.ru-v1",
+      "genome_file": "genome.v1.json",
+      "immutable_after_seal": true,
+      "zone_proportions": {
+        "executive": 1.0,
+        "emotional": 0.85,
+        "social": 0.9,
+        "logical": 0.95,
+        "linguistic": 1.0,
+        "spatial": 0.5,
+        "character": 0.6,
+        "perceptual": 0.8,
+        "metabolic": 1.0
+      },
+      "ema_limits": {
+        "character_alpha_max": 0.08,
+        "character_alpha_default": 0.05
+      },
+      "surprise_gains": {
+        "metabolic_fatigue": 0.12,
+        "affect_arousal": 0.15,
+        "dan_boost_cap": 24
+      },
+      "promote_canon": {
+        "sandbox_theta": 0.65,
+        "bundle_tier_gate": "RU-ε",
+        "algorithm": "agent_promote_canon_lattice_v1"
+      },
+      "fork_policy": {
+        "mode": "inherit_verbatim",
+        "allele_fork_enabled": false,
+        "require_parent_passport": true
+      },
+      "planned_lineage": {
+        "after_gate": ["hamilton", "lovelace"],
+        "adr": "0065",
+        "note": "Allelic fork sisters after von-neumann matures; no budding/copy-paste. AiNet when peer subjects exist."
+      },
+      "note": "Sealed genome @ T=0; allelic fork disabled until lineage gate (ADR-0065 §8)"
+    },
+    "metabolic_zone": {
+      "enabled": true,
+      "adr": "0064",
+      "spawn_on_bootstrap": true,
+      "core_lattice_id": "agent-metabolic-core",
+      "sandbox_lattice_id": "agent-metabolic-sandbox",
+      "concept_prefix_core": "agent.metabolic.",
+      "concept_prefix_sandbox": "agent.metabolic.lab.",
+      "initial_atp": 1.0,
+      "policy": {
+        "atp_per_tick_base": 0.02,
+        "cost_surprise": 0.08,
+        "cost_compose_token": 0.008,
+        "sleep_threshold": 0.85,
+        "recovery_per_idle_tick": 0.06
+      },
+      "note": "ATP tick budget, fatigue, forced sleep"
+    },
+    "perceptual_zone": {
+      "enabled": true,
+      "adr": "0063",
+      "spawn_on_bootstrap": true,
+      "core_lattice_id": "agent-percept-core",
+      "sandbox_lattice_id": "agent-percept-sandbox",
+      "concept_prefix_core": "agent.percept.",
+      "concept_prefix_sandbox": "agent.percept.lab.",
+      "active_modalities": ["text_stream", "keyboard"],
+      "fan_out": {
+        "text_stream": { "linguistic": 0.85, "social": 0.15 },
+        "keyboard": { "linguistic": 0.7, "executive": 0.3 }
+      },
+      "note": "Sensory gate before semantic_read"
+    },
+    "linguistic_zone": {
+      "enabled": true,
+      "adr": "0061",
+      "spawn_on_bootstrap": true,
+      "core_lattice_id": "agent-linguistic-core",
+      "sandbox_lattice_id": "agent-linguistic-sandbox",
+      "concept_prefix_core": "agent.linguistic.",
+      "concept_prefix_sandbox": "agent.linguistic.lab.",
+      "initial_discourse_confidence": 0.5,
+      "note": "Formal WM+discourse path — tract/compose bias"
     }
   },
   "host_canon": {

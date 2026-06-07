@@ -78,7 +78,7 @@ Character **не задаётся** оператором раз и навсег�
 
 ### 5. Affect — limbic organ (канон в ADR-0058)
 
-Детальный дизайн: **[CASA-ADR-0058-limbic-affect-prism-v1.md](CASA-ADR-0058-limbic-affect-prism-v1.md)**.
+Детальный дизайн: **[CASA-ADR-0058-limbic-affect-prism.md](CASA-ADR-0058-limbic-affect-prism.md)**.
 
 Кратко: organ с T=0 (valence / arousal / security); наполнение из прожитых ситуаций; `value.py` ≠ affect; `ru.dialog.affect` = лексика; character = slow EMA поверх affect.
 
@@ -173,5 +173,5 @@ curriculum moments / open dialogue
 
 - Ревью пробела: [CASA-von-neumann-curriculum-review-v1.md](CASA-von-neumann-curriculum-review-v1.md) § epistemic debt  
 - Существование: [agent-existence-north-star.md](agent-existence-north-star.md) — «меняется после ошибки», persistence  
-- Compose: [CASA-ADR-0056-discourse-compose-ooaed-v1.md](CASA-ADR-0056-discourse-compose-ooaed-v1.md)
-- Limbic: [CASA-ADR-0058-limbic-affect-prism-v1.md](CASA-ADR-0058-limbic-affect-prism-v1.md)
+- Compose: [CASA-ADR-0056-discourse-compose-ooaed.md](CASA-ADR-0056-discourse-compose-ooaed.md)
+- Limbic: [CASA-ADR-0058-limbic-affect-prism.md](CASA-ADR-0058-limbic-affect-prism.md)

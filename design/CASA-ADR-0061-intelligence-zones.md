@@ -43,8 +43,18 @@ Organ catalog **closed** at T=0 (no new intelligence *types* at runtime). Нов
 | **social** | межличностный | dialogue ring, social tract, partner model | agent-social-sandbox (planned) | **gap** — repair, mentalizing |
 | **spatial** | пространственный | prism_visual, control_vis | vis scratch (roadmap) | design only |
 | **character** | temperament (медленный) | EMA поверх emotional + social | — | 0057; not separate sandbox v0 |
+| **genetic** | species / meta-instructions | genome hash, promote_canon, zone proportions | **none** (allelic per **0065**) | **0062** design |
+| **perceptual** | sensory gate / thalamic input | VK, text stream, vis quantize | `agent-percept-sandbox` | **0063** design |
+| **metabolic** | ATP / fatigue / sleep pressure | tick budget, forced sleep | `agent-metabolic-sandbox` | **0064** design |
+| **linguistic** | лингвистический (explicit, planned) | WM, discourse, lexicon path | phrase lattices | implicit today; zone formalize post-P7 |
 
 **g (general):** не отдельная zone — **executive** + predict + tract competition + value.
+
+**Tier −1 (substrate):** **genetic** — не intelligence type; **read-only** meta for all zones (0062).
+
+**Tier 0 (innate intelligence):** emotional … character + perceptual + metabolic.
+
+**Tier 1 (development):** sandbox → promote inside zones; **не** genome mutation.
 
 ### 3. Bootstrap & migration (не с нуля)
 
@@ -84,14 +94,20 @@ Re-bootstrap **only** for empty lab stores; production von-neumann → **migrate
 | **P3** | logical | math-in-dialogue situations + tract balance |
 | **P4** | character | EMA from emotional + social cores |
 | **P5** | spatial | when vis modality active |
+| **P6** | genetic | seal genome.v1.json; species passport; fork hash |
+| **P7** | perceptual | sensory gate before semantic_read; REPL text path |
+| **P8** | metabolic | ATP tick budget; sleep_pressure; runtime hang guard |
+| **P9** | linguistic | formal zone (split from implicit WM/discourse) |
 
 ### 5. Tick order (target)
 
 ```text
-thalamus → predict → zones.read (emotional, executive, …)
+genetic.read (immutable constants)
+→ RAW → perceptual_gate.read
+→ thalamus → predict → zones.read (emotional, executive, metabolic.begin, …)
 → DMN → SN → FPN → DAN → WM/intent
-→ tract → agency → zone.apply → compose
-→ zones.update → persist
+→ tract → agency → metabolic.allow? → zone.apply → compose
+→ zones.update → metabolic.end → (forced_sleep?) → persist
 ```
 
 ---
@@ -104,6 +120,9 @@ thalamus → predict → zones.read (emotional, executive, …)
 | One zone fixes all (only emotional) | full map; phased wire |
 | Teacher mood / soul doc | neutral core + life + promote |
 | Runtime new intelligence type | closed catalog; sandbox inside zone |
+| Mutate genome in life | genetic read-only; AiNet fork explicit |
+| Raw stdin → bind | perceptual gate first (0063) |
+| Infinite tick without sleep | metabolic pressure → sleep (0064) |
 
 ---
 
@@ -116,6 +135,10 @@ thalamus → predict → zones.read (emotional, executive, …)
 
 ## Links
 
-- [CASA-ADR-0060-emotional-zone-v1.md](CASA-ADR-0060-emotional-zone-v1.md)
-- [CASA-ADR-0059-innate-organ-basis-v1.md](CASA-ADR-0059-innate-organ-basis-v1.md)
-- [CASA-ADR-0057-dialogue-situations-character-v1.md](CASA-ADR-0057-dialogue-situations-character-v1.md)
+- [CASA-ADR-0060-emotional-zone.md](CASA-ADR-0060-emotional-zone.md)
+- [CASA-ADR-0062-genetic-zone.md](CASA-ADR-0062-genetic-zone.md)
+- [CASA-ADR-0063-perceptual-zone.md](CASA-ADR-0063-perceptual-zone.md)
+- [CASA-ADR-0064-metabolic-zone.md](CASA-ADR-0064-metabolic-zone.md)
+- [CASA-ADR-0065-controlled-mutations.md](CASA-ADR-0065-controlled-mutations.md)
+- [CASA-ADR-0059-innate-organ-basis.md](CASA-ADR-0059-innate-organ-basis.md)
+- [CASA-ADR-0057-dialogue-situations-character.md](CASA-ADR-0057-dialogue-situations-character.md)

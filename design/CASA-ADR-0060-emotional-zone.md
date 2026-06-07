@@ -14,11 +14,12 @@
 
 ## Decision
 
-### Emotional Zone = один регион `prism_agent.emotional_zone`
+### Emotional Zone = `prism_agent.intelligence_zones.emotional`
 
 ```text
 prism_agent
-└── emotional_zone
+└── intelligence_zones
+    └── emotional
     ├── core (limbic)          ← innate T=0; hot path compose/disposition
     │   ├── axes               valence, arousal, security
     │   ├── episodic           dialog.repair_pending, …
@@ -57,7 +58,7 @@ Manifest `agent_prisms.emotional_zone`:
 
 | Function | Role |
 |----------|------|
-| `ensure_emotional_zone` | block in `prism_agent` |
+| `ensure_emotional_zone` | block in `intelligence_zones.emotional` |
 | `spawn_emotional_zone` | cold boot lattices + core |
 | `core_affect_state` | read axes/episodic |
 | `affect_after_turn` | life events → core (not teacher) |
@@ -93,6 +94,6 @@ Same as ADR-0058: `self_failure`, `partner_repair_invite`, `self_repair_success`
 
 ## Links
 
-- [CASA-ADR-0058-limbic-affect-prism-v1.md](CASA-ADR-0058-limbic-affect-prism-v1.md)
-- [CASA-ADR-0059-innate-organ-basis-v1.md](CASA-ADR-0059-innate-organ-basis-v1.md)
+- [CASA-ADR-0058-limbic-affect-prism.md](CASA-ADR-0058-limbic-affect-prism.md)
+- [CASA-ADR-0059-innate-organ-basis.md](CASA-ADR-0059-innate-organ-basis.md)
 - [CASA-ADR-0014-agent-prism.md](CASA-ADR-0014-agent-prism.md)

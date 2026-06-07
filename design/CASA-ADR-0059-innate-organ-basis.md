@@ -71,7 +71,21 @@ ADR-0057/0058 описывают **развитие** и **limbic organ**; эт�
 | **Journal / Self tier** | autobiographical scratch | bootstrap entries OK |
 | **Hippo / sleep hook** | consolidate | wired, may no-op until sleep |
 
-#### D. Content (НЕ органы — learned)
+#### E. Substrate & infrastructure zones (ADR-0062–0064)
+
+| Organ | ADR | T=0 | Mutability |
+|-------|-----|-----|------------|
+| **Genetic zone** | 0062 | genome.v1.json + hash sealed | **immutable** after seal |
+| **Perceptual gate** | 0063 | agent-percept-core; text + keyboard | core calibrates; sandbox experiments |
+| **Metabolic zone** | 0064 | ATP=1.0, fatigue=0 | live counters; policy from genome |
+
+Genetic **не** intelligence type — **meta-instructions** для пропорций зон, EMA limits, surprise→fatigue, promote_canon.
+
+Perceptual **не** заменяет thalamus (0024): thalamus = global arousal; perceptual = modality quantize + fan-out.
+
+Metabolic **не** заменяет hippo sleep — **давит** на sleep trigger при exhaustion.
+
+#### F. Content (НЕ органы — learned)
 
 Lexicon bundles, `ru.dialog.*`, math claims — **материал DMN**, как **язык среды**, не замена SN/affect. Можно иметь 50k слов **без** limbic — это и есть текущий von-neumann.
 
@@ -79,7 +93,10 @@ Lexicon bundles, `ru.dialog.*`, math claims — **материал DMN**, как
 
 ```text
 INPUT
+  → genetic.read (constants)            ADR-0062
+  → perceptual_gate (quantize)          ADR-0063
   → thalamus (wake/bandwidth)           ADR-0024
+  → metabolic.begin_tick()              ADR-0064
   → predict expected (P8 path)          ADR-0010
   → affect_read / prior                 ADR-0058
   → DMN digest
@@ -93,7 +110,9 @@ INPUT
   → compose (ADR-0056)
   → ACT (reply)
   → affect_update + WM/intent update
+  → metabolic.end_tick()                ADR-0064
   → value tag for replay (P9)
+  → (forced_sleep?) → hippo merge
   → persist
 ```
 
@@ -150,6 +169,9 @@ REPL сегодня: **semantic_read → tract → bind → compose** — **пр
 | Value P9 | `value.py` | ❌ | sleep only |
 | **Affect** | ADR-0058 | ❌ | ❌ |
 | **Character** | ADR-0057 | ❌ | ❌ |
+| **Genetic** | ADR-0062 | ❌ | ❌ |
+| **Perceptual** | ADR-0063 | ❌ | ❌ |
+| **Metabolic** | ADR-0064 | ❌ | ❌ |
 | WM prism | ADR-0055 | ✅ | partial |
 | Intent prism | manifest | ✅ | partial |
 
@@ -172,13 +194,14 @@ REPL сегодня: **semantic_read → tract → bind → compose** — **пр
 ## Consequences
 
 - **ADR-0058** — специфика **одного** innate органа (affect); не заменяет этот ADR.
+- **ADR-0062–0064** — genetic / perceptual / metabolic substrate zones.
 - **ADR-0057** — **development** (situations, character drift); presupposes 0059.
 - **Implementation order:** (1) manifest + empty prism state all organs; (2) wire tick order P1–P9 digest v0; (3) affect/character apply; (4) situation curriculum; (5) NCA train on lattices.
 - **Verification:** cold boot store passes **organ checklist**; REPL tick provenance lists **all** organ reads, not only bind.
 
 ## Links
 
-- [CASA-ADR-0057-dialogue-situations-character-v1.md](CASA-ADR-0057-dialogue-situations-character-v1.md)
-- [CASA-ADR-0058-limbic-affect-prism-v1.md](CASA-ADR-0058-limbic-affect-prism-v1.md)
+- [CASA-ADR-0057-dialogue-situations-character.md](CASA-ADR-0057-dialogue-situations-character.md)
+- [CASA-ADR-0058-limbic-affect-prism.md](CASA-ADR-0058-limbic-affect-prism.md)
 - [CASA-ADR-0010-control-zone-predict-attention-value.md](CASA-ADR-0010-control-zone-predict-attention-value.md)
 - [agent-bootstrap-manifest.v1.json](agent-bootstrap-manifest.v1.json)
