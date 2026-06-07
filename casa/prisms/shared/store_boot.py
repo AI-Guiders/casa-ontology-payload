@@ -53,6 +53,10 @@ def apply_store_boot_profile(store_dir: Path, state: dict) -> None:
 
         prism_router(state)["default_content_prism"] = str(default_prism)
 
+    from casa.domain.subject_mode import apply_subject_profile
+
+    apply_subject_profile(store_dir, state)
+
 
 def boot_store(
     store_dir: Path,

@@ -176,6 +176,9 @@ def main() -> None:
 
         with store_session_lock(store, holder="subject:wake_retro"):
             maybe_run_retrospective_on_wake(store, force=False)
+            from casa.domain.dialogue_tick import dialogue_initiate_from_wake_retro
+
+            dialogue_initiate_from_wake_retro(store)
 
     wm = load_session(store)
 
@@ -255,6 +258,10 @@ def main() -> None:
 
         promote = (row.get("agent_self_drive") or {}).get("skill_promote")
 
+        dialogue = row.get("dialogue") or {}
+
+        last_out = (dialogue.get("last_outbound") or {}).get("text", "")[:120]
+
         print(
 
             json.dumps(
@@ -272,6 +279,8 @@ def main() -> None:
                     "step_capability": wm.step_capability,
 
                     "skill_promote": promote,
+
+                    "dialogue_outbound": last_out or None,
 
                 },
 

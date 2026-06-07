@@ -80,6 +80,9 @@ def compact_persist_store(
     store_dir = store_dir.resolve()
     field = FieldState.bind(ensure_prisms(state))
     state = field.wire
+    from casa.prisms.memory.agent_canon_field import sync_agent_canon_to_field
+
+    sync_agent_canon_to_field(state, store_dir)
     ltm_dir = ltm_root(store_dir)
     pids = content_prism_ids if content_prism_ids is not None else list_content_prism_ids(state)
 

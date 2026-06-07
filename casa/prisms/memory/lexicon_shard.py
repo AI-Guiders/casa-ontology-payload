@@ -84,8 +84,12 @@ def l2_lexicon_lattice_ids(state: dict) -> list[str]:
 
 
 def is_nca_trainable_lattice(lattice_id: str) -> bool:
-    """RU/EN L2 shards (and legacy L2_word) — eligible for per-shard NCA repair."""
-    return is_l2_word_lattice(lattice_id) or is_l2_en_word_lattice(lattice_id)
+    """RU/EN L2 shards, L3 phrase shards — eligible for per-shard NCA repair."""
+    if is_l2_word_lattice(lattice_id) or is_l2_en_word_lattice(lattice_id):
+        return True
+    from casa.prisms.memory.phrase_shard import is_l3_phrase_lattice
+
+    return is_l3_phrase_lattice(lattice_id)
 
 
 def is_l2_word_lattice(lattice_id: str) -> bool:

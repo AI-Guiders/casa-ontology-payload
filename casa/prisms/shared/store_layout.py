@@ -309,6 +309,11 @@ def agent_manifest_path(store_dir: Path) -> Path:
     return agent_prism_root(store_dir) / "manifest.json"
 
 
+def agent_canon_registry_path(store_dir: Path) -> Path:
+    """Agent-owned canon tier registry (promote/demote decisions, not profile ltm/)."""
+    return agent_prism_root(store_dir) / "canon_registry.v1.json"
+
+
 def agent_bridges_path(store_dir: Path) -> Path:
     """Agent-owned control bridges — not exported in profile ltm/."""
     return agent_prism_root(store_dir) / "bridges.json"

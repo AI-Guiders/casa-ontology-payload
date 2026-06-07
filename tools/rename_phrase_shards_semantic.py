@@ -25,7 +25,9 @@ ensure_import_paths()
 from casa.domain.prism_wire import normalize_prisms
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.phrase_shard import (
+    LEGACY_L3,
     L3_SHARD_PREFIX,
+    PHRASES_MONOLITH,
     SHARD_NAMING_TOKEN_RANGE,
     attach_token_range_shard_ids,
     build_semantic_l3_rename_map,
@@ -83,6 +85,9 @@ def rename_semantic_phrase_shards(
 
     _apply_sharding_metadata(state)
     rename_map = build_semantic_l3_rename_map(state["l3_sharding"])
+    lats = memory_lattices(state)
+    if PHRASES_MONOLITH in lats and LEGACY_L3 in lats:
+        rename_map[LEGACY_L3] = PHRASES_MONOLITH
     if not rename_map:
         return {"renamed": 0, "reason": "nothing to rename"}
 

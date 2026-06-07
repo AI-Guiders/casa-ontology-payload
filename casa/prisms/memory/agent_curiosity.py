@@ -153,6 +153,7 @@ def _what_if_probe(
                 structure_tag="predict_mismatch",
                 form_extract_allowed=True,
                 episode_source="wake",
+                bind_class="open_probe",
             )
             ep_id = (ep or {}).get("id")
 

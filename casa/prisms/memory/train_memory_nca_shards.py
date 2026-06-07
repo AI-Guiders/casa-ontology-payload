@@ -21,6 +21,7 @@ from casa.prisms.memory.lexicon_shard import (
     set_nca_model,
     shard_stats,
 )
+from casa.prisms.memory.phrase_shard import l3_phrase_lattice_ids
 from casa.prisms.memory.nca_codec import tokens_from_lattice
 from casa.prisms.shared.lattice_names_v1 import is_alphabet_lattice
 from casa.prisms.shared.nca_registry import mark_lattice_trained, repair_smoke_ratio
@@ -39,7 +40,8 @@ def main() -> None:
         default=None,
         help="Per-lattice train dirs (default: <store-dir>/nca/<lattice_id>/)",
     )
-    p.add_argument("--layer", default="L2", help="L2 | L1 | L0 | all")
+    p.add_argument("--layer", default="L2", help="L2 | L3 | L1 | L0 | all")
+    p.add_argument("--max-shards", type=int, default=0, help="Train at most N targets (0 = all)")
     p.add_argument("--skip-trained", action="store_true", default=True, help="Skip shards with model.pt (default on)")
     p.add_argument("--no-skip-trained", action="store_false", dest="skip_trained")
     p.add_argument("--from-lattice", default=None, help="Train only this id and later (lex sort)")
@@ -61,6 +63,8 @@ def main() -> None:
     targets: list[str] = []
     if args.layer in ("L2", "all"):
         targets.extend(l2_lexicon_lattice_ids(state))
+    if args.layer in ("L3", "all"):
+        targets.extend(l3_phrase_lattice_ids(state))
     if args.layer in ("L1", "all"):
         targets.extend(sorted(lid for lid in lattices if lid.startswith("syllables-") or lid.startswith("L1_")))
     if args.layer in ("L0", "all"):
@@ -69,6 +73,8 @@ def main() -> None:
     if args.from_lattice:
         start = str(args.from_lattice)
         targets = [t for t in targets if t >= start]
+    if args.max_shards > 0:
+        targets = targets[: args.max_shards]
 
     results: list[dict] = []
     for lid in targets:
