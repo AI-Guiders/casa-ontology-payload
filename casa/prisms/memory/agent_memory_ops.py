@@ -79,6 +79,22 @@ def agent_remember(
     persist: bool = True,
 ) -> dict[str, Any]:
     """Persist anything the agent chose to keep — encoding is internal."""
+    record = dict(record)
+    if record.get("compose_from_field") or record.get("compose"):
+        cue = str(record.get("cue") or record.get("text") or "").strip()
+        if not cue:
+            raise ValueError("compose_from_field requires cue or text")
+        from casa.domain.subject_journal import compose_journal_entry_text
+        from casa.prisms.control.fpn_state import WorkingMemory
+
+        wm = record.get("wm")
+        if not isinstance(wm, WorkingMemory):
+            wm = WorkingMemory()
+        composed = compose_journal_entry_text(cue, state, wm, store_dir)
+        if not composed:
+            raise ValueError("journal compose_from_field produced empty text")
+        record["text"] = composed
+
     if not _has_content(record):
         raise ValueError("remember record needs text, tokens, concepts, placements, data, or tags")
 

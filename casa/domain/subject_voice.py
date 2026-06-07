@@ -7,7 +7,8 @@ from typing import Any
 
 from casa.domain.subject_agency import SubjectAction, SubjectDisposition
 from casa.domain.subject_articulation import compose_subject_utterance
-from casa.domain.subject_dialogue_bind import gather_subject_dialogue_blocks
+from casa.domain.dialogue_provenance import meaning_provenance
+from casa.domain.dialogue_bind import SubjectDialogueContext, gather_subject_dialogue_blocks
 from casa.domain.subject_mode import subject_display_name
 from casa.prisms.control.fpn_state import WorkingMemory
 from casa.prisms.control.sn_cen_runtime import TaskEmit
@@ -62,9 +63,29 @@ def compose_subject_partner_reply(
     store_dir=None,
 ) -> str:
     """Subject-mode reply from field + journal + CEN bind → articulate (no keyword templates)."""
+    _ctx, text = compose_subject_partner_reply_with_ctx(
+        user_query, task, state, wm, store_dir=store_dir
+    )
+    return text
+
+
+def compose_subject_partner_reply_with_ctx(
+    user_query: str,
+    task: TaskEmit | None,
+    state: dict,
+    wm: WorkingMemory,
+    *,
+    store_dir=None,
+) -> tuple[SubjectDialogueContext, str]:
+    """Reply + bind context (for dialogue provenance / journal prior)."""
     q = (user_query or "").strip()
     if not q:
-        return "Запрос пустой; скажи, о чём говорим."
+        empty = SubjectDialogueContext(
+            display_name=subject_display_name(state, store_dir),
+            field_version=int(state.get("field_version") or 0),
+            wm=wm,
+        )
+        return empty, "Запрос пустой; скажи, о чём говорим."
 
     ctx = gather_subject_dialogue_blocks(q, task, state, wm, store_dir)
     text = compose_subject_utterance(q, ctx)
@@ -72,9 +93,9 @@ def compose_subject_partner_reply(
     if task and task.answer_text:
         legacy = task.answer_text.strip()
         if "language store нет болтовни" in legacy or "Не отвечаю уроком про Console" in legacy:
-            return text
+            return ctx, text
 
-    return text
+    return ctx, text
 
 
 def initiate_from_retro(retro: dict[str, Any]) -> str | None:

@@ -305,10 +305,19 @@ def run_learning_tick(
         kolb_rep = kolb_cycle(state, cfg.kolb_session, bundle=bundle_for_hippo)
 
     retro_rep: dict[str, Any] | None = None
+    wm_sleep_rep: dict[str, Any] | None = None
+    intent_sleep_rep: dict[str, Any] | None = None
     if sleep_rep and cfg.retro_after_sleep:
         from casa.domain.subject_retrospective import maybe_run_retrospective_after_sleep
 
         retro_rep = maybe_run_retrospective_after_sleep(store_dir)
+
+    if sleep_rep:
+        from casa.prisms.memory.intent import intent_on_sleep_boundary
+        from casa.prisms.memory.wm import wm_on_sleep_boundary
+
+        wm_sleep_rep = wm_on_sleep_boundary(state, store_dir)
+        intent_sleep_rep = intent_on_sleep_boundary(state, store_dir)
 
     dialogue_rep = process_dialogue_on_tick(
         store_dir,
@@ -398,6 +407,8 @@ def run_learning_tick(
             "self_check": self_check_rep,
         },
         "dialogue": dialogue_rep,
+        "wm_prism_sleep": wm_sleep_rep,
+        "intent_prism_sleep": intent_sleep_rep,
         "learning_cycle": {
             "extract": {"field_decode": True, "act_rollout": bool(act_report and not act_report.get("skipped"))},
             "remember": {"hippo_episode": hippo_ep is not None, "sleep": sleep_rep is not None},

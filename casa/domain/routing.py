@@ -37,6 +37,8 @@ class RouteContext:
     skill_id: str = ""
     surface_class: str = ""
     novel: str = ""
+    geometry: str = ""
+    read_intent: str = ""
     capabilities_available: tuple[str, ...] = ()
 
 
@@ -167,6 +169,9 @@ def _ctx_value(ctx: RouteContext, key: str) -> str:
         "skill": ctx.skill_id,
         "surface_class": ctx.surface_class,
         "novel": ctx.novel,
+        "geometry": ctx.geometry,
+        "read_intent": ctx.read_intent,
+        "intent": ctx.read_intent,
     }
     return _norm(mapping.get(key, ""))
 

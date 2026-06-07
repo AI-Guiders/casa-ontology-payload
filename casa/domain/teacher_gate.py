@@ -48,12 +48,17 @@ PROBE_REGISTRY: dict[str, ProbeSpec] = {
     "probe_block08_grammar_phrase_meta_held_out": ProbeSpec(
         GateKind.AGENT_KSA, "block 8 agreement/possessive/numeral meta held-out"
     ),
-    "probe_passage_comprehend_ru_v0": ProbeSpec(GateKind.AGENT_KSA, "passage comprehension held-out"),
-    "probe_morphemics_ru_v0": ProbeSpec(GateKind.AGENT_KSA, "morphemics segment bind held-out"),
+    "probe_passage_comprehend_ru": ProbeSpec(GateKind.AGENT_KSA, "passage comprehension held-out"),
+    "probe_morphemics_ru": ProbeSpec(GateKind.AGENT_KSA, "morphemics segment bind held-out"),
     "probe_block09c_morphemics_held_out": ProbeSpec(GateKind.AGENT_KSA, "block 9c morphemics held-out"),
-    "probe_oov_word_recall_v0": ProbeSpec(GateKind.AGENT_KSA, "OOV remember recall"),
-    "probe_orthography_ru_v0": ProbeSpec(GateKind.AGENT_KSA, "orthography in context"),
-    "probe_grammar_punct_ru_v0": ProbeSpec(GateKind.AGENT_KSA, "punctuation in context"),
+    "probe_oov_word_recall_ru": ProbeSpec(GateKind.AGENT_KSA, "OOV remember recall"),
+    "probe_nositel_gate_ru": ProbeSpec(GateKind.AGENT_KSA, "interlocutor discuss/talk/teach/honest (B1 subset)"),
+    "probe_cefr_gate_ru": ProbeSpec(GateKind.AGENT_KSA, "CEFR A1-C2 written tract achieved_level"),
+    "probe_text_meaning_ru": ProbeSpec(GateKind.AGENT_KSA, "B11 text meaning props + articulate"),
+    "probe_orthography_ru": ProbeSpec(GateKind.AGENT_KSA, "orthography in context"),
+    "probe_grammar_punct_ru": ProbeSpec(GateKind.AGENT_KSA, "punctuation in context"),
+    "probe_literature_rc_ru": ProbeSpec(GateKind.AGENT_KSA, "literature RC micro-class"),
+    "probe_material_verbal_ru": ProbeSpec(GateKind.AGENT_KSA, "RU-α material→verbal journal articulate"),
     "nline-compare-quiz": ProbeSpec(GateKind.AGENT_KSA, "numberline compare"),
     "venn-region-quiz": ProbeSpec(GateKind.AGENT_KSA, "venn region math"),
     "geom-lex-quiz": ProbeSpec(GateKind.AGENT_KSA, "geometry lex on field"),
@@ -196,7 +201,9 @@ def probe_gate_passed(report: dict[str, Any], gate_id: str = "") -> bool:
         return _gate_phrase_agent_store(report)
     if probe == "paradigm-select":
         return _gate_paradigm_select(report)
-    if probe in ("probe_orthography_ru_v0", "probe_grammar_punct_ru_v0"):
+    if probe in ("probe_orthography_ru", "probe_grammar_punct_ru", "probe_text_meaning_ru", "probe_literature_rc_ru"):
+        if "gate_pass" in report:
+            return bool(report.get("gate_pass"))
         return int(report.get("know") or 0) == int(report.get("total") or 0) and int(report.get("total") or 0) > 0
     if ":" in probe and report.get("class_id"):
         return _gate_stage_full_know(report)

@@ -23,7 +23,7 @@ from casa.domain.routing import (
     _norm,
 )
 
-# Lab auto-promote: frozen v0 bootstrap only — do not add curriculum stages here.
+# Lab auto-promote: bootstrap probes only — curriculum stages use explicit promote tooling.
 _BOOTSTRAP_PROBES = frozenset(
     {
         "literacy-corpus-quiz",
@@ -32,6 +32,11 @@ _BOOTSTRAP_PROBES = frozenset(
         "phrase-compose-pilot",
         "phrase-agent-store",
         "paradigm-select",
+        "probe_text_meaning_ru",
+        "probe_orthography_ru",
+        "probe_grammar_punct_ru",
+        "probe_morphemics_ru",
+        "probe_oov_word_recall_ru",
     }
 )
 
@@ -155,6 +160,12 @@ def suggest_trial_plan(goal_id: str, capabilities: tuple[str, ...]) -> TrialPlan
     if gid in ("goal.learn.corpus", "goal.read.corpus") or "corpus" in gid:
         steps = ["skill.read.whole", "skill.verify.corpus"]
         return TrialPlan(plan_id="plan.trial.whole_word", steps=steps, goal_id=gid)
+
+    if gid in ("goal.read.comprehend",) or gid.startswith("goal.read.comprehend"):
+        if "skill.read.comprehend" not in caps and "skill.read.phrase" not in caps:
+            return None
+        steps = ["skill.read.comprehend", "skill.read.phrase"]
+        return TrialPlan(plan_id="plan.trial.text_comprehend", steps=tuple(steps), goal_id=gid)
 
     if gid.startswith("goal.") and caps:
         return TrialPlan(plan_id=f"plan.trial.{gid.replace('.', '_')}", steps=tuple(sorted(caps)[:4]), goal_id=gid)
@@ -326,6 +337,85 @@ def _probe_route_actions(report: dict[str, Any], gate_id: str, agent_id: str) ->
                 "kind": "capability",
                 "match": {"modality": "vis", "surface_class": "word", "locale": locale},
                 "target_skill": "skill.select.form",
+            }
+        )
+        return actions
+
+    if probe == "probe_text_meaning_ru":
+        if not report.get("gate_pass"):
+            return []
+        actions.append(
+            {
+                "kind": "capability",
+                "match": {
+                    "modality": "text",
+                    "geometry": "passage_context",
+                    "locale": locale,
+                },
+                "target_skill": "skill.read.comprehend",
+            }
+        )
+        actions.append(
+            {
+                "kind": "applicability",
+                "match": {"goal": "goal.read.comprehend", "locale": locale},
+                "target_plan": f"plan.text_comprehend_{agent_id}",
+                "steps": ["skill.read.comprehend", "skill.read.phrase"],
+            }
+        )
+        actions.append(
+            {
+                "kind": "goal",
+                "match": {"inbox_kind": "text", "stage": "stage-11-text-meaning-ru"},
+                "target_goal": "goal.read.comprehend",
+            }
+        )
+        return actions
+
+    if probe == "probe_orthography_ru":
+        if not report.get("gate_pass"):
+            return []
+        actions.append(
+            {
+                "kind": "capability",
+                "match": {"modality": "text", "read_intent": "spelling", "locale": locale},
+                "target_skill": "skill.spell.check",
+            }
+        )
+        return actions
+
+    if probe == "probe_grammar_punct_ru":
+        if not report.get("gate_pass"):
+            return []
+        actions.append(
+            {
+                "kind": "capability",
+                "match": {"modality": "text", "read_intent": "punctuation", "locale": locale},
+                "target_skill": "skill.punct.check",
+            }
+        )
+        return actions
+
+    if probe == "probe_morphemics_ru":
+        if not report.get("gate_pass"):
+            return []
+        actions.append(
+            {
+                "kind": "capability",
+                "match": {"modality": "vis", "surface_class": "word", "locale": locale},
+                "target_skill": "skill.ortho.vigilance",
+            }
+        )
+        return actions
+
+    if probe == "probe_oov_word_recall_ru":
+        if int(report.get("know") or 0) < int(report.get("total") or 0):
+            return []
+        actions.append(
+            {
+                "kind": "capability",
+                "match": {"modality": "text", "novel": "true", "locale": locale},
+                "target_skill": "skill.lex.oov_remember",
             }
         )
     return actions
