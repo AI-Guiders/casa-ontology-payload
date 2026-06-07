@@ -22,7 +22,16 @@ from casa.domain.prism_wire import (
 )
 from casa.prisms.shared.codec_grid import Grid
 from casa.prisms.shared.field_write import load_field_state, save_field_state
-from casa.prisms.shared.lattice_names_v1 import ALPHABET_RU, ALPHABET_UK, ALPHABET_EN, EPISODIC_SURFACE, LEXICON_RU, PHRASES
+from casa.prisms.shared.lattice_names_v1 import (
+    ALPHABET_RU,
+    ALPHABET_UK,
+    ALPHABET_EN,
+    EPISODIC_SURFACE,
+    LEXICON_RU,
+    PHRASES,
+    SYLLABLES_RU,
+    canonical_lattice_id,
+)
 from casa.prisms.memory.stack import (
     _place_token,
     apply_z_compose,
@@ -276,6 +285,7 @@ def append_episode(
     allow_teacher_links: bool = False,
     crosslink_hypotheses: list[dict[str, Any]] | None = None,
     episode_source: str = "wake",
+    bind_class: str | None = None,
 ) -> dict | None:
     state = ensure_cylinders(state)
     if episode_source == "ingest":
@@ -290,13 +300,31 @@ def append_episode(
     if bundle and not concept_id:
         concept_id = concept_id_for_surface(bundle, correct, lattice_id=lattice_id)
 
+    from casa.prisms.shared.lattice_names_v1 import canonical_lattice_id
+    from casa.prisms.shared.memory_layer_names import memory_layer_for_lattice_id
+
+    lattice_id = canonical_lattice_id(lattice_id)
+    semantic_layer = memory_layer_for_lattice_id(lattice_id)
+
+    from casa.domain.episode_bind import infer_bind_class
+
+    resolved_bind = bind_class or infer_bind_class(
+        structure_tag=structure_tag,
+        scene=scene,
+        concept_id=concept_id,
+        correct=correct,
+        kind="surface",
+    )
+
     ep = {
         "id": _now_id(),
         "cue": cue.strip()[:120],
         "surface_attempt": surface_attempt.strip()[:120],
         "correct": correct.strip()[:120],
         "lattice_id": lattice_id,
+        "semantic_layer": semantic_layer,
         "concept_id": concept_id,
+        "bind_class": resolved_bind,
         "consolidated": False,
         "kind": "surface",
         "scene": (scene or "").strip()[:240],
@@ -519,6 +547,10 @@ def run_sleep(
     """
     bundle = bundle or {"claims": [], "graph": {"edges": []}}
     state = ensure_cylinders(state)
+    from casa.domain.load_governor import cognitive_load_from_state, retire_stuck_surprise_episodes
+
+    load_rep = cognitive_load_from_state(state)
+    overload_retire = retire_stuck_surprise_episodes(state, overloaded=bool(load_rep.get("overloaded")))
     from casa.prisms.hippo.sleep_replay import SleepReplayConfig, prepare_sleep_replay
 
     replay_report = prepare_sleep_replay(
@@ -565,10 +597,12 @@ def run_sleep(
                 consolidate_budget -= 1
                 consolidated_this_call += 1
             continue
-        lid = str(ep.get("lattice_id") or "L1_syllable")
-        cid = ep.get("concept_id")
-        if not cid and bundle:
-            cid = concept_id_for_surface(bundle, str(ep.get("correct") or ""), lattice_id=lid)
+        from casa.domain.episode_bind import resolve_episode_concept_id
+
+        lid = canonical_lattice_id(str(ep.get("lattice_id") or SYLLABLES_RU))
+        cid = resolve_episode_concept_id(ep, bundle, lattice_id=lid)
+        if cid and not ep.get("concept_id"):
+            ep = {**ep, "concept_id": cid}
         min_rec = max(1, int(ep.get("min_recurrence") or 1))
         seen = int(ep.get("recurrence_seen") or 0) + 1
         ep = {**ep, "recurrence_seen": seen}
@@ -606,7 +640,7 @@ def run_sleep(
         raw_links = ep.get("links") or []
         allow_teacher_links = bool(
             ep.get("allow_teacher_links")
-            or str(ep.get("structure_tag") or "") == "self_promote"
+            or str(ep.get("structure_tag") or "") in ("self_promote", "canon_promote")
             or str(ep.get("correction_kind") or "") == "self_promote"
         )
         if raw_links and allow_teacher_links:
@@ -915,6 +949,13 @@ def run_sleep(
                 state,
                 store_dir,
             )
+
+    if store_dir is not None:
+        from casa.prisms.memory.agent_canon_field import sync_agent_canon_to_field
+
+        canon_sync = sync_agent_canon_to_field(state, store_dir)
+        if canon_sync.get("synced"):
+            cons["last_sleep"]["agent_canon_sync"] = canon_sync
 
     if store_dir is not None and compact_persist is not False:
         from casa.prisms.shared.compact_persist import maybe_compact_persist_after_sleep

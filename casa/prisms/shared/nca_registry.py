@@ -18,6 +18,7 @@ from typing import Any
 from casa.prisms.shared.field_version import memory_field_version, train_field_version_for_lattice
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.lexicon_shard import is_nca_trainable_lattice, l2_lexicon_lattice_ids, nca_model_registry
+from casa.prisms.memory.phrase_shard import l3_phrase_lattice_ids
 from casa.prisms.memory.nca_codec import tokens_from_lattice
 from casa.prisms.shared.store_layout import nca_lattice_dir, nca_root, nca_train_registry_path, rel_to_repo
 
@@ -34,6 +35,7 @@ def empty_registry(*, store_id: str = "") -> dict[str, Any]:
         "updated_at": _utc_now(),
         "field_version": 0,
         "pending": [],
+        "pending_requests": [],
         "lattices": {},
     }
 
@@ -44,6 +46,7 @@ def load_registry(store_dir: Path) -> dict[str, Any]:
         return empty_registry(store_id=store_dir.name)
     reg = json.loads(path.read_text(encoding="utf-8"))
     reg.setdefault("pending", [])
+    reg.setdefault("pending_requests", [])
     reg.setdefault("lattices", {})
     return reg
 
@@ -103,6 +106,11 @@ def clear_pending(store_dir: Path, lattice_ids: list[str]) -> None:
     reg = load_registry(store_dir)
     drop = set(lattice_ids)
     reg["pending"] = [lid for lid in reg.get("pending") or [] if lid not in drop]
+    reg["pending_requests"] = [
+        r
+        for r in reg.get("pending_requests") or []
+        if str(r.get("lattice_id") or "") not in drop
+    ]
     save_registry(store_dir, reg)
 
 
@@ -145,6 +153,9 @@ def mark_lattice_trained(
         entry["last_repair_at"] = _utc_now()
     reg.setdefault("lattices", {})[lattice_id] = entry
     reg["pending"] = [lid for lid in reg.get("pending") or [] if lid != lattice_id]
+    reg["pending_requests"] = [
+        r for r in reg.get("pending_requests") or [] if str(r.get("lattice_id") or "") != lattice_id
+    ]
     reg["field_version"] = memory_field_version(state)
     reg["store_id"] = store_dir.name
     save_registry(store_dir, reg)
@@ -236,7 +247,10 @@ def find_stale_shards(
     current_mfv = memory_field_version(state)
     rows: list[dict[str, Any]] = []
 
-    for lid in l2_lexicon_lattice_ids(state):
+    trainable_ids = list(dict.fromkeys(l2_lexicon_lattice_ids(state) + l3_phrase_lattice_ids(state)))
+    for lid in trainable_ids:
+        if not is_nca_trainable_lattice(lid):
+            continue
         lat = memory_lattices(state).get(lid) or {}
         tok = lattice_token_count(state, lid)
         if tok < min_tokens:
