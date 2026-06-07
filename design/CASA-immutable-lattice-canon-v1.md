@@ -225,17 +225,25 @@ Experiential `lexicon-ru-*` — отдельная очередь stale shard (c
 
 Поток: tool train → percept «готово» в `body/completions.jsonl` → **macro tick** `ingest_body_completions_on_tick` (episode + `agent_commit_canon_nca_completion` в RAM) → persist на границе tick. Tools **не** вызывают `save_runtime_state`.
 
-### Где на диске (store tiers)
+### Один живой store — не картриджи
 
-| Путь под `agents/<store_id>/` | Tier | В git |
-|-------------------------------|------|-------|
-| `ltm/`, cold `nca/` (shipped pack) | shipped | опционально snapshot |
-| `field_state.json`, `agent_session.json` | **runtime** checkpoint | **нет** (`.gitignore`) |
-| `nca_train_registry.json`, `body/completions.jsonl`, `nca/*/model.pt` | **runtime** / body buffer | **нет** |
-| `agent/`, `journal/` | **self** (явная память агента) | **нет** |
-| `store_profile.json`, `body_manifest.example.json` | profile template | да |
+Продуктовая модель: **один агент → один непрерывно живущий store** ([ADR-0021](CASA-ADR-0021-experience-agent-transfer.md): опыт без сменяемых картриджей). Занятия (JPEG, ingest, probe) — **события** в его жизни; итог консолидации — **его** `ltm/`, `nca/`, hippo→sleep, canon, journal. Нет «вставил картридж — получил знание»: только накопление.
 
-Решения (promote, commit, persist) — **агент**; body только артефакты и percept. Это не teacher corpus и не host oracle.
+**Тело** (`body_manifest`, worker, `body/completions.jsonl`) — не внешний модуль и не поставка: **его периферия** (motor/sensory, ADR-0046/0027), часть той же жизни. NCA repair — не «веса знания», а способность тела восстанавливать уже зафиксированные полки после damage.
+
+Имена tier в коде (`shipped` / `runtime` / `self`) — **роли персиста на диске**, не сменяемые продуктовые слои:
+
+| Роль персиста | Смысл для субъекта | Примеры путей |
+|---------------|-------------------|---------------|
+| Структура памяти | его накопленный опыт на поле | `ltm/`, `nca/*/model.pt` |
+| Checkpoint | снимок жизни между wake | `field_state.json`, `agent_session.json` |
+| Явная self | его записи и prism | `agent/`, `journal/` |
+| Body buffer | входящие percepts до tick | `body/completions.jsonl`, `train_complete.json` |
+| Очередь его act | он решил train | `nca_train_registry.json` |
+
+Всё под `agents/<store_id>/` — **его жизнь**; в **кодовом** репо живой store не коммитим (`.gitignore`). Отдельный **life-archive** (`AI-Guiders/von-neumann-life-archive`) + `tools/sync_life_archive.py` — transcript/DR с Git LFS; **сейчас private**, при зрелости — **public read без внешних MR** ([ADR-0050](CASA-ADR-0050-agent-life-archive-visibility-v1.md)). Шаблоны (`store_profile.json`, `body_manifest.example.json`) — bootstrap host, не замена store.
+
+Решения (promote, commit, persist) — **агент**; body worker — артефакт + percept, без `save_runtime_state`.
 
 ---
 
