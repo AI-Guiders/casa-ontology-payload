@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import shutil
 import subprocess
 import sys
@@ -21,20 +20,15 @@ from casa._paths import ensure_import_paths
 ensure_import_paths()
 
 from casa.prisms.shared.store_layout import default_agent_store
+from casa.prisms.shared.store_mirror import (
+    LIFE_ARCHIVE_STORE_SUBDIR,
+    copy_store_tree,
+)
 
 DEFAULT_GH_REPO = "AI-Guiders/von-neumann-life-archive"
 DEFAULT_ARCHIVE_DIR = _REPO.parent / "von-neumann-life-archive"
 TEMPLATE_DIR = _REPO / "life-archive-template"
-STORE_SUBDIR = "store"
-
-SKIP_NAMES = frozenset(
-    {
-        ".crash-quarantine",
-        ".git",
-        ".sync-staging",
-        ".store.write.lock",
-    }
-)
+STORE_SUBDIR = LIFE_ARCHIVE_STORE_SUBDIR
 
 
 def _utc_now() -> str:
@@ -81,24 +75,6 @@ def ensure_git_lfs(*, archive_dir: Path) -> None:
         _run(["git", "lfs", "track", pattern], cwd=archive_dir, check=False)
 
 
-def _copy_store_tree(src: Path, dst: Path) -> dict[str, int]:
-    dst.mkdir(parents=True, exist_ok=True)
-    files = dirs = 0
-    for root, dirnames, filenames in os.walk(src):
-        dirnames[:] = [d for d in dirnames if d not in SKIP_NAMES]
-        rel_root = Path(root).relative_to(src)
-        for name in filenames:
-            if name in SKIP_NAMES or name.endswith(".tmp"):
-                continue
-            s = Path(root) / name
-            t = dst / rel_root / name
-            t.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(s, t)
-            files += 1
-        dirs += len(dirnames)
-    return {"files": files, "dirs": dirs}
-
-
 def sync_store(store_dir: Path, archive_dir: Path) -> dict:
     store_dir = store_dir.resolve()
     if not store_dir.is_dir():
@@ -107,7 +83,7 @@ def sync_store(store_dir: Path, archive_dir: Path) -> dict:
     staging = archive_dir / ".sync-staging"
     if staging.exists():
         shutil.rmtree(staging)
-    stats = _copy_store_tree(store_dir, staging)
+    stats = copy_store_tree(store_dir, staging)
     if target.exists():
         shutil.rmtree(target)
     staging.rename(target)

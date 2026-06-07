@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Bootstrap Self tier for a living agent: journal (workbook) + agent prism."""
+"""Bootstrap Self tier only: journal + agent/ prism on an existing store (lab / cold shell).
+
+Not a life restore — use restore_agent_life for snapshot from life-archive.
+"""
 
 from __future__ import annotations
 
-from casa._paths import REPO_ROOT, ensure_import_paths
+from casa._paths import ensure_import_paths
 
 ensure_import_paths()
 
@@ -25,13 +28,23 @@ from casa.prisms.shared.store_layout import default_agent_store
 from casa.prisms.shared.store_persist import save_runtime_state
 
 
-def init_agent_self_tier(
+def bootstrap_agent_self_tier(
     store_dir: Path,
     *,
     display_name: str = "Нейманн",
     notebooks: list[str] | None = None,
+    skip_if_journal_exists: bool = True,
 ) -> dict:
     store_dir = store_dir.resolve()
+    journal_dir = store_dir / "journal"
+    if skip_if_journal_exists and journal_dir.is_dir() and any(journal_dir.rglob("entries.jsonl")):
+        return {
+            "store_dir": str(store_dir),
+            "skipped": True,
+            "reason": "journal_already_present",
+            "journal": journal_stats(store_dir),
+        }
+
     notebooks = notebooks or ["math-palochki", "kolb", "self"]
 
     boot = boot_store(store_dir, prefer_field_state=True)
@@ -42,7 +55,7 @@ def init_agent_self_tier(
     create_agent_lattice(state, "agent-self-default", width=32, height=32, concept_prefix="agent.self.")
     save_agent_prism(store_dir, state)
 
-    journal_rows: list[dict] = []
+    journal_rows: list[str] = []
     append_journal_entry(
         store_dir,
         {
@@ -92,6 +105,7 @@ def init_agent_self_tier(
 
     return {
         "store_dir": str(store_dir),
+        "skipped": False,
         "journal": journal_stats(store_dir),
         "bootstrapped_notebooks": journal_rows,
         "agent_prism": str(store_dir / "agent"),
@@ -100,17 +114,25 @@ def init_agent_self_tier(
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="Init agent journal + agent/ prism (Self tier)")
+    p = argparse.ArgumentParser(
+        description="Bootstrap Self tier (journal + agent/) on existing store — not life restore"
+    )
     p.add_argument("--store-dir", type=Path, default=None)
     p.add_argument("--display-name", default="Нейманн")
     p.add_argument("--notebook", action="append", default=[], help="Extra notebook id (repeatable)")
+    p.add_argument(
+        "--force",
+        action="store_true",
+        help="Run even if journal/ already exists",
+    )
     args = p.parse_args()
 
     notebooks = ["math-palochki", "kolb", "self", *(args.notebook or [])]
-    rep = init_agent_self_tier(
+    rep = bootstrap_agent_self_tier(
         args.store_dir or default_agent_store(),
         display_name=args.display_name,
         notebooks=notebooks,
+        skip_if_journal_exists=not args.force,
     )
     print(json.dumps(rep, ensure_ascii=False, indent=2))
 
