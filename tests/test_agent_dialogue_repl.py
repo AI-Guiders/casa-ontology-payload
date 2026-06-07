@@ -25,24 +25,23 @@ def _fresh_store() -> Path:
 
 def test_repl_import_and_subject_gate() -> None:
     from casa.cli.agent_dialogue_repl import _partner_reply, run_repl
+    from casa.prisms.control.fpn_state import WorkingMemory
 
     store = _fresh_store()
     from casa.cli.ingest_state import resolve_ingest_state
     from casa.domain.subject_mode import apply_subject_profile
-    from casa.prisms.control.fpn_state import WorkingMemory
 
     state = resolve_ingest_state(store, None)
     apply_subject_profile(store, state)
-    reply, _ = _partner_reply(
+    reply, _, _, _ = _partner_reply(
         "Привет!",
         store=store,
         state=state,
         wm=WorkingMemory(tick=0),
-        tick=1,
         verbose=False,
     )
     assert reply.strip()
-    assert run_repl  # callable
+    assert callable(run_repl)
 
 
 def test_repl_quit_via_pipe() -> None:

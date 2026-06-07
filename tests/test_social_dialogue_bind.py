@@ -18,7 +18,7 @@ from casa.domain.dialogue_bind.scoring import partner_self_label, social_dialog_
 from casa.prisms.control.fpn_state import WorkingMemory
 from casa.prisms.control.sn_cen_runtime import TaskEmit
 from casa.prisms.shared.store_bundles import load_store_bundles
-from casa.prisms.tick.semantic_read import route_kb_read
+from casa.prisms.tick.routing import route_kb_read
 
 
 def _dialogue_store() -> Path:

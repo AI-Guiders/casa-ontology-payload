@@ -35,10 +35,13 @@ class IntelligenceZonesTests(unittest.TestCase):
                 "agent-logical-core",
                 "agent-logical-sandbox",
                 "agent-character-core",
+                "agent-metabolic-core",
+                "agent-percept-core",
+                "agent-linguistic-core",
             ):
                 self.assertIn(lid, lats, lid)
             self.assertNotIn("agent-spatial-core", lats)
-            self.assertEqual(rep["intelligence_zones_version"], 2)
+            self.assertEqual(rep["intelligence_zones_version"], 4)
 
     def test_logical_tract_boosts_math_on_arithmetic(self) -> None:
         from casa.prisms.intelligence.logical import spawn_logical_zone
