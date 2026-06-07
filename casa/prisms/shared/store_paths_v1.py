@@ -39,8 +39,10 @@ def ltm_tier_for_lattice(lattice_id: str) -> str:
         return "memory/phrase"
     if lid.startswith("phrases-"):
         return "memory/phrase"
-    if lid.startswith(("schema-", "compose-", "cardinal-", "quantity-")):
+    if lid.startswith(("schema-", "compose-", "cardinal-", "quantity-", "logic-", "math-axiom", "math-calculus")):
         return "memory/math"
+    if lid in ("logic-laws", "math-axiom", "math-calculus-rules", "morph-role-ru"):
+        return "memory/math" if lid != "morph-role-ru" else "memory/lexicon"
     if lid.startswith("episodic-"):
         return "hippo"
     if lid.startswith("L0_"):

@@ -350,10 +350,19 @@ def maybe_agent_self_drive_tick(
     from casa.domain.emergent_promote import promote_pending_bootstrap_routes
 
     route_promote = promote_pending_bootstrap_routes(state)
+    from casa.prisms.tick.agent_canon_tick import maybe_promote_canon_on_tick
+
+    canon_promote = maybe_promote_canon_on_tick(
+        store_dir,
+        state,
+        wm=wm,
+        bundle=bundle,
+    )
     return {
         "agent_controlled": True,
         "knowledge_seek": knowledge,
         "skill_promote": skill,
         "bootstrap_route_promote": [r.promoted for r in route_promote if r.promoted],
+        "canon_promote": canon_promote,
         "want_kolb": agent_wants_kolb(store_dir),
     }

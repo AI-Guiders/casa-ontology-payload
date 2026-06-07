@@ -47,7 +47,6 @@
   "pattern_legacy_to_v1": [
     { "match": "^L2_word_(\\d{2})$", "replace": "lexicon-ru-\\1" },
     { "match": "^L2_en_word_(\\d{2})$", "replace": "lexicon-en-\\1" },
-    { "match": "^L3_phrase_(\\d{2})$", "replace": "phrases-\\1" },
     { "match": "^words-ru-(\\d{2})$", "replace": "lexicon-ru-\\1" },
     { "match": "^words-en-(\\d{2})$", "replace": "lexicon-en-\\1" }
   ],
@@ -57,5 +56,50 @@
     "be": { "id": "alphabet-be", "script": "cyrl" },
     "en": { "id": "alphabet-en", "script": "latn", "legacy": "L0_grapheme_latn" },
     "de": { "id": "alphabet-de", "script": "latin-extended" }
+  },
+  "canon_immutable_lattices": {
+    "doc": "design/CASA-immutable-lattice-canon-v1.md",
+    "host_bootstrap": [
+      "alphabet-ru",
+      "alphabet-en",
+      "keys-physical",
+      "layout-en-us",
+      "layout-ru-jcuken",
+      "punct-ru",
+      "punct-en",
+      "schema-math"
+    ],
+    "planned_host_bootstrap": [
+      "morph-role-ru"
+    ],
+    "agent_decides_canon": true
+  },
+  "planned_lattices": {
+    "morph-role-ru": {
+      "semantic": "memory.morph.role",
+      "stability": "bootstrap_canon",
+      "meta_prefix": "lang.meta.morph",
+      "slots": ["prefix", "root", "suffix", "stem", "ending"],
+      "status": "planned"
+    },
+    "logic-laws": {
+      "semantic": "memory.logic.law",
+      "stability": "agent_canon",
+      "concept_prefix": ["math.logic.", "lang.meta.logic."],
+      "status": "planned",
+      "note": "agent promotes after discovery (ADR-0029 L4)"
+    },
+    "math-axiom": {
+      "semantic": "memory.math.axiom",
+      "stability": "agent_canon",
+      "concept_prefix": ["math.axiom."],
+      "status": "planned"
+    },
+    "math-calculus-rules": {
+      "semantic": "memory.math.calculus",
+      "stability": "agent_canon",
+      "concept_prefix": ["math.calc."],
+      "status": "planned"
+    }
   }
 }

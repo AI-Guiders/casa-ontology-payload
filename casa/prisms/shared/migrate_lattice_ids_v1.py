@@ -29,6 +29,7 @@ from casa.prisms.shared.ltm_pack import lattice_subdir
 from casa.domain.prism_wire import normalize_prisms, prism_control, prism_hippo, prism_memory
 from casa.prisms.memory.memory_prisms import memory_lattices
 from casa.domain.agent_field import field_db_path
+from casa.prisms.memory.phrase_shard import SHARD_NAMING_TOKEN_RANGE, attach_token_range_shard_ids
 from casa.prisms.shared.store_layout import field_state_path, ltm_root, nca_root, nca_train_registry_path, use_compact_field_state
 
 _MAP_PATH = REPO_ROOT / "design" / "lattice-id-map.v1.json"
@@ -137,10 +138,14 @@ def _rewrite_strings(obj: Any, rename_map: dict[str, str]) -> Any:
 
 
 def _rename_dict_keys(d: dict[str, Any], rename_map: dict[str, str]) -> dict[str, Any]:
+    """Rename keys; drop legacy aliases when canonical target key already exists."""
     out: dict[str, Any] = {}
     for k, v in d.items():
-        nk = rename_map.get(str(k), str(k))
-        if nk in out and nk != k:
+        sk = str(k)
+        nk = rename_map.get(sk, sk)
+        if nk != sk and nk in d and nk not in rename_map:
+            continue
+        if nk in out and nk != sk:
             continue
         out[nk] = v
     return out
@@ -195,13 +200,19 @@ def migrate_ltm_files(
         dst = _ltm_target_path(ltm_dir, new, source=src)
         if src.resolve() == dst.resolve():
             continue
-        if dst.exists() and not src.exists():
+        if dst.exists():
+            if not src.exists():
+                continue
+            actions.append(
+                f"ltm drop duplicate {src.relative_to(store_dir)} "
+                f"(canonical {dst.relative_to(store_dir)})"
+            )
+            if not dry_run:
+                src.unlink()
             continue
         actions.append(f"ltm {src.relative_to(store_dir)} → {dst.relative_to(store_dir)}")
         if not dry_run:
             dst.parent.mkdir(parents=True, exist_ok=True)
-            if dst.exists():
-                raise FileExistsError(f"target exists: {dst}")
             os.replace(src, dst)
     return actions
 
@@ -236,11 +247,14 @@ def migrate_manifest(store_dir: Path, rename_map: dict[str, str], *, dry_run: bo
             sh["shard_prefix"] = "lexicon-ru-"
         manifest["l2_sharding"] = _rewrite_strings(sh, rename_map)
     if isinstance(manifest.get("l3_sharding"), dict):
-        sh3 = manifest["l3_sharding"]
+        sh3 = dict(manifest["l3_sharding"])
         if sh3.get("legacy_lattice") in rename_map:
             sh3["legacy_lattice"] = rename_map[str(sh3["legacy_lattice"])]
         if sh3.get("shard_prefix") == "L3_phrase_":
             sh3["shard_prefix"] = "phrases-"
+        if sh3.get("token_ranges"):
+            sh3["shard_naming"] = SHARD_NAMING_TOKEN_RANGE
+            sh3["token_ranges"] = attach_token_range_shard_ids(list(sh3["token_ranges"]))
         manifest["l3_sharding"] = _rewrite_strings(sh3, rename_map)
     manifest["lattice_naming"] = {"version": 1, "migrated_at": _now_iso()}
     after = json.dumps(manifest, ensure_ascii=False, sort_keys=True)

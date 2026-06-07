@@ -274,8 +274,59 @@ def main() -> None:
     sp_nb_list = nb_sub.add_parser("list")
     sp_nb_list.add_argument("--store-dir", type=Path, required=True)
 
+    sp_promote = sub.add_parser("promote-canon")
+    sp_promote.add_argument("--store-dir", type=Path, required=True)
+    sp_promote.add_argument("--lattice-id", required=True)
+    sp_promote.add_argument("--concepts", nargs="+", required=True)
+    sp_promote.add_argument("--source-journal-id", default=None)
+    sp_promote.add_argument("--reason", default="")
+    sp_promote.add_argument("--allow-unconfirmed", action="store_true")
+
+    sp_demote = sub.add_parser("demote-canon")
+    sp_demote.add_argument("--store-dir", type=Path, required=True)
+    sp_demote.add_argument("--lattice-id", required=True)
+    sp_demote.add_argument("--concepts", nargs="*", default=[])
+    sp_demote.add_argument("--reason", default="")
+
+    sp_list_canon = sub.add_parser("list-canon")
+    sp_list_canon.add_argument("--store-dir", type=Path, required=True)
+
+    sp_candidates = sub.add_parser("canon-candidates")
+    sp_candidates.add_argument("--store-dir", type=Path, required=True)
+    sp_candidates.add_argument("--limit", type=int, default=20)
+
+    sp_nca_status = sub.add_parser("canon-nca-status")
+    sp_nca_status.add_argument("--store-dir", type=Path, required=True)
+
+    sp_nca_run = sub.add_parser("run-canon-nca")
+    sp_nca_run.add_argument("--store-dir", type=Path, required=True)
+    sp_nca_run.add_argument("--max-jobs", type=int, default=1)
+    sp_nca_run.add_argument("--device", default="cpu")
+
+    sp_nca_commit = sub.add_parser(
+        "commit-canon-nca",
+        help="Agent-owned commit after body train (registry + optional field_state persist)",
+    )
+    sp_nca_commit.add_argument("--store-dir", type=Path, required=True)
+    sp_nca_commit.add_argument("--lattice-id", default="", help="One lattice; default all train_complete markers")
+    sp_nca_commit.add_argument("--no-persist", action="store_true")
+
+    sp_nca_enqueue = sub.add_parser("enqueue-canon-nca")
+    sp_nca_enqueue.add_argument("--store-dir", type=Path, required=True)
+    sp_nca_enqueue.add_argument("--lattice-id", required=True)
+    sp_nca_enqueue.add_argument("--reason", default="manual_enqueue")
+    sp_nca_enqueue.add_argument("--actor", choices=("agent", "host"), default="agent")
+
     args = p.parse_args()
     store_dir = args.store_dir.resolve()
+
+    if args.cmd in ("promote-canon", "demote-canon", "list-canon", "canon-candidates"):
+        from casa.prisms.memory.agent_canon_lattice import (
+            agent_demote_canon_lattice,
+            agent_promote_canon_lattice,
+            canon_promote_candidates,
+            list_agent_canon_lattices,
+        )
 
     if args.cmd == "remember":
         if args.record:
@@ -293,6 +344,80 @@ def main() -> None:
         fs = field_state_path(store_dir)
         state = ensure_prisms(load_field_state(fs)) if fs.is_file() else ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
         out = agent_remember(store_dir, state, record, scope=args.scope)
+    elif args.cmd == "promote-canon":
+        fs = field_state_path(store_dir)
+        state = ensure_prisms(load_field_state(fs)) if fs.is_file() else ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+        out = agent_promote_canon_lattice(
+            store_dir,
+            state,
+            {
+                "lattice_id": args.lattice_id,
+                "concept_ids": args.concepts,
+                "source_journal_id": args.source_journal_id,
+                "reason": args.reason,
+            },
+            allow_unconfirmed=args.allow_unconfirmed,
+        )
+    elif args.cmd == "demote-canon":
+        fs = field_state_path(store_dir)
+        state = ensure_prisms(load_field_state(fs)) if fs.is_file() else ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+        out = agent_demote_canon_lattice(
+            store_dir,
+            state,
+            {
+                "lattice_id": args.lattice_id,
+                "concept_ids": args.concepts,
+                "reason": args.reason,
+            },
+        )
+    elif args.cmd == "list-canon":
+        out = list_agent_canon_lattices(store_dir)
+    elif args.cmd == "canon-candidates":
+        out = {"candidates": canon_promote_candidates(store_dir, limit=args.limit)}
+    elif args.cmd == "canon-nca-status":
+        from casa.prisms.memory.canon_nca_train import list_canon_nca_status
+
+        fs = field_state_path(store_dir)
+        state = ensure_prisms(load_field_state(fs)) if fs.is_file() else ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+        out = list_canon_nca_status(state, store_dir)
+    elif args.cmd == "run-canon-nca":
+        from casa.prisms.memory.canon_nca_train import run_pending_canon_nca_trains
+
+        fs = field_state_path(store_dir)
+        state = ensure_prisms(load_field_state(fs)) if fs.is_file() else ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+        out = run_pending_canon_nca_trains(
+            store_dir,
+            state,
+            max_jobs=args.max_jobs,
+            device=args.device,
+            agent_commit=False,
+        )
+    elif args.cmd == "commit-canon-nca":
+        from casa.prisms.memory.canon_nca_train import (
+            agent_commit_canon_nca_completion,
+            agent_commit_pending_canon_nca,
+        )
+
+        fs = field_state_path(store_dir)
+        state = ensure_prisms(load_field_state(fs)) if fs.is_file() else ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
+        if str(getattr(args, "lattice_id", "") or "").strip():
+            out = agent_commit_canon_nca_completion(
+                store_dir,
+                state,
+                args.lattice_id,
+                persist=not args.no_persist,
+            )
+        else:
+            out = agent_commit_pending_canon_nca(store_dir, state, persist=not args.no_persist)
+    elif args.cmd == "enqueue-canon-nca":
+        from casa.prisms.memory.canon_nca_train import enqueue_canon_nca_train
+
+        out = enqueue_canon_nca_train(
+            store_dir,
+            args.lattice_id,
+            reason=args.reason,
+            actor=args.actor,
+        )
     elif args.cmd == "notebook":
         from casa.prisms.memory.agent_notebook import create_agent_notebook, list_agent_notebooks
 

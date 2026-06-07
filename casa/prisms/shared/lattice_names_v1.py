@@ -14,6 +14,7 @@ from typing import Any, Literal
 Script = Literal["cyrl", "latn", "latin-extended"]
 
 _MAP_PATH = REPO_ROOT / "design" / "lattice-id-map.v1.json"
+_LATTICE_ID_MAP_PATH = _MAP_PATH
 
 # Memory / language
 ALPHABET_RU = "alphabet-ru"
@@ -84,7 +85,36 @@ ALPHABET_LATN = ALPHABET_EN
 
 
 @lru_cache(maxsize=1)
+def _legacy_lattice_map() -> tuple[dict[str, str], list[dict[str, str]]]:
+    if not _LATTICE_ID_MAP_PATH.is_file():
+        return {}, []
+    doc = json.loads(_LATTICE_ID_MAP_PATH.read_text(encoding="utf-8"))
+    return dict(doc.get("legacy_to_v1") or {}), list(doc.get("pattern_legacy_to_v1") or [])
+
+
+def canonical_lattice_id(lattice_id: str) -> str:
+    """Legacy L*/F*/H*/lattice_* → v1 kebab id (alphabet-ru, schema-math, …)."""
+    lid = str(lattice_id or "").strip()
+    if not lid:
+        return lid
+    fixed, patterns = _legacy_lattice_map()
+    if lid in fixed:
+        return str(fixed[lid])
+    for rule in patterns:
+        m = re.fullmatch(str(rule["match"]), lid)
+        if m:
+            return m.expand(str(rule["replace"]))
+    return lid
+
+
+def is_legacy_lattice_id(lattice_id: str) -> bool:
+    return canonical_lattice_id(lattice_id) != str(lattice_id or "").strip()
+
+
+@lru_cache(maxsize=1)
 def _map_doc() -> dict:
+    if not _MAP_PATH.is_file():
+        return {}
     return json.loads(_MAP_PATH.read_text(encoding="utf-8"))
 
 
