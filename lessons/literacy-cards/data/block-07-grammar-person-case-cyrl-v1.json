@@ -41,6 +41,16 @@
       ],
       "repeats": 2,
       "moment_prefix": "b07-w2"
+    },
+    {
+      "wave": 3,
+      "label": "You-do: дательный / кому (give phrase)",
+      "frame_ids": [
+        "word-case-dat-sans",
+        "word-case-dat-whom-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b07-w3"
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "block_id": "block-06b-meta-language-cyrl",
-  "version": 1,
-  "title": "Блок 6b — метаязык (регистр, эпистемика)",
+  "version": 2,
+  "title": "Блок 6b — метаязык (lang.meta.* канон)",
   "stage_id": "stage-07-meta-language",
   "class_rel": "lessons/literacy-cards",
   "lesson_id": "lesson-07-meta-language",
@@ -22,7 +22,7 @@
   "waves": [
     {
       "wave": 1,
-      "label": "I-do: буква слово регистр",
+      "label": "I-do: буква слово + регистр буквы (прилаг.)",
       "frame_ids": [
         "word-bukva-sans",
         "word-slovo-sans",
@@ -34,7 +34,7 @@
     },
     {
       "wave": 2,
-      "label": "We-do: не знаю выбор + грамм. метки",
+      "label": "We-do: эпистемика + операционные POS-метки",
       "frame_ids": [
         "word-ne_znayu-sans",
         "word-vybor-sans",
@@ -46,17 +46,16 @@
     },
     {
       "wave": 3,
-      "label": "You-do: register phrases",
+      "label": "You-do: letterCase phrases (чистые meta)",
       "frame_ids": [
-        "word-zaglavnaya_bukva-sans",
-        "word-bukva_verhnego_registra-sans",
-        "word-strochnaya_bukva-sans",
-        "word-bukva_nizhnego_registra-sans",
         "word-capital-zaglavnaya-bukva-sans",
-        "word-lowercase-strochnaya-bukva-sans"
+        "word-capital-verhnego-registra-sans",
+        "word-lowercase-strochnaya-bukva-sans",
+        "word-lowercase-nizhnego-registra-sans"
       ],
       "repeats": 1,
       "moment_prefix": "b06b-w3"
     }
-  ]
+  ],
+  "notes": "Register слова/фразы — block-07c (lang.meta.register.*). Manifest concept_id — канон lang.meta.*."
 }

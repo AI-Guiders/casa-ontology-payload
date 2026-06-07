@@ -1,0 +1,82 @@
+{
+  "block_id": "block-09c-morphemics-cyrl",
+  "version": 1,
+  "title": "Блок 9c — морфемные роли (morph-role-ru) + сегменты",
+  "stage_id": "stage-14-morphemics-root-affix",
+  "class_rel": "lessons/literacy-cards",
+  "lesson_id": "lesson-14-morphemics-meta",
+  "held_out_frame_ids": [
+    "word-segment-po-sans",
+    "word-agr-brat-myl-sans"
+  ],
+  "morph_meta_rules": [
+    {
+      "role_cid": "lang.meta.morph.root",
+      "segment_cid": "lang.word.myl"
+    },
+    {
+      "role_cid": "lang.meta.morph.ending",
+      "segment_cid": "lang.word.ending_a"
+    },
+    {
+      "role_cid": "lang.meta.morph.prefix",
+      "segment_cid": "lang.word.po_prefix"
+    }
+  ],
+  "gate": {
+    "probe_id": "probe_morphemics_ru_v0",
+    "pass": {
+      "know_min_ratio": 1.0,
+      "empty_max": 0,
+      "ambiguous_max_ratio": 0.0,
+      "morph_segment_bind_min": 3
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "I-do: пять ролей морфемы",
+      "frame_ids": [
+        "word-morph-prefix-sans",
+        "word-morph-root-sans",
+        "word-morph-suffix-sans",
+        "word-morph-stem-sans",
+        "word-morph-ending-sans"
+      ],
+      "repeats": 2,
+      "moment_prefix": "b09c-w1"
+    },
+    {
+      "wave": 2,
+      "label": "We-do: корень мыл + окончание -а",
+      "morph_binds": [
+        {
+          "role_frame_id": "word-morph-root-sans",
+          "segment_frame_id": "word-segment-myl-sans",
+          "phrase_frame_id": "word-agr-papa-myl-sans"
+        },
+        {
+          "role_frame_id": "word-morph-ending-sans",
+          "segment_frame_id": "word-segment-a-sans",
+          "phrase_frame_id": "word-agr-mama-myla-sans"
+        }
+      ],
+      "repeats": 2,
+      "moment_prefix": "b09c-w2"
+    },
+    {
+      "wave": 3,
+      "label": "Spacing: приставка по- + корень",
+      "morph_binds": [
+        {
+          "role_frame_id": "word-morph-prefix-sans",
+          "segment_frame_id": "word-segment-po-sans",
+          "phrase_frame_id": "word-person-on-myl-sans"
+        }
+      ],
+      "repeats": 1,
+      "moment_prefix": "b09c-w3"
+    }
+  ],
+  "notes": "Bootstrap morph-role-ru lattice before ingest. Prerequisite: 9b passage. Held-out: по-, брат мыл."
+}

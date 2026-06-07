@@ -1,0 +1,50 @@
+{
+  "block_id": "block-08b-question-meta-cyrl",
+  "version": 1,
+  "title": "Блок 8b — вопросительные рамки (lang.meta.grammar.question.*)",
+  "stage_id": "stage-08c-meta-grammar-question",
+  "class_rel": "lessons/literacy-cards",
+  "lesson_id": "lesson-08c-grammar-question-meta",
+  "held_out_frame_ids": [
+    "word-question-who-sans",
+    "word-question-to_whom-sans",
+    "word-question-whose-sans"
+  ],
+  "gate": {
+    "probe_id": "probe_block08b_question_meta_held_out",
+    "pass": {
+      "know_min_ratio": 1.0,
+      "empty_max": 0,
+      "ambiguous_max_ratio": 0.0
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "I-do: кто что что делает какой",
+      "frame_ids": [
+        "word-question-who-sans",
+        "word-question-what-sans",
+        "word-question-what_do-sans",
+        "word-question-which-sans"
+      ],
+      "repeats": 2,
+      "moment_prefix": "b08b-w1"
+    },
+    {
+      "wave": 2,
+      "label": "We-do: кому когда как чей чьи род",
+      "frame_ids": [
+        "word-question-to_whom-sans",
+        "word-question-when-sans",
+        "word-question-how-sans",
+        "word-question-whose-sans",
+        "word-question-whose_pl-sans",
+        "word-question-which_gender-sans"
+      ],
+      "repeats": 1,
+      "moment_prefix": "b08b-w2"
+    }
+  ],
+  "notes": "Prerequisite: block-07 grammar case (nom/acc/dat). Feeds phrase-events question_frames."
+}

@@ -54,5 +54,5 @@
       "moment_prefix": "b04-revisit"
     }
   ],
-  "notes": "«Привет» — native_ru_bootstrap / ADR-0049 social path, не JPEG ingest здесь."
+  "notes": "apelsin/apelsin_cap — один lemma (lang.word.apelsin), register bind в block-07c. «Привет» — native_ru_bootstrap / ADR-0049."
 }

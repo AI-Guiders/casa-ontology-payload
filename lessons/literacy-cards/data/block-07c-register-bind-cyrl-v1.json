@@ -1,0 +1,81 @@
+{
+  "block_id": "block-07c-register-bind-cyrl",
+  "version": 3,
+  "title": "Блок 7c — lang.meta.register.* (sentenceInitial, allCaps)",
+  "stage_id": "stage-07c-register-phrases",
+  "class_rel": "lessons/literacy-cards",
+  "lesson_id": "lesson-07-meta-language",
+  "held_out_frame_ids": [
+    "word-apelsin-sans",
+    "word-apelsin_cap-sans"
+  ],
+  "register_meta_rules": [
+    {
+      "rule_cid": "lang.meta.register.sentenceInitial",
+      "lemma_cid": "lang.word.apelsin",
+      "cap_cid": "lang.word.apelsin"
+    },
+    {
+      "rule_cid": "lang.meta.register.allCaps",
+      "lemma_cid": "lang.word.sssr",
+      "cap_cid": "lang.word.sssr"
+    }
+  ],
+  "gate": {
+    "probe_id": "probe_block07c_register_bind_held_out",
+    "pass": {
+      "know_min_ratio": 1.0,
+      "empty_max": 0,
+      "ambiguous_max_ratio": 0.0,
+      "register_meta_bind_min": 2,
+      "register_ambiguous_ok": true
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "I-do: правило + апельсин | Апельсин",
+      "register_binds": [
+        {
+          "lower_frame_id": "word-apelsin-sans",
+          "cap_frame_id": "word-apelsin_cap-sans",
+          "meta_frame_id": "word-register-sentence-initial-sans"
+        },
+        {
+          "lower_frame_id": "word-apelsin-sans",
+          "cap_frame_id": "word-apelsin_cap-sans",
+          "meta_frame_id": "word-register-apelsin-equals-sans"
+        }
+      ],
+      "repeats": 2,
+      "moment_prefix": "b07c-w1"
+    },
+    {
+      "wave": 2,
+      "label": "All-caps: СССР + правило аббревиатуры",
+      "register_binds": [
+        {
+          "lower_frame_id": "word-sssr-sans",
+          "cap_frame_id": "word-sssr-sans",
+          "meta_frame_id": "word-register-all-caps-rule-sans"
+        }
+      ],
+      "repeats": 2,
+      "moment_prefix": "b07c-w2"
+    },
+    {
+      "wave": 3,
+      "label": "Spacing revisit",
+      "register_binds": [
+        {
+          "lower_frame_id": "word-apelsin-sans",
+          "cap_frame_id": "word-apelsin_cap-sans",
+          "meta_frame_id": "word-register-sentence-initial-sans"
+        }
+      ],
+      "repeats": 1,
+      "moment_prefix": "b07c-revisit"
+    }
+  ],
+  "notes": "Один lemma apelsin; cap surface — register. Gate: 2 meta binds (sentenceInitial + allCaps)."
+}

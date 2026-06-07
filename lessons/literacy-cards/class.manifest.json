@@ -134,6 +134,20 @@
       "lesson_ids": [
         "lesson-09c-grammar-numeral-meta"
       ]
+    },
+    {
+      "id": "stage-08c-meta-grammar-question",
+      "title": "Вопросительные рамки (кто / что / кому …)",
+      "order": 815,
+      "lesson_ids": [
+        "lesson-08c-grammar-question-meta"
+      ]
+    },
+    {
+      "id": "stage-14-morphemics-root-affix",
+      "title": "Состав слова: роли морфем",
+      "order": 140,
+      "lesson_id": "lesson-14-morphemics-meta"
     }
   ],
   "frames": [
@@ -6131,9 +6145,10 @@
       "id": "word-apelsin_cap-sans",
       "path": "lesson-03-words-cyrl/images/word-apelsin_cap-sans.jpg",
       "scene_label": "card:word:apelsin_cap:sans",
-      "concept_id": "lang.word.apelsin_cap",
+      "concept_id": "lang.word.apelsin",
       "curriculum_tags": [
-        "lang.word.apelsin_cap",
+        "lang.word.apelsin",
+        "register:sentenceInitial",
         "word:Апельсин",
         "slug:apelsin_cap",
         "face:sans"
@@ -6144,9 +6159,9 @@
       "id": "word-bukva-sans",
       "path": "lesson-07-meta-language/images/word-bukva-sans.jpg",
       "scene_label": "card:word:bukva:sans",
-      "concept_id": "lang.word.bukva",
+      "concept_id": "lang.meta.lexicon.grapheme",
       "curriculum_tags": [
-        "lang.word.bukva",
+        "lang.meta.lexicon.grapheme",
         "word:буква",
         "slug:bukva",
         "face:sans"
@@ -6157,9 +6172,9 @@
       "id": "word-slovo-sans",
       "path": "lesson-07-meta-language/images/word-slovo-sans.jpg",
       "scene_label": "card:word:slovo:sans",
-      "concept_id": "lang.word.slovo",
+      "concept_id": "lang.meta.lexicon.word",
       "curriculum_tags": [
-        "lang.word.slovo",
+        "lang.meta.lexicon.word",
         "word:слово",
         "slug:slovo",
         "face:sans"
@@ -6170,9 +6185,9 @@
       "id": "word-zaglavnaya-sans",
       "path": "lesson-07-meta-language/images/word-zaglavnaya-sans.jpg",
       "scene_label": "card:word:zaglavnaya:sans",
-      "concept_id": "lang.word.zaglavnaya",
+      "concept_id": "lang.meta.letterCase.upper",
       "curriculum_tags": [
-        "lang.word.zaglavnaya",
+        "lang.meta.letterCase.upper",
         "word:заглавная",
         "slug:zaglavnaya",
         "face:sans"
@@ -6183,9 +6198,9 @@
       "id": "word-strochnaya-sans",
       "path": "lesson-07-meta-language/images/word-strochnaya-sans.jpg",
       "scene_label": "card:word:strochnaya:sans",
-      "concept_id": "lang.word.strochnaya",
+      "concept_id": "lang.meta.letterCase.lower",
       "curriculum_tags": [
-        "lang.word.strochnaya",
+        "lang.meta.letterCase.lower",
         "word:строчная",
         "slug:strochnaya",
         "face:sans"
@@ -6196,9 +6211,9 @@
       "id": "word-ne_znayu-sans",
       "path": "lesson-07-meta-language/images/word-ne_znayu-sans.jpg",
       "scene_label": "card:word:ne_znayu:sans",
-      "concept_id": "lang.word.ne_znayu",
+      "concept_id": "lang.meta.epistemic.unknown",
       "curriculum_tags": [
-        "lang.word.ne_znayu",
+        "lang.meta.epistemic.unknown",
         "word:не знаю",
         "slug:ne_znayu",
         "face:sans"
@@ -6209,9 +6224,9 @@
       "id": "word-vybor-sans",
       "path": "lesson-07-meta-language/images/word-vybor-sans.jpg",
       "scene_label": "card:word:vybor:sans",
-      "concept_id": "lang.word.vybor",
+      "concept_id": "lang.meta.epistemic.choice",
       "curriculum_tags": [
-        "lang.word.vybor",
+        "lang.meta.epistemic.choice",
         "word:выбор",
         "slug:vybor",
         "face:sans"
@@ -6222,9 +6237,9 @@
       "id": "word-zameshatelstvo-sans",
       "path": "lesson-07-meta-language/images/word-zameshatelstvo-sans.jpg",
       "scene_label": "card:word:zameshatelstvo:sans",
-      "concept_id": "lang.word.zameshatelstvo",
+      "concept_id": "lang.meta.epistemic.confusion",
       "curriculum_tags": [
-        "lang.word.zameshatelstvo",
+        "lang.meta.epistemic.confusion",
         "word:замешательство",
         "slug:zameshatelstvo",
         "face:sans"
@@ -6235,9 +6250,9 @@
       "id": "word-glagol-sans",
       "path": "lesson-07-meta-language/images/word-glagol-sans.jpg",
       "scene_label": "card:word:glagol:sans",
-      "concept_id": "lang.word.glagol",
+      "concept_id": "lang.meta.grammar.pos.verb",
       "curriculum_tags": [
-        "lang.word.glagol",
+        "lang.meta.grammar.pos.verb",
         "word:глагол",
         "slug:glagol",
         "face:sans"
@@ -6248,9 +6263,9 @@
       "id": "word-deystvie-sans",
       "path": "lesson-07-meta-language/images/word-deystvie-sans.jpg",
       "scene_label": "card:word:deystvie:sans",
-      "concept_id": "lang.word.deystvie",
+      "concept_id": "lang.meta.grammar.pos.action",
       "curriculum_tags": [
-        "lang.word.deystvie",
+        "lang.meta.grammar.pos.action",
         "word:действие",
         "slug:deystvie",
         "face:sans"
@@ -6261,9 +6276,9 @@
       "id": "word-sushchestvennoe-sans",
       "path": "lesson-07-meta-language/images/word-sushchestvennoe-sans.jpg",
       "scene_label": "card:word:sushchestvennoe:sans",
-      "concept_id": "lang.word.sushchestvennoe",
+      "concept_id": "lang.meta.grammar.pos.noun",
       "curriculum_tags": [
-        "lang.word.sushchestvennoe",
+        "lang.meta.grammar.pos.noun",
         "word:существительное",
         "slug:sushchestvennoe",
         "face:sans"
@@ -6274,9 +6289,9 @@
       "id": "word-zaglavnaya_bukva-sans",
       "path": "lesson-07-meta-language/images/word-zaglavnaya_bukva-sans.jpg",
       "scene_label": "card:word:zaglavnaya_bukva:sans",
-      "concept_id": "lang.word.zaglavnaya_bukva",
+      "concept_id": "lang.meta.letterCase.upper",
       "curriculum_tags": [
-        "lang.word.zaglavnaya_bukva",
+        "lang.meta.letterCase.upper",
         "word:заглавная буква",
         "slug:zaglavnaya_bukva",
         "face:sans"
@@ -6287,9 +6302,9 @@
       "id": "word-bukva_verhnego_registra-sans",
       "path": "lesson-07-meta-language/images/word-bukva_verhnego_registra-sans.jpg",
       "scene_label": "card:word:bukva_verhnego_registra:sans",
-      "concept_id": "lang.word.bukva_verhnego_registra",
+      "concept_id": "lang.meta.letterCase.upper",
       "curriculum_tags": [
-        "lang.word.bukva_verhnego_registra",
+        "lang.meta.letterCase.upper",
         "word:буква верхнего регистра",
         "slug:bukva_verhnego_registra",
         "face:sans"
@@ -6300,9 +6315,9 @@
       "id": "word-strochnaya_bukva-sans",
       "path": "lesson-07-meta-language/images/word-strochnaya_bukva-sans.jpg",
       "scene_label": "card:word:strochnaya_bukva:sans",
-      "concept_id": "lang.word.strochnaya_bukva",
+      "concept_id": "lang.meta.letterCase.lower",
       "curriculum_tags": [
-        "lang.word.strochnaya_bukva",
+        "lang.meta.letterCase.lower",
         "word:строчная буква",
         "slug:strochnaya_bukva",
         "face:sans"
@@ -6313,9 +6328,9 @@
       "id": "word-bukva_nizhnego_registra-sans",
       "path": "lesson-07-meta-language/images/word-bukva_nizhnego_registra-sans.jpg",
       "scene_label": "card:word:bukva_nizhnego_registra:sans",
-      "concept_id": "lang.word.bukva_nizhnego_registra",
+      "concept_id": "lang.meta.letterCase.lower",
       "curriculum_tags": [
-        "lang.word.bukva_nizhnego_registra",
+        "lang.meta.letterCase.lower",
         "word:буква нижнего регистра",
         "slug:bukva_nizhnego_registra",
         "face:sans"
@@ -8172,6 +8187,357 @@
         "grammar:numeral"
       ],
       "lesson_id": "lesson-09c-grammar-numeral-meta"
+    },
+    {
+      "id": "word-register-sentence-initial-sans",
+      "path": "lesson-07-meta-language/images/word-register-sentence-initial-sans.jpg",
+      "scene_label": "card:register:register-sentence-initial:sans",
+      "concept_id": "lang.meta.register.sentenceInitial",
+      "curriculum_tags": [
+        "lang.meta.register.sentenceInitial",
+        "surface:в начале предложения — заглавная",
+        "slug:register-sentence-initial",
+        "face:sans",
+        "grammar:register"
+      ],
+      "lesson_id": "lesson-07-meta-language"
+    },
+    {
+      "id": "word-register-all-caps-rule-sans",
+      "path": "lesson-07-meta-language/images/word-register-all-caps-rule-sans.jpg",
+      "scene_label": "card:register:register-all-caps-rule:sans",
+      "concept_id": "lang.meta.register.allCaps",
+      "curriculum_tags": [
+        "lang.meta.register.allCaps",
+        "surface:аббревиатура — все буквы заглавные",
+        "slug:register-all-caps-rule",
+        "face:sans",
+        "grammar:register"
+      ],
+      "lesson_id": "lesson-07-meta-language"
+    },
+    {
+      "id": "word-register-apelsin-equals-sans",
+      "path": "lesson-07-meta-language/images/word-register-apelsin-equals-sans.jpg",
+      "scene_label": "card:register:register-apelsin-equals:sans",
+      "concept_id": "lang.meta.register.sentenceInitial",
+      "curriculum_tags": [
+        "lang.meta.register.sentenceInitial",
+        "surface:апельсин = Апельсин",
+        "slug:register-apelsin-equals",
+        "face:sans",
+        "grammar:register"
+      ],
+      "lesson_id": "lesson-07-meta-language"
+    },
+    {
+      "id": "word-sssr-sans",
+      "path": "lesson-07-meta-language/images/word-sssr-sans.jpg",
+      "scene_label": "card:word:sssr:sans",
+      "concept_id": "lang.word.sssr",
+      "curriculum_tags": [
+        "lang.word.sssr",
+        "register:allCaps",
+        "surface:СССР",
+        "slug:register-sssr-example",
+        "face:sans",
+        "grammar:register"
+      ],
+      "lesson_id": "lesson-07-meta-language"
+    },
+    {
+      "id": "word-case-dat-sans",
+      "path": "lesson-08b-grammar-case-meta/images/word-case-dat-sans.jpg",
+      "scene_label": "card:grammar:grammar.case.dat:sans",
+      "concept_id": "lang.meta.grammar.case.dat",
+      "curriculum_tags": [
+        "lang.meta.grammar.case.dat",
+        "surface:дательный падеж",
+        "slug:case-dat",
+        "face:sans",
+        "grammar:case"
+      ],
+      "lesson_id": "lesson-08b-grammar-case-meta"
+    },
+    {
+      "id": "word-case-dat-whom-sans",
+      "path": "lesson-08b-grammar-case-meta/images/word-case-dat-whom-sans.jpg",
+      "scene_label": "card:grammar:grammar.case.dat:sans",
+      "concept_id": "lang.meta.grammar.case.dat",
+      "curriculum_tags": [
+        "lang.meta.grammar.case.dat",
+        "surface:кому?",
+        "slug:case-dat-whom",
+        "face:sans",
+        "grammar:case"
+      ],
+      "lesson_id": "lesson-08b-grammar-case-meta"
+    },
+    {
+      "id": "word-question-who-sans",
+      "path": "lesson-08c-grammar-question-meta/images/word-question-who-sans.jpg",
+      "scene_label": "card:grammar:grammar.question.who:sans",
+      "concept_id": "lang.meta.grammar.question.who",
+      "curriculum_tags": [
+        "lang.meta.grammar.question.who",
+        "surface:кто?",
+        "slug:question-who",
+        "face:sans",
+        "grammar:question"
+      ],
+      "lesson_id": "lesson-08c-grammar-question-meta"
+    },
+    {
+      "id": "word-question-what-sans",
+      "path": "lesson-08c-grammar-question-meta/images/word-question-what-sans.jpg",
+      "scene_label": "card:grammar:grammar.question.what:sans",
+      "concept_id": "lang.meta.grammar.question.what",
+      "curriculum_tags": [
+        "lang.meta.grammar.question.what",
+        "surface:что?",
+        "slug:question-what",
+        "face:sans",
+        "grammar:question"
+      ],
+      "lesson_id": "lesson-08c-grammar-question-meta"
+    },
+    {
+      "id": "word-question-what_do-sans",
+      "path": "lesson-08c-grammar-question-meta/images/word-question-what_do-sans.jpg",
+      "scene_label": "card:grammar:grammar.question.what_do:sans",
+      "concept_id": "lang.meta.grammar.question.what_do",
+      "curriculum_tags": [
+        "lang.meta.grammar.question.what_do",
+        "surface:что делает?",
+        "slug:question-what_do",
+        "face:sans",
+        "grammar:question"
+      ],
+      "lesson_id": "lesson-08c-grammar-question-meta"
+    },
+    {
+      "id": "word-question-which-sans",
+      "path": "lesson-08c-grammar-question-meta/images/word-question-which-sans.jpg",
+      "scene_label": "card:grammar:grammar.question.which:sans",
+      "concept_id": "lang.meta.grammar.question.which",
+      "curriculum_tags": [
+        "lang.meta.grammar.question.which",
+        "surface:какой?",
+        "slug:question-which",
+        "face:sans",
+        "grammar:question"
+      ],
+      "lesson_id": "lesson-08c-grammar-question-meta"
+    },
+    {
+      "id": "word-question-to_whom-sans",
+      "path": "lesson-08c-grammar-question-meta/images/word-question-to_whom-sans.jpg",
+      "scene_label": "card:grammar:grammar.question.to_whom:sans",
+      "concept_id": "lang.meta.grammar.question.to_whom",
+      "curriculum_tags": [
+        "lang.meta.grammar.question.to_whom",
+        "surface:кому?",
+        "slug:question-to_whom",
+        "face:sans",
+        "grammar:question"
+      ],
+      "lesson_id": "lesson-08c-grammar-question-meta"
+    },
+    {
+      "id": "word-question-when-sans",
+      "path": "lesson-08c-grammar-question-meta/images/word-question-when-sans.jpg",
+      "scene_label": "card:grammar:grammar.question.when:sans",
+      "concept_id": "lang.meta.grammar.question.when",
+      "curriculum_tags": [
+        "lang.meta.grammar.question.when",
+        "surface:когда?",
+        "slug:question-when",
+        "face:sans",
+        "grammar:question"
+      ],
+      "lesson_id": "lesson-08c-grammar-question-meta"
+    },
+    {
+      "id": "word-question-how-sans",
+      "path": "lesson-08c-grammar-question-meta/images/word-question-how-sans.jpg",
+      "scene_label": "card:grammar:grammar.question.how:sans",
+      "concept_id": "lang.meta.grammar.question.how",
+      "curriculum_tags": [
+        "lang.meta.grammar.question.how",
+        "surface:как?",
+        "slug:question-how",
+        "face:sans",
+        "grammar:question"
+      ],
+      "lesson_id": "lesson-08c-grammar-question-meta"
+    },
+    {
+      "id": "word-question-whose-sans",
+      "path": "lesson-08c-grammar-question-meta/images/word-question-whose-sans.jpg",
+      "scene_label": "card:grammar:grammar.question.whose:sans",
+      "concept_id": "lang.meta.grammar.question.whose",
+      "curriculum_tags": [
+        "lang.meta.grammar.question.whose",
+        "surface:чей?",
+        "slug:question-whose",
+        "face:sans",
+        "grammar:question"
+      ],
+      "lesson_id": "lesson-08c-grammar-question-meta"
+    },
+    {
+      "id": "word-question-whose_pl-sans",
+      "path": "lesson-08c-grammar-question-meta/images/word-question-whose_pl-sans.jpg",
+      "scene_label": "card:grammar:grammar.question.whose_pl:sans",
+      "concept_id": "lang.meta.grammar.question.whose_pl",
+      "curriculum_tags": [
+        "lang.meta.grammar.question.whose_pl",
+        "surface:чьи?",
+        "slug:question-whose_pl",
+        "face:sans",
+        "grammar:question"
+      ],
+      "lesson_id": "lesson-08c-grammar-question-meta"
+    },
+    {
+      "id": "word-question-which_gender-sans",
+      "path": "lesson-08c-grammar-question-meta/images/word-question-which_gender-sans.jpg",
+      "scene_label": "card:grammar:grammar.question.which_gender:sans",
+      "concept_id": "lang.meta.grammar.question.which_gender",
+      "curriculum_tags": [
+        "lang.meta.grammar.question.which_gender",
+        "surface:какого рода?",
+        "slug:question-which_gender",
+        "face:sans",
+        "grammar:question"
+      ],
+      "lesson_id": "lesson-08c-grammar-question-meta"
+    },
+    {
+      "id": "word-morph-prefix-sans",
+      "path": "lesson-14-morphemics-meta/images/word-morph-prefix-sans.jpg",
+      "scene_label": "card:morph:role:morph-prefix:sans",
+      "concept_id": "lang.meta.morph.prefix",
+      "curriculum_tags": [
+        "lang.meta.morph.prefix",
+        "surface:приставка",
+        "slug:morph-prefix",
+        "face:sans",
+        "morph:role"
+      ],
+      "lesson_id": "lesson-14-morphemics-meta"
+    },
+    {
+      "id": "word-morph-root-sans",
+      "path": "lesson-14-morphemics-meta/images/word-morph-root-sans.jpg",
+      "scene_label": "card:morph:role:morph-root:sans",
+      "concept_id": "lang.meta.morph.root",
+      "curriculum_tags": [
+        "lang.meta.morph.root",
+        "surface:корень",
+        "slug:morph-root",
+        "face:sans",
+        "morph:role"
+      ],
+      "lesson_id": "lesson-14-morphemics-meta"
+    },
+    {
+      "id": "word-morph-suffix-sans",
+      "path": "lesson-14-morphemics-meta/images/word-morph-suffix-sans.jpg",
+      "scene_label": "card:morph:role:morph-suffix:sans",
+      "concept_id": "lang.meta.morph.suffix",
+      "curriculum_tags": [
+        "lang.meta.morph.suffix",
+        "surface:суффикс",
+        "slug:morph-suffix",
+        "face:sans",
+        "morph:role"
+      ],
+      "lesson_id": "lesson-14-morphemics-meta"
+    },
+    {
+      "id": "word-morph-stem-sans",
+      "path": "lesson-14-morphemics-meta/images/word-morph-stem-sans.jpg",
+      "scene_label": "card:morph:role:morph-stem:sans",
+      "concept_id": "lang.meta.morph.stem",
+      "curriculum_tags": [
+        "lang.meta.morph.stem",
+        "surface:основа",
+        "slug:morph-stem",
+        "face:sans",
+        "morph:role"
+      ],
+      "lesson_id": "lesson-14-morphemics-meta"
+    },
+    {
+      "id": "word-morph-ending-sans",
+      "path": "lesson-14-morphemics-meta/images/word-morph-ending-sans.jpg",
+      "scene_label": "card:morph:role:morph-ending:sans",
+      "concept_id": "lang.meta.morph.ending",
+      "curriculum_tags": [
+        "lang.meta.morph.ending",
+        "surface:окончание",
+        "slug:morph-ending",
+        "face:sans",
+        "morph:role"
+      ],
+      "lesson_id": "lesson-14-morphemics-meta"
+    },
+    {
+      "id": "word-segment-myl-sans",
+      "path": "lesson-14-morphemics-meta/images/word-segment-myl-sans.jpg",
+      "scene_label": "card:morph:segment:segment-myl:sans",
+      "concept_id": "lang.word.myl",
+      "curriculum_tags": [
+        "lang.word.myl",
+        "surface:мыл",
+        "slug:segment-myl",
+        "face:sans",
+        "morph:segment"
+      ],
+      "lesson_id": "lesson-14-morphemics-meta"
+    },
+    {
+      "id": "word-segment-myla-sans",
+      "path": "lesson-14-morphemics-meta/images/word-segment-myla-sans.jpg",
+      "scene_label": "card:morph:segment:segment-myla:sans",
+      "concept_id": "lang.word.myla",
+      "curriculum_tags": [
+        "lang.word.myla",
+        "surface:мыла",
+        "slug:segment-myla",
+        "face:sans",
+        "morph:segment"
+      ],
+      "lesson_id": "lesson-14-morphemics-meta"
+    },
+    {
+      "id": "word-segment-po-sans",
+      "path": "lesson-14-morphemics-meta/images/word-segment-po-sans.jpg",
+      "scene_label": "card:morph:segment:segment-po:sans",
+      "concept_id": "lang.word.po_prefix",
+      "curriculum_tags": [
+        "lang.word.po_prefix",
+        "surface:по-",
+        "slug:segment-po",
+        "face:sans",
+        "morph:segment"
+      ],
+      "lesson_id": "lesson-14-morphemics-meta"
+    },
+    {
+      "id": "word-segment-a-sans",
+      "path": "lesson-14-morphemics-meta/images/word-segment-a-sans.jpg",
+      "scene_label": "card:morph:segment:segment-a:sans",
+      "concept_id": "lang.word.ending_a",
+      "curriculum_tags": [
+        "lang.word.ending_a",
+        "surface:-а",
+        "slug:segment-a",
+        "face:sans",
+        "morph:segment"
+      ],
+      "lesson_id": "lesson-14-morphemics-meta"
     }
   ]
 }

@@ -94,21 +94,60 @@ GRAMMAR_POSSESSIVE_PHRASE_CARDS: list[MetaCard] = [
 #   RU: «Этот круг больше других»  EN: «This circle is bigger than the others»
 # legacy → канон на read path: casa/prisms/memory/meta_concept_aliases.py
 
-# Волна 2: concept_id явный; legacy lang.word.* — миграция на lang.meta.* по мере pure-ingest
-WAVE2_CARDS: list[MetaCard] = [
-    ("ne_znayu", "не знаю", "lang.word.ne_znayu"),
-    ("vybor", "выбор", "lang.word.vybor"),
-    ("zameshatelstvo", "замешательство", "lang.word.zameshatelstvo"),
-    ("glagol", "глагол", "lang.word.glagol"),
-    ("deystvie", "действие", "lang.word.deystvie"),
-    ("sushchestvennoe", "существительное", "lang.word.sushchestvennoe"),
+EPISTEMIC_UNKNOWN = "lang.meta.epistemic.unknown"
+EPISTEMIC_CHOICE = "lang.meta.epistemic.choice"
+EPISTEMIC_CONFUSION = "lang.meta.epistemic.confusion"
+LEXICON_GRAPHEME = "lang.meta.lexicon.grapheme"
+LEXICON_WORD = "lang.meta.lexicon.word"
+GRAMMAR_POS_VERB = "lang.meta.grammar.pos.verb"
+GRAMMAR_POS_NOUN = "lang.meta.grammar.pos.noun"
+GRAMMAR_POS_ACTION = "lang.meta.grammar.pos.action"
+
+META_LANGUAGE_LETTER_CASE_PHRASE_CARDS: list[MetaCard] = [
+    ("capital-zaglavnaya-bukva", "заглавная буква", LETTER_CASE_UPPER),
+    ("capital-verhnego-registra", "буква верхнего регистра", LETTER_CASE_UPPER),
+    ("lowercase-strochnaya-bukva", "строчная буква", LETTER_CASE_LOWER),
+    ("lowercase-nizhnego-registra", "буква нижнего регистра", LETTER_CASE_LOWER),
+]
+
+META_LANGUAGE_WAVE1_CARDS: list[MetaCard] = [
+    ("bukva", "буква", LEXICON_GRAPHEME),
+    ("slovo", "слово", LEXICON_WORD),
+    ("zaglavnaya", "заглавная", LETTER_CASE_UPPER),
+    ("strochnaya", "строчная", LETTER_CASE_LOWER),
+]
+
+META_LANGUAGE_WAVE2_CARDS: list[MetaCard] = [
+    ("ne_znayu", "не знаю", EPISTEMIC_UNKNOWN),
+    ("vybor", "выбор", EPISTEMIC_CHOICE),
+    ("zameshatelstvo", "замешательство", EPISTEMIC_CONFUSION),
+    ("glagol", "глагол", GRAMMAR_POS_VERB),
+    ("deystvie", "действие", GRAMMAR_POS_ACTION),
+    ("sushchestvennoe", "существительное", GRAMMAR_POS_NOUN),
     ("size-large", "большая", SIZE_LARGE),
     ("size-small", "маленькая", SIZE_SMALL),
 ]
 
-# Регистр (канон); legacy в store — CANONICAL_ALIASES в casa/prisms/memory/meta_concept_aliases.py
+# Back-compat alias
+WAVE2_CARDS = META_LANGUAGE_WAVE2_CARDS
+
+# Регистр буквы (графема, блок 1) vs регистр слова/текста (meta.register, блок 7c+)
 REGISTER_CAPITAL = LETTER_CASE_UPPER
 REGISTER_LOWERCASE = LETTER_CASE_LOWER
+
+# Правила письма на уровне слова/фразы (B2 register — не отдельные lemma)
+REGISTER_SENTENCE_INITIAL = "lang.meta.register.sentenceInitial"
+REGISTER_ALL_CAPS = "lang.meta.register.allCaps"
+
+REGISTER_META_CARDS: list[MetaCard] = [
+    ("register-sentence-initial", "в начале предложения — заглавная", REGISTER_SENTENCE_INITIAL),
+    ("register-all-caps-rule", "аббревиатура — все буквы заглавные", REGISTER_ALL_CAPS),
+    ("register-apelsin-equals", "апельсин = Апельсин", REGISTER_SENTENCE_INITIAL),
+]
+
+REGISTER_WORD_CARDS: list[MetaCard] = [
+    ("sssr", "СССР", "lang.word.sssr"),
+]
 
 # L2+ грамматика (ADR-0030 / ADR-0033)
 GRAMMAR_CASE_NOM = "lang.meta.grammar.case.nom"
@@ -138,6 +177,21 @@ GRAMMAR_AGREEMENT_MASC_SG_PAST = "lang.meta.grammar.agreement.subjectVerb.masc.s
 GRAMMAR_CASE_CARDS: list[MetaCard] = [
     ("case-nom", "именительный падеж", GRAMMAR_CASE_NOM),
     ("case-acc", "винительный падеж", GRAMMAR_CASE_ACC),
+    ("case-dat", "дательный падеж", GRAMMAR_CASE_DAT),
+    ("case-dat-whom", "кому?", GRAMMAR_CASE_DAT),
+]
+
+GRAMMAR_QUESTION_CARDS: list[MetaCard] = [
+    ("question-who", "кто?", "lang.meta.grammar.question.who"),
+    ("question-what", "что?", "lang.meta.grammar.question.what"),
+    ("question-what_do", "что делает?", "lang.meta.grammar.question.what_do"),
+    ("question-which", "какой?", "lang.meta.grammar.question.which"),
+    ("question-to_whom", "кому?", "lang.meta.grammar.question.to_whom"),
+    ("question-when", "когда?", "lang.meta.grammar.question.when"),
+    ("question-how", "как?", "lang.meta.grammar.question.how"),
+    ("question-whose", "чей?", "lang.meta.grammar.question.whose"),
+    ("question-whose_pl", "чьи?", "lang.meta.grammar.question.whose_pl"),
+    ("question-which_gender", "какого рода?", "lang.meta.grammar.question.which_gender"),
 ]
 
 # Две surface → один agreement id (L3)
@@ -160,6 +214,34 @@ QUESTION_FRAME_IDS: tuple[str, ...] = (
     "lang.meta.grammar.question.whose_pl",
     "lang.meta.grammar.question.which_gender",
 )
+
+# Морфемные роли (B5 / morph-role-ru bootstrap)
+MORPH_PREFIX = "lang.meta.morph.prefix"
+MORPH_ROOT = "lang.meta.morph.root"
+MORPH_SUFFIX = "lang.meta.morph.suffix"
+MORPH_STEM = "lang.meta.morph.stem"
+MORPH_ENDING = "lang.meta.morph.ending"
+
+MORPH_ROLE_CARDS: list[MetaCard] = [
+    ("morph-prefix", "приставка", MORPH_PREFIX),
+    ("morph-root", "корень", MORPH_ROOT),
+    ("morph-suffix", "суффикс", MORPH_SUFFIX),
+    ("morph-stem", "основа", MORPH_STEM),
+    ("morph-ending", "окончание", MORPH_ENDING),
+]
+
+# Attested сегменты (experiential; bind к meta role на поле)
+SEGMENT_MYL = "lang.word.myl"
+SEGMENT_MYLA = "lang.word.myla"
+SEGMENT_PO = "lang.word.po_prefix"
+SEGMENT_ENDING_A = "lang.word.ending_a"
+
+MORPH_SEGMENT_CARDS: list[MetaCard] = [
+    ("segment-myl", "мыл", SEGMENT_MYL),
+    ("segment-myla", "мыла", SEGMENT_MYLA),
+    ("segment-po", "по-", SEGMENT_PO),
+    ("segment-a", "-а", SEGMENT_ENDING_A),
+]
 
 # Agent surface (lower) → person meta id for agreement cross-check
 AGENT_PERSON_BY_SURFACE: dict[str, str] = {
