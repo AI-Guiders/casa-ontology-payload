@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Emotional Zone — limbic core + agent sandbox (ADR-0060)."""
+"""Emotional Zone — limbic core + agent sandbox (ADR-0060, wire under intelligence_zones)."""
 
 from __future__ import annotations
 
-import re
 from typing import Any
 
 from casa.prisms.affect.model import (
@@ -18,7 +17,13 @@ from casa.prisms.affect.model import (
     LIFE_EVENTS,
     SandboxExperiment,
 )
-from casa.prisms.memory.agent_prism import agent_lattices, create_agent_lattice, ensure_agent_prism
+from casa.prisms.memory.agent_prism import ensure_agent_prism
+
+
+def _intelligence_root(state: dict) -> dict:
+    from casa.prisms.intelligence.model import intelligence_root
+
+    return intelligence_root(state)
 
 _EVENT_DELTAS: dict[str, dict[str, float]] = {
     "partner_greeting": {"valence": 0.08, "arousal": 0.05, "security": 0.06},
@@ -36,9 +41,36 @@ _EPISODIC_FLAGS: dict[str, tuple[str, float]] = {
 }
 
 
-def ensure_emotional_zone(state: dict) -> dict[str, Any]:
+def migrate_legacy_emotional_zone(state: dict) -> bool:
+    """Move prism_agent.emotional_zone → intelligence_zones.emotional (idempotent)."""
     block = ensure_agent_prism(state)
-    zone = block.setdefault("emotional_zone", {})
+    legacy = block.get("emotional_zone")
+    if not isinstance(legacy, dict) or not legacy:
+        return False
+    root = _intelligence_root(state)
+    current = root.get("emotional")
+    if isinstance(current, dict) and current.get("core"):
+        block.pop("emotional_zone", None)
+        return False
+    root["emotional"] = legacy
+    block.pop("emotional_zone", None)
+    return True
+
+
+def consolidate_emotional_zone_wire(state: dict) -> bool:
+    """Ensure canonical wire: emotional lives only under intelligence_zones."""
+    migrated = migrate_legacy_emotional_zone(state)
+    block = ensure_agent_prism(state)
+    if "emotional_zone" in block:
+        block.pop("emotional_zone", None)
+        migrated = True
+    return migrated
+
+
+def ensure_emotional_zone(state: dict) -> dict[str, Any]:
+    migrate_legacy_emotional_zone(state)
+    root = _intelligence_root(state)
+    zone = root.setdefault("emotional", {})
     zone.setdefault(
         "core",
         CoreAffectState(
@@ -53,20 +85,9 @@ def ensure_emotional_zone(state: dict) -> dict[str, Any]:
     policy = zone.setdefault("zone_policy", {})
     for key, val in DEFAULT_ZONE_POLICY.items():
         policy.setdefault(key, val)
+    zone.setdefault("core_lattice_id", DEFAULT_CORE_LATTICE)
+    zone.setdefault("sandbox_lattice_id", DEFAULT_SANDBOX_LATTICE)
     return zone
-
-
-def _ensure_lattice(state: dict, lattice_id: str, *, concept_prefix: str) -> str:
-    lats = agent_lattices(state)
-    if lattice_id not in lats:
-        create_agent_lattice(
-            state,
-            lattice_id,
-            width=32,
-            height=32,
-            concept_prefix=concept_prefix,
-        )
-    return lattice_id
 
 
 def spawn_emotional_zone(
@@ -77,8 +98,6 @@ def spawn_emotional_zone(
 ) -> dict[str, Any]:
     """Cold boot: core limbic lattice + sandbox test lattice + neutral axes."""
     cfg = config or {}
-    core_lid = str(cfg.get("core_lattice_id") or DEFAULT_CORE_LATTICE)
-    sandbox_lid = str(cfg.get("sandbox_lattice_id") or DEFAULT_SANDBOX_LATTICE)
     initial = cfg.get("initial_axes") if isinstance(cfg.get("initial_axes"), dict) else DEFAULT_AXES
     policy = cfg.get("zone_policy") if isinstance(cfg.get("zone_policy"), dict) else {}
 
@@ -86,8 +105,19 @@ def spawn_emotional_zone(
     if policy:
         zone["zone_policy"].update(policy)
 
-    _ensure_lattice(state, core_lid, concept_prefix=str(cfg.get("concept_prefix_core") or CORE_PREFIX))
-    _ensure_lattice(state, sandbox_lid, concept_prefix=str(cfg.get("concept_prefix_sandbox") or SANDBOX_PREFIX))
+    from casa.prisms.intelligence.zone_spawner import spawn_zone_lattices_from_config
+
+    rep = spawn_zone_lattices_from_config(
+        state,
+        zone,
+        cfg,
+        default_core=DEFAULT_CORE_LATTICE,
+        default_sandbox=DEFAULT_SANDBOX_LATTICE,
+        default_core_prefix=CORE_PREFIX,
+        default_sandbox_prefix=SANDBOX_PREFIX,
+    )
+    core_lid = rep["core_lattice_id"]
+    sandbox_lid = rep["sandbox_lattice_id"]
 
     core = CoreAffectState(
         axes=AffectAxes.from_dict(initial),
@@ -131,8 +161,20 @@ def affect_after_turn(
     zone = ensure_emotional_zone(state)
     core = CoreAffectState.from_dict(zone.get("core"))
     deltas = dict(_EVENT_DELTAS.get(event, {}))
+    if "arousal" in deltas:
+        try:
+            from casa.prisms.genetic import genetic_constant
+
+            gain = float(genetic_constant(state, "surprise_gains.affect_arousal", 0.15))
+            deltas["arousal"] = float(deltas["arousal"]) * (gain / 0.15)
+        except Exception:
+            pass
     if extra_deltas:
         deltas.update({k: float(v) for k, v in extra_deltas.items() if k in DEFAULT_AXES})
+    if event == "partner_trust":
+        from casa.prisms.intelligence.partner_cues import bump_partner_trust
+
+        bump_partner_trust(state)
     core.axes = _apply_deltas(core.axes, deltas)
     flag = _EPISODIC_FLAGS.get(event)
     if flag:
@@ -210,15 +252,25 @@ def affect_compose_bias(state: dict) -> dict[str, Any]:
     core = core_affect_state(state)
     axes = core.axes.clamped()
     repair = float(core.episodic.get("dialog.repair_pending") or 0.0)
+    invited = float(core.episodic.get("dialog.repair_invited") or 0.0)
+    repair_active = repair > 0 or invited > 0
     return {
         "valence": axes.valence,
         "arousal": axes.arousal,
         "security": axes.security,
-        "repair_pending": repair > 0,
+        "repair_pending": repair_active,
+        "repair_invited": invited > 0,
         "budget_scale": max(0.6, min(1.4, 1.0 + 0.25 * axes.arousal - 0.15 * repair)),
         "social_affinity_delta": int(round(8 * axes.security)),
         "honest_defer_bias": repair > 0 and axes.security < 0.45,
     }
+
+
+def infer_partner_life_event(partner_text: str, *, query_intent: str = "") -> str | None:
+    """Partner-only cues — safe before subject compose (ADR-0057)."""
+    from casa.prisms.intelligence.partner_cues import infer_partner_life_event_name
+
+    return infer_partner_life_event_name(partner_text, query_intent=query_intent)
 
 
 def infer_life_event_from_turn(
@@ -230,19 +282,15 @@ def infer_life_event_from_turn(
     disposition: str = "",
 ) -> str | None:
     """Lightweight event inference for dialogue tick wiring."""
-    pt = (partner_text or "").strip().lower()
     reply = (subject_reply or "").strip()
     core = core_affect_state(state)
-    if re.search(r"\b(прости|извини)\b", pt) and re.search(r"(неожидан|странн|молч)", pt):
-        return "partner_repair_invite"
+    partner_only = infer_partner_life_event(partner_text, query_intent=query_intent)
+    if partner_only and not reply:
+        return partner_only
     if disposition in {"defer", "refuse"} and not reply:
         return "self_failure"
     if not reply and query_intent in {"math", "social", "general", "explain"}:
         return "self_failure"
-    if re.search(r"\b(спасибо|благодар)\b", pt):
-        return "partner_trust"
-    if re.search(r"\b(привет|здравств)\b", pt):
-        return "partner_greeting"
     if reply and core.episodic.get("dialog.repair_pending"):
         return "self_repair_success"
     return None

@@ -8,8 +8,13 @@ from typing import Any
 from casa.prisms.affect import affect_compose_bias, core_affect_state
 from casa.prisms.intelligence.character import character_compose_deltas, ensure_character_zone
 from casa.prisms.intelligence.executive import ensure_executive_zone, executive_tract_boosts
+from casa.prisms.intelligence.linguistic import (
+    ensure_linguistic_zone,
+    linguistic_compose_deltas,
+    linguistic_tract_boosts,
+)
 from casa.prisms.intelligence.logical import ensure_logical_zone, logical_tract_boosts
-from casa.prisms.intelligence.social import ensure_social_zone, social_compose_deltas
+from casa.prisms.intelligence.social import ensure_social_zone, social_compose_deltas, social_tract_boosts
 
 
 def intelligence_tract_boosts(
@@ -21,17 +26,20 @@ def intelligence_tract_boosts(
     for part in (
         executive_tract_boosts(state, concept_hints=concept_hints),
         logical_tract_boosts(state, concept_hints=concept_hints),
+        linguistic_tract_boosts(state, concept_hints=concept_hints),
+        social_tract_boosts(state, concept_hints=concept_hints),
     ):
         for tract_id, boost in part.items():
             merged[tract_id] = merged.get(tract_id, 0) + int(boost)
     return merged
 
 
-def intelligence_compose_deltas(state: dict) -> dict[str, int]:
+def intelligence_compose_deltas(state: dict, *, concept_hints: list[str] | None = None) -> dict[str, int]:
     affect = affect_compose_bias(state)
     repair = bool(affect.get("repair_pending"))
     deltas = dict(social_compose_deltas(state, repair_pending=repair))
     deltas.update(character_compose_deltas(state))
+    deltas.update(linguistic_compose_deltas(state, concept_hints=concept_hints))
     if repair:
         for prefix in ("ru.dialog.capabilities", "ru.dialog.how_are_you"):
             deltas.setdefault(prefix, -20)
@@ -71,5 +79,8 @@ def intelligence_snapshot(state: dict) -> dict[str, Any]:
         "character": {
             "openness": char.get("openness"),
             "directness": char.get("directness"),
+        },
+        "linguistic": {
+            "discourse_confidence": ensure_linguistic_zone(state).get("discourse_confidence"),
         },
     }

@@ -13,6 +13,7 @@ from casa._paths import ensure_import_paths
 ensure_import_paths()
 
 from casa.prisms.affect import core_affect_state, ensure_emotional_zone, spawn_emotional_zone
+from casa.prisms.affect.zone import consolidate_emotional_zone_wire
 from casa.prisms.intelligence.character import spawn_character_zone
 from casa.prisms.intelligence.executive import spawn_executive_zone
 from casa.prisms.intelligence.logical import spawn_logical_zone
@@ -23,7 +24,34 @@ from casa.prisms.memory.bootstrap_agent_manifest import load_agent_bootstrap_man
 from casa.prisms.shared.store_boot import boot_store
 from casa.prisms.shared.store_persist import save_runtime_state
 
-INTELLIGENCE_ZONES_VERSION = 2
+INTELLIGENCE_ZONES_VERSION = 4
+
+
+def infer_emotional_from_dialogue_ring(
+    store_dir: Path,
+    state: dict,
+    *,
+    max_turns: int = 16,
+) -> dict[str, Any]:
+    """ADR-0061 v0.1 — infer partner life events from dialogue ring on migrate."""
+    from casa.domain.dialogue_turn import load_dialogue_turns
+    from casa.prisms.affect import affect_after_turn, core_affect_state
+    from casa.prisms.affect.zone import infer_partner_life_event
+
+    core = core_affect_state(state)
+    if core.episodic or core.last_event:
+        return {"skipped": True, "reason": "core_already_has_episodic"}
+
+    turns = load_dialogue_turns(store_dir)[-max_turns:]
+    applied: list[str] = []
+    for turn in turns:
+        if turn.speaker != "partner":
+            continue
+        event = infer_partner_life_event(turn.text)
+        if event and event not in applied:
+            affect_after_turn(state, event, tick=int(getattr(turn, "seq", 0) or 0))
+            applied.append(event)
+    return {"inferred_events": applied, "core_axes": core_affect_state(state).axes.to_dict()}
 
 
 def migrate_emotional_zone(
@@ -32,6 +60,7 @@ def migrate_emotional_zone(
     *,
     tick: int = 0,
     force_respawn: bool = False,
+    store_dir: Path | None = None,
 ) -> dict[str, Any]:
     cfg = _zone_cfg(manifest, "emotional_zone")
     if not cfg.get("enabled", True):
@@ -59,11 +88,15 @@ def migrate_emotional_zone(
         )
         return {"spawned": True, **rep}
 
+    dialogue_infer: dict[str, Any] = {"skipped": True, "reason": "no_store_dir"}
+    if store_dir is not None:
+        dialogue_infer = infer_emotional_from_dialogue_ring(store_dir, state)
     return {
         "spawned": False,
         "core_lattice_id": core_lid,
         "sandbox_lattice_id": sandbox_lid,
         "core_axes": core_affect_state(state).axes.to_dict(),
+        "dialogue_infer": dialogue_infer,
     }
 
 
@@ -88,7 +121,57 @@ _SPAWNERS = {
         **spawn_character_zone(state, config=cfg),
     },
     "spatial_zone": lambda state, cfg, tick: spawn_spatial_zone(state, config=cfg),
+    "metabolic_zone": lambda state, cfg, tick: {
+        "spawned": True,
+        **_spawn_metabolic_zone(state, cfg),
+    },
+    "perceptual_zone": lambda state, cfg, tick: {
+        "spawned": True,
+        **_spawn_perceptual_zone(state, cfg),
+    },
+    "linguistic_zone": lambda state, cfg, tick: {
+        "spawned": True,
+        **_spawn_linguistic_zone(state, cfg),
+    },
 }
+
+
+def _spawn_metabolic_zone(state: dict, cfg: dict[str, Any]) -> dict[str, Any]:
+    from casa.prisms.metabolic import spawn_metabolic_zone
+
+    return spawn_metabolic_zone(state, config=cfg)
+
+
+def _spawn_perceptual_zone(state: dict, cfg: dict[str, Any]) -> dict[str, Any]:
+    from casa.prisms.perceptual import spawn_perceptual_zone
+
+    return spawn_perceptual_zone(state, config=cfg)
+
+
+def _spawn_linguistic_zone(state: dict, cfg: dict[str, Any]) -> dict[str, Any]:
+    from casa.prisms.intelligence.linguistic import spawn_linguistic_zone
+
+    return spawn_linguistic_zone(state, config=cfg)
+
+
+def _migrate_genetic_zone(
+    state: dict,
+    manifest: dict[str, Any],
+    store_dir: Path,
+    *,
+    tick: int = 0,
+) -> dict[str, Any]:
+    cfg = _zone_cfg(manifest, "genetic_zone")
+    if not cfg.get("enabled", True):
+        return {"skipped": True, "reason": "disabled in manifest"}
+    from casa.prisms.genetic import load_genetic_zone, seal_genetic_zone
+    from casa.prisms.genetic.zone import ensure_genetic_zone
+
+    load_genetic_zone(store_dir, state)
+    zone = ensure_genetic_zone(state)
+    if zone.get("immutable") and zone.get("genome_hash"):
+        return {"sealed": False, "loaded": True, "genome_hash": zone.get("genome_hash")}
+    return seal_genetic_zone(store_dir, state, cfg, tick=tick)
 
 
 def _zone_cfg(manifest: dict[str, Any], key: str) -> dict[str, Any]:
@@ -108,6 +191,12 @@ def migrate_all_zones(
     report: dict[str, Any] = {"zones": {}, "intelligence_zones_version": INTELLIGENCE_ZONES_VERSION}
     wrapper = manifest if "agent_prisms" in manifest else {"agent_prisms": manifest}
 
+    if consolidate_emotional_zone_wire(state):
+        report["emotional_wire_migrated"] = True
+
+    if store_dir is not None:
+        report["zones"]["genetic"] = _migrate_genetic_zone(state, wrapper, store_dir, tick=tick)
+
     for key, spawner in _SPAWNERS.items():
         cfg = _zone_cfg(wrapper, key)
         if not cfg.get("enabled", key == "emotional_zone"):
@@ -119,6 +208,7 @@ def migrate_all_zones(
                 wrapper,
                 tick=tick,
                 force_respawn=force_respawn,
+                store_dir=store_dir,
             )
         else:
             rep = spawner(state, cfg, tick)
@@ -156,6 +246,7 @@ def migrate_intelligence_zones(
         manifest,
         tick=tick,
         persist=False,
+        store_dir=store_dir,
         force_respawn=force_respawn,
     )
     report["store"] = store_dir.name
@@ -179,6 +270,8 @@ def main() -> int:
     if args.dry_run:
         manifest = load_agent_bootstrap_manifest(args.manifest)
         enabled = [k for k in _SPAWNERS if _zone_cfg(manifest, k).get("enabled", k == "emotional_zone")]
+        if _zone_cfg(manifest, "genetic_zone").get("enabled", True):
+            enabled = ["genetic_zone", *enabled]
         print(json.dumps({"dry_run": True, "enabled_zones": enabled}, indent=2))
         return 0
 
@@ -189,7 +282,17 @@ def main() -> int:
         persist=True,
         force_respawn=args.force_respawn,
     )
-    print(json.dumps(rep, indent=2, ensure_ascii=False))
+    summary = {
+        "store": rep.get("store"),
+        "intelligence_zones_version": rep.get("intelligence_zones_version"),
+        "zones": rep.get("zones"),
+        "field_version": rep.get("field_version"),
+        "persist": {
+            "saved": (rep.get("persist") or {}).get("saved"),
+            "thin_checkpoint": (rep.get("persist") or {}).get("thin_checkpoint"),
+        },
+    }
+    print(json.dumps(summary, indent=2, ensure_ascii=False))
     return 0
 
 

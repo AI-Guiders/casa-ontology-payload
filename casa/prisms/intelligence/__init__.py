@@ -18,6 +18,13 @@ from casa.prisms.intelligence.executive import (
     executive_tract_boosts,
     spawn_executive_zone,
 )
+from casa.prisms.intelligence.linguistic import (
+    ensure_linguistic_zone,
+    linguistic_after_turn,
+    linguistic_compose_deltas,
+    linguistic_tract_boosts,
+    spawn_linguistic_zone,
+)
 from casa.prisms.intelligence.logical import (
     ensure_logical_zone,
     logical_after_turn,
@@ -36,7 +43,7 @@ from casa.prisms.intelligence.social import (
     spawn_social_zone,
 )
 from casa.prisms.intelligence.spatial import ensure_spatial_zone, spawn_spatial_zone
-from casa.prisms.intelligence.tick import process_intelligence_turn
+from casa.prisms.intelligence.tick import intelligence_before_partner_compose, process_intelligence_turn
 
 __all__ = [
     "INTELLIGENCE_ZONES_VERSION",
@@ -45,6 +52,7 @@ __all__ = [
     "character_compose_deltas",
     "ensure_character_zone",
     "ensure_executive_zone",
+    "ensure_linguistic_zone",
     "ensure_logical_zone",
     "ensure_social_zone",
     "ensure_spatial_zone",
@@ -53,15 +61,20 @@ __all__ = [
     "intelligence_compose_deltas",
     "intelligence_snapshot",
     "intelligence_tract_boosts",
+    "linguistic_after_turn",
+    "linguistic_compose_deltas",
+    "linguistic_tract_boosts",
     "logical_after_turn",
     "logical_tract_boosts",
     "migrate_all_zones",
     "migrate_intelligence_zones",
+    "intelligence_before_partner_compose",
     "process_intelligence_turn",
     "social_after_turn",
     "social_compose_deltas",
     "spawn_character_zone",
     "spawn_executive_zone",
+    "spawn_linguistic_zone",
     "spawn_logical_zone",
     "spawn_social_zone",
     "spawn_spatial_zone",

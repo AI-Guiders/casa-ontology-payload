@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from casa.prisms.intelligence.model import DEFAULT_ZONE_POLICY, intelligence_root
-from casa.prisms.memory.agent_prism import agent_lattices, create_agent_lattice
+from casa.prisms.intelligence.model import DEFAULT_ZONE_POLICY, intelligence_root, zone_proportion_scale
+from casa.prisms.intelligence.zone_spawner import spawn_zone_lattices_from_config
 
 CORE_LATTICE = "agent-logical-core"
 SANDBOX_LATTICE = "agent-logical-sandbox"
@@ -28,22 +28,18 @@ def ensure_logical_zone(state: dict) -> dict[str, Any]:
 def spawn_logical_zone(state: dict, *, config: dict[str, Any] | None = None) -> dict[str, Any]:
     cfg = config or {}
     zone = ensure_logical_zone(state)
-    core_lid = str(cfg.get("core_lattice_id") or CORE_LATTICE)
-    sandbox_lid = str(cfg.get("sandbox_lattice_id") or SANDBOX_LATTICE)
-    lats = agent_lattices(state)
-    if core_lid not in lats:
-        create_agent_lattice(state, core_lid, concept_prefix=str(cfg.get("concept_prefix_core") or CORE_PREFIX))
-    if sandbox_lid not in lats:
-        create_agent_lattice(
-            state,
-            sandbox_lid,
-            concept_prefix=str(cfg.get("concept_prefix_sandbox") or SANDBOX_PREFIX),
-        )
+    rep = spawn_zone_lattices_from_config(
+        state,
+        zone,
+        cfg,
+        default_core=CORE_LATTICE,
+        default_sandbox=SANDBOX_LATTICE,
+        default_core_prefix=CORE_PREFIX,
+        default_sandbox_prefix=SANDBOX_PREFIX,
+    )
     if cfg.get("initial_math_confidence") is not None:
         zone["math_confidence"] = float(cfg["initial_math_confidence"])
-    zone["core_lattice_id"] = core_lid
-    zone["sandbox_lattice_id"] = sandbox_lid
-    return {"core_lattice_id": core_lid, "sandbox_lattice_id": sandbox_lid}
+    return rep
 
 
 def logical_after_turn(
@@ -68,7 +64,8 @@ def logical_tract_boosts(state: dict, *, concept_hints: list[str] | None = None)
     if not has_math:
         return {}
     conf = float(zone.get("math_confidence") or 0.5)
+    scale = zone_proportion_scale(state, "logical", 1.0)
     return {
-        "math": int(18 + 12 * conf),
-        "social": -int(10 + 8 * (1.0 - conf)),
+        "math": int((18 + 12 * conf) * scale),
+        "social": -int((10 + 8 * (1.0 - conf)) * scale),
     }

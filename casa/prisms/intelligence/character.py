@@ -45,6 +45,15 @@ def character_after_turn(
 ) -> dict[str, Any]:
     zone = ensure_character_zone(state)
     alpha = float(zone.get("ema_alpha") or 0.05)
+    try:
+        from casa.prisms.genetic import genetic_constant
+
+        alpha = min(
+            alpha,
+            float(genetic_constant(state, "ema_limits.character_alpha_max", alpha)),
+        )
+    except ImportError:
+        pass
     axes = emotional_axes or {}
     valence = float(axes.get("valence") or 0.0)
     security = float(axes.get("security") or 0.5)

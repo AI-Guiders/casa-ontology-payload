@@ -14,8 +14,31 @@ from casa.prisms.affect import (
 from casa.prisms.intelligence.apply import intelligence_snapshot
 from casa.prisms.intelligence.character import character_after_turn
 from casa.prisms.intelligence.executive import executive_after_turn
+from casa.prisms.intelligence.linguistic import linguistic_after_turn
 from casa.prisms.intelligence.logical import logical_after_turn
 from casa.prisms.intelligence.social import social_after_turn
+
+
+def intelligence_before_partner_compose(
+    state: dict,
+    *,
+    partner_text: str,
+    query_intent: str = "",
+    disposition: str = "",
+    tick: int = 0,
+) -> dict[str, Any]:
+    """Partner cues that must bias compose in the same turn (ADR-0061 tick order)."""
+    from casa.prisms.affect import affect_after_turn, infer_partner_life_event
+
+    ensure_emotional_zone(state)
+    life = infer_partner_life_event(partner_text, query_intent=query_intent)
+    if life:
+        affect_after_turn(state, life, tick=tick)
+    if life == "partner_repair_invite":
+        from casa.prisms.intelligence.social import ensure_social_zone
+
+        ensure_social_zone(state)["repair_open"] = 1.0
+    return {"life_event": life} if life else {}
 
 
 def process_intelligence_turn(
@@ -61,6 +84,11 @@ def process_intelligence_turn(
         concept_hints=concept_hints,
         subject_reply=subject_reply,
         query_intent=query_intent,
+    )
+    linguistic_after_turn(
+        state,
+        subject_reply=subject_reply,
+        concept_hints=concept_hints,
     )
     character_after_turn(
         state,

@@ -3,11 +3,11 @@
 
 from __future__ import annotations
 
-import re
 from typing import Any
 
-from casa.prisms.intelligence.model import DEFAULT_ZONE_POLICY, intelligence_root
-from casa.prisms.memory.agent_prism import agent_lattices, create_agent_lattice
+from casa.prisms.intelligence.model import DEFAULT_ZONE_POLICY, intelligence_root, zone_proportion_scale
+from casa.prisms.intelligence.partner_cues import apply_partner_trust_cue
+from casa.prisms.intelligence.zone_spawner import spawn_zone_lattices_from_config
 
 CORE_LATTICE = "agent-social-core"
 SANDBOX_LATTICE = "agent-social-sandbox"
@@ -30,22 +30,18 @@ def ensure_social_zone(state: dict) -> dict[str, Any]:
 def spawn_social_zone(state: dict, *, config: dict[str, Any] | None = None) -> dict[str, Any]:
     cfg = config or {}
     zone = ensure_social_zone(state)
-    core_lid = str(cfg.get("core_lattice_id") or CORE_LATTICE)
-    sandbox_lid = str(cfg.get("sandbox_lattice_id") or SANDBOX_LATTICE)
-    lats = agent_lattices(state)
-    if core_lid not in lats:
-        create_agent_lattice(state, core_lid, concept_prefix=str(cfg.get("concept_prefix_core") or CORE_PREFIX))
-    if sandbox_lid not in lats:
-        create_agent_lattice(
-            state,
-            sandbox_lid,
-            concept_prefix=str(cfg.get("concept_prefix_sandbox") or SANDBOX_PREFIX),
-        )
+    rep = spawn_zone_lattices_from_config(
+        state,
+        zone,
+        cfg,
+        default_core=CORE_LATTICE,
+        default_sandbox=SANDBOX_LATTICE,
+        default_core_prefix=CORE_PREFIX,
+        default_sandbox_prefix=SANDBOX_PREFIX,
+    )
     if cfg.get("initial_trust") is not None:
         zone["partner_trust"] = float(cfg["initial_trust"])
-    zone["core_lattice_id"] = core_lid
-    zone["sandbox_lattice_id"] = sandbox_lid
-    return {"core_lattice_id": core_lid, "sandbox_lattice_id": sandbox_lid}
+    return rep
 
 
 def social_after_turn(
@@ -56,9 +52,7 @@ def social_after_turn(
     repair_pending: bool = False,
 ) -> dict[str, Any]:
     zone = ensure_social_zone(state)
-    pt = (partner_text or "").lower()
-    if re.search(r"\b(спасибо|благодар)\b", pt):
-        zone["partner_trust"] = min(1.0, float(zone["partner_trust"]) + 0.08)
+    apply_partner_trust_cue(state, partner_text)
     if repair_pending and (subject_reply or "").strip():
         zone["repair_open"] = max(0.0, float(zone["repair_open"]) - 0.5)
         zone["partner_trust"] = min(1.0, float(zone["partner_trust"]) + 0.05)
@@ -68,6 +62,23 @@ def social_after_turn(
         "partner_trust": float(zone["partner_trust"]),
         "repair_open": float(zone["repair_open"]),
     }
+
+
+def social_tract_boosts(state: dict, *, concept_hints: list[str] | None = None) -> dict[str, int]:
+    zone = ensure_social_zone(state)
+    scale = zone_proportion_scale(state, "social", 1.0)
+    trust = float(zone.get("partner_trust") or 0.5)
+    repair = float(zone.get("repair_open") or 0.0)
+    boosts: dict[str, int] = {}
+    if trust > 0.55:
+        boosts["social"] = int(6 + 10 * (trust - 0.5) * scale)
+    if repair > 0:
+        boosts["social"] = boosts.get("social", 0) + int(8 * scale)
+        boosts["general"] = int(4 * scale)
+    hints = concept_hints or []
+    if any(str(h).startswith("ru.dialog.") for h in hints):
+        boosts["social"] = boosts.get("social", 0) + int(4 * scale)
+    return boosts
 
 
 def social_compose_deltas(state: dict, *, repair_pending: bool) -> dict[str, int]:

@@ -108,9 +108,35 @@ def _bootstrap_self_tier(
     return journal_rows
 
 
-def _bootstrap_agent_prisms(state: dict, manifest: dict[str, Any], *, tick: int = 0) -> list[dict[str, Any]]:
+def _bootstrap_agent_prisms(
+    state: dict,
+    manifest: dict[str, Any],
+    *,
+    tick: int = 0,
+    store_dir: Path | None = None,
+) -> list[dict[str, Any]]:
     applied: list[dict[str, Any]] = []
     prisms = manifest.get("agent_prisms") or {}
+
+    genetic_cfg = prisms.get("genetic_zone") or {}
+    if genetic_cfg.get("enabled") and store_dir is not None:
+        from casa.prisms.genetic import load_genetic_zone, seal_genetic_zone
+        from casa.prisms.genetic.zone import ensure_genetic_zone
+
+        load_genetic_zone(store_dir, state)
+        zone = ensure_genetic_zone(state)
+        if zone.get("immutable") and zone.get("genome_hash"):
+            applied.append(
+                {
+                    "prism": "genetic_zone",
+                    "adr": genetic_cfg.get("adr") or "0062",
+                    "loaded": True,
+                    "genome_hash": zone.get("genome_hash"),
+                }
+            )
+        else:
+            rep = seal_genetic_zone(store_dir, state, genetic_cfg, tick=tick)
+            applied.append({"prism": "genetic_zone", "adr": genetic_cfg.get("adr") or "0062", **rep})
 
     wm = prisms.get("wm_prism") or {}
     if wm.get("enabled"):
@@ -150,24 +176,24 @@ def _bootstrap_agent_prisms(state: dict, manifest: dict[str, Any], *, tick: int 
                 }
             )
 
-    zone_spawners: list[tuple[str, str, Any]] = [
-        ("emotional_zone", "0060", "spawn_emotional_zone"),
-        ("executive_zone", "0061", "spawn_executive_zone"),
-        ("social_zone", "0061", "spawn_social_zone"),
-        ("logical_zone", "0061", "spawn_logical_zone"),
-        ("character_zone", "0061", "spawn_character_zone"),
-        ("spatial_zone", "0061", "spawn_spatial_zone"),
+    zone_spawners: list[tuple[str, str, str, str]] = [
+        ("emotional_zone", "0060", "spawn_emotional_zone", "casa.prisms.affect"),
+        ("executive_zone", "0061", "spawn_executive_zone", "casa.prisms.intelligence"),
+        ("social_zone", "0061", "spawn_social_zone", "casa.prisms.intelligence"),
+        ("logical_zone", "0061", "spawn_logical_zone", "casa.prisms.intelligence"),
+        ("character_zone", "0061", "spawn_character_zone", "casa.prisms.intelligence"),
+        ("spatial_zone", "0061", "spawn_spatial_zone", "casa.prisms.intelligence"),
+        ("metabolic_zone", "0064", "spawn_metabolic_zone", "casa.prisms.metabolic"),
+        ("perceptual_zone", "0063", "spawn_perceptual_zone", "casa.prisms.perceptual"),
+        ("linguistic_zone", "0061", "spawn_linguistic_zone", "casa.prisms.intelligence"),
     ]
-    for key, adr, fn_name in zone_spawners:
+    for key, adr, fn_name, mod_path in zone_spawners:
         cfg = prisms.get(key) or {}
         if not cfg.get("enabled"):
             continue
         if not cfg.get("spawn_on_bootstrap", True):
             continue
-        mod = __import__(
-            "casa.prisms.affect" if key == "emotional_zone" else "casa.prisms.intelligence",
-            fromlist=[fn_name],
-        )
+        mod = __import__(mod_path, fromlist=[fn_name])
         spawner = getattr(mod, fn_name)
         spawn_kwargs: dict[str, Any] = {
             "core_lattice_id": cfg.get("core_lattice_id"),
@@ -190,6 +216,18 @@ def _bootstrap_agent_prisms(state: dict, manifest: dict[str, Any], *, tick: int 
                 spawn_kwargs["initial_trust"] = cfg.get("initial_trust")
             if key == "logical_zone" and cfg.get("initial_math_confidence") is not None:
                 spawn_kwargs["initial_math_confidence"] = cfg.get("initial_math_confidence")
+            if key == "linguistic_zone" and cfg.get("initial_discourse_confidence") is not None:
+                spawn_kwargs["initial_discourse_confidence"] = cfg.get("initial_discourse_confidence")
+            if key == "metabolic_zone":
+                if cfg.get("initial_atp") is not None:
+                    spawn_kwargs["initial_atp"] = cfg.get("initial_atp")
+                if isinstance(cfg.get("policy"), dict):
+                    spawn_kwargs["policy"] = cfg.get("policy")
+            if key == "perceptual_zone":
+                if cfg.get("active_modalities"):
+                    spawn_kwargs["active_modalities"] = cfg.get("active_modalities")
+                if isinstance(cfg.get("fan_out"), dict):
+                    spawn_kwargs["fan_out"] = cfg.get("fan_out")
             if key == "character_zone":
                 if cfg.get("initial_openness") is not None:
                     spawn_kwargs["initial_openness"] = cfg.get("initial_openness")
@@ -218,7 +256,7 @@ def bootstrap_agent_from_manifest(
     load_agent_prism(store_dir, state)
 
     journal_rows = _bootstrap_self_tier(store_dir, state, manifest, display_name=display_name)
-    prism_rows = _bootstrap_agent_prisms(state, manifest, tick=tick)
+    prism_rows = _bootstrap_agent_prisms(state, manifest, tick=tick, store_dir=store_dir)
 
     save_agent_prism(store_dir, state)
     return {

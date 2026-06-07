@@ -6,8 +6,8 @@ from __future__ import annotations
 from typing import Any
 
 from casa.prisms.control import predict as lp
-from casa.prisms.intelligence.model import DEFAULT_ZONE_POLICY, intelligence_root
-from casa.prisms.memory.agent_prism import agent_lattices, create_agent_lattice
+from casa.prisms.intelligence.model import DEFAULT_ZONE_POLICY, intelligence_root, zone_proportion_scale
+from casa.prisms.intelligence.zone_spawner import spawn_zone_lattices_from_config
 
 CORE_LATTICE = "agent-exec-core"
 SANDBOX_LATTICE = "agent-exec-sandbox"
@@ -30,22 +30,39 @@ def ensure_executive_zone(state: dict) -> dict[str, Any]:
 def spawn_executive_zone(state: dict, *, config: dict[str, Any] | None = None) -> dict[str, Any]:
     cfg = config or {}
     zone = ensure_executive_zone(state)
-    core_lid = str(cfg.get("core_lattice_id") or CORE_LATTICE)
-    sandbox_lid = str(cfg.get("sandbox_lattice_id") or SANDBOX_LATTICE)
-    lats = agent_lattices(state)
-    if core_lid not in lats:
-        create_agent_lattice(state, core_lid, concept_prefix=str(cfg.get("concept_prefix_core") or CORE_PREFIX))
-    if sandbox_lid not in lats:
-        create_agent_lattice(
-            state,
-            sandbox_lid,
-            concept_prefix=str(cfg.get("concept_prefix_sandbox") or SANDBOX_PREFIX),
-        )
-    zone["core_lattice_id"] = core_lid
-    zone["sandbox_lattice_id"] = sandbox_lid
+    rep = spawn_zone_lattices_from_config(
+        state,
+        zone,
+        cfg,
+        default_core=CORE_LATTICE,
+        default_sandbox=SANDBOX_LATTICE,
+        default_core_prefix=CORE_PREFIX,
+        default_sandbox_prefix=SANDBOX_PREFIX,
+    )
     if cfg.get("zone_policy"):
         zone["zone_policy"].update(cfg["zone_policy"])
-    return {"core_lattice_id": core_lid, "sandbox_lattice_id": sandbox_lid}
+    return rep
+
+
+def executive_before_compose(
+    state: dict,
+    *,
+    query: str,
+    concept_hints: list[str] | None = None,
+    prior_digest: list[str] | None = None,
+) -> dict[str, Any]:
+    """Partner-side predict/surprise before tract bind (ADR-0061 tick order)."""
+    hints = list(concept_hints or [])
+    if not hints and (query or "").strip():
+        from casa.prisms.tick.tract.model import parse_math_ops
+
+        hints = list(parse_math_ops(query))
+    return executive_after_turn(
+        state,
+        query=query,
+        concept_hints=hints,
+        prior_digest=prior_digest,
+    )
 
 
 def executive_after_turn(
@@ -71,10 +88,11 @@ def executive_tract_boosts(state: dict, *, concept_hints: list[str] | None = Non
     zone = ensure_executive_zone(state)
     boosts = {"math": 0, "social": 0, "general": 0, "explain": 0}
     surprise = int(zone.get("predict_surprise_n") or 0)
+    scale = zone_proportion_scale(state, "executive", 1.0)
     if surprise > 0:
-        boosts["general"] += min(12, surprise * 4)
+        boosts["general"] += int(min(12, surprise * 4) * scale)
     has_math = any(str(h).startswith("math.") for h in (concept_hints or []))
     if has_math:
-        boosts["math"] += 14
-        boosts["social"] -= 8
+        boosts["math"] += int(14 * scale)
+        boosts["social"] -= int(8 * scale)
     return boosts
