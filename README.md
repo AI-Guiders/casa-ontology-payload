@@ -7,7 +7,7 @@ Not an LLM autocomplete — `anchors[]` from L2 lexicon + `unified_tick` (script
 
 Living field agent (not LLM chat). **Guide:** [docs/CASA-von-neumann-local-play-v1.md](docs/CASA-von-neumann-local-play-v1.md)
 
-Short path: clone [life-archive](https://github.com/AI-Guiders/von-neumann-life-archive) (private — ask for access) → `git lfs pull` → copy `store/` to `agents/von-neumann/` →:
+Short path: clone [life-archive](https://github.com/AI-Guiders/von-neumann-life-archive) (private — ask for access) → `git lfs pull` → `python tools/restore_agent_life.py --from-life-archive … --force` →:
 
 ```powershell
 pip install -r tools/requirements.txt   # Python 3.12+

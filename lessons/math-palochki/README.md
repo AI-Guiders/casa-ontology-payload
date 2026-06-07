@@ -88,7 +88,8 @@ python tools/check_agent_mastery.py --store-dir agents/von-neumann
 
 Reports: `last-ingest-report.json`, `last-mastery-report.json`.
 
-Cold bootstrap (один раз): `python tools/init_agent_self.py --store-dir agents/von-neumann`
+Restore trained store: `python tools/restore_agent_life.py --from-life-archive …`  
+Cold shell (lab): `python tools/bootstrap_agent_cold_store.py --store-dir agents/von-neumann`
 
 ## CASA mapping
 

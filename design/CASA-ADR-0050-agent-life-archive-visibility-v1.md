@@ -118,20 +118,33 @@ Life-archive — не «второй продукт для форков», а **
 | **Движок** | `casa-ontology-payload` | wake, tick, sleep, body, curriculum как события |
 | **LFS** | `git lfs pull` в life-archive | иначе `*.pt` / большие json — pointer-файлы |
 
-### Процедура (v0)
+### Процедура (канон CLI)
 
 ```powershell
 git clone https://github.com/AI-Guiders/von-neumann-life-archive.git
-cd von-neumann-life-archive
-git lfs install && git lfs pull
-# опционально: git checkout <tag>  — зафиксировать версию жизни
+cd von-neumann-life-archive && git lfs install && git lfs pull
 
 git clone https://github.com/AI-Guiders/casa-ontology-payload.git
-# совместимый commit runtime — см. sync_meta.json / release notes
+cd casa-ontology-payload
 
-Copy-Item -Recurse von-neumann-life-archive\store casa-ontology-payload\agents\von-neumann
-# → agent_wake / macro tick на хосте пользователя
+python tools/restore_agent_life.py `
+  --from-life-archive ..\von-neumann-life-archive `
+  --store-dir agents/von-neumann --force
+# → agent_sn_cen_tick / run_agent на хосте пользователя
 ```
+
+Ручной `Copy-Item store/` — эквивалент; предпочтительно **`restore_agent_life`** (`casa/prisms/shared/store_mirror.py`).
+
+### Термины bootstrap (не смешивать)
+
+| Команда | Роль |
+|---------|------|
+| **`restore_agent_life`** | snapshot → `agents/<id>/` — **обученный** агент |
+| **`bootstrap_agent_cold_store`** | пустая оболочка — **необученный**, curriculum с lessons |
+| **`bootstrap_agent_self_tier`** | только Self tier на существующем store |
+| ~~`init_agent_self`~~ | deprecated |
+
+`init_agent_self` **не** restore: исторически только journal+agent prism; полная жизнь — **restore**.
 
 ### Смысл «тот же Нейман»
 

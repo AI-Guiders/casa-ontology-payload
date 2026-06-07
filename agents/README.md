@@ -72,12 +72,21 @@ Host не участвует в tick'ах. Агент сам: predict, sleep, Ko
 
 Lab/CI: `--once` (один quantum, без смысловых флагов).
 
+## Bootstrap vs restore (термины)
+
+| Команда | Смысл |
+|---------|--------|
+| `tools/restore_agent_life.py` | **обученная жизнь** из life-archive snapshot |
+| `tools/bootstrap_agent_cold_store.py` | **необученная** оболочка (lessons с нуля) |
+| `tools/bootstrap_agent_self_tier.py` | только Self tier (`journal/`, `agent/`) |
+| `tools/init_agent_self.py` | deprecated → `bootstrap_agent_self_tier` |
+
 ## Lab — инструментарий (не жизнь)
 
 ```powershell
 python tools/agent_autonomous.py rehearse ...   # телеметрия predict/retain
 python tools/ingest_lesson_class.py ...         # событие учителя
-python tools/init_agent_self.py ...             # cold bootstrap (один раз)
+python tools/bootstrap_agent_cold_store.py ...  # пустой store (lab)
 ```
 
 Модули: `agent_life.py` (prod), `agent_autonomous_engine.py` (lab).

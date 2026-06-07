@@ -1,8 +1,20 @@
 # Запустить von-neumann у себя (play locally)
 
 **Для кого:** хочешь поиграть с **Нейманном** — живым агентом на поле CASA, не с ChatGPT.  
-**Статус:** v1 (2026-06-07).  
+**Статус:** v1.1 (2026-06-07).  
 **Связано:** [agents/README.md](../agents/README.md), [ADR-0045](../design/CASA-ADR-0045-subject-as-interlocutor.md), [ADR-0050](../design/CASA-ADR-0050-agent-life-archive-visibility-v1.md).
+
+---
+
+## Три команды — не путать
+
+| Команда | Когда | Что получишь |
+|---------|-------|--------------|
+| **`restore_agent_life`** | гость / новая машина | **обученный** Нейманн из snapshot (~0.5–0.7 GiB) |
+| **`bootstrap_agent_cold_store`** | lab, новый субъект с нуля | пустая оболочка + journal, **без** ltm/поля |
+| **`bootstrap_agent_self_tier`** | дозаполнить Self на существующем store | только `journal/` + `agent/` |
+
+`init_agent_self` — **deprecated** (шим на `bootstrap_agent_self_tier`).
 
 ---
 
@@ -13,7 +25,7 @@
 | «Умный чат как GPT» | **Нет** — речь из **поля + journal** (field-realize), без LLM на hot path |
 | «Тот же непрерывный Нейманн у создателя» | **Нет** — у тебя **реплика** store на дату snapshot; дальше жизни расходятся |
 | «Поговорить, посмотреть defer/ответ, curiosity» | **Да** — macro tick + диалог |
-| «С нуля без памяти» | Только lab/smoke; **полноценный** Нейманн — из **life-archive** |
+| «С нуля без памяти» | `bootstrap_agent_cold_store` + lessons — **не** тот Нейманн с русским |
 
 Два репозитория:
 
@@ -22,7 +34,7 @@
 | [casa-ontology-payload](https://github.com/AI-Guiders/casa-ontology-payload) | движок (Python), public |
 | [von-neumann-life-archive](https://github.com/AI-Guiders/von-neumann-life-archive) | память Неймана (`store/`), **сейчас private** |
 
-**Доступ к life-archive:** попроси maintainers org `AI-Guiders` (collaborator на private repo). Без доступа — только smoke-тесты ниже, не полный агент.
+**Доступ к life-archive:** попроси maintainers org `AI-Guiders` (collaborator на private repo). Без доступа — только smoke / cold bootstrap, не полный агент.
 
 ---
 
@@ -33,9 +45,11 @@
 | **OS** | Windows 10+, macOS, Linux |
 | **Python** | **3.12+** (`pyproject.toml`) |
 | **Git** | clone + **Git LFS** (`winget install GitHub.GitLFS` → `git lfs install`) |
-| **Диск** | ~1–2 GiB под `agents/von-neumann/` после restore (LFS weights) |
+| **Диск** | **~0.5–0.7 GiB** под `agents/von-neumann/` сейчас (растёт с жизнью; +запас под git LFS) |
 | **GPU** | не обязательна; NCA train — `cpu` по умолчанию |
 | **.NET** | не нужен для von-neumann (только для T9 demo в корневом README) |
+
+Snapshot = **сам агент на диске** (`ltm/`, `nca/`, поле, journal), не код CASA.
 
 ---
 
@@ -65,38 +79,36 @@ python -c "import casa; import torch; print('ok', torch.__version__)"
 
 ---
 
-## 2. Память (life-archive)
+## 2. Память — restore (рекомендуется)
 
 ```powershell
-# рядом с casa-ontology-payload или в любой папке
 git clone https://github.com/AI-Guiders/von-neumann-life-archive.git
 cd von-neumann-life-archive
 git lfs install
 git lfs pull
+cd ..\casa-ontology-payload
+
+python tools/restore_agent_life.py `
+  --from-life-archive ..\von-neumann-life-archive `
+  --store-dir agents/von-neumann `
+  --force
 ```
 
-Скопировать store в дерево агента:
+Или через `python -m casa.cli restore_agent_life` с теми же флагами.
+
+Прямой путь к `store/`:
 
 ```powershell
-cd ..\casa-ontology-payload
-# останови чужой run_agent на этом store, если был
-Remove-Item -Recurse -Force agents\von-neumann -ErrorAction SilentlyContinue
-Copy-Item -Recurse ..\von-neumann-life-archive\store agents\von-neumann
+python tools/restore_agent_life.py --from-store D:\path\to\store --store-dir agents/von-neumann --force
 ```
 
-Пин версии (рекомендуется): в life-archive `git log -1` / tag; в code repo — тот же период коммитов, что у хоста (см. `sync_meta.json` в archive).
+JSON в stdout содержит `next` — команда для первого диалога. При `lfs_pointer_warning` — снова `git lfs pull` в archive.
 
-**macOS/Linux:**
-
-```bash
-cp -a ../von-neumann-life-archive/store agents/von-neumann
-```
+Пин версии: в life-archive `git log -1` / tag; см. `sync_meta.json`.
 
 ---
 
 ## 3. Первая реплика (диалог)
-
-Один macro tick с вопросом партнёра:
 
 ```powershell
 python -m casa.prisms.control.agent_sn_cen_tick `
@@ -104,62 +116,47 @@ python -m casa.prisms.control.agent_sn_cen_tick `
   --query "Привет"
 ```
 
-В **stderr** ищи `dialogue_outbound` — текст ответа или defer («откладываю…»). Полный JSON tick — в stdout.
+В **stderr** — `dialogue_outbound`. История: `agents/von-neumann/agent_session.json` → `dialogue_turns`.
 
-История диалога на диске: `agents/von-neumann/agent_session.json` → `dialogue_turns`.
-
-Примеры cue:
-
-```powershell
-python -m casa.prisms.control.agent_sn_cen_tick --store-dir agents/von-neumann --query "Как дела?"
-python -m casa.prisms.control.agent_sn_cen_tick --store-dir agents/von-neumann --query "Что купила Маша?"
-```
-
-**Важно:** не гоняй два процесса, пишущих в один store (tick + `run_agent` одновременно) — риск lock / half-written checkpoint.
+**Важно:** не гоняй два процесса на один store (`run_agent` + tick).
 
 ---
 
-## 4. Фоновая жизнь (curiosity loop)
-
-Host только поднимает процесс; смысл tick — у агента:
+## 4. Фоновая жизнь
 
 ```powershell
 python tools/run_agent.py --store-dir agents/von-neumann
 ```
 
-Остановка: **Ctrl+C** (host interrupt, checkpoint сохраняется).
-
-Lab: один quantum без бесконечного цикла:
-
-```powershell
-python tools/run_agent.py --store-dir agents/von-neumann --once
-```
+Остановка: **Ctrl+C**.
 
 ---
 
-## 5. Карта store (куда смотреть)
+## 5. Карта store
 
 | Путь | Смысл |
 |------|--------|
-| `agents/von-neumann/ltm/` | опыт после sleep |
-| `agents/von-neumann/journal/` | его тетрадь (self) |
-| `agents/von-neumann/agent_session.json` | сессия, dialogue, WM |
-| `agents/von-neumann/MEMORY.md` | карта для человека (regenerate tools) |
-| `agents/von-neumann/field_state.json` | большой checkpoint (может быть sqlite mirror) |
-
-Живой store **не** коммитится в code repo — только у тебя локально (+ твои эксперименты).
+| `ltm/` | опыт после sleep |
+| `nca/` | веса repair по решёткам |
+| `journal/` | тетрадь (self) |
+| `agent_session.json` | dialogue, WM |
+| `agent_field.db` / `field_state.json` | checkpoint поля |
 
 ---
 
-## 6. Без life-archive (только smoke)
+## 6. Без snapshot
 
-Проверить, что окружение живое, без памяти Неймана:
+**Smoke (окружение):**
 
 ```powershell
 python -m casa.domain.dialogue_smoke
 ```
 
-Ожидай `"ok": true` в JSON. Это **не** von-neumann store, а изолированный тест органа диалога.
+**Необученная оболочка (curriculum с lessons/):**
+
+```powershell
+python tools/bootstrap_agent_cold_store.py --store-dir agents/von-neumann-new --force
+```
 
 ---
 
@@ -167,29 +164,24 @@ python -m casa.domain.dialogue_smoke
 
 | Симптом | Что сделать |
 |---------|-------------|
-| `git lfs` / pointer-файлы вместо `*.pt` | `git lfs pull` в life-archive |
-| `ModuleNotFoundError: casa` | активируй venv; `cd` в корень репо |
-| Python &lt; 3.12 | установи 3.12+ |
-| Ответ только defer | нормально на ранней фазе / overload; попробуй другой cue или `--ticks 2` |
-| «файл занят» при tick | останови `run_agent.py` |
-| Нет доступа к private archive | запроси invite; без него полный restore недоступен |
+| `lfs_pointer_warning` в restore | `git lfs pull` в life-archive |
+| `store_dir is not empty` | `--force` на restore |
+| `ModuleNotFoundError: casa` | venv + корень репо |
+| Ответ defer | нормально; другой cue или `--ticks 2` |
+| Нет доступа к archive | invite; иначе только cold/smoke |
 
 ---
 
-## 8. Чего пока нет (честно)
+## 8. Чего пока нет
 
-- Красивого REPL-чата в терминале — только tick + JSON / session file.
-- Публичного life-archive (Phase B в [ADR-0050](../design/CASA-ADR-0050-agent-life-archive-visibility-v1.md)) — пока private.
-- Browser wasm — [horizon memo](../design/CASA-future-von-neumann-browser-wasm-v0.md).
+- REPL-чат в терминале.
+- Public life-archive (ADR-0050 Phase B).
+- Browser wasm.
 
 ---
 
 ## Ссылки
 
-- Зоны жизни / host vs teacher: [agents/README.md](../agents/README.md)
-- Диалог и субъект: [ADR-0045](../design/CASA-ADR-0045-subject-as-interlocutor.md)
-- Restore / fork: [ADR-0050 § Restore](../design/CASA-ADR-0050-agent-life-archive-visibility-v1.md)
-- Учебный план RU: [CASA-von-neumann-ru-teaching-plan-v1.md](../design/CASA-von-neumann-ru-teaching-plan-v1.md)
-- Snapshot backup (maintainers): `python tools/sync_life_archive.py snapshot -m "…"`
-
-**Вопросы по доступу:** maintainers [AI-Guiders/casa-ontology-payload](https://github.com/AI-Guiders/casa-ontology-payload).
+- [agents/README.md](../agents/README.md)
+- [ADR-0050](../design/CASA-ADR-0050-agent-life-archive-visibility-v1.md)
+- Backup (maintainers): `python tools/sync_life_archive.py snapshot -m "…"`
