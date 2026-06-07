@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "bundle_id": "kb-lang-ru-lexicon-semantics-v1",
+  "title": "RU lexicon semantics — meaning frames (ADR-0053)",
+  "doc": "lessons/lang-ru-lexicon-semantics/README.md",
+  "claims": [
+    {
+      "concept_id": "ru.prop.frame.event",
+      "text": "Событие: действие + участники + время/место.",
+      "section": "semantics_meta",
+      "slots": {
+        "slot_actor": "кто",
+        "slot_time": "когда",
+        "slot_place": "где"
+      }
+    },
+    {
+      "concept_id": "ru.prop.event.meeting_moved",
+      "text": "Перенос родительского собрания.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_passage_any": "собран|перенос",
+        "score": "42",
+        "event": "meeting_moved",
+        "actor": "родители",
+        "clause_template": "родительское собрание перенесли|{place_norm}|на {time_date}|в {time_clock}",
+        "anchors": "time_date,time_clock,place",
+        "question_register_any": "дружеск|чат|неформальн|родител",
+        "register": "informal"
+      }
+    },
+    {
+      "concept_id": "ru.prop.constraint.preserve_facts",
+      "text": "Сохранить все факты из исходного текста.",
+      "section": "meaning_emit",
+      "slots": {
+        "match_question_all": "сохрани,факт",
+        "requires_passage_any": "собран|перенос",
+        "score": "38",
+        "constraint": "preserve_facts"
+      }
+    },
+    {
+      "concept_id": "ru.prop.constraint.shift_register",
+      "text": "Сменить регистр на дружеский для чата.",
+      "section": "meaning_emit",
+      "slots": {
+        "match_question_any": "дружеск|чат|неформальн",
+        "requires_passage_any": "собран|перенос",
+        "score": "36",
+        "constraint": "shift_register",
+        "target_register": "informal"
+      }
+    },
+    {
+      "concept_id": "ru.prop.stance.author_cautious",
+      "text": "Позиция автора: осторожный подход к раннему второму языку.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_passage_any": "автор|склоня|осторож|позици",
+        "match_passage_all": "осторож|без спешки",
+        "score": "44",
+        "stance": "cautious",
+        "clause_1": "Похоже, автор склоняется к осторожности",
+        "if_passage": "грамотност",
+        "clause_2": "сначала нужна прочная грамотность",
+        "linker_2": "а потом",
+        "clause_3": "второй язык можно без спешки",
+        "linker_3": "то есть"
+      }
+    },
+    {
+      "concept_id": "ru.prop.argument.for",
+      "text": "Аргумент за: ранний старт естественен для ребёнка.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_sentence_any": "настаивают|гибче|естественно",
+        "score": "32",
+        "side": "for",
+        "clause_1": "мозг ребёнка гибче и освоение идёт естественно"
+      }
+    },
+    {
+      "concept_id": "ru.prop.argument.against",
+      "text": "Аргумент против: перегрузка в первом классе.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_sentence_any": "предупреждают|перегруз|отнимает",
+        "score": "32",
+        "side": "against",
+        "clause_1": "перегрузка отнимает время у родного языка и математики"
+      }
+    },
+    {
+      "concept_id": "ru.prop.task.pro_con",
+      "text": "Задача: структурированное мнение с аргументами за и против.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_question_any": "за и против|аргумент|мнен",
+        "score": "40",
+        "task": "pro_con",
+        "clause_1": "вопрос о втором языке в школе спорный"
+      }
+    },
+    {
+      "concept_id": "ru.prop.topic.second_language_school",
+      "text": "Тема: второй язык в школе с первого класса.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_question_all": "язык,школ",
+        "match_question_any": "за и против|аргумент|мнен",
+        "score": "38",
+        "topic": "second_language_school",
+        "clause_for": "ранний старт помогает привыкнуть к языку",
+        "linker_for": "С одной стороны",
+        "clause_against": "детям может быть тяжело совмещать с базовыми предметами",
+        "linker_against": "С другой стороны",
+        "clause_stance": "решение зависит от готовности ребёнка и школы",
+        "linker_stance": "В итоге"
+      }
+    },
+    {
+      "concept_id": "ru.prop.inference.praise_for_showing",
+      "text": "Вывод: папа похвалил за показ апельсина.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_passage_all": "показал,апельсин",
+        "match_question_any": "почему",
+        "score": "44",
+        "cause": "маша показала апельсин",
+        "effect": "похвала",
+        "clause_1": "Похоже, папа сказал это потому что Маша показала апельсин",
+        "clause_2": "он похвалил её за это",
+        "linker_2": "то есть"
+      }
+    },
+    {
+      "concept_id": "ru.prop.inference.motive_from_context",
+      "text": "Мотив реплики из контекста сцены.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_passage_all": "вернулся,показал",
+        "match_question_any": "почему",
+        "score": "30",
+        "clause_1": "Видимо, реплика связана с тем, что произошло перед ней в тексте"
+      }
+    },
+    {
+      "concept_id": "ru.prop.fact.quoted_speech",
+      "text": "Реплика из кавычек в тексте.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_passage_quote": "true",
+        "match_question_any": "сказал,сказала,ответ",
+        "deny_question_any": "почему",
+        "score": "36",
+        "emit_quote_clause": "true"
+      }
+    },
+    {
+      "concept_id": "ru.prop.fact.purchase",
+      "text": "Покупка предмета в тексте.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_passage_regex": "купил[а]?\\s+(\\w+)",
+        "match_question_any": "что,купил",
+        "score": "34",
+        "emit_capture_as": "item,clause_1"
+      }
+    },
+    {
+      "concept_id": "ru.prop.inference.bus_delay",
+      "text": "Вывод: опоздание из-за транспорта.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_passage_all": "автобус,опоздал",
+        "match_question_any": "почему",
+        "score": "44",
+        "cause": "автобус опоздал",
+        "effect": "опоздала на урок",
+        "clause_1": "Похоже, Оля опоздала потому что автобус опоздал",
+        "clause_2": "задержка транспорта сорвала её план",
+        "linker_2": "то есть"
+      }
+    },
+    {
+      "concept_id": "ru.prop.inference.rain_cancel_walk",
+      "text": "Вывод: прогулку отменили из-за дождя.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_passage_all": "дожд,луж",
+        "match_question_any": "почему,из-за чего",
+        "score": "42",
+        "cause": "начался дождь",
+        "effect": "дети остались дома",
+        "clause_1": "Похоже, прогулку отменили из-за дождя",
+        "clause_2": "на дорожках появились лужи, поэтому идти было неудобно",
+        "linker_2": "то есть"
+      }
+    },
+    {
+      "concept_id": "ru.prop.main_idea.library_quiet",
+      "text": "Главная мысль: библиотеке нужна тишина, чтобы всем было удобно читать.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_passage_all": "библиотек,тих",
+        "match_question_any": "главная мысль,основная мысль,о чём",
+        "score": "42",
+        "topic": "library_quiet",
+        "clause_1": "Главная мысль в том, что в библиотеке нужна тишина",
+        "clause_2": "так читателям легче сосредоточиться",
+        "linker_2": "потому что"
+      }
+    },
+    {
+      "concept_id": "ru.prop.stance.residents_trees",
+      "text": "Позиция жителей: они против вырубки старых деревьев.",
+      "section": "meaning_frame",
+      "slots": {
+        "match_passage_all": "жители,дерев",
+        "match_question_any": "позиция,жителей,протест",
+        "score": "42",
+        "stance": "against_tree_cutting",
+        "clause_1": "Жители против вырубки старых деревьев",
+        "clause_2": "для них деревья дают тень и воздух",
+        "linker_2": "потому что"
+      }
+    }
+  ]
+}

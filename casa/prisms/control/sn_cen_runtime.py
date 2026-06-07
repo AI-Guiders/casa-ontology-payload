@@ -241,6 +241,10 @@ _CODE_QUERY_MARKERS = (
 _GRAMMAR_QUERY_MARKERS = (
     "согласно",
     "запят",
+    "буква",
+    "как пишется",
+    "как правильно",
+    "проверь",
     "пароним",
     "орфограф",
     "граммат",
@@ -300,45 +304,33 @@ def _query_wants_code(query: str) -> bool:
 
 
 def _query_is_dialogue(query: str) -> bool:
-    """Приветствие, self, бытовые слова (мама), «как сказать» — dialogue KB, не отказ."""
-    q = query.strip().lower()
-    if not q or _query_wants_code(q):
+    """Turn-taking cue: short partner line, not passage/grammar/teach (structural, not word lists)."""
+    from casa.prisms.tick.passage import has_passage_context
+
+    raw = (query or "").strip()
+    if not raw or _query_wants_code(raw):
         return False
-    social = (
-        "привет",
-        "здравствуй",
-        "здарова",
-        "добрый день",
-        "добрый вечер",
-        "добрый утро",
-        "как дела",
-        "что умеешь",
-        "кто ты",
-        "как ты",
-        "мама",
-        "папа",
-        "позвонить",
-        "набрать",
-        "вечером",
-        "красиво сказать",
-        "как сказать",
-        "сформулировать",
-    )
-    if not any(m in q for m in social):
+    if has_passage_context(raw):
         return False
-    if _query_has_grammar_intent(q) and not any(
-        x in q for x in ("привет", "мама", "дела", "умеешь", "кто ты", "позвонить", "сказать", "сформулировать")
-    ):
+    q = raw.lower()
+    if _query_has_grammar_intent(q):
         return False
-    if any(x in q for x in ("верно ли", "запят", "согласно", "пароним", "орфограф")):
+    if any(m in q for m in ("что такое", "объясни", "объяснить", "explain", "what is")):
         return False
-    if any(x in q for x in ("фильм", "кино", "сериал", "рецепт", "погода")):
+    words = _tokenize_query(raw)
+    if len(words) > 28:
         return False
-    return True
+    if len(words) <= 6:
+        return True
+    if "?" in raw and len(words) <= 18:
+        return True
+    return len(words) <= 10
 
 
 def _is_dialogue_claim(claim: dict) -> bool:
     cid = str(claim.get("concept_id") or "")
+    if cid.startswith(("ru.dialog.clarify.", "ru.dialog.honest.")):
+        return False
     return cid.startswith("ru.dialog.") or cid.startswith("ru.lang.word.")
 
 
