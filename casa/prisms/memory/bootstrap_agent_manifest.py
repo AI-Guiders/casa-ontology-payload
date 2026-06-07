@@ -150,6 +150,56 @@ def _bootstrap_agent_prisms(state: dict, manifest: dict[str, Any], *, tick: int 
                 }
             )
 
+    zone_spawners: list[tuple[str, str, Any]] = [
+        ("emotional_zone", "0060", "spawn_emotional_zone"),
+        ("executive_zone", "0061", "spawn_executive_zone"),
+        ("social_zone", "0061", "spawn_social_zone"),
+        ("logical_zone", "0061", "spawn_logical_zone"),
+        ("character_zone", "0061", "spawn_character_zone"),
+        ("spatial_zone", "0061", "spawn_spatial_zone"),
+    ]
+    for key, adr, fn_name in zone_spawners:
+        cfg = prisms.get(key) or {}
+        if not cfg.get("enabled"):
+            continue
+        if not cfg.get("spawn_on_bootstrap", True):
+            continue
+        mod = __import__(
+            "casa.prisms.affect" if key == "emotional_zone" else "casa.prisms.intelligence",
+            fromlist=[fn_name],
+        )
+        spawner = getattr(mod, fn_name)
+        spawn_kwargs: dict[str, Any] = {
+            "core_lattice_id": cfg.get("core_lattice_id"),
+            "concept_prefix_core": cfg.get("concept_prefix_core"),
+        }
+        if key != "character_zone":
+            spawn_kwargs["sandbox_lattice_id"] = cfg.get("sandbox_lattice_id")
+            spawn_kwargs["concept_prefix_sandbox"] = cfg.get("concept_prefix_sandbox")
+        if key == "emotional_zone":
+            spawn_kwargs["initial_axes"] = cfg.get("initial_axes")
+            spawn_kwargs["zone_policy"] = cfg.get("zone_policy")
+            rep = spawner(state, tick=tick, config=spawn_kwargs)
+        elif key == "spatial_zone":
+            spawn_kwargs["enabled"] = cfg.get("enabled", False)
+            rep = spawner(state, config=spawn_kwargs)
+            if not rep.get("spawned", True):
+                continue
+        else:
+            if key == "social_zone" and cfg.get("initial_trust") is not None:
+                spawn_kwargs["initial_trust"] = cfg.get("initial_trust")
+            if key == "logical_zone" and cfg.get("initial_math_confidence") is not None:
+                spawn_kwargs["initial_math_confidence"] = cfg.get("initial_math_confidence")
+            if key == "character_zone":
+                if cfg.get("initial_openness") is not None:
+                    spawn_kwargs["initial_openness"] = cfg.get("initial_openness")
+                if cfg.get("initial_directness") is not None:
+                    spawn_kwargs["initial_directness"] = cfg.get("initial_directness")
+            if cfg.get("zone_policy"):
+                spawn_kwargs["zone_policy"] = cfg.get("zone_policy")
+            rep = spawner(state, config=spawn_kwargs)
+        applied.append({"prism": key, "adr": cfg.get("adr") or adr, **rep})
+
     return applied
 
 

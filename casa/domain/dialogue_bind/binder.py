@@ -140,6 +140,7 @@ class SubjectDialogueBinder:
             intent=intent,
             concept_hints=query_read.concept_hints,
             passage_lemmas=pt,
+            state=state,
         )
 
         wm_bind_rep: dict[str, Any] | None = None

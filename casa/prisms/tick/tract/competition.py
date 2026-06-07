@@ -72,6 +72,17 @@ def compete_tract_intent(
                 scores[tract_id].score += boost
                 scores[tract_id].sources.append("wm_prism")
 
+        from casa.prisms.tick.tract.model import parse_math_ops
+        from casa.prisms.intelligence.apply import intelligence_tract_boosts
+
+        hints = list(parse_math_ops(raw))
+        for tract_id, boost in intelligence_tract_boosts(state, concept_hints=hints).items():
+            if tract_id not in scores:
+                scores[tract_id] = TractScore(tract_id, 0)
+            if boost:
+                scores[tract_id].score += boost
+                scores[tract_id].sources.append("intelligence_zone")
+
     ranked = sorted(scores.values(), key=lambda t: t.score, reverse=True)
     winner = ranked[0]
     if winner.score <= 0:

@@ -20,6 +20,13 @@
         "meta": { "notebook": "self", "status": "open" }
       },
       {
+        "domain": "self",
+        "kind": "note",
+        "text_template": "Emotional Zone: лимбика (agent-limbic-core) — то, что переживаю в жизни. Песочница (agent-affect-sandbox) — где пробую, не ломая core; в core переношу только через promote.",
+        "tags": ["notebook:self", "bootstrap", "emotional-zone"],
+        "meta": { "notebook": "self", "status": "open", "zone": "emotional" }
+      },
+      {
         "domain_from_notebook": true,
         "kind": "note",
         "text_template": "Тетрадь «{notebook}»: сюда записываю свои попытки, ошибки и выводы по классу.",
@@ -63,6 +70,97 @@
         "max_hypotheses": 48
       },
       "note": "Personal tract priors from dialogue; cold boot with WM"
+    },
+    "emotional_zone": {
+      "enabled": true,
+      "adr": "0060",
+      "spawn_on_bootstrap": true,
+      "core_lattice_id": "agent-limbic-core",
+      "sandbox_lattice_id": "agent-affect-sandbox",
+      "concept_prefix_core": "agent.limbic.",
+      "concept_prefix_sandbox": "agent.affect.lab.",
+      "initial_axes": {
+        "valence": 0.0,
+        "arousal": 0.2,
+        "security": 0.5
+      },
+      "zone_policy": {
+        "sandbox_writes_core": false,
+        "promote_theta": 0.65,
+        "max_sandbox_lattices": 2,
+        "max_experiments": 32
+      },
+      "note": "Limbic core at T=0; sandbox for agent experiments before promote"
+    },
+    "executive_zone": {
+      "enabled": true,
+      "adr": "0061",
+      "spawn_on_bootstrap": true,
+      "core_lattice_id": "agent-exec-core",
+      "sandbox_lattice_id": "agent-exec-sandbox",
+      "concept_prefix_core": "agent.exec.",
+      "concept_prefix_sandbox": "agent.exec.lab.",
+      "zone_policy": {
+        "sandbox_writes_core": false,
+        "promote_theta": 0.65,
+        "max_sandbox_lattices": 2,
+        "max_experiments": 32
+      },
+      "note": "Predict / FPN executive zone — tract priors from surprise"
+    },
+    "social_zone": {
+      "enabled": true,
+      "adr": "0061",
+      "spawn_on_bootstrap": true,
+      "core_lattice_id": "agent-social-core",
+      "sandbox_lattice_id": "agent-social-sandbox",
+      "concept_prefix_core": "agent.social.",
+      "concept_prefix_sandbox": "agent.social.lab.",
+      "initial_trust": 0.5,
+      "zone_policy": {
+        "sandbox_writes_core": false,
+        "promote_theta": 0.65,
+        "max_sandbox_lattices": 2,
+        "max_experiments": 32
+      },
+      "note": "Partner trust, repair openness — social tract compose bias"
+    },
+    "logical_zone": {
+      "enabled": true,
+      "adr": "0061",
+      "spawn_on_bootstrap": true,
+      "core_lattice_id": "agent-logical-core",
+      "sandbox_lattice_id": "agent-logical-sandbox",
+      "concept_prefix_core": "agent.logic.",
+      "concept_prefix_sandbox": "agent.logic.lab.",
+      "initial_math_confidence": 0.5,
+      "zone_policy": {
+        "sandbox_writes_core": false,
+        "promote_theta": 0.65,
+        "max_sandbox_lattices": 2,
+        "max_experiments": 32
+      },
+      "note": "Math tract confidence — boosts math over social on arithmetic cues"
+    },
+    "character_zone": {
+      "enabled": true,
+      "adr": "0061",
+      "spawn_on_bootstrap": true,
+      "core_lattice_id": "agent-character-core",
+      "concept_prefix_core": "agent.character.",
+      "initial_openness": 0.5,
+      "initial_directness": 0.5,
+      "note": "Slow EMA temperament from emotional + social cores"
+    },
+    "spatial_zone": {
+      "enabled": false,
+      "adr": "0061",
+      "spawn_on_bootstrap": false,
+      "core_lattice_id": "agent-spatial-core",
+      "sandbox_lattice_id": "agent-spatial-sandbox",
+      "concept_prefix_core": "agent.spatial.",
+      "concept_prefix_sandbox": "agent.spatial.lab.",
+      "note": "Vis/spatial stub — enable when prism_visual active"
     }
   },
   "host_canon": {

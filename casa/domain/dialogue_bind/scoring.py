@@ -203,6 +203,7 @@ def reweight_blocks_for_reply(
     intent: str,
     concept_hints: list[str] | None = None,
     passage_lemmas: set[str] | None = None,
+    state: dict | None = None,
 ) -> None:
     """Emergent reply order: intent affinity + token overlap, not act templates."""
     kb_dialog = kb_reply_present(kb_hits)
@@ -354,6 +355,14 @@ def reweight_blocks_for_reply(
             score = min(score, 5)
 
         b["score"] = score
+
+    if state is not None:
+        from casa.prisms.intelligence.apply import (
+            apply_zone_deltas_to_blocks,
+            intelligence_compose_deltas,
+        )
+
+        apply_zone_deltas_to_blocks(blocks, intelligence_compose_deltas(state))
 
     blocks[:] = [b for b in blocks if int(b.get("score") or 0) > 0]
     blocks.sort(key=lambda row: int(row.get("score") or 0), reverse=True)

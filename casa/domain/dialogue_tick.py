@@ -175,6 +175,24 @@ def process_dialogue_on_tick(
             bind_top=bind_top,
         )
         ctx.wm_edge_scores = dict(wm_rep.get("wm_edge_scores") or {})
+        from casa.prisms.affect import affect_compose_bias
+        from casa.prisms.intelligence.tick import process_intelligence_turn
+
+        zone_snap = process_intelligence_turn(
+            state,
+            partner_text=q,
+            subject_reply=reply_text or "",
+            query_intent=query_intent or getattr(ctx, "query_intent", "") or "",
+            concept_hints=list(getattr(ctx, "concept_hints", None) or []),
+            disposition=disp.action.value if disp else "",
+            tick=int(wm_next.tick),
+        )
+        emotional = zone_snap.get("emotional") or {}
+        affect_rep: dict[str, Any] = {"axes": emotional.get("axes") or {}}
+        if zone_snap.get("life_event"):
+            affect_rep["event"] = zone_snap["life_event"]
+        else:
+            affect_rep["bias"] = affect_compose_bias(state)
         turn = append_subject_turn(
             store_dir,
             reply_text,
@@ -185,12 +203,16 @@ def process_dialogue_on_tick(
                 "cen_action": task.action if task else "",
                 "yielded_disposition": disp.reason if disp else "",
                 **meaning_provenance(ctx),
+                "emotional_zone": affect_rep,
+                "intelligence_zones": zone_snap,
             },
         )
         out["outbound"].append(turn.to_dict())
         out["reply_text"] = reply_text
         out["wm_prism"] = wm_rep
         out["intent_prism"] = intent_rep
+        out["emotional_zone"] = affect_rep
+        out["intelligence_zones"] = zone_snap
 
     else:
         initiated: list[dict[str, Any]] = []
