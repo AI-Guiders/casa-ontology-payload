@@ -12,6 +12,9 @@ import json
 from pathlib import Path
 
 from casa.cli.bootstrap_agent_self_tier import bootstrap_agent_self_tier
+from casa.prisms.memory.bootstrap_agent_manifest import default_manifest_path
+from casa.prisms.memory.bootstrap_host_canon import bootstrap_host_canon_lattices
+from casa.prisms.shared.store_boot import boot_store
 from casa.prisms.shared.store_layout import default_agent_store
 
 _DEFAULT_PROFILE = {
@@ -49,11 +52,19 @@ def bootstrap_agent_cold_store(
     )
 
     self_rep: dict | None = None
+    canon_rep: dict | None = None
     if seed_self:
         self_rep = bootstrap_agent_self_tier(
             store_dir,
             display_name=display_name,
             skip_if_journal_exists=False,
+        )
+        boot = boot_store(store_dir, prefer_field_state=True)
+        canon_rep = bootstrap_host_canon_lattices(
+            store_dir,
+            boot["state"],
+            locale=locale,
+            persist=True,
         )
 
     return {
@@ -61,7 +72,9 @@ def bootstrap_agent_cold_store(
         "store_id": sid,
         "trained": False,
         "store_profile": str(store_dir / "store_profile.json"),
+        "bootstrap_manifest": str(default_manifest_path()),
         "self_tier": self_rep,
+        "host_canon": canon_rep,
         "next": "Run lessons/ingest or restore_agent_life for a trained snapshot",
     }
 

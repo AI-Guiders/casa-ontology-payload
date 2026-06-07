@@ -1,0 +1,31 @@
+{
+  "plan_id": "wm-context-ru-v1",
+  "stage": "stage-05e-half-wm-context-ru",
+  "min_pass_ratio": 1.0,
+  "scenarios": [
+    {
+      "scenario_id": "wm-link-after-turns",
+      "wired": true,
+      "turns": [
+        {
+          "speaker": "partner",
+          "text": "Дождь отменил прогулку в парке.",
+          "provenance": {
+            "prop_ids": ["ru.prop.rain", "ru.prop.cancel", "lang.word.парк"]
+          }
+        },
+        {
+          "speaker": "partner",
+          "text": "Парк был нашей целью на выходные.",
+          "provenance": {
+            "prop_ids": ["lang.word.парк", "ru.prop.weekend_goal"]
+          }
+        }
+      ],
+      "recall_query": "Объясни своими словами связь между дождём и отменой — без пересказа всего текста.",
+      "expect_substrings": ["дожд", "отмен"],
+      "max_paste_ratio": 0.45,
+      "min_wm_edges": 1
+    }
+  ]
+}

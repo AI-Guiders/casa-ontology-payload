@@ -1,0 +1,27 @@
+{
+  "plan_id": "wm-retention-ru-v1",
+  "stage": "stage-05e-half-wm-retention-ru",
+  "min_pass_ratio": 1.0,
+  "scenarios": [
+    {
+      "scenario_id": "partner-callback",
+      "wired": true,
+      "seed_edges": [
+        ["lang.word.квантовый", "lang.word.физика"]
+      ],
+      "turns": [
+        {
+          "speaker": "partner",
+          "text": "Мы обсуждали квантовую физику в прошлый раз.",
+          "provenance": {
+            "concept_hints": ["lang.word.квантовый", "lang.word.физика"]
+          }
+        }
+      ],
+      "recall_query": "Как мы говорили про квантовый — напомни связь своими словами.",
+      "expect_substrings": ["квантов"],
+      "max_paste_ratio": 0.5,
+      "require_wm_block": true
+    }
+  ]
+}
