@@ -78,15 +78,42 @@ class QueryRead:
     kb_hits: list[tuple[dict[str, Any], int]] = field(default_factory=list)
 
 
-def classify_query_intent(query: str) -> str:
+def passage_focus_query(query: str) -> str:
+    """Passage + question turn: classify/act on the question line, not quoted dialogue in passage."""
     q = (query or "").strip()
     if not q:
+        return q
+    parts = [p.strip() for p in re.split(r"\n\s*\n", q) if p.strip()]
+    if len(parts) >= 2:
+        return parts[-1]
+    return q
+
+
+_PASSAGE_RECALL_MARKERS = (
+    "что купил",
+    "что сказал",
+    "что сделал",
+    "куда ",
+    "где ",
+    "когда ",
+    "кто ",
+    "сколько ",
+    "почему ",
+    "зачем ",
+)
+
+
+def classify_query_intent(query: str) -> str:
+    q = passage_focus_query(query)
+    if not q:
         return "general"
+    ql = q.lower()
+    if any(m in ql for m in _PASSAGE_RECALL_MARKERS):
+        return "recall"
     if _query_is_dialogue(q):
         return "social"
     sticks = parse_stick_runs(q)
     ops = parse_math_ops(q)
-    ql = q.lower()
     if sticks or ops:
         return "math"
     if any(w in ql for w in ("плюс", "минус", "умнож", "делить", "палоч", "слагаем", "сумм", "разност")):

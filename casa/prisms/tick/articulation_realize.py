@@ -206,15 +206,17 @@ def build_plan(
     user_query: str,
     answer_blocks: tuple[Any, ...] | list[Any],
 ) -> UtterancePlan:
+    from casa.prisms.tick.semantic_read import passage_focus_query
+
     q = (user_query or "").strip()
-    intent = _intent_label(q)
+    intent = _intent_label(passage_focus_query(q))
     blocks = list(answer_blocks)
     cids = [_block_cid(b) for b in blocks if _block_cid(b)]
     lexemes: dict[str, str] = {}
     atoms: list[GrammarAtom] = []
     act = ""
 
-    ql = q.lower()
+    ql = passage_focus_query(q).lower()
     if "как дела" in ql:
         act = "how_are_you"
     elif any(x in ql for x in ("привет", "здравствуй", "добрый день", "добрый вечер")):

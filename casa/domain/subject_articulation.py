@@ -225,6 +225,22 @@ def _realize_social(plan: UtterancePlan, query: str, ctx: SubjectDialogueContext
     return body
 
 
+def _realize_recall(plan: UtterancePlan, query: str, ctx: SubjectDialogueContext) -> str | None:
+    confirmed = [b for b in ctx.blocks if str(b.get("section") or "") == "confirmed"]
+    if confirmed:
+        return _trim(_block_text(confirmed[0]), 220)
+    for b in ctx.blocks:
+        if b.get("source") != "journal":
+            continue
+        text = _block_text(b)
+        if text and any(tok in text.lower() for tok in ("купил", "сказал", "ушёл", "ушел", "вернулся")):
+            return _trim(text, 220)
+    lang_hits = [b for b in ctx.blocks if str(b.get("concept_id") or "").startswith("lang.word.")]
+    if lang_hits:
+        return _trim(_block_text(lang_hits[0]), 160)
+    return None
+
+
 def _realize_soft_miss(plan: UtterancePlan, query: str, ctx: SubjectDialogueContext) -> str:
     if ctx.query_intent == "math":
         math = _realize_math(ctx, query)
@@ -256,7 +272,9 @@ def realize_subject(plan: UtterancePlan, user_query: str, ctx: SubjectDialogueCo
     if not plan.atoms:
         plan.atoms.extend(_atoms_from_blocks(ctx, q))
 
-    if act in ("greeting", "how_are_you", "intro"):
+    if ctx.query_intent == "recall":
+        body = _realize_recall(plan, q, ctx) or _realize_soft_miss(plan, q, ctx)
+    elif act in ("greeting", "how_are_you", "intro"):
         body = _realize_social(plan, q, ctx)
     elif ctx.query_intent == "grammar":
         body = _grammar_body(plan, q, ctx) or _realize_soft_miss(plan, q, ctx)

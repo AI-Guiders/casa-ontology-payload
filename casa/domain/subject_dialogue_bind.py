@@ -85,7 +85,9 @@ def _answer_block_to_dict(b: AnswerBlock | dict[str, Any]) -> dict[str, Any]:
 
 
 def _social_query(query: str) -> str | None:
-    ql = query.strip().lower()
+    from casa.prisms.tick.semantic_read import passage_focus_query
+
+    ql = passage_focus_query(query).strip().lower()
     if any(x in ql for x in ("привет", "здравствуй", "добрый день", "добрый вечер", "hello", "hi", "здарова")):
         return "greeting"
     if any(x in ql for x in ("как дела", "how are you")):
