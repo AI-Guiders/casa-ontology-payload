@@ -196,25 +196,7 @@ def run_learning_tick(
     task = cen_plan(gated, bundle=routing_bundle, user_query=q)
     wm_next = fpn_after_cen(wm, task, user_query=q)
 
-    from casa.domain.dialogue_tick import apply_subject_answer_text, process_dialogue_on_tick
-
-    subject_answer = apply_subject_answer_text(
-        task, user_query=q, state=state, wm=wm_next, store_dir=store_dir
-    )
-    if subject_answer != task.answer_text:
-        task = TaskEmit(
-            intent=task.intent,
-            action=task.action,
-            concepts=task.concepts,
-            edges=task.edges,
-            targets=task.targets,
-            query_to_dmn=task.query_to_dmn,
-            confidence=task.confidence,
-            notes=task.notes,
-            llm_probe=task.llm_probe,
-            answer_blocks=task.answer_blocks,
-            answer_text=subject_answer,
-        )
+    from casa.domain.dialogue_tick import process_dialogue_on_tick
 
     control = run_control_extensions(
         prior_digest=wm.last_concepts,
@@ -330,6 +312,20 @@ def run_learning_tick(
         self_drive_rep=self_drive_rep,
         retro_rep=retro_rep,
     )
+    if dialogue_rep.get("subject_mode") and dialogue_rep.get("reply_text"):
+        task = TaskEmit(
+            intent=task.intent,
+            action=task.action,
+            concepts=task.concepts,
+            edges=task.edges,
+            targets=task.targets,
+            query_to_dmn=task.query_to_dmn,
+            confidence=task.confidence,
+            notes=task.notes,
+            llm_probe=task.llm_probe,
+            answer_blocks=task.answer_blocks,
+            answer_text=str(dialogue_rep["reply_text"]),
+        )
 
     pdca_phase = infer_pdca_phase(
         plan_tick=plan_tick,

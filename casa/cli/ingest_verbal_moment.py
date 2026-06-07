@@ -16,7 +16,7 @@ from casa.prisms.memory.agent_memory_ops import agent_remember
 from casa.prisms.shared.store_bundles import load_store_bundles
 from casa.prisms.shared.store_lock import store_session_lock
 from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
-from casa.prisms.tick.semantic_read import route_kb_read
+from casa.prisms.tick.routing import route_kb_read
 
 
 def _reply_excerpt(reply: str, limit: int = 200) -> str:

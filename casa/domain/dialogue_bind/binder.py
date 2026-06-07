@@ -59,7 +59,7 @@ class SubjectDialogueBinder:
         from casa.prisms.memory.intent import is_agent_tract, resolve_compose_profile
         from casa.prisms.shared.store_bundles import load_store_bundles
         from casa.prisms.tick.passage import proposition_bind_blocks
-        from casa.prisms.tick.semantic_read import route_kb_read
+        from casa.prisms.tick.routing import route_kb_read
 
         q = (user_query or "").strip()
         name = subject_display_name(state, store_dir)

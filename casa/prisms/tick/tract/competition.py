@@ -83,7 +83,32 @@ def compete_tract_intent(
                 scores[tract_id].score += boost
                 scores[tract_id].sources.append("intelligence_zone")
 
+        percept = state.get("_perceptual_turn")
+        if isinstance(percept, dict):
+            row = percept.get("fan_out") if isinstance(percept.get("fan_out"), dict) else {}
+            social_w = float(row.get("social") or 0.0)
+            ling_w = float(row.get("linguistic") or 0.0)
+            exec_w = float(row.get("executive") or 0.0)
+            if social_w > 0.15 and "social" in scores:
+                scores["social"].score += int(10 * social_w)
+                scores["social"].sources.append("perceptual:fan_out")
+            if ling_w > 0.15:
+                for tract_id in ("general", "query", "explain"):
+                    if tract_id in scores:
+                        scores[tract_id].score += int(8 * ling_w)
+                        scores[tract_id].sources.append("perceptual:fan_out")
+            if exec_w > 0.15 and "general" in scores:
+                scores["general"].score += int(8 * exec_w)
+                scores["general"].sources.append("perceptual:fan_out")
+
     ranked = sorted(scores.values(), key=lambda t: t.score, reverse=True)
+    if state is not None:
+        from casa.prisms.metabolic import metabolic_allows_tract
+
+        for tract in ranked:
+            if not metabolic_allows_tract(state, tract.tract_id):
+                tract.score = min(tract.score, 0)
+        ranked = sorted(scores.values(), key=lambda t: t.score, reverse=True)
     winner = ranked[0]
     if winner.score <= 0:
         return "general", ranked

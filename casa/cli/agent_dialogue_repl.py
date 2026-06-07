@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Interactive console dialogue with a subject-mode agent store (ADR-0045)."""
+"""Interactive dialogue — partner mode of agent-life engine (agent_sn_cen_tick)."""
 
 from __future__ import annotations
 
@@ -13,16 +13,13 @@ from casa._paths import REPO_ROOT, ensure_import_paths
 ensure_import_paths()
 
 from casa.cli.ingest_state import resolve_ingest_state
-from casa.domain.dialogue_tick import process_dialogue_on_tick
 from casa.domain.dialogue_turn import load_dialogue_turns
 from casa.domain.subject_mode import apply_subject_profile, is_subject_mode, subject_display_name
-from casa.prisms.control.fpn_state import WorkingMemory, read_session_meta
-from casa.prisms.control.sn_cen_runtime import TaskEmit
+from casa.prisms.control.agent_sn_cen_tick import interactive_dialogue_config, run_dialogue_partner_turn
+from casa.prisms.control.fpn_state import load_session, save_session
 from casa.prisms.memory.agent_memory_ops import agent_remember
-from casa.prisms.shared.store_bundles import load_store_bundles
 from casa.prisms.shared.store_lock import store_session_lock
 from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
-from casa.prisms.tick.semantic_read import route_kb_read
 
 
 def _store_dir(store_id: str) -> Path:
@@ -30,20 +27,6 @@ def _store_dir(store_id: str) -> Path:
     if p.is_dir():
         return p.resolve()
     return (REPO_ROOT / "agents" / store_id).resolve()
-
-
-def _minimal_task(*, intent: str = "query") -> TaskEmit:
-    return TaskEmit(
-        intent=intent,
-        action="answer_from_memory",
-        concepts=[],
-        edges=[],
-        targets=[],
-        query_to_dmn=None,
-        confidence=0.5,
-        answer_blocks=(),
-        answer_text="",
-    )
 
 
 def _configure_stdio_utf8() -> None:
@@ -59,6 +42,7 @@ def _print_banner(store: Path, display: str) -> None:
     turns = len(load_dialogue_turns(store))
     print()
     print(f"CASA dialogue — {display} ({store.name})")
+    print("Режим partner-turn через agent_sn_cen_tick (тот же субъект, что autonomous tick).")
     print("Пиши сообщения; пустая строка или /quit — выход.")
     print("Команды: /help /turns /remember <текст> /verbose /sleep")
     if turns:
@@ -183,35 +167,37 @@ def _partner_reply(
     *,
     store: Path,
     state: dict,
-    wm: WorkingMemory,
-    tick: int,
+    wm,
     verbose: bool,
-) -> tuple[str, dict[str, Any]]:
-    wm_next = WorkingMemory(tick=tick, goal_id=wm.goal_id, goal=wm.goal)
-    bundle = load_store_bundles(store)
-    pre = route_kb_read(query, bundle, store_dir=store, state=state)
-    task = _minimal_task(intent=pre.intent or "query")
-    rep = process_dialogue_on_tick(
+) -> tuple[str, dict[str, Any], object, dict]:
+    reply, report, wm_next, state = run_dialogue_partner_turn(
         store,
-        state,
-        wm=wm,
-        wm_next=wm_next,
         user_query=query,
-        task=task,
-        mem_prep={"goal_arbiter": {"load": {"overloaded": False}}},
+        wm=wm,
+        state=state,
+        config=interactive_dialogue_config(),
     )
+    dialogue = report.get("dialogue") or {}
 
-    reply = str(rep.get("reply_text") or "").strip()
-    if not reply and rep.get("outbound"):
-        last = rep["outbound"][-1]
-        reply = str(last.get("text") or "").strip()
-    if not reply and rep.get("disposition_verbalized"):
-        reply = str(rep.get("last_outbound", {}).get("text") or "").strip()
+    if dialogue.get("forced_sleep"):
+        try:
+            sleep_msg = _run_sleep(store, state)
+            if verbose:
+                print(f"  · metabolic: {sleep_msg}", file=sys.stderr)
+        except Exception as exc:  # noqa: BLE001
+            if verbose:
+                print(f"  · metabolic sleep failed: {exc}", file=sys.stderr)
 
     if verbose:
-        print(f"  · intent={pre.intent} tracts={len(pre.tract_ranked or [])}", file=sys.stderr)
+        cen = report.get("cen") or {}
+        metabolic = dialogue.get("metabolic_zone") or {}
+        print(
+            f"  · intent={cen.get('intent')} tick={report.get('tick')} "
+            f"atp={metabolic.get('atp_current')}",
+            file=sys.stderr,
+        )
 
-    return reply or "(молчит)", rep
+    return reply, report, wm_next, state
 
 
 def run_repl(
@@ -240,9 +226,7 @@ def run_repl(
         display = subject_display_name(state, store)
         _print_banner(store, display)
 
-        meta = read_session_meta(store)
-        tick = int(meta.get("repl_tick") or 0)
-        wm = WorkingMemory(tick=tick)
+        wm = load_session(store)
 
         try:
             while True:
@@ -274,30 +258,24 @@ def run_repl(
                     if not line:
                         continue
 
-                reply, _rep = _partner_reply(
+                reply, _report, wm, state = _partner_reply(
                     line,
                     store=store,
                     state=state,
                     wm=wm,
-                    tick=tick,
                     verbose=verbose,
                 )
-                tick += 1
-                wm = WorkingMemory(tick=tick, goal_id=wm.goal_id, goal=wm.goal)
                 print(f"{display}> {reply}")
                 print()
 
                 if persist:
-                    meta = read_session_meta(store)
-                    meta["repl_tick"] = tick
-                    from casa.prisms.control.fpn_state import write_session_meta
-
-                    write_session_meta(store, meta)
+                    save_session(store, wm)
                     mark_runtime_dirty(state)
                     save_runtime_state(store, state, force=True, sync_ltm_on_save=False)
 
         finally:
             if persist:
+                save_session(store, wm)
                 mark_runtime_dirty(state)
                 save_runtime_state(store, state, force=True, sync_ltm_on_save=False)
 

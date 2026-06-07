@@ -31,8 +31,7 @@ import json
 import time
 
 from pathlib import Path
-
-
+from typing import Any
 
 from casa.prisms.control.fpn_state import load_session, save_session
 
@@ -61,7 +60,46 @@ def run_tick(
     )
 
 
+def interactive_dialogue_config(*, act_rollout: bool = False) -> LearningTickConfig:
+    """One macro tick T for partner dialogue — same engine as agent_sn_cen_tick, lighter act."""
+    return LearningTickConfig(
+        act_rollout=act_rollout,
+        surprise_episode=True,
+        remember_on_surprise=True,
+        sleep_every=0,
+        agent_self_drive=True,
+        goal_from_surprise=True,
+        metacog_gate=True,
+        spacing_on_wake=False,
+        tick_log=True,
+        retro_after_sleep=True,
+    )
 
+
+def run_dialogue_partner_turn(
+    store_dir: Path,
+    *,
+    user_query: str,
+    wm,
+    state: dict | None = None,
+    config: LearningTickConfig | None = None,
+) -> tuple[str, dict[str, Any], object, dict]:
+    """Partner line → one agent-life tick; REPL is a mode, not a second contour."""
+    report, wm_next, state_out = run_tick(
+        store_dir=store_dir,
+        user_query=user_query,
+        wm=wm,
+        state=state,
+        config=config or interactive_dialogue_config(),
+    )
+    dialogue = report.get("dialogue") or {}
+    reply = str(dialogue.get("reply_text") or "").strip()
+    if not reply and dialogue.get("outbound"):
+        reply = str(dialogue["outbound"][-1].get("text") or "").strip()
+    if not reply:
+        last = dialogue.get("last_outbound") or {}
+        reply = str(last.get("text") or "").strip()
+    return reply or "(молчит)", report, wm_next, state_out
 
 
 def main() -> None:

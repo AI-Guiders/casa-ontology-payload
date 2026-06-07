@@ -57,6 +57,10 @@ def restore_agent_life(
         + str(store_dir)
         + ' --query "Привет"'
     )
+    rep["next_interactive"] = (
+        "python -m casa.cli.agent_dialogue_repl --store "
+        + store_dir.name
+    )
     return rep
 
 

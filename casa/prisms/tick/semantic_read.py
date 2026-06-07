@@ -83,14 +83,10 @@ def has_passage_context(query: str) -> bool:
 
 
 def passage_focus_query(query: str) -> str:
-    """Passage + question turn: classify/act on the question line, not quoted dialogue in passage."""
-    q = (query or "").strip()
-    if not q:
-        return q
-    parts = [p.strip() for p in re.split(r"\n\s*\n", q) if p.strip()]
-    if len(parts) >= 2:
-        return parts[-1]
-    return q
+    """Alias for passage_focus_question — single focus-line helper for routing."""
+    from casa.prisms.tick.passage.comprehend import passage_focus_question
+
+    return passage_focus_question(query)
 
 
 def classify_query_intent(
@@ -149,36 +145,15 @@ def _intent_boost_for_claim(
     query: str,
     concept_hints: list[str],
 ) -> int:
-    boost = 0
-    if cid in concept_hints:
-        boost += 10
-    if intent == "math" and cid.startswith("math."):
-        boost += 6
-    if intent == "explain":
-        if cid.startswith("ru.dialog.explain"):
-            boost += 22
-        elif cid.startswith("lang.word."):
-            boost += 16
-        elif cid.startswith("ru.dialog."):
-            boost -= 12
-    if intent == "social":
-        if cid.startswith("ru.dialog."):
-            boost += 18
-        elif cid.startswith("lang.word."):
-            boost += 8
-            surface = cid.rsplit(".", 1)[-1].lower()
-            if surface and surface in passage_focus_query(query).lower():
-                boost -= 8
-    if intent == "grammar":
-        if cid.startswith("ru.grammar."):
-            boost += 14
-        elif cid.startswith(("ru.dialog.clarify.", "ru.dialog.honest.")):
-            boost += 20 if not _has_inline_check_text(query) else -12
-        elif cid.startswith("ru.dialog.explain"):
-            boost += 8
-        elif cid.startswith("ru.dialog.greeting"):
-            boost -= 10
-    return boost
+    from casa.domain.dialogue_bind.intent_scoring import kb_intent_boost_for_claim
+
+    return kb_intent_boost_for_claim(
+        cid,
+        intent=intent,
+        concept_hints=concept_hints,
+        has_inline_check_text=_has_inline_check_text(query),
+        passage_focus_lower=passage_focus_query(query).lower(),
+    )
 
 
 def detect_query_locales(query: str) -> list[str]:
@@ -235,9 +210,16 @@ def route_kb_read(
     *,
     store_dir: Any | None = None,
     state: dict[str, Any] | None = None,
+    extra_concept_hints: list[str] | None = None,
 ) -> QueryRead:
     """Surface hints → KB match → tract competition intent (ADR-0052)."""
     hints = _concept_hints_from_surface(query)
+    if state is not None:
+        from casa.prisms.perceptual import perceptual_turn_hints
+
+        hints = list(dict.fromkeys(hints + perceptual_turn_hints(state)))
+    if extra_concept_hints:
+        hints = list(dict.fromkeys(hints + list(extra_concept_hints)))
     read = QueryRead(
         intent="general",
         locales=detect_query_locales(query),

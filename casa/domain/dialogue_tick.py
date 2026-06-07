@@ -78,6 +78,21 @@ def dialogue_initiate_from_wake_retro(store_dir: Path) -> dict[str, Any] | None:
     return {"initiated": True, "kind": "retro", "turn": turn.to_dict()}
 
 
+def _trim_reply_for_budget(text: str, state: dict) -> str:
+    from casa.prisms.affect import affect_compose_bias
+    from casa.prisms.metabolic import metabolic_compose_budget
+
+    budget = metabolic_compose_budget(state)
+    if budget is not None:
+        scale = float(affect_compose_bias(state).get("budget_scale") or 1.0)
+        budget = max(24, int(budget * scale))
+    raw = (text or "").strip()
+    if budget is None or len(raw) <= budget:
+        return raw
+    cut = raw[: budget - 1].rsplit(" ", 1)[0]
+    return (cut or raw[: budget - 1]) + "…"
+
+
 def process_dialogue_on_tick(
     store_dir: Path,
     state: dict,
@@ -105,10 +120,39 @@ def process_dialogue_on_tick(
 
     q = (user_query or "").strip()
     query_intent = ""
+    metabolic_rep: dict[str, Any] = {}
+    pre_zone: dict[str, Any] = {}
+    surprise_for_metabolic = 0
+
+    arbiter = mem_prep.get("goal_arbiter") if isinstance(mem_prep.get("goal_arbiter"), dict) else {}
+    disp = _parse_disposition(arbiter.get("subject_disposition"))
+    load_rep = arbiter.get("load") if isinstance(arbiter.get("load"), dict) else {}
+
     if q:
-        from casa.prisms.tick.semantic_read import route_kb_read
+        from casa.prisms.intelligence.executive import ensure_executive_zone, executive_before_compose
+        from casa.prisms.intelligence.tick import intelligence_before_partner_compose
+        from casa.prisms.metabolic import metabolic_begin_tick
+        from casa.prisms.perceptual import perceptual_prepare_turn, perceptual_turn_hints
+        from casa.prisms.tick.routing import route_kb_read
         from casa.prisms.shared.store_bundles import load_store_bundles
 
+        metabolic_rep = metabolic_begin_tick(state, tick=int(wm_next.tick))
+        perceptual_prepare_turn(state, q, modality="text_stream")
+        pre_zone = intelligence_before_partner_compose(
+            state,
+            partner_text=q,
+            query_intent="",
+            disposition=disp.action.value if disp else "",
+            tick=int(wm_next.tick),
+        )
+        prior_digest = list(wm.last_concepts or []) if wm.last_concepts else None
+        executive_before_compose(
+            state,
+            query=q,
+            concept_hints=perceptual_turn_hints(state),
+            prior_digest=prior_digest,
+        )
+        surprise_for_metabolic = int(ensure_executive_zone(state).get("predict_surprise_n") or 0)
         pre_read = route_kb_read(q, load_store_bundles(store_dir), store_dir=store_dir, state=state)
         query_intent = pre_read.intent
         ranked_tracts = list(pre_read.tract_ranked or [])
@@ -122,10 +166,6 @@ def process_dialogue_on_tick(
             },
         )
         out["partner"] = partner.to_dict()
-
-    arbiter = mem_prep.get("goal_arbiter") if isinstance(mem_prep.get("goal_arbiter"), dict) else {}
-    disp = _parse_disposition(arbiter.get("subject_disposition"))
-    load_rep = arbiter.get("load") if isinstance(arbiter.get("load"), dict) else {}
 
     if (
         disp
@@ -145,9 +185,12 @@ def process_dialogue_on_tick(
         out["disposition_verbalized"] = disp.action.value
 
     elif q:
+        from casa.prisms.intelligence.tick import process_intelligence_turn
+
         ctx, reply_text = compose_subject_partner_reply_with_ctx(
             q, task, state, wm_next, store_dir=store_dir
         )
+        reply_text = _trim_reply_for_budget(reply_text, state)
         sn = state.get("sn") if isinstance(state.get("sn"), dict) else {}
         surprise_before = int(sn.get("surprise") or 0) or None
         from casa.prisms.memory.wm import wm_after_partner_turn
@@ -176,7 +219,6 @@ def process_dialogue_on_tick(
         )
         ctx.wm_edge_scores = dict(wm_rep.get("wm_edge_scores") or {})
         from casa.prisms.affect import affect_compose_bias
-        from casa.prisms.intelligence.tick import process_intelligence_turn
 
         zone_snap = process_intelligence_turn(
             state,
@@ -187,10 +229,21 @@ def process_dialogue_on_tick(
             disposition=disp.action.value if disp else "",
             tick=int(wm_next.tick),
         )
+        from casa.prisms.metabolic import metabolic_end_tick, metabolic_should_sleep
+
+        metabolic_rep = metabolic_end_tick(
+            state,
+            surprise_n=surprise_for_metabolic,
+            compose_tokens=len((reply_text or "").split()),
+            bind_blocks=len(getattr(ctx, "blocks", []) or []),
+            had_partner_input=True,
+        )
         emotional = zone_snap.get("emotional") or {}
         affect_rep: dict[str, Any] = {"axes": emotional.get("axes") or {}}
         if zone_snap.get("life_event"):
             affect_rep["event"] = zone_snap["life_event"]
+        elif pre_zone.get("life_event"):
+            affect_rep["event"] = pre_zone["life_event"]
         else:
             affect_rep["bias"] = affect_compose_bias(state)
         turn = append_subject_turn(
@@ -204,7 +257,8 @@ def process_dialogue_on_tick(
                 "yielded_disposition": disp.reason if disp else "",
                 **meaning_provenance(ctx),
                 "emotional_zone": affect_rep,
-                "intelligence_zones": zone_snap,
+                "intelligence_zones": {**zone_snap, "pre_compose": pre_zone},
+                "metabolic_zone": metabolic_rep,
             },
         )
         out["outbound"].append(turn.to_dict())
@@ -212,7 +266,9 @@ def process_dialogue_on_tick(
         out["wm_prism"] = wm_rep
         out["intent_prism"] = intent_rep
         out["emotional_zone"] = affect_rep
-        out["intelligence_zones"] = zone_snap
+        out["intelligence_zones"] = {**zone_snap, "pre_compose": pre_zone}
+        out["metabolic_zone"] = metabolic_rep
+        out["forced_sleep"] = metabolic_should_sleep(state)
 
     else:
         initiated: list[dict[str, Any]] = []
@@ -266,20 +322,3 @@ def process_dialogue_on_tick(
     out["turns_total"] = len(load_dialogue_turns(store_dir))
     out["last_outbound"] = last.to_dict() if last else None
     return out
-
-
-def apply_subject_answer_text(
-    task: TaskEmit,
-    *,
-    user_query: str | None,
-    state: dict,
-    wm: WorkingMemory,
-    store_dir: Path,
-) -> str:
-    """Replace CEN answer_text in report when subject mode active."""
-    if not is_subject_mode(state, store_dir):
-        return task.answer_text
-    q = (user_query or "").strip()
-    if not q:
-        return task.answer_text
-    return compose_subject_partner_reply(q, task, state, wm, store_dir=store_dir)
