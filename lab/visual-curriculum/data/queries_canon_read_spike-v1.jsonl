@@ -1,0 +1,6 @@
+{"query": "Что такое согласование подлежатого и сказуемого?", "expect_any": ["согласован", "глаг", "лиц"], "definition": "Согласование — формы подлежатого и сказуемого совпадают по лицу, числу, роду."}
+{"query": "Объясни простыми словами: integrity POST — протокол границ агента.", "expect_any": ["границ", "протокол", "integrity"], "definition": "POST — проверка well-known integrity-core перед действием; при провале — minimal safe default."}
+{"query": "Что такое paradigm-select в literacy track?", "expect_any": ["paradigm", "форм", "lang"], "definition": "W5 gate: agent выбирает форму из paradigm cluster (книга/книгу) на поле."}
+{"query": "Что такое agent journal в CASA?", "expect_any": ["journal", "skill_trace", "append"], "definition": "Subject journal — append log skill_trace/tick_log в SQLite (позже .witdb)."}
+{"query": "Что такое MVCC transactional store в WitDB?", "expect_any": ["транзак", "snapshot", "MVCC"], "definition": "Snapshot isolation: read не блокирует write; commit на WitSqlEngine."}
+{"query": "Что делала мама с рамой?", "kind": "pilot_phrase", "expect_any": ["мама", "мыла", "раму"], "definition": "Pilot event lang.event.transitive.wash.v0 — бытовая сцена мытья."}
