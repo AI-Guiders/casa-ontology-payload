@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from casa.prisms.tick.articulation_realize import UtterancePlan, _realize_compare
-from casa.prisms.tick.discourse.model import ClauseSketch, DiscourseContext, DiscourseSketch
+from casa.prisms.tick.discourse.model import ClauseSketch, DiscourseContext
 from casa.prisms.tick.discourse.policy import BlockDiscoursePolicy
 from casa.prisms.tick.discourse.realizers.blocks import (
     DialogBlockRealizer,
@@ -11,7 +11,6 @@ from casa.prisms.tick.discourse.realizers.blocks import (
     JournalBlockRealizer,
     LexemeBlockRealizer,
 )
-from casa.prisms.tick.discourse.render import paragraph_breaks, render_discourse
 from casa.prisms.tick.discourse.wm import WmBlockRealizer
 
 
@@ -30,9 +29,22 @@ class ExplainIntentStrategy:
         clause_scores: list[int] = []
 
         journal_hits = [b for b in ctx.blocks if b.get("source") == "journal" and policy._journal_explain_overlap(b, ctx.query)]
+        journal_hits.sort(
+            key=lambda b: (policy.journal_overlap_score(b, ctx.query), int(b.get("score") or 0)),
+            reverse=True,
+        )
+        if journal_hits:
+            top = policy.journal_overlap_score(journal_hits[0], ctx.query)
+            if top >= 2:
+                journal_hits = [
+                    b for b in journal_hits if policy.journal_overlap_score(b, ctx.query) >= top - 1
+                ]
         ordered = journal_hits + [b for b in ctx.blocks if b not in journal_hits]
+        strong_journal = bool(journal_hits)
 
         for block in ordered:
+            if strong_journal and block.get("source") != "journal":
+                continue
             score = int(block.get("score") or 0)
             journal_hit = block.get("source") == "journal" and policy._journal_explain_overlap(block, ctx.query)
             if score < budget.score_floor and not journal_hit:
@@ -42,6 +54,8 @@ class ExplainIntentStrategy:
             cid = str(block.get("concept_id") or "")
             if block.get("source") == "journal":
                 for c in journal.realize(block, ctx):
+                    if policy.journal_overlap_score({"text": " ".join(c.pieces)}, ctx.query) == 0:
+                        continue
                     clauses.append(c)
                     clause_scores.append(score + 6)
             elif cid.startswith("ru.dialog."):
@@ -70,5 +84,9 @@ class ExplainIntentStrategy:
             clause_scores.append(90)
 
         if not clauses:
+            from casa.prisms.tick.passage import has_passage_context
+
+            if has_passage_context(ctx.query):
+                return composer.field_text(ctx.with_intent("discuss"))
             return None
-        return render_discourse(DiscourseSketch(clauses, paragraph_after=paragraph_breaks(clause_scores)))
+        return composer._render_discourse(clauses, clause_scores)

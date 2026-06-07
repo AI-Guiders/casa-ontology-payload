@@ -39,10 +39,12 @@ class BlockDiscoursePolicy:
                 return mode in ("explain", "journal", "recall", "field", "discuss")
             return mode in ("field", "general", "discuss", "explain")
 
+        if cid.startswith("subject.dialog."):
+            return query_intent == "social"
         if cid.startswith("subject."):
             return False
         if cid.startswith("ru.dialog."):
-            return self._dialog_eligible(cid, query_intent, blocks)
+            return self._dialog_eligible(cid, query_intent, blocks, ctx.concept_hints)
         if block.get("source") == "journal":
             return self._journal_eligible(block, query, query_intent)
         if cid.startswith("ru.prop."):
@@ -61,16 +63,21 @@ class BlockDiscoursePolicy:
                 return False
         return True
 
-    def _dialog_eligible(self, cid: str, query_intent: str, blocks: list[dict[str, Any]]) -> bool:
+    def _dialog_eligible(
+        self,
+        cid: str,
+        query_intent: str,
+        blocks: list[dict[str, Any]],
+        concept_hints: list[str],
+    ) -> bool:
         if query_intent in ("explain", "grammar"):
             return not any(cid.startswith(p) for p in self._EXPLAIN_DIALOG_DENY)
         if query_intent == "social":
-            top = self._top_dialog_cid(blocks)
-            if not top:
-                return True
-            if any(cid.startswith(p) for p in self._SOCIAL_DIALOG_DENY):
+            from casa.domain.dialogue_bind.scoring import social_dialog_slot_allowed
+
+            if not social_dialog_slot_allowed(cid, concept_hints=concept_hints):
                 return False
-            return self._dialog_family(cid) == self._dialog_family(top) or cid == top
+            return not any(cid.startswith(p) for p in self._SOCIAL_DIALOG_DENY)
         if query_intent == "rewrite":
             return cid.startswith(("ru.dialog.greeting", "ru.dialog.thanks", "ru.dialog.farewell"))
         return query_intent in ("social", "general")
@@ -99,14 +106,22 @@ class BlockDiscoursePolicy:
 
     @staticmethod
     def _journal_explain_overlap(block: dict[str, Any], query: str) -> bool:
+        return BlockDiscoursePolicy.journal_overlap_score(block, query) > 0
+
+    @staticmethod
+    def journal_overlap_score(block: dict[str, Any], query: str) -> int:
         tl = str(block.get("text") or "").lower()
         ql = (query or "").lower()
         if not tl or not ql:
-            return False
+            return 0
+        hits = 0
         for tok in re.findall(r"[\w\u0400-\u04FF]+", ql, flags=re.UNICODE):
-            if len(tok) >= 5 and tok in tl:
-                return True
-        return False
+            low = tok.lower()
+            if len(low) < 4 or low in ("опиши", "скажи", "своими", "словами", "коротко"):
+                continue
+            if low in tl:
+                hits += 2 if len(low) >= 6 else 1
+        return hits
 
     @staticmethod
     def _top_dialog_cid(blocks: list[dict[str, Any]]) -> str | None:

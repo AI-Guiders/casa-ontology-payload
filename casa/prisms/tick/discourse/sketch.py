@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from casa.prisms.tick.discourse.model import ABSOLUTE_CLAUSE_SAFETY, DiscourseContext, DiscourseSketch, PhraseSketch
+from casa.prisms.tick.discourse.model import DiscourseContext, DiscourseSketch, PhraseSketch
 from casa.prisms.tick.discourse.policy import BlockDiscoursePolicy
 from casa.prisms.tick.discourse.realizers.blocks import MorphBlockRealizer, default_block_realizer_registry
 from casa.prisms.tick.discourse.realizers.base import BlockRealizerRegistry
@@ -26,16 +26,18 @@ class DiscourseSketchBuilder:
         clauses = []
         clause_scores: list[int] = []
         seen_cid: set[str] = set()
+        seen_clause: set[str] = set()
 
         morph = MorphBlockRealizer.morph_clause(ctx.blocks)
         if morph and ctx.blocks:
             top_score = max(int(b.get("score") or 0) for b in ctx.blocks)
-            clauses.append(morph)
-            clause_scores.append(top_score)
+            key = " ".join(morph.pieces).strip().lower()
+            if key:
+                clauses.append(morph)
+                clause_scores.append(top_score)
+                seen_clause.add(key)
 
         for block in ctx.blocks:
-            if len(clauses) >= ABSOLUTE_CLAUSE_SAFETY:
-                break
             score = int(block.get("score") or 0)
             if score < budget.score_floor:
                 break
@@ -50,6 +52,10 @@ class DiscourseSketchBuilder:
             for clause in new:
                 if not clause or not clause.pieces:
                     continue
+                key = " ".join(clause.pieces).strip().lower()
+                if not key or key in seen_clause:
+                    continue
+                seen_clause.add(key)
                 clauses.append(clause)
                 clause_scores.append(score)
             seen_cid.add(cid)

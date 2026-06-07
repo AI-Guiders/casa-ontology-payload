@@ -42,7 +42,8 @@ discourse/
 
 ### Length policy (unchanged semantics)
 
-- Stop adding clauses when block score &lt; `DiscourseBudget.score_floor`.
+- Stop adding clauses when block score &lt; `DiscourseBudget.score_floor` (emergent from bind + stance).
+- No fixed teacher quota on clause count — only relevance (policy, overlap) and bind floor.
 - Brief partner turn → короткий greeting/thanks (`_BRIEF_DIALOG_PREFIXES`).
 - Narrative self (`ru.dialog.self` …) — полный slot bind, не режется brief.
 - WM — 1–2 clauses via `WmBlockRealizer`, second only when bind + intent support elaboration.

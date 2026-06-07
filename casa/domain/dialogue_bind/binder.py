@@ -73,7 +73,7 @@ class SubjectDialogueBinder:
         query_read = route_kb_read(q, merged_bundle, store_dir=store_dir, state=state)
         intent = compose_mode if compose_mode else query_read.intent
         if compose_mode is None and looks_like_field_recall(q):
-            intent = "journal"
+            intent = "explain"
 
         resolved_skill = (
             apply_capability_to_wm(
@@ -117,6 +117,13 @@ class SubjectDialogueBinder:
             )
             blocks.extend(journal_blocks)
             sources.extend(journal_sources)
+
+            from casa.domain.dialogue_bind.dialogue import dialogue_continuity_blocks
+
+            dialogue_blocks = dialogue_continuity_blocks(store_dir, q)
+            if dialogue_blocks:
+                blocks.extend(dialogue_blocks)
+                sources.append("dialogue")
 
         field_blocks, field_sources = collect_field_blocks(state, wm, task, intent)
         blocks.extend(field_blocks)

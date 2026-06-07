@@ -47,7 +47,8 @@ def _compose_blocks(ctx: SubjectDialogueContext, query: str) -> list[dict[str, A
     for b in ctx.blocks:
         cid = str(b.get("concept_id") or "")
         if cid.startswith("subject."):
-            continue
+            if not (ctx.query_intent == "social" and cid.startswith("subject.dialog.")):
+                continue
         text = _block_text(b)
         if b.get("source") == "journal" and _is_journal_bootstrap_text(text):
             continue
@@ -102,6 +103,7 @@ def realize_subject(plan: UtterancePlan, user_query: str, ctx: SubjectDialogueCo
             query_intent=ctx.query_intent,
             stance=ctx.stance,
             agent_tract_profile=ctx.agent_tract_profile,
+            concept_hints=ctx.concept_hints,
         )
 
     return (body or "").strip()

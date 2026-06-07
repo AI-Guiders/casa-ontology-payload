@@ -22,6 +22,12 @@ def passage_fact_anchors(passage: str) -> list[str]:
         found.append(m.group(0))
     for m in re.finditer(r"№\s*\d+", passage):
         found.append(m.group(0).replace(" ", ""))
+    for m in re.finditer(
+        r"(?:на|в)\s+(понедельник\w*|вторник\w*|сред\w*|четверг\w*|пятниц\w*|суббот\w*|воскресен\w*)",
+        passage,
+        flags=re.IGNORECASE,
+    ):
+        found.append(m.group(1))
     return found
 
 
@@ -70,6 +76,13 @@ def rewrite_fact_assembly(passage: str, question: str) -> str | None:
         parts.append("Всем в чате:")
     if "собран" in passage.lower():
         parts.append("родительское собрание перенесли")
+    weekday = re.search(
+        r"(?:на|в)\s+(понедельник\w*|вторник\w*|сред\w*|четверг\w*|пятниц\w*|суббот\w*|воскресен\w*)",
+        passage,
+        flags=re.IGNORECASE,
+    )
+    if weekday:
+        parts.append(f"на {weekday.group(1).lower()}")
     loc = re.search(r"в\s+актовом\s+зале\s+школы\s*№\s*\d+", passage, flags=re.IGNORECASE)
     if loc:
         parts.append(loc.group(0).replace("актовом зале", "актовый зал"))

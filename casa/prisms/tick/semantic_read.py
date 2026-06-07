@@ -42,7 +42,15 @@ _SOCIAL_SURFACE_TO_CID: tuple[tuple[str, str], ...] = (
     ("здравствуйте", "lang.word.здравствуйте"),
     ("добрый день", "ru.dialog.greeting.formal"),
     ("добрый вечер", "ru.dialog.greeting.formal"),
-    ("как дела", "ru.dialog.how_are_you"),
+    ("как дела", "ru.dialog.affect"),
+    ("как ты", "ru.dialog.affect"),
+    ("кто ты", "ru.dialog.self"),
+    ("ты кто", "ru.dialog.self"),
+    ("как зовут", "ru.dialog.self"),
+    ("о себе", "ru.dialog.self"),
+    ("представ", "ru.dialog.self"),
+    ("как тебе здесь", "ru.dialog.affect"),
+    ("как тебе тут", "ru.dialog.affect"),
     ("спасибо", "lang.word.спасибо"),
     ("до свидания", "ru.dialog.farewell"),
     ("пока", "ru.dialog.farewell"),
@@ -214,6 +222,11 @@ def _concept_hints_from_surface(query: str) -> list[str]:
         if cid:
             hints.append(cid)
     return list(dict.fromkeys(hints))
+
+
+def concept_hints_from_surface(query: str) -> list[str]:
+    """Public surface → concept hints (speech situation read per clause)."""
+    return _concept_hints_from_surface(query)
 
 
 def route_kb_read(

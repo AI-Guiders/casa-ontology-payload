@@ -2,17 +2,117 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from casa.domain.dialogue_bind.blocks import (
     is_journal_bootstrap_text,
     is_wake_journal_text,
+    score_text,
     tokenize,
 )
 
 
 def kb_reply_present(kb_hits: list[tuple[dict[str, Any], int]]) -> bool:
     return any(str(c.get("concept_id") or "").startswith("ru.dialog.") for c, _ in kb_hits)
+
+
+def partner_quote_from_block(block: dict[str, Any]) -> str:
+    text = str(block.get("text") or "")
+    match = re.search(r"«([^»]+)»", text)
+    return match.group(1).strip() if match else ""
+
+
+def dialog_block_body(block: dict[str, Any]) -> str:
+    slots = block.get("slots") if isinstance(block.get("slots"), dict) else {}
+    body = " ".join(str(v) for v in slots.values())
+    return f"{block.get('text') or ''} {body}".strip()
+
+
+def dialog_query_position_boost(
+    query: str,
+    block: dict[str, Any],
+    *,
+    concept_hints: list[str] | None,
+) -> int:
+    """Earlier partner surface → stronger bind (discourse order emerges from field, not compose)."""
+    ql = (query or "").lower()
+    cid = str(block.get("concept_id") or "")
+    slots = block.get("slots") if isinstance(block.get("slots"), dict) else {}
+    anchors: list[int] = []
+
+    for key in ("stimulus", "word", "surface"):
+        surface = str(slots.get(key) or "").lower()
+        if len(surface) >= 2 and surface in ql:
+            anchors.append(ql.find(surface))
+
+    for hint in concept_hints or []:
+        if hint.startswith("ru.dialog.") and (cid == hint or cid.startswith(f"{hint}.")):
+            for surface in ("как дела", "как ты", "как тебе здесь", "как тебе тут"):
+                if surface in ql:
+                    anchors.append(ql.find(surface))
+        if hint == "ru.dialog.affect" and cid.startswith("ru.dialog.affect"):
+            for surface in ("как дела", "как ты"):
+                if surface in ql:
+                    anchors.append(ql.find(surface))
+        if hint.startswith("lang.word.") and cid.startswith("ru.dialog.greeting"):
+            lemma = hint.rsplit(".", 1)[-1].lower()
+            if lemma and lemma in ql:
+                anchors.append(ql.find(lemma))
+
+    if not anchors:
+        return 0
+    pos = min(anchors)
+    span = max(len(ql), 8)
+    return max(0, (span - pos) * 3)
+
+
+def partner_self_label(quote: str) -> str:
+    """Self-label in partner turn — later «Я X» after preamble (discourse structure)."""
+    matches = list(re.finditer(r"[яЯ]\s+([А-ЯЁ][а-яё]{1,24})\b", quote))
+    return matches[-1].group(1) if matches else ""
+
+
+def partner_dialog_bind_overlap(quote: str, blocks: list[dict[str, Any]]) -> int:
+    """Overlap partner quote with activated ru.dialog bind — situational, not lexicon lists."""
+    best = 0
+    for block in blocks:
+        cid = str(block.get("concept_id") or "")
+        if not cid.startswith("ru.dialog."):
+            continue
+        slots = block.get("slots") if isinstance(block.get("slots"), dict) else {}
+        body = " ".join(str(v) for v in slots.values())
+        text = f"{block.get('text') or ''} {body}"
+        best = max(best, score_text(quote, text, base=0))
+    return best
+
+
+def partner_speech_turn(
+    quote: str,
+    *,
+    intent: str,
+    concept_hints: list[str] | None,
+    blocks: list[dict[str, Any]],
+) -> bool:
+    """Partner turn is intro/teaching when tract + bind support it."""
+    if intent != "social" or not quote.strip():
+        return False
+    if partner_self_label(quote):
+        return True
+    if partner_dialog_bind_overlap(quote, blocks) >= 8:
+        return True
+    hints = set(concept_hints or [])
+    return bool(hints & {"ru.dialog.capabilities", "ru.dialog.thanks", "ru.dialog.affect"})
+
+
+def social_dialog_slot_allowed(cid: str, *, concept_hints: list[str] | None) -> bool:
+    """Dialog slot enters compose only when semantic_read routed the speech situation."""
+    hints = set(concept_hints or [])
+    if cid.startswith("ru.dialog.how_are_you"):
+        return False
+    if cid.startswith("ru.dialog.self"):
+        return any(h.startswith("ru.dialog.self") for h in hints)
+    return True
 
 
 def kb_hit_allowed(cid: str, intent: str, passage_lemmas: set[str]) -> bool:
@@ -113,6 +213,13 @@ def reweight_blocks_for_reply(
         for c, _ in kb_hits
     )
 
+    partner_speech_query = partner_speech_turn(
+        query,
+        intent=intent,
+        concept_hints=concept_hints,
+        blocks=blocks,
+    )
+
     for b in blocks:
         cid = str(b.get("concept_id") or "")
         text = str(b.get("text") or "")
@@ -136,10 +243,47 @@ def reweight_blocks_for_reply(
             if lemma and lemma in ql and intent not in ("explain", "grammar"):
                 score -= 22
         if intent == "social" and cid.startswith("ru.dialog.how_are_you"):
-            for hint in concept_hints or []:
-                if hint.startswith("lang.word.") and hint.rsplit(".", 1)[-1].lower() == "спасибо":
-                    score -= 20
-                    break
+            score = 0
+
+        if intent == "social" and cid.startswith("ru.dialog.self"):
+            if not any(h.startswith("ru.dialog.self") for h in (concept_hints or [])):
+                score -= 44
+
+        if intent == "social" and "ru.dialog.affect" in (concept_hints or []):
+            if cid.startswith("ru.dialog.affect"):
+                if "lang.word.привет" not in (concept_hints or []) or any(
+                    m in ql for m in ("как тебе здесь", "как тебе тут")
+                ):
+                    score += 20
+            if cid.startswith("ru.dialog.honest."):
+                score += 12
+            if cid.startswith(("ru.dialog.self", "ru.dialog.capabilities", "ru.dialog.how_are_you")):
+                score -= 18
+
+        if intent == "social" and cid.startswith("ru.dialog."):
+            score += dialog_query_position_boost(query, b, concept_hints=concept_hints)
+
+        if intent == "social" and b.get("source") == "dialogue":
+            quote = partner_quote_from_block(b)
+            if quote.strip().lower() == ql.strip():
+                score += 24
+            if quote and partner_speech_turn(
+                quote,
+                intent=intent,
+                concept_hints=concept_hints,
+                blocks=blocks,
+            ):
+                score += 36
+            elif cid == "subject.dialog.partner_recent":
+                score += 16
+            if cid == "subject.dialog.self_recent":
+                score += 6
+
+        if intent == "social" and partner_speech_query:
+            if cid.startswith("ru.dialog.thanks"):
+                score += 18
+            if cid.startswith("ru.dialog.capabilities"):
+                score += 10
 
         if intent == "journal":
             if cid.startswith(("passage.sent.", "ru.meta.discourse.")):

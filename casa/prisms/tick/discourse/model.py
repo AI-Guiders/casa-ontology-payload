@@ -8,8 +8,6 @@ from typing import Any
 
 from casa.prisms.tick.discourse.budget import DiscourseBudget, discourse_budget_from_blocks
 
-ABSOLUTE_CLAUSE_SAFETY = 128
-
 
 @dataclass
 class ClauseSketch:
@@ -39,6 +37,7 @@ class DiscourseContext:
     stance: str
     blocks: list[dict[str, Any]]
     focus_query: str | None = None
+    concept_hints: list[str] = field(default_factory=list)
     agent_tract_profile: dict[str, Any] | None = None
 
     @classmethod
@@ -51,6 +50,7 @@ class DiscourseContext:
         stance: str = "partial",
         focus_query: str | None = None,
         agent_tract_profile: dict[str, Any] | None = None,
+        concept_hints: list[str] | None = None,
     ) -> DiscourseContext:
         return cls(
             query=query,
@@ -59,6 +59,7 @@ class DiscourseContext:
             blocks=blocks,
             focus_query=focus_query or query,
             agent_tract_profile=agent_tract_profile,
+            concept_hints=list(concept_hints or []),
         )
 
     @property
@@ -88,4 +89,5 @@ class DiscourseContext:
             blocks=self.blocks,
             focus_query=focus_query if focus_query is not None else self.focus_query,
             agent_tract_profile=self.agent_tract_profile,
+            concept_hints=list(self.concept_hints),
         )

@@ -7,7 +7,6 @@ from typing import Any
 
 from casa.prisms.tick.articulation_realize import UtterancePlan
 from casa.prisms.tick.discourse import (
-    ABSOLUTE_CLAUSE_SAFETY,
     ClauseSketch,
     DiscourseBudget,
     DiscourseSketch,
@@ -42,6 +41,7 @@ def compose_subject_phrase(
     query_intent: str,
     stance: str = "partial",
     agent_tract_profile: dict[str, Any] | None = None,
+    concept_hints: list[str] | None = None,
 ) -> str | None:
     """Subject says as much as field bind supports — no fixed sentence quota."""
     return default_composer().compose(
@@ -51,11 +51,11 @@ def compose_subject_phrase(
         query_intent=query_intent,
         stance=stance,
         agent_tract_profile=agent_tract_profile,
+        concept_hints=concept_hints,
     )
 
 
 __all__ = [
-    "ABSOLUTE_CLAUSE_SAFETY",
     "ClauseSketch",
     "DiscourseBudget",
     "DiscourseSketch",

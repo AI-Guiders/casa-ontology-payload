@@ -8,7 +8,6 @@ from __future__ import annotations
 from casa.prisms.tick.discourse.budget import DiscourseBudget, discourse_budget_from_blocks
 from casa.prisms.tick.discourse.composer import SubjectDiscourseComposer, default_composer
 from casa.prisms.tick.discourse.model import (
-    ABSOLUTE_CLAUSE_SAFETY,
     ClauseSketch,
     DiscourseContext,
     DiscourseSketch,
@@ -35,7 +34,6 @@ from casa.prisms.tick.discourse.strategies import (
 from casa.prisms.tick.discourse.wm import wm_clauses_from_block, wm_link_discourse
 
 __all__ = [
-    "ABSOLUTE_CLAUSE_SAFETY",
     "ClauseSketch",
     "DiscourseBudget",
     "DiscourseContext",

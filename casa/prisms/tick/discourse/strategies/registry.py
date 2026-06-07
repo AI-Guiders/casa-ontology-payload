@@ -42,7 +42,9 @@ def default_intent_strategies() -> dict[str, IntentStrategy]:
         SocialIntentStrategy(),
         GeneralIntentStrategy(),
     ]
-    return {s.intent: s for s in items}
+    base = {s.intent: s for s in items}
+    base["math"] = base["explain"]
+    return base
 
 
 _HOST_STRATEGY_BY_MODE = default_intent_strategies()
