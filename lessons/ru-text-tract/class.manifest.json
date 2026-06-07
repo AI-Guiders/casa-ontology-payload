@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "class_id": "ru-text-tract",
+  "title": "Письменный тракт Phase III",
+  "target_agent": "von-neumann",
+  "tract_id": "text",
+  "plans": {
+    "ortho": "data/ortho-moment-plan-v1.json",
+    "punct": "data/punct-moment-plan-v1.json",
+    "cefr": "data/cefr-gate-plan-v1.json",
+    "dialog": "data/dialog-moment-plan-v1.json",
+    "oov": "data/oov-recall-plan.json"
+  }
+}

@@ -2,7 +2,8 @@
   "tract_id": "ru-text-dialog",
   "version": 1,
   "block": 12,
-  "gate_probe": "dialogue_acceptance",
+  "gate_probe": "probe_dialogue_acceptance_ru",
+  "superseded_by": "lessons/ru-text-tract/data/nositel-acceptance-plan.json",
   "scenarios": [
     {
       "scenario_id": "greeting-privet",
@@ -13,7 +14,8 @@
     {
       "scenario_id": "thanks",
       "query": "Спасибо за помощь",
-      "expect_in_reply": ["спасибо"]
+      "expect_concept_any": ["lang.word.спасибо", "ru.dialog.thanks"],
+      "expect_in_reply": ["пожалуйста"]
     },
     {
       "scenario_id": "norm-check-defer",

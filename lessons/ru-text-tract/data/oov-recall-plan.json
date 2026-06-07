@@ -1,0 +1,13 @@
+{
+  "tract_id": "ru-text-oov",
+  "gate_probe": "probe_oov_word_recall_ru",
+  "cases": [
+    {
+      "case_id": "oov-remember-recall",
+      "wired": true,
+      "novel_surface": "квантовый",
+      "cue": "Что означает слово квантовый?",
+      "expect_in_reply": ["квантов"]
+    }
+  ]
+}

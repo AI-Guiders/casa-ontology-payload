@@ -1,0 +1,40 @@
+{
+  "tract_id": "ru-text-comprehend-held-out",
+  "gate_probe": "probe_text_meaning_ru",
+  "min_pass_ratio": 1.0,
+  "scenarios": [
+    {
+      "scenario_id": "ho-extract-who",
+      "stage": "extract",
+      "wired": true,
+      "query": "Вчера Петя принёс букет. Мама поставила цветы в вазу.\n\nКто принёс букет?",
+      "expect_intent": "discuss",
+      "expect_semantic_any": ["пет", "пётр", "петя", "принёс", "букет"],
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "ho-inference-why-late",
+      "stage": "inference",
+      "wired": true,
+      "query": "Автобус опоздал на пятнадцать минут. Оля опоздала на урок.\n\nПочему Оля опоздала?",
+      "expect_intent": "discuss",
+      "expect_semantic_any": ["автобус", "опоздал", "пятнадцать"],
+      "expect_discuss_shape": true,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "ho-stance-park",
+      "stage": "stance",
+      "wired": true,
+      "query": "Город планирует срубить старые деревья в парке, чтобы расширить парковку. Жители протестуют: деревья дают тень и воздух. Власти обещают посадить новые, но не сразу.\n\nКакая позиция жителей? Коротко своими словами.",
+      "expect_intent": "discuss",
+      "expect_props": ["ru.prop.stance.residents_trees"],
+      "expect_semantic_any": ["протест", "дерев", "тень", "воздух"],
+      "expect_own_voice_min": 2,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    }
+  ]
+}

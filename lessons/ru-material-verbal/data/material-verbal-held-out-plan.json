@@ -1,0 +1,35 @@
+{
+  "tract_id": "ru-material-verbal-held-out",
+  "gate_probe": "probe_material_verbal_ru",
+  "min_pass_ratio": 1.0,
+  "scenarios": [
+    {
+      "scenario_id": "ho-cows-two-one",
+      "stage": "verbalize",
+      "wired": true,
+      "remember_text": "Две коровы стоят вместе, одна корова отдельно — так на картинке поля.",
+      "concepts": ["agent.world.entity.cow_group", "agent.world.idea.two_groups_one_apart"],
+      "tags": ["material-verbal", "held-out"],
+      "recall_query": "Опиши своими словами: сколько коров вместе и сколько отдельно?",
+      "expect_field_tokens": ["коров", "две", "одн", "отдельн", "вместе"],
+      "expect_own_voice_min": 3,
+      "expect_max_paste_ratio": 0.35,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "ho-five-sticks-count",
+      "stage": "verbalize",
+      "wired": true,
+      "remember_text": "Я насчитал пять палочек в одной кучке и две в другой.",
+      "concepts": ["math.num.five", "math.num.two", "math.entity.stick"],
+      "tags": ["material-verbal", "held-out"],
+      "recall_query": "Сколько палочек в каждой кучке? Ответь своими словами, не пересказывая дословно.",
+      "expect_field_tokens": ["пять", "две", "палоч", "куч"],
+      "expect_own_voice_min": 3,
+      "expect_max_paste_ratio": 0.35,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    }
+  ]
+}

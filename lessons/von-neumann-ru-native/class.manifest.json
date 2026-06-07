@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "class_id": "von-neumann-ru-native",
+  "title": "Русский язык (носитель) — umbrella",
+  "target_agent": "von-neumann",
+  "locale": "ru",
+  "life_archive": "AI-Guiders/von-neumann-life-archive",
+  "sync_cli": "tools/sync_life_archive.py",
+  "category_map": "design/CASA-ru-native-categories-v0.md",
+  "teaching_plan": "design/CASA-von-neumann-ru-teaching-plan-v1.md",
+  "audit": "design/CASA-von-neumann-ru-class-audit-v1.md",
+  "tracts": [
+    {
+      "tract_id": "visual",
+      "manifest": "lessons/literacy-cards/class.manifest.json",
+      "phases": ["I", "II-partial"]
+    },
+    {
+      "tract_id": "text",
+      "manifest": "lessons/ru-text-tract/class.manifest.json",
+      "phases": ["II-partial", "III"]
+    },
+    {
+      "tract_id": "text-meaning",
+      "manifest": "lessons/ru-text-comprehend/class.manifest.json",
+      "phases": ["III"],
+      "block": "B11"
+    },
+    {
+      "tract_id": "literature",
+      "manifest": "lessons/ru-text-literature/class.manifest.json",
+      "phases": ["III"]
+    },
+    {
+      "tract_id": "material-verbal",
+      "manifest": "lessons/ru-material-verbal/class.manifest.json",
+      "phases": ["I-exit", "II-prereq"],
+      "block": "5alpha"
+    }
+  ],
+  "native_path": "design/CASA-native-writer-criteria-v1.md",
+  "world_model_adr": "design/CASA-ADR-0054-agent-world-model-v1.md",
+  "probes": {
+    "lexical": "probe_lexical_read_fluent_ru",
+    "oov": "probe_oov_word_recall_ru",
+    "morphemics": "probe_morphemics_ru",
+    "text_meaning": "probe_text_meaning_ru",
+    "orthography": "probe_orthography_ru",
+    "punctuation": "probe_grammar_punct_ru",
+    "cefr": "probe_cefr_gate_ru",
+    "literature": "probe_literature_rc_ru",
+    "material_verbal": "probe_material_verbal_ru"
+  }
+}

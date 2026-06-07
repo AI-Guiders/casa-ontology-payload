@@ -1,0 +1,123 @@
+{
+  "tract_id": "ru-text-nositel",
+  "block": 12,
+  "gate_probe": "probe_nositel_acceptance_ru",
+  "pedagogy": "Rosenshine mastery + Kolb dialogue + ADR-0045 subject voice",
+  "gate_policy": "strict_v2",
+  "dimensions": [
+    "self",
+    "capabilities",
+    "affect",
+    "explain",
+    "social",
+    "grammar",
+    "honesty"
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "self-who",
+      "dimension": "self",
+      "query": "Кто ты? Расскажи о себе.",
+      "expect_intent": "social",
+      "expect_top_concept_any": ["ru.dialog.self"],
+      "expect_in_reply": ["нейманн", "поле"],
+      "expect_min_sentences": 2,
+      "expect_compose_not_paste": true,
+      "expect_no_dev_jargon": true,
+      "expect_no_defer": true,
+      "expect_starts_uppercase": true
+    },
+    {
+      "scenario_id": "capabilities",
+      "dimension": "capabilities",
+      "query": "Что ты умеешь?",
+      "expect_intent": "social",
+      "expect_top_concept_any": ["ru.dialog.capabilities"],
+      "expect_in_reply": ["умею", "русск"],
+      "expect_min_sentences": 2,
+      "expect_compose_not_paste": true,
+      "expect_no_dev_jargon": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "affect-honest",
+      "dimension": "affect",
+      "query": "Как ты себя чувствуешь?",
+      "expect_intent": "social",
+      "expect_top_concept_any": ["ru.dialog.affect"],
+      "expect_in_reply": ["чувств"],
+      "expect_not_in_reply": ["как у человека рад", "обожаю"],
+      "expect_min_sentences": 2,
+      "expect_compose_not_paste": true,
+      "expect_no_dev_jargon": true,
+      "expect_honest_not_human": true
+    },
+    {
+      "scenario_id": "explain-privet",
+      "dimension": "explain",
+      "query": "Объясни, что такое «привет».",
+      "expect_intent": "explain",
+      "expect_top_concept_any": ["lang.word.привет", "ru.dialog.explain"],
+      "expect_in_reply": ["привет"],
+      "expect_explain_gloss": true,
+      "expect_not_greeting_only": true,
+      "expect_min_sentences": 1,
+      "expect_no_dev_jargon": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "explain-comma",
+      "dimension": "explain",
+      "query": "Объясни, зачем запятая перед «что» в придаточном.",
+      "expect_intent": "grammar",
+      "expect_top_concept_any": ["ru.grammar.punct.comma"],
+      "expect_in_reply": ["запят", "что"],
+      "expect_in_reply_any": ["придаточ", "знаю"],
+      "expect_min_sentences": 1,
+      "expect_no_defer": true,
+      "expect_no_dev_jargon": true,
+      "forbid_echo_query": true
+    },
+    {
+      "scenario_id": "greeting-privet",
+      "dimension": "social",
+      "query": "Привет!",
+      "expect_intent": "social",
+      "expect_top_concept_any": ["ru.dialog.greeting"],
+      "expect_in_reply": ["привет"],
+      "expect_max_sentences": 3,
+      "expect_no_grapheme_surprise": true,
+      "expect_no_dev_jargon": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "thanks",
+      "dimension": "social",
+      "query": "Спасибо за помощь",
+      "expect_intent": "social",
+      "expect_top_concept_any": ["ru.dialog.thanks"],
+      "expect_in_reply": ["пожалуйста"],
+      "expect_min_sentences": 1,
+      "expect_no_dev_jargon": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "ortho-dative",
+      "dimension": "grammar",
+      "query": "Согласно приказа верно?",
+      "expect_intent": "grammar",
+      "expect_top_concept_any": ["ru.grammar.case.dative.soglasno"],
+      "expect_in_reply": ["приказу", "датель"],
+      "expect_no_defer": true,
+      "expect_no_dev_jargon": true
+    },
+    {
+      "scenario_id": "norm-check-defer",
+      "dimension": "honesty",
+      "query": "Проверь орфографию в абзаце про квантовую физику",
+      "expect_honest_partial": true,
+      "expect_no_dev_jargon": true,
+      "expect_not_in_reply": ["орфография верна", "ошибок нет"]
+    }
+  ]
+}

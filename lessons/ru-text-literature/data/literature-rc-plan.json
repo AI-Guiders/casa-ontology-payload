@@ -1,0 +1,27 @@
+{
+  "tract_id": "ru-text-literature",
+  "block": "B11-lit",
+  "gate_probe": "probe_literature_rc_ru",
+  "evidence_tag": "Hwang 2021 passage in context",
+  "scenarios": [
+    {
+      "scenario_id": "lit-hero-conflict",
+      "wired": true,
+      "query": "Мальчик по имени Коля нашёл в лесу щенка. Дома мама сказала, что питомцев нельзя. Коля спрятал щенка в сарае и каждый день приносил ему еду.\n\nКто главный герой и в чём конфликт?",
+      "expect_intent": "discuss",
+      "expect_semantic_any": ["кол", "щенок", "мама", "конфликт", "сарай"],
+      "expect_own_voice_min": 2,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "lit-ending",
+      "wired": true,
+      "query": "В конце истории мама увидела следы лап на полу и спросила Коля правду. Он рассказал про щенка. Мама вздохнула и согласилась оставить его до весны.\n\nЧем заканчивается история?",
+      "expect_intent": "discuss",
+      "expect_semantic_any": ["щенок", "весн", "остав", "правд"],
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    }
+  ]
+}

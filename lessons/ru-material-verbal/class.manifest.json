@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "class_id": "ru-material-verbal",
+  "title": "RU-α — Material→Verbal bridge",
+  "target_agent": "von-neumann",
+  "tract_id": "visual",
+  "block": "5alpha",
+  "phase": "RU-alpha",
+  "stage_id": "stage-05a-material-verbal-ru",
+  "target_skill": "skill.articulate.field",
+  "target_goal": "goal.articulate.experience",
+  "gate_probe": "probe_material_verbal_ru",
+  "plan": "data/material-verbal-moment-plan-v1.json",
+  "held_out_plan": "data/material-verbal-held-out-plan.json",
+  "prerequisite": "probe_block05_corpus_held_out",
+  "phrase_prerequisite_after": "block-08",
+  "design": "design/CASA-native-writer-criteria-v1.md",
+  "adr": "design/CASA-ADR-0054-agent-world-model-v1.md"
+}

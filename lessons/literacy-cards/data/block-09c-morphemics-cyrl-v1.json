@@ -24,7 +24,7 @@
     }
   ],
   "gate": {
-    "probe_id": "probe_morphemics_ru_v0",
+    "probe_id": "probe_morphemics_ru",
     "pass": {
       "know_min_ratio": 1.0,
       "empty_max": 0,

@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "class_id": "ru-text-comprehend",
+  "title": "Понимание текста (B11)",
+  "target_agent": "von-neumann",
+  "tract_id": "text",
+  "block": "B11",
+  "stage_id": "stage-11-text-meaning-ru",
+  "target_skill": "skill.read.comprehend",
+  "target_goal": "goal.read.comprehend",
+  "gate_probe": "probe_text_meaning_ru",
+  "kb_bundle": "kb-lang-ru-lexicon-semantics-v1",
+  "plan": "data/text-meaning-plan-v1.json",
+  "ingest_cli": "casa.cli.ingest_text_meaning_class",
+  "stages": [
+    {
+      "id": "stage-11a-extract-fact",
+      "title": "Извлечение фактов из passage",
+      "order": 1,
+      "sub_act": "extract"
+    },
+    {
+      "id": "stage-11b-inference",
+      "title": "Вывод из контекста",
+      "order": 2,
+      "sub_act": "analyze"
+    },
+    {
+      "id": "stage-11c-stance",
+      "title": "Позиция автора и аргументы",
+      "order": 3,
+      "sub_act": "analyze"
+    },
+    {
+      "id": "stage-11d-pro-con",
+      "title": "Структурированное мнение",
+      "order": 4,
+      "sub_act": "analyze"
+    },
+    {
+      "id": "stage-11e-register",
+      "title": "Смысл + смена регистра",
+      "order": 5,
+      "sub_act": "respond"
+    }
+  ]
+}

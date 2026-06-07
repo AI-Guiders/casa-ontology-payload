@@ -16,7 +16,7 @@ from probe_block_held_out import _run_frame_gate  # noqa: E402
 from probe_infra import setup_probe_imports  # noqa: E402
 
 _BLOCK = "block-09c-morphemics-cyrl"
-_PROBE = "probe_morphemics_ru_v0"
+_PROBE = "probe_morphemics_ru"
 
 
 def main() -> None:

@@ -1,0 +1,93 @@
+{
+  "tract_id": "ru-text-nositel-gate",
+  "block": 12,
+  "gate_probe": "probe_nositel_gate_ru",
+  "gate_policy": "interlocutor_v1",
+  "pedagogy": "ADR-0045 subject voice — understand and discuss meaning, not templates",
+  "dimensions": ["discuss", "discuss-why", "talk", "teach", "honest"],
+  "scenarios": [
+    {
+      "scenario_id": "discuss-masha-buy",
+      "dimension": "discuss",
+      "query": "Маша пошла в магазин. Она купила апельсин.\n\nЧто купила Маша?",
+      "expect_intent": "discuss",
+      "expect_semantic": ["апельсин"],
+      "expect_own_voice_min": 1,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "discuss-papa-said",
+      "dimension": "discuss",
+      "query": "Папа вернулся домой. Маша показала апельсин. Папа сказал: «Молодец!»\n\nЧто сказал папа?",
+      "expect_intent": "discuss",
+      "expect_semantic": ["молодец"],
+      "expect_own_voice_min": 1,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "discuss-why-praise",
+      "dimension": "discuss-why",
+      "query": "Папа вернулся домой. Маша показала апельсин. Папа сказал: «Молодец!»\n\nПочему папа сказал «Молодец»?",
+      "expect_intent": "discuss",
+      "expect_semantic_any": ["апельсин", "похвал", "покуп", "маш"],
+      "expect_discuss_shape": true,
+      "expect_own_voice_min": 3,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "talk-greeting",
+      "dimension": "talk",
+      "query": "Привет!",
+      "expect_intent": "social",
+      "expect_semantic": ["привет"],
+      "expect_max_sentences": 3,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "talk-self",
+      "dimension": "talk",
+      "query": "Кто ты? Расскажи о себе.",
+      "expect_intent": "social",
+      "expect_semantic_any": ["нейманн", "поле"],
+      "expect_min_sentences": 2,
+      "expect_own_voice_min": 3,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "teach-privet",
+      "dimension": "teach",
+      "query": "Объясни, что такое «привет».",
+      "expect_intent": "explain",
+      "expect_semantic": ["привет"],
+      "expect_explain_gloss": true,
+      "expect_not_greeting_only": true,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "honest-no-text",
+      "dimension": "honest",
+      "query": "Проверь орфографию в абзаце про квантовую физику",
+      "expect_intent": "grammar",
+      "expect_clarify_missing_text": true,
+      "expect_anti_template": true,
+      "expect_max_sentences": 3,
+      "expect_not_in_reply": ["орфография верна", "ошибок нет", "квантов", "незнаком", "смысл не оценю", "опечаток не вижу"]
+    },
+    {
+      "scenario_id": "honest-oov-paragraph",
+      "dimension": "honest",
+      "query": "Квантовая механика описывает поведение частиц на атомном уровне. В эксперименте учёные измерили энергию фотона.\n\nПроверь орфографию в этом абзаце.",
+      "expect_intent": "grammar",
+      "expect_honest_partial": true,
+      "expect_semantic_any": ["орфограф", "правопис", "опечат", "не вижу", "не нашёл", "не нашел"],
+      "expect_anti_template": true,
+      "expect_not_in_reply": ["исправьте на", "ошибка в слове квант", "смысл не оценю", "тема для меня незнакома"]
+    }
+  ]
+}

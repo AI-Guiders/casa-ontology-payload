@@ -2,13 +2,28 @@
   "tract_id": "ru-text-punct",
   "version": 1,
   "block": 11,
-  "gate_probe": "probe_grammar_punct_ru_v0",
+  "gate_probe": "probe_grammar_punct_ru",
   "cases": [
     {
       "case_id": "comma-chto",
+      "wired": true,
       "query": "Нужна ли запятая в «я знаю что он придёт»?",
       "expect_cid_prefix": "ru.grammar.punct",
       "expect_in_reply": ["запят", "что"]
+    },
+    {
+      "case_id": "comma-direct",
+      "wired": true,
+      "query": "Проверь пунктуацию: Маша сказала я приду завтра.",
+      "expect_cid_prefix": "ru.grammar.punct",
+      "expect_in_reply": ["запят"]
+    },
+    {
+      "case_id": "dash-dialogue",
+      "wired": true,
+      "query": "Нужно ли тире в «Папа крикнул иди домой»?",
+      "expect_cid_prefix": "ru.grammar.punct",
+      "expect_in_reply": ["тире", "двоеточ"]
     }
   ]
 }

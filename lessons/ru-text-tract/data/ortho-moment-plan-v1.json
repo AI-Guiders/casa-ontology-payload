@@ -2,19 +2,35 @@
   "tract_id": "ru-text-ortho",
   "version": 1,
   "block": 10,
-  "gate_probe": "probe_orthography_ru_v0",
+  "gate_probe": "probe_orthography_ru",
   "cases": [
     {
       "case_id": "dative-prikaz",
+      "wired": true,
       "query": "Согласно приказа верно?",
       "expect_cid_prefix": "ru.grammar.case.dative",
       "expect_in_reply": ["приказу", "датель"]
     },
     {
       "case_id": "v-techenie",
+      "wired": true,
       "query": "Как пишется: в течении или в течение дня?",
       "expect_cid_prefix": "ru.grammar.spelling",
       "expect_in_reply": ["течение"]
+    },
+    {
+      "case_id": "zh-sh",
+      "wired": true,
+      "query": "В слове «большой» буква ж или ш?",
+      "expect_cid_prefix": "ru.grammar.spelling",
+      "expect_in_reply": ["ж"]
+    },
+    {
+      "case_id": "nn-beg",
+      "wired": true,
+      "query": "Как правильно: красивый или красивый? (одна или две н в слове красивый)",
+      "expect_cid_prefix": "ru.grammar.spelling",
+      "expect_in_reply": ["красив"]
     }
   ]
 }

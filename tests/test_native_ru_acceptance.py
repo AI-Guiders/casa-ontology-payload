@@ -17,7 +17,7 @@ from casa.domain.partner_cue_policy import (
     social_concept_for_cue,
 )
 from casa.domain.subject_articulation import compose_subject_utterance
-from casa.domain.subject_dialogue_bind import gather_subject_dialogue_blocks
+from casa.domain.dialogue_bind import gather_subject_dialogue_blocks
 from casa.prisms.control.fpn_state import WorkingMemory
 from casa.prisms.control.tick import ControlExtensions
 from casa.prisms.shared.store_bundles import load_store_bundles

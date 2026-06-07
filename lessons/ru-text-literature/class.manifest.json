@@ -1,0 +1,11 @@
+{
+  "schema_version": 2,
+  "class_id": "ru-text-literature",
+  "title": "Литература — понимание короткого текста",
+  "target_agent": "von-neumann",
+  "tract_id": "text",
+  "block": "B11-lit",
+  "gate_probe": "probe_literature_rc_ru",
+  "plan": "data/literature-rc-plan.json",
+  "prerequisite": "probe_text_meaning_ru"
+}

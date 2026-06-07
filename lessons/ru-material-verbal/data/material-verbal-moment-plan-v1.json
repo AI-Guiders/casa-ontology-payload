@@ -1,0 +1,52 @@
+{
+  "tract_id": "ru-material-verbal",
+  "version": 1,
+  "block": "5alpha",
+  "gate_probe": "probe_material_verbal_ru",
+  "pedagogy": "Galperin material→verbal; written social speech via journal",
+  "min_pass_ratio": 1.0,
+  "scenarios": [
+    {
+      "scenario_id": "mv-sticks-two-heaps",
+      "stage": "verbalize",
+      "wired": true,
+      "remember_text": "На поле две кучки палочек и одна палочка отдельно — запомнил этот контраст.",
+      "concepts": ["math.entity.stick", "math.role.heap", "agent.world.idea.two_groups_one_apart"],
+      "tags": ["material-verbal", "vis-math", "cue:sticks"],
+      "recall_query": "Ты видел палочки на поле. Опиши своими словами, что заметил про кучки и отдельную палочку.",
+      "expect_field_tokens": ["куч", "палоч", "отдельн", "две", "одн"],
+      "expect_own_voice_min": 3,
+      "expect_max_paste_ratio": 0.4,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "mv-compare-more-less",
+      "stage": "verbalize",
+      "wired": true,
+      "remember_text": "Слева палочек больше, справа меньше — так я это увидел на поле.",
+      "concepts": ["math.op.compare", "math.entity.stick", "agent.world.relation.more_than"],
+      "tags": ["material-verbal", "math", "cue:compare"],
+      "recall_query": "Сравни: где палочек больше, где меньше? Скажи своими словами.",
+      "expect_field_tokens": ["больш", "меньш", "палоч", "слева", "справа"],
+      "expect_own_voice_min": 3,
+      "expect_max_paste_ratio": 0.4,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "mv-between-gap",
+      "stage": "verbalize",
+      "wired": true,
+      "remember_text": "Между двумя кучками есть промежуток — пустое место на поле.",
+      "concepts": ["math.role.heap", "agent.world.relation.between"],
+      "tags": ["material-verbal", "spatial", "cue:between"],
+      "recall_query": "Что между кучками на поле? Объясни коротко своими словами.",
+      "expect_field_tokens": ["между", "куч", "промежут", "пуст"],
+      "expect_own_voice_min": 2,
+      "expect_max_paste_ratio": 0.45,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    }
+  ]
+}
