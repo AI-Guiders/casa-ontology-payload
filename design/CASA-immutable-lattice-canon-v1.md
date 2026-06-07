@@ -225,6 +225,18 @@ Experiential `lexicon-ru-*` — отдельная очередь stale shard (c
 
 Поток: tool train → percept «готово» в `body/completions.jsonl` → **macro tick** `ingest_body_completions_on_tick` (episode + `agent_commit_canon_nca_completion` в RAM) → persist на границе tick. Tools **не** вызывают `save_runtime_state`.
 
+### Где на диске (store tiers)
+
+| Путь под `agents/<store_id>/` | Tier | В git |
+|-------------------------------|------|-------|
+| `ltm/`, cold `nca/` (shipped pack) | shipped | опционально snapshot |
+| `field_state.json`, `agent_session.json` | **runtime** checkpoint | **нет** (`.gitignore`) |
+| `nca_train_registry.json`, `body/completions.jsonl`, `nca/*/model.pt` | **runtime** / body buffer | **нет** |
+| `agent/`, `journal/` | **self** (явная память агента) | **нет** |
+| `store_profile.json`, `body_manifest.example.json` | profile template | да |
+
+Решения (promote, commit, persist) — **агент**; body только артефакты и percept. Это не teacher corpus и не host oracle.
+
 ---
 
 ## Чего не делать

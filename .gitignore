@@ -2,9 +2,22 @@
 **/field_state.json
 **/field_state.legacy.json
 **/field_state.before_sleep_e2e.json
+**/agent_session.json
+**/.store.write.lock
+**/.crash-quarantine/
 agents/*/ltm/
 agents/*/nca/
 agents/*/field_state*.json
+
+# Agent store — runtime + self (living von-neumann; see memory-hierarchy.md § Store tiers)
+agents/*/agent/
+agents/*/journal/
+agents/*/agent_field.db
+agents/*/agent_journal.db
+agents/*/nca_train_registry.json
+agents/*/body/completions.jsonl
+agents/*/body/completions.archive.jsonl
+agents/*/MEMORY.md
 
 # Lab snapshot shards and fat stores
 lab/snapshots/**/_parallel_shards/
@@ -43,6 +56,9 @@ lab/agent-core/**/nca/**/report.json
 # Lab experiments, scratch, and local train stores
 lab/exp_*/
 lab/nca_out*/
+lab/out/
+lab/kb-bundles/
+lab/inbox/_processed/
 lab/_bench*
 lab/_tmp*
 lab/**/*.log
@@ -51,6 +67,7 @@ lab/mm/
 lab/sensory/
 lab/sources/
 lab/kb/_tmp*
+lab/visual-curriculum/out/
 
 # Post-train pipeline logs (repo root)
 /post_train_ru_general.log
