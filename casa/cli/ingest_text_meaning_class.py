@@ -137,7 +137,15 @@ def main() -> None:
         sync = REPO_ROOT / "tools/sync_life_archive.py"
         if sync.is_file():
             proc = subprocess.run(
-                [sys.executable, str(sync), "snapshot", "--store-dir", str(store)],
+                [
+                    sys.executable,
+                    str(sync),
+                    "--store-dir",
+                    str(store),
+                    "snapshot",
+                    "-m",
+                    "life: B11 text-meaning ingest",
+                ],
                 cwd=str(REPO_ROOT),
             )
             raise SystemExit(proc.returncode)

@@ -1,0 +1,49 @@
+{
+  "tract_id": "ru-world-link-train",
+  "phase": "RU-epsilon",
+  "gate_probe": "probe_world_link_ru",
+  "pedagogy": "agent.world.* links from field experience — train only; held-out disjoint",
+  "min_pass_ratio": 1.0,
+  "scenarios": [
+    {
+      "scenario_id": "wl-train-heaps-gap",
+      "stage": "world_link",
+      "wired": true,
+      "remember_text": "Вижу на поле две группы палочек и одну палочку в стороне — между группами пустое место.",
+      "concepts": [
+        "math.entity.stick",
+        "math.role.heap",
+        "agent.world.entity.stick_heap_left",
+        "agent.world.entity.stick_apart",
+        "agent.world.relation.between",
+        "agent.world.idea.two_groups_one_apart"
+      ],
+      "tags": ["world-link", "train"],
+      "recall_query": "Опиши связь между группами палочек и отдельной палочкой на поле.",
+      "expect_field_tokens": ["групп", "палоч", "отдельн", "между", "пуст"],
+      "expect_own_voice_min": 2,
+      "expect_max_paste_ratio": 0.4,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "wl-train-compare-sides",
+      "stage": "world_link",
+      "wired": true,
+      "remember_text": "Слева на поле палочек больше, чем справа — так я это зафиксировал.",
+      "concepts": [
+        "math.entity.stick",
+        "agent.world.relation.more_than",
+        "agent.world.relation.less_than",
+        "agent.world.idea.compare_heaps"
+      ],
+      "tags": ["world-link", "train"],
+      "recall_query": "Как связаны «больше слева» и «меньше справа» в твоём наблюдении?",
+      "expect_field_tokens": ["больш", "меньш", "слева", "справа"],
+      "expect_own_voice_min": 2,
+      "expect_max_paste_ratio": 0.4,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    }
+  ]
+}

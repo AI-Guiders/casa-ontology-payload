@@ -30,6 +30,13 @@ def test_tick_gate_and_probe_both_count():
     assert mastery_ready_for_skill(state, "skill.read.analytic", min_streak=2)
 
 
+def test_intent_personal_probe_sync_credits_skill_gate():
+    state: dict = {}
+    sync_probe_pass_to_skill_gate(state, "probe_intent_personal_ru", tick=1)
+    sync_probe_pass_to_skill_gate(state, "probe_intent_personal_ru", tick=2)
+    assert mastery_ready_for_skill(state, "skill.tract.personal", min_streak=2)
+
+
 def test_promote_from_probe_report_syncs_skill_gate():
     state: dict = {}
     event = {"phrase_know": True, "know_words": 3, "total_words": 3}

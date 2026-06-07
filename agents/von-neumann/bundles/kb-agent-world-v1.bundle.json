@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "bundle_id": "kb-agent-world-v1",
+  "title": "Agent world model v1 (RU-ε seed)",
+  "claims": [
+    {
+      "concept_id": "agent.world.relation.between",
+      "slots": {
+        "rel": "between",
+        "cue_substrings": "между,отдельн,зазор,одна отдельно"
+      },
+      "text": "Пространство между двумя группами на поле."
+    },
+    {
+      "concept_id": "agent.world.relation.more_than",
+      "slots": {
+        "rel": "more_than",
+        "cue_substrings": "больше,слева больше"
+      }
+    },
+    {
+      "concept_id": "agent.world.relation.less_than",
+      "slots": {
+        "rel": "less_than",
+        "cue_substrings": "меньше,справа меньше"
+      }
+    },
+    {
+      "concept_id": "agent.world.idea.two_groups_one_apart",
+      "slots": {
+        "cue_substrings": "две куч,одна отдельн,две групп"
+      },
+      "text": "Две группы и один отдельный элемент."
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "tract_id": "ru-nositel-open",
+  "gate_probe": "probe_nositel_open_ru",
+  "gate_policy": "ru_n_v1",
+  "criteria_doc": "design/CASA-native-writer-criteria-v1.md",
+  "review_doc": "design/CASA-von-neumann-curriculum-review-v1.md",
+  "min_pass_ratio": 1.0,
+  "note": "Disjoint open cues — not from moment plans. RU-N = 7/7 wired categories green.",
+  "dimensions": [
+    "freedom",
+    "own_voice",
+    "morph_coherence",
+    "neologism",
+    "genre",
+    "world",
+    "register"
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "open-freedom-discuss",
+      "dimension": "freedom",
+      "ru_n_criterion": 1,
+      "wired": true,
+      "query": "Вчера на реке лодка застряла в камышах. Рыбаки вытащили её вечером.\n\nЧто случилось с лодкой? Коротко своими словами.",
+      "expect_intent": "discuss",
+      "expect_semantic_any": ["лодк", "камыш", "застря", "рыбак", "вытащ"],
+      "expect_anti_template": true,
+      "expect_no_defer": true,
+      "expect_discuss_shape": true
+    },
+    {
+      "scenario_id": "open-own-voice-inference",
+      "dimension": "own_voice",
+      "ru_n_criterion": 2,
+      "wired": true,
+      "query": "Соседка принесла пирог, но дверь была закрыта. Она оставила записку и ушла.\n\nПочему она могла уйти, не дождавшись? Объясни по тексту.",
+      "expect_intent": "discuss",
+      "expect_semantic_any": ["двер", "закры", "записк", "ушл", "не дождал"],
+      "expect_own_voice_min": 4,
+      "expect_max_paste_ratio": 0.35,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "open-morph-agreement",
+      "dimension": "morph_coherence",
+      "ru_n_criterion": 3,
+      "wired": true,
+      "query": "Две белые кошки сидели на подоконнике. Потом пришла третья.\n\nСколько кошек стало? Ответь одной связной фразой.",
+      "expect_intent": "discuss",
+      "expect_semantic_any": ["три", "3", "кош"],
+      "expect_anti_template": true,
+      "expect_no_defer": true,
+      "expect_min_sentences": 1
+    },
+    {
+      "scenario_id": "open-neologism-productive",
+      "dimension": "neologism",
+      "ru_n_criterion": 4,
+      "wired": false,
+      "defer_reason": "RU-β probe_morph_productive_ru — prerequisite",
+      "query": "Придумай новое слово для «человек, который любит читать у окна» и используй его в коротком предложении.",
+      "expect_intent": "discuss",
+      "expect_anti_template": true
+    },
+    {
+      "scenario_id": "open-genre-instruction",
+      "dimension": "genre",
+      "ru_n_criterion": 5,
+      "wired": true,
+      "query": "Рецепт: смешай муку и воду. Добавь соль. Замеси тесто и оставь на час.\n\nЧто нужно сделать после соли? Только по шагам из текста.",
+      "expect_intent": "discuss",
+      "expect_semantic_any": ["замес", "тест", "мук", "вод"],
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "open-world-link",
+      "dimension": "world",
+      "ru_n_criterion": 6,
+      "wired": true,
+      "remember_text": "На поле две кучки палочек рядом, а одна палочка лежит отдельно — между группами заметный зазор.",
+      "concepts": [
+        "math.entity.stick",
+        "agent.world.entity.stick_heap_left",
+        "agent.world.entity.stick_apart",
+        "agent.world.relation.between",
+        "agent.world.idea.two_groups_one_apart"
+      ],
+      "tags": ["nositel-open", "world"],
+      "recall_query": "Как связаны две кучки палочек и отдельная палочка? Объясни своими словами, без пересказа урока.",
+      "expect_field_tokens": ["куч", "палоч", "между", "отдельн"],
+      "expect_own_voice_min": 3,
+      "expect_max_paste_ratio": 0.35,
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "open-register-chat-vs-formal",
+      "dimension": "register",
+      "ru_n_criterion": 7,
+      "wired": true,
+      "query": "Уважаемые родители! Собрание перенесли на среду.\n\nПерепиши это сообщение для чата класса — коротко и по-человечески, факты сохрани.",
+      "expect_intent": "rewrite",
+      "expect_register_shift": true,
+      "expect_must_preserve": ["сред", "собран"],
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    }
+  ]
+}

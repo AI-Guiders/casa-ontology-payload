@@ -29,6 +29,9 @@ PROBE_GATE_BY_SKILL: dict[str, str] = {
     "skill.punct.check": "probe_grammar_punct_ru",
     "skill.lex.oov_remember": "probe_oov_word_recall_ru",
     "skill.ortho.vigilance": "probe_morphemics_ru",
+    "skill.tract.personal": "probe_intent_personal_ru",
+    "skill.articulate.field": "probe_material_verbal_ru",
+    "skill.world.link": "probe_world_link_ru",
 }
 
 SKILL_GATE_BY_PROBE: dict[str, str] = {v: k for k, v in PROBE_GATE_BY_SKILL.items()}

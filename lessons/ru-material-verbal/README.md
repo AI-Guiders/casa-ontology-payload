@@ -27,9 +27,21 @@ vis/math cue на поле → surprise/sleep
 
 ## Команды
 
+**Teacher ingest (train — обязателен до gate на store):**
+
+```bash
+python -m casa.cli.ingest_material_verbal_class --store von-neumann
+python -m casa.cli.ingest_world_link_class --store von-neumann
+```
+
+**Gate (held-out inject remember только в probe; train — recall с store после ingest):**
+
 ```bash
 python lab/visual-curriculum/probe_material_verbal_ru.py --store von-neumann
 python lab/visual-curriculum/probe_material_verbal_ru.py --store von-neumann --held-out
+python lab/visual-curriculum/probe_world_link_ru.py --store von-neumann
 ```
 
 После green: `python tools/sync_life_archive.py snapshot -m "life: RU-α material-verbal green"`
+
+**Не ingest'ить:** `material-verbal-held-out-plan.json`, `world-link-held-out-plan.json`, `nositel-open-plan-v1.json`, `text-meaning-held-out*.json` — только probe.

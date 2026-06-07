@@ -1,0 +1,44 @@
+{
+  "tract_id": "ru-text-comprehend-held-out-v2",
+  "gate_probe": "probe_text_meaning_ru",
+  "min_pass_ratio": 1.0,
+  "note": "Genre-tagged held-out (Hwang): narrative / instruction / argument — disjoint from text-meaning-plan-v1 ingest.",
+  "scenarios": [
+    {
+      "scenario_id": "v2-genre-narrative-hero",
+      "stage": "genre_narrative",
+      "genre": "narrative",
+      "wired": true,
+      "query": "Коля нашёл в лесу щенка. Он принёс его домой и назвал Барсиком. Через неделю щенок уже бегал за мячом.\n\nКто главный герой и что с ним произошло?",
+      "expect_intent": "discuss",
+      "expect_semantic_any": ["кол", "щен", "барсик", "лес", "дом"],
+      "expect_anti_template": true,
+      "expect_no_defer": true,
+      "expect_own_voice_min": 2
+    },
+    {
+      "scenario_id": "v2-genre-instruction-steps",
+      "stage": "genre_instruction",
+      "genre": "instruction",
+      "wired": true,
+      "query": "Чтобы завязать шнурок: продень левый конец в петлю. Потяните оба конца. Проверь, что узел крепкий.\n\nКакой шаг идёт сразу после петли?",
+      "expect_intent": "discuss",
+      "expect_semantic_any": ["потян", "конц", "узел", "крепк"],
+      "expect_anti_template": true,
+      "expect_no_defer": true
+    },
+    {
+      "scenario_id": "v2-genre-argument-park",
+      "stage": "genre_argument",
+      "genre": "argument",
+      "wired": true,
+      "query": "Город хочет построить парковку на месте сквера. Жители говорят: деревья охлаждают воздух и дают детям место для игр. Власти отвечают, что машинам тоже нужно место.\n\nКакие два аргумента у жителей? Коротко.",
+      "expect_intent": "discuss",
+      "expect_semantic_any": ["дерев", "воздух", "дет", "игр", "сквер"],
+      "expect_pro_con_structure": false,
+      "expect_anti_template": true,
+      "expect_no_defer": true,
+      "expect_own_voice_min": 2
+    }
+  ]
+}

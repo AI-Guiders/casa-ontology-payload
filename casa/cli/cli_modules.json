@@ -1,5 +1,6 @@
 {
   "agent_autonomous_tick": "casa.prisms.tick.agent_autonomous_tick",
+  "agent_dialogue_repl": "casa.cli.agent_dialogue_repl",
   "agent_bridge": "casa.prisms.memory.agent_bridges",
   "agent_journal": "casa.prisms.memory.agent_journal",
   "agent_workbook": "casa.prisms.memory.agent_workbook",
@@ -132,6 +133,8 @@
   "ingest_en_lex_dev": "casa.prisms.memory.ingest_en_lex_dev",
   "ingest_kb_meta_l3": "casa.prisms.memory.ingest_kb_meta_l3",
   "ingest_text_meaning_class": "casa.cli.ingest_text_meaning_class",
+  "ingest_material_verbal_class": "casa.cli.ingest_material_verbal_class",
+  "ingest_world_link_class": "casa.cli.ingest_world_link_class",
   "promote_meaning_frames": "casa.cli.promote_meaning_frames",
   "init_control_lab": "casa.prisms.control.init_control_lab",
   "init_math_l0_lab": "casa.prisms.memory.init_math_l0_lab",

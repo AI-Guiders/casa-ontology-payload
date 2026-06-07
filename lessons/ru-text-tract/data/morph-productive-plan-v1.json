@@ -1,0 +1,19 @@
+{
+  "plan_id": "morph-productive-ru-v1",
+  "stage": "stage-05b-morph-productive-ru",
+  "phase": "RU-beta",
+  "min_pass_ratio": 1.0,
+  "note": "Productive neologism with affix in context — scaffold; enable when phrase+paradigm ready.",
+  "scenarios": [
+    {
+      "scenario_id": "neo-window-lover",
+      "wired": false,
+      "defer_reason": "authoring: paradigm slots for -люб/-ник on novel stem",
+      "query": "Придумай слово для «человек, который любит смотреть в окно» и употреби его в коротком предложении.",
+      "expect_intent": "discuss",
+      "expect_anti_template": true,
+      "expect_no_defer": true,
+      "expect_neologism_affix_any": ["-люб", "-ник", "-овед"]
+    }
+  ]
+}

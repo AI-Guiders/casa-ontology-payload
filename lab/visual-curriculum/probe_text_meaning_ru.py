@@ -14,6 +14,7 @@ from text_meaning_scenario import scenario_pass
 _PLAN = Path(__file__).resolve().parents[2] / "lessons/ru-text-comprehend/data/text-meaning-plan-v1.json"
 _PROBE = "probe_text_meaning_ru"
 _HELD_OUT = Path(__file__).resolve().parents[2] / "lessons/ru-text-comprehend/data/text-meaning-held-out-plan.json"
+_HELD_OUT_V2 = Path(__file__).resolve().parents[2] / "lessons/ru-text-comprehend/data/text-meaning-held-out-v2.json"
 _STAGE = "stage-11-text-meaning-ru"
 
 
@@ -31,10 +32,16 @@ def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--store", default="von-neumann")
     p.add_argument("--plan", type=Path, default=_PLAN)
-    p.add_argument("--held-out", action="store_true", help="Use disjoint held-out scenarios")
+    p.add_argument("--held-out", action="store_true", help="Use disjoint held-out scenarios (v1)")
+    p.add_argument("--held-out-v2", action="store_true", help="Genre held-out v2 (narrative/instruction/argument)")
     args = p.parse_args()
 
-    plan_path = _HELD_OUT if args.held_out and _HELD_OUT.is_file() else args.plan
+    if args.held_out_v2 and _HELD_OUT_V2.is_file():
+        plan_path = _HELD_OUT_V2
+    elif args.held_out and _HELD_OUT.is_file():
+        plan_path = _HELD_OUT
+    else:
+        plan_path = args.plan
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
     scenarios = list(plan.get("scenarios") or [])
     min_ratio = float(plan.get("min_pass_ratio") or 1.0)

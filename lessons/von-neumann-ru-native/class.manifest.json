@@ -9,6 +9,7 @@
   "category_map": "design/CASA-ru-native-categories-v0.md",
   "teaching_plan": "design/CASA-von-neumann-ru-teaching-plan-v1.md",
   "audit": "design/CASA-von-neumann-ru-class-audit-v1.md",
+  "curriculum_review": "design/CASA-von-neumann-curriculum-review-v1.md",
   "tracts": [
     {
       "tract_id": "visual",
@@ -49,6 +50,15 @@
     "punctuation": "probe_grammar_punct_ru",
     "cefr": "probe_cefr_gate_ru",
     "literature": "probe_literature_rc_ru",
-    "material_verbal": "probe_material_verbal_ru"
+    "material_verbal": "probe_material_verbal_ru",
+    "intent_personal": "probe_intent_personal_ru",
+    "nositel_open": "probe_nositel_open_ru",
+    "world_link": "probe_world_link_ru",
+    "morph_productive": "probe_morph_productive_ru"
+  },
+  "native_gates": {
+    "ru_alpha": "probe_material_verbal_ru",
+    "ru_n": "probe_nositel_open_ru",
+    "criteria": "design/CASA-native-writer-criteria-v1.md"
   }
 }

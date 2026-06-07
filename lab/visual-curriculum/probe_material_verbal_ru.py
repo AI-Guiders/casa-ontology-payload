@@ -24,6 +24,7 @@ def _run_case(
     state,
     wm,
     bundle,
+    inject_remember: bool,
 ) -> tuple[bool, dict[str, Any], str]:
     from casa.domain.subject_articulation import compose_subject_utterance
     from casa.domain.dialogue_bind import gather_subject_dialogue_blocks
@@ -32,7 +33,7 @@ def _run_case(
     from casa.prisms.tick.semantic_read import route_kb_read
 
     remember_text = str(case.get("remember_text") or "")
-    if remember_text:
+    if inject_remember and remember_text:
         agent_remember(
             store,
             state,
@@ -102,7 +103,14 @@ def main() -> None:
             if not case.get("wired", True):
                 continue
             total += 1
-            ok, detail, reply = _run_case(case, store=store, state=state, wm=wm, bundle=bundle)
+            ok, detail, reply = _run_case(
+                case,
+                store=store,
+                state=state,
+                wm=wm,
+                bundle=bundle,
+                inject_remember=args.held_out,
+            )
             if ok:
                 know += 1
             items.append(
