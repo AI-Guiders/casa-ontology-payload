@@ -23,3 +23,12 @@ def install(from_file: str | Path) -> tuple[Path, Path]:
         if s not in sys.path:
             sys.path.insert(0, s)
     return repo, curriculum
+
+
+def repo_root(from_file: str | Path | None = None) -> Path:
+    """casa-ontology-payload root (parent of lab/)."""
+    if from_file is not None:
+        repo, _ = install(from_file)
+        return repo
+    curriculum = Path(__file__).resolve().parent
+    return curriculum.parents[1]

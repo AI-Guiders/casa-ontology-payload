@@ -8,14 +8,20 @@ import json
 from pathlib import Path
 from typing import Any
 
-from block_pedagogy import (
+from probe_infra import manifest_hints, run_frame_probe, setup_probe_imports
+
+setup_probe_imports()
+
+from block_pedagogy import (  # noqa: E402
     block_kind,
     gate_pass,
     held_out_frame_ids,
     held_out_phrase_event_ids,
     load_block_spec,
+    register_bind_report,
+    morph_segment_bind_report,
+    register_meta_bind_report,
 )
-from probe_infra import manifest_hints, run_frame_probe
 
 
 def _run_phrase_gate(spec: dict[str, Any], *, block_id: str, store_id: str) -> dict:
@@ -97,6 +103,22 @@ def _run_frame_gate(spec: dict[str, Any], *, block_id: str, store_id: str) -> di
         },
         print_lines=False,
     )
+    from probe_infra import default_store, setup_probe_imports
+
+    meta_rules = spec.get("register_meta_rules") or []
+    morph_rules = spec.get("morph_meta_rules") or []
+    pairs = spec.get("register_bind_pairs") or []
+    if meta_rules or morph_rules or pairs:
+        setup_probe_imports()
+        from casa.cli.ingest_state import resolve_ingest_state
+
+        state = resolve_ingest_state(default_store(store_id), None)
+        if meta_rules:
+            report["register_meta_bind"] = register_meta_bind_report(state, meta_rules)
+        if morph_rules:
+            report["morph_segment_bind"] = morph_segment_bind_report(state, morph_rules)
+        if pairs:
+            report["register_bind"] = register_bind_report(state, pairs)
     report["gate_pass"] = gate_pass(spec, report)
     out_path = Path(__file__).resolve().parent / "generated" / report_name
     out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

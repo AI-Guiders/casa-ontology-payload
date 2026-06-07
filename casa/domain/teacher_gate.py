@@ -49,6 +49,8 @@ PROBE_REGISTRY: dict[str, ProbeSpec] = {
         GateKind.AGENT_KSA, "block 8 agreement/possessive/numeral meta held-out"
     ),
     "probe_passage_comprehend_ru_v0": ProbeSpec(GateKind.AGENT_KSA, "passage comprehension held-out"),
+    "probe_morphemics_ru_v0": ProbeSpec(GateKind.AGENT_KSA, "morphemics segment bind held-out"),
+    "probe_block09c_morphemics_held_out": ProbeSpec(GateKind.AGENT_KSA, "block 9c morphemics held-out"),
     "probe_oov_word_recall_v0": ProbeSpec(GateKind.AGENT_KSA, "OOV remember recall"),
     "probe_orthography_ru_v0": ProbeSpec(GateKind.AGENT_KSA, "orthography in context"),
     "probe_grammar_punct_ru_v0": ProbeSpec(GateKind.AGENT_KSA, "punctuation in context"),

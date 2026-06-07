@@ -11,8 +11,12 @@ META_PURE_LITERACY_FRAMES = (
     "word-lowercase-strochnaya-bukva-sans",
     "word-lowercase-nizhnego-registra-sans",
     "word-ne_znayu-sans",
+    "word-vybor-sans",
+    "word-zameshatelstvo-sans",
     "word-size-large-sans",
     "word-size-small-sans",
+    "word-bukva-sans",
+    "word-slovo-sans",
 )
 
 META_PURE_FRAMES = META_PURE_LITERACY_FRAMES

@@ -10,7 +10,9 @@ from pathlib import Path
 from typing import Any
 
 _CURRICULUM = Path(__file__).resolve().parent
-_REPO = _CURRICULUM.parents[1]
+from vc_paths import repo_root  # noqa: E402
+
+_REPO = repo_root(__file__)
 
 
 def setup_probe_imports() -> Path:

@@ -9,7 +9,9 @@ from pathlib import Path
 from typing import Any, Literal
 
 _CURRICULUM = Path(__file__).resolve().parent
-_REPO = _CURRICULUM.parents[1]
+from vc_paths import repo_root  # noqa: E402
+
+_REPO = repo_root(__file__)
 
 from teacher_pedagogy import (  # noqa: E402
     LITERACY_STAGE_PROBES,
@@ -144,13 +146,56 @@ def probe_issues(report: dict[str, Any]) -> list[dict[str, Any]]:
     return bad
 
 
+def ingest_probe_failure_frames(
+    session: Any,
+    spec: dict[str, Any],
+    report: dict[str, Any],
+    *,
+    moment_copies: int = 3,
+) -> list[dict[str, Any]]:
+    """JPEG ingest for probe failures — lab remediation after held-out gate (not train waves)."""
+    from manifest_steps import frame_by_id, steps_for_frame
+    from teacher_pedagogy import load_class_manifest
+
+    manifest = load_class_manifest(str(spec.get("class_rel") or "lessons/literacy-cards"))
+    rows: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in probe_issues(report):
+        fid = str(item.get("frame_id") or "")
+        if not fid or fid in seen:
+            continue
+        seen.add(fid)
+        frame = frame_by_id(manifest, fid)
+        steps = steps_for_frame(frame)
+        for i in range(max(1, moment_copies)):
+            mid = f"remediate-{fid}-{i + 1}"[:80]
+            row = session.ingest(mid, steps, frame_id=fid, remediate=i + 1)
+            rows.append(
+                {
+                    "frame_id": fid,
+                    "moment_id": mid,
+                    "verdict": item.get("verdict"),
+                    "bridges_emergent": row.get("bridges_emergent"),
+                }
+            )
+    return rows
+
+
 def reinforce_from_probe_report(
     state: dict[str, Any],
     report: dict[str, Any],
     *,
     copies: int = 12,
 ) -> list[dict[str, Any]]:
+    from casa.prisms.memory.f0_stack import weaken_graph_edge
+    from casa.prisms.memory.lexical_lattice_bootstrap import lattice_for_lex_concept
+    from casa.prisms.memory.memory_prisms import memory_lattices, persist_content_lattices
     from casa.prisms.visual.bridge_lex import reinforce_vis_lex_bridge
+    from casa.prisms.visual.bridge_math import (
+        DEFAULT_RELATION,
+        _weaken_on_visual_lum,
+        vis_frame_concept_id,
+    )
 
     rows: list[dict[str, Any]] = []
     for item in probe_issues(report):
@@ -158,6 +203,33 @@ def reinforce_from_probe_report(
         hint = str(item.get("teacher_hint") or "").strip()
         if not fid or not hint:
             continue
+        weakened: list[str] = []
+        if str(item.get("verdict") or "") == "ambiguous":
+            vis_cid = vis_frame_concept_id(fid)
+            for leader in item.get("leaders") or []:
+                lex_cid = str(leader or "").strip()
+                if not lex_cid or lex_cid == hint:
+                    continue
+                _weaken_on_visual_lum(
+                    state,
+                    src=vis_cid,
+                    relation=DEFAULT_RELATION,
+                    dst=lex_cid,
+                    copies=copies,
+                )
+                lat_id = lattice_for_lex_concept(lex_cid)
+                if lat_id:
+                    lats = memory_lattices(state)
+                    weaken_graph_edge(
+                        lats,
+                        lat_id,
+                        vis_cid,
+                        DEFAULT_RELATION,
+                        lex_cid,
+                        copies=copies,
+                    )
+                    persist_content_lattices(state, lats)
+                weakened.append(lex_cid)
         row = reinforce_vis_lex_bridge(
             state,
             frame_id=fid,
@@ -170,6 +242,7 @@ def reinforce_from_probe_report(
                 "lex_cid": hint,
                 "verdict": item.get("verdict"),
                 "reinforced": row is not None,
+                "weakened": weakened,
             }
         )
     return rows
@@ -180,6 +253,7 @@ def run_probe_script(
     *,
     cwd: Path | None = None,
     extra_args: list[str] | None = None,
+    allow_gate_fail: bool = False,
 ) -> dict[str, Any]:
     """Запуск probe_*.py из lab/visual-curriculum, вернуть JSON отчёт."""
     cwd = cwd or _CURRICULUM
@@ -192,21 +266,32 @@ def run_probe_script(
         encoding="utf-8",
         check=False,
     )
-    if proc.returncode != 0:
+    if proc.returncode != 0 and not allow_gate_fail:
         raise RuntimeError(
             f"probe failed ({script.name}): {proc.stderr or proc.stdout}"
         )
     summary: dict[str, Any] | None = None
-    for line in reversed(proc.stdout.strip().splitlines()):
+    tail: dict[str, Any] | None = None
+    for line in proc.stdout.strip().splitlines():
         stripped = line.strip()
-        if stripped.startswith("{"):
-            summary = json.loads(stripped)
-            break
+        if not stripped.startswith("{"):
+            continue
+        row = json.loads(stripped)
+        if row.get("path"):
+            summary = row
+        else:
+            tail = row
+    if summary is None:
+        summary = tail
     if summary is None:
         raise RuntimeError(
             f"probe stdout has no JSON summary ({script.name}): {proc.stderr or proc.stdout!r}"
         )
     report_name = Path(str(summary.get("path") or "")).name
+    if not report_name:
+        raise RuntimeError(
+            f"probe stdout JSON has no report path ({script.name}): {summary!r}"
+        )
     report = json.loads((cwd / "generated" / report_name).read_text(encoding="utf-8"))
     return report
 

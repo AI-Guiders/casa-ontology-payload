@@ -59,6 +59,50 @@ def steps_for_frame(frame: dict[str, Any]) -> list[dict[str, Any]]:
     ]
 
 
+def steps_morph_segment_bind(
+    manifest: dict[str, Any],
+    *,
+    role_frame_id: str,
+    segment_frame_id: str,
+    phrase_frame_id: str | None = None,
+) -> list[dict[str, Any]]:
+    """One moment: morph role meta + attested segment (+ optional phrase context)."""
+    steps: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for fid in (role_frame_id, segment_frame_id, phrase_frame_id):
+        if not fid or fid in seen:
+            continue
+        seen.add(fid)
+        frame = frame_by_id(manifest, fid)
+        steps.append({"visual_frame": fid})
+        steps.append({"lexical": lexical_spec_from_frame(frame)})
+    return steps
+
+
+def steps_register_bind(
+    manifest: dict[str, Any],
+    *,
+    lower_frame_id: str,
+    cap_frame_id: str,
+    meta_frame_id: str | None = None,
+) -> list[dict[str, Any]]:
+    """One moment: register meta rule + lower/cap surfaces (co-sleep bind)."""
+    steps: list[dict[str, Any]] = []
+    if meta_frame_id:
+        meta = frame_by_id(manifest, meta_frame_id)
+        steps.append({"visual_frame": meta_frame_id})
+        steps.append({"lexical": lexical_spec_from_frame(meta)})
+    seen: set[str] = set()
+    for fid in (lower_frame_id, cap_frame_id):
+        if not fid or fid in seen:
+            continue
+        seen.add(fid)
+        frame = frame_by_id(manifest, fid)
+        steps.append({"visual_frame": fid})
+        steps.append({"lexical": lexical_spec_from_frame(frame)})
+    return steps
+
+
 def frame_by_id(manifest: dict[str, Any], frame_id: str) -> dict[str, Any]:
     for f in manifest.get("frames") or []:
         if str(f.get("id")) == frame_id:

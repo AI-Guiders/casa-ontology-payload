@@ -78,6 +78,13 @@ def _lex_episodes(episodes: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
+def _lex_lex_episode_pair(lep_a: dict[str, Any], lep_b: dict[str, Any]) -> bool:
+    """Same teacher moment scene → co-occurrence candidate (register / paradigm)."""
+    sa = str(lep_a.get("scene") or "").strip()
+    sb = str(lep_b.get("scene") or "").strip()
+    return bool(sa and sb and sa == sb)
+
+
 def _vis_lex_episode_pair(vep: dict[str, Any], lep: dict[str, Any]) -> bool:
     """Co-occur only when same scene or vis cue matches lex concept slug."""
     vs = str(vep.get("scene") or "").strip()
@@ -173,6 +180,46 @@ def extract_emergent_vis_lex_bridges(
             if len(seen) > 128:
                 break
 
+    def _min_votes_for(cid: str) -> int:
+        return 1 if cid.startswith("lang.meta.") else min_lex_votes
+
+    for i, lep_a in enumerate(lex_eps):
+        cid_a = canonical_lex_concept_id(str(lep_a.get("concept_id") or ""))
+        if lex_concept_votes(lattices, cid_a, min_votes=_min_votes_for(cid_a)) < _min_votes_for(cid_a):
+            continue
+        for lep_b in lex_eps[i + 1 :]:
+            cid_b = canonical_lex_concept_id(str(lep_b.get("concept_id") or ""))
+            if cid_a == cid_b:
+                continue
+            if not _lex_lex_episode_pair(lep_a, lep_b):
+                continue
+            if lex_concept_votes(lattices, cid_b, min_votes=_min_votes_for(cid_b)) < _min_votes_for(cid_b):
+                continue
+            word_meta = cid_a.startswith("lang.word.") and cid_b.startswith("lang.meta.")
+            meta_word = cid_a.startswith("lang.meta.") and cid_b.startswith("lang.word.")
+            word_word = cid_a.startswith("lang.word.") and cid_b.startswith("lang.word.")
+            if not (word_meta or meta_word or word_word):
+                continue
+            src, dst = (cid_a, cid_b) if not meta_word else (cid_b, cid_a)
+            if meta_word:
+                src, dst = cid_b, cid_a
+            elif word_meta:
+                src, dst = cid_a, cid_b
+            kind = (
+                "sleep_co_occurs_lex_meta"
+                if word_meta or meta_word
+                else "sleep_co_occurs_lex_lex"
+            )
+            emit(
+                src,
+                DEFAULT_RELATION,
+                dst,
+                episode_id=str(lep_a.get("id") or lep_b.get("id") or ""),
+                kind=kind,
+            )
+            if len(seen) > 128:
+                break
+
     return out
 
 
@@ -253,4 +300,12 @@ def predict_lex_for_vis_cue(
                 parts = es.split("|", 2)
                 if len(parts) == 3:
                     bump(parts[2], 2)
+    from casa.prisms.memory.prism_hot_context import hot_edges
+
+    for row in hot_edges(state):
+        if str(row.get("src") or "") != vis_cid:
+            continue
+        dst = canonical_lex_concept_id(str(row.get("dst") or ""))
+        if dst.startswith(_LEX_DST_PREFIXES):
+            bump(dst, max(1, int(float(row.get("salience") or 1))))
     return sorted(scores.items(), key=lambda x: (-x[1], x[0]))[:top_k]

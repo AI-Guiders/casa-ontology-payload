@@ -11,7 +11,9 @@ from typing import Any, Literal
 from casa.domain.teacher_gate import GateKind, gate_kind_for_probe
 
 _CURRICULUM = Path(__file__).resolve().parent
-_REPO = _CURRICULUM.parents[1]
+from vc_paths import repo_root  # noqa: E402
+
+_REPO = repo_root(__file__)
 
 ClassRel = Literal[
     "lessons/literacy-cards",

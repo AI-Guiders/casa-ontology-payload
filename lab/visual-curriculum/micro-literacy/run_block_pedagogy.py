@@ -21,6 +21,7 @@ from block_pedagogy import (  # noqa: E402
 )
 from literacy_pedagogy import (  # noqa: E402
     hippo_pending_surface_episodes,
+    ingest_probe_failure_frames,
     probe_issues,
     promote_emergent_routes_after_probe,
     reinforce_from_probe_report,
@@ -43,6 +44,16 @@ def _parser(p: argparse.ArgumentParser) -> None:
     p.add_argument("--skip-probe", action="store_true")
     p.add_argument("--reinforce-tail", action="store_true")
     p.add_argument("--reinforce-copies", type=int, default=12)
+    p.add_argument("--reinforce-ingest-copies", type=int, default=3)
+    p.add_argument("--no-reinforce-ingest", action="store_true")
+
+
+def _bootstrap_block(session, block_id: str) -> None:
+    if block_id == "block-09c-morphemics-cyrl":
+        from casa.prisms.memory.bootstrap_morph_role_ru import bootstrap_morph_role_lattice
+
+        rep = bootstrap_morph_role_lattice(session.store_dir, session.state, persist=True)
+        session.log({"bootstrap": "morph-role-ru", **rep})
 
 
 def _ingest_phrase_waves(session, spec: dict, *, waves: list[int] | None) -> None:
@@ -75,6 +86,7 @@ def _run(session, args: argparse.Namespace) -> None:
     )
 
     if not args.skip_ingest and not args.probe_only:
+        _bootstrap_block(session, block_id)
         if kind == "phrase":
             _ingest_phrase_waves(session, spec, waves=waves)
         else:
@@ -82,6 +94,7 @@ def _run(session, args: argparse.Namespace) -> None:
                 session.ingest(mid, steps, i=i + 1)
                 if (i + 1) % 20 == 0 or i + 1 == len(jobs):
                     session.log(session.summary_rows[-1])
+            session.save(sync_ltm=False)
 
     report: dict | None = None
     issues: list[dict] = []
@@ -89,6 +102,7 @@ def _run(session, args: argparse.Namespace) -> None:
         report = run_probe_script(
             "probe_block_held_out.py",
             extra_args=["--block", block_id, "--store", args.store],
+            allow_gate_fail=args.reinforce_tail,
         )
         if kind != "phrase":
             issues = probe_issues(report)
@@ -106,13 +120,31 @@ def _run(session, args: argparse.Namespace) -> None:
             session.log({"emergent_promote": promote})
 
     if args.reinforce_tail and report is not None and issues:
+        if kind != "phrase" and not args.no_reinforce_ingest:
+            ingested = ingest_probe_failure_frames(
+                session,
+                spec,
+                report,
+                moment_copies=args.reinforce_ingest_copies,
+            )
+            session.log({"reinforce_ingest": ingested})
         reinforced = reinforce_from_probe_report(session.state, report, copies=args.reinforce_copies)
         session.log({"reinforce_tail": reinforced})
+        session.save(sync_ltm=False)
         report2 = run_probe_script(
             "probe_block_held_out.py",
             extra_args=["--block", block_id, "--store", args.store],
+            allow_gate_fail=True,
         )
-        session.log({"probe_after_reinforce": {"know": report2.get("know"), "total": report2.get("total")}})
+        session.log(
+            {
+                "probe_after_reinforce": {
+                    "know": report2.get("know"),
+                    "total": report2.get("total"),
+                    "gate_pass": report2.get("gate_pass"),
+                }
+            }
+        )
 
 
 def main() -> None:

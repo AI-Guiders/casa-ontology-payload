@@ -57,12 +57,24 @@ def bridge_exists_on_field(
     src: str,
     relation: str,
     dst: str,
+    state: dict | None = None,
 ) -> bool:
     tok = _edge_token(src, relation, dst)
     for lid in (LATTICE_V1_LUM, SCHEMA_MATH, ALPHABET_RU, LEXICON_RU, SYLLABLES_RU):
         lat = lattices.get(lid) or {}
         for cell in lat.get("cells") or []:
             if isinstance(cell, list) and tok in cell:
+                return True
+    if state is not None:
+        from casa.prisms.memory.prism_hot_context import hot_edges
+
+        src_n, rel_n, dst_n = src.strip(), relation.strip(), dst.strip()
+        for row in hot_edges(state):
+            if (
+                str(row.get("src") or "") == src_n
+                and str(row.get("relation") or "") == rel_n
+                and str(row.get("dst") or "") == dst_n
+            ):
                 return True
     return False
 

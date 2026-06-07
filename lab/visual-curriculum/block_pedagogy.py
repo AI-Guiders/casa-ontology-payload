@@ -9,7 +9,13 @@ from typing import Any
 _REPO = Path(__file__).resolve().parents[2]
 
 from literacy_pedagogy import frames_for_stage  # noqa: E402
-from manifest_steps import frame_by_id, letter_frame_id, steps_for_frame  # noqa: E402
+from manifest_steps import (  # noqa: E402
+    frame_by_id,
+    letter_frame_id,
+    steps_for_frame,
+    steps_morph_segment_bind,
+    steps_register_bind,
+)
 from teacher_pedagogy import load_class_manifest  # noqa: E402
 
 _BLOCK_SPECS: dict[str, Path] = {
@@ -23,6 +29,9 @@ _BLOCK_SPECS: dict[str, Path] = {
     "block-07-grammar-person-case-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-07-grammar-person-case-cyrl-v1.json",
     "block-08-grammar-phrase-meta-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-08-grammar-phrase-meta-cyrl-v1.json",
     "block-09-phrase-exit-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-09-phrase-exit-cyrl-v1.json",
+    "block-07c-register-bind-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-07c-register-bind-cyrl-v1.json",
+    "block-08b-question-meta-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-08b-question-meta-cyrl-v1.json",
+    "block-09c-morphemics-cyrl": _REPO / "lessons" / "literacy-cards" / "data" / "block-09c-morphemics-cyrl-v1.json",
 }
 
 
@@ -216,6 +225,52 @@ def wave_moment_jobs(
     manifest = manifest or _manifest(spec)
     prefix = str(wave.get("moment_prefix") or f"block-w{wave.get('wave', 0)}")
     jobs: list[tuple[str, list[dict[str, Any]]]] = []
+    morph_binds = wave.get("morph_binds") or []
+    if morph_binds:
+        repeats = max(1, int(wave.get("repeats") or 1))
+        for r in range(repeats):
+            for bi, bind in enumerate(morph_binds, start=1):
+                if not isinstance(bind, dict):
+                    continue
+                role_fid = str(bind.get("role_frame_id") or "")
+                seg_fid = str(bind.get("segment_frame_id") or "")
+                phrase_fid = str(bind.get("phrase_frame_id") or "") or None
+                mid = f"{prefix}-morph-{role_fid}-{r}-{bi}"[:80]
+                jobs.append(
+                    (
+                        mid,
+                        steps_morph_segment_bind(
+                            manifest,
+                            role_frame_id=role_fid,
+                            segment_frame_id=seg_fid,
+                            phrase_frame_id=phrase_fid,
+                        ),
+                    )
+                )
+        return jobs
+    binds = wave.get("register_binds") or []
+    if binds:
+        repeats = max(1, int(wave.get("repeats") or 1))
+        for r in range(repeats):
+            for bi, bind in enumerate(binds, start=1):
+                if not isinstance(bind, dict):
+                    continue
+                lower_fid = str(bind.get("lower_frame_id") or "")
+                cap_fid = str(bind.get("cap_frame_id") or "")
+                meta_fid = str(bind.get("meta_frame_id") or "") or None
+                mid = f"{prefix}-bind-{lower_fid}-{r}-{bi}"[:80]
+                jobs.append(
+                    (
+                        mid,
+                        steps_register_bind(
+                            manifest,
+                            lower_frame_id=lower_fid,
+                            cap_frame_id=cap_fid,
+                            meta_frame_id=meta_fid,
+                        ),
+                    )
+                )
+        return jobs
     for idx, fid in enumerate(_frame_ids_for_wave(spec, wave, manifest), start=1):
         frame = frame_by_id(manifest, fid)
         mid = f"{prefix}-{fid}-{idx}"[:80]
@@ -254,6 +309,87 @@ def gate_pass_phrase(spec: dict[str, Any], report: dict[str, Any]) -> bool:
     return know / total >= min_ratio
 
 
+def _meta_bridge(state: dict[str, Any], lats: dict, src: str, dst: str) -> bool:
+    from casa.prisms.memory.meta_concept_aliases import canonical_lex_concept_id
+    from casa.prisms.visual.bridge_math import DEFAULT_RELATION, bridge_exists_on_field
+
+    src = canonical_lex_concept_id(src)
+    dst = canonical_lex_concept_id(dst)
+    return bridge_exists_on_field(
+        lats, src=src, relation=DEFAULT_RELATION, dst=dst, state=state
+    ) or bridge_exists_on_field(lats, src=dst, relation=DEFAULT_RELATION, dst=src, state=state)
+
+
+def morph_segment_bind_report(
+    state: dict[str, Any],
+    rules: list[dict[str, Any]],
+) -> dict[str, Any]:
+    from casa.prisms.memory.memory_prisms import memory_lattices
+
+    lats = memory_lattices(state)
+    rows: list[dict[str, Any]] = []
+    ok = 0
+    for row in rules:
+        role = str(row.get("role_cid") or "").strip()
+        segment = str(row.get("segment_cid") or "").strip()
+        linked = bool(role and segment) and _meta_bridge(state, lats, role, segment)
+        if linked:
+            ok += 1
+        rows.append({"role_cid": role, "segment_cid": segment, "linked": linked})
+    return {"ok": ok, "total": len(rows), "rows": rows}
+
+
+def register_meta_bind_report(
+    state: dict[str, Any],
+    rules: list[dict[str, Any]],
+) -> dict[str, Any]:
+    from casa.prisms.memory.memory_prisms import memory_lattices
+
+    lats = memory_lattices(state)
+    rows: list[dict[str, Any]] = []
+    ok = 0
+    for row in rules:
+        rule = str(row.get("rule_cid") or "").strip()
+        lemma = str(row.get("lemma_cid") or "").strip()
+        cap = str(row.get("cap_cid") or "").strip()
+        lemma_rule = bool(lemma and rule) and _meta_bridge(state, lats, lemma, rule)
+        cap_rule = bool(cap and rule) and _meta_bridge(state, lats, cap, rule)
+        linked = lemma_rule and cap_rule
+        if linked:
+            ok += 1
+        rows.append(
+            {
+                "rule_cid": rule,
+                "lemma_cid": lemma,
+                "cap_cid": cap,
+                "lemma_rule": lemma_rule,
+                "cap_rule": cap_rule,
+                "linked": linked,
+            }
+        )
+    return {"ok": ok, "total": len(rows), "rules": rows}
+
+
+def register_bind_report(
+    state: dict[str, Any],
+    pairs: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Legacy lex↔lex register pairs (bootstrap); prefer register_meta_bind_report."""
+    from casa.prisms.memory.memory_prisms import memory_lattices
+
+    lats = memory_lattices(state)
+    rows: list[dict[str, Any]] = []
+    ok = 0
+    for row in pairs:
+        lo = str(row.get("lower_cid") or "").strip()
+        cap = str(row.get("cap_cid") or "").strip()
+        linked = bool(lo and cap) and _meta_bridge(state, lats, lo, cap)
+        if linked:
+            ok += 1
+        rows.append({"lower_cid": lo, "cap_cid": cap, "linked": linked})
+    return {"ok": ok, "total": len(rows), "pairs": rows}
+
+
 def gate_pass(spec: dict[str, Any], report: dict[str, Any]) -> bool:
     if block_kind(spec) == "phrase":
         return gate_pass_phrase(spec, report)
@@ -267,12 +403,58 @@ def gate_pass(spec: dict[str, Any], report: dict[str, Any]) -> bool:
     min_ratio = float(gate.get("know_min_ratio") or 0.85)
     empty_max = int(gate.get("empty_max") if gate.get("empty_max") is not None else 0)
     amb_max_ratio = float(gate.get("ambiguous_max_ratio") or 0.1)
+    meta_rules = spec.get("register_meta_rules") or []
+    pairs = spec.get("register_bind_pairs") or []
+    pair_lemmas: set[str] = set()
+    for p in meta_rules:
+        if not isinstance(p, dict):
+            continue
+        for key in ("lemma_cid", "cap_cid"):
+            cid = str(p.get(key) or "").strip()
+            if cid:
+                pair_lemmas.add(cid)
+    if pairs:
+        for p in pairs:
+            if not isinstance(p, dict):
+                continue
+            lo = str(p.get("lower_cid") or "").strip()
+            cap = str(p.get("cap_cid") or "").strip()
+            if lo:
+                pair_lemmas.add(lo)
+            if cap:
+                pair_lemmas.add(cap)
+    register_ambiguous = 0
+    if gate.get("register_ambiguous_ok") and pair_lemmas:
+        for item in report.get("items") or []:
+            if str(item.get("verdict") or "") != "ambiguous":
+                continue
+            leaders = {str(x) for x in (item.get("leaders") or [])}
+            if leaders and leaders <= pair_lemmas:
+                register_ambiguous += 1
+    effective_know = know + register_ambiguous
+    residual_ambiguous = ambiguous - register_ambiguous
     if empty > empty_max:
         return False
-    if know / total < min_ratio:
+    if effective_know / total < min_ratio:
         return False
-    if ambiguous / total > amb_max_ratio:
+    if residual_ambiguous / total > amb_max_ratio:
         return False
+    meta_min = gate.get("register_meta_bind_min")
+    if meta_min is not None and meta_rules:
+        rb = report.get("register_meta_bind") or {}
+        if int(rb.get("ok") or 0) < int(meta_min):
+            return False
+    bind_min = gate.get("register_bind_min")
+    if bind_min is not None and pairs:
+        rb = report.get("register_bind") or {}
+        if int(rb.get("ok") or 0) < int(bind_min):
+            return False
+    morph_rules = spec.get("morph_meta_rules") or []
+    morph_min = gate.get("morph_segment_bind_min")
+    if morph_min is not None and morph_rules:
+        mb = report.get("morph_segment_bind") or {}
+        if int(mb.get("ok") or 0) < int(morph_min):
+            return False
     return True
 
 
