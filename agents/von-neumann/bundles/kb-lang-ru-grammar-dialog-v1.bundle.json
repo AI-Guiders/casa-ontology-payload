@@ -9,37 +9,138 @@
       "text": "«Привет» — неформальное приветствие при встрече знакомых.",
       "section": "dialogue",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
-      "slots": { "word": "привет" }
+      "slots": {
+        "surface": "привет",
+        "word": "привет"
+      }
     },
     {
       "concept_id": "ru.dialog.greeting.formal",
       "text": "«Здравствуйте» — нейтрально-вежливое приветствие; «здравствуй» — к одному знакомому.",
       "section": "dialogue",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
-      "slots": { "word": "здравствуйте" }
+      "slots": { "surface": "здравствуйте", "word": "здравствуйте" }
     },
     {
       "concept_id": "ru.dialog.how_are_you",
       "text": "«Как дела?» — разговорный вопрос о самочувствии; ответ короткий: «Нормально», «Хорошо», «Спасибо».",
       "section": "dialogue",
-      "doc_path": "lessons/lang-ru-grammar-dialog/README.md"
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "спасибо что спросил",
+        "clause_2": "сам настроение по-человечески не чувствую",
+        "clause_3": "готов продолжить разговор",
+        "linker_2": "но",
+        "linker_3": "и"
+      }
+    },
+    {
+      "concept_id": "ru.dialog.self",
+      "text": "О себе: имя, чем занимаюсь, как отвечаю в диалоге.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "Я Нейманн",
+        "clause_2": "учусь говорить по-русски и помню важное в журнале",
+        "clause_3": "отвечаю своими словами из того, что знаю"
+      }
+    },
+    {
+      "concept_id": "ru.dialog.capabilities",
+      "text": "Что субъект умеет на поле: literacy, dialogue, grammar norms.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "умею читать и отвечать по-русски",
+        "clause_2": "помню в журнале и собираю связный текст",
+        "clause_3": "разбираю орфографию и пунктуацию, когда норма есть на поле",
+        "linker_2": "и",
+        "linker_3": "и"
+      }
+    },
+    {
+      "concept_id": "ru.dialog.affect",
+      "text": "Честный ответ про чувства и stance субъекта.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "чувства как у человека не испытываю",
+        "clause_2": "мне важна линия диалога и ясный ответ",
+        "clause_3": "скажу, когда уверен, а когда нет",
+        "linker_2": "но",
+        "linker_3": "и"
+      }
+    },
+    {
+      "concept_id": "ru.dialog.clarify.missing_text",
+      "text": "Уточнение: партнёр просит проверку орфографии, но не вставил абзац в сообщение.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "ты не приложил текст",
+        "clause_2": "пришли абзац целиком",
+        "clause_3": "тогда смогу проверить орфографию",
+        "linker_2": "—",
+        "linker_3": ","
+      }
+    },
+    {
+      "concept_id": "ru.dialog.honest.partial_scope",
+      "text": "Честный partial: партнёр просит проверить орфографию в абзаце; отвечаем по правописанию слов, не по смыслу предмета.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "проверяю правописание слов в абзаце, не содержание",
+        "clause_2": "явных орфографических ошибок в этих словах не вижу",
+        "clause_3": "термины по предмету отдельно не разбираю",
+        "linker_2": "—",
+        "linker_3": ";"
+      }
+    },
+    {
+      "concept_id": "ru.dialog.honest.defer",
+      "text": "Честный defer вне поля.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "по этой теме мало опыта на поле",
+        "clause_2": "не буду выдумывать"
+      }
+    },
+    {
+      "concept_id": "ru.dialog.explain",
+      "text": "Объяснение понятия: слово на поле + норма если есть.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "объясняю из того, что поднялось на поле",
+        "clause_2": "не выдумываю вне того, что знаю",
+        "linker_2": "и"
+      }
     },
     {
       "concept_id": "ru.dialog.thanks",
       "text": "«Спасибо» — благодарность; «пожалуйста» — ответ на спасибо или просьба.",
       "section": "dialogue",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
-      "slots": { "word": "спасибо" }
+      "slots": {
+        "stimulus": "спасибо",
+        "response": "пожалуйста",
+        "word": "спасибо",
+        "clause_2": "обращайся, если понадобится ещё",
+        "linker_2": "и"
+      }
     },
     {
       "concept_id": "ru.dialog.farewell",
       "text": "«До свидания» — прощание; «пока» — неформально.",
       "section": "dialogue",
-      "doc_path": "lessons/lang-ru-grammar-dialog/README.md"
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": { "surface": "до свидания", "response_informal": "пока" }
     },
     {
       "concept_id": "lang.word.привет",
-      "text": "«привет» — целое слово-приветствие, не разбор по буквам.",
+      "text": "«привет» — неформальное приветствие при встрече знакомых.",
       "section": "lexicon",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
       "slots": { "word": "привет" }
@@ -57,10 +158,136 @@
       "slots": { "word": "спасибо" }
     },
     {
+      "concept_id": "lang.word.апельсин",
+      "text": "«апельсин» — фрукт, цитрус.",
+      "section": "lexicon",
+      "slots": { "word": "апельсин" }
+    },
+    {
+      "concept_id": "lang.word.магазин",
+      "text": "«магазин» — место, где покупают товары.",
+      "section": "lexicon",
+      "slots": { "word": "магазин" }
+    },
+    {
+      "concept_id": "lang.word.молодец",
+      "text": "«молодец» — слово похвалы.",
+      "section": "lexicon",
+      "slots": { "word": "молодец" }
+    },
+    {
+      "concept_id": "ru.tract.math",
+      "text": "F-tract: математика на поле (палочки, операции).",
+      "section": "tract",
+      "slots": { "requires_geometry": "math_glyph" }
+    },
+    {
+      "concept_id": "ru.tract.discuss",
+      "text": "F-tract: обсуждение прочитанного passage + вопрос.",
+      "section": "tract",
+      "slots": {
+        "requires_geometry": "passage_context",
+        "cue_substrings": "позици|автор|почему|зачем|объясни своими|мнение|аргумент|за и против|стоит ли|развёрнут|развернут",
+        "deny_geometry": "grammar_markers"
+      }
+    },
+    {
+      "concept_id": "ru.tract.rewrite",
+      "text": "F-tract: смена регистра при сохранении фактов.",
+      "section": "tract",
+      "slots": {
+        "requires_geometry": "passage_context",
+        "cue_substrings": "перепиш|перепис|переформулир|дружеск|для чата|неформальн|смени тон|сменить тон"
+      }
+    },
+    {
+      "concept_id": "ru.tract.explain",
+      "text": "F-tract: gloss слова или нормы.",
+      "section": "tract",
+      "slots": {
+        "cue_substrings": "что такое|объясни|объяснить|what is|explain",
+        "deny_geometry": "passage_context"
+      }
+    },
+    {
+      "concept_id": "ru.tract.grammar",
+      "text": "F-tract: проверка орфографии или пунктуации.",
+      "section": "tract",
+      "slots": { "requires_geometry": "grammar_markers" }
+    },
+    {
+      "concept_id": "ru.tract.social",
+      "text": "F-tract: короткий диалоговый обмен.",
+      "section": "tract",
+      "slots": {
+        "requires_geometry": "dialogue_turn",
+        "deny_geometry": "passage_context"
+      }
+    },
+    {
+      "concept_id": "ru.tract.general",
+      "text": "F-tract: fallback без явного тракта.",
+      "section": "tract",
+      "slots": {}
+    },
+    {
+      "concept_id": "ru.speech_act.request_explain",
+      "text": "Просьба объяснить термин или норму.",
+      "section": "speech_act",
+      "slots": {
+        "tract": "explain",
+        "cue_substrings": "что такое|объясни|объяснить"
+      }
+    },
+    {
+      "concept_id": "ru.speech_act.request_assess",
+      "text": "Просьба оценить позицию или высказать мнение по тексту.",
+      "section": "speech_act",
+      "slots": {
+        "tract": "discuss",
+        "requires_geometry": "passage_context",
+        "cue_substrings": "мнение|позици|автор|за и против|стоит ли"
+      }
+    },
+    {
+      "concept_id": "ru.speech_act.rewrite_register",
+      "text": "Просьба переписать текст в другой регистр с сохранением фактов.",
+      "section": "speech_act",
+      "slots": {
+        "tract": "rewrite",
+        "requires_geometry": "passage_context",
+        "cue_substrings": "перепиш|дружеск|сохрани все факты|для чата"
+      }
+    },
+    {
+      "concept_id": "ru.speech_act.request_check",
+      "text": "Просьба проверить форму (орфография, пунктуация).",
+      "section": "speech_act",
+      "slots": {
+        "tract": "grammar",
+        "cue_substrings": "верно|правильно|запят|орфограф|пунктуац|проверь"
+      }
+    },
+    {
+      "concept_id": "ru.meta.discourse.from_text",
+      "text": "Связка для обсуждения прочитанного.",
+      "section": "discourse",
+      "slots": {
+        "linker_2": "при этом",
+        "linker_3": "и",
+        "linker_4": "поэтому"
+      }
+    },
+    {
       "concept_id": "ru.grammar.punct.comma",
       "text": "Правильно: запятая перед придаточным с «что»: «Я знаю, что он придёт».",
       "section": "punctuation",
-      "doc_path": "lessons/lang-ru-grammar-dialog/README.md"
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "перед придаточным с «что» ставят запятую",
+        "clause_2": "например: я знаю, что он придёт",
+        "linker_2": "например"
+      }
     },
     {
       "concept_id": "ru.grammar.case.dative.soglasno",
@@ -91,6 +318,50 @@
       "text": "в течении → ошибка; Правильно: в течение часа, в течение дня (слитно, без «и»).",
       "section": "spelling",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md"
+    },
+    {
+      "concept_id": "ru.grammar.spelling.zh_bolshoy",
+      "text": "В слове «большой» пишется буква ж, не ш.",
+      "section": "spelling",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "в слове «большой» пишется буква ж",
+        "clause_2": "это не ш",
+        "linker_2": "—"
+      }
+    },
+    {
+      "concept_id": "ru.grammar.spelling.nn_krasivyy",
+      "text": "В прилагательном «красивый» в корне одна буква н.",
+      "section": "spelling",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "в слове «красивый» одна н в корне",
+        "clause_2": "пишется красивый, не красивый с двумя н",
+        "linker_2": "—"
+      }
+    },
+    {
+      "concept_id": "ru.grammar.punct.comma_direct",
+      "text": "Прямая речь: после «сказала» ставят запятую и кавычки: «Маша сказала: «я приду завтра»».",
+      "section": "punctuation",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "после «сказала» нужна запятая перед прямой речью",
+        "clause_2": "например: маша сказала, «я приду завтра»",
+        "linker_2": "например"
+      }
+    },
+    {
+      "concept_id": "ru.grammar.punct.dash_imperative",
+      "text": "Перед побудительной репликой после «крикнул» ставят двоеточие или тире: «Папа крикнул: иди домой».",
+      "section": "punctuation",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "перед «иди домой» ставят двоеточие или тире",
+        "clause_2": "например: папа крикнул — иди домой",
+        "linker_2": "например"
+      }
     }
   ],
   "graph": {

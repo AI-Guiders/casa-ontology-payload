@@ -26,6 +26,7 @@ from casa.prisms.shared.store_mirror import (
 )
 
 DEFAULT_GH_REPO = "AI-Guiders/von-neumann-life-archive"
+DEFAULT_GITLAB_BACKUP = "git@gitlab.wissance.com:wissance/ai/von-neumann-life-archive.git"
 DEFAULT_ARCHIVE_DIR = _REPO.parent / "von-neumann-life-archive"
 TEMPLATE_DIR = _REPO / "life-archive-template"
 STORE_SUBDIR = LIFE_ARCHIVE_STORE_SUBDIR
@@ -144,6 +145,39 @@ def init_archive(
         _run(["git", "push", "-u", "origin", "main"], cwd=archive_dir, check=False)
 
 
+def setup_gitlab_backup(archive_dir: Path, *, gitlab_url: str = DEFAULT_GITLAB_BACKUP) -> dict:
+    archive_dir = archive_dir.resolve()
+    if not (archive_dir / ".git").is_dir():
+        raise FileNotFoundError(f"not a git repo: {archive_dir}")
+    gh_push = f"https://github.com/{DEFAULT_GH_REPO}.git"
+    remotes = subprocess.run(
+        ["git", "remote"],
+        cwd=archive_dir,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.splitlines()
+    if "backup" in remotes:
+        _run(["git", "remote", "set-url", "backup", gitlab_url], cwd=archive_dir)
+    else:
+        _run(["git", "remote", "add", "backup", gitlab_url], cwd=archive_dir)
+    _run(["git", "remote", "set-url", "--push", "origin", gh_push], cwd=archive_dir)
+    _run(["git", "remote", "set-url", "--add", "--push", "origin", gitlab_url], cwd=archive_dir)
+    lfs_https = gitlab_url.removeprefix("git@").replace(":", "/", 1)
+    if not lfs_https.startswith("https://"):
+        lfs_https = f"https://{lfs_https}"
+    _run(
+        [
+            "git",
+            "config",
+            f"lfs.{lfs_https}/info/lfs.locksverify",
+            "false",
+        ],
+        cwd=archive_dir,
+    )
+    return {"backup": gitlab_url, "origin_push": [gh_push, gitlab_url]}
+
+
 def create_github_repo(gh_repo: str, *, private: bool = True) -> str:
     _run(
         [
@@ -213,6 +247,9 @@ def main() -> int:
     sp_init = sub.add_parser("init", help="Clone repo and seed LFS + templates")
     sp_init.add_argument("--no-clone", action="store_true")
 
+    sp_backup = sub.add_parser("setup-backup", help="Add GitLab backup remote + dual push on origin")
+    sp_backup.add_argument("--gitlab-url", default=DEFAULT_GITLAB_BACKUP)
+
     sub.add_parser("sync", help="Copy store → archive/store/ only")
 
     sp_commit = sub.add_parser("commit", help="git add/commit/push (after sync)")
@@ -239,6 +276,11 @@ def main() -> int:
 
     if args.cmd == "init":
         init_archive(archive_dir, gh_repo=args.gh_repo, clone=not args.no_clone)
+        return 0
+
+    if args.cmd == "setup-backup":
+        rep = setup_gitlab_backup(archive_dir, gitlab_url=args.gitlab_url)
+        print(json.dumps(rep, indent=2))
         return 0
 
     if args.cmd == "sync":

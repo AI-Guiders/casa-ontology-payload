@@ -17,8 +17,25 @@ sync_meta.json  # last sync source path + timestamp
 
 ## Remotes
 
-- `origin` — GitHub `AI-Guiders/von-neumann-life-archive` (private → public read при зрелости; см. ADR-0050)
-- add `backup` remote for second host when ready
+- `origin` — fetch + push GitHub `AI-Guiders/von-neumann-life-archive` (private → public read при зрелости; см. ADR-0050)
+- `backup` + второй push URL на `origin` — Wissance GitLab (зеркало)
+
+Один раз после создания репозитория на GitLab:
+
+```powershell
+python tools/sync_life_archive.py setup-backup
+```
+
+Или вручную в каталоге life-archive:
+
+```powershell
+git remote add backup git@gitlab.wissance.com:wissance/ai/von-neumann-life-archive.git
+git remote set-url --push origin https://github.com/AI-Guiders/von-neumann-life-archive.git
+git remote set-url --add --push origin git@gitlab.wissance.com:wissance/ai/von-neumann-life-archive.git
+git config lfs.https://gitlab.wissance.com/wissance/ai/von-neumann-life-archive.git/info/lfs.locksverify false
+```
+
+`snapshot` пушит в `origin` → GitHub и GitLab. Если GitLab LFS падает по TLS, GitHub-часть всё равно уходит; зеркало догоняешь с машины/VPN, где `https://gitlab.wissance.com` открывается.
 
 ## Git LFS
 
