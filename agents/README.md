@@ -58,6 +58,10 @@ agents/von-neumann/
 └── memory_manifest.json
 ```
 
+## Play locally (onboarding)
+
+Полный гайд для гостей (clone, LFS, диалог, troubleshooting): [docs/CASA-von-neumann-local-play-v1.md](../docs/CASA-von-neumann-local-play-v1.md).
+
 ## Prod — только поднять жизнь
 
 ```powershell

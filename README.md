@@ -3,7 +3,18 @@
 Research lab: **predictive text on a field** with **parallel EN/RU script branches** (homoglyphs).  
 Not an LLM autocomplete — `anchors[]` from L2 lexicon + `unified_tick` (script → T9).
 
-## Quick start
+## Von-neumann — play locally
+
+Living field agent (not LLM chat). **Guide:** [docs/CASA-von-neumann-local-play-v1.md](docs/CASA-von-neumann-local-play-v1.md)
+
+Short path: clone [life-archive](https://github.com/AI-Guiders/von-neumann-life-archive) (private — ask for access) → `git lfs pull` → copy `store/` to `agents/von-neumann/` →:
+
+```powershell
+pip install -r tools/requirements.txt   # Python 3.12+
+python -m casa.prisms.control.agent_sn_cen_tick --store-dir agents/von-neumann --query "Привет"
+```
+
+## Quick start (T9 bilingual demo)
 
 ```powershell
 cd casa-ontology-payload
