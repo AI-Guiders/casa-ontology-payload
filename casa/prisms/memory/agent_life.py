@@ -101,7 +101,13 @@ def agent_life_tick(
     bundle: dict | None = None,
 ) -> dict[str, Any]:
     """Один quantum жизни агента (сейчас: idle → self_drive; позже: внешний cue, relay)."""
-    return agent_self_tick(store_dir, state, session, bundle=bundle)
+    from casa.body.completion_ingest import ingest_body_completions_on_tick
+
+    body_ingest = ingest_body_completions_on_tick(store_dir, state, session)
+    rep = agent_self_tick(store_dir, state, session, bundle=bundle)
+    if body_ingest.get("ingested") or body_ingest.get("committed"):
+        rep["body_completions"] = body_ingest
+    return rep
 
 
 @dataclass

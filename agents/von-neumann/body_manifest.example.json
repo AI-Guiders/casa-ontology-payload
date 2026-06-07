@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "body_profile_id": "von-neumann-desk-v0",
+  "default_backend": "stub",
+  "backends": {
+    "stub": {},
+    "mcp": {
+      "transport": "host_provided",
+      "note": "Host injects MCP client — Cursor stdio, CIDE loopback, etc."
+    },
+    "ide_command": {
+      "note": "CIDE ide_execute_command / --agent-contract CLI"
+    },
+    "in_process": {}
+  },
+  "functions": [
+    {
+      "function_id": "tool.memory.run_canon_nca",
+      "title": "Train canon NCA queue",
+      "description": "Drain pending immutable-lattice NCA jobs outside agent tick/sleep",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "max_jobs": { "type": "integer", "minimum": 1, "default": 1 },
+          "device": { "type": "string", "default": "cpu" }
+        }
+      },
+      "backend_id": "in_process",
+      "wire": { "kind": "in_process", "handler": "tool.memory.run_canon_nca" }
+    },
+    {
+      "function_id": "tool.notes.read",
+      "title": "Read agent notes",
+      "description": "Restore session continuity from .cascade-ide/agent-notes.md",
+      "input_schema": { "type": "object", "properties": {} },
+      "backend_id": "mcp",
+      "wire": {
+        "kind": "mcp",
+        "server": "cascade-ide",
+        "tool": "ide_read_agent_notes"
+      }
+    },
+    {
+      "function_id": "tool.git.status",
+      "title": "Git status",
+      "description": "Working tree status in workspace",
+      "input_schema": { "type": "object", "properties": {} },
+      "backend_id": "mcp",
+      "wire": {
+        "kind": "mcp",
+        "server": "cascade-ide",
+        "tool": "ide_git_status"
+      }
+    },
+    {
+      "function_id": "tool.build.verify",
+      "title": "Verify build",
+      "description": "Structured build result for subject tool literacy",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "policy": { "type": "string" }
+        }
+      },
+      "backend_id": "ide_command",
+      "wire": {
+        "kind": "ide_command",
+        "command_id": "ide_agent_verify",
+        "args_template": { "policy": "standard" }
+      }
+    }
+  ]
+}
