@@ -124,6 +124,28 @@
 
 ---
 
+## Curriculum / native path (CUR-*)
+
+См. [CASA-von-neumann-curriculum-review-v1.md](CASA-von-neumann-curriculum-review-v1.md).
+
+| Id | Задача | Статус |
+|----|--------|--------|
+| CUR-1 | `probe_nositel_open_ru` + plan | **wired 5/5** |
+| CUR-2 | B11 held-out v2 | **done** |
+| CUR-3 | world bundle + `probe_world_link_ru` | **2/2 green** |
+| CUR-4 | `skill.tract.personal` ↔ `probe_intent_personal_ru` | **done** |
+| CUR-5 | нумерация B9/B11 в teaching plan | **done** |
+| CUR-6 | CEFR curated vs open-world nositel | **done** |
+| CUR-7 | spell/punct promote path audit | open |
+| CUR-8 | literature micro-class | open |
+| CUR-9 | B4 lexicon facets held-out | open |
+| CUR-10 | `promote_frame_from_journal` (ADR-0053 v2) | open |
+| **RU-β** | `probe_morph_productive_ru` (wired:false) | **scaffold** |
+
+**L1 runtime (2026-06-07):** `agents/von-neumann/` runtime → `von-neumann-life-archive`; payload — code + bundles only.
+
+---
+
 ## История
 
 | Дата | Изменение |
@@ -135,3 +157,4 @@
 | 2026-06-01 | Legacy wire private in prism_wire; casa imports → domain |
 | 2026-06-01 | MP-5: `content_prism_split`, merged `memory_lattices`, `tools/split_content_prisms.py` |
 | 2026-06-01 | L1: post-migration agent layout (`agents/` vs lab legacy), ADR-0021 R5 |
+| 2026-06-07 | CUR-* curriculum/native path; L1 runtime untrack → life-archive |

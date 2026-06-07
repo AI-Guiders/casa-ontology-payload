@@ -2,7 +2,7 @@
 
 **Статус:** рабочий аудит (2026-06-07)  
 **Основание:** канон design/, lessons/, lab probes, agent-notes pedagogy (Castles 2018, SVR, Stalega deny PA-only).  
-**Связано:** [CASA-von-neumann-class-ru-v1.md](CASA-von-neumann-class-ru-v1.md), [CASA-von-neumann-ru-teaching-plan-v1.md](CASA-von-neumann-ru-teaching-plan-v1.md), [CASA-ru-native-categories-v0.md](CASA-ru-native-categories-v0.md), [CASA-cefr-gate-ru-v1.md](CASA-cefr-gate-ru-v1.md), [CASA-ADR-0053-type0-written-meaning-graph-v1.md](CASA-ADR-0053-type0-written-meaning-graph-v1.md)
+**Связано:** [CASA-von-neumann-class-ru-v1.md](CASA-von-neumann-class-ru-v1.md), [CASA-von-neumann-ru-teaching-plan-v1.md](CASA-von-neumann-ru-teaching-plan-v1.md), [CASA-ru-native-categories-v0.md](CASA-ru-native-categories-v0.md), [CASA-cefr-gate-ru-v1.md](CASA-cefr-gate-ru-v1.md), [CASA-ADR-0053-type0-written-meaning-graph-v1.md](CASA-ADR-0053-type0-written-meaning-graph-v1.md), **[CASA-von-neumann-curriculum-review-v1.md](CASA-von-neumann-curriculum-review-v1.md)**
 
 ---
 

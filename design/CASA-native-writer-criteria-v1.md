@@ -2,7 +2,7 @@
 
 **Статус:** канон критериев (2026-06-07)  
 **Агент:** `von-neumann`  
-**Связано:** [CASA-ADR-0054-agent-world-model-v1.md](CASA-ADR-0054-agent-world-model-v1.md), [CASA-von-neumann-ru-teaching-plan-v1.md](CASA-von-neumann-ru-teaching-plan-v1.md), [CASA-cefr-gate-ru-v1.md](CASA-cefr-gate-ru-v1.md), [CASA-von-neumann-school-program-arc-v1.md](CASA-von-neumann-school-program-arc-v1.md)
+**Связано:** [CASA-ADR-0054-agent-world-model-v1.md](CASA-ADR-0054-agent-world-model-v1.md), [CASA-von-neumann-ru-teaching-plan-v1.md](CASA-von-neumann-ru-teaching-plan-v1.md), [CASA-cefr-gate-ru-v1.md](CASA-cefr-gate-ru-v1.md), [CASA-von-neumann-school-program-arc-v1.md](CASA-von-neumann-school-program-arc-v1.md), [agent-existence-north-star.md](agent-existence-north-star.md), [CASA-von-neumann-curriculum-review-v1.md](CASA-von-neumann-curriculum-review-v1.md)
 
 ---
 
@@ -36,7 +36,9 @@
 | Semantics + genre | RU-δ | Hwang: narrative / instruction / argument | genre-tagged `ru.prop.*` + `probe_genre_rc_ru` |
 | World & concepts | RU-ε | Сущности, связи, идеи на поле | `agent.world.*` · ADR-0054 |
 | Logical / abstract | RU-ζ | Причина, контрфакт, категории | ADR-0029 поверх world |
-| **Native Ru Writer** | **RU-N** | Свобода письма, регистр, coining | `probe_nositel_open_ru` (planned) |
+| **Native Ru Writer** | **RU-N** | Свобода письма, регистр, coining | `probe_nositel_open_ru` — plan: `lessons/ru-text-tract/data/nositel-open-plan-v1.json` |
+
+**Probe RU-N:** `python lab/visual-curriculum/probe_nositel_open_ru.py --store von-neumann` — `gate_pass` на **wired** сценариях; `ru_n_claim_pass` только при 7/7 (2 deferred: RU-β neologism, RU-ε open-world без journal).
 
 **Prerequisite RU-N:** RU-α green + phrase exit + B11 + (RU-β..ζ по maturity table ниже).
 

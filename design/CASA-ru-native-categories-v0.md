@@ -88,6 +88,8 @@ ADR-0049 фиксирует **четыре опоры письменного flu
 
 **B10 v1 = written dialogue** (чат/IDE), не устная речь. **B11** — между B7 (phrase) и B10 (dialogue): не «пересказ», а **extract + analyze** на meaning graph. **B3** — когда появится аудиотракт.
 
+**Нумерация teaching plan:** categories **B11** = понимание текста → teaching **«Блок 9d»**; teaching **«Блок 11»** = пунктуация (**B9**). См. [CASA-von-neumann-curriculum-review-v1.md](CASA-von-neumann-curriculum-review-v1.md).
+
 ---
 
 ## Модальность v1: письменный тракт

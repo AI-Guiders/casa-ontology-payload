@@ -12,7 +12,9 @@ Partner turn: **intent = победивший F-tract** (`compete_tract_intent`)
 
 Понимание текста: **meaning graph** `ru.prop.*` из `passage_meaning` → bind над `passage.sent` → compose из slots. См. [CASA-ADR-0053-type0-written-meaning-graph-v1.md](CASA-ADR-0053-type0-written-meaning-graph-v1.md).
 
-**Milestone (2026-06-07):** `probe_cefr_gate_ru` на `von-neumann` — **13/13 wired know**, `achieved_level=C2`, `block_12_pass=true`, `nositel_claim_pass=true` (после inference props B1 + meaning graph C1/C2). Это честный written gate, не LLM.
+**Milestone (2026-06-07):** `probe_cefr_gate_ru` на `von-neumann` — **13/13 wired know**, `achieved_level=C2`, `block_12_pass=true`, `nositel_claim_pass=true` (после inference props B1 + meaning graph C1/C2). Это **curated written gate**, не LLM.
+
+**Не смешивать с RU-N:** curated CEFR green **≠** open-world native. Open claim — только `probe_nositel_open_ru` (`ru_n_claim_pass`). См. [CASA-native-writer-criteria-v1.md](CASA-native-writer-criteria-v1.md), [CASA-von-neumann-curriculum-review-v1.md](CASA-von-neumann-curriculum-review-v1.md) §3.
 
 ---
 

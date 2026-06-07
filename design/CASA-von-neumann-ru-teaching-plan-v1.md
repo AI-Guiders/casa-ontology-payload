@@ -10,6 +10,10 @@
 
 **Evidence (read-only):** `agent-notes/knowledge/worlds/pedagogy-russian-language/` (Castles, Ehri, NRP); neuro — rationale only ([bridge matrix](agent-notes path: `cognition-neurolinguistics/matrix-neurolinguistics-pedagogy-bridge-v1.md`)).
 
+**Нумерация блоков vs categories:** teaching **«Блок 11»** = пунктуация (ось **B9**); categories **B11** = понимание текста → teaching **«Блок 9d»**. См. [CASA-von-neumann-curriculum-review-v1.md](CASA-von-neumann-curriculum-review-v1.md) § CUR-5.
+
+**Ревью курса:** [CASA-von-neumann-curriculum-review-v1.md](CASA-von-neumann-curriculum-review-v1.md)
+
 ---
 
 ## Как читать этот документ
@@ -34,6 +38,7 @@
 Блок 4–5   WORDS    early whole + corpus             → literacy-corpus-quiz → skill.read.whole
 ── Phase I exit ──
 Блок 5α    VERBAL   material→verbal (Гальперин)      → probe_material_verbal_ru  [RU-α]
+Блок 5f    INTENT   personal tract priors (ADR-0057)   → probe_intent_personal_ru  [skill.tract.personal]
 Блок 6–7   META     closed class + grammar meta      → stage gates
 Блок 8–9   PHRASE   agreement, possessive, numeral   → phrase-agent-store (held-out)
 ── Phase II exit ──
@@ -271,9 +276,11 @@ python lab/visual-curriculum/probe_block_held_out.py --block block-05-corpus-cyr
 2. **Classify:** `modality=vis|math`, `compose_mode=journal` на recall; tract **explain** + journal overlap.
 3. **Methods:** I-do: teacher model entry в journal; we-do: совместный recall cue; you-do: held-out (коровы, счёт 5+2) **не** из ingest.
 4. **Train / held-out:** 3 wired train; 2 disjoint held-out; `expect_field_tokens` + `expect_own_voice_min` + anti-paste.
-5. **Ingest:** moments пишут `agent.world.idea.*` tags; life-archive sync после gate.
+5. **Ingest:** `python -m casa.cli.ingest_material_verbal_class --store von-neumann` (train plan only); held-out **не** ingest'ить.
+6. **Gate:** train probe — recall с store (без inline remember); held-out — inject remember в probe.
 
 ```bash
+python -m casa.cli.ingest_material_verbal_class --store von-neumann
 python lab/visual-curriculum/probe_material_verbal_ru.py --store von-neumann
 python lab/visual-curriculum/probe_material_verbal_ru.py --store von-neumann --held-out
 python tools/sync_life_archive.py snapshot -m "life: RU-α material-verbal"
@@ -294,6 +301,30 @@ python tools/sync_life_archive.py snapshot -m "life: RU-α material-verbal"
 | `probe_material_verbal_ru --held-out` | 100% disjoint (коровы, 5+2 палочки) |
 
 **Hard prerequisite для Блок 8 (phrase):** 5α held-out green. Иначе phrase chain ловит Surprise без семантического хаба.
+
+---
+
+## Блок 5f — Personal intent (ADR-0057, tract priors)
+
+| | |
+|---|---|
+| **Цель** | Эмерджентные `agent:*` tracts после диалога; host-tract boost на recall |
+| **Stage** | `stage-05f-intent-personal-ru` |
+| **Plan** | `lessons/ru-text-tract/data/intent-personal-plan-v1.json` |
+| **Skill** | `skill.tract.personal` |
+| **Ориентир** | после 5α или параллельно Phase II; не блокирует grapheme |
+
+```bash
+python lab/visual-curriculum/probe_intent_personal_ru.py
+```
+
+### Gate
+
+| Probe | Pass |
+|-------|------|
+| `probe_intent_personal_ru` | all wired scenarios (lab state; см. mastery_gate) |
+
+**Примечание:** `intent_prism` enabled в bootstrap — gate обязателен до promote emergent tracts в KB (`tools/compile_intent_bundle.py`).
 
 ---
 
@@ -710,7 +741,7 @@ Gate: `probe_oov_word_recall_ru` (Блок 10+).
 | 3 | `data/block-03-syllable-cyrl-v1.json` | **done** |
 | 4 | `data/block-04-early-words-cyrl-v1.json` | **done** |
 | 5 | `data/block-05-corpus-cyrl-v1.json` | **done** |
-| 5α | `lessons/ru-material-verbal/` | **authoring** (RU-α probe lab) |
+| 5α | `lessons/ru-material-verbal/` | **ingest + gate** (`ingest_material_verbal_class`, `ingest_world_link_class`) |
 | 6 | `data/block-06-closed-class-cyrl-v1.json` | **done** |
 | 6b | `data/block-06b-meta-language-cyrl-v1.json` | **done** |
 | 7 | `data/block-07-grammar-person-case-cyrl-v1.json` | **done** |

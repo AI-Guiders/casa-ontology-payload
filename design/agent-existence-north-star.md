@@ -87,6 +87,8 @@ T=0..∞  perceive → DMN → SN → FPN → CEN → act → P4 feedback → �
 
 Канон целей: agent-notes `casa-goals-and-roadmap-v1.md`.
 
+**Native Writer (языковой NorthStar):** [CASA-native-writer-criteria-v1.md](CASA-native-writer-criteria-v1.md) · ревью курса: [CASA-von-neumann-curriculum-review-v1.md](CASA-von-neumann-curriculum-review-v1.md)
+
 ---
 
 ## Что CASA не обещает (дополнение)
