@@ -184,7 +184,8 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 **README:** `lessons/literacy-cards/block-04-early-words-cyrl/README.md`
 
 - Frames: `word-{slug}-sans` → `lang.word.{lemma}`; waves 8 train + spacing revisit.
-- **Held-out (2):** `word-apelsin-sans`, `word-apelsin_cap-sans`.
+- **Held-out (2):** `word-apelsin-sans`, `word-apelsin_cap-sans` (register contrast — не два несвязанных lemma).
+- **Register meta (7c):** `block-07c-register-bind-cyrl` — `lang.meta.register.sentenceInitial` / `allCaps`; gate = lemma+cap ↔ meta на поле.
 - Social «Привет» — `native_ru_bootstrap` (ADR-0049), **не** JPEG ingest в этом блоке.
 
 ```bash
@@ -261,10 +262,13 @@ python lab/visual-curriculum/probe_block_held_out.py --block block-05-corpus-cyr
 
 - Text + vis meta — **не** exam «назови часть речи».
 - Closed class: 52 function words → 3 waves; held-out last 10.
-- Meta-language: 20 cards → 3 waves; held-out 4 (size/epistemic).
+- Meta-language: `block-06b` v2 — канон `lang.meta.*` (lexicon, letterCase, epistemic, POS); held-out 4 (size/epistemic/POS).
+- **Register bind (7c):** `block-07c-register-bind-cyrl` — `lang.meta.register.sentenceInitial` / `allCaps`; gate `register_meta_bind_min: 2`; один lemma `apelsin`.
 
 ```bash
 python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-06-closed-class-cyrl
+python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-06b-meta-language-cyrl
+python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-07c-register-bind-cyrl
 ```
 
 ### Agent
@@ -277,6 +281,7 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 |-------|------|
 | `probe_block06_closed_class_held_out` | ≥85% know on held-out closed-class |
 | `probe_block06b_meta_language_held_out` | ≥85% on held-out meta cards |
+| `probe_block07c_register_bind_held_out` | 100% surfaces + `register_meta_bind` 2/2 |
 
 ---
 
@@ -293,7 +298,7 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 ### Teacher
 
 **Spec:** `data/block-07-grammar-person-case-cyrl-v1.json`  
-JPEG pairs: «она мыла» / «*она мыл» — contrast, не lecture.
+JPEG pairs: «она мыла» / «*она мыл» — contrast, не lecture. Wave 3: `lang.meta.grammar.case.dat` («кому?») для give-phrase.
 
 ```bash
 python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-07-grammar-person-case-cyrl
@@ -311,6 +316,33 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 
 ---
 
+## Блок 8b — Вопросительные рамки (B6, phrase prep)
+
+| | |
+|---|---|
+| **Цель** | `lang.meta.grammar.question.*` на JPEG — feed для `phrase-events` |
+| **Stage** | `stage-08c-meta-grammar-question` |
+| **Lesson** | `lesson-08c-grammar-question-meta` |
+| **Ориентир** | 2 waves, 10 cards |
+
+### Teacher
+
+**Spec:** `data/block-08b-question-meta-cyrl-v1.json`  
+Held-out: `who`, `to_whom`, `whose`. После block 7 (case dat).
+
+```bash
+python lessons/literacy-cards/tools/build_grammar_meta_cards.py --question
+python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-08b-question-meta-cyrl
+```
+
+### Gate
+
+| Probe | Pass |
+|-------|------|
+| `probe_block08b_question_meta_held_out` | 100% on held-out question frames |
+
+---
+
 ## Блок 8 — Согласование и словоформы (B6–B7)
 
 | | |
@@ -323,7 +355,7 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 ### Teacher
 
 **Spec:** `data/block-08-grammar-phrase-meta-cyrl-v1.json`  
-Agreement / possessive / numeral meta JPEG waves.
+Agreement / possessive / numeral meta JPEG waves. Prerequisite: block 8b.
 
 ```bash
 python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-08-grammar-phrase-meta-cyrl
@@ -346,8 +378,9 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 | | |
 |---|---|
 | **Цель** | Held-out **phrase event**; корень/affix для ortho vigilance |
-| **Stages** | `stage-10-phrase-events-ru` (planned), `stage-14-morphemics-root-affix` (planned) |
+| **Stages** | `stage-10-phrase-events-ru`, `stage-14-morphemics-root-affix` *(planned)* |
 | **Ориентир** | 3–5 moments |
+| **Canon lattice** | [`CASA-immutable-lattice-canon-v1.md`](CASA-immutable-lattice-canon-v1.md) — `morph-role-ru` (роли: приставка/корень/…); attested сегменты в experiential `lexicon-*`; **агент сам решает** promote/demote стабильных кластеров |
 
 ### Teacher
 
@@ -402,6 +435,20 @@ python lab/visual-curriculum/probe_passage_comprehend_ru_v0.py
 ```
 
 **Статус v0:** spec + probe wired; green на store — после corpus/journal coverage (волна 2).
+
+---
+
+## Блок 9c — Морфемный разбор *(planned, после 9b)*
+
+| | |
+|---|---|
+| **Цель** | Операционный разбор слова: приставка, корень, суффикс, основа, окончание — не зачёт по § |
+| **Stage** | `stage-14-morphemics-root-affix` |
+| **Lattice** | **Immutable** `morph-role-ru` (5 role slots); сегменты `мыл`, `по-`, `-а` — experiential + `episodic-rule` |
+| **Gate** | `probe_morphemics_ru_v0` (held-out segment cue в знакомом слове) |
+| **Agent** | сам решает `agent_promote_canon_lattice` / demote для paradigm-кластеров после своей проверки (см. immutable-lattice canon) |
+
+Prerequisite: phrase gate green, 9b passage partial. Подача: phrase chain + meta morph cards; **не** cartesian sleep grapheme+morph+word.
 
 ---
 
@@ -476,6 +523,7 @@ Scenarios: greeting, thanks, norm check; OOV → remember tract (L2).
 ### Agent
 
 - Field-mastery-first articulate; defer/refuse if partial.
+- **Hot path:** только field-realize (`subject_articulation`, `phrase_compose`) — **без LLM** (ADR-0045, north star § самодостаточность).
 - Interleave dialogue **only after** Phase I exit (autonomy_intent).
 
 ### Gate (nositel′ v0 — ADR-0049 acceptance)

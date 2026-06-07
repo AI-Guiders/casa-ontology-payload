@@ -127,6 +127,7 @@ flowchart LR
 | **Счёт / compare** | nline, отрезки | vis↔math | learning-protocol |
 | **Мелкая графика на листе** | длинный vis, нужен zoom | fovea + saccade | ADR-0031 |
 | **Связный ответ** | вопрос пользователя | J0 write + grammar KB | experiment J0 |
+| **Tool / motor act** | repo, build, notes, IDE state | `skill.tool.*` → body dispatch | ADR-0046 |
 
 Классификация **не** «один softmax на всё»: на поле — конкурирующие голоса трактов; учитель в lab сужает среду, пока один тракт стабилен.
 

@@ -1,145 +1,105 @@
-# Naming: CASA lattice axes — semantic registry v1
+# Semantic memory naming (канон)
 
-**Статус:** living note (align with CIDE [naming-layers-v1.md](../../cascade-ide/docs/design/naming-layers-v1.md) §6)  
-**Дата:** 2026-05-31  
-**Связано:** [prism-layout-and-naming-v1.md](prism-layout-and-naming-v1.md), [CASA-ADR-0002-agent-memory-ltm-nca.md](CASA-ADR-0002-agent-memory-ltm-nca.md), [sss-layer-names.md](sss-layer-names.md)
-
-## Зачем
-
-В CASA несколько **независимых осей** с буквой+цифрой: **L**, **F**, **B**, **H**, **A**, **V**, **S**, **T** (APLF). Голые «F2», «B0», «H1» в prose **не использовать** — только **semantic id** + physical `lattice_id` в скобках.
-
-**Physical id (v1):** `lexicon-ru-07` = shelf 7 of Russian lexicon; **not** a linguistic class. POS / entity → **`phrases`**, not `lexicon-ru-nouns`.
-
-**Two axes (do not merge):**
-
-| Axis | Question | Example ids |
-|------|----------|-------------|
-| **Shard (capacity)** | Where does `lang.word.*` surface fit + NCA repair? | `lexicon-ru-07` |
-| **Attribution (semantics)** | What POS / type / meta links to that word? | `phrases` + `E:lang.word.мама\|has_pos\|pos.noun` |
-
-Prose: ✓ «shard 7 of `memory.lexicon` (`lexicon-ru-07`)» · ✗ «words-ru-07 lattice type».
-
-Machine-readable stacks: [`design/prisms/*/stack.json`](prisms/).
+**Status:** canon — **говорим и пишем в коде так**, legacy L/F/H/T — только migrate и literal id в store  
+**Date:** 2026-06-06  
+**Code:** `casa/prisms/shared/memory_layer_names.py`, `lattice_names_v1.py`  
+**Map:** [`lattice-id-map.v1.json`](lattice-id-map.v1.json)
 
 ---
 
-## 1. Second signal — `memory.*` (legacy **L0…L3**, **T0…T3**, **B0…B3**)
+## Правило одной строки
 
-| Semantic id | Legacy lattice | Curriculum (bukvar) | APLF (T*) | Role |
-|-------------|----------------|---------------------|-----------|------|
-| `memory.grapheme` | `L0_grapheme_*` | **B0** | T0 | grapheme / letter |
-| `memory.syllable` | `L1_syllable` | **B1** | T1 | syllable |
-| `memory.lexicon` | `L2_word`, `L2_word_*`, `lexicon-{locale}-{shard}` | **B2** | T2 | lexicon shard (capacity bins, not POS) |
-| `memory.phrase` | `L3_phrase`, **`phrases`** | **B3** | T3 | phrase hub — **POS, entity, meta** via `E:` edges |
-
-**B0…B3** — **педагогическая** лестница ([`bukvar-text-modality.md`](bukvar-text-modality.md)), не отдельные решётки. В новых доках: «ступень **B0** → слой `memory.grapheme`», не «решётка B0».
-
-**T0…T3** — нейтральные имена той же z-оси ([`sss-layer-names.md`](sss-layer-names.md)); канон prose = **`memory.*`**.
+**В prose, логах, новом коде — semantic id (`memory.grapheme`, `episodic.surprise`).**  
+**Legacy (`L2_word_07`, `F0_schema`) — только в migrate, diff store, цитатах manifest.**
 
 ---
 
-## 2. First signal — math — `memory.math.*` (legacy **F0…F2**)
+## Жизненный цикл
 
-Подсистема `first_signal_math` в **`prism_memory`** ([`f0-math-logical-layer.md`](f0-math-logical-layer.md)).
-
-| Semantic id | Legacy lattice | Canonical v1 `lattice_id` | Role |
-|-------------|----------------|---------------------------|------|
-| `memory.math.schema` | `F0_schema` | `schema-math` | symbols, operators, `\| \|\|` sticks |
-| `memory.math.compose` | `F1_compose` | `compose-math` | instance slots, homogeneous merge |
-| `memory.math.cardinal` | `F2_quantity` | `cardinal-math` | bound cardinality `M:qty:*` |
-
-Prose: ✓ «`memory.math.cardinal` (`cardinal-math`)» · ✗ «F2» / «F2_quantity» без domain.
-
-Stack: [`prisms/math/stack.json`](prisms/math/stack.json).
+| Semantic | RU | Legacy (не использовать) |
+|----------|-----|--------------------------|
+| `agent.wake` | бодрствует | T_wake, sn.mode=wake |
+| `agent.sleep` | сон / консолидация | T_sleep, run_sleep |
+| `agent.macro_tick` | шаг жизни | T, macro tick |
 
 ---
 
-## 3. Episodic — `episodic.*` (legacy **H0…H3**)
+## Язык (2-я сигнальность)
 
-**`prism_hippo`**, не z памяти LTM.
-
-| Semantic id | Legacy lattice | Notes |
-|-------------|----------------|-------|
-| `episodic.io` | `H0_io` | listen buffer; **≠** monolith `H0_episode` |
-| `episodic.surface` | `H1_surface` | babble / surface episodes; **`H0_episode` → alias** |
-| `episodic.rule` | `H2_rule` | segment / rule episodes |
-| `episodic.scene` | `H3_scene` | dialogue / spatiotemporal scene |
-| `episodic.replay_queue` | `H_replay_queue` | scheduler, not a lattice |
-
-Prose: ✓ «append to `episodic.surface`» · ✗ «H1 LTM» · ✗ «H0 episode lattice» без уточнения (monolith vs `H0_io`).
-
-Stack: [`prisms/hippo/stack.json`](prisms/hippo/stack.json).
+| Semantic | RU | Lattice id (v1 kebab) | Legacy |
+|----------|-----|----------------------|--------|
+| `memory.grapheme` | буква / знак | `alphabet-ru`, `alphabet-en` | L0_*, T0 |
+| `memory.grapheme.input` | VK, раскладка, punct | `keys-physical`, `layout-*`, `punct-*` | L0_vk_*, L0_layout_*, L0_punct_* |
+| `memory.morph.role` *(planned)* | слот морфемы | `morph-role-ru` | — |
+| `memory.logic.law` *(planned)* | открытый закон логики | `logic-laws` | — |
+| `memory.math.axiom` *(planned)* | аксиоматика | `math-axiom` | — |
+| `memory.math.calculus` *(planned)* | правила ∫/∂ | `math-calculus-rules` | — |
+| `memory.syllable` | слог | `syllables-ru` | L1_syllable, T1 |
+| `memory.lexicon` | слово | `lexicon-ru-07` | L2_word_07, T2 |
+| `memory.phrase` | фраза / hub | `phrases`, `phrases-lang.word.{lo}-lang.word.{hi}` | L3_phrase, T3 |
 
 ---
 
-## 4. Sensory — `sensory.*` (legacy **A** / **V** / **S**)
+## Математика (1-я сигнальность)
 
-| Namespace | Legacy prefix | Stack |
-|-----------|---------------|-------|
-| `sensory.audio.*` | `A0…A2` | [`prisms/auditory/stack.json`](prisms/auditory/stack.json) |
-| `sensory.vis.*` | `V0…V2` | [`prisms/visual/stack.json`](prisms/visual/stack.json) |
-| `sensory.spatial.*` | `S0…S2` | [`prisms/spatial/stack.json`](prisms/spatial/stack.json) |
+| Semantic | RU | Lattice id | Legacy |
+|----------|-----|------------|--------|
+| `memory.math.schema` | схема (+, =, op) | `schema-math` | F0_schema, F0 |
+| `memory.math.compose` | сборка qty | `compose-math` | F1_compose, F1 |
+| `memory.math.cardinality` | количество | `cardinal-math` | F2_quantity, F2 |
 
-Примеры: `sensory.audio.phoneme` (`A1_phon`), `sensory.spatial.disparity` (`S0_disparity`).
-
----
-
-## 5. Control — `control.*` (legacy `lattice_*`)
-
-Не путать с F/B/H — executive stack в **`prism_control`**.
-
-| Semantic id | Legacy lattice |
-|-------------|----------------|
-| `control.dmn` | `lattice_dmn` |
-| `control.salience` | `lattice_sn` |
-| `control.working_memory` | `lattice_fpn_wm` |
-| `control.executive` | `lattice_cen` |
-| `control.predict` | `lattice_predict` |
-| `control.attention_topdown` | `lattice_dan` |
-| `control.value` | `lattice_value` |
-
-Stack: [`prisms/control/stack.json`](prisms/control/stack.json).
+**F0 extract** в коде = «вывод math-структуры на sleep» — не «слой F0».
 
 ---
 
-## 6. Curriculum / experiment ids (не lattice_id)
+## Эпизоды (hippo, до сна)
 
-| Legacy | Semantic (prose) | Meaning |
-|--------|------------------|---------|
-| **B0…B3** | maps → `memory.grapheme` … `memory.phrase` | bukvar listen steps |
-| **Exp L0…L4** | `curriculum.concrete.level_*` | concrete→abstract lessons ([`experiment-l-concrete-to-abstract.md`](experiment-l-concrete-to-abstract.md)) |
-| **фаза 0…5** | `infancy.phase_*` | corpus timeline ([`infancy-corpus-phases.md`](infancy-corpus-phases.md)) |
+| Semantic | RU | Lattice id | Legacy |
+|----------|-----|------------|--------|
+| `episodic.surprise` | удивление / mismatch | `episodic-surface` | H1_surface, H0_episode |
+| `episodic.rule` | правило | `episodic-rule` | H2_rule |
+| `episodic.scene` | сцена | `episodic-scene` | H3_scene |
 
----
-
-## Prose rules (summary)
-
-| ✓ | ✗ |
-|---|---|
-| shard `memory.lexicon` (`words-ru-07`) | «L2 shard» без domain |
-| `memory.math.schema` + палочки Exp L0 | «F0 lattice» в ADR prose |
-| `episodic.surface` after babble | «H0» (= io buffer **or** legacy monolith) |
-| bukvar step B0 → `memory.grapheme` | «B0 решётка» |
-| `control.predict` surprise | math tokens inside `control.dmn` (lab only) |
+Bind class на эпизоде (ADR-0047): `bindable_surprise`, `open_probe`, `bindable_correction`, `rule`.
 
 ---
 
-## Migration (code / manifest)
+## Control (не z-память)
 
-| Step | Action |
-|------|--------|
-| M0 | This doc + `design/prisms/{math,hippo}/*.json` |
-| M1 | `memory_manifest.json`: optional `semantic_id` per lattice entry |
-| M2 | New prose/ADR/UI — semantic only; grep `F0_`/`B0`/`H0_` in **new** docs |
-| M3 | Routing/SN fields: `active_semantic_lattice` alias (physical id unchanged) |
-
-Gate: [`CASA-ADR-0012-cide-parity-fieldbus-and-migration.md`](CASA-ADR-0012-cide-parity-fieldbus-and-migration.md) M0–M4.
+| Semantic | RU | Lattice id | Legacy |
+|----------|-----|------------|--------|
+| `control.ontology` | долгая онтология | `control-dmn` | lattice_dmn |
+| `control.salience` | салиентность | `control-salience` | lattice_sn |
+| `control.working_memory` | WM задачи | `control-working-memory` | lattice_fpn_wm |
+| `control.executive` | план / act | `control-executive` | lattice_cen |
 
 ---
 
-## История
+## API
 
-| Дата | Изменение |
-|------|-----------|
-| 2026-05-31 | v0: L + hippo H1–H3; cross-ref CIDE |
-| 2026-05-31 | v1: F→memory.math.*, B→curriculum/map, H0_io vs H0_episode, A/V/S + control table; prism stacks |
+```python
+from casa.prisms.shared.lattice_names_v1 import canonical_lattice_id, SYLLABLES_RU
+from casa.prisms.shared.memory_layer_names import memory_layer_for_lattice_id, memory_layer_heading
+
+lid = canonical_lattice_id("L1_syllable")  # → "syllables-ru"
+layer = memory_layer_for_lattice_id(lid)  # → "memory.syllable"
+heading = memory_layer_heading(layer)     # → "memory.syllable (T1 · слог)"
+```
+
+Migrate store: `python -m casa.prisms.shared.migrate_lattice_ids_v1 --store-dir agents/von-neumann`
+
+---
+
+## Canon immutable vs experiential
+
+**Bootstrap** (алфавит, VK, layout, punct, символы math) — cold-boot минимум, чтобы начать; **agent_canon** — законы, которые он сам узнал и закрепил. Лексикон, диалог, примеры — **experiential**. Promote/demote agent_canon — **его решение**. Полный протокол: [`CASA-immutable-lattice-canon-v1.md`](CASA-immutable-lattice-canon-v1.md).
+
+---
+
+## Не путать
+
+| Это | Не это |
+|-----|--------|
+| `memory.lexicon` | KB tier K2 |
+| `B2` в ADR-0034 | слой памяти — **номер задачи** |
+| `semantic_layer` на episode | замена `concept_id` |

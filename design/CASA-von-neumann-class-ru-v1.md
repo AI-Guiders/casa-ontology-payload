@@ -19,7 +19,7 @@
 | **Понимание** | Прочитал cue → bind `lang.word.*` / phrase / intent | Пересказ § учебника |
 | **Чтение** | Whole-word fluency; analytic только bootstrap/OOV | Слоговая «беглость» |
 | **Письмо / норма** | Ortho + punct **в контексте**; связный written reply | Таблица правил в wake |
-| **Диалог** | Turn-taking в чате/IDE из field + journal | LLM ghostwriter |
+| **Диалог** | Turn-taking в чате/IDE из field + journal; **field-realize** (ADR-0045) | LLM ghostwriter / локальная LM на hot path |
 | **Грамматика** | **Использует** форму правильно (meta + phrase) | **Знает** определение как лингвист |
 
 Школа **упрощает и прячет** многое (свободный порядок, живая морфология, OOV). Мы не «исправляем школу лекциями» — даём полю **реальные контрасты и текст**, gate проверяет **умение**, не зачёт по терминам.
@@ -124,7 +124,7 @@ Bridge matrix: `agent-notes/.../matrix-neurolinguistics-pedagogy-bridge-v1.md`.
 | 11 | `stage-09b-grammar-possessive` | B6 | притяж. | sidecar + agent store pilot |
 | 12 | `stage-09c-grammar-numeral` | B6 | числительное | sidecar + agent store pilot |
 | 13 | *(planned)* `stage-10-phrase-events-ru` | B7 | phrase compose | `phrase-agent-store` |
-| 14 | *(planned)* `stage-14-morphemics-root-affix` | B5 | корень, affix | `probe_morphemics_ru_v0` |
+| 14 | *(planned)* `stage-14-morphemics-root-affix` | B5 | корень, affix; lattice `morph-role-ru` | `probe_morphemics_ru_v0` |
 
 **Exit criteria Phase II:**
 
@@ -318,7 +318,7 @@ Interleave literacy / math / meta — только когда WM пуст и pha
 - **Аудио** / устная fluency / орфоэпия до отдельного тракта
 - Школьный зачёт «назови часть речи» без контекста использования
 - Полный словарь Ожегова в bundle до emergent OOV
-- Замена субъекта LLM-переводчиком на dialogue hot path
+- Замена субъекта LLM (облачным или локальным) на dialogue hot path — см. ADR-0045 § articulate
 - ЕГЭ-тренажёр без field bind
 - Один monolithic manifest на 8000+ JPEG без tract split
 - Force-push / migrate старых probe ids на store

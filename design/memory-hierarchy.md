@@ -71,6 +71,8 @@ Do **not** use `lab/nca_out_<corpus>_*/` for production — train in-place under
 
 **Инварианты:** один агент → один store; math и lang — разные **события**, один **опыт** в призмах. Predict — только из опыта, bundle не oracle.
 
+**Bootstrap lattices** (алфавит, `keys-physical`, layout, punct — cold-boot минимум) и **agent_canon** (законы, которые он сам закрепил) — стабильная топология, отдельно от растущих `lexicon-*`. См. [`CASA-immutable-lattice-canon-v1.md`](CASA-immutable-lattice-canon-v1.md).
+
 **Layout (legacy → R5):** сейчас опыт часто под `lab/agent-stores/<id>/` (исторически `examples/`). После миграции — канон `agents/<id>/`; `lab/` только curriculum ([`CASA-ADR-0021`](CASA-ADR-0021-experience-agent-transfer.md) § R5, [`TECH-DEBT-INDEX.md`](TECH-DEBT-INDEX.md) L1).
 
 ### Фактология vs картриджи (canon)

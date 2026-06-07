@@ -7,6 +7,7 @@
 **Связано:**
 
 - [CASA-ADR-0034-executor-learning-loop.md](CASA-ADR-0034-executor-learning-loop.md) — горизонтальный цикл 1–5 (цель → … → проверка)
+- [CASA-ADR-0046-body-function-calling-extension.md](CASA-ADR-0046-body-function-calling-extension.md) — tool tract: `skill.tool.*` / body dispatch; **не** organ в control
 - [CASA-ADR-0016-prism-domains-hot-router.md](CASA-ADR-0016-prism-domains-hot-router.md) — `prism_router` (слой 1)
 - [CASA-ADR-0021-experience-agent-transfer.md](CASA-ADR-0021-experience-agent-transfer.md) — transfer_matrix, опыт агента
 - [CASA-ADR-0010-control-zone-predict-attention-value.md](CASA-ADR-0010-control-zone-predict-attention-value.md) — FPN/DAN/CEN (исполнение, не таблицы знаний)
@@ -136,8 +137,13 @@ flowchart TB
 | `skill.math.count` | `predict_math_for_vis_cue` | nline probe |
 | `skill.vis.saccade` | fovea chain | ADR-0031 |
 | `skill.write.j0` | articulation / write@sketch | J0 bench |
+| `skill.tool.git_status` | `BodyFunctionExtension` → git status | ADR-0046 tool smoke |
+| `skill.tool.build.verify` | `ide_agent_verify` / build ladder | ADR-0046 + CIDE AEE |
+| `skill.tool.notes.read` | read agent notes / hot context | ADR-0046 continuity |
 
 Умение — **не** NCA weights сами по себе; это **доступная процедура + достаточный след** на поле (bridges, LTM). **Gate** = проверка ЗУН на held-out ([CASA-ADR-0037-gate-zun-verification.md](CASA-ADR-0037-gate-zun-verification.md)); sidecar без store — не gate.
+
+**Tool tract (ADR-0046):** capability/applicability/goal routes — **да**; отдельный router-prism в control hot path — **нет**. Wire MCP живёт в `body_manifest`; поле хранит «умею вызвать», не JSON Schema.
 
 ### Матрица capability (эмерджентно, тот же паттерн)
 
@@ -395,6 +401,8 @@ Control **читает** план и активную capability; **не** хр�
 | `skill_id` | 2–4 | `skill.read.analytic` |
 | `surface_class` | 2 | `word`, `phrase`, `drawing` |
 | `novel` | 2 | `true` / `false` |
+| `function_family` | 2 (tool) | `git`, `build`, `notes` |
+| `step_focus` | control WM | `tool_dispatch` → body hook (ADR-0046) |
 | `target_*` | out | prism / skill / goal / plan id |
 
 Один **алгоритм** `Router.resolve(ctx)` — priority, longest match; разные **таблицы** по `route_kind`.
@@ -452,6 +460,7 @@ Control **читает** план и активную capability; **не** хр�
 | 8 | Wake decompose B7 | **done** (`wake_decompose.py`) |
 | 9 | Interleave C7 + autonomy seed | **done** (`interleaving_queue`, `autonomy_intent`) |
 | 10 | Self-check before CEN | **done** (`self_check_tick.py`) |
+| 11 | Tool tract + `step_focus: tool_dispatch` (ADR-0046) | planned |
 
 ---
 
