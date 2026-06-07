@@ -1,7 +1,7 @@
 # CASA: иммутабельные решётки (canon tier) и выбор агента
 
 **Статус:** design v1 (2026-06-07)  
-**Связано:** [`memory-hierarchy.md`](memory-hierarchy.md), [`naming-memory-layers.md`](naming-memory-layers.md), [`lattice-id-map.v1.json`](lattice-id-map.v1.json), [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md), [`CASA-ADR-0029-logical-composition.md`](CASA-ADR-0029-logical-composition.md), [`CASA-ADR-0036-emergent-morph-agreement.md`](CASA-ADR-0036-emergent-morph-agreement.md), [`CASA-ADR-0044-field-native-semantic-articulate.md`](CASA-ADR-0044-field-native-semantic-articulate.md), [`CASA-von-neumann-ru-teaching-plan-v1.md`](CASA-von-neumann-ru-teaching-plan-v1.md)
+**Связано:** [`memory-hierarchy.md`](memory-hierarchy.md), [`naming-memory-layers.md`](naming-memory-layers.md), [`lattice-id-map.v1.json`](lattice-id-map.v1.json), [`CASA-ADR-0015-agent-self-memory.md`](CASA-ADR-0015-agent-self-memory.md), [`CASA-ADR-0029-logical-composition.md`](CASA-ADR-0029-logical-composition.md), [`CASA-ADR-0036-emergent-morph-agreement.md`](CASA-ADR-0036-emergent-morph-agreement.md), [`CASA-ADR-0044-field-native-semantic-articulate.md`](CASA-ADR-0044-field-native-semantic-articulate.md), [`CASA-ADR-0051-multilingual-geometry.md`](CASA-ADR-0051-multilingual-geometry.md), [`CASA-von-neumann-ru-teaching-plan-v1.md`](CASA-von-neumann-ru-teaching-plan-v1.md)
 
 ---
 
@@ -72,7 +72,11 @@ Bootstrap — **не эпистемический авторитет**, а **м�
 
 ## Планируемо для RU literacy (Phase II→III)
 
-### `morph-role-ru` (planned, bootstrap **topology**)
+### `morph-role-ru` (active) · `morph-role-en` (planned parallel slot)
+
+**RU shelf — active** on lab store; **EN shelf** — same `lang.meta.morph.*` ids, separate `lattice_id` ([ADR-0051](CASA-ADR-0051-multilingual-geometry.md)).
+
+Bootstrap **topology** (RU):
 
 Фиксированные **роли**, не словарь корней:
 
@@ -275,12 +279,14 @@ Teaching plan: блок 9b → morphemics (`stage-14`) → блок 10–12 → 
 ## Roadmap (код)
 
 - [x] `planned_lattices` в `lattice-id-map.v1.json`: `morph-role-ru`, `logic-laws`, `math-axiom`, `math-calculus-rules`  
-- [ ] `memory_layer_names`: `memory.morph.role`  
+- [x] `memory_layer_names`: `memory.morph.role.ru` / `memory.morph.role.en`
+- [x] `bootstrap_morph_role.py` + `bootstrap_host_canon.py` (cold boot locale)
+- [x] `morph-role-ru` active in `lattice-id-map` host_bootstrap; `morph-role-en` planned  
 - [x] `agent_promote_canon_lattice` / `agent_demote_canon_lattice` — registry `agent/canon_registry.v1.json`, CLI `agent_memory_ops promote-canon|demote-canon|list-canon|canon-candidates`  
 - [x] tick/self-drive: `maybe_promote_canon_on_tick` в `agent_self_drive_tick` (mastery `canon:{journal_id}` или tag `canon-ready`)  
 - [x] field + sleep + compact: `sync_agent_canon_to_field`, `enqueue_canon_sleep_episodes` (`structure_tag: canon_promote`), flush через `compact_persist_store` / `run_sleep`  
 - [x] **NCA после canon act:** enqueue → body train + percept → **commit** на `agent_life_tick` (`completion_ingest.py`); CLI `commit-canon-nca` — lab; tools не пишут `field_state`  
-- [x] `block-09c-morphemics-cyrl` spec + `probe_morphemics_ru_v0` (gate green на store)  
+- [x] `block-09c-morphemics-cyrl` spec + `probe_morphemics_ru` (gate green на store)  
 - [ ] Документировать в `MEMORY.md` generator класс lattice stability  
 
 ---

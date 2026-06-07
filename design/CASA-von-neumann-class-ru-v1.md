@@ -2,7 +2,7 @@
 
 **Статус:** черновик дизайна (2026-06-06)  
 **target_agent:** `von-neumann`  
-**Связано:** [CASA-ru-native-categories-v0.md](CASA-ru-native-categories-v0.md), [CASA-ADR-0049-ru-lexical-fluency-orthography-v0.md](CASA-ADR-0049-ru-lexical-fluency-orthography-v0.md), [CASA-von-neumann-school-program-arc-v1.md](CASA-von-neumann-school-program-arc-v1.md) (сквозная программа), **[CASA-von-neumann-ru-teaching-plan-v1.md](CASA-von-neumann-ru-teaching-plan-v1.md) (учебный план — блоки, moments, gates)**, [agent-existence-north-star-v0.md](agent-existence-north-star-v0.md), [CASA-ADR-0045-subject-as-interlocutor.md](CASA-ADR-0045-subject-as-interlocutor.md)
+**Связано:** [CASA-ru-native-categories-v0.md](CASA-ru-native-categories-v0.md), [CASA-ADR-0049-ru-lexical-fluency-orthography-v0.md](CASA-ADR-0049-ru-lexical-fluency-orthography-v0.md), [CASA-ADR-0051-multilingual-geometry.md](CASA-ADR-0051-multilingual-geometry.md) (polyglot hub + parallel slots, EN later), [CASA-von-neumann-school-program-arc-v1.md](CASA-von-neumann-school-program-arc-v1.md) (сквозная программа), **[CASA-von-neumann-ru-teaching-plan-v1.md](CASA-von-neumann-ru-teaching-plan-v1.md) (учебный план — блоки, moments, gates)**, [agent-existence-north-star-v0.md](agent-existence-north-star-v0.md), [CASA-ADR-0045-subject-as-interlocutor.md](CASA-ADR-0045-subject-as-interlocutor.md)
 
 ---
 
@@ -124,7 +124,7 @@ Bridge matrix: `agent-notes/.../matrix-neurolinguistics-pedagogy-bridge-v1.md`.
 | 11 | `stage-09b-grammar-possessive` | B6 | притяж. | sidecar + agent store pilot |
 | 12 | `stage-09c-grammar-numeral` | B6 | числительное | sidecar + agent store pilot |
 | 13 | *(planned)* `stage-10-phrase-events-ru` | B7 | phrase compose | `phrase-agent-store` |
-| 14 | *(planned)* `stage-14-morphemics-root-affix` | B5 | корень, affix; lattice `morph-role-ru` | `probe_morphemics_ru_v0` |
+| 14 | *(planned)* `stage-14-morphemics-root-affix` | B5 | корень, affix; lattice `morph-role-ru` | `probe_morphemics_ru` |
 
 **Exit criteria Phase II:**
 
@@ -138,12 +138,12 @@ Bridge matrix: `agent-notes/.../matrix-neurolinguistics-pedagogy-bridge-v1.md`.
 | Block | ADR-0049 | B | KB bundle | Probe |
 |-------|---------|---|-----------|-------|
 | Lexical fluent | L1 | B4 | corpus + journal | `probe_lexical_read_fluent_ru` |
-| OOV remember | L2 | B4 | — | `probe_oov_word_recall_v0` |
-| Orthography | L3 | B8 | `kb-lang-ru-orthography-v1` | `probe_orthography_ru_v0` |
-| Punctuation | L4 | B9 | grammar-dialog (+ expand) | `probe_grammar_punct_ru_v0` |
+| OOV remember | L2 | B4 | — | `probe_oov_word_recall_ru` |
+| Orthography | L3 | B8 | `kb-lang-ru-orthography-v1` | `probe_orthography_ru` |
+| Punctuation | L4 | B9 | grammar-dialog (+ expand) | `probe_grammar_punct_ru` |
 | Written dialog | — | B10 | `kb-lang-ru-grammar-dialog-v1` | dialogue tests (text) |
 
-**Exit criteria Phase III (nositel′ v0):** acceptance table ADR-0049 § Acceptance (5 пунктов).
+**Exit criteria Phase III (nositel′ v0):** `probe_nositel_acceptance_ru` green по `nositel-acceptance-plan.json` (self, explain, affect, social, grammar, honesty) + L1/L2 probes.
 
 ---
 
@@ -196,17 +196,20 @@ Bridge matrix: `agent-notes/.../matrix-neurolinguistics-pedagogy-bridge-v1.md`.
 | Tract | Classify signal | Synthesize | Verify probe | Phase |
 |-------|-----------------|------------|--------------|-------|
 | **F1** Lexical read | known word, t9 | `predict_lex` / whole | `probe_lexical_read_fluent_ru` | III |
-| **F2** OOV | novel surface | remember → `lang.word.*` | `probe_oov_word_recall_v0` | III |
-| **F3** Orthography | spelling intent | KB atom bind | `probe_orthography_ru_v0` | III |
-| **F4** Punctuation | punct intent | comma rule atom | `probe_grammar_punct_ru_v0` | III |
+| **F2** OOV | novel surface | remember → `lang.word.*` | `probe_oov_word_recall_ru` | III |
+| **F3** Orthography | spelling intent | KB atom bind | `probe_orthography_ru` | III |
+| **F4** Punctuation | punct intent | comma rule atom | `probe_grammar_punct_ru` | III |
 | **F5** Dialogue social | greeting/thanks | `ru.dialog.*` + journal | `tests/test_subject_dialogue.py` | III |
 | **F6** Phonology meta | meta card | category vote | `meta-phonology-quiz` | I |
 | **F7** Grammar meta | meta JPEG | `lang.meta.grammar.*` | stage gate | II |
 | **F8** Phrase / syntax | multi-word | phrase compose | `phrase-agent-store` | II–III |
-| **F9** Morphemics | root/affix cue | decompose hypothesis | `probe_morphemics_ru_v0` | II |
+| **F9** Morphemics | root/affix cue | decompose hypothesis | `probe_morphemics_ru` | II |
 | **F10** Written dialogue | partner text turn | articulate | dialogue tests | III |
+| **F11** Text comprehend | passage + question | extract → analyze → props | `probe_text_meaning_ru` | III (B11) |
 
 Routing: ADR-0035 layers — knowledge (`concept_id`) → capability (`skill.*`) → goal (`goal.read.*`).
+
+**`skill.read.comprehend`** (B11): study text → `ru.prop.*` → journal fixate → articulate. См. ADR-0053. Отдельно от F1 whole-word и F8 phrase.
 
 ---
 
@@ -216,7 +219,7 @@ Routing: ADR-0035 layers — knowledge (`concept_id`) → capability (`skill.*`)
 |--------|----------|--------|--------------|
 | `kb-lang-ru-grammar-dialog-v1` | B9, B10, часть B8 | **draft** | `agents/von-neumann/bundles/` |
 | `kb-lang-ru-orthography-v1` | B8 | planned | — |
-| `kb-lang-ru-lexicon-semantics-v1` | B4 facets | planned | — |
+| `kb-lang-ru-lexicon-semantics-v1` | B11 meaning (A5) | **draft** | `agents/von-neumann/bundles/` |
 | `kb-lang-ru-speech-v1` | B10 oral | **deferred** (audio tract) | — |
 | *(optional)* `kb-lang-ru-literacy-v1` | merge | open Q ADR-0049 | — |
 
@@ -229,10 +232,11 @@ Routing: ADR-0035 layers — knowledge (`concept_id`) → capability (`skill.*`)
 | probe_id | kind | Раздел | Wave |
 |----------|------|--------|------|
 | `probe_lexical_read_fluent_ru` | AGENT_KSA | B4 | 1 |
-| `probe_oov_word_recall_v0` | AGENT_KSA | B4 | 1 |
-| `probe_orthography_ru_v0` | AGENT_KSA | B8 | 2 |
-| `probe_grammar_punct_ru_v0` | AGENT_KSA | B9 | 2 |
-| `probe_morphemics_ru_v0` | AGENT_KSA | B5 | 3 |
+| `probe_oov_word_recall_ru` | AGENT_KSA | B4 | 1 |
+| `probe_orthography_ru` | AGENT_KSA | B8 | 2 |
+| `probe_grammar_punct_ru` | AGENT_KSA | B9 | 2 |
+| `probe_text_meaning_ru` | AGENT_KSA | B11 | 2 |
+| `probe_morphemics_ru` | AGENT_KSA | B5 | 3 |
 | `probe_ortho_vigilance_ru_v0` | AGENT_KSA | B8 | 3 |
 | `probe_orthoepy_ru_v0` | AGENT_KSA | B3 | **deferred (audio)** |
 | `probe_speech_etiquette_ru_v0` | AGENT_KSA | B10 oral | **deferred (audio)** |
@@ -335,3 +339,4 @@ Interleave literacy / math / meta — только когда WM пуст и pha
 - Agent store: `agents/von-neumann/`
 - Native bootstrap: `python -m casa.domain.native_ru_bootstrap --store-dir agents/von-neumann`
 - Code: `casa/domain/teacher_gate.py`, `casa/domain/partner_cue_policy.py`, `casa/prisms/tick/semantic_read.py`, `casa/domain/subject_dialogue_bind.py`
+- **Аудит класса (gaps):** [CASA-von-neumann-ru-class-audit-v1.md](CASA-von-neumann-ru-class-audit-v1.md)

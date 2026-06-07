@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "agent_bootstrap_manifest",
+  "title": "Agent cold boot — Self tier + agent-owned prisms (declarative)",
+  "doc": "design/CASA-ADR-0055-working-memory-prism-v1.md",
+  "self_tier": {
+    "default_lattice": {
+      "lattice_id": "agent-self-default",
+      "width": 32,
+      "height": 32,
+      "concept_prefix": "agent.self."
+    },
+    "notebooks": ["math-palochki", "kolb", "self"],
+    "journal_entries": [
+      {
+        "domain": "self",
+        "kind": "note",
+        "text_template": "Я — {display_name}. Это мой журнал (Self tier). Сюда — черновики, гипотезы, рабочая тетрадь. Уроки учителя лежат в lessons/; после занятий факты уходят в ltm/ через sleep.",
+        "tags": ["notebook:self", "bootstrap"],
+        "meta": { "notebook": "self", "status": "open" }
+      },
+      {
+        "domain_from_notebook": true,
+        "kind": "note",
+        "text_template": "Тетрадь «{notebook}»: сюда записываю свои попытки, ошибки и выводы по классу.",
+        "tags": ["draft", "notebook:{notebook}"],
+        "meta": { "status": "open", "class_id": "{notebook}" }
+      }
+    ],
+    "remember_on_boot": {
+      "kind": "observation",
+      "text": "agent-self-default lattice ready",
+      "notebook": "self",
+      "concepts": ["agent.self.bootstrap"]
+    }
+  },
+  "agent_prisms": {
+    "wm_prism": {
+      "enabled": true,
+      "adr": "0055",
+      "spawn_on_bootstrap": true,
+      "scratch_lattice_id": "agent-wm-scratch",
+      "concept_prefix": "agent.wm.",
+      "wm_policy": {
+        "theta_decay": 0.2,
+        "theta_hold": 0.45,
+        "theta_promote": 0.65,
+        "prune_every_ticks": 8,
+        "max_scratch_lattices": 3,
+        "scratch_ttl_ticks": 32
+      }
+    },
+    "intent_prism": {
+      "enabled": true,
+      "adr": "0057",
+      "spawn_on_bootstrap": true,
+      "scratch_lattice_id": "agent-intent-scratch",
+      "concept_prefix": "agent.intent.",
+      "intent_policy": {
+        "theta_decay": 0.12,
+        "theta_hold": 0.38,
+        "theta_promote": 0.62,
+        "max_hypotheses": 48
+      },
+      "note": "Personal tract priors from dialogue; cold boot with WM"
+    }
+  },
+  "host_canon": {
+    "morph_role_by_locale": true
+  },
+  "planned": {
+    "world_model": {
+      "enabled": false,
+      "adr": "0054",
+      "note": "agent.world.* — promote after RU-ε gate, not cold boot"
+    }
+  }
+}

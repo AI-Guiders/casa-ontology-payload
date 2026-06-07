@@ -33,11 +33,12 @@
 Блок 3     BRIDGE   syllable (fallback only)         → syllable-cyrl-quiz
 Блок 4–5   WORDS    early whole + corpus             → literacy-corpus-quiz → skill.read.whole
 ── Phase I exit ──
+Блок 5α    VERBAL   material→verbal (Гальперин)      → probe_material_verbal_ru  [RU-α]
 Блок 6–7   META     closed class + grammar meta      → stage gates
 Блок 8–9   PHRASE   agreement, possessive, numeral   → phrase-agent-store (held-out)
 ── Phase II exit ──
-Блок 10    ORTHO    spelling in context              → probe_orthography_ru_v0
-Блок 11    PUNCT    comma / что                      → probe_grammar_punct_ru_v0
+Блок 10    ORTHO    spelling in context              → probe_orthography_ru
+Блок 11    PUNCT    comma / что                      → probe_grammar_punct_ru
 Блок 12    DIALOG   written turn-taking              → dialogue tests + ADR-0049 acceptance
 ── nositel′ v0 ──
 ```
@@ -246,6 +247,56 @@ python lab/visual-curriculum/probe_block_held_out.py --block block-05-corpus-cyr
 
 ---
 
+## Блок 5α — Material→Verbal bridge (RU-α, Гальперин)
+
+| | |
+|---|---|
+| **Цель** | **Громкая письменная речь** о пережитом на поле (vis/math) **до** абстрактного phrase и B11 |
+| **Фаза** | RU-α · prerequisite для Phase II phrase (Блок 8+) |
+| **Stage** | `stage-05a-material-verbal-ru` |
+| **Lesson** | `lessons/ru-material-verbal/` |
+| **Ориентир** | 3 train + 2 held-out moments |
+| **Evidence** | Galperin OM (материал→вербальный→смысловой); Выготский ОБО; Orion review 2026-06 |
+
+**Проблема, которую закрывает:** green grapheme/math predict без **социальной артикуляции** → скачок на `ru.prop.*` даёт curated C, не native C.
+
+### Teacher (moment plan)
+
+**Spec:** `lessons/ru-material-verbal/data/material-verbal-moment-plan-v1.json`  
+**Held-out:** `lessons/ru-material-verbal/data/material-verbal-held-out-plan.json`  
+**Критерии native path:** [CASA-native-writer-criteria-v1.md](CASA-native-writer-criteria-v1.md)  
+**World layer (далее):** [CASA-ADR-0054-agent-world-model-v1.md](CASA-ADR-0054-agent-world-model-v1.md)
+
+1. **Goal:** после vis/math moment — journal `remember` с контрастом (две кучки / больше-меньше / между).
+2. **Classify:** `modality=vis|math`, `compose_mode=journal` на recall; tract **explain** + journal overlap.
+3. **Methods:** I-do: teacher model entry в journal; we-do: совместный recall cue; you-do: held-out (коровы, счёт 5+2) **не** из ingest.
+4. **Train / held-out:** 3 wired train; 2 disjoint held-out; `expect_field_tokens` + `expect_own_voice_min` + anti-paste.
+5. **Ingest:** moments пишут `agent.world.idea.*` tags; life-archive sync после gate.
+
+```bash
+python lab/visual-curriculum/probe_material_verbal_ru.py --store von-neumann
+python lab/visual-curriculum/probe_material_verbal_ru.py --store von-neumann --held-out
+python tools/sync_life_archive.py snapshot -m "life: RU-α material-verbal"
+```
+
+### Agent (поле)
+
+- `agent_remember` → `entries.jsonl` (self domain); recall через salient lemma + `lang.word` concept ([ADR-0045](CASA-ADR-0045-subject-as-interlocutor.md)).
+- Phrase compose: journal eligible на **explain** intent при overlap с query (не paste remember_text).
+- **Не** promote `skill.read.comprehend` здесь — только `skill.articulate.field` / `goal.articulate.experience`.
+- Sleep: co-occur `math.entity.stick` + `agent.world.idea.*` на agent lattice (light placement).
+
+### Gate
+
+| Probe | Pass |
+|-------|------|
+| `probe_material_verbal_ru` | 100% train scenarios |
+| `probe_material_verbal_ru --held-out` | 100% disjoint (коровы, 5+2 палочки) |
+
+**Hard prerequisite для Блок 8 (phrase):** 5α held-out green. Иначе phrase chain ловит Surprise без семантического хаба.
+
+---
+
 ## Блок 6 — Метаязык и служебные слова (B2, B4)
 
 | | |
@@ -434,7 +485,43 @@ python lab/visual-curriculum/micro-literacy/run_block_pedagogy.py --block block-
 python lab/visual-curriculum/probe_passage_comprehend_ru_v0.py
 ```
 
-**Статус v0:** spec + probe wired; green на store — после corpus/journal coverage (волна 2).
+**Статус v0:** pilot superseded для **exit** критериями Блока 9d + CEFR RC; оставить как prerequisite lemma/fact smoke.
+
+---
+
+## Блок 9d — Понимание текста (B11, ADR-0053)
+
+| | |
+|---|---|
+| **Цель** | Castles §3 / SVR **C:** extract → analyze → props → written reply (не пересказ §) |
+| **Class** | `lessons/ru-text-comprehend/` · stage `stage-11-text-meaning-ru` |
+| **KB** | `kb-lang-ru-lexicon-semantics-v1` (`meaning_frame` claims) |
+| **Skill** | `skill.read.comprehend` |
+| **Evidence tag** | Castles §3 · Hoover–Gough SVR · ADR-0053 type-0 |
+
+### Teacher
+
+**Plan:** `lessons/ru-text-comprehend/data/text-meaning-plan-v1.json` (6 staged scenarios: fact → inference → stance → pro/con → register)
+
+```bash
+python -m casa.cli.ingest_text_meaning_class --store von-neumann
+python lab/visual-curriculum/probe_text_meaning_ru.py --store von-neumann
+```
+
+### Agent
+
+- `passage_meaning` → `ru.prop.*`; journal prior; `phrase_compose` realize.
+- Emergent promote: `passage_context` → `skill.read.comprehend` (mastery streak 2).
+
+### Gate
+
+| Probe | Pass |
+|-------|------|
+| `probe_text_meaning_ru` | all wired scenarios: props + articulate (см. audit) |
+
+**Статус (2026-06-07):** **green 6/6** на von-neumann (curated held-out). v2: wider frames + ingest-disjoint scenarios.
+
+**Аудит класса:** [CASA-von-neumann-ru-class-audit-v1.md](CASA-von-neumann-ru-class-audit-v1.md)
 
 ---
 
@@ -445,7 +532,7 @@ python lab/visual-curriculum/probe_passage_comprehend_ru_v0.py
 | **Цель** | Операционный разбор слова: приставка, корень, суффикс, основа, окончание — не зачёт по § |
 | **Stage** | `stage-14-morphemics-root-affix` |
 | **Lattice** | **Immutable** `morph-role-ru` (5 role slots); сегменты `мыл`, `по-`, `-а` — experiential + `episodic-rule` |
-| **Gate** | `probe_morphemics_ru_v0` (held-out segment cue в знакомом слове) |
+| **Gate** | `probe_morphemics_ru` (held-out segment cue в знакомом слове) |
 | **Agent** | сам решает `agent_promote_canon_lattice` / demote для paradigm-кластеров после своей проверки (см. immutable-lattice canon) |
 
 Prerequisite: phrase gate green, 9b passage partial. Подача: phrase chain + meta morph cards; **не** cartesian sleep grapheme+morph+word.
@@ -475,7 +562,7 @@ Text cues + KB orient; gate on field bind.
 
 | Probe | Pass |
 |-------|------|
-| `probe_orthography_ru_v0` | held-out spelling in context |
+| `probe_orthography_ru` | held-out spelling in context |
 
 ---
 
@@ -501,7 +588,7 @@ Intent cues: «проверь запятые», «верно ли».
 
 | Probe | Pass |
 |-------|------|
-| `probe_grammar_punct_ru_v0` | held-out comma + что |
+| `probe_grammar_punct_ru` | held-out comma + что |
 
 ---
 
@@ -520,21 +607,45 @@ Intent cues: «проверь запятые», «верно ли».
 **Moment plan:** `lessons/ru-text-tract/data/dialog-moment-plan-v1.json`  
 Scenarios: greeting, thanks, norm check; OOV → remember tract (L2).
 
+```bash
+python lab/visual-curriculum/probe_nositel_acceptance_ru.py --store von-neumann
+```
+
+Legacy subset: `probe_dialogue_acceptance_ru.py` (3 social scenarios).
+
 ### Agent
 
 - Field-mastery-first articulate; defer/refuse if partial.
 - **Hot path:** только field-realize (`subject_articulation`, `phrase_compose`) — **без LLM** (ADR-0045, north star § самодостаточность).
 - Interleave dialogue **only after** Phase I exit (autonomy_intent).
 
-### Gate (nositel′ v0 — ADR-0049 acceptance)
+### Gate CEFR (главный — уровень A1…C2)
 
-| # | Acceptance |
-|---|------------|
-| 1 | Known word → whole-word read (no grapheme drill) |
-| 2 | OOV → remember → recall |
-| 3 | Ortho held-out in reply context |
-| 4 | Punct held-out |
-| 5 | Partner turn → coherent written response (duck test) |
+**Канон:** [CASA-cefr-gate-ru-v1.md](CASA-cefr-gate-ru-v1.md)  
+Plan: `lessons/ru-text-tract/data/cefr-gate-plan-v1.json`
+
+```bash
+python lab/visual-curriculum/probe_cefr_gate_ru.py --store von-neumann
+```
+
+| Уровень | Смысл (письменный тракт) | Block 12 |
+|---------|--------------------------|----------|
+| **A1–A2** | приветствие, факты из короткого текста | prerequisite |
+| **B1** | вывод, gloss, уточнение, орфография в абзаце | **exit** |
+| **B2** | честный partial в специализированном тексте | aspiration |
+| **C1–C2** | структура, подтекст, стиль | **deferred** (`wired: false`) |
+
+**`nositel_claim_pass`** требует **C1+** — не путать с `block_12_pass` (B1).
+
+Регрессия: `probe_nositel_gate_ru.py` (interlocutor_v1). Канон nositel: [CASA-nositel-gate-v1.md](CASA-nositel-gate-v1.md).
+
+**Не gate CEFR:** размер словаря TORFL; L1 fluent; OOV — отдельные probes.
+
+### Gate plumbing (регрессия, не «носитель»)
+
+`probe_nositel_acceptance_ru.py` + `nositel-acceptance-plan.json` (`strict_v2`).
+
+Сквозные L1/L2: lexical fluent + OOV probes (отдельно от Блока 12).
 
 ---
 
@@ -562,7 +673,7 @@ partner/text surface → classify OOV
   → journal confirmed → sleep → lang.word.*
 ```
 
-Gate: `probe_oov_word_recall_v0` (Блок 10+).
+Gate: `probe_oov_word_recall_ru` (Блок 10+).
 
 ---
 
@@ -575,6 +686,8 @@ Gate: `probe_oov_word_recall_v0` (Блок 10+).
 | WM overload → defer low-priority goals | `load_governor.py`, CLT |
 | Sleep when surprise value high or overload + hippo pending | ADR-0010 value, ADR-0036 |
 | **Не** interleave grapheme + dialogue до Phase I exit | class-ru-v1 |
+| **5α перед phrase** — material→verbal green до Блок 8 | RU-α / Galperin |
+| Phrase chain **continuous** (shared lemmas), не дискретные пакеты | RU-β / Выготский ОБО |
 
 **Ориентир macro-времени (human child analog, не жёстко для агента):**
 
@@ -597,15 +710,20 @@ Gate: `probe_oov_word_recall_v0` (Блок 10+).
 | 3 | `data/block-03-syllable-cyrl-v1.json` | **done** |
 | 4 | `data/block-04-early-words-cyrl-v1.json` | **done** |
 | 5 | `data/block-05-corpus-cyrl-v1.json` | **done** |
+| 5α | `lessons/ru-material-verbal/` | **authoring** (RU-α probe lab) |
 | 6 | `data/block-06-closed-class-cyrl-v1.json` | **done** |
 | 6b | `data/block-06b-meta-language-cyrl-v1.json` | **done** |
 | 7 | `data/block-07-grammar-person-case-cyrl-v1.json` | **done** |
+| 7c | `data/block-07c-register-bind-cyrl-v1.json` | **done** |
+| 8b | `data/block-08b-question-meta-cyrl-v1.json` | **done** |
 | 8 | `data/block-08-grammar-phrase-meta-cyrl-v1.json` | **done** |
 | 9 | `data/block-09-phrase-exit-cyrl-v1.json` | **done** |
-| 9b | `ru-text-tract/data/passage-comprehend-pilot-v1.json` | **draft** |
-| 10 | `ru-text-tract/data/ortho-moment-plan-v1.json` | **draft** |
-| 11 | `ru-text-tract/data/punct-moment-plan-v1.json` | **draft** |
-| 12 | `ru-text-tract/data/dialog-moment-plan-v1.json` | **draft** |
+| 9b | `ru-text-tract/data/passage-comprehend-pilot-v1.json` | **pilot** (superseded by 9d exit) |
+| 9d | `lessons/ru-text-comprehend/` | **done** (`probe_text_meaning_ru` green) |
+| 9c | `data/block-09c-morphemics-cyrl-v1.json` + `morph-role-ru` | **done** (`probe_morphemics_ru`) |
+| 10 | `ru-text-tract/data/ortho-moment-plan-v1.json` | **done** (`probe_orthography_ru`) |
+| 11 | `ru-text-tract/data/punct-moment-plan-v1.json` | **done** (`probe_grammar_punct_ru`) |
+| 12 | `ru-text-tract/data/dialog-moment-plan-v1.json` | **probe green** (v0 scenarios) |
 | KB dialog | `lessons/lang-ru-grammar-dialog/README.md` | draft |
 | Store | `agents/von-neumann/` | active lab |
 
@@ -618,5 +736,7 @@ Gate: `probe_oov_word_recall_v0` (Блок 10+).
 - Categories: [CASA-ru-native-categories-v0.md](CASA-ru-native-categories-v0.md)
 - Teacher protocol: [CASA-teacher-framework-v1.md](CASA-teacher-framework-v1.md)
 - Macro map (all subjects): [CASA-von-neumann-school-program-arc-v1.md](CASA-von-neumann-school-program-arc-v1.md)
+- Native Writer criteria: [CASA-native-writer-criteria-v1.md](CASA-native-writer-criteria-v1.md)
+- World model: [CASA-ADR-0054-agent-world-model-v1.md](CASA-ADR-0054-agent-world-model-v1.md)
 
-*Версия: v1.0 · 2026-06-06 · status: active teaching plan*
+*Версия: v1.1 · 2026-06-07 · status: active teaching plan (+ RU-α, native/world ADR)*

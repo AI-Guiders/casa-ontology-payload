@@ -8,7 +8,7 @@
 
 **Evidence oracle (read-only):** `agent-notes/knowledge/worlds/pedagogy-*` и `cognition-*` — см. § Evidence index ниже. Group-kb = mirror, не authoring.
 
-**Active scope (2026-06):** только RU L1 — учебный план: `design/CASA-von-neumann-ru-teaching-plan-v1.md`.
+**Active scope (2026-06):** RU L1 → **Native Ru Writer** path — учебный план: `design/CASA-von-neumann-ru-teaching-plan-v1.md`; критерии: `design/CASA-native-writer-criteria-v1.md`; world: `design/CASA-ADR-0054-agent-world-model-v1.md`.
 
 ---
 

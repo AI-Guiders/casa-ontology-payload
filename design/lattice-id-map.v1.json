@@ -67,20 +67,37 @@
       "layout-ru-jcuken",
       "punct-ru",
       "punct-en",
-      "schema-math"
-    ],
-    "planned_host_bootstrap": [
+      "schema-math",
       "morph-role-ru"
     ],
-    "agent_decides_canon": true
+    "planned_host_bootstrap": [
+      "morph-role-en"
+    ],
+    "agent_decides_canon": true,
+    "agent_owned_bootstrap": [
+      "agent-self-default",
+      "agent-wm-scratch",
+      "agent-intent-scratch"
+    ],
+    "agent_owned_bootstrap_doc": "design/agent-bootstrap-manifest.v1.json — WM + Self tier cold boot"
   },
   "planned_lattices": {
     "morph-role-ru": {
-      "semantic": "memory.morph.role",
+      "semantic": "memory.morph.role.ru",
       "stability": "bootstrap_canon",
       "meta_prefix": "lang.meta.morph",
       "slots": ["prefix", "root", "suffix", "stem", "ending"],
-      "status": "planned"
+      "status": "active",
+      "locale": "ru"
+    },
+    "morph-role-en": {
+      "semantic": "memory.morph.role.en",
+      "stability": "bootstrap_canon",
+      "meta_prefix": "lang.meta.morph",
+      "slots": ["prefix", "root", "suffix", "stem", "ending"],
+      "status": "planned",
+      "locale": "en",
+      "note": "parallel articulation slot; same lang.meta.morph.* hub ids"
     },
     "logic-laws": {
       "semantic": "memory.logic.law",

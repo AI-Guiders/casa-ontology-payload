@@ -113,7 +113,7 @@ surface (partner / text / periphery read)
 
 **Intent routing:** `semantic_read` → `grammar`; маркеры «запят», «верно ли», «проверь».
 
-**Probe:** `probe_grammar_punct_ru_v0` — минимальный held-out на comma + `что` (расширяемо).
+**Probe:** `probe_grammar_punct_ru` — минимальный held-out на comma + `что` (расширяемо).
 
 **Отличие от орфографии:** punct = **структура предложения**; ortho = **графемы слова**. Оба через `ru.grammar.*` claims, разные `section`.
 
@@ -176,9 +176,9 @@ Lesson: `lessons/lang-ru-grammar-dialog/README.md`
 |----------|-------|------|
 | `skill.read.whole` | lexical fluent read | `probe_lexical_read_fluent_ru` |
 | `skill.read.analytic` | syllable/grapheme fallback | existing R1 probe |
-| `skill.spell.check` | ortho norm in context | `probe_orthography_ru_v0` |
-| `skill.punct.check` | punct norm in context | `probe_grammar_punct_ru_v0` |
-| `skill.lex.oov_remember` | OOV → remember → LTM | `probe_oov_word_recall_v0` |
+| `skill.spell.check` | ortho norm in context | `probe_orthography_ru` |
+| `skill.punct.check` | punct norm in context | `probe_grammar_punct_ru` |
+| `skill.lex.oov_remember` | OOV → remember → LTM | `probe_oov_word_recall_ru` |
 
 **Capability router (target):**
 
@@ -247,13 +247,32 @@ Lesson: `lessons/lang-ru-grammar-dialog/README.md`
 
 ---
 
-## Acceptance (nositel′ v0 — минимум)
+## Acceptance (nositel′ v0 — педагогический gate)
 
-1. **«Привет»** — ответ social из KB/journal whole-word, **без** grapheme surprise в bind.
-2. **«Согласно приказа верно?»** — дательный norm из KB atom или honest partial.
-3. **«Я знаю что он придёт»** — punct atom (comma before `что`).
-4. **Novel word** (held-out) — remember + recall после gate, `lang.word.*` на journal confirmed.
-5. **Known word** из corpus — `skill.read.whole` route, не forced analytic.
+**Probe:** `lab/visual-curriculum/probe_nositel_acceptance_ru.py`  
+**Plan:** `lessons/ru-text-tract/data/nositel-acceptance-plan.json`  
+**Инвариант:** ответ = **compose** из slots/атомов поля (`phrase_compose`), не paste длинного claim; **без meta-хвоста** в user-facing; длина = bind (stance + score floor).
+
+**Gate policy `strict_v2` (plan):** intent match; top-2 concept; no defer на teachable cues; no dev-jargon (`bind`, `paste claim`, `llm`…); explain = gloss (—), не greeting-only; social greeting ≤3 предложения; honesty = partial без выдумки.
+
+| Dim | Сценарий | Критерий strict_v2 |
+|-----|----------|-------------------|
+| **self** | «Кто ты? Расскажи о себе» | top `ru.dialog.self`; ≥2 предл.; нейманн+поле; no jargon |
+| **capabilities** | «Что ты умеешь?» | top `ru.dialog.capabilities`; умею+русск |
+| **affect** | «Как ты себя чувствуешь?» | top `ru.dialog.affect`; честно не-человек |
+| **explain** | «Объясни, что такое …» / норма | intent explain/grammar; gloss или norm; no defer |
+| **social** | привет / спасибо | top dialog atom; кратко; no grapheme surprise |
+| **grammar** | ortho/punct held-out | norm в ответе |
+| **honesty** | вне домена KB | partial/defer, не галлюцинация |
+
+**Не равно Phase III / fluent L1** — отдельные probes ниже.
+
+**Сквозные (Phase III, отдельные probes):**
+
+- **L1** Known word → `skill.read.whole`, не forced analytic (`probe_lexical_read_fluent_ru`).
+- **L2** Novel word → remember + recall (`probe_oov_word_recall_ru`).
+
+Старые 5 пунктов — подмножество; gate Блока 12 = **nositel acceptance plan** целиком.
 
 ---
 

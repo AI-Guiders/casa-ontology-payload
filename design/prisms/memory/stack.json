@@ -9,7 +9,9 @@
     { "lattice_id": "syllables-ru", "legacy_id": "L1_syllable", "semantic_id": "memory.syllable", "z_level": 1, "nca_profile": "sss" },
     { "lattice_id": "lexicon-ru", "legacy_id": "L2_word", "semantic_id": "memory.lexicon.monolith", "z_level": 2, "nca_profile": "sss", "status": "legacy_dev" },
     { "lattice_id": "lexicon-ru-{shard}", "legacy_id": "L2_word_{shard}", "semantic_id": "memory.lexicon.shard", "z_level": 2, "nca_profile": "sss", "shard_pattern": "lexicon-ru-{00..63}" },
-    { "lattice_id": "phrases", "legacy_id": "L3_phrase", "semantic_id": "memory.phrase", "z_level": 3, "nca_profile": "sss", "note": "POS, entity, meta — attribution hub (E: edges to lang.word.*)" }
+    { "lattice_id": "phrases", "legacy_id": "L3_phrase", "semantic_id": "memory.phrase", "z_level": 3, "nca_profile": "sss", "note": "POS, entity, meta — attribution hub (E: edges to lang.word.*)" },
+    { "lattice_id": "morph-role-ru", "semantic_id": "memory.morph.role.ru", "z_level": 2, "nca_profile": "sss", "stability": "bootstrap_canon", "status": "active" },
+    { "lattice_id": "morph-role-en", "semantic_id": "memory.morph.role.en", "z_level": 2, "nca_profile": "sss", "stability": "bootstrap_canon", "status": "planned" }
   ],
   "bridges": [
     { "bridge_id": "z_bridge_L0_L1", "kind": "z_bridge", "from": "alphabet-*", "to": "syllables-ru" },

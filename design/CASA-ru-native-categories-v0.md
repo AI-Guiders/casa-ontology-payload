@@ -66,7 +66,7 @@ ADR-0049 фиксирует **четыре опоры письменного flu
 | **A2** | syllable | `memory.syllable` | syllable frames | **fallback** analytic read, не цель носителя |
 | **A3** | lexicon whole-word | `memory.lexicon` | `lang.word.*` | **PRIMARY** fluency (ADR-0049 L1, L2) |
 | **A4** | phrase / dialog | `memory.phrase` | `phrase.*`, `ru.dialog.*` | слоты, turn-taking (ADR-0033, 0045) |
-| **A5** | text / coherent **written** reply | phrase hubs + J0 | `ru.text.*`, articulate | связность **письменного** ответа (planned) |
+| **A5** | text / coherent **written** reply | phrase hubs + meaning graph | `ru.prop.*`, `ru.text.*` | изучение текста → факты → анализ → ответ (Block 11) |
 
 **Инвариант ADR-0049:** A2 не блокирует A4 (social «Привет» — whole-word / dialog, не grapheme surprise).
 
@@ -84,8 +84,9 @@ ADR-0049 фиксирует **четыре опоры письменного flu
 | **B8** | «Орфография» | Написание в контексте | `ru.grammar.spelling.*` | `skill.spell.check` | KB draft |
 | **B9** | «Пунктуация» | Знаки в **письменном** предложении | `ru.grammar.punct.*` | `skill.punct.check` | KB draft |
 | **B10** | «Развитие речи» | **Письменный** диалог: этикет, turn-taking | `ru.dialog.*` | dialogue articulate | bundle draft |
+| **B11** | «Понимание текста» | **Изучение связного текста:** факты, вывод, позиция | `ru.prop.*` | **`skill.read.comprehend`** | draft (ADR-0053) |
 
-**B10 v1 = written dialogue** (чат/IDE), не устная речь. **B3** — когда появится аудиотракт.
+**B10 v1 = written dialogue** (чат/IDE), не устная речь. **B11** — между B7 (phrase) и B10 (dialogue): не «пересказ», а **extract + analyze** на meaning graph. **B3** — когда появится аудиотракт.
 
 ---
 
@@ -93,9 +94,10 @@ ADR-0049 фиксирует **четыре опоры письменного flu
 
 ```text
 Partner text / JPEG word / KB sentence
-        → read (whole-word)     → понимание
-        → bind / remember       → OOV
-        → articulate (written)  → ответ, norm check, punct
+        → read (whole-word)     → слово на поле (B4)
+        → comprehend (B11)      → ru.prop.* : факты, inference, stance
+        → bind / remember       → OOV + journal fixation
+        → articulate (written)  → ответ из props, не paste
         → dialogue turn         → ru.dialog.* (text)
 ```
 
