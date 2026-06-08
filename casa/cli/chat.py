@@ -26,6 +26,7 @@ from casa.domain.subject_mode import apply_subject_profile, is_subject_mode, sub
 from casa.prisms.control.agent_sn_cen_tick import run_dialogue_partner_turn
 from casa.prisms.control.fpn_state import load_session, save_session
 from casa.prisms.shared.store_lock import store_session_lock
+from casa.prisms.memory.agent_memory_ops import agent_remember
 from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
 from casa.prisms.tick.orchestrator import LearningTickConfig
 
@@ -70,6 +71,7 @@ _HELP = "\n".join(
         "Команды:",
         "  /quit /exit /q   — выход (сохраняет опыт сессии)",
         "  /save            — сохранить опыт прямо сейчас",
+        "  /remember <текст>— научить/поправить (запись в журнал; всплывает по «на поле …»)",
         "  /turns [N]       — последние N реплик",
         "  /passage         — многострочный ввод (пассаж+вопрос), конец — пустая строка",
         "  /engage          — режим разговора (отвечать, не деферить)  [по умолчанию]",
@@ -184,6 +186,17 @@ def run_chat(
                     elif cmd == "save":
                         _save(store, state, wm)
                         dirty = False
+                        continue
+                    elif cmd in ("remember", "teach"):
+                        if not arg.strip():
+                            print("  · нужен текст: /remember <факт или правка>")
+                        else:
+                            agent_remember(
+                                store, state,
+                                {"kind": "observation", "text": arg.strip(), "tags": ["chat", "correction"]},
+                                scope="self",
+                            )
+                            print("  · записал в журнал (спроси «на поле …», чтобы вспомнил)")
                         continue
                     elif cmd == "engage":
                         state.setdefault("subject", {})["force_accept_external"] = True
