@@ -11,6 +11,7 @@ engages rather than deferring to its own practice; pass --agency to keep defer.
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 import time
 from pathlib import Path
@@ -76,6 +77,25 @@ _HELP = "\n".join(
         "  /help            — эта справка",
     ]
 )
+
+
+_SENT_SPLIT = re.compile(r"(?<=[.!?…])\s+")
+
+
+def _maybe_split_passage(line: str) -> str:
+    """A single-line 'statement(s) + final question?' is reformatted into
+    'passage\\n\\nquestion' so the reading-comprehension path fires — it keys on a
+    blank-line separator (split_passage_query / has_passage_context). Short greetings
+    like 'Привет. Как дела?' are left alone by the >=12-char passage guard."""
+    if "\n" in line:
+        return line
+    sents = [s.strip() for s in _SENT_SPLIT.split(line.strip()) if s.strip()]
+    if len(sents) >= 2 and sents[-1].rstrip().endswith("?"):
+        passage = " ".join(sents[:-1]).strip()
+        question = sents[-1].strip()
+        if len(passage) >= 12 and len(question) >= 4:
+            return f"{passage}\n\n{question}"
+    return line
 
 
 def _save(store: Path, state: dict, wm, *, quiet: bool = False) -> None:
@@ -183,9 +203,10 @@ def run_chat(
                         print(f"  неизвестная команда: /{cmd} (/help)")
                         continue
 
+                query = _maybe_split_passage(line)
                 t0 = time.perf_counter()
                 reply, report, wm, state = run_dialogue_partner_turn(
-                    store, user_query=line, wm=wm, state=state, config=cfg
+                    store, user_query=query, wm=wm, state=state, config=cfg
                 )
                 dt = (time.perf_counter() - t0) * 1000
                 dirty = True
