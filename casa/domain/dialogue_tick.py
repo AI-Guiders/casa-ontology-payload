@@ -223,6 +223,9 @@ def process_dialogue_on_tick(
             query=q,
             surprise_before=surprise_before,
             surprise_after=surprise_before,
+            # Fast/interactive callers (console chat) defer the heavy full-store
+            # checkpoint to a session boundary instead of paying it every turn.
+            persist=not bool(state.get("_defer_runtime_persist")),
         )
         from casa.prisms.memory.intent import intent_after_partner_turn
 
