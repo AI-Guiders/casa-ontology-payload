@@ -96,10 +96,13 @@ def run_dialogue_partner_turn(
     reply = str(dialogue.get("reply_text") or "").strip()
     if not reply and dialogue.get("outbound"):
         reply = str(dialogue["outbound"][-1].get("text") or "").strip()
-    if not reply:
-        last = dialogue.get("last_outbound") or {}
-        reply = str(last.get("text") or "").strip()
-    return reply or "(молчит)", report, wm_next, state_out
+    if reply:
+        return reply, report, wm_next, state_out
+    # Empty compose: stay honest. Do NOT echo a stale prior outbound — last_outbound
+    # is structurally stale because load_dialogue_turns drops empty-text turns.
+    if dialogue.get("soft_miss"):
+        return "(пока не могу собрать ответ)", report, wm_next, state_out
+    return "(молчит)", report, wm_next, state_out
 
 
 def main() -> None:
