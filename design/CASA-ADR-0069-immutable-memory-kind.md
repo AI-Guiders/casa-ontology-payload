@@ -2,7 +2,7 @@
 
 **Status:** accepted (design)  
 **Date:** 2026-06-07  
-**Related:** ADR-0068 (Memory Zone), ADR-0067 (zone prism wire), ADR-0062 (genetic / promote_canon), ADR-0065 (controlled mutations), ADR-0059 (innate basis), [prisms/memory/stack.json](prisms/memory/stack.json), [zone-prism-map.v1.json](zone-prism-map.v1.json)
+**Related:** ADR-0068 (Memory Zone), ADR-0070 (Forgetting policies), ADR-0067 (zone prism wire), ADR-0062 (genetic / promote_canon), ADR-0065 (controlled mutations), ADR-0059 (innate basis), [prisms/memory/stack.json](prisms/memory/stack.json), [zone-prism-map.v1.json](zone-prism-map.v1.json)
 
 ---
 

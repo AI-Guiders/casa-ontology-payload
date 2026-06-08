@@ -2,7 +2,7 @@
 
 **Status:** accepted (design); immutable kind in **ADR-0069** (postulates, promote, theory fork)  
 **Date:** 2026-06-07  
-**Related:** ADR-0069 (Immutable memory kind — canon lattices), ADR-0061 (Intelligence Zones), ADR-0067 (zone prism wire), ADR-0059 (innate basis), ADR-0010 (control stack), [multi-cylinder-memory.md](multi-cylinder-memory.md), [hippo-lattice-stack.md](hippo-lattice-stack.md), [prisms/memory/stack.json](prisms/memory/stack.json), [zone-prism-map.v1.json](zone-prism-map.v1.json), [agent-bootstrap-manifest.v1.json](agent-bootstrap-manifest.v1.json)
+**Related:** ADR-0069 (Immutable memory kind — canon lattices), ADR-0070 (Forgetting policies), ADR-0061 (Intelligence Zones), ADR-0067 (zone prism wire), ADR-0059 (innate basis), ADR-0010 (control stack), [multi-cylinder-memory.md](multi-cylinder-memory.md), [hippo-lattice-stack.md](hippo-lattice-stack.md), [prisms/memory/stack.json](prisms/memory/stack.json), [zone-prism-map.v1.json](zone-prism-map.v1.json), [agent-bootstrap-manifest.v1.json](agent-bootstrap-manifest.v1.json)
 
 ---
 
@@ -58,7 +58,7 @@ intelligence_zones
 | **implicit** | priming | bind/WM decay | edge scores | нет |
 | **immutable** | postulates / conventions | принятые посылки; hot read-only; **promote** adds | alphabet-* @ bootstrap; earned TBD | да (read) |
 
-**Sleep:** hippo → **explicit** semantic (mutable only). **Immutable** — принятые postulates (не «истина навечно»): bootstrap @ T=0, earned @ `promote_canon`, смена аксиом = **theory fork** — [CASA-ADR-0069-immutable-memory-kind.md](CASA-ADR-0069-immutable-memory-kind.md).
+**Sleep:** hippo → **explicit** semantic (mutable only); затем **три скорости забывания** (priming @ tick, episodic fade @ metabolic, NCA erosion @ sleep) — [CASA-ADR-0070-forgetting-policies.md](CASA-ADR-0070-forgetting-policies.md). **Immutable** — принятые postulates: bootstrap @ T=0, earned @ `promote_canon`, theory fork — [CASA-ADR-0069-immutable-memory-kind.md](CASA-ADR-0069-immutable-memory-kind.md).
 
 ### 3. Prisms → Memory Zone (ownership)
 
@@ -212,6 +212,7 @@ prism_agent
 → memory.explicit.episodic.append?          # partner/subject turn
 → … metabolic.end …
 → (sleep?) memory.consolidate()             # hippo → LTM + procedural strengthen
+→ (sleep?) memory.forget()                  # trim episodic, decay semantic — 0070
 → (ceremony?) promote_canon()               # explicit/sandbox → immutable postulate
 ```
 
@@ -284,6 +285,7 @@ REPL **минимум P12b:** `memory.resolve_scopes` before bind; math tract �
 
 | **P12g** | Sleep merge skip immutable; promote_canon → earned postulates |
 | **P12h** | Theory fork metadata; active_theory_id in resolve |
+| **P15** | Forgetting policies — ADR-0070; post-sleep trim/decay |
 
 ### 11. Tests (acceptance)
 
@@ -333,6 +335,7 @@ REPL **минимум P12b:** `memory.resolve_scopes` before bind; math tract �
 - [CASA-ADR-0065-controlled-mutations.md](CASA-ADR-0065-controlled-mutations.md)
 - [CASA-ADR-0067-zone-prism-wire-migration.md](CASA-ADR-0067-zone-prism-wire-migration.md)
 - [CASA-ADR-0069-immutable-memory-kind.md](CASA-ADR-0069-immutable-memory-kind.md)
+- [CASA-ADR-0070-forgetting-policies.md](CASA-ADR-0070-forgetting-policies.md)
 - [multi-cylinder-memory.md](multi-cylinder-memory.md)
 - [hippo-lattice-stack.md](hippo-lattice-stack.md)
 - [zone-prism-map.v1.json](zone-prism-map.v1.json)
