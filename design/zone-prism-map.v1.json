@@ -1,0 +1,248 @@
+{
+  "schema_version": 2,
+  "kind": "zone_prism_map",
+  "doc": "design/CASA-ADR-0067-zone-prism-wire-migration.md + CASA-ADR-0068-memory-zone.md",
+  "note": "Memory Zone owns LTM/hippo prisms. Intelligence zones hold domain_scope (read clients), not prism_memory ownership.",
+  "memory_zone": {
+    "zone_id": "memory",
+    "adr": "0068",
+    "owner_prisms": ["prism_memory", "prism_hippo"],
+    "owner_agent_blocks": ["wm_prism", "memory_zone"],
+    "explicit": {
+      "episodic": {
+        "prisms": ["prism_hippo"],
+        "stores": ["dialogue_ring", "journal"],
+        "lattice_patterns": [
+          "H0_*",
+          "H1_*",
+          "H2_*",
+          "H3_*",
+          "episodic-*"
+        ],
+        "hippo_stack_doc": "design/hippo-lattice-stack.json"
+      },
+      "semantic": {
+        "prisms": ["prism_memory"],
+        "agent_blocks": ["wm_prism"],
+        "agent_lattice_patterns": ["agent-wm-*"],
+        "ltm_stack_doc": "design/prisms/memory/stack.json",
+        "domains": {
+          "lang": {
+            "lattice_patterns": [
+              "alphabet-*",
+              "syllables-*",
+              "lexicon-*",
+              "words-*",
+              "L2_word*",
+              "phrases",
+              "phrases-*",
+              "L3_phrase*",
+              "morph-role-*"
+            ],
+            "client_zones": ["linguistic", "social"]
+          },
+          "math": {
+            "lattice_ids": [
+              "schema-math",
+              "compose-math",
+              "cardinal-math",
+              "logic-laws",
+              "math-axiom",
+              "math-calculus-rules"
+            ],
+            "lattice_patterns": ["math-*"],
+            "client_zones": ["logical"]
+          },
+          "vis": {
+            "lattice_patterns": ["vis-*", "layout-*", "scene-*", "V1_*"],
+            "client_zones": ["spatial"],
+            "status": "planned"
+          }
+        }
+      }
+    },
+    "implicit": {
+      "procedural": {
+        "agent_blocks": ["intent_prism"],
+        "agent_lattice_patterns": ["agent-intent-*"],
+        "registry": ["nca_train_registry.json", "nca/*/model.pt"],
+        "client_zones": ["executive", "linguistic", "logical"]
+      },
+      "priming": {
+        "sources": ["wm_prism.edge_scores", "bind_top_k_decay"],
+        "decay_halflife_ticks": 6
+      }
+    },
+    "consolidate": {
+      "sleep_hook": "run_sleep",
+      "hippo_to_memory_bridges": "h_bridge_*",
+      "doc": "design/multi-cylinder-memory.md"
+    },
+    "mutability": {
+      "immutable_lattice_patterns": ["alphabet-*", "syllables-ru", "morph-role-*"],
+      "immutable_lattice_ids": [],
+      "default_episodic": "mutable",
+      "default_implicit": "mutable",
+      "write_gate": "genetic.promote_canon"
+    }
+  },
+  "intelligence_zones": {
+    "linguistic": {
+      "role": "domain_client",
+      "memory_access": {
+        "explicit": {
+          "semantic_domains": ["lang"],
+          "episodic": false
+        },
+        "implicit": {
+          "procedural": true,
+          "priming": true
+        }
+      },
+      "agent_blocks": ["linguistic_zone"],
+      "agent_lattice_patterns": ["agent-linguistic-*"],
+      "tract_allowlist": ["social", "discuss", "grammar", "explain", "journal", "recall", "rewrite", "general"],
+      "read_priority": 1.0
+    },
+    "logical": {
+      "role": "domain_client",
+      "memory_access": {
+        "explicit": {
+          "semantic_domains": ["math"],
+          "episodic": false
+        },
+        "implicit": {
+          "procedural": true,
+          "priming": true
+        }
+      },
+      "agent_blocks": ["logical_zone"],
+      "agent_lattice_patterns": ["agent-logical-*"],
+      "tract_allowlist": ["math", "query"],
+      "read_priority": 1.0
+    },
+    "executive": {
+      "role": "orchestrator",
+      "memory_access": {
+        "explicit": {
+          "semantic_domains": ["lang", "math", "vis"],
+          "episodic": true
+        },
+        "implicit": {
+          "procedural": true,
+          "priming": true
+        },
+        "budget_scale": 0.85,
+        "note": "Only zone with default cross-domain union — bounded"
+      },
+      "prisms": ["prism_control"],
+      "lattice_patterns": [
+        "control-*",
+        "lattice_dmn",
+        "lattice_sn",
+        "lattice_fpn*",
+        "lattice_cen",
+        "lattice_predict",
+        "lattice_dan",
+        "lattice_value"
+      ],
+      "agent_blocks": ["intent_prism", "executive_zone"],
+      "agent_lattice_patterns": ["agent-exec-*", "agent-intent-*"],
+      "tract_allowlist": ["*"]
+    },
+    "emotional": {
+      "role": "intelligence",
+      "memory_access": {
+        "explicit": {
+          "episodic_tags_only": true,
+          "note": "dialog.repair_pending — tags on episodic, not hippo owner"
+        }
+      },
+      "agent_blocks": ["emotional_zone"],
+      "agent_lattice_patterns": ["agent-limbic-*", "agent-affect-*"]
+    },
+    "social": {
+      "role": "intelligence",
+      "memory_access": {
+        "explicit": {
+          "semantic_domains": ["lang"],
+          "episodic": true
+        }
+      },
+      "agent_blocks": ["social_zone"],
+      "agent_lattice_patterns": ["agent-social-*"],
+      "tract_allowlist": ["social", "discuss"]
+    },
+    "spatial": {
+      "role": "domain_client",
+      "memory_access": {
+        "explicit": {
+          "semantic_domains": ["vis"]
+        }
+      },
+      "prisms": ["prism_visual"],
+      "agent_blocks": ["spatial_zone"],
+      "agent_lattice_patterns": ["agent-spatial-*"],
+      "status": "planned"
+    },
+    "perceptual": {
+      "role": "substrate_gate",
+      "agent_blocks": ["perceptual_zone"],
+      "agent_lattice_patterns": ["agent-percept-*"],
+      "lattice_patterns": ["lattice_thal_*"]
+    },
+    "metabolic": {
+      "role": "substrate",
+      "agent_blocks": ["metabolic_zone"],
+      "agent_lattice_patterns": ["agent-metabolic-*"]
+    },
+    "neuromodulator": {
+      "role": "substrate",
+      "agent_blocks": ["neuromodulator_zone"],
+      "agent_lattice_patterns": ["agent-neuromod-*"]
+    },
+    "genetic": {
+      "role": "substrate",
+      "agent_blocks": ["genetic_zone"]
+    },
+    "character": {
+      "role": "intelligence",
+      "agent_blocks": ["character_zone"],
+      "agent_lattice_patterns": ["agent-character-*"]
+    }
+  },
+  "cross_zone_bridges": [
+    {
+      "id": "logical_verbalize_lang",
+      "from_client": "logical",
+      "to_client": "linguistic",
+      "via": "compose:math_in_dialogue",
+      "memory_path": "explicit.semantic: math → lang",
+      "when": "tract=math and reply_verbalize=true",
+      "budget_scale": 0.35
+    },
+    {
+      "id": "exec_dmn_semantic_digest",
+      "from_zone": "executive",
+      "to_domain": "lang",
+      "via": "control_bridge:P1",
+      "when": "dmn_digest",
+      "budget_scale": 0.25
+    },
+    {
+      "id": "recall_episodic_explicit",
+      "from_zone": "executive",
+      "to_memory": "explicit.episodic",
+      "via": "tract=recall",
+      "when": "recall_intent",
+      "budget_scale": 0.5
+    },
+    {
+      "id": "spatial_linguistic_deictic",
+      "from_client": "spatial",
+      "to_client": "linguistic",
+      "via": "wm_concept_hints",
+      "status": "planned"
+    }
+  ]
+}

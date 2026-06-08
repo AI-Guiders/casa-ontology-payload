@@ -248,13 +248,85 @@
       "concept_prefix_core": "agent.linguistic.",
       "concept_prefix_sandbox": "agent.linguistic.lab.",
       "initial_discourse_confidence": 0.5,
-      "note": "Formal WM+discourse path — tract/compose bias"
+      "note": "Formal WM+discourse path — tract/compose bias; LTM via memory_zone domain=lang (0068)"
+    },
+    "memory_zone": {
+      "enabled": false,
+      "adr": "0068",
+      "spawn_on_bootstrap": false,
+      "core_lattice_id": "agent-memory-core",
+      "sandbox_lattice_id": "agent-memory-sandbox",
+      "concept_prefix_core": "agent.memory.",
+      "concept_prefix_sandbox": "agent.memory.lab.",
+      "explicit": {
+        "episodic": {
+          "hippo_prism": "prism_hippo",
+          "dialogue": true,
+          "journal": true
+        },
+        "semantic": {
+          "ltm_prism": "prism_memory",
+          "wm_prism": "wm_prism"
+        }
+      },
+      "implicit": {
+        "procedural": {
+          "intent_prism": "intent_prism",
+          "nca_registry": true
+        },
+        "priming": {
+          "decay_halflife_ticks": 6
+        }
+      },
+      "mutability": {
+        "immutable_lattice_patterns": ["alphabet-*", "syllables-ru", "morph-role-*"],
+        "immutable_lattice_ids": [],
+        "write_gate": "genetic.promote_canon",
+        "note": "Immutable = bootstrap canon; lexicon shards stay mutable"
+      },
+      "note": "Owns prism_memory + prism_hippo; enable after P12a (ADR-0068)"
+    },
+    "neuromodulator_zone": {
+      "enabled": true,
+      "adr": "0066",
+      "spawn_on_bootstrap": true,
+      "core_lattice_id": "agent-neuromod-core",
+      "sandbox_lattice_id": "agent-neuromod-sandbox",
+      "concept_prefix_core": "agent.neuromod.",
+      "concept_prefix_sandbox": "agent.neuromod.lab.",
+      "initial_core": {
+        "arousal_drive": 0.08,
+        "threat_tone": 0.12,
+        "approach": 0.45,
+        "regulatory_load": 0.05
+      },
+      "policy": {
+        "decay_halflife_ticks": {
+          "arousal_drive": 4,
+          "threat_tone": 12,
+          "approach": 8,
+          "regulatory_load": 3
+        },
+        "panic_arousal_threshold": 0.65,
+        "panic_threat_threshold": 0.5
+      },
+      "note": "Subcortical gain bus — interoception + scaled limbic (ADR-0066 P10)"
     }
   },
   "host_canon": {
     "morph_role_by_locale": true
   },
   "planned": {
+    "memory_zone": {
+      "enabled": false,
+      "adr": "0068",
+      "note": "Live config in agent_prisms.memory_zone — enable after P12 code"
+    },
+    "neuromodulator_zone": {
+      "enabled": false,
+      "adr": "0066",
+      "note": "Live config in agent_prisms.neuromodulator_zone (P10 enabled)"
+    },
     "world_model": {
       "enabled": false,
       "adr": "0054",

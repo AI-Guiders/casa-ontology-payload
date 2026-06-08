@@ -195,9 +195,9 @@ Tests: `tests/test_affect_prism_dialogue.py` — event deltas, repair scenario, 
 | **Situation curriculum** | lived experience | Design (0057) | isolated block green ≠ conversation |
 | **Partner model** | mentalizing | Gap | не отличает meta-repair от self-intro |
 | **Motor compose** | моторная речь | ADR-0005 roadmap | write modality отдельно от dialog |
-| **Interoception / insula** | body state | Gap | нет «перегруз / устал» кроме overload defer |
+| **Interoception / insula** | body state | Design → **0066** neuromodulator + 0064 metabolic | перегруз / panic без gain dynamics |
 
-**Приоритет для von-neumann REPL:** affect (0058) → situation curriculum → predict→P8→affect → character EMA → DAN/tract balance.
+**Приоритет для von-neumann REPL:** affect (0058/0060) → **neuromodulator dynamics (0066)** → situation curriculum → predict→P8→neuromod→affect → character EMA → DAN/tract balance.
 
 ---
 

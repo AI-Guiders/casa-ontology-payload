@@ -96,4 +96,5 @@ Same as ADR-0058: `self_failure`, `partner_repair_invite`, `self_repair_success`
 
 - [CASA-ADR-0058-limbic-affect-prism.md](CASA-ADR-0058-limbic-affect-prism.md)
 - [CASA-ADR-0059-innate-organ-basis.md](CASA-ADR-0059-innate-organ-basis.md)
+- [CASA-ADR-0066-neuromodulator-zone.md](CASA-ADR-0066-neuromodulator-zone.md)
 - [CASA-ADR-0014-agent-prism.md](CASA-ADR-0014-agent-prism.md)

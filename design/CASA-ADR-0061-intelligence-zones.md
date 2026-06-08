@@ -38,7 +38,7 @@ Organ catalog **closed** at T=0 (no new intelligence *types* at runtime). Нов
 |------|------------------------|-------------|---------|--------|
 | **executive** | общий / исполнительный | thalamus, SN, FPN, CEN, predict, DAN, value (P1–P9) | agent-exec-scratch (planned) | design + lab; **migrate** control stack |
 | **emotional** | эмоциональный / intrapersonal | limbic axes, episodic | `agent-affect-sandbox` | **0060 implemented** |
-| **linguistic** | лингвистический | memory prisms, discourse compose | WM scratch, agent phrase lattices | content-heavy today |
+| **linguistic** | лингвистический | discourse compose, tract bias | agent-linguistic-* | **uses** memory `domain=lang` (0068) |
 | **logical** | логико-матhematical | math tract, schema-math bootstrap | math palochki / agent-math-* | tract OK; wire + situations |
 | **social** | межличностный | dialogue ring, social tract, partner model | agent-social-sandbox (planned) | **gap** — repair, mentalizing |
 | **spatial** | пространственный | prism_visual, control_vis | vis scratch (roadmap) | design only |
@@ -46,15 +46,18 @@ Organ catalog **closed** at T=0 (no new intelligence *types* at runtime). Нов
 | **genetic** | species / meta-instructions | genome hash, promote_canon, zone proportions | **none** (allelic per **0065**) | **0062** design |
 | **perceptual** | sensory gate / thalamic input | VK, text stream, vis quantize | `agent-percept-sandbox` | **0063** design |
 | **metabolic** | ATP / fatigue / sleep pressure | tick budget, forced sleep | `agent-metabolic-sandbox` | **0064** design |
-| **linguistic** | лингвистический (explicit, planned) | WM, discourse, lexicon path | phrase lattices | implicit today; zone formalize post-P7 |
+| **neuromodulator** | subcortical gain bus / interoceptive dynamics | arousal_drive, threat_tone, approach, regulatory_load | `agent-neuromod-sandbox` | **0066** design |
+| **memory** | хранение + consolidate (не intelligence type) | explicit episodic/semantic + implicit procedural/priming | `agent-memory-sandbox` | **0068** design |
 
 **g (general):** не отдельная zone — **executive** + predict + tract competition + value.
 
-**Tier −1 (substrate):** **genetic** — не intelligence type; **read-only** meta for all zones (0062).
+**Tier −1 (substrate):** **genetic** — read-only meta; **memory** — LTM/hippo infrastructure (0068).
 
 **Tier 0 (innate intelligence):** emotional … character + perceptual + metabolic.
 
 **Tier 1 (development):** sandbox → promote inside zones; **не** genome mutation.
+
+**Memory vs linguistic (0068):** linguistic **uses** lexicon via `domain_scope: lang`; **не владеет** `prism_memory`.
 
 ### 3. Bootstrap & migration (не с нуля)
 
@@ -98,13 +101,16 @@ Re-bootstrap **only** for empty lab stores; production von-neumann → **migrate
 | **P7** | perceptual | sensory gate before semantic_read; REPL text path |
 | **P8** | metabolic | ATP tick budget; sleep_pressure; runtime hang guard |
 | **P9** | linguistic | formal zone (split from implicit WM/discourse) |
+| **P10** | neuromodulator | interoception + gain bus; emotional deltas scaled; panic/recovery probes |
+| **P11** | zone prism wire | migrate + domain routing — ADR-0067 |
+| **P12** | memory zone | explicit/implicit; owns LTM/hippo — ADR-0068 |
 
 ### 5. Tick order (target)
 
 ```text
 genetic.read (immutable constants)
 → RAW → perceptual_gate.read
-→ thalamus → predict → zones.read (emotional, executive, metabolic.begin, …)
+→ thalamus → predict → interoception → neuromodulator → zones.read (emotional, executive, metabolic.begin, …)
 → DMN → SN → FPN → DAN → WM/intent
 → tract → agency → metabolic.allow? → zone.apply → compose
 → zones.update → metabolic.end → (forced_sleep?) → persist
@@ -140,5 +146,8 @@ genetic.read (immutable constants)
 - [CASA-ADR-0063-perceptual-zone.md](CASA-ADR-0063-perceptual-zone.md)
 - [CASA-ADR-0064-metabolic-zone.md](CASA-ADR-0064-metabolic-zone.md)
 - [CASA-ADR-0065-controlled-mutations.md](CASA-ADR-0065-controlled-mutations.md)
+- [CASA-ADR-0066-neuromodulator-zone.md](CASA-ADR-0066-neuromodulator-zone.md)
+- [CASA-ADR-0067-zone-prism-wire-migration.md](CASA-ADR-0067-zone-prism-wire-migration.md)
+- [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md)
 - [CASA-ADR-0059-innate-organ-basis.md](CASA-ADR-0059-innate-organ-basis.md)
 - [CASA-ADR-0057-dialogue-situations-character.md](CASA-ADR-0057-dialogue-situations-character.md)

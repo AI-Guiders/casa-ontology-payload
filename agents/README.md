@@ -43,7 +43,7 @@ Code: `STORE_AGENT_DEFAULT`, `default_agent_store()` in `casa/prisms/shared/stor
 | Код жизни | `casa/prisms/memory/agent_life.py` | live loop, life tick |
 | Idle drive | `agent_curiosity.py` | «а что будет, если?» когда нет внешнего cue |
 
-**Не жизнь агента:** `MEMORY.md` (карта для человека), `lessons/` (учебник), lab CLI.
+**Не жизнь агента:** `MEMORY.md` / `memory_map.*` (карта для человека и скриптов), `lessons/` (учебник), lab CLI.
 
 ## Tree (von-neumann)
 
@@ -55,7 +55,8 @@ agents/von-neumann/
 ├── journal/              ← агент пишет сам
 ├── agent/                ← agent prism
 ├── bundles/              ← audit snapshot после ingest
-└── memory_manifest.json
+├── MEMORY.md             ← карта памяти (human; regen: memory_map --write)
+└── memory_map.summary.json  ← краткий JSON для скриптов (optional)
 ```
 
 ## Play locally (onboarding)
