@@ -18,6 +18,9 @@ agents/*/nca_train_registry.json
 agents/*/body/completions.jsonl
 agents/*/body/completions.archive.jsonl
 agents/*/MEMORY.md
+agents/*/memory_map.summary.json
+agents/*/memory_map.inventory.json
+agents/*/memory_manifest.json
 
 # Lab snapshot shards and fat stores
 lab/snapshots/**/_parallel_shards/
