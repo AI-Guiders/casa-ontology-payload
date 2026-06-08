@@ -2,7 +2,7 @@
 
 **Status:** accepted (design v1)  
 **Date:** 2026-06-07  
-**Related:** ADR-0065 (controlled mutations), ADR-0059 (innate basis), ADR-0061 (Intelligence Zones umbrella), ADR-0014 (agent-owned lattices), ADR-0010 (DAN/surprise constants), [agent-bootstrap-manifest.v1.json](agent-bootstrap-manifest.v1.json), [agent-existence-north-star.md](agent-existence-north-star.md)
+**Related:** ADR-0065 (controlled mutations), ADR-0059 (innate basis), ADR-0061 (Intelligence Zones), ADR-0068/0070 (Memory / forgetting), ADR-0064 (Metabolic), ADR-0066 (Neuromodulator), ADR-0058 (Affect), ADR-0014 (agent-owned lattices), ADR-0010 (control stack), [agent-bootstrap-manifest.v1.json](agent-bootstrap-manifest.v1.json), [agent-existence-north-star.md](agent-existence-north-star.md)
 
 ---
 
@@ -16,6 +16,8 @@
 - `agent_promote_canon_lattice` и promote-θ — **локальные костыли**, не **родовой алгоритм**.
 
 **Аналог:** человеческие гены не кодируют русский язык; они кодируют **мета-алгоритмы сборки** и **границы пластичности**.
+
+**Уточнение (оператор, 2026-06-08):** геном имеет смысл только если задаёт **приоры для всех систем** — не только forgetting (0070). Иначе genetic fork / размножение — копия store без **разнообразия голосов** @ T=0. Сила вида — в расхождении особей от рождения (склонности, чувствительности, редкие уязвимости), при **общем** species bootstrap (alphabet, morph — Memory immutable).
 
 ---
 
@@ -46,25 +48,72 @@ prism_agent
     ├── signal_decay        theta_decay defaults per WM/intent/affect
     ├── surprise_gains      P8 → DAN / affect / metabolic coupling
     ├── promote_canon       алгоритм + θ floors (sandbox → core, lattice → bundle)
+    ├── demote_canon        симметрия promote (agent canon) — 0070
+    ├── forgetting_genotype профиль памяти @ birth — 0070
+    ├── metabolic_policy    bounds ATP/fatigue/sleep — 0064
+    ├── neuromodulator_gains regulatory / dopamine coupling — 0066
+    ├── affect_baseline     valence/arousal/security @ T=0 + sensitivity — 0058
+    ├── control_gains       DAN, predict, value replay — 0010
+    ├── memory_routing      default active_theory, domain read bias — 0068/0069
     ├── mutation_policy     experiential + allelic bounds (0065)
     └── fork_policy         inherit_verbatim | mutate_alleles (0065)
 ```
 
 **v0 storage:** canonical block в `agent/genome.v1.json` + hash в `prism_agent.genetic_zone`; **не** в thin field_state overlay (как `zone_state` — Self tier).
 
-### 3. Что Genetic Zone **задаёт** (normative)
+### 3. Genome → все системы (phenotype priors @ T=0)
 
-| Parameter group | Consumers | Example |
+Genetic Zone — **единый источник рождественных констант** для substrate и intelligence zones. Опыт меняет **state** зон; геном меняется только **fork / allelic mutation** (0065).
+
+```text
+genome.v1.json
+    │
+    ├── intelligence_zones.*     zone_proportions, ema_limits, tract ratio caps
+    ├── memory.*                 forgetting_genotype, promote/demote θ, routing bias
+    ├── metabolic.*              sleep_threshold, cost_*, recovery_*
+    ├── neuromodulator.*         compose budget scale bounds, regulatory coupling
+    ├── affect.*                 baseline axes, surprise→limbic gains
+    ├── executive / control.*      surprise_gains → DAN, value weights
+    ├── wm / intent.*              signal_decay floors (0055, 0057)
+    └── perceptual / substrate.*  (roadmap) quantize habit, IO gain
+```
+
+| Parameter group | Consumers (ADR) | Что задаёт @ birth |
+|-----------------|-----------------|-------------------|
+| `zone_proportions` | 0061 tract competition | math:social, linguistic bias |
+| `ema_limits` | character, temperament | скорость смены характера |
+| `forgetting_genotype` | **0070** memory | α, β, ε bases; cement gain; canon_susceptibility (редко) |
+| `metabolic_policy` | **0064** | усталость, sleep pressure, ATP economy |
+| `neuromodulator_gains` | **0066** | regulatory effort, dopamine cement coupling |
+| `affect_baseline` | **0058 / 0060** | стартовые оси; чувствительность к surprise/repair |
+| `surprise_gains` / `control_gains` | **0010** executive | DAN boost cap, fatigue→metabolic |
+| `signal_decay` | **0055** WM, intent | θ_decay floors, prune cadence |
+| `promote_canon` / `demote_canon` | **0069 / 0070** | пороги ceremony, verify gates |
+| `memory_routing` | **0068 / 0069** | default theories, domain read weights |
+
+**Invariant:** tunable default зоны **читается** через `genetic_constant(path)`; дубли в Python/manifest без genome — **anti-pattern** (кроме species template @ first seal).
+
+**Fork diversity (0065):** `mutate_alleles` шагает по **нескольким группам** (не только forgetting) → новый `genome_hash`, тот же `species_id`, **другой голос** с tick 0 при том же bootstrap immutable.
+
+**Teaching agent (von-neumann):** standard allele — `canon_susceptibility ≈ 0`; разнообразие в **профиле систем**, не в сломанном alphabet @ curriculum.
+
+### 4. Что Genetic Zone **задаёт** (normative, v0 wired)
+
+| Parameter group | Status v0 | Example |
 |-----------------|-----------|---------|
-| `zone_proportions` | tract competition, intelligence_tract_boosts scale | math:social prior ratio cap |
-| `ema_limits` | character_zone, future temperament | `character.ema_alpha_max = 0.08` |
-| `signal_decay` | WM, intent, affect sandbox TTL | `wm.theta_decay` floor |
-| `surprise_gains` | executive, emotional, **metabolic** (0064) | surprise → fatigue increment |
-| `promote_canon` | agent_promote, zone promote | θ, verify gate, bundle tier rules |
+| `zone_proportions` | manifest | math:social prior ratio cap |
+| `ema_limits` | manifest | `character.ema_alpha_max = 0.08` |
+| `signal_decay` | partial | `wm.theta_decay` floor |
+| `surprise_gains` | **wired** metabolic | surprise → fatigue increment |
+| `promote_canon` | design | θ, verify gate |
+| `forgetting_genotype` | **0070 draft** | episodic retention, cement gain |
+| `metabolic_policy` | partial 0064 | `sleep_threshold`, costs |
+| `affect_baseline` | roadmap 0058 | neutral @ T=0 + gains |
+| `neuromodulator_gains` | roadmap 0066 | compose budget coupling |
 
 **Invariant:** runtime hooks **read** genetic constants; они **не** подменяются episodic state.
 
-### 4. Seal & fork
+### 5. Seal & fork
 
 **Cold boot:**
 1. Load `genetic_spec` from manifest `agent_prisms.genetic_zone`.
@@ -78,7 +127,7 @@ prism_agent
 
 **AiNet delta exchange:** experiential layers (WM edges, sandbox, bundles) — **mutable**; genetic hash mismatch → **reject merge** on meta-instructions.
 
-### 5. Bootstrap manifest (planned → P6)
+### 6. Bootstrap manifest (planned → P6)
 
 ```json
 "genetic_zone": {
@@ -99,7 +148,7 @@ prism_agent
 }
 ```
 
-### 6. API (target: `casa/prisms/genetic/`)
+### 7. API (target: `casa/prisms/genetic/`)
 
 | Function | Role |
 |----------|------|
@@ -109,15 +158,16 @@ prism_agent
 | `verify_genome_fork` | parent/child hash policy |
 | `species_passport` | export for AiNet |
 
-### 7. Rollout
+### 8. Rollout
 
 | Phase | Action |
 |-------|--------|
 | **P6a** | ADR + `genome.v1.json` schema + manifest block |
 | **P6b** | seal on bootstrap; persist Self tier |
-| **P6c** | wire character/WM/surprise readers to `genetic_constant` |
+| **P6c** | wire **all** zone defaults → `genetic_constant` (inventory per §3) |
 | **P6d** | fork + hash verify CLI |
-| **P6e–P7** | mutation policy + allele fork + sleep NCA drift — **ADR-0065** |
+| **P6e** | `mutate_alleles` multi-group (memory, metabolic, affect, proportions) — **0065** |
+| **P6f** | genome passport in REPL / MEMORY.md (species_id, hash, allele summary) |
 
 ---
 
@@ -129,6 +179,9 @@ prism_agent
 | Genetic = soul doc prose | canonical JSON + hash |
 | Новый intelligence type at runtime | closed catalog; genome lists **allowed zone ids** |
 | Дублировать constants в каждой zone | single genetic source |
+| Genom только для forgetting | genome → **все** системы (§3) |
+| Fork без allelic diversity | mutate по нескольким группам → новый голос @ T=0 |
+| Одинаковый genotype у всех детей | `mutate_alleles` bounded step per group |
 
 ---
 
@@ -138,9 +191,12 @@ prism_agent
 - ADR-0064 metabolic fatigue increments **read** `surprise_gains` from genome.
 - Migration: existing von-neumann → **seal genome v1** from current manifest defaults (additive, idempotent).
 - ADR-0065 — нормативная модель мутаций; 0062 остаётся паспортом и seal API.
+- ADR-0070 `forgetting_genotype` — **одна ветка** genome→memory; не изолировать от §3.
 
 ## Links
 
+- [CASA-ADR-0070-forgetting-policies.md](CASA-ADR-0070-forgetting-policies.md)
+- [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md)
 - [CASA-ADR-0065-controlled-mutations.md](CASA-ADR-0065-controlled-mutations.md)
 - [CASA-ADR-0061-intelligence-zones.md](CASA-ADR-0061-intelligence-zones.md)
 - [CASA-ADR-0059-innate-organ-basis.md](CASA-ADR-0059-innate-organ-basis.md)
