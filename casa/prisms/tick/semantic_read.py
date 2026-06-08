@@ -47,6 +47,8 @@ _SOCIAL_SURFACE_TO_CID: tuple[tuple[str, str], ...] = (
     ("кто ты", "ru.dialog.self"),
     ("ты кто", "ru.dialog.self"),
     ("как зовут", "ru.dialog.self"),
+    ("зовут", "ru.dialog.self"),
+    ("занима", "ru.dialog.self"),
     ("о себе", "ru.dialog.self"),
     ("представ", "ru.dialog.self"),
     ("как тебе здесь", "ru.dialog.affect"),

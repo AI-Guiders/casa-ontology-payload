@@ -27,6 +27,15 @@ _NARRATIVE_DIALOG = (
     "ru.dialog.clarify.",
     "ru.dialog.honest.",
 )
+# Content-narrative families whose verbatim paste must be relevance-gated (routed by
+# hint or token overlap). Honest/clarify blocks are graceful "I don't know / let me
+# clarify" responses and are intentionally NOT gated.
+_GATED_NARRATIVE = (
+    "ru.dialog.self",
+    "ru.dialog.capabilities",
+    "ru.dialog.affect",
+    "ru.dialog.explain",
+)
 _BRIEF_DIALOG_PREFIXES = (
     "ru.dialog.greeting",
     "ru.dialog.thanks",
@@ -171,6 +180,29 @@ class DialogBlockRealizer:
         out.extend(BlockSlots.extra_clauses(slots))
         return out
 
+    @staticmethod
+    def _narrative_relevant(
+        cid: str, clauses: list[ClauseSketch], ctx: DiscourseContext
+    ) -> bool:
+        """Narrative dialog paste is on-topic: routed by hint, self-cue, or token overlap."""
+        for h in ctx.concept_hints or []:
+            if cid == h or cid.startswith(f"{h}.") or str(h).startswith(cid):
+                return True
+        if cid.startswith("ru.dialog.self"):
+            from casa.domain.dialogue_bind.partner_scoring import query_implies_self
+
+            if query_implies_self(ctx.query):
+                return True
+        qtokens = {t for t in (ctx.tokens or set()) if len(t) > 3}
+        if not qtokens:
+            return False
+        for c in clauses:
+            for piece in c.pieces:
+                for w in re.findall(r"\w+", str(piece).lower(), flags=re.UNICODE):
+                    if len(w) > 3 and w in qtokens:
+                        return True
+        return False
+
     def _dialog_clauses(
         self,
         block: dict[str, Any],
@@ -186,6 +218,13 @@ class DialogBlockRealizer:
         if any(cid.startswith(p) for p in _NARRATIVE_DIALOG):
             narrative = self.narrative_clauses(block, ctx.query)
             if narrative:
+                # Content-narrative blocks paste verbatim only when routed (hint) or they
+                # share a content token with the turn — otherwise stay silent rather than
+                # paste off-topic. Honest/clarify blocks always pass (graceful fallback).
+                if cid.startswith(_GATED_NARRATIVE) and not self._narrative_relevant(
+                    cid, narrative, ctx
+                ):
+                    return []
                 return narrative
 
         slots = BlockSlots.read(block)

@@ -100,11 +100,30 @@ def partner_speech_turn(
     return bool(hints & {"ru.dialog.capabilities", "ru.dialog.thanks", "ru.dialog.affect"})
 
 
-def social_dialog_slot_allowed(cid: str, *, concept_hints: list[str] | None) -> bool:
+_SELF_CUE_SURFACES = (
+    "зовут",
+    "кто ты",
+    "ты кто",
+    "как тебя",
+    "о себе",
+    "представ",
+    "занима",
+)
+
+
+def query_implies_self(query: str) -> bool:
+    """A self/identity question routes the self narrative even without a precomputed hint."""
+    ql = (query or "").lower()
+    return any(s in ql for s in _SELF_CUE_SURFACES)
+
+
+def social_dialog_slot_allowed(
+    cid: str, *, concept_hints: list[str] | None, query: str = ""
+) -> bool:
     """Dialog slot enters compose only when semantic_read routed the speech situation."""
     hints = set(concept_hints or [])
     if cid.startswith("ru.dialog.how_are_you"):
         return False
     if cid.startswith("ru.dialog.self"):
-        return any(h.startswith("ru.dialog.self") for h in hints)
+        return any(h.startswith("ru.dialog.self") for h in hints) or query_implies_self(query)
     return True
