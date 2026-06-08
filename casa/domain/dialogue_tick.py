@@ -85,6 +85,12 @@ def _trim_reply_for_budget(text: str, state: dict) -> str:
     budget = metabolic_compose_budget(state)
     if budget is not None:
         scale = float(affect_compose_bias(state).get("budget_scale") or 1.0)
+        try:
+            from casa.prisms.neuromodulator import neuromodulator_compose_budget_scale
+
+            scale *= neuromodulator_compose_budget_scale(state)
+        except ImportError:
+            pass
         budget = max(24, int(budget * scale))
     raw = (text or "").strip()
     if budget is None or len(raw) <= budget:
@@ -121,6 +127,7 @@ def process_dialogue_on_tick(
     q = (user_query or "").strip()
     query_intent = ""
     metabolic_rep: dict[str, Any] = {}
+    neuromod_rep: dict[str, Any] = {}
     pre_zone: dict[str, Any] = {}
     surprise_for_metabolic = 0
 
@@ -138,13 +145,6 @@ def process_dialogue_on_tick(
 
         metabolic_rep = metabolic_begin_tick(state, tick=int(wm_next.tick))
         perceptual_prepare_turn(state, q, modality="text_stream")
-        pre_zone = intelligence_before_partner_compose(
-            state,
-            partner_text=q,
-            query_intent="",
-            disposition=disp.action.value if disp else "",
-            tick=int(wm_next.tick),
-        )
         prior_digest = list(wm.last_concepts or []) if wm.last_concepts else None
         executive_before_compose(
             state,
@@ -153,6 +153,24 @@ def process_dialogue_on_tick(
             prior_digest=prior_digest,
         )
         surprise_for_metabolic = int(ensure_executive_zone(state).get("predict_surprise_n") or 0)
+        try:
+            from casa.prisms.neuromodulator import neuromodulator_begin_tick, neuromodulator_is_active
+
+            if neuromodulator_is_active(state):
+                neuromod_rep = neuromodulator_begin_tick(
+                    state,
+                    tick=int(wm_next.tick),
+                    surprise_n=surprise_for_metabolic,
+                )
+        except ImportError:
+            pass
+        pre_zone = intelligence_before_partner_compose(
+            state,
+            partner_text=q,
+            query_intent="",
+            disposition=disp.action.value if disp else "",
+            tick=int(wm_next.tick),
+        )
         pre_read = route_kb_read(q, load_store_bundles(store_dir), store_dir=store_dir, state=state)
         query_intent = pre_read.intent
         ranked_tracts = list(pre_read.tract_ranked or [])
@@ -229,6 +247,14 @@ def process_dialogue_on_tick(
             disposition=disp.action.value if disp else "",
             tick=int(wm_next.tick),
         )
+        try:
+            from casa.prisms.neuromodulator import neuromodulator_is_active, neuromodulator_snapshot
+
+            if neuromodulator_is_active(state):
+                neuromod_rep = neuromodulator_snapshot(state)
+                zone_snap["neuromodulator"] = neuromod_rep
+        except ImportError:
+            pass
         from casa.prisms.metabolic import metabolic_end_tick, metabolic_should_sleep
 
         metabolic_rep = metabolic_end_tick(
@@ -259,6 +285,7 @@ def process_dialogue_on_tick(
                 "emotional_zone": affect_rep,
                 "intelligence_zones": {**zone_snap, "pre_compose": pre_zone},
                 "metabolic_zone": metabolic_rep,
+                "neuromodulator_zone": neuromod_rep or None,
             },
         )
         out["outbound"].append(turn.to_dict())
@@ -268,6 +295,7 @@ def process_dialogue_on_tick(
         out["emotional_zone"] = affect_rep
         out["intelligence_zones"] = {**zone_snap, "pre_compose": pre_zone}
         out["metabolic_zone"] = metabolic_rep
+        out["neuromodulator_zone"] = neuromod_rep or None
         out["forced_sleep"] = metabolic_should_sleep(state)
 
     else:

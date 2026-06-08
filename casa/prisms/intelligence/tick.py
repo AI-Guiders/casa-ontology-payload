@@ -33,6 +33,13 @@ def intelligence_before_partner_compose(
     ensure_emotional_zone(state)
     life = infer_partner_life_event(partner_text, query_intent=query_intent)
     if life:
+        try:
+            from casa.prisms.neuromodulator import neuromodulator_after_event, neuromodulator_is_active
+
+            if neuromodulator_is_active(state):
+                neuromodulator_after_event(state, life, tick=tick)
+        except ImportError:
+            pass
         affect_after_turn(state, life, tick=tick)
     if life == "partner_repair_invite":
         from casa.prisms.intelligence.social import ensure_social_zone
@@ -61,8 +68,29 @@ def process_intelligence_turn(
         disposition=disposition,
     )
     if life:
+        try:
+            from casa.prisms.intelligence.executive import ensure_executive_zone
+            from casa.prisms.neuromodulator import neuromodulator_after_event, neuromodulator_is_active
+
+            surprise_n = 0
+            if neuromodulator_is_active(state):
+                if life == "self_failure" and any(str(h).startswith("math.") for h in (concept_hints or [])):
+                    surprise_n = int(ensure_executive_zone(state).get("predict_surprise_n") or 0)
+                neuromodulator_after_event(state, life, tick=tick, surprise_n=surprise_n)
+        except ImportError:
+            pass
         affect_after_turn(state, life, tick=tick)
     if life == "self_failure" and any(str(h).startswith("math.") for h in (concept_hints or [])):
+        try:
+            from casa.prisms.neuromodulator import neuromodulator_after_event, neuromodulator_is_active
+
+            if neuromodulator_is_active(state):
+                from casa.prisms.intelligence.executive import ensure_executive_zone
+
+                surprise_n = int(ensure_executive_zone(state).get("predict_surprise_n") or 0)
+                neuromodulator_after_event(state, "prediction_error", tick=tick, surprise_n=surprise_n)
+        except ImportError:
+            pass
         affect_after_turn(state, "prediction_error", tick=tick)
 
     executive_after_turn(

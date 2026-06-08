@@ -114,7 +114,14 @@ def metabolic_end_tick(
     surprise_cost = float(policy["cost_surprise"]) * max(0, int(surprise_n))
     compose_cost = float(policy["cost_compose_token"]) * max(0, int(compose_tokens))
     bind_cost = float(policy["cost_bind_block"]) * max(0, int(bind_blocks))
-    total = surprise_cost + compose_cost + bind_cost
+    try:
+        from casa.prisms.neuromodulator import neuromodulator_metabolic_compose_scale, neuromodulator_panic_surcharge
+
+        compose_cost *= neuromodulator_metabolic_compose_scale(state)
+        panic_extra = neuromodulator_panic_surcharge(state)
+    except ImportError:
+        panic_extra = 0.0
+    total = surprise_cost + compose_cost + bind_cost + panic_extra
     if not had_partner_input:
         atp = min(1.0, atp + float(policy["recovery_per_idle_tick"]))
     else:
@@ -131,6 +138,7 @@ def metabolic_end_tick(
         "surprise": surprise_cost,
         "compose": compose_cost,
         "bind": bind_cost,
+        "panic": panic_extra,
         "total": total,
     }
     return metabolic_snapshot(state)

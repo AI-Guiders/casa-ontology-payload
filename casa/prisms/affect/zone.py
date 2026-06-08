@@ -171,6 +171,13 @@ def affect_after_turn(
             pass
     if extra_deltas:
         deltas.update({k: float(v) for k, v in extra_deltas.items() if k in DEFAULT_AXES})
+    try:
+        from casa.prisms.neuromodulator import neuromodulator_is_active, scale_affect_event_deltas
+
+        if neuromodulator_is_active(state):
+            deltas = scale_affect_event_deltas(state, deltas)
+    except ImportError:
+        pass
     if event == "partner_trust":
         from casa.prisms.intelligence.partner_cues import bump_partner_trust
 

@@ -133,6 +133,10 @@ _SPAWNERS = {
         "spawned": True,
         **_spawn_linguistic_zone(state, cfg),
     },
+    "neuromodulator_zone": lambda state, cfg, tick: {
+        "spawned": True,
+        **_spawn_neuromodulator_zone(state, cfg),
+    },
 }
 
 
@@ -152,6 +156,12 @@ def _spawn_linguistic_zone(state: dict, cfg: dict[str, Any]) -> dict[str, Any]:
     from casa.prisms.intelligence.linguistic import spawn_linguistic_zone
 
     return spawn_linguistic_zone(state, config=cfg)
+
+
+def _spawn_neuromodulator_zone(state: dict, cfg: dict[str, Any]) -> dict[str, Any]:
+    from casa.prisms.neuromodulator import spawn_neuromodulator_zone
+
+    return spawn_neuromodulator_zone(state, config=cfg)
 
 
 def _migrate_genetic_zone(

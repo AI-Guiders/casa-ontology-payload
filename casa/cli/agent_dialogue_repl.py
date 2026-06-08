@@ -99,6 +99,13 @@ def _run_sleep(store: Path, state: dict) -> str:
         replay_value_weight=PRODUCTION_SLEEP_REPLAY.value_weight,
     )
     merged = int((report or {}).get("merged_episodes") or (report or {}).get("episodes_merged") or 0)
+    try:
+        from casa.prisms.neuromodulator import neuromodulator_after_sleep, neuromodulator_is_active
+
+        if neuromodulator_is_active(state):
+            neuromodulator_after_sleep(state)
+    except ImportError:
+        pass
     return f"sleep ok: pending {before} → merged {merged}"
 
 
@@ -191,11 +198,18 @@ def _partner_reply(
     if verbose:
         cen = report.get("cen") or {}
         metabolic = dialogue.get("metabolic_zone") or {}
+        neuromod = dialogue.get("neuromodulator_zone") or {}
         print(
             f"  · intent={cen.get('intent')} tick={report.get('tick')} "
             f"atp={metabolic.get('atp_current')}",
             file=sys.stderr,
         )
+        if neuromod:
+            print(
+                f"  · neuromod: arousal={neuromod.get('arousal_drive')} "
+                f"threat={neuromod.get('threat_tone')} panic={neuromod.get('panic_risk')}",
+                file=sys.stderr,
+            )
 
     return reply, report, wm_next, state
 
