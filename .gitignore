@@ -33,6 +33,9 @@ __pycache__/
 # Temp
 .tmp-pdf-read/
 
+# Local hybrid codebase index (MCP / IDE cache)
+.hybrid-codebase-index/
+
 # Visual-curriculum lab output (moment JSON, summaries, probe dumps)
 lab/visual-curriculum/generated/**
 lab/visual-curriculum/reports/**
