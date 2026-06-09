@@ -98,13 +98,19 @@ def ensure_cylinders(state: dict) -> dict:
 ensure_prisms = ensure_cylinders
 
 
-def set_content_lattice(state: dict, lattice_id: str, lattice: dict) -> None:
+def set_content_lattice(
+    state: dict,
+    lattice_id: str,
+    lattice: dict,
+    *,
+    write_context: str = "hot",
+) -> None:
     """Write one lattice to its owning content prism."""
     from casa.domain.content_prism_split import lattice_content_prism_target
     from casa.domain.prism_ids import PRISM_MEMORY
 
     target = lattice_content_prism_target(lattice_id) or PRISM_MEMORY
-    import_lattice_into_prism(state, target, lattice_id, lattice)
+    import_lattice_into_prism(state, target, lattice_id, lattice, write_context=write_context)
 
 
 def content_prism_lattices(state: dict, prism_id: str | None = None) -> dict[str, dict]:
@@ -137,18 +143,25 @@ def merged_content_lattices(state: dict) -> dict[str, dict]:
     return out
 
 
-def persist_content_lattices(state: dict, lattices: dict[str, dict]) -> None:
+def persist_content_lattices(
+    state: dict,
+    lattices: dict[str, dict],
+    *,
+    write_context: str = "hot",
+) -> None:
     """Write lattice map back to owning content prisms (post split)."""
     from casa.domain.content_prism_split import lattice_content_prism_target
     from casa.domain.prism_ids import PRISM_MEMORY
+    from casa.prisms.memory.write_gate import memory_write_allowed
 
     mem: dict[str, dict] = {}
     for lid, lat in lattices.items():
         target = lattice_content_prism_target(lid) or PRISM_MEMORY
         if target == PRISM_MEMORY:
             mem[lid] = lat
-        else:
-            import_lattice_into_prism(state, target, lid, lat)
+        if memory_write_allowed(state, lid, context=write_context):
+            if target != PRISM_MEMORY:
+                import_lattice_into_prism(state, target, lid, lat, write_context=write_context)
     prism_memory(state)["lattices"] = mem
     state.setdefault("sss", {})["lattices"] = dict(mem)
 
@@ -159,8 +172,18 @@ def memory_lattices(state: dict, prism_id: str | None = None) -> dict[str, dict]
     return merged_content_lattices(state)
 
 
-def import_lattice_into_prism(state: dict, prism_id: str, lattice_id: str, lattice: dict) -> None:
+def import_lattice_into_prism(
+    state: dict,
+    prism_id: str,
+    lattice_id: str,
+    lattice: dict,
+    *,
+    write_context: str = "hot",
+) -> None:
     """Place decoded lattice into a content prism (multi-prism import from ltm/)."""
+    from casa.prisms.memory.write_gate import assert_memory_write_allowed
+
+    assert_memory_write_allowed(state, lattice_id, context=write_context)
     from casa.prisms.memory.prism_spawn import list_content_prism_ids, spawn_prism
     from casa.domain.prism_ids import PRISM_KIND_CONTENT, PRISM_MEMORY
     from casa.domain.prism_wire import (
@@ -509,7 +532,20 @@ def _strengthen_rule(state: dict, rule_id: str, *, copies: int = 5) -> None:
     persist_content_lattices(state, lattices)
 
 
-def _strengthen_concept(lattices: dict[str, dict], lattice_id: str, concept_id: str, *, copies: int) -> bool:
+def _strengthen_concept(
+    lattices: dict[str, dict],
+    lattice_id: str,
+    concept_id: str,
+    *,
+    copies: int,
+    state: dict | None = None,
+    write_context: str = "sleep_merge",
+) -> bool:
+    if state is not None:
+        from casa.prisms.memory.write_gate import memory_write_allowed
+
+        if not memory_write_allowed(state, lattice_id, context=write_context):
+            return False
     if lattice_id not in lattices or not concept_id:
         return False
     lat = lattices[lattice_id]
@@ -564,6 +600,7 @@ def run_sleep(
     episodes = hippo.get("episodes") or []
     merged: list[dict] = []
     pending: list[dict] = []
+    immutable_skipped: list[dict[str, Any]] = []
     consolidate_budget = max_episodes
     consolidated_this_call = 0
     budget_starved = 0
@@ -600,6 +637,24 @@ def run_sleep(
         from casa.domain.episode_bind import resolve_episode_concept_id
 
         lid = canonical_lattice_id(str(ep.get("lattice_id") or SYLLABLES_RU))
+        from casa.prisms.memory.write_gate import memory_write_allowed
+
+        allow_links = bool(
+            ep.get("allow_teacher_links")
+            or str(ep.get("structure_tag") or "") in ("self_promote", "canon_promote")
+            or str(ep.get("correction_kind") or "") == "self_promote"
+        )
+        if not memory_write_allowed(state, lid, context="sleep_merge") and not allow_links:
+            immutable_skipped.append(
+                {
+                    "episode_id": ep.get("id"),
+                    "lattice_id": lid,
+                    "concept_id": ep.get("concept_id"),
+                    "reason": "immutable_sleep_gate",
+                }
+            )
+            pending.append(ep)
+            continue
         cid = resolve_episode_concept_id(ep, bundle, lattice_id=lid)
         if cid and not ep.get("concept_id"):
             ep = {**ep, "concept_id": cid}
@@ -656,7 +711,18 @@ def run_sleep(
                 extract_rep = {**extract_rep, "links": link_extract}
             elif link_extract:
                 extract_rep = {"links": link_extract}
-        strengthened = bool(cid and _strengthen_concept(lattices, lid, str(cid), copies=strength))
+        strengthen_context = "promote_canon" if allow_links else "sleep_merge"
+        strengthened = bool(
+            cid
+            and _strengthen_concept(
+                lattices,
+                lid,
+                str(cid),
+                copies=strength,
+                state=state,
+                write_context=strengthen_context,
+            )
+        )
         if strengthened or link_extract:
             ep = {**ep, "consolidated": True}
             if cid:
@@ -694,6 +760,7 @@ def run_sleep(
             "items": merged,
             "nca": None,
             "replay": replay_report,
+            "immutable_skipped": immutable_skipped,
             "batch": {
                 "max_episodes": max_episodes,
                 "consolidated": consolidated_this_call,
@@ -771,13 +838,20 @@ def run_sleep(
 
     from casa.prisms.memory.f0_pattern_extract import extract_emergent_count_patterns
 
-    for item in extract_emergent_count_patterns(
-        lattices,
-        episodes,
-        state,
-        lattice_id="schema-math",
-        copies=strength,
-    ):
+    from casa.prisms.memory.write_gate import memory_write_allowed as _mw_allowed
+
+    if _mw_allowed(state, "schema-math", context="sleep_merge"):
+        emergent_count = extract_emergent_count_patterns(
+            lattices,
+            episodes,
+            state,
+            lattice_id="schema-math",
+            copies=strength,
+        )
+    else:
+        emergent_count = []
+
+    for item in emergent_count:
         if item.get("skipped"):
             merged.append(item)
             continue
@@ -793,14 +867,19 @@ def run_sleep(
 
     from casa.prisms.memory.f0_names_extract import extract_emergent_names_from_episodes
 
-    for item in extract_emergent_names_from_episodes(
-        lattices,
-        episodes,
-        bundle,
-        state,
-        lattice_id="schema-math",
-        copies=strength,
-    ):
+    if _mw_allowed(state, "schema-math", context="sleep_merge"):
+        emergent_names = extract_emergent_names_from_episodes(
+            lattices,
+            episodes,
+            bundle,
+            state,
+            lattice_id="schema-math",
+            copies=strength,
+        )
+    else:
+        emergent_names = []
+
+    for item in emergent_names:
         merged.append(
             {
                 "episode_id": item.get("episode_id"),
@@ -813,13 +892,18 @@ def run_sleep(
 
     from casa.prisms.memory.f0_equiv_extract import extract_emergent_mul_equiv_from_episodes
 
-    for item in extract_emergent_mul_equiv_from_episodes(
-        lattices,
-        episodes,
-        state,
-        lattice_id="schema-math",
-        copies=strength,
-    ):
+    if _mw_allowed(state, "schema-math", context="sleep_merge"):
+        emergent_equiv = extract_emergent_mul_equiv_from_episodes(
+            lattices,
+            episodes,
+            state,
+            lattice_id="schema-math",
+            copies=strength,
+        )
+    else:
+        emergent_equiv = []
+
+    for item in emergent_equiv:
         merged.append(
             {
                 "episode_id": None,
@@ -917,6 +1001,7 @@ def run_sleep(
         "items": merged,
         "nca": nca_report,
         "replay": replay_report,
+        "immutable_skipped": immutable_skipped,
     }
     if max_episodes is not None:
         last_sleep["batch"] = {

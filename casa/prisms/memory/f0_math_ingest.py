@@ -33,7 +33,7 @@ def ingest_math_bundle(
     state = ensure_prisms(state)
     stack = load_f0_stack(stack_path)
     lat = encode_f0_lattice(bundle, lattice_id=lattice_id, stack=stack, copies=copies)
-    import_lattice_into_prism(state, PRISM_MATH, lattice_id, lat)
+    import_lattice_into_prism(state, PRISM_MATH, lattice_id, lat, write_context="bootstrap")
     prism_block(state, PRISM_MATH)["active_lattice"] = lattice_id
     state["f0"] = {
         "stack": str(stack_path or Path("design/f0-math-lattice-stack.json")),

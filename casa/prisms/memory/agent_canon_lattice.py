@@ -221,6 +221,22 @@ def agent_promote_canon_lattice(
         journal_id=source_id,
     )
     sync_agent_canon_to_field(state, store_dir)
+    from casa.prisms.memory.write_gate import record_earned_postulate
+
+    sem = str(spec.get("semantic") or "")
+    domain = "math" if "math" in sem or lattice_id.startswith("math-") else "lang"
+    if "logic" in sem:
+        domain = "logic"
+    theory_id = str(spec.get("theory_id") or lattice_id)
+    earned = record_earned_postulate(
+        state,
+        lattice_id=lattice_id,
+        domain=domain,
+        theory_id=theory_id,
+        concept_ids=merged_ids,
+        source="promote_canon",
+    )
+    result["earned_theory"] = earned
     from casa.prisms.memory.canon_nca_train import agent_requests_nca_train_after_canon
 
     nca_req = agent_requests_nca_train_after_canon(

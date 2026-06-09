@@ -64,12 +64,19 @@ def sync_agent_canon_to_field(
             c = str(cid or "").strip()
             if not c:
                 continue
-            if _strengthen_concept(lattices, lid, c, copies=strength):
+            if _strengthen_concept(
+                lattices,
+                lid,
+                c,
+                copies=strength,
+                state=state,
+                write_context="promote_canon",
+            ):
                 concept_count += 1
         touched.append(lid)
 
     if touched:
-        persist_content_lattices(state, lattices)
+        persist_content_lattices(state, lattices, write_context="promote_canon")
         mark_runtime_dirty(state)
 
     state.setdefault("agent_canon", {})["last_field_sync"] = {

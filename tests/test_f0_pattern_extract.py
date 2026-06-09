@@ -104,9 +104,11 @@ def test_sleep_extract_from_count_row_episodes() -> None:
             form_extract_allowed=True,
         )
     rep = run_sleep(state, bundle, strength=4)
+    skipped = rep.get("immutable_skipped") or []
+    assert skipped
+    assert all(row.get("lattice_id") == "schema-math" for row in skipped)
     emergent = [x for x in rep.get("items") or [] if x.get("kind") == "emergent_pattern"]
-    assert emergent
-    assert is_emergent_pattern_id(emergent[0]["concept_id"])
+    assert not emergent
 
 
 def test_predict_ranks_by_field_edges_not_name() -> None:

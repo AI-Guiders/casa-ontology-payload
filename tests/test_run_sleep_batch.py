@@ -11,7 +11,7 @@ def _mini_state() -> dict:
     return ensure_prisms(
         {
             "field_version": 1,
-            "sss": {"lattices": {"L2_word": lat}, "active_lattice": "L2_word"},
+            "sss": {"lattices": {"lexicon-ru": lat}, "active_lattice": "lexicon-ru"},
             "consolidation": {},
         }
     )
@@ -27,7 +27,7 @@ def test_run_sleep_max_episodes_defers_tail_until_drained():
             cue=f"cue{i}",
             surface_attempt="x",
             correct=f"w{i}",
-            lattice_id="L2_word",
+            lattice_id="lexicon-ru",
             concept_id=f"lang.word.w{i}",
         )
 
@@ -57,7 +57,7 @@ def test_run_sleep_max_episodes_none_matches_monolithic_count():
         cue="a",
         surface_attempt="b",
         correct="c",
-        lattice_id="L2_word",
+        lattice_id="lexicon-ru",
         concept_id="lang.word.c",
     )
     rep = run_sleep(state, bundle, max_episodes=None)
