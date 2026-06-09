@@ -9,6 +9,7 @@ requires-python = ">=3.12"
 [project.scripts]
 casa-cli = "casa.cli._run:main"
 
+[tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
 addopts = "-q"

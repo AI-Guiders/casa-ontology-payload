@@ -1,6 +1,7 @@
 {
   "agent_autonomous_tick": "casa.prisms.tick.agent_autonomous_tick",
   "agent_dialogue_repl": "casa.cli.agent_dialogue_repl",
+  "chat": "casa.cli.chat",
   "affect_zone": "casa.prisms.affect.zone",
   "metabolic_zone": "casa.prisms.metabolic.zone",
   "perceptual_zone": "casa.prisms.perceptual.zone",

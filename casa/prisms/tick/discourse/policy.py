@@ -44,7 +44,7 @@ class BlockDiscoursePolicy:
         if cid.startswith("subject."):
             return False
         if cid.startswith("ru.dialog."):
-            return self._dialog_eligible(cid, query_intent, blocks, ctx.concept_hints)
+            return self._dialog_eligible(cid, query_intent, blocks, ctx.concept_hints, query)
         if block.get("source") == "journal":
             return self._journal_eligible(block, query, query_intent)
         if cid.startswith("ru.prop."):
@@ -69,13 +69,14 @@ class BlockDiscoursePolicy:
         query_intent: str,
         blocks: list[dict[str, Any]],
         concept_hints: list[str],
+        query: str = "",
     ) -> bool:
         if query_intent in ("explain", "grammar"):
             return not any(cid.startswith(p) for p in self._EXPLAIN_DIALOG_DENY)
         if query_intent == "social":
             from casa.domain.dialogue_bind.scoring import social_dialog_slot_allowed
 
-            if not social_dialog_slot_allowed(cid, concept_hints=concept_hints):
+            if not social_dialog_slot_allowed(cid, concept_hints=concept_hints, query=query):
                 return False
             return not any(cid.startswith(p) for p in self._SOCIAL_DIALOG_DENY)
         if query_intent == "rewrite":

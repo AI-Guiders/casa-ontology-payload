@@ -223,6 +223,9 @@ def process_dialogue_on_tick(
             query=q,
             surprise_before=surprise_before,
             surprise_after=surprise_before,
+            # Fast/interactive callers (console chat) defer the heavy full-store
+            # checkpoint to a session boundary instead of paying it every turn.
+            persist=not bool(state.get("_defer_runtime_persist")),
         )
         from casa.prisms.memory.intent import intent_after_partner_turn
 
@@ -272,23 +275,29 @@ def process_dialogue_on_tick(
             affect_rep["event"] = pre_zone["life_event"]
         else:
             affect_rep["bias"] = affect_compose_bias(state)
-        turn = append_subject_turn(
-            store_dir,
-            reply_text,
-            kind="reply",
-            provenance={
-                **provenance_base,
-                "source": "partner_reply",
-                "cen_action": task.action if task else "",
-                "yielded_disposition": disp.reason if disp else "",
-                **meaning_provenance(ctx),
-                "emotional_zone": affect_rep,
-                "intelligence_zones": {**zone_snap, "pre_compose": pre_zone},
-                "metabolic_zone": metabolic_rep,
-                "neuromodulator_zone": neuromod_rep or None,
-            },
-        )
-        out["outbound"].append(turn.to_dict())
+        if reply_text.strip():
+            turn = append_subject_turn(
+                store_dir,
+                reply_text,
+                kind="reply",
+                provenance={
+                    **provenance_base,
+                    "source": "partner_reply",
+                    "cen_action": task.action if task else "",
+                    "yielded_disposition": disp.reason if disp else "",
+                    **meaning_provenance(ctx),
+                    "emotional_zone": affect_rep,
+                    "intelligence_zones": {**zone_snap, "pre_compose": pre_zone},
+                    "metabolic_zone": metabolic_rep,
+                    "neuromodulator_zone": neuromod_rep or None,
+                },
+            )
+            out["outbound"].append(turn.to_dict())
+        else:
+            # Empty compose: do not persist an empty subject turn (load_dialogue_turns
+            # would silently drop it, leaving a stale prior outbound to be echoed).
+            out["soft_miss"] = True
+            out["reason"] = "empty_compose"
         out["reply_text"] = reply_text
         out["wm_prism"] = wm_rep
         out["intent_prism"] = intent_rep

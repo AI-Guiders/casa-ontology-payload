@@ -15,6 +15,17 @@ class DiscourseBudget:
     stance: str
 
 
+# Phatic dialog blocks bind strongly on ANY short turn; they should not set the
+# answer bar, or they float the floor above the block that actually answers a
+# self/identity question (e.g. ru.dialog.self for "как тебя зовут").
+_PHATIC_PREFIXES = (
+    "ru.dialog.greeting",
+    "ru.dialog.farewell",
+    "ru.dialog.thanks",
+    "ru.dialog.how_are_you",
+)
+
+
 def discourse_budget_from_blocks(
     blocks: list[dict[str, Any]],
     *,
@@ -24,6 +35,15 @@ def discourse_budget_from_blocks(
     scores = [int(b.get("score") or 0) for b in blocks if b.get("concept_id")]
     if not scores:
         return DiscourseBudget(score_floor=0, stance=stance)
+    if query_intent == "social":
+        content_scores = [
+            int(b.get("score") or 0)
+            for b in blocks
+            if b.get("concept_id")
+            and not str(b.get("concept_id")).startswith(_PHATIC_PREFIXES)
+        ]
+        if content_scores:
+            scores = content_scores
     top = max(scores)
     margin = {"confident": 18, "partial": 10, "unknown": 5}.get(stance, 10)
     if query_intent in ("discuss", "journal", "rewrite"):
