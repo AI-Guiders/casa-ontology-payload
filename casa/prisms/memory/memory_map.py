@@ -213,10 +213,17 @@ def build_memory_map(store_dir: Path, state: dict) -> dict[str, Any]:
 
     memory_zone_groups = build_memory_zone_groups(state, layers)
     genome_doc: dict[str, Any] = {}
+    concept_doc: dict[str, Any] = {}
     try:
         from casa.prisms.genetic import genome_passport
 
         genome_doc = genome_passport(state)
+    except ImportError:
+        pass
+    try:
+        from casa.prisms.memory.concept_layer import concept_layer_snapshot
+
+        concept_doc = concept_layer_snapshot(state)
     except ImportError:
         pass
 
@@ -247,6 +254,7 @@ def build_memory_map(store_dir: Path, state: dict) -> dict[str, Any]:
         "lattice_stack": layers,
         "memory_zone_groups": memory_zone_groups,
         "genome_passport": genome_doc,
+        "concept_layer": concept_doc,
         "l2_network_ids": l2_word_lattice_ids(state),
         "journal": journal_stats(store_dir),
         "disk": disk,
@@ -289,6 +297,24 @@ def build_memory_map_summary(full: dict[str, Any]) -> dict[str, Any]:
 def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
     """Deprecated alias — use build_memory_map."""
     return build_memory_map(store_dir, state)
+
+
+def _render_concept_layer_section(snapshot: dict[str, Any]) -> list[str]:
+    if not snapshot or not snapshot.get("concept_count"):
+        return []
+    lines = [
+        "## Concept Zone (ADR-0073 P18)",
+        "",
+        f"- theory: `{snapshot.get('theory_id')}`",
+        f"- concept hubs: **{snapshot.get('concept_count')}**",
+        f"- lattice: `{', '.join(snapshot.get('lattice_ids') or []) or '—'}`",
+        "",
+        "```text",
+    ]
+    for cid in snapshot.get("concept_ids") or []:
+        lines.append(f"  {cid}")
+    lines.extend(["```", ""])
+    return lines
 
 
 def _render_genome_passport_section(passport: dict[str, Any]) -> list[str]:
@@ -392,6 +418,9 @@ def render_memory_md(memory_map: dict[str, Any]) -> str:
         f"| `_parallel_shards/` | {_fmt_bytes(memory_map['disk']['parallel_shards_dir'])} |",
         "",
     ]
+    concept_doc = memory_map.get("concept_layer") or {}
+    if concept_doc:
+        lines.extend(_render_concept_layer_section(concept_doc))
     genome_doc = memory_map.get("genome_passport") or {}
     if genome_doc:
         lines.extend(_render_genome_passport_section(genome_doc))

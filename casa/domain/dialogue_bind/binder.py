@@ -21,11 +21,14 @@ from casa.prisms.tick.articulation_realize import build_plan
 
 
 def _dedupe_blocks(blocks: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    from casa.prisms.memory.concept_layer import normalize_bind_block
+
     deduped: list[dict[str, Any]] = []
     seen_cids: set[str] = set()
     seen_texts: set[tuple[str, str]] = set()
     for row in blocks:
-        cid = str(row.get("concept_id") or "")
+        row = normalize_bind_block(row)
+        cid = str(row.get("bind_hub") or row.get("concept_id") or "")
         if cid and cid in seen_cids:
             continue
         if cid:

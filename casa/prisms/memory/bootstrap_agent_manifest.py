@@ -220,9 +220,11 @@ def _bootstrap_agent_prisms(
             if key == "linguistic_zone" and cfg.get("initial_discourse_confidence") is not None:
                 spawn_kwargs["initial_discourse_confidence"] = cfg.get("initial_discourse_confidence")
             if key == "memory_zone":
-                for sub in ("explicit", "implicit", "immutable", "mutability"):
+                for sub in ("explicit", "implicit", "immutable", "mutability", "concept_layer"):
                     if isinstance(cfg.get(sub), dict):
                         spawn_kwargs[sub] = cfg.get(sub)
+                    elif sub == "concept_layer" and cfg.get(sub) is False:
+                        spawn_kwargs[sub] = False
             if key == "metabolic_zone":
                 if cfg.get("initial_atp") is not None:
                     spawn_kwargs["initial_atp"] = cfg.get("initial_atp")

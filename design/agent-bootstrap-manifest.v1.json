@@ -296,6 +296,12 @@
         "write_gate": "genetic.promote_canon",
         "note": "Immutable = bootstrap canon; lexicon shards stay mutable"
       },
+      "concept_layer": {
+        "enabled": true,
+        "adr": "0073",
+        "theory_id": "species-concept-bootstrap-v1",
+        "note": "concept.* hub in immutable.domains.concept; lex.ru/en surfaces"
+      },
       "note": "Owns prism_memory + prism_hippo (ADR-0068 P12a)"
     },
     "neuromodulator_zone": {

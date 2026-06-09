@@ -123,12 +123,21 @@ def spawn_memory_zone(state: dict, *, config: dict[str, Any] | None = None) -> d
     from casa.prisms.memory.write_gate import sync_immutable_catalog
 
     imm_rep = sync_immutable_catalog(state)
+    concept_rep: dict[str, Any] = {}
+    if cfg.get("concept_layer", True) is not False:
+        try:
+            from casa.prisms.memory.concept_layer import spawn_concept_layer
+
+            concept_rep = spawn_concept_layer(state, config=cfg.get("concept_layer") or {})
+        except ImportError:
+            pass
     return {
         **rep,
         "ltm_lattice_count": len(ltm_ids),
         "hippo_lattice_count": len(hippo_ids),
         "active_lattice": active,
         "immutable_catalog": imm_rep,
+        "concept_layer": concept_rep,
     }
 
 

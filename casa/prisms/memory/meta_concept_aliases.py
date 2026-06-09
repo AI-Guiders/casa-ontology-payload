@@ -39,3 +39,19 @@ def canonical_lex_concept_id(concept_id: str) -> str:
 def lex_concept_id_variants(concept_id: str) -> tuple[str, ...]:
     """После миграции store — один id; до миграции read path нормализует legacy в canon."""
     return (canonical_lex_concept_id(concept_id),)
+
+
+def concept_lex_variants(concept_id: str) -> tuple[str, ...]:
+    """Read-path variants including concept hub resolution (ADR-0073 P18b)."""
+    try:
+        from casa.prisms.memory.concept_layer import bind_concept_id, lex_for_locale
+
+        hub = bind_concept_id(concept_id)
+        variants = {canonical_lex_concept_id(concept_id), hub}
+        for loc in ("ru", "en"):
+            lex_id = lex_for_locale(hub, loc)
+            if lex_id:
+                variants.add(lex_id)
+        return tuple(sorted(variants))
+    except ImportError:
+        return lex_concept_id_variants(concept_id)

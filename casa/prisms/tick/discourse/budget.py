@@ -26,6 +26,15 @@ _PHATIC_PREFIXES = (
 )
 
 
+def _budget_hub(block: dict[str, Any]) -> str:
+    try:
+        from casa.prisms.memory.concept_layer import bind_concept_id
+
+        return bind_concept_id(str(block.get("bind_hub") or block.get("concept_id") or ""))
+    except ImportError:
+        return str(block.get("concept_id") or "")
+
+
 def discourse_budget_from_blocks(
     blocks: list[dict[str, Any]],
     *,
@@ -33,6 +42,14 @@ def discourse_budget_from_blocks(
     query_intent: str = "general",
 ) -> DiscourseBudget:
     scores = [int(b.get("score") or 0) for b in blocks if b.get("concept_id")]
+    if scores:
+        by_hub: dict[str, int] = {}
+        for b in blocks:
+            if not b.get("concept_id"):
+                continue
+            hub = _budget_hub(b)
+            by_hub[hub] = max(by_hub.get(hub, 0), int(b.get("score") or 0))
+        scores = list(by_hub.values())
     if not scores:
         return DiscourseBudget(score_floor=0, stance=stance)
     if query_intent == "social":
