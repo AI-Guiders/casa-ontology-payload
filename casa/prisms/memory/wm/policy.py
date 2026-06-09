@@ -11,8 +11,25 @@ from casa.prisms.memory.agent_prism import ensure_agent_prism
 from .model import DEFAULT_WM_POLICY
 
 
+def _apply_genetic_wm_policy(state: dict, policy: dict[str, Any]) -> None:
+    try:
+        from casa.prisms.genetic import genetic_constant
+
+        for path, key in (
+            ("signal_decay.wm_theta_decay", "theta_decay"),
+            ("signal_decay.wm_theta_decay_floor", "theta_decay"),
+        ):
+            val = genetic_constant(state, path)
+            if val is not None:
+                policy[key] = float(val)
+                break
+    except (ImportError, AttributeError, TypeError, ValueError):
+        pass
+
+
 def get_wm_policy(state: dict, store_dir: Path | None = None) -> dict[str, Any]:
     policy = json.loads(json.dumps(DEFAULT_WM_POLICY))
+    _apply_genetic_wm_policy(state, policy)
     block = ensure_agent_prism(state)
     override = block.get("wm_policy")
     if isinstance(override, dict):

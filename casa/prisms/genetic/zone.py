@@ -34,6 +34,14 @@ DEFAULT_GENOME: dict[str, Any] = {
     "signal_decay": {
         "wm_theta_decay_floor": 0.12,
         "intent_theta_decay_floor": 0.08,
+        "wm_theta_decay": 0.2,
+        "intent_theta_decay": 0.12,
+    },
+    "forgetting_genotype": {
+        "implicit": {
+            "priming_alpha_retain": 0.2,
+        },
+        "canon_susceptibility": 0.0,
     },
     "surprise_gains": {
         "metabolic_fatigue": 0.12,
@@ -82,9 +90,21 @@ def build_genome_spec(manifest_cfg: dict[str, Any] | None = None) -> dict[str, A
     cfg = manifest_cfg or {}
     if cfg.get("species_id"):
         spec["species_id"] = str(cfg["species_id"])
-    for key in ("zone_proportions", "ema_limits", "signal_decay", "surprise_gains", "promote_canon", "metabolic"):
+    for key in (
+        "zone_proportions",
+        "ema_limits",
+        "signal_decay",
+        "surprise_gains",
+        "promote_canon",
+        "metabolic",
+        "forgetting_genotype",
+    ):
         if isinstance(cfg.get(key), dict):
             spec[key] = {**spec.get(key, {}), **cfg[key]}
+    if isinstance(cfg.get("forgetting_genotype"), dict):
+        fg = cfg["forgetting_genotype"]
+        if isinstance(fg.get("implicit"), dict):
+            spec.setdefault("forgetting_genotype", {}).setdefault("implicit", {}).update(fg["implicit"])
     if isinstance(cfg.get("policy"), dict):
         spec.setdefault("metabolic", {})["policy"] = {
             **spec.get("metabolic", {}).get("policy", {}),
@@ -152,7 +172,14 @@ def seal_genetic_zone(
             "spec": spec,
         }
     )
-    return {"sealed": True, "genome_hash": spec["genome_hash"], "path": str(path)}
+    rep: dict[str, Any] = {"sealed": True, "genome_hash": spec["genome_hash"], "path": str(path)}
+    try:
+        from casa.prisms.genetic.passport import write_genome_passport_artifact
+
+        rep["genome_passport"] = write_genome_passport_artifact(store_dir, state)
+    except ImportError:
+        pass
+    return rep
 
 
 def _walk_get(obj: Any, parts: list[str]) -> Any:
@@ -167,9 +194,9 @@ def _walk_get(obj: Any, parts: list[str]) -> Any:
 def genetic_constant(state: dict, path: str, default: Any = None) -> Any:
     zone = ensure_genetic_zone(state)
     spec = zone.get("spec") or {}
-    if not spec and zone.get("immutable"):
-        spec = DEFAULT_GENOME
-    val = _walk_get(spec, path.split("."))
+    val = _walk_get(spec, path.split(".")) if spec else None
+    if val is None:
+        val = _walk_get(DEFAULT_GENOME, path.split("."))
     return default if val is None else val
 
 

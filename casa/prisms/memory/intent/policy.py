@@ -35,8 +35,25 @@ def agent_tract_concept_id(slug: str) -> str:
     return f"{AGENT_TRACT_CONCEPT_PREFIX}{agent_tract_slug(format_agent_tract_id(slug))}"
 
 
+def _apply_genetic_intent_policy(state: dict, policy: dict[str, Any]) -> None:
+    try:
+        from casa.prisms.genetic import genetic_constant
+
+        for path, key in (
+            ("signal_decay.intent_theta_decay", "theta_decay"),
+            ("signal_decay.intent_theta_decay_floor", "theta_decay"),
+        ):
+            val = genetic_constant(state, path)
+            if val is not None:
+                policy[key] = float(val)
+                break
+    except (ImportError, AttributeError, TypeError, ValueError):
+        pass
+
+
 def get_intent_policy(state: dict) -> dict[str, Any]:
     policy = json.loads(json.dumps(DEFAULT_INTENT_POLICY))
+    _apply_genetic_intent_policy(state, policy)
     block = ensure_agent_prism(state)
     override = block.get("intent_policy")
     if isinstance(override, dict):

@@ -76,6 +76,7 @@ _HELP = "\n".join(
         "  /passage         — многострочный ввод (пассаж+вопрос), конец — пустая строка",
         "  /engage          — режим разговора (отвечать, не деферить)  [по умолчанию]",
         "  /agency          — вернуть субъектность (может деферить ради своей практики)",
+        "  /genome          — паспорт генома (species_id, hash, alleles)",
         "  /help            — эта справка",
     ]
 )
@@ -205,6 +206,11 @@ def run_chat(
                     elif cmd == "agency":
                         state.setdefault("subject", {}).pop("force_accept_external", None)
                         print("  · субъектность восстановлена (может деферить)")
+                        continue
+                    elif cmd == "genome":
+                        from casa.prisms.genetic import format_genome_passport_repl
+
+                        print(format_genome_passport_repl(state))
                         continue
                     elif cmd == "turns":
                         n = int(arg) if arg.strip().isdigit() else 6

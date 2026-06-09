@@ -194,6 +194,18 @@
         "bundle_tier_gate": "RU-ε",
         "algorithm": "agent_promote_canon_lattice_v1"
       },
+      "forgetting_genotype": {
+        "implicit": {
+          "priming_alpha_retain": 0.2
+        },
+        "canon_susceptibility": 0.0
+      },
+      "signal_decay": {
+        "wm_theta_decay": 0.2,
+        "intent_theta_decay": 0.12,
+        "wm_theta_decay_floor": 0.12,
+        "intent_theta_decay_floor": 0.08
+      },
       "fork_policy": {
         "mode": "inherit_verbatim",
         "allele_fork_enabled": false,

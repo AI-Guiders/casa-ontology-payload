@@ -212,6 +212,13 @@ def build_memory_map(store_dir: Path, state: dict) -> dict[str, Any]:
         seen_ids.add(lid)
 
     memory_zone_groups = build_memory_zone_groups(state, layers)
+    genome_doc: dict[str, Any] = {}
+    try:
+        from casa.prisms.genetic import genome_passport
+
+        genome_doc = genome_passport(state)
+    except ImportError:
+        pass
 
     nca_dir = store_dir / "nca"
     parallel = store_dir / "_parallel_shards"
@@ -239,6 +246,7 @@ def build_memory_map(store_dir: Path, state: dict) -> dict[str, Any]:
         "prisms": ["prism_memory", "prism_hippo"],
         "lattice_stack": layers,
         "memory_zone_groups": memory_zone_groups,
+        "genome_passport": genome_doc,
         "l2_network_ids": l2_word_lattice_ids(state),
         "journal": journal_stats(store_dir),
         "disk": disk,
@@ -266,6 +274,11 @@ def build_memory_map_summary(full: dict[str, Any]) -> dict[str, Any]:
         "lattice_count_by_layer": by_layer,
         "memory_zone_groups": dict((full.get("memory_zone_groups") or {}).get("counts") or {}),
         "memory_zone_indexed": bool((full.get("memory_zone_groups") or {}).get("indexed")),
+        "genome_passport": {
+            "species_id": (full.get("genome_passport") or {}).get("species_id"),
+            "genome_hash_short": (full.get("genome_passport") or {}).get("genome_hash_short"),
+            "valid": (full.get("genome_passport") or {}).get("valid"),
+        },
         "l2_network_ids": list(full.get("l2_network_ids") or []),
         "journal": dict(full.get("journal") or {}),
         "disk": dict(full.get("disk") or {}),
@@ -276,6 +289,29 @@ def build_memory_map_summary(full: dict[str, Any]) -> dict[str, Any]:
 def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
     """Deprecated alias — use build_memory_map."""
     return build_memory_map(store_dir, state)
+
+
+def _render_genome_passport_section(passport: dict[str, Any]) -> list[str]:
+    if not passport:
+        return []
+    alleles = passport.get("allele_summary") or {}
+    fg = alleles.get("forgetting_genotype") or {}
+    mp = alleles.get("metabolic_policy") or {}
+    sd = alleles.get("signal_decay") or {}
+    lines = [
+        "## Genetic passport (ADR-0062 P6f)",
+        "",
+        f"- species_id: `{passport.get('species_id')}`",
+        f"- genome_hash: `{passport.get('genome_hash_short')}…` valid={passport.get('valid')} sealed@{passport.get('sealed_at_tick')}",
+        "",
+        "```text",
+        f"forgetting  α_retain={fg.get('priming_alpha_retain')} canon_susceptibility={fg.get('canon_susceptibility')}",
+        f"metabolic   sleep_threshold={mp.get('sleep_threshold')} cost_surprise={mp.get('cost_surprise')}",
+        f"signal_decay wm_θ={sd.get('wm_theta_decay')} intent_θ={sd.get('intent_theta_decay')}",
+        "```",
+        "",
+    ]
+    return lines
 
 
 def _render_memory_zone_section(zone_groups: dict[str, Any]) -> list[str]:
@@ -356,6 +392,9 @@ def render_memory_md(memory_map: dict[str, Any]) -> str:
         f"| `_parallel_shards/` | {_fmt_bytes(memory_map['disk']['parallel_shards_dir'])} |",
         "",
     ]
+    genome_doc = memory_map.get("genome_passport") or {}
+    if genome_doc:
+        lines.extend(_render_genome_passport_section(genome_doc))
     zone_groups = memory_map.get("memory_zone_groups") or {}
     if zone_groups:
         lines.extend(_render_memory_zone_section(zone_groups))
