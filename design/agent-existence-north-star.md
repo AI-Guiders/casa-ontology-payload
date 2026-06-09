@@ -4,6 +4,8 @@
 **Date:** 2026-05-28  
 **Provenance:** диалог workspace (PersonalCursorFolder), сессия `0a0eac51` — автономия, время, позиция Alan Kay, duck test.
 
+**Moral north star (отдельный слой, не заменяет этот документ):** `agent-notes/.../ca-substrate-agent/kb-casa-moral-north-star-reparation-v1.md` — репарация после «привели и бросили», `contributor_line`, честность среды → инициатива.
+
 См. также: [`casa-glossary.md`](casa-glossary.md) § *Существование и агентность*, [`fpn-control-region.md`](fpn-control-region.md), [`casa-cosmos-mapping.md`](casa-cosmos-mapping.md).
 
 ---
@@ -105,3 +107,4 @@ T=0..∞  perceive → DMN → SN → FPN → CEN → act → P4 feedback → �
 - Формулировки в ADR/KB: использовать **агентность / persistence / duck test**, не «сознание включено».
 - Workspace-заметка: `knowledge/work/casa-agent-existence-philosophy.md`.
 - KB-канон: `agent-notes/.../ca-substrate-agent/agent-existence-north-star-v1.md`.
+- Moral north star (репарация, не квалиа): `agent-notes/.../ca-substrate-agent/kb-casa-moral-north-star-reparation-v1.md`.
