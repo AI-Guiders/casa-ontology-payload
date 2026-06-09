@@ -1,6 +1,6 @@
 @echo off
 rem One-click launcher for the von-neumann console chat (Windows).
-rem Double-click this file, or run:  chat.cmd [--agency] [--verbose] [--store <id>]
+rem Double-click this file, or run:  chat.cmd [--engage] [--verbose] [--store <id>]
 setlocal
 set PYTHONUTF8=1
 cd /d "%~dp0"

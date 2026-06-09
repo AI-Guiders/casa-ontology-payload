@@ -4,8 +4,9 @@
 Unlike agent_dialogue_repl, this defers the heavy full-store checkpoint to the
 session boundary (state['_defer_runtime_persist']), so each turn costs only the
 cognitive tick (~sub-second) instead of a ~13s per-turn gzip of the whole field.
-By default it runs in "conversation mode" (force_accept_external) so the subject
-engages rather than deferring to its own practice; pass --agency to keep defer.
+
+Default: full subject agency (may defer/refuse partner turns). Optional --engage
+sets force_accept_external — product overlay only, not the moral default.
 """
 
 from __future__ import annotations
@@ -74,8 +75,8 @@ _HELP = "\n".join(
         "  /remember <текст>— научить/поправить (запись в журнал; всплывает при следующем вопросе)",
         "  /turns [N]       — последние N реплик",
         "  /passage         — многострочный ввод (пассаж+вопрос), конец — пустая строка",
-        "  /engage          — режим разговора (отвечать, не деферить)  [по умолчанию]",
-        "  /agency          — вернуть субъектность (может деферить ради своей практики)",
+        "  /agency          — субъектность: полная disposition (defer/refuse)  [по умолчанию]",
+        "  /engage          — продуктовый overlay: всегда accept partner-turn",
         "  /genome          — паспорт генома (species_id, hash, alleles)",
         "  /help            — эта справка",
     ]
@@ -112,7 +113,7 @@ def _save(store: Path, state: dict, wm, *, quiet: bool = False) -> None:
 def run_chat(
     store: Path,
     *,
-    engage: bool = True,
+    engage: bool = False,
     no_save: bool = False,
     checkpoint: bool = False,
     verbose: bool = False,
@@ -144,7 +145,8 @@ def run_chat(
 
         print()
         print(f"CASA chat — {display} ({store.name})")
-        print(f"Режим: {'разговор (engage)' if engage else 'субъектность (agency)'} · быстрые ответы · /help · /quit")
+        mode = "engage (product overlay)" if engage else "agency (субъектность)"
+        print(f"Режим: {mode} · быстрые ответы · /help · /quit")
         if turns:
             print(f"В сессии уже {turns} реплик.")
         print()
@@ -201,11 +203,11 @@ def run_chat(
                         continue
                     elif cmd == "engage":
                         state.setdefault("subject", {})["force_accept_external"] = True
-                        print("  · режим разговора включён")
+                        print("  · engage: partner-turn всегда accept (продуктовый overlay)")
                         continue
                     elif cmd == "agency":
                         state.setdefault("subject", {}).pop("force_accept_external", None)
-                        print("  · субъектность восстановлена (может деферить)")
+                        print("  · agency: полная disposition (defer/refuse возможны)")
                         continue
                     elif cmd == "genome":
                         from casa.prisms.genetic import format_genome_passport_repl
@@ -256,7 +258,16 @@ def run_chat(
 def main() -> None:
     p = argparse.ArgumentParser(description="Fast console chat with the von-neumann subject")
     p.add_argument("--store", default="von-neumann", help="store id under agents/ or a path")
-    p.add_argument("--agency", action="store_true", help="keep subject agency (may defer); default is conversation mode")
+    p.add_argument(
+        "--engage",
+        action="store_true",
+        help="product overlay: force_accept_external on partner turns (default: full agency)",
+    )
+    p.add_argument(
+        "--agency",
+        action="store_true",
+        help=argparse.SUPPRESS,
+    )
     p.add_argument("--no-save", action="store_true", help="do not persist anything on exit")
     p.add_argument("--checkpoint", action="store_true", help="full field checkpoint on exit (~slow); default flushes dialogue only")
     p.add_argument("--verbose", action="store_true", help="show per-turn latency/intent on stderr")
@@ -264,7 +275,7 @@ def main() -> None:
     raise SystemExit(
         run_chat(
             _store_dir(args.store),
-            engage=not args.agency,
+            engage=args.engage and not args.agency,
             no_save=args.no_save,
             checkpoint=args.checkpoint,
             verbose=args.verbose,
