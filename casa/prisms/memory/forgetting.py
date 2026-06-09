@@ -13,6 +13,13 @@ DEFAULT_PRIMING_ALPHA = 0.2
 PRIMING_FLOOR = 0.01
 PRIMING_BOOST_SCALE = 10
 
+DEFAULT_EPISODIC_BETA = 0.08
+DEFAULT_EPISODIC_FADE_EVERY_N = 8
+DEFAULT_EPISODIC_SALIENCE_FLOOR = 0.05
+DEFAULT_HIPPO_CAP = 240
+DEFAULT_DIALOGUE_RING_CAP = 256
+DEFAULT_NCA_EROSION_EPSILON = 0.02
+
 
 def _priming_block(state: dict) -> dict[str, Any]:
     zone = ensure_memory_zone(state)
@@ -177,6 +184,271 @@ def _pathology_mode(state: dict) -> str:
     return raw or "none"
 
 
+def _genetic_forgetting_float(state: dict, path: str, default: float) -> float:
+    try:
+        from casa.prisms.genetic.zone import genetic_constant
+
+        val = genetic_constant(state, path)
+        if val is not None:
+            return float(val)
+    except (ImportError, AttributeError, TypeError, ValueError):
+        pass
+    return default
+
+
+def _genetic_forgetting_int(state: dict, path: str, default: int) -> int:
+    return int(_genetic_forgetting_float(state, path, float(default)))
+
+
+def episodic_beta_fade(state: dict) -> float:
+    zone = ensure_memory_zone(state)
+    fg = (zone.get("forgetting") or {}) if isinstance(zone.get("forgetting"), dict) else {}
+    raw = fg.get("episodic_beta_fade")
+    if raw is not None:
+        return float(raw)
+    return _genetic_forgetting_float(state, "forgetting_genotype.episodic.beta_fade", DEFAULT_EPISODIC_BETA)
+
+
+def episodic_fade_every_n_ticks(state: dict) -> int:
+    zone = ensure_memory_zone(state)
+    fg = (zone.get("forgetting") or {}) if isinstance(zone.get("forgetting"), dict) else {}
+    raw = fg.get("episodic_fade_every_n_ticks")
+    if raw is not None:
+        return max(1, int(raw))
+    return max(1, _genetic_forgetting_int(state, "forgetting_genotype.episodic.fade_every_n_ticks", DEFAULT_EPISODIC_FADE_EVERY_N))
+
+
+def episodic_salience_floor(state: dict) -> float:
+    zone = ensure_memory_zone(state)
+    fg = (zone.get("forgetting") or {}) if isinstance(zone.get("forgetting"), dict) else {}
+    raw = fg.get("episodic_salience_floor")
+    if raw is not None:
+        return float(raw)
+    return _genetic_forgetting_float(
+        state,
+        "forgetting_genotype.episodic.salience_floor",
+        DEFAULT_EPISODIC_SALIENCE_FLOOR,
+    )
+
+
+def episodic_hippo_cap(state: dict) -> int:
+    zone = ensure_memory_zone(state)
+    fg = (zone.get("forgetting") or {}) if isinstance(zone.get("forgetting"), dict) else {}
+    raw = fg.get("hippo_cap")
+    if raw is not None:
+        return max(1, int(raw))
+    return max(1, _genetic_forgetting_int(state, "forgetting_genotype.episodic.hippo_cap", DEFAULT_HIPPO_CAP))
+
+
+def dialogue_ring_cap(state: dict) -> int:
+    zone = ensure_memory_zone(state)
+    fg = (zone.get("forgetting") or {}) if isinstance(zone.get("forgetting"), dict) else {}
+    raw = fg.get("dialogue_ring_cap")
+    if raw is not None:
+        return max(1, int(raw))
+    return max(1, _genetic_forgetting_int(state, "forgetting_genotype.episodic.dialogue_ring_cap", DEFAULT_DIALOGUE_RING_CAP))
+
+
+def _metabolic_load_factor(state: dict) -> float:
+    meta = state.get("meta") or {}
+    for key in ("metabolic_last", "metabolic_tick", "metabolic"):
+        block = meta.get(key)
+        if not isinstance(block, dict):
+            continue
+        for fat_key in ("fatigue", "fatigue_ema", "load"):
+            raw = block.get(fat_key)
+            if raw is not None:
+                return min(1.0, max(0.0, float(raw)))
+    zone = ensure_memory_zone(state)
+    fg = zone.get("forgetting") if isinstance(zone.get("forgetting"), dict) else {}
+    override = fg.get("metabolic_load_override")
+    if override is not None:
+        return min(1.0, max(0.0, float(override)))
+    return 0.0
+
+
+def _episode_salience(ep: dict[str, Any]) -> float:
+    raw = ep.get("salience")
+    if raw is None:
+        return 1.0
+    return max(0.0, float(raw))
+
+
+def _hub_cooccurrence(state: dict, concept_id: str | None) -> float:
+    cid = str(concept_id or "").strip()
+    if not cid:
+        return 0.0
+    prim = (ensure_memory_zone(state).get("implicit") or {}).get("priming") or {}
+    act = float((prim.get("cells") or {}).get(cid) or 0)
+    if act < PRIMING_FLOOR:
+        return 0.0
+    return min(1.0, act)
+
+
+def forget_should_episodic_fade(state: dict, *, tick: int | None = None) -> bool:
+    """Speed-2: fade every N ticks or when metabolic load is elevated."""
+    n = episodic_fade_every_n_ticks(state)
+    fv = int(tick if tick is not None else state.get("field_version") or 0)
+    if n > 0 and fv % n == 0:
+        return True
+    return _metabolic_load_factor(state) >= 0.5
+
+
+def forget_episodic_fade(state: dict, *, tick: int | None = None) -> dict[str, Any]:
+    """Speed-2: salience decay on hippo episodes (ADR-0070 P15c)."""
+    from casa.domain.prism_wire import prism_hippo
+
+    beta = episodic_beta_fade(state)
+    load = _metabolic_load_factor(state)
+    floor = episodic_salience_floor(state)
+    multiplier = 1.0 + load
+    hippo = prism_hippo(state)
+    episodes = list(hippo.get("episodes") or [])
+    faded = 0
+    below_floor = 0
+    fv = int(tick if tick is not None else state.get("field_version") or 0)
+    for ep in episodes:
+        if not isinstance(ep, dict) or ep.get("consolidated"):
+            continue
+        hub_boost = _hub_cooccurrence(state, str(ep.get("concept_id") or "") or None)
+        decay = beta * multiplier * (1.0 - hub_boost)
+        new_sal = max(0.0, _episode_salience(ep) - decay)
+        ep["salience"] = round(new_sal, 6)
+        faded += 1
+        if new_sal < floor:
+            below_floor += 1
+    hippo["episodes"] = episodes
+    rep = {
+        "beta_fade": beta,
+        "metabolic_load": round(load, 4),
+        "multiplier": round(multiplier, 4),
+        "faded": faded,
+        "below_floor": below_floor,
+        "salience_floor": floor,
+        "tick": fv,
+    }
+    forget = state.setdefault("forgetting", {})
+    forget["speed2_last"] = rep
+    return rep
+
+
+def forget_episodic_trim(state: dict) -> dict[str, Any]:
+    """Post-sleep: drop low-salience / consolidated episodes; cap hippo queue (P15e)."""
+    from casa.domain.prism_wire import prism_hippo
+
+    floor = episodic_salience_floor(state)
+    cap = episodic_hippo_cap(state)
+    hippo = prism_hippo(state)
+    episodes = list(hippo.get("episodes") or [])
+    before = len(episodes)
+    kept: list[dict[str, Any]] = []
+    trimmed_low = 0
+    trimmed_consolidated = 0
+    for ep in episodes:
+        if not isinstance(ep, dict):
+            continue
+        if ep.get("consolidated"):
+            trimmed_consolidated += 1
+            continue
+        if _episode_salience(ep) < floor:
+            trimmed_low += 1
+            continue
+        kept.append(ep)
+    overflow = max(0, len(kept) - cap)
+    if overflow:
+        kept.sort(key=_episode_salience, reverse=True)
+        kept = kept[:cap]
+    hippo["episodes"] = kept
+    rep = {
+        "before": before,
+        "after": len(kept),
+        "trimmed_low_salience": trimmed_low,
+        "trimmed_consolidated": trimmed_consolidated,
+        "trimmed_overflow": overflow,
+        "hippo_cap": cap,
+        "salience_floor": floor,
+    }
+    forget = state.setdefault("forgetting", {})
+    forget["episodic_trim_last"] = rep
+    return rep
+
+
+def trim_dialogue_ring(store_dir, state: dict | None = None) -> dict[str, Any]:
+    """Cap session dialogue ring (ADR-0070 speed-2 post-sleep)."""
+    from casa.domain.dialogue_turn import DIALOGUE_RING_MAX, load_dialogue_turns
+    from casa.prisms.control.fpn_state import read_session_meta, write_session_meta
+
+    cap = dialogue_ring_cap(state) if state is not None else DIALOGUE_RING_MAX
+    store_dir = Path(store_dir).resolve()
+    turns = load_dialogue_turns(store_dir)
+    before = len(turns)
+    if before <= cap:
+        return {"before": before, "after": before, "trimmed": 0, "cap": cap}
+    meta = read_session_meta(store_dir)
+    trimmed_turns = turns[-cap:]
+    meta["dialogue_turns"] = [t.to_dict() for t in trimmed_turns]
+    write_session_meta(store_dir, meta)
+    return {"before": before, "after": len(trimmed_turns), "trimmed": before - len(trimmed_turns), "cap": cap}
+
+
+def nca_erosion_pass(state: dict) -> dict[str, Any]:
+    """Speed-3 @ sleep: concept edge decay; immutable lattices skipped (P15d)."""
+    from casa.prisms.memory.agent_prism import agent_lattices
+    from casa.prisms.memory.write_gate import is_immutable_lattice
+
+    immutable_skipped = sorted(
+        lid for lid in agent_lattices(state) if is_immutable_lattice(state, str(lid))
+    )
+    concept_rep: dict[str, Any] = {"skipped": True, "reason": "import"}
+    try:
+        from casa.prisms.memory.concept_index import apply_concept_nca_edge_decay
+
+        concept_rep = apply_concept_nca_edge_decay(state)
+    except ImportError:
+        pass
+    epsilon = _genetic_forgetting_float(
+        state,
+        "forgetting_genotype.nca.erosion_epsilon",
+        DEFAULT_NCA_EROSION_EPSILON,
+    )
+    rep = {
+        "epsilon": epsilon,
+        "immutable_lattices_skipped": immutable_skipped,
+        "immutable_skipped_count": len(immutable_skipped),
+        "concept_core": concept_rep,
+        "mutable_lattice_count": len(agent_lattices(state)) - len(immutable_skipped),
+    }
+    forget = state.setdefault("forgetting", {})
+    forget["nca_erosion_last"] = rep
+    return rep
+
+
+def probe_episodic_fade_runs(state: dict) -> dict[str, Any]:
+    """Speed-2 hook should be configured and salience floor sane (P15f)."""
+    n = episodic_fade_every_n_ticks(state)
+    beta = episodic_beta_fade(state)
+    floor = episodic_salience_floor(state)
+    return {
+        "pass": n >= 1 and 0.0 < beta < 1.0 and 0.0 < floor < 1.0,
+        "fade_every_n_ticks": n,
+        "beta_fade": beta,
+        "salience_floor": floor,
+    }
+
+
+def probe_episodic_trim_cap(state: dict) -> dict[str, Any]:
+    """Hippo queue must respect cap after trim (P15f)."""
+    from casa.domain.prism_wire import prism_hippo
+
+    cap = episodic_hippo_cap(state)
+    count = len(prism_hippo(state).get("episodes") or [])
+    return {
+        "pass": count <= cap,
+        "hippo_episode_count": count,
+        "hippo_cap": cap,
+    }
+
+
 def count_canon_immutable_touched(state: dict) -> int:
     """Merged sleep items or blocked hot writes that touched immutable lattices."""
     from casa.prisms.memory.write_gate import is_immutable_lattice
@@ -232,8 +504,13 @@ def forget_snapshot(state: dict) -> dict[str, Any]:
     pathology = _pathology_mode(state)
     return {
         "speed1_last": forget.get("speed1_last"),
+        "speed2_last": forget.get("speed2_last"),
+        "episodic_trim_last": forget.get("episodic_trim_last"),
+        "nca_erosion_last": forget.get("nca_erosion_last"),
         "priming_active_count": int(prim.get("active_count") or 0),
         "alpha_retain": priming_alpha_retain(state),
+        "episodic_beta_fade": episodic_beta_fade(state),
+        "hippo_cap": episodic_hippo_cap(state),
         "last_sleep": {
             "merged": int(last_sleep.get("merged") or 0),
             "pending": int(last_sleep.get("pending") or 0),
@@ -256,6 +533,8 @@ def build_forget_honesty_report(state: dict) -> dict[str, Any]:
     probes = {
         "canon_immutable_touched": probe_canon_immutable_touched(state),
         "priming_alpha": probe_priming_alpha(state),
+        "episodic_fade": probe_episodic_fade_runs(state),
+        "episodic_trim_cap": probe_episodic_trim_cap(state),
         "recall_episodic": probe_recall_uses_episodic_scope(state),
         "math_implicit": probe_math_habit_implicit(state),
         "post_sleep": probe_post_sleep_hippo_pending_down(state),
@@ -291,15 +570,15 @@ def finalize_memory_sleep_reports(
     """P12e consolidate mirror + P15f honesty report after run_sleep."""
     from casa.prisms.memory.consolidate_report import memory_consolidate_snapshot
 
-    concept_nca: dict[str, Any] = {}
-    try:
-        from casa.prisms.memory.concept_index import apply_concept_nca_edge_decay
-
-        concept_nca = apply_concept_nca_edge_decay(state)
-        if concept_nca.get("edges_decayed") is not None:
-            sleep_report["concept_nca"] = concept_nca
-    except ImportError:
-        pass
+    nca_rep = nca_erosion_pass(state)
+    if nca_rep.get("concept_core"):
+        sleep_report["concept_nca"] = nca_rep["concept_core"]
+    trim_rep = forget_episodic_trim(state)
+    sleep_report["episodic_trim"] = trim_rep
+    dialogue_trim: dict[str, Any] = {}
+    if store_dir is not None:
+        dialogue_trim = trim_dialogue_ring(store_dir, state)
+        sleep_report["dialogue_ring_trim"] = dialogue_trim
     digest = memory_consolidate_snapshot(state, sleep_report)
     honesty = build_forget_honesty_report(state)
     sleep_report["forget_honesty"] = {
@@ -309,4 +588,10 @@ def finalize_memory_sleep_reports(
     }
     if store_dir is not None:
         write_forget_honesty_report(store_dir, honesty)
-    return {"consolidate": digest, "honesty": honesty, "concept_nca": concept_nca}
+    return {
+        "consolidate": digest,
+        "honesty": honesty,
+        "nca_erosion": nca_rep,
+        "episodic_trim": trim_rep,
+        "dialogue_ring_trim": dialogue_trim,
+    }

@@ -41,6 +41,16 @@ DEFAULT_GENOME: dict[str, Any] = {
         "implicit": {
             "priming_alpha_retain": 0.2,
         },
+        "episodic": {
+            "beta_fade": 0.08,
+            "fade_every_n_ticks": 8,
+            "salience_floor": 0.05,
+            "hippo_cap": 240,
+            "dialogue_ring_cap": 256,
+        },
+        "nca": {
+            "erosion_epsilon": 0.02,
+        },
         "canon_susceptibility": 0.0,
     },
     "surprise_gains": {
@@ -105,6 +115,10 @@ def build_genome_spec(manifest_cfg: dict[str, Any] | None = None) -> dict[str, A
         fg = cfg["forgetting_genotype"]
         if isinstance(fg.get("implicit"), dict):
             spec.setdefault("forgetting_genotype", {}).setdefault("implicit", {}).update(fg["implicit"])
+        if isinstance(fg.get("episodic"), dict):
+            spec.setdefault("forgetting_genotype", {}).setdefault("episodic", {}).update(fg["episodic"])
+        if isinstance(fg.get("nca"), dict):
+            spec.setdefault("forgetting_genotype", {}).setdefault("nca", {}).update(fg["nca"])
     if isinstance(cfg.get("policy"), dict):
         spec.setdefault("metabolic", {})["policy"] = {
             **spec.get("metabolic", {}).get("policy", {}),
