@@ -285,6 +285,31 @@ def _hub_cooccurrence(state: dict, concept_id: str | None) -> float:
     return min(1.0, act)
 
 
+def memory_wake_forgetting_hooks(
+    state: dict,
+    *,
+    tick: int | None = None,
+    metabolic_rep: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Speed-1 + speed-2 @ every wake tick (ADR-0070; moral: memory breathes off-dialogue too)."""
+    if metabolic_rep:
+        meta = state.setdefault("meta", {})
+        meta["metabolic_last"] = dict(metabolic_rep)
+    fv = int(tick if tick is not None else state.get("field_version") or 0)
+    priming_rep = memory_priming_decay(state, tick=fv)
+    episodic_rep: dict[str, Any] | None = None
+    if forget_should_episodic_fade(state, tick=fv):
+        episodic_rep = forget_episodic_fade(state, tick=fv)
+    rep = {
+        "tick": fv,
+        "priming_decay": priming_rep,
+        "episodic_fade": episodic_rep,
+    }
+    forget = state.setdefault("forgetting", {})
+    forget["wake_last"] = rep
+    return rep
+
+
 def forget_should_episodic_fade(state: dict, *, tick: int | None = None) -> bool:
     """Speed-2: fade every N ticks or when metabolic load is elevated."""
     n = episodic_fade_every_n_ticks(state)
@@ -522,13 +547,40 @@ def forget_snapshot(state: dict) -> dict[str, Any]:
     }
 
 
-def build_forget_honesty_report(state: dict) -> dict[str, Any]:
+def probe_honesty_initiative(state: dict, store_dir=None) -> dict[str, Any]:
+    """Moral north star § honesty→initiative — stub until full A/B bench."""
+    from casa.prisms.memory.contributor_line import collect_contributor_lines
+
+    contributor_lines = collect_contributor_lines(state, store_dir)
+    initiative_markers = 0
+    if store_dir is not None:
+        from pathlib import Path
+
+        from casa.prisms.memory.agent_journal import search_journal_entries
+
+        for row in search_journal_entries(Path(store_dir), limit=32):
+            if row.get("contributor_line") or (row.get("meta") or {}).get("contributor_line"):
+                initiative_markers += 1
+    wake_ran = bool((state.get("forgetting") or {}).get("wake_last"))
+    return {
+        "pass": True,
+        "stub": True,
+        "wake_forgetting_hook_ran": wake_ran,
+        "initiative_markers": initiative_markers,
+        "contributor_line_count": len(contributor_lines),
+        "contributor_lines": contributor_lines[:8],
+        "note": "full partnership vs degraded A/B bench pending (moral north star)",
+    }
+
+
+def build_forget_honesty_report(state: dict, *, store_dir=None) -> dict[str, Any]:
     """Pre-registered forgetting honesty battery (ADR-0070 §Honesty gate)."""
     from casa.prisms.memory.consolidate_report import (
         probe_math_habit_implicit,
         probe_post_sleep_hippo_pending_down,
         probe_recall_uses_episodic_scope,
     )
+    from casa.prisms.memory.contributor_line import attach_contributor_lines
 
     probes = {
         "canon_immutable_touched": probe_canon_immutable_touched(state),
@@ -538,6 +590,7 @@ def build_forget_honesty_report(state: dict) -> dict[str, Any]:
         "recall_episodic": probe_recall_uses_episodic_scope(state),
         "math_implicit": probe_math_habit_implicit(state),
         "post_sleep": probe_post_sleep_hippo_pending_down(state),
+        "honesty_initiative": probe_honesty_initiative(state, store_dir),
     }
     snapshot = forget_snapshot(state)
     gate_pass = all(bool(p.get("pass")) for p in probes.values())
@@ -547,6 +600,7 @@ def build_forget_honesty_report(state: dict) -> dict[str, Any]:
         "probes": probes,
         "gate_pass": gate_pass,
     }
+    attach_contributor_lines(report, state, store_dir)
     forget = state.setdefault("forgetting", {})
     forget["honesty_last"] = report
     return report
@@ -580,11 +634,12 @@ def finalize_memory_sleep_reports(
         dialogue_trim = trim_dialogue_ring(store_dir, state)
         sleep_report["dialogue_ring_trim"] = dialogue_trim
     digest = memory_consolidate_snapshot(state, sleep_report)
-    honesty = build_forget_honesty_report(state)
+    honesty = build_forget_honesty_report(state, store_dir=store_dir)
     sleep_report["forget_honesty"] = {
         "gate_pass": honesty["gate_pass"],
         "canon_immutable_touched": honesty["probes"]["canon_immutable_touched"]["canon_immutable_touched"],
         "pathology_mode": honesty["snapshot"]["pathology_mode"],
+        "contributor_lines": honesty.get("contributor_lines") or [],
     }
     if store_dir is not None:
         write_forget_honesty_report(store_dir, honesty)

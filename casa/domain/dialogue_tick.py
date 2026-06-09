@@ -144,16 +144,11 @@ def process_dialogue_on_tick(
         from casa.prisms.shared.store_bundles import load_store_bundles
 
         metabolic_rep = metabolic_begin_tick(state, tick=int(wm_next.tick))
-        from casa.prisms.memory.forgetting import (
-            forget_episodic_fade,
-            forget_should_episodic_fade,
-            memory_priming_decay,
-        )
-
-        priming_decay_rep = memory_priming_decay(state, tick=int(wm_next.tick))
-        episodic_fade_rep: dict[str, Any] = {}
-        if forget_should_episodic_fade(state, tick=int(wm_next.tick)):
-            episodic_fade_rep = forget_episodic_fade(state, tick=int(wm_next.tick))
+        meta = state.setdefault("meta", {})
+        meta["metabolic_last"] = dict(metabolic_rep)
+        wake_last = (state.get("forgetting") or {}).get("wake_last") or {}
+        priming_decay_rep = wake_last.get("priming_decay") or {}
+        episodic_fade_rep = wake_last.get("episodic_fade") or {}
         perceptual_prepare_turn(state, q, modality="text_stream")
         prior_digest = list(wm.last_concepts or []) if wm.last_concepts else None
         executive_before_compose(

@@ -49,10 +49,10 @@ class GeneticPassportTests(unittest.TestCase):
             self.assertEqual(doc["species_id"], "casa.test.v1")
             self.assertTrue(doc.get("valid"))
             self.assertIn("allele_summary", doc)
-            self.assertEqual(
-                doc["allele_summary"]["forgetting_genotype"]["priming_alpha_retain"],
-                0.2,
-            )
+            fg = doc["allele_summary"]["forgetting_genotype"]
+            self.assertEqual((fg.get("implicit") or {}).get("priming_alpha_retain"), 0.2)
+            self.assertIn("episodic", fg)
+            self.assertIn("nca", fg)
 
     def test_wm_intent_policy_wired_from_genome(self) -> None:
         state = self._state()
@@ -72,6 +72,8 @@ class GeneticPassportTests(unittest.TestCase):
         text = format_genome_passport_repl(state)
         self.assertIn("species_id", text)
         self.assertIn("forgetting", text)
+        self.assertIn("β=", text)
+        self.assertIn("nca_ε=", text)
 
     def test_priming_alpha_matches_default_genome(self) -> None:
         state = self._state()

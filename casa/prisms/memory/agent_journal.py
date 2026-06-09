@@ -259,6 +259,7 @@ def append_journal_entry(
     *,
     domain: str = DEFAULT_JOURNAL_DOMAIN,
     field_version: int | None = None,
+    contributor_line: str | None = None,
 ) -> dict[str, Any]:
     from casa.domain.journal_wal import append_entry_line, wal_append_pending, wal_commit_append
 
@@ -282,6 +283,14 @@ def append_journal_entry(
     meta = entry.get("meta")
     if isinstance(meta, dict) and meta:
         row["meta"] = meta
+
+    from casa.prisms.memory.contributor_line import resolve_contributor_line, stamp_journal_entry
+
+    cl = resolve_contributor_line(
+        contributor_line or entry.get("contributor_line") or (row.get("meta") or {}).get("contributor_line")
+    )
+    if cl:
+        row = stamp_journal_entry(row, cl)
 
     rows = _load_entries(store_dir, domain)
     if any(r.get("id") == row["id"] for r in rows):

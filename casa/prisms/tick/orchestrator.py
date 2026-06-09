@@ -196,6 +196,10 @@ def run_learning_tick(
     task = cen_plan(gated, bundle=routing_bundle, user_query=q)
     wm_next = fpn_after_cen(wm, task, user_query=q)
 
+    from casa.prisms.memory.forgetting import memory_wake_forgetting_hooks
+
+    wake_forget_rep = memory_wake_forgetting_hooks(state, tick=int(wm_next.tick))
+
     from casa.domain.dialogue_tick import process_dialogue_on_tick
 
     control = run_control_extensions(
@@ -402,6 +406,7 @@ def run_learning_tick(
             "autonomy_seed": mem_prep.get("autonomy_seed"),
             "self_check": self_check_rep,
         },
+        "memory_wake_forgetting": wake_forget_rep,
         "dialogue": dialogue_rep,
         "wm_prism_sleep": wm_sleep_rep,
         "intent_prism_sleep": intent_sleep_rep,

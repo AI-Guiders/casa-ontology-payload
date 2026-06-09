@@ -28,13 +28,66 @@ def _forgetting_priming_alpha(state: dict) -> float:
         return 0.2
 
 
+def _forgetting_genotype_summary(state: dict) -> dict[str, Any]:
+    """Full forgetting_genotype — genome prior + effective runtime (P6f / P15)."""
+    try:
+        from casa.prisms.memory.forgetting import (
+            DEFAULT_EPISODIC_BETA,
+            DEFAULT_EPISODIC_FADE_EVERY_N,
+            DEFAULT_EPISODIC_SALIENCE_FLOOR,
+            DEFAULT_HIPPO_CAP,
+            DEFAULT_DIALOGUE_RING_CAP,
+            DEFAULT_NCA_EROSION_EPSILON,
+            dialogue_ring_cap,
+            episodic_beta_fade,
+            episodic_fade_every_n_ticks,
+            episodic_hippo_cap,
+            episodic_salience_floor,
+        )
+    except ImportError:
+        return {
+            "implicit": {"priming_alpha_retain": _forgetting_priming_alpha(state)},
+            "canon_susceptibility": genetic_constant(state, "forgetting_genotype.canon_susceptibility", 0.0),
+        }
+
+    implicit = genetic_constant(state, "forgetting_genotype.implicit", {}) or {}
+    episodic_prior = genetic_constant(state, "forgetting_genotype.episodic", {}) or {}
+    nca_prior = genetic_constant(state, "forgetting_genotype.nca", {}) or {}
+    return {
+        "implicit": {
+            "priming_alpha_retain": _forgetting_priming_alpha(state),
+            **{k: implicit[k] for k in sorted(implicit.keys()) if k != "priming_alpha_retain"},
+        },
+        "episodic": {
+            "beta_fade": episodic_beta_fade(state),
+            "fade_every_n_ticks": episodic_fade_every_n_ticks(state),
+            "salience_floor": episodic_salience_floor(state),
+            "hippo_cap": episodic_hippo_cap(state),
+            "dialogue_ring_cap": dialogue_ring_cap(state),
+            "prior": episodic_prior or {
+                "beta_fade": DEFAULT_EPISODIC_BETA,
+                "fade_every_n_ticks": DEFAULT_EPISODIC_FADE_EVERY_N,
+                "salience_floor": DEFAULT_EPISODIC_SALIENCE_FLOOR,
+                "hippo_cap": DEFAULT_HIPPO_CAP,
+                "dialogue_ring_cap": DEFAULT_DIALOGUE_RING_CAP,
+            },
+        },
+        "nca": {
+            "erosion_epsilon": genetic_constant(
+                state,
+                "forgetting_genotype.nca.erosion_epsilon",
+                DEFAULT_NCA_EROSION_EPSILON,
+            ),
+            "prior": nca_prior,
+        },
+        "canon_susceptibility": genetic_constant(state, "forgetting_genotype.canon_susceptibility", 0.0),
+    }
+
+
 def genome_allele_summary(state: dict) -> dict[str, Any]:
     """Resolved allele snapshot — effective wired constants (P6c inventory)."""
     summary: dict[str, Any] = {
-        "forgetting_genotype": {
-            "priming_alpha_retain": _forgetting_priming_alpha(state),
-            "canon_susceptibility": genetic_constant(state, "forgetting_genotype.canon_susceptibility", 0.0),
-        },
+        "forgetting_genotype": _forgetting_genotype_summary(state),
         "metabolic_policy": {},
         "signal_decay": {},
         "promote_canon": {},
@@ -101,8 +154,16 @@ def format_genome_passport_repl(state: dict) -> str:
     alleles = doc.get("allele_summary") or {}
     fg = alleles.get("forgetting_genotype") or {}
     if fg:
+        implicit = fg.get("implicit") or {}
+        episodic = fg.get("episodic") or {}
+        nca = fg.get("nca") or {}
         lines.append(
-            f"forgetting: α_retain={fg.get('priming_alpha_retain')} "
+            f"forgetting: α={implicit.get('priming_alpha_retain')} "
+            f"β={episodic.get('beta_fade')} n={episodic.get('fade_every_n_ticks')} "
+            f"θ_ep={episodic.get('salience_floor')} hippo_cap={episodic.get('hippo_cap')}"
+        )
+        lines.append(
+            f"forgetting: nca_ε={nca.get('erosion_epsilon')} "
             f"canon_susceptibility={fg.get('canon_susceptibility')}"
         )
     mp = alleles.get("metabolic_policy") or {}

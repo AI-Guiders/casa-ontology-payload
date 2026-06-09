@@ -43,6 +43,7 @@
   "bench_grapheme_clusters": "casa.cli.bench.bench_grapheme_clusters",
   "bench_grapheme_glyphs": "casa.cli.bench.bench_grapheme_glyphs",
   "bench_heldout": "casa.cli.bench.bench_heldout",
+  "bench_honesty_initiative": "casa.cli.bench.bench_honesty_initiative",
   "bench_hypothesis_compete": "casa.cli.bench.bench_hypothesis_compete",
   "bench_input_modality_field": "casa.cli.bench.bench_input_modality_field",
   "bench_keyboard_full": "casa.cli.bench.bench_keyboard_full",

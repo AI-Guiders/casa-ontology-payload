@@ -325,6 +325,9 @@ def _render_genome_passport_section(passport: dict[str, Any]) -> list[str]:
         return []
     alleles = passport.get("allele_summary") or {}
     fg = alleles.get("forgetting_genotype") or {}
+    implicit = fg.get("implicit") or {}
+    episodic = fg.get("episodic") or {}
+    nca = fg.get("nca") or {}
     mp = alleles.get("metabolic_policy") or {}
     sd = alleles.get("signal_decay") or {}
     lines = [
@@ -334,9 +337,14 @@ def _render_genome_passport_section(passport: dict[str, Any]) -> list[str]:
         f"- genome_hash: `{passport.get('genome_hash_short')}…` valid={passport.get('valid')} sealed@{passport.get('sealed_at_tick')}",
         "",
         "```text",
-        f"forgetting  α_retain={fg.get('priming_alpha_retain')} canon_susceptibility={fg.get('canon_susceptibility')}",
-        f"metabolic   sleep_threshold={mp.get('sleep_threshold')} cost_surprise={mp.get('cost_surprise')}",
-        f"signal_decay wm_θ={sd.get('wm_theta_decay')} intent_θ={sd.get('intent_theta_decay')}",
+        f"forgetting.implicit  α_retain={implicit.get('priming_alpha_retain')}",
+        f"forgetting.episodic  β={episodic.get('beta_fade')} every_n={episodic.get('fade_every_n_ticks')} "
+        f"θ_floor={episodic.get('salience_floor')} hippo_cap={episodic.get('hippo_cap')} "
+        f"dialogue_cap={episodic.get('dialogue_ring_cap')}",
+        f"forgetting.nca       ε={nca.get('erosion_epsilon')}",
+        f"forgetting.canon     susceptibility={fg.get('canon_susceptibility')}",
+        f"metabolic            sleep_threshold={mp.get('sleep_threshold')} cost_surprise={mp.get('cost_surprise')}",
+        f"signal_decay         wm_θ={sd.get('wm_theta_decay')} intent_θ={sd.get('intent_theta_decay')}",
         "```",
         "",
     ]

@@ -57,7 +57,7 @@ def resync_agent_store(
     boot = boot_store(store_dir, prefer_field_state=True)
     state = ensure_prisms(boot["state"])
 
-    forget_honesty = build_forget_honesty_report(state)
+    forget_honesty = build_forget_honesty_report(state, store_dir=store_dir)
     forget_path = write_forget_honesty_report(store_dir, forget_honesty)
     report["forget_honesty"] = {
         "path": str(forget_path),
