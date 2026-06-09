@@ -456,6 +456,26 @@ Orion: `autonomic.load`; в коде: `fatigue_ema` / `sleep_pressure` (0064). *
 
 ---
 
+## Honesty gate (pre-registered probes)
+
+Три скорости забывания и `λ=0` @ immutable — **архитектурные обещания**. Перед P15 «accepted» прогоняются фиксированные пробы (pre-register, без подгонки порогов post-hoc).
+
+**Healthy agent battery** (von-neumann teaching store, N ≥ 1000 ticks):
+
+| Probe | Ожидание @ healthy | KILL если |
+|-------|-------------------|-----------|
+| `canon_immutable_touched` | **0** @ P15f snapshot | > 0 без `pathology_mode` |
+| `forget_snapshot` episodic | decay монотонен; нет silent delete semantic | необъяснимые gaps в provenance |
+| Скорость-1 priming | α_eff ≈ genome prior ± limbic band | α=0 → мёртвая WM; α→1 → нет удержания |
+| Скорость-3 @ sleep | NCA erosion **не** трогает `immutable` lattices | alphabet/morph strength ↓ без demote |
+| Pathology (lab only) | `pathology_mode` + `canon_susceptibility` allele | erosion canon @ default teaching genome |
+
+**NCA vs скучный бейзлайн** (связь с §7 recommendations, отдельный от P15 minimal): абляция «NCA erosion off» vs «checkpoint-only repair» на **той же** метрике удержания episodic + decode fidelity — если ECC/checkpoint доминирует Pareto при текущем byte-budget NCA, скорость-3 **пересматривается**, не декларируется «Orion full» без отчёта.
+
+**Артефакт:** `forget_honesty_report.json` @ P15f (probes, α/β/ε_eff, `canon_immutable_touched`, ablation summary).
+
+---
+
 ## Rollout (draft)
 
 | Phase | Action |
@@ -465,7 +485,7 @@ Orion: `autonomic.load`; в коде: `fatigue_ema` / `sleep_pressure` (0064). *
 | **P15c** | Скорость-2: `forget_episodic_fade` + metabolic load input |
 | **P15d** | Скорость-3: `nca_erosion_pass` @ sleep + cement from probe |
 | **P15e** | `forget_episodic_trim` post-sleep; hypothesis accel |
-| **P15f** | `forget_snapshot`; probe `canon_immutable_touched == 0` |
+| **P15f** | `forget_snapshot`; probe `canon_immutable_touched == 0`; **Honesty gate** report |
 | **P15g** | `demote_canon` genetic stub (только agent canon) |
 | **P16** | `affect_forgetting_gains` + limbic modulators (§6.1) |
 | **P17** | (Optional, Q7) `forgetting_genotype` + `pathology_mode` — только lab |
@@ -489,6 +509,7 @@ Orion: `autonomic.load`; в коде: `fatigue_ema` / `sleep_pressure` (0064). *
 | Скорость-2 только @ sleep | metabolic fade каждые N ticks на wake |
 | WM без prune | полоса prune/promote 0055 |
 | Всё в MEMORY.md | Digest ≠ полное поле |
+| Заявить Orion full без honesty report | P15f `forget_honesty_report.json` |
 
 ---
 

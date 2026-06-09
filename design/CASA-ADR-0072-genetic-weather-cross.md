@@ -222,6 +222,33 @@ REPL / MEMORY.md (опционально): «рождён @ mix с погодо�
 
 ---
 
+## Honesty gate (pre-registered metrics)
+
+Идея «многоосная погода → разнообразие» должна быть **измерена до** масштабирования AiNet fork — по дисциплине pre-register (см. Von Neumann recommendations §7).
+
+**Корпус:** фиксированная пара родителей `(H_a, H_b)` + held-out набор `W_i` (≥ 24 bundle: live или cached, разные `fetched_at_utc` / точки).
+
+| Метрика | Определение |
+|---------|-------------|
+| **Repro** | `(H_a, H_b, W)` → один `child_genome_hash`; повтор fork → бит-в-бит совпадение |
+| **Diversity (allele)** | mean pairwise L1 по `mutate_allowed_keys` между детьми при **одних** родителях и **разных** `W_i` |
+| **Diversity (topology)** | mean pairwise Frobenius / L2 по `character_topology` warp (0071) |
+| **Baseline** | `mutate_alleles` с `rng_seed = store_id` на том же parent — те же метрики |
+
+**Пред-регистрированные критерии (P6w-f):**
+
+| Вердикт | Условие |
+|---------|---------|
+| **PASS** | `Diversity_weather` (allele **или** topology) ≥ **1.5×** baseline `mutate_alleles` на held-out |
+| **KILL (weather_cross decorative)** | `Diversity_weather` ≤ baseline при том же byte-budget lineage audit |
+| **KILL (implementation bug)** | Repro test падает при фиксированном `weather_at_fork.json` |
+
+Скучный бейзлайн для сравнения: PRNG-only fork **обязан** быть построен и измерен в том же отчёте — иначе «погода красивая» без доказательства.
+
+**Артефакт:** `lineage/diversity_report.json` @ P6w-f (parents, W list, hashes, distances).
+
+---
+
 ## Open questions
 
 ### Q1 — Сколько точек N?
@@ -247,7 +274,7 @@ REPL / MEMORY.md (опционально): «рождён @ mix с погодо�
 | **P6w-c** | `mix_genome_hashes` + `unroll_child_genome` unit tests |
 | **P6w-d** | CLI `weather_cross`; lineage files |
 | **P6w-e** | wire `fork_genome_for_child(mode=weather_cross)` |
-| **P6w-f** | AiNet cohort probe: hash diversity @ same parents different W |
+| **P6w-f** | AiNet cohort probe + **Honesty gate** (§ pre-registered metrics): diversity vs `mutate_alleles` baseline |
 
 ---
 
@@ -261,6 +288,7 @@ REPL / MEMORY.md (опционально): «рождён @ mix с погодо�
 | Float hash без rounding | canonical normalize + round |
 | Погода как narrative в hot path | только @ fork; digest optional |
 | Один параметр (только temp) | многоосный bundle (ветер, давление, осадки, …) |
+| Fork без diversity report | P6w-f honesty gate + `lineage/diversity_report.json` |
 
 ---
 
