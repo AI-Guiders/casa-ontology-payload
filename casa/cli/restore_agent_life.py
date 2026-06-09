@@ -9,6 +9,7 @@ ensure_import_paths()
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from casa.cli.bootstrap_agent_self_tier import bootstrap_agent_self_tier
@@ -89,6 +90,13 @@ def main() -> None:
         help="Do not bootstrap Self tier when journal missing",
     )
     args = p.parse_args()
+
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except (OSError, ValueError):
+                pass
 
     if args.from_life_archive:
         source = resolve_life_archive_store(args.from_life_archive)
