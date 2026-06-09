@@ -58,6 +58,14 @@ def memory_write_allowed(
     return not is_immutable_lattice(state, lattice_id)
 
 
+def record_immutable_write_blocked(state: dict) -> int:
+    """Increment blocked-write counter for P15f honesty snapshot."""
+    meta = state.setdefault("meta", {})
+    n = int(meta.get("immutable_write_blocked") or 0) + 1
+    meta["immutable_write_blocked"] = n
+    return n
+
+
 def assert_memory_write_allowed(
     state: dict,
     lattice_id: str,
@@ -66,6 +74,7 @@ def assert_memory_write_allowed(
 ) -> None:
     if memory_write_allowed(state, lattice_id, context=context):
         return
+    record_immutable_write_blocked(state)
     raise ImmutableLatticeWriteError(
         f"immutable lattice {lattice_id!r} write blocked (context={context}); use promote_canon ceremony"
     )

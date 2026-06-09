@@ -795,6 +795,9 @@ def run_sleep(
                 skip_vocab_over=65535,
                 remigrate_l2=False,
             )
+        from casa.prisms.memory.forgetting import finalize_memory_sleep_reports
+
+        finalize_memory_sleep_reports(state, cons["last_sleep"], store_dir=store_dir)
         set_active_prism(state, PRISM_MEMORY)
         state["sn"] = {**(state.get("sn") or {}), "mode": "wake"}
         state["field_version"] = int(state.get("field_version") or 0) + 1
@@ -1053,6 +1056,9 @@ def run_sleep(
             skip_vocab_over=65535,
             remigrate_l2=False,
         )
+    from casa.prisms.memory.forgetting import finalize_memory_sleep_reports
+
+    finalize_memory_sleep_reports(state, cons["last_sleep"], store_dir=store_dir)
     set_active_prism(state, PRISM_MEMORY)
     state["sn"] = {**(state.get("sn") or {}), "mode": "wake"}
     state["field_version"] = int(state.get("field_version") or 0) + 1
