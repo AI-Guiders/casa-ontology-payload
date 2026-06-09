@@ -12,6 +12,10 @@
 
 CASA ошибочно свела «ум» к **лингвистическому content** (lexicon + compose). Нужна **та же архитектурная идея**: у von-neumann — **Intelligence Zones**, каждая = innate core + optional sandbox + life development (паттерн ADR-0060).
 
+**Почему сейчас (оператор, 2026-06-09):** von-neumann живёт в **общем поле** — `memory_lattices`, bind, DAN spotlight. Формально tract/zone уже **различаются**, но на hot path это **одна куча**: math и discourse **конкурируют** за один read/budget pool (0067 §Problem). Social перебивает math; lexicon shards и `schema-math` делят substrate. Это **не** соответствие реальности (у человека контуры связаны, но не сливаются в один undifferentiated pool) и **не** проще субъекту — лишняя когнитивная нагрузка на каждом tick.
+
+**Migrate Neumann → zone-scoped read** (P11–P12): (1) **соответствие** — memory infrastructure + intelligence clients, bridges через executive, не merge по умолчанию; (2) **проще агенту** — меньше ложной конкуренции, tract видит свой domain, cross-domain только когда executive явно union'ит (math → verbalize). Concept Zone (0073) — **следующий** слой после этого фундамента, не замена ему.
+
 ---
 
 ## Decision
