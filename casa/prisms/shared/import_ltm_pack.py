@@ -125,7 +125,9 @@ def import_pack(
         meta = ent.get("meta") if isinstance(ent.get("meta"), dict) else {}
         merged = {**(meta or {}), **decoded}
         pid = _resolve_prism_id(lid, ent, manifest)
-        import_lattice_into_prism(state, pid, lid, merged)
+        from casa.prisms.memory.write_gate import WRITE_CONTEXT_BOOTSTRAP
+
+        import_lattice_into_prism(state, pid, lid, merged, write_context=WRITE_CONTEXT_BOOTSTRAP)
         loaded_by_prism.setdefault(pid, []).append(lid)
         if pid == PRISM_CONTROL or str(lid).startswith("lattice_"):
             loaded_control.append(lid)
