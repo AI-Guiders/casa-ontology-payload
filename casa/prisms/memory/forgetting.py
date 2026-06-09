@@ -291,6 +291,15 @@ def finalize_memory_sleep_reports(
     """P12e consolidate mirror + P15f honesty report after run_sleep."""
     from casa.prisms.memory.consolidate_report import memory_consolidate_snapshot
 
+    concept_nca: dict[str, Any] = {}
+    try:
+        from casa.prisms.memory.concept_index import apply_concept_nca_edge_decay
+
+        concept_nca = apply_concept_nca_edge_decay(state)
+        if concept_nca.get("edges_decayed") is not None:
+            sleep_report["concept_nca"] = concept_nca
+    except ImportError:
+        pass
     digest = memory_consolidate_snapshot(state, sleep_report)
     honesty = build_forget_honesty_report(state)
     sleep_report["forget_honesty"] = {
@@ -300,4 +309,4 @@ def finalize_memory_sleep_reports(
     }
     if store_dir is not None:
         write_forget_honesty_report(store_dir, honesty)
-    return {"consolidate": digest, "honesty": honesty}
+    return {"consolidate": digest, "honesty": honesty, "concept_nca": concept_nca}

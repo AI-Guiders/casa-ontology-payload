@@ -220,7 +220,15 @@ def spawn_concept_prism(
             height=32,
             concept_prefix=CONCEPT_PREFIX,
         )
-    return {"concept_id": hub, "lattice_id": CONCEPT_CORE_LATTICE, "catalog_size": len(catalog)}
+    from casa.prisms.memory.concept_index import index_concept_hub
+
+    index_rep = index_concept_hub(state, hub, tick=fv)
+    return {
+        "concept_id": hub,
+        "lattice_id": CONCEPT_CORE_LATTICE,
+        "catalog_size": len(catalog),
+        "index": index_rep,
+    }
 
 
 def spawn_concept_layer(state: dict, *, config: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -236,7 +244,15 @@ def spawn_concept_layer(state: dict, *, config: dict[str, Any] | None = None) ->
     dom = ensure_concept_domain(state)
     dom["theory_id"] = theory
     dom["bootstrap_count"] = len(spawned)
-    return {"theory_id": theory, "concept_ids": spawned, "lattice_id": CONCEPT_CORE_LATTICE}
+    from casa.prisms.memory.concept_index import build_concept_hub_index
+
+    index_rep = build_concept_hub_index(state)
+    return {
+        "theory_id": theory,
+        "concept_ids": spawned,
+        "lattice_id": CONCEPT_CORE_LATTICE,
+        "index": index_rep,
+    }
 
 
 def normalize_bind_block(row: dict[str, Any]) -> dict[str, Any]:

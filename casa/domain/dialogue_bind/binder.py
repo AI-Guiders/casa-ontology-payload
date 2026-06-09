@@ -181,6 +181,16 @@ class SubjectDialogueBinder:
         )
         meta = state.setdefault("meta", {})
         meta["priming_bind_last"] = priming_bind
+        try:
+            from casa.prisms.memory.concept_index import touch_concept_hub_edges
+
+            meta["concept_edge_touch"] = touch_concept_hub_edges(
+                state,
+                blocks,
+                tick=int(state.get("field_version") or 0),
+            )
+        except ImportError:
+            pass
 
         stance = infer_stance(blocks, task=task, intent=intent)
 

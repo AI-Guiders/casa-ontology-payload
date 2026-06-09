@@ -221,9 +221,10 @@ def build_memory_map(store_dir: Path, state: dict) -> dict[str, Any]:
     except ImportError:
         pass
     try:
+        from casa.prisms.memory.concept_index import concept_index_snapshot
         from casa.prisms.memory.concept_layer import concept_layer_snapshot
 
-        concept_doc = concept_layer_snapshot(state)
+        concept_doc = {**concept_layer_snapshot(state), "index": concept_index_snapshot(state)}
     except ImportError:
         pass
 
@@ -302,12 +303,14 @@ def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
 def _render_concept_layer_section(snapshot: dict[str, Any]) -> list[str]:
     if not snapshot or not snapshot.get("concept_count"):
         return []
+    index = snapshot.get("index") or {}
     lines = [
         "## Concept Zone (ADR-0073 P18)",
         "",
         f"- theory: `{snapshot.get('theory_id')}`",
         f"- concept hubs: **{snapshot.get('concept_count')}**",
         f"- lattice: `{', '.join(snapshot.get('lattice_ids') or []) or '—'}`",
+        f"- index edges: **{index.get('edge_count', 0)}** (hub λ=0, edges only @ NCA)",
         "",
         "```text",
     ]
