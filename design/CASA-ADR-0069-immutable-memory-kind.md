@@ -78,8 +78,10 @@ Genetic — *как* попасть в immutable; Memory immutable — *что �
 | Содержимое | Epistemic | Kind |
 |------------|-----------|------|
 | Алфавит RU @ species install | convention (не innate у людей; install @ T=0) | immutable bootstrap |
-| Morph-role table | grammar postulate set | immutable bootstrap |
-| F=ma после curriculum + probes | *принятая* модель механики, не «истина мира» | immutable **earned** (future) |
+| Morph-role table | grammar postulate set | immutable bootstrap (`domains.lang`) |
+| `concept.window`, `concept.orange` | teaching object / idea postulate | immutable bootstrap (`domains.concept`) |
+| Agent novel invariant (probes pass) | *принятый* concept cell, не «истина мира» | immutable **earned** (`domains.concept`) |
+| F=ma после curriculum + probes | *принятая* модель механики, не «истина мира» | immutable **earned** (`domains.math`) |
 | Гипотеза до verify | draft | explicit mutable / sandbox |
 | Lexicon 50k | experiential semantic | explicit mutable |
 

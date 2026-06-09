@@ -139,6 +139,9 @@ memory.immutable
 │                      lang-ru-morph-v1       → morph-role-*
 ├── domains.math
 │   └── theories[]     (earned @ promote)
+├── domains.concept    ← **Concept Zone** (0073): `concept.*` hub lattices / prisms
+│   └── theories[]     species-bootstrap-v1 → teaching concepts @ T=0
+│                      earned-*              → agent-discovered @ promote_canon
 └── domains.vis
     └── theories[]     (roadmap)
 ```
@@ -157,7 +160,9 @@ intelligence_zones.logical
 
 **Invariant:** promote_canon всегда append в **единый** `memory.immutable` catalog с `domain` + `theory_id`; theory fork = новая ветка в том же store, не новая intelligence zone.
 
-Подробнее epistemic model + earned path: [CASA-ADR-0069-immutable-memory-kind.md](CASA-ADR-0069-immutable-memory-kind.md) §8–9.
+**Concept Zone (`domains.concept`):** не intelligence zone и не linguistic owner — **полка immutable** под `concept.*` hub/prism. Bootstrap = species teaching set; **earned** = ceremony после sandbox + verify (агент может открыть concept, которого не было @ T=0). Lex (`lex.ru.*`) остаётся **explicit mutable**; vis/audio edges — explicit или crosslink к hub.
+
+Подробнее: [CASA-ADR-0073-concept-layer-lexicalization.md](CASA-ADR-0073-concept-layer-lexicalization.md) § Concept Zone.
 
 ### 5. State block (v0)
 
@@ -286,6 +291,9 @@ REPL **минимум P12b:** `memory.resolve_scopes` before bind; math tract �
 | **P12g** | Sleep merge skip immutable; promote_canon → earned postulates |
 | **P12h** | Theory fork metadata; active_theory_id in resolve |
 | **P15** | Forgetting policies — ADR-0070; post-sleep trim/decay |
+| **P18** | Concept layer + **Concept Zone** in `immutable.domains.concept` — ADR-0073; **after P12g–h** |
+
+**Порядок (оператор, 2026-06-09):** сначала **дожать Zones** (P11 wire → P12 memory kinds → P12g promote/immutable index), **затем** Concept Zone — иначе concept prisms некуда безопасно класть.
 
 ### 11. Tests (acceptance)
 

@@ -93,16 +93,57 @@ discourse.ru.* / discourse.en.*   ← compose realizers (0056), NOT concept iden
 
 | Layer | Prefix | Example | Memory kind (0068/0069) |
 |-------|--------|---------|-------------------------|
-| **Concept** | `concept.` | `concept.orange`, `concept.window` | explicit.semantic (stable) or earned → immutable postulate |
+| **Concept** | `concept.` | `concept.orange`, `concept.window` | **immutable** @ `domains.concept` (bootstrap or earned) |
 | **Lexeme RU** | `lex.ru.` | `lex.ru.apelsin` → `concept.orange` | explicit.semantic |
 | **Lexeme EN** | `lex.en.` | `lex.en.orange` → `concept.orange` | explicit.semantic |
-| **Meta (grammar/epistemic)** | `lang.meta.` | `lang.meta.compare.greater` | immutable @ bootstrap (0069) |
+| **Meta (grammar/epistemic)** | `lang.meta.` | `lang.meta.compare.greater` | immutable @ `domains.lang` |
 | **Discourse frame** | `discourse.{locale}.` | `discourse.ru.self` (migrate from `ru.dialog.self`) | explicit / sandbox |
 | **Legacy** | `lang.word.*`, `ru.*` | read-path aliases only | migrate → concept+lex |
 
 **Anti-pattern:** новые `lang.word.{russian_surface}` как **identity** концепта.
 
-### 3. Concept lattice (target)
+### 3. Concept Zone — `memory.immutable.domains.concept` (не intelligence zone)
+
+**Решение (оператор, 2026-06-09):** после завершения **Zones** (P11–P12) — выделить в immutable **Concept Zone**: место, где **безопасно** живут hub/prism на `concept.*`. Не 11-я intelligence zone; **полка** внутри singleton `memory.immutable` (0068 §4.1), sibling `domains.lang` / `math`.
+
+```text
+memory.immutable.domains.concept
+├── theory: species-concept-bootstrap-v1
+│     concept.orange   → lattice concept-orange  (or indexed cell @ agent-concept-core)
+│     concept.window   → lattice concept-window
+│     concept.door     → …
+├── theory: earned-*   @ promote_canon only
+│     concept.{novel}  → agent-discovered invariant (probes + verify)
+└── spawn_policy
+      hot_write: forbidden
+      promote: genetic.promote_canon + honesty gate (§ below)
+      fork: theory_id branch; supersede, not overwrite
+```
+
+**Зачем immutable, а не explicit:**
+
+| explicit semantic | Concept Zone (immutable) |
+|-------------------|--------------------------|
+| lex drift, sleep merge | **λ=0** @ healthy agent (0070) |
+| «забыли слово» | concept hub **остаётся** |
+| гипотеза до verify | черновик в sandbox → **promote** → Concept Zone |
+| нет ceremony | **один** путь добавить новый concept prism |
+
+**«Концепты, которых мы не нашли»:** агент (или следующее поколение CASA) формирует **candidate** в explicit/sandbox (multimodal bind, cross-locale invariance) → `promote_canon` → новый `concept.{id}` + prism в `domains.concept`. Это **earned postulate**, не hot-path галлюцинация. Operator bootstrap @ T=0 задаёт **species scaffold**; earned расширяет каталог **внутри той же epistemic модели** (0069).
+
+**Intelligence zones — клиенты Concept Zone:**
+
+| Zone | Read |
+|------|------|
+| linguistic | `concept.*` + `lex.{locale}.*` |
+| spatial | `concept.*` + vis edges |
+| logical | `concept.*` + math bridges |
+| social | `concept.agent.*`, partner model |
+| executive | union read @ cross-domain tick |
+
+**Prism-per-concept (target):** `spawn_concept_prism(concept_id)` → catalog entry under `memory.immutable.domains.concept` + optional dedicated lattice id `concept-{slug}`; v1 shared `agent-concept-core` with index (sparse, как concept cell literature).
+
+### 4. Concept lattice (target)
 
 Помимо per-language `lexicon-ru/en`:
 
@@ -113,9 +154,9 @@ prism_memory / agent-concept-core   (or shared concept lattice in memory zone)
 ```
 
 **v0 rollout:** concept id в **explicit** semantic + **edges** в F0/graph к lex/vis (без отдельной 64×64 решётки).  
-**v1:** dedicated `agent-concept-core` lattice + index (как character 0071).
+**v1 (Concept Zone live):** dedicated lattice or indexed cell per `concept.*` under **`immutable.domains.concept`** after P12g promote wire.
 
-### 4. Bind / compose pipeline
+### 5. Bind / compose pipeline
 
 ```text
 percept (text/vis) → locale surface tokens
@@ -126,16 +167,16 @@ percept (text/vis) → locale surface tokens
 
 **Intent routing (0061 linguistic):** tables keyed by **concept + locale surface**, not hardcoded `ru.dialog.*` in Python. EN = новый locale file, не fork логики.
 
-### 5. Memory & forgetting (0069 / 0070)
+### 6. Memory & forgetting (0069 / 0070)
 
 | Object | Forgetting @ healthy | Notes |
 |--------|----------------------|-------|
-| `concept.*` (species scaffold) | λ≈0; demote/supersede ceremony | как immutable postulate после promote |
+| `concept.*` hub @ **Concept Zone** | λ=0; demote/supersede ceremony only | immutable `domains.concept` |
 | `lex.ru.*` / `lex.en.*` | normal episodic / priming | «забыл слово», не «забыл апельсин» |
 | weak lex → strong concept | bind через concept hub | vis + один lex достаточно для compose |
 | `lang.meta.*` bootstrap | λ=0 | 0069 |
 
-### 6. Genetic fork (0062 / 0072)
+### 7. Genetic fork (0062 / 0072)
 
 | Invariant @ fork | Variable @ fork |
 |------------------|-----------------|
@@ -145,7 +186,7 @@ percept (text/vis) → locale surface tokens
 
 **Смысл:** дети **делят** «окно/дом/дверь», **расходятся** в lex access, character, forgetting — как phenotype priors, не как другой язык.
 
-### 7. Distillation (0065 / рекомендации §4)
+### 8. Distillation (0065 / рекомендации §4)
 
 ```text
 LLM draft frame → adversarial gate (0037 ref) → candidate concept.orange + lex.ru.*
@@ -203,7 +244,11 @@ Runtime **без** LLM. Concept layer **усиливает** gating: promote п�
 
 ### Q3 — Separate concept lattice v0 or graph-only?
 
-**Proposal:** graph-only v0 (P18a–c); lattice v1 when NCA erosion on concept hub measured (0070 honesty).
+**Proposal:** graph-only **до** P12g; Concept Zone prisms in **`immutable.domains.concept`** @ P18g (after Zones done). Shared `agent-concept-core` index v1 when honesty probe passes.
+
+### Q5 — Concept Zone vs 11th intelligence zone?
+
+**Proposal:** **нет** новой intelligence zone. Concept Zone = **immutable partition** only; all intelligence zones read via `immutable_read_scope: { domain: concept }` or global concept union @ executive.
 
 ### Q4 — Statistical learning module?
 
@@ -213,15 +258,18 @@ Runtime **без** LLM. Concept layer **усиливает** gating: promote п�
 
 ## Rollout
 
+**Порядок:** **P11 → P12 (включая P12g–h immutable index) → P18**. Concept Zone без promote gate = anti-pattern.
+
 | Phase | Action | Depends |
 |-------|--------|---------|
-| **P18a** | ADR-0073 accepted; manifest `concept_layer` block | 0069 terminology |
+| **P18a** | ADR-0073 + manifest `concept_layer` + `immutable.domains.concept` | **P12g–h** |
 | **P18b** | `concept.*` / `lex.{ru,en}.*` schema + alias read path | P18a |
-| **P18c** | migrate top N teaching concepts (orange, window, door, …) | P18b |
-| **P18d** | bind budget on `concept.*`; provenance shows concept id | 0067 wire |
-| **P18e** | locale tables for intent (`discourse.{locale}.*`) | P18d; fixes rec. §5 |
+| **P18c** | migrate top N teaching concepts → **Concept Zone bootstrap** | P18b |
+| **P18d** | bind budget on `concept.*`; provenance shows concept id | P11 wire |
+| **P18e** | locale tables for intent (`discourse.{locale}.*`) | P18d |
 | **P18f** | **Honesty gate** report | P18c–e |
-| **P19** | `agent-concept-core` lattice + NCA policy | 0070 P15d |
+| **P18g** | `spawn_concept_prism`; promote → `domains.concept` earned theory | P12g promote_canon |
+| **P19** | `agent-concept-core` index + NCA policy on concept hub edges only | P18g; 0070 P15d |
 
 ---
 
@@ -235,6 +283,8 @@ Runtime **без** LLM. Concept layer **усиливает** gating: promote п�
 | «Concept cell» = one Python object per word | sparse hub + multimodal edges |
 | Забывание lex = забывание concept | λ on lex; concept protected @ healthy |
 | Skip honesty probes | P18f cross-surface report |
+| Concept prism in explicit without promote | Concept Zone @ immutable only |
+| 11th intelligence zone «concept» | `memory.immutable.domains.concept` |
 | Claim «exactly like human neuron» | «motivated by concept-cell + cross-lingual evidence» |
 
 ---
