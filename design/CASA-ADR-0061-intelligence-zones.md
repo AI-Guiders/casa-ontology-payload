@@ -38,7 +38,7 @@ Organ catalog **closed** at T=0 (no new intelligence *types* at runtime). Нов
 |------|------------------------|-------------|---------|--------|
 | **executive** | общий / исполнительный | thalamus, SN, FPN, CEN, predict, DAN, value (P1–P9) | agent-exec-scratch (planned) | design + lab; **migrate** control stack |
 | **emotional** | эмоциональный / intrapersonal | limbic axes, episodic | `agent-affect-sandbox` | **0060 implemented** |
-| **linguistic** | лингвистический | discourse compose, tract bias | agent-linguistic-* | **uses** memory `domain=lang` (0068) |
+| **linguistic** | лингвистический | discourse compose, tract bias; **concept hub — 0073** | agent-linguistic-* | **uses** memory `domain=lang` (0068) |
 | **logical** | логико-матhematical | math tract, schema-math bootstrap | math palochki / agent-math-* | tract OK; wire + situations |
 | **social** | межличностный | dialogue ring, social tract, partner model | agent-social-sandbox (planned) | **gap** — repair, mentalizing |
 | **spatial** | пространственный | prism_visual, control_vis | vis scratch (roadmap) | design only |
@@ -149,5 +149,7 @@ genetic.read (immutable constants)
 - [CASA-ADR-0066-neuromodulator-zone.md](CASA-ADR-0066-neuromodulator-zone.md)
 - [CASA-ADR-0067-zone-prism-wire-migration.md](CASA-ADR-0067-zone-prism-wire-migration.md)
 - [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md)
+- [CASA-ADR-0071-character-field-prismatic.md](CASA-ADR-0071-character-field-prismatic.md)
+- [CASA-ADR-0073-concept-layer-lexicalization.md](CASA-ADR-0073-concept-layer-lexicalization.md)
 - [CASA-ADR-0059-innate-organ-basis.md](CASA-ADR-0059-innate-organ-basis.md)
 - [CASA-ADR-0057-dialogue-situations-character.md](CASA-ADR-0057-dialogue-situations-character.md)

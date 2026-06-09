@@ -526,6 +526,7 @@ Orion: `autonomic.load`; в коде: `fatigue_ema` / `sleep_pressure` (0064). *
 - [CASA-ADR-0060-emotional-zone-v1.md](CASA-ADR-0060-emotional-zone-v1.md)
 - [CASA-ADR-0062-genetic-zone.md](CASA-ADR-0062-genetic-zone.md)
 - [CASA-ADR-0065-controlled-mutations.md](CASA-ADR-0065-controlled-mutations.md)
+- [CASA-ADR-0073-concept-layer-lexicalization.md](CASA-ADR-0073-concept-layer-lexicalization.md)
 - [CASA-ADR-0072-genetic-weather-cross.md](CASA-ADR-0072-genetic-weather-cross.md)
 - [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md)
 - [CASA-ADR-0069-immutable-memory-kind.md](CASA-ADR-0069-immutable-memory-kind.md)

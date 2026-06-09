@@ -354,4 +354,5 @@ How executive picks `active_theory_id` per tract (default species theory vs agen
 - [CASA-ADR-0067-zone-prism-wire-migration.md](CASA-ADR-0067-zone-prism-wire-migration.md)
 - [CASA-ADR-0062-genetic-zone.md](CASA-ADR-0062-genetic-zone.md)
 - [CASA-ADR-0065-controlled-mutations.md](CASA-ADR-0065-controlled-mutations.md)
+- [CASA-ADR-0073-concept-layer-lexicalization.md](CASA-ADR-0073-concept-layer-lexicalization.md)
 - [zone-prism-map.v1.json](zone-prism-map.v1.json)

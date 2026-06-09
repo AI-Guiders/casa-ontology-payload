@@ -92,6 +92,7 @@ genome.v1.json
 | `promote_canon` / `demote_canon` | **0069 / 0070** | пороги ceremony, verify gates |
 | `memory_routing` | **0068 / 0069** | default theories, domain read weights |
 | `character_topology` | **0071** | birth bias grid / lattice warp |
+| `concept_catalog` | **0073** | species concept ids; lex weights variable @ fork |
 
 **Invariant:** tunable default зоны **читается** через `genetic_constant(path)`; дубли в Python/manifest без genome — **anti-pattern** (кроме species template @ first seal).
 
@@ -201,6 +202,7 @@ genome.v1.json
 - [CASA-ADR-0070-forgetting-policies.md](CASA-ADR-0070-forgetting-policies.md)
 - [CASA-ADR-0071-character-field-prismatic.md](CASA-ADR-0071-character-field-prismatic.md)
 - [CASA-ADR-0072-genetic-weather-cross.md](CASA-ADR-0072-genetic-weather-cross.md)
+- [CASA-ADR-0073-concept-layer-lexicalization.md](CASA-ADR-0073-concept-layer-lexicalization.md)
 - [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md)
 - [CASA-ADR-0065-controlled-mutations.md](CASA-ADR-0065-controlled-mutations.md)
 - [CASA-ADR-0061-intelligence-zones.md](CASA-ADR-0061-intelligence-zones.md)
