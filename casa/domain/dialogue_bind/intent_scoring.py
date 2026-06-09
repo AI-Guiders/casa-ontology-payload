@@ -27,6 +27,14 @@ def intent_affinity_delta(cid: str, *, intent: str) -> int:
         if cid.startswith(("ru.dialog.greeting", "ru.dialog.thanks")):
             return -16
         return 0
+    if intent == "recall":
+        if cid.startswith("agent.self.journal."):
+            return 32
+        if cid.startswith(("ru.dialog.explain", "lang.word.")):
+            return 8
+        if cid.startswith(("ru.dialog.greeting", "ru.dialog.thanks", "ru.dialog.farewell")):
+            return -28
+        return 0
     if intent == "social":
         if cid.startswith(("ru.dialog.self", "ru.dialog.capabilities", "ru.dialog.affect")):
             return 12
@@ -81,6 +89,11 @@ def kb_intent_boost_for_claim(
             boost += 16
         elif cid.startswith("ru.dialog."):
             boost -= 12
+    if intent == "recall":
+        if cid.startswith("agent.self.journal."):
+            boost += 24
+        elif cid.startswith("ru.dialog."):
+            boost -= 14
     if intent == "social":
         if cid.startswith("ru.dialog."):
             boost += 18

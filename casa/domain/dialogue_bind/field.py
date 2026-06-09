@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 from typing import Any
 
 from casa.domain.dialogue_bind.blocks import block_dict
@@ -11,8 +12,17 @@ from casa.prisms.control.sn_cen_runtime import TaskEmit
 from casa.prisms.memory.memory_prisms import memory_lattices
 
 
-def looks_like_field_recall(query: str) -> bool:
+def looks_like_field_recall(query: str, *, store_dir: Path | None = None) -> bool:
     ql = (query or "").lower()
+    if store_dir is not None:
+        try:
+            from casa.domain.dialogue_bind.recall_routing import journal_recall_tract_boost
+
+            recall_boost, _, _ = journal_recall_tract_boost(store_dir, query)
+            if recall_boost >= 28:
+                return True
+        except ImportError:
+            pass
     has_material_object = any(cue in ql for cue in ("палоч", "куч", "коров", "картинк"))
     if "на поле" not in ql and not has_material_object:
         return False

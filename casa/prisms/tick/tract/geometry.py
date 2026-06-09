@@ -36,6 +36,10 @@ def geometry_signals(query: str) -> dict[str, bool]:
         "word_lookup": any(m in ql for m in ("что означает", "что такое", "объясни", "объяснить")),
         "why_passage": any(m in ql for m in ("почему", "зачем")),
         "dialogue_turn": _query_is_dialogue(raw),
+        "recall_cue": any(
+            m in ql
+            for m in ("напомни", "напомин", "ты помнишь", "ты говорил", "мы говорили")
+        ),
     }
 
 
@@ -48,6 +52,9 @@ def _geometry_score_for_tract(tract_id: str, geo: dict[str, bool]) -> tuple[int,
     if tract_id == "grammar" and geo.get("grammar_markers"):
         score += 34
         sources.append("geo:grammar_markers")
+    if tract_id == "recall" and geo.get("recall_cue"):
+        score += 34
+        sources.append("geo:recall_cue")
     if tract_id == "explain" and geo.get("word_lookup"):
         if geo.get("passage_context") and geo.get("why_passage"):
             score += 8
@@ -56,8 +63,9 @@ def _geometry_score_for_tract(tract_id: str, geo: dict[str, bool]) -> tuple[int,
             score += 36
             sources.append("geo:word_lookup")
     if tract_id == "social" and geo.get("dialogue_turn") and not geo.get("word_lookup"):
-        score += 32
-        sources.append("geo:dialogue_turn")
+        if not geo.get("math_glyph") and not geo.get("grammar_markers"):
+            score += 32
+            sources.append("geo:dialogue_turn")
     if tract_id == "discuss" and geo.get("passage_context"):
         score += 22
         sources.append("geo:passage")

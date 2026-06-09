@@ -75,7 +75,19 @@ class SubjectDialogueBinder:
 
         query_read = route_kb_read(q, merged_bundle, store_dir=store_dir, state=state)
         intent = compose_mode if compose_mode else query_read.intent
-        if compose_mode is None and looks_like_field_recall(q):
+        if compose_mode is None and store_dir is not None:
+            from casa.domain.dialogue_bind.recall_routing import should_prefer_recall_intent
+
+            social_score = 0
+            for row in query_read.tract_ranked or []:
+                if getattr(row, "tract_id", None) == "social":
+                    social_score = int(getattr(row, "score", 0) or 0)
+                    break
+            if should_prefer_recall_intent(store_dir.resolve(), q, social_score=social_score):
+                intent = "recall"
+            elif looks_like_field_recall(q, store_dir=store_dir.resolve()):
+                intent = "explain"
+        elif compose_mode is None and looks_like_field_recall(q):
             intent = "explain"
 
         from casa.prisms.intelligence.scope_bind import apply_bind_scope, filter_bind_blocks

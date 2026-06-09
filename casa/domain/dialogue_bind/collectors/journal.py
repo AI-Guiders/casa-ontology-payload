@@ -28,7 +28,7 @@ def collect_journal_blocks(
     blocks: list[dict[str, Any]] = []
     sources: list[str] = []
 
-    if intent == "journal":
+    if intent in ("journal", "recall"):
         confirmed = journal_confirmed_blocks(store_dir, q, intent=intent)
         blocks.extend(confirmed)
         if confirmed:

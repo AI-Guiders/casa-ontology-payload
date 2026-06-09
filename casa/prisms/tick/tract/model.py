@@ -52,6 +52,7 @@ TRACT_IDS: tuple[str, ...] = (
     "math",
     "discuss",
     "rewrite",
+    "recall",
     "explain",
     "grammar",
     "social",

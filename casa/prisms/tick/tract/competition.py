@@ -56,6 +56,23 @@ def compete_tract_intent(
                 scores[tract_id].score += boost
                 scores[tract_id].sources.append("kb_affinity")
 
+    if store_dir is not None:
+        from casa.domain.dialogue_bind.recall_routing import journal_recall_tract_boost
+
+        r_boost, e_boost, js = journal_recall_tract_boost(store_dir, raw)
+        if r_boost:
+            scores.setdefault("recall", TractScore("recall", 0))
+            scores["recall"].score += r_boost
+            scores["recall"].sources.extend(js)
+        if e_boost and "explain" in scores:
+            scores["explain"].score += e_boost
+            scores["explain"].sources.append("journal:explain_shadow")
+        if r_boost >= 28 and "social" in scores:
+            damp = min(30, scores["social"].score)
+            if damp:
+                scores["social"].score -= damp
+                scores["social"].sources.append("journal:suppress_phatic_social")
+
     if state is not None:
         from casa.prisms.memory.intent import intent_tract_boosts
         from casa.prisms.memory.wm import wm_tract_boosts

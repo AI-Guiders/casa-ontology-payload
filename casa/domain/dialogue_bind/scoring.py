@@ -125,6 +125,15 @@ def reweight_blocks_for_reply(
             if cid.startswith("ru.dialog.capabilities"):
                 score += 10
 
+        if intent == "recall":
+            if b.get("source") == "journal":
+                score += 28
+            if str(b.get("section") or "") in ("confirmed", "journal_echo", "passage_echo"):
+                score += 12
+            if cid.startswith("agent.self.journal."):
+                score += 16
+            if cid.startswith(("ru.dialog.greeting", "ru.dialog.thanks", "ru.dialog.farewell")):
+                score = 0
         if intent == "journal":
             if cid.startswith(("passage.sent.", "ru.meta.discourse.")):
                 score += 18
