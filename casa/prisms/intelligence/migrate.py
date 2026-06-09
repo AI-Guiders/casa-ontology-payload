@@ -24,7 +24,7 @@ from casa.prisms.memory.bootstrap_agent_manifest import load_agent_bootstrap_man
 from casa.prisms.shared.store_boot import boot_store
 from casa.prisms.shared.store_persist import save_runtime_state
 
-INTELLIGENCE_ZONES_VERSION = 4
+INTELLIGENCE_ZONES_VERSION = 5
 
 
 def infer_emotional_from_dialogue_ring(
@@ -137,6 +137,10 @@ _SPAWNERS = {
         "spawned": True,
         **_spawn_neuromodulator_zone(state, cfg),
     },
+    "memory_zone": lambda state, cfg, tick: {
+        "spawned": True,
+        **_spawn_memory_zone(state, cfg),
+    },
 }
 
 
@@ -162,6 +166,12 @@ def _spawn_neuromodulator_zone(state: dict, cfg: dict[str, Any]) -> dict[str, An
     from casa.prisms.neuromodulator import spawn_neuromodulator_zone
 
     return spawn_neuromodulator_zone(state, config=cfg)
+
+
+def _spawn_memory_zone(state: dict, cfg: dict[str, Any]) -> dict[str, Any]:
+    from casa.prisms.memory.zone import spawn_memory_zone
+
+    return spawn_memory_zone(state, config=cfg)
 
 
 def _migrate_genetic_zone(
@@ -206,10 +216,14 @@ def migrate_all_zones(
 
     if store_dir is not None:
         report["zones"]["genetic"] = _migrate_genetic_zone(state, wrapper, store_dir, tick=tick)
+        from casa.prisms.intelligence.genetic_wire import wire_genetic_intelligence_zone
+
+        report["genetic_intelligence_wire"] = wire_genetic_intelligence_zone(state)
 
     for key, spawner in _SPAWNERS.items():
         cfg = _zone_cfg(wrapper, key)
-        if not cfg.get("enabled", key == "emotional_zone"):
+        default_enabled = key in ("emotional_zone", "memory_zone")
+        if not cfg.get("enabled", default_enabled):
             report["zones"][key.removesuffix("_zone")] = {"skipped": True}
             continue
         if key == "emotional_zone":
@@ -279,7 +293,11 @@ def main() -> int:
 
     if args.dry_run:
         manifest = load_agent_bootstrap_manifest(args.manifest)
-        enabled = [k for k in _SPAWNERS if _zone_cfg(manifest, k).get("enabled", k == "emotional_zone")]
+        enabled = [
+            k
+            for k in _SPAWNERS
+            if _zone_cfg(manifest, k).get("enabled", k in ("emotional_zone", "memory_zone"))
+        ]
         if _zone_cfg(manifest, "genetic_zone").get("enabled", True):
             enabled = ["genetic_zone", *enabled]
         print(json.dumps({"dry_run": True, "enabled_zones": enabled}, indent=2))

@@ -52,15 +52,19 @@ def salient_recall_tokens(query: str) -> list[str]:
     return list(dict.fromkeys(out))
 
 
-def field_snapshot_block(state: dict, wm: WorkingMemory) -> dict[str, Any]:
+def field_snapshot_block(state: dict, wm: WorkingMemory, *, intent: str = "general") -> dict[str, Any]:
     fv = int(state.get("field_version") or 0)
     goal = (wm.goal_id or wm.goal or "").strip()
     active = ""
     mem = memory_lattices(state)
     if mem:
-        from casa.domain.prism_wire import prism_memory
+        from casa.prisms.intelligence.scope_bind import pick_scoped_active_lattice
 
-        active = str(prism_memory(state).get("active_lattice") or next(iter(mem.keys()), ""))
+        active = pick_scoped_active_lattice(state, tract=intent)
+        if not active:
+            from casa.domain.prism_wire import prism_memory
+
+            active = str(prism_memory(state).get("active_lattice") or next(iter(mem.keys()), ""))
     parts = [f"field_version {fv}", f"tick {wm.tick}"]
     if goal:
         parts.append(f"goal {goal[:80]}")

@@ -36,7 +36,7 @@ def collect_field_blocks(
     blocks: list[dict[str, Any]] = []
     sources: list[str] = []
 
-    blocks.append(field_snapshot_block(state, wm))
+    blocks.append(field_snapshot_block(state, wm, intent=intent))
     sources.append("field")
 
     if task and task.concepts and intent == "social":

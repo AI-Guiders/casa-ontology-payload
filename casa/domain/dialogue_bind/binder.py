@@ -75,6 +75,10 @@ class SubjectDialogueBinder:
         if compose_mode is None and looks_like_field_recall(q):
             intent = "explain"
 
+        from casa.prisms.intelligence.scope_bind import apply_bind_scope, filter_bind_blocks
+
+        apply_bind_scope(state, tract=intent)
+
         resolved_skill = (
             apply_capability_to_wm(
                 state, wm, q, locale=(query_read.locales[0] if query_read.locales else "ru")
@@ -130,6 +134,7 @@ class SubjectDialogueBinder:
         sources.extend(field_sources)
 
         blocks[:] = _dedupe_blocks(blocks)
+        blocks[:] = filter_bind_blocks(blocks, state, intent=intent)
 
         from casa.domain.dialogue_bind.scoring import reweight_blocks_for_reply
 

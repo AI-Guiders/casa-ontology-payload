@@ -251,9 +251,9 @@
       "note": "Formal WM+discourse path — tract/compose bias; LTM via memory_zone domain=lang (0068)"
     },
     "memory_zone": {
-      "enabled": false,
+      "enabled": true,
       "adr": "0068",
-      "spawn_on_bootstrap": false,
+      "spawn_on_bootstrap": true,
       "core_lattice_id": "agent-memory-core",
       "sandbox_lattice_id": "agent-memory-sandbox",
       "concept_prefix_core": "agent.memory.",
@@ -284,7 +284,7 @@
         "write_gate": "genetic.promote_canon",
         "note": "Immutable = bootstrap canon; lexicon shards stay mutable"
       },
-      "note": "Owns prism_memory + prism_hippo; enable after P12a (ADR-0068)"
+      "note": "Owns prism_memory + prism_hippo (ADR-0068 P12a)"
     },
     "neuromodulator_zone": {
       "enabled": true,

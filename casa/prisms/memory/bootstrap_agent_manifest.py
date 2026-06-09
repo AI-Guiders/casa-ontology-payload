@@ -186,6 +186,7 @@ def _bootstrap_agent_prisms(
         ("metabolic_zone", "0064", "spawn_metabolic_zone", "casa.prisms.metabolic"),
         ("perceptual_zone", "0063", "spawn_perceptual_zone", "casa.prisms.perceptual"),
         ("linguistic_zone", "0061", "spawn_linguistic_zone", "casa.prisms.intelligence"),
+        ("memory_zone", "0068", "spawn_memory_zone", "casa.prisms.memory.zone"),
     ]
     for key, adr, fn_name, mod_path in zone_spawners:
         cfg = prisms.get(key) or {}
@@ -218,6 +219,10 @@ def _bootstrap_agent_prisms(
                 spawn_kwargs["initial_math_confidence"] = cfg.get("initial_math_confidence")
             if key == "linguistic_zone" and cfg.get("initial_discourse_confidence") is not None:
                 spawn_kwargs["initial_discourse_confidence"] = cfg.get("initial_discourse_confidence")
+            if key == "memory_zone":
+                for sub in ("explicit", "implicit", "immutable", "mutability"):
+                    if isinstance(cfg.get(sub), dict):
+                        spawn_kwargs[sub] = cfg.get(sub)
             if key == "metabolic_zone":
                 if cfg.get("initial_atp") is not None:
                     spawn_kwargs["initial_atp"] = cfg.get("initial_atp")

@@ -27,8 +27,11 @@ from casa.prisms.shared.memory_layer_names import (
 )
 from casa.prisms.shared.store_layout import rel_to_repo
 from casa.prisms.shared.store_paths_v1 import manifest_layout_block
+from casa.domain.prism_wire import prism_hippo
+from casa.prisms.memory.zone import ensure_memory_zone, lattice_zone_tag
 
 MEMORY_MAP_MD = "MEMORY.md"
+MEMORY_ZONE_GROUPS_SCHEMA = 1
 MEMORY_MAP_SUMMARY_JSON = "memory_map.summary.json"
 MEMORY_MAP_INVENTORY_JSON = "memory_map.inventory.json"
 LEGACY_MANIFEST_JSON = "memory_manifest.json"
@@ -74,6 +77,74 @@ def _shard_tier_summary(block: dict[str, Any] | None) -> dict[str, Any]:
     }
 
 
+def _row_line_label(row: dict[str, Any]) -> str:
+    nca = " + NCA" if row.get("nca_model") else ""
+    extra = f" · {row['lex_range']}" if row.get("lex_range") else ""
+    if row.get("token_range"):
+        hint = row.get("token_hint") or "entity/word tokens"
+        extra = f" · {row['token_range']} ({hint})"
+    idx = row.get("shard_index")
+    idx_s = f" [#{idx:02d}]" if idx is not None else ""
+    mut = " · immutable" if row.get("mutability") == "immutable" else ""
+    return f"`{row.get('id')}`{idx_s} (tokens={row.get('token_count', 0)}){nca}{extra}{mut}"
+
+
+def build_memory_zone_groups(state: dict, lattice_rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """ADR-0068 P12c — Memory → explicit/implicit/immutable → domain."""
+    ensure_memory_zone(state)
+    indexed = bool((state.get("meta") or {}).get("zone_lattice_index"))
+
+    explicit_episodic: list[dict[str, Any]] = []
+    explicit_semantic: dict[str, list[dict[str, Any]]] = {}
+    immutable_domains: dict[str, list[dict[str, Any]]] = {}
+
+    for row in lattice_rows:
+        lid = str(row.get("id") or "")
+        if not lid:
+            continue
+        tag = lattice_zone_tag(state, lid)
+        enriched = {**row, "zone_tag": tag}
+        mutability = str(tag.get("mutability") or "mutable")
+        subkind = str(tag.get("memory_subkind") or "")
+        domain = str(tag.get("domain") or "_ungrouped")
+
+        if mutability == "immutable":
+            immutable_domains.setdefault(domain, []).append(enriched)
+            continue
+        if subkind == "episodic":
+            explicit_episodic.append(enriched)
+            continue
+        explicit_semantic.setdefault(domain, []).append(enriched)
+
+    zone = ensure_memory_zone(state)
+    implicit = zone.get("implicit") or {}
+    counts = {
+        "explicit_episodic": len(explicit_episodic),
+        "explicit_semantic": sum(len(v) for v in explicit_semantic.values()),
+        "immutable": sum(len(v) for v in immutable_domains.values()),
+    }
+    for dom, rows in explicit_semantic.items():
+        counts[f"explicit_semantic_{dom}"] = len(rows)
+    for dom, rows in immutable_domains.items():
+        counts[f"immutable_{dom}"] = len(rows)
+
+    return {
+        "schema_version": MEMORY_ZONE_GROUPS_SCHEMA,
+        "adr": "0068",
+        "indexed": indexed,
+        "explicit": {
+            "episodic": explicit_episodic,
+            "semantic": {k: v for k, v in sorted(explicit_semantic.items())},
+        },
+        "immutable": {k: v for k, v in sorted(immutable_domains.items())},
+        "implicit_refs": {
+            "procedural": dict(implicit.get("procedural") or {}),
+            "priming": dict(implicit.get("priming") or {}),
+        },
+        "counts": counts,
+    }
+
+
 def build_memory_map(store_dir: Path, state: dict) -> dict[str, Any]:
     """Full in-memory map (feeds MEMORY.md and optional inventory JSON)."""
     store_dir = store_dir.resolve()
@@ -83,12 +154,14 @@ def build_memory_map(store_dir: Path, state: dict) -> dict[str, Any]:
     fs_bytes = fs_path.stat().st_size if fs_path.is_file() else 0
 
     layers: list[dict[str, Any]] = []
+    seen_ids: set[str] = set()
     for lid in sorted(lattices.keys(), key=lambda x: (lattices[x].get("z_level", 0), x)):
         lat = lattices[lid]
         toks = tokens_from_lattice(lat)
         nca_path = nca_model_registry(state).get(lid)
         nca_bytes = Path(nca_path).stat().st_size if nca_path and Path(nca_path).is_file() else 0
         mem_layer = memory_layer_for_lattice_id(lid)
+        tag = lattice_zone_tag(state, lid)
         layers.append(
             {
                 "id": lid,
@@ -103,8 +176,42 @@ def build_memory_map(store_dir: Path, state: dict) -> dict[str, Any]:
                 "word_concepts": sum(1 for t in toks if t.startswith("C:lang.word.")),
                 "nca_model": rel_to_repo(nca_path),
                 "nca_bytes": nca_bytes,
+                "mutability": tag.get("mutability"),
+                "memory_kind": tag.get("memory_kind"),
+                "memory_subkind": tag.get("memory_subkind"),
+                "domain": tag.get("domain"),
             }
         )
+        seen_ids.add(lid)
+
+    hippo_lats = prism_hippo(state).get("lattices") or {}
+    for lid in sorted(hippo_lats.keys()):
+        if lid in seen_ids:
+            continue
+        lat = hippo_lats[lid]
+        toks = tokens_from_lattice(lat) if isinstance(lat, dict) else []
+        tag = lattice_zone_tag(state, lid)
+        layers.append(
+            {
+                "id": lid,
+                "z_level": lat.get("z_level", 0) if isinstance(lat, dict) else 0,
+                "memory_layer": "memory.episodic",
+                "role": "hippo",
+                "width": lat.get("width") if isinstance(lat, dict) else None,
+                "height": lat.get("height") if isinstance(lat, dict) else None,
+                "token_count": len(toks),
+                "word_concepts": 0,
+                "nca_model": None,
+                "nca_bytes": 0,
+                "mutability": tag.get("mutability"),
+                "memory_kind": tag.get("memory_kind") or "explicit",
+                "memory_subkind": tag.get("memory_subkind") or "episodic",
+                "domain": tag.get("domain"),
+            }
+        )
+        seen_ids.add(lid)
+
+    memory_zone_groups = build_memory_zone_groups(state, layers)
 
     nca_dir = store_dir / "nca"
     parallel = store_dir / "_parallel_shards"
@@ -131,6 +238,7 @@ def build_memory_map(store_dir: Path, state: dict) -> dict[str, Any]:
         "l3_sharding": phrase_shard_stats(state),
         "prisms": ["prism_memory", "prism_hippo"],
         "lattice_stack": layers,
+        "memory_zone_groups": memory_zone_groups,
         "l2_network_ids": l2_word_lattice_ids(state),
         "journal": journal_stats(store_dir),
         "disk": disk,
@@ -156,6 +264,8 @@ def build_memory_map_summary(full: dict[str, Any]) -> dict[str, Any]:
         "l3": _shard_tier_summary(full.get("l3_sharding")),
         "lattice_count": len(stack),
         "lattice_count_by_layer": by_layer,
+        "memory_zone_groups": dict((full.get("memory_zone_groups") or {}).get("counts") or {}),
+        "memory_zone_indexed": bool((full.get("memory_zone_groups") or {}).get("indexed")),
         "l2_network_ids": list(full.get("l2_network_ids") or []),
         "journal": dict(full.get("journal") or {}),
         "disk": dict(full.get("disk") or {}),
@@ -166,6 +276,63 @@ def build_memory_map_summary(full: dict[str, Any]) -> dict[str, Any]:
 def build_manifest(store_dir: Path, state: dict) -> dict[str, Any]:
     """Deprecated alias — use build_memory_map."""
     return build_memory_map(store_dir, state)
+
+
+def _render_memory_zone_section(zone_groups: dict[str, Any]) -> list[str]:
+    lines = [
+        "## Memory Zone (ADR-0068)",
+        "",
+        f"- zone index wired: **{zone_groups.get('indexed')}**",
+        f"- counts: {json.dumps(zone_groups.get('counts') or {}, ensure_ascii=False)}",
+        "",
+        "```text",
+        "memory",
+    ]
+    explicit = zone_groups.get("explicit") or {}
+    episodic = list(explicit.get("episodic") or [])
+    if episodic:
+        lines.append("  explicit.episodic  (prism_hippo)")
+        for row in sorted(episodic, key=lambda r: str(r.get("id") or "")):
+            lines.append(f"    {_row_line_label(row)}")
+    semantic = explicit.get("semantic") or {}
+    if semantic:
+        lines.append("  explicit.semantic  (prism_memory)")
+        for domain in sorted(semantic.keys()):
+            rows = semantic[domain]
+            if not rows:
+                continue
+            label = domain if domain != "_ungrouped" else "ungrouped"
+            lines.append(f"    domain.{label}  ({len(rows)})")
+            for row in sorted(rows, key=lambda r: str(r.get("id") or ""))[:48]:
+                lines.append(f"      {_row_line_label(row)}")
+            if len(rows) > 48:
+                lines.append(f"      … +{len(rows) - 48} more")
+    immutable = zone_groups.get("immutable") or {}
+    if immutable:
+        lines.append("  immutable  (promote_canon gate)")
+        for domain in sorted(immutable.keys()):
+            rows = immutable[domain]
+            if not rows:
+                continue
+            label = domain if domain != "_ungrouped" else "ungrouped"
+            lines.append(f"    domain.{label}  ({len(rows)})")
+            for row in sorted(rows, key=lambda r: str(r.get("id") or "")):
+                lines.append(f"      {_row_line_label(row)}")
+    implicit_refs = zone_groups.get("implicit_refs") or {}
+    proc = implicit_refs.get("procedural") or {}
+    prim = implicit_refs.get("priming") or {}
+    if proc or prim:
+        lines.append("  implicit")
+        if proc:
+            lines.append(f"    procedural  intent={proc.get('intent_prism_ref')} nca={proc.get('nca_registry_ref')}")
+        if prim:
+            lines.append(
+                f"    priming  halflife_ticks={prim.get('bind_decay_halflife_ticks')} "
+                f"last_tick={prim.get('last_activation_tick')}"
+            )
+    lines.append("```")
+    lines.append("")
+    return lines
 
 
 def render_memory_md(memory_map: dict[str, Any]) -> str:
@@ -186,14 +353,21 @@ def render_memory_md(memory_map: dict[str, Any]) -> str:
         f"| `nca/` | {_fmt_bytes(memory_map['disk']['nca_dir'])} |",
         f"| `_parallel_shards/` | {_fmt_bytes(memory_map['disk']['parallel_shards_dir'])} |",
         "",
-        "## Hierarchy (prism_memory)",
-        "",
-        "Слои: **memory.grapheme** (T0) → **memory.syllable** (T1) → **memory.lexicon** (T2) → **memory.phrase** (T3).",
-        "Legacy L0…L3 / lattice_id в скобках — только для migrate.",
-        "",
-        "```text",
-        "prism_memory",
     ]
+    zone_groups = memory_map.get("memory_zone_groups") or {}
+    if zone_groups:
+        lines.extend(_render_memory_zone_section(zone_groups))
+    lines.extend(
+        [
+            "## Legacy stack (T0–T3)",
+            "",
+            "Слои: **memory.grapheme** (T0) → **memory.syllable** (T1) → **memory.lexicon** (T2) → **memory.phrase** (T3).",
+            "Для migrate; каноническая группировка — **Memory Zone** выше.",
+            "",
+            "```text",
+            "prism_memory",
+        ]
+    )
     l3_by_id = {
         str(r.get("lattice_id")): r
         for r in (memory_map.get("l3_sharding") or {}).get("lattices") or []

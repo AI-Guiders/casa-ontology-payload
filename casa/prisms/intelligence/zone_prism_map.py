@@ -293,8 +293,9 @@ def memory_resolve_scopes(
     *,
     tract: str,
     client_zone: str = "",
+    state: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Shadow routing: tract + optional client → allowed domains and memory kinds (P11b)."""
+    """Shadow routing: tract + optional client → allowed domains and memory kinds (P11b/P12h)."""
     tract = str(tract or "general").strip().lower()
     zones = doc.get("intelligence_zones") or {}
     client = client_zone or _default_client_for_tract(tract, zones)
@@ -306,13 +307,30 @@ def memory_resolve_scopes(
         episodic = True
     else:
         episodic = tract == "recall" or client == "executive"
-    return {
+    scope: dict[str, Any] = {
         "tract": tract,
         "client_zone": client,
         "semantic_domains": domains,
         "explicit_episodic": episodic,
         "implicit_procedural": bool((access.get("implicit") or {}).get("procedural")),
     }
+    if state is None:
+        return scope
+    primary_domain = domains[0] if domains else ("math" if tract == "math" else "lang")
+    from casa.prisms.memory.write_gate import active_theory_for_domain
+    from casa.prisms.memory.zone import ensure_memory_zone
+
+    theory = active_theory_for_domain(state, primary_domain)
+    if theory:
+        scope["active_theory_id"] = str(theory.get("theory_id") or "")
+        scope["active_theory_domain"] = str(theory.get("domain") or primary_domain)
+        scope["active_theory_lattice_ids"] = [
+            str(x) for x in (theory.get("lattice_ids") or []) if x
+        ]
+    zone = ensure_memory_zone(state)
+    imm = zone.get("immutable") if isinstance(zone.get("immutable"), dict) else {}
+    scope["immutable_lattice_ids"] = [str(x) for x in (imm.get("lattice_ids") or []) if x]
+    return scope
 
 
 def lattices_for_scope(index: dict[str, Any], scope: dict[str, Any]) -> list[str]:
@@ -330,7 +348,14 @@ def lattices_for_scope(index: dict[str, Any], scope: dict[str, Any]) -> list[str
         dom = str(row.get("domain") or "")
         if dom and dom in domains:
             out.append(lid)
-    return sorted(out)
+    extra = set(scope.get("active_theory_lattice_ids") or [])
+    for lid in scope.get("immutable_lattice_ids") or []:
+        extra.add(str(lid))
+    if extra:
+        out = sorted(set(out) | extra)
+    else:
+        out = sorted(out)
+    return out
 
 
 def _default_client_for_tract(tract: str, zones: dict[str, Any]) -> str:

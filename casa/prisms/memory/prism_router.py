@@ -114,8 +114,14 @@ def route_context_from_state(
 def _apply_lattice_hint(state: dict, prism_id: str, hint: str | None) -> None:
     if not hint:
         return
+    from casa.prisms.intelligence.scope_bind import constrain_lattice_hint
     from casa.prisms.memory.memory_prisms import content_prism_lattices
     from casa.domain.prism_wire import prisms
+
+    tract = str((state.get("meta") or {}).get("bind_scope", {}).get("tract") or "general")
+    hint = constrain_lattice_hint(state, hint, tract=tract)
+    if not hint:
+        return
 
     lats = content_prism_lattices(state, prism_id)
     if hint in lats:
