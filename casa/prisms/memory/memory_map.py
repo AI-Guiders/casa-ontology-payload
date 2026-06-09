@@ -327,7 +327,9 @@ def _render_memory_zone_section(zone_groups: dict[str, Any]) -> list[str]:
             lines.append(f"    procedural  intent={proc.get('intent_prism_ref')} nca={proc.get('nca_registry_ref')}")
         if prim:
             lines.append(
-                f"    priming  halflife_ticks={prim.get('bind_decay_halflife_ticks')} "
+                f"    priming  alpha={prim.get('alpha_retain')} "
+                f"halflife_ticks={prim.get('bind_decay_halflife_ticks')} "
+                f"active={prim.get('active_count', len(prim.get('cells') or {}))} "
                 f"last_tick={prim.get('last_activation_tick')}"
             )
     lines.append("```")

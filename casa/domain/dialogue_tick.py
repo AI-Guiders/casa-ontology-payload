@@ -144,6 +144,9 @@ def process_dialogue_on_tick(
         from casa.prisms.shared.store_bundles import load_store_bundles
 
         metabolic_rep = metabolic_begin_tick(state, tick=int(wm_next.tick))
+        from casa.prisms.memory.forgetting import memory_priming_decay
+
+        priming_decay_rep = memory_priming_decay(state, tick=int(wm_next.tick))
         perceptual_prepare_turn(state, q, modality="text_stream")
         prior_digest = list(wm.last_concepts or []) if wm.last_concepts else None
         executive_before_compose(
@@ -171,6 +174,8 @@ def process_dialogue_on_tick(
             disposition=disp.action.value if disp else "",
             tick=int(wm_next.tick),
         )
+        if priming_decay_rep:
+            pre_zone = {**pre_zone, "memory_priming_decay": priming_decay_rep}
         pre_read = route_kb_read(q, load_store_bundles(store_dir), store_dir=store_dir, state=state)
         query_intent = pre_read.intent
         ranked_tracts = list(pre_read.tract_ranked or [])

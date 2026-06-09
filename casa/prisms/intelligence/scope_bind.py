@@ -44,12 +44,15 @@ def scoped_lattice_ids(state: dict, scope: dict[str, Any]) -> set[str] | None:
 
 def apply_bind_scope(state: dict, *, tract: str, client_zone: str = "") -> dict[str, Any]:
     """Persist scope on state.meta for tick / field snapshot consumers."""
+    from casa.prisms.memory.forgetting import memory_implicit_gains
+
     scope = bind_scope(state, tract=tract, client_zone=client_zone)
     allowed = scoped_lattice_ids(state, scope)
+    gains = memory_implicit_gains(state, tract=tract)
     meta = state.setdefault("meta", {})
     meta["bind_scope"] = scope
     meta["bind_scope_lattices"] = sorted(allowed) if allowed is not None else []
-    return {"scope": scope, "lattice_count": len(allowed or [])}
+    return {"scope": scope, "lattice_count": len(allowed or []), "implicit_gains": gains}
 
 
 def lattice_allowed_for_bind(state: dict, lattice_id: str, scope: dict[str, Any]) -> bool:

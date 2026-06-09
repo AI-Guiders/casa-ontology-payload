@@ -157,6 +157,16 @@ class SubjectDialogueBinder:
             blocks.extend(wm_extra)
             sources.extend(wm_sources)
 
+        from casa.prisms.memory.forgetting import memory_priming_record_bind
+
+        priming_bind = memory_priming_record_bind(
+            state,
+            blocks,
+            tick=int(state.get("field_version") or 0),
+        )
+        meta = state.setdefault("meta", {})
+        meta["priming_bind_last"] = priming_bind
+
         stance = infer_stance(blocks, task=task, intent=intent)
 
         agent_tract_profile = None
