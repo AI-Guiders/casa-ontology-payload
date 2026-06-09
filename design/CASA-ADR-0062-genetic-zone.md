@@ -55,6 +55,7 @@ prism_agent
     ├── affect_baseline     valence/arousal/security @ T=0 + sensitivity — 0058
     ├── control_gains       DAN, predict, value replay — 0010
     ├── memory_routing      default active_theory, domain read bias — 0068/0069
+    ├── character_topology  стартовая маска character field — 0071
     ├── mutation_policy     experiential + allelic bounds (0065)
     └── fork_policy         inherit_verbatim | mutate_alleles (0065)
 ```
@@ -90,6 +91,7 @@ genome.v1.json
 | `signal_decay` | **0055** WM, intent | θ_decay floors, prune cadence |
 | `promote_canon` / `demote_canon` | **0069 / 0070** | пороги ceremony, verify gates |
 | `memory_routing` | **0068 / 0069** | default theories, domain read weights |
+| `character_topology` | **0071** | birth bias grid / lattice warp |
 
 **Invariant:** tunable default зоны **читается** через `genetic_constant(path)`; дубли в Python/manifest без genome — **anti-pattern** (кроме species template @ first seal).
 
@@ -123,6 +125,7 @@ genome.v1.json
 **Fork (new store / AiNet child):** см. **ADR-0065**.
 - Default `fork_policy.mode = inherit_verbatim` — copy parent `genome.v1.json` без изменений.
 - `mutate_alleles` — bounded step по `mutation_policy.allelic`; новый `genome_hash`, тот же `species_id`.
+- `weather_cross` — два `genome_hash` + многоосный снимок погоды → `H_mix` → child genome — **0072**; `character_topology` — **0071**.
 - New `store_id`, new journal; **species fork** (новый `species_id`, топология) — operator gate, не allele drift.
 
 **AiNet delta exchange:** experiential layers (WM edges, sandbox, bundles) — **mutable**; genetic hash mismatch → **reject merge** on meta-instructions.
@@ -196,6 +199,8 @@ genome.v1.json
 ## Links
 
 - [CASA-ADR-0070-forgetting-policies.md](CASA-ADR-0070-forgetting-policies.md)
+- [CASA-ADR-0071-character-field-prismatic.md](CASA-ADR-0071-character-field-prismatic.md)
+- [CASA-ADR-0072-genetic-weather-cross.md](CASA-ADR-0072-genetic-weather-cross.md)
 - [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md)
 - [CASA-ADR-0065-controlled-mutations.md](CASA-ADR-0065-controlled-mutations.md)
 - [CASA-ADR-0061-intelligence-zones.md](CASA-ADR-0061-intelligence-zones.md)

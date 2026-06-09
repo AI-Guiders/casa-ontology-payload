@@ -2,7 +2,7 @@
 
 **Status:** accepted  
 **Date:** 2026-06-07  
-**Related:** ADR-0062 (genetic zone / genome seal), ADR-0061 (Intelligence Zones), ADR-0064 (metabolic / sleep gate), ADR-0057 (situations + character), ADR-0014 (agent-owned lattices), ADR-0002 (LTM / NCA), ADR-0023 (sleep-merge), [agent-bootstrap-manifest.v1.json](agent-bootstrap-manifest.v1.json), [agent-existence-north-star.md](agent-existence-north-star.md)
+**Related:** ADR-0062 (genetic zone / genome seal), ADR-0072 (weather_cross fork), ADR-0071 (character field + topology unroll), ADR-0061 (Intelligence Zones), ADR-0064 (metabolic / sleep gate), ADR-0057 (situations + character), ADR-0014 (agent-owned lattices), ADR-0002 (LTM / NCA), ADR-0023 (sleep-merge), [agent-bootstrap-manifest.v1.json](agent-bootstrap-manifest.v1.json), [agent-existence-north-star.md](agent-existence-north-star.md)
 
 ---
 
@@ -42,9 +42,9 @@ Genetic Zone кодирует не «русский язык», а **регул�
    (within life)            (between instances)      (never)
    ─────────────────         ──────────────────       ─────────────
    NCA weight drift          fork allele step         9-zone topology
-   sandbox → promote         AiNet fitness select     allowed_zone_ids
-   tract prior EMA           species fork gate        promote algorithm id
-   linguistic bridge probe   operator re-seal         genome schema_version
+   sandbox → promote         weather_cross (0072)     allowed_zone_ids
+   tract prior EMA           AiNet fitness select     promote algorithm id
+   linguistic bridge probe   species fork gate        genome schema_version
 ```
 
 #### Track A — Experiential (NCA / sandbox / promote)
@@ -75,12 +75,10 @@ Genetic Zone кодирует не «русский язык», а **регул�
 1. Child bootstrap копирует parent `genome.v1.json`.
 2. `fork_policy.mode`:
    - `inherit_verbatim` — default v1 (same hash);
-   - `mutate_alleles` — controlled step по `mutation_policy.allelic`.
-3. Для каждого ключа из `mutate_allowed_keys` применяется:
-   - `step` — max relative perturbation (e.g. `0.05` = ±5%);
-   - `clamp` — hard bounds per allele;
-   - `rng_seed` — детерминизм fork (`parent_hash + child_store_id`).
-4. Новый `genome_hash`; `species_id` **не** меняется при allele fork (тот же вид, другой профиль).
+   - `mutate_alleles` — controlled step по `mutation_policy.allelic`;
+   - `weather_cross` — два hash + снимок погоды → child genome — **[ADR-0072](CASA-ADR-0072-genetic-weather-cross.md)**.
+3. Для `mutate_alleles`: каждый ключ из `mutate_allowed_keys` — `step`, `clamp`, `rng_seed` (`parent_hash + child_store_id`).
+4. Новый `genome_hash`; `species_id` **не** меняется при allele / weather fork (тот же вид, другой профиль).
 
 **Отбор:**
 - параллельные инстансы в AiNet / Intercom проживают curriculum (0057);
@@ -157,6 +155,7 @@ Metabolic **не** меняет genome; она **разрешает окно** �
 | `apply_allele_fork(parent_spec, child_store_id, policy)` | B | bounded perturbation → new spec + hash |
 | `verify_allele_bounds(spec)` | B | reject out-of-range before seal |
 | `fork_genome_for_child(store_dir, parent_state, mode)` | B | orchestrate inherit vs mutate |
+| `weather_cross_genome(...)` | B′ | см. **0072** |
 | `sleep_merge_nca_drift(state, merge_ctx)` | A | σ-noise on agent NCA models per policy |
 | `experiential_drift_allowed(state)` | A | metabolic + sleep gate check |
 | `record_lineage_fitness(store_dir, metrics)` | B | AiNet selection input |
@@ -171,6 +170,7 @@ Metabolic **не** меняет genome; она **разрешает окно** �
 |-------|--------|---------|
 | **P6e** | ADR-0065 + `mutation_policy` / `fork_policy` in genome schema + manifest defaults | 0062 P6b |
 | **P6f** | `apply_allele_fork` + `verify_allele_bounds`; fork CLI `inherit` \| `mutate` | P6e |
+| **P6w** | `weather_cross` CLI + lineage bundle — **0072** | P6f |
 | **P7a** | `experiential_drift_allowed` + `sleep_merge_nca_drift` on agent NCA lattices | 0064 sleep, 0014 |
 | **P7b** | AiNet `record_lineage_fitness` + parallel fork cohort | Intercom |
 | **P7c** | Curriculum-linked selection → winning hash propagation | 0057 probes |

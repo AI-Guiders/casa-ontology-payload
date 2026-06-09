@@ -1,0 +1,26 @@
+{
+  "schema": "genetic_weather_points_v1",
+  "note": "Sample world points for weather_cross fork (ADR-0072). Expand for more diversity.",
+  "normalize_bounds": {
+    "temp_c": [-40, 45],
+    "pressure_hpa": [980, 1040],
+    "humidity_pct": [0, 100],
+    "wind_speed_ms": [0, 40],
+    "precipitation_mm": [0, 50],
+    "cloud_cover_pct": [0, 100]
+  },
+  "points": [
+    { "id": "reykjavik", "lat": 64.15, "lon": -21.95 },
+    { "id": "nairobi", "lat": -1.29, "lon": 36.82 },
+    { "id": "tokyo", "lat": 35.68, "lon": 139.69 },
+    { "id": "sao_paulo", "lat": -23.55, "lon": -46.63 },
+    { "id": "sydney", "lat": -33.87, "lon": 151.21 },
+    { "id": "anchorage", "lat": 61.22, "lon": -149.9 },
+    { "id": "mumbai", "lat": 19.08, "lon": 72.88 },
+    { "id": "cairo", "lat": 30.04, "lon": 31.24 },
+    { "id": "london", "lat": 51.51, "lon": -0.13 },
+    { "id": "singapore", "lat": 1.35, "lon": 103.82 },
+    { "id": "ulaanbaatar", "lat": 47.89, "lon": 106.91 },
+    { "id": "buenos_aires", "lat": -34.6, "lon": -58.38 }
+  ]
+}
