@@ -42,7 +42,7 @@ Organ catalog **closed** at T=0 (no new intelligence *types* at runtime). Нов
 | **logical** | логико-матhematical | math tract, schema-math bootstrap | math palochki / agent-math-* | tract OK; wire + situations |
 | **social** | межличностный | dialogue ring, social tract, partner model | agent-social-sandbox (planned) | **gap** — repair, mentalizing |
 | **spatial** | пространственный | prism_visual, control_vis | vis scratch (roadmap) | design only |
-| **character** | temperament (медленный) | EMA поверх emotional + social | — | 0057; not separate sandbox v0 |
+| **character** | temperament (медленный) | призматическое поле bias / lattice — **0071** | — | 0057; v0 domain×tract matrix |
 | **genetic** | species / meta-instructions | genome hash, promote_canon, zone proportions | **none** (allelic per **0065**) | **0062** design |
 | **perceptual** | sensory gate / thalamic input | VK, text stream, vis quantize | `agent-percept-sandbox` | **0063** design |
 | **metabolic** | ATP / fatigue / sleep pressure | tick budget, forced sleep | `agent-metabolic-sandbox` | **0064** design |
@@ -95,7 +95,7 @@ Re-bootstrap **only** for empty lab stores; production von-neumann → **migrate
 | **P1** | executive | wire predict→affect; migrate_control_stack opt-in |
 | **P2** | social | partner model core + sandbox; situation curriculum |
 | **P3** | logical | math-in-dialogue situations + tract balance |
-| **P4** | character | EMA from emotional + social cores |
+| **P4** | character | prismatic field — ADR-0071; EMA from emotional + social |
 | **P5** | spatial | when vis modality active |
 | **P6** | genetic | seal genome.v1.json; species passport; fork hash |
 | **P7** | perceptual | sensory gate before semantic_read; REPL text path |
