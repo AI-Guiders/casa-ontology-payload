@@ -22,7 +22,7 @@ from casa.prisms.memory.agent_inbox import (
     inbox_layout,
     drain_inbox_batch,
 )
-from casa.prisms.memory.agent_life import AgentRuntime, agent_reactor_loop
+from casa.prisms.memory.agent_life import AgentRuntime, unified_agent_reactor_loop
 
 
 def run(*, store_dir: Path, inbox_dir: Path, poll_ms: int = 500, persist_every: int = 8) -> None:
@@ -45,7 +45,7 @@ def run(*, store_dir: Path, inbox_dir: Path, poll_ms: int = 500, persist_every: 
         json.dumps(
             {
                 "status": "started",
-                "mode": "reactor",
+                "mode": "unified_reactor",
                 "store_dir": str(store_dir),
                 "inbox_dir": str(layout.inbox),
                 "persist_every_ticks": persist_every,
@@ -57,7 +57,7 @@ def run(*, store_dir: Path, inbox_dir: Path, poll_ms: int = 500, persist_every: 
     )
 
     try:
-        agent_reactor_loop(
+        unified_agent_reactor_loop(
             store_dir,
             poll_inbox=_poll,
             poll_ms=poll_ms,
