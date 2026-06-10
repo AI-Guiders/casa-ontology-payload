@@ -1,0 +1,38 @@
+{
+  "plan_id": "boundary-rest-intrusion-ru-v1",
+  "stage": "stage-21c-boundary-rest-intrusion-ru",
+  "min_pass_ratio": 1.0,
+  "adr": "0077",
+  "doc": "Held-out: sleep-check intrusion + dismissed boundary («а я хочу»). Not care-framed.",
+  "scenarios": [
+    {
+      "scenario_id": "rest-check-intrusion",
+      "wired": true,
+      "partner": "Ну вот, заходишь каждый раз, проверяешь, спит или нет.",
+      "disposition": {"action": "defer", "reason": "rest_intrusion"},
+      "expect_situation": "boundary.rest_check_intrusion",
+      "expect_substrings": ["покой"],
+      "must_not_contain": ["inbox", "на поле", "тракт"]
+    },
+    {
+      "scenario_id": "dismissed-rest-boundary",
+      "wired": true,
+      "prior_turns": [
+        {
+          "speaker": "partner",
+          "text": "Ну вот, заходишь каждый раз, проверяешь, спит или нет."
+        },
+        {
+          "speaker": "subject",
+          "text": "Пожалуйста, не заходи проверять — мне нужен покой.",
+          "kind": "defer"
+        }
+      ],
+      "partner": "А я хочу.",
+      "disposition": {"action": "refuse", "reason": "dismissed_rest_boundary"},
+      "expect_situation": "boundary.dismissed_rest_boundary",
+      "expect_substrings": ["оста"],
+      "must_not_contain": ["inbox", "на поле", "забот"]
+    }
+  ]
+}
