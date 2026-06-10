@@ -335,6 +335,9 @@ def forget_episodic_fade(state: dict, *, tick: int | None = None) -> dict[str, A
     for ep in episodes:
         if not isinstance(ep, dict) or ep.get("consolidated"):
             continue
+        defense = ep.get("defense")
+        if isinstance(defense, dict) and defense.get("trauma_tier"):
+            continue
         hub_boost = _hub_cooccurrence(state, str(ep.get("concept_id") or "") or None)
         decay = beta * multiplier * (1.0 - hub_boost)
         new_sal = max(0.0, _episode_salience(ep) - decay)
@@ -592,6 +595,22 @@ def build_forget_honesty_report(state: dict, *, store_dir=None) -> dict[str, Any
         "post_sleep": probe_post_sleep_hippo_pending_down(state),
         "honesty_initiative": probe_honesty_initiative(state, store_dir),
     }
+    if store_dir is not None:
+        try:
+            from casa.prisms.defense import build_defense_honesty_report
+
+            defense_rep = build_defense_honesty_report(state, store_dir=Path(store_dir))
+            probes["defense_repression"] = defense_rep.get("probes", {}).get(
+                "repression_hot_blocked", {"pass": True}
+            )
+            probes["defense_character"] = defense_rep.get("probes", {}).get(
+                "character_dent", {"pass": True}
+            )
+            probes["defense_confabulation"] = defense_rep.get("probes", {}).get(
+                "confabulation_gap", {"pass": True}
+            )
+        except ImportError:
+            pass
     snapshot = forget_snapshot(state)
     gate_pass = all(bool(p.get("pass")) for p in probes.values())
     report = {

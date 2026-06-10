@@ -116,6 +116,23 @@ def bind_concept_id(concept_id: str) -> str:
     return cid
 
 
+def discourse_concept_id(block: dict[str, Any]) -> str:
+    """Partner discourse slot id — surface ru.dialog.* even when bind hub is concept.*."""
+    surface = str(block.get("surface_concept_id") or "").strip()
+    if surface.startswith("ru.dialog."):
+        return surface
+    cid = str(block.get("concept_id") or block.get("bind_hub") or "").strip()
+    if cid.startswith("ru.dialog."):
+        return cid
+    if cid.startswith(CONCEPT_PREFIX):
+        spec = SPECIES_CONCEPT_BOOTSTRAP.get(cid) or {}
+        for legacy in spec.get("legacy_concept_ids") or []:
+            leg = str(legacy)
+            if leg.startswith("ru.dialog."):
+                return leg
+    return cid
+
+
 def is_concept_hub(concept_id: str) -> bool:
     return str(concept_id or "").startswith(CONCEPT_PREFIX)
 
