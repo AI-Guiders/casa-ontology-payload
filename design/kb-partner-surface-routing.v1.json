@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "bundle_id": "kb-partner-surface-routing-v1",
+  "title": "Partner surface → concept hints (semantic_read routing only)",
+  "claims": [
+    {
+      "concept_id": "ru.routing.partner_surface.greeting.informal",
+      "text": "Informal greeting → lang.word.привет",
+      "slots": {
+        "route_hint": "lang.word.привет",
+        "cue_substrings": "привет"
+      }
+    },
+    {
+      "concept_id": "ru.routing.partner_surface.greeting.formal_word",
+      "text": "Formal greeting word → lang.word.здравствуйте",
+      "slots": {
+        "route_hint": "lang.word.здравствуйте",
+        "cue_substrings": "здравствуй|здравствуйте"
+      }
+    },
+    {
+      "concept_id": "ru.routing.partner_surface.greeting.formal_phrase",
+      "text": "Formal greeting phrase → ru.dialog.greeting.formal",
+      "slots": {
+        "route_hint": "ru.dialog.greeting.formal",
+        "cue_substrings": "добрый день|добрый вечер"
+      }
+    },
+    {
+      "concept_id": "ru.routing.partner_surface.affect",
+      "text": "Affect / how-are-you → ru.dialog.affect hub",
+      "slots": {
+        "route_hint": "ru.dialog.affect",
+        "cue_substrings": "как дела|как ты|как тебе здесь|как тебе тут"
+      }
+    },
+    {
+      "concept_id": "ru.routing.partner_surface.self",
+      "text": "Self / identity → ru.dialog.self hub",
+      "slots": {
+        "route_hint": "ru.dialog.self",
+        "cue_substrings": "кто ты|ты кто|как зовут|зовут|занима|о себе|представ"
+      }
+    },
+    {
+      "concept_id": "ru.routing.partner_surface.thanks",
+      "text": "Thanks → lang.word.спасибо",
+      "slots": {
+        "route_hint": "lang.word.спасибо",
+        "cue_substrings": "спасибо"
+      }
+    },
+    {
+      "concept_id": "ru.routing.partner_surface.farewell",
+      "text": "Farewell → ru.dialog.farewell hub",
+      "slots": {
+        "route_hint": "ru.dialog.farewell",
+        "cue_substrings": "до свидания|пока"
+      }
+    }
+  ],
+  "graph": { "edges": [] }
+}

@@ -21,6 +21,11 @@ def _tokenize(text: str) -> set[str]:
     }
 
 
+def slot_cue_hit(query_lower: str, slots: dict[str, str]) -> int:
+    """Public cue match score for routing claims (cue_substrings / cue_words)."""
+    return _slot_cue_hit(query_lower, slots)
+
+
 def _slot_cue_hit(query_lower: str, slots: dict[str, str]) -> int:
     score = 0
     for key in ("cue_substrings", "boost_cues", "cues"):

@@ -36,29 +36,6 @@ _OP_GLYPH_TO_CID = {
     "=": "math.op.eq",
 }
 
-_SOCIAL_SURFACE_TO_CID: tuple[tuple[str, str], ...] = (
-    ("привет", "lang.word.привет"),
-    ("здравствуй", "lang.word.здравствуйте"),
-    ("здравствуйте", "lang.word.здравствуйте"),
-    ("добрый день", "ru.dialog.greeting.formal"),
-    ("добрый вечер", "ru.dialog.greeting.formal"),
-    ("как дела", "ru.dialog.affect"),
-    ("как ты", "ru.dialog.affect"),
-    ("кто ты", "ru.dialog.self"),
-    ("ты кто", "ru.dialog.self"),
-    ("как зовут", "ru.dialog.self"),
-    ("зовут", "ru.dialog.self"),
-    ("занима", "ru.dialog.self"),
-    ("о себе", "ru.dialog.self"),
-    ("представ", "ru.dialog.self"),
-    ("как тебе здесь", "ru.dialog.affect"),
-    ("как тебе тут", "ru.dialog.affect"),
-    ("спасибо", "lang.word.спасибо"),
-    ("до свидания", "ru.dialog.farewell"),
-    ("пока", "ru.dialog.farewell"),
-)
-
-
 def _has_cyrillic(text: str) -> bool:
     return bool(re.search(r"[\u0400-\u04FF]", text))
 
@@ -169,7 +146,9 @@ def detect_query_locales(query: str) -> list[str]:
     return locs or ["ru"]
 
 
-def _concept_hints_from_surface(query: str) -> list[str]:
+def _concept_hints_from_surface(query: str, bundle: dict[str, Any] | None = None) -> list[str]:
+    from casa.prisms.tick.partner_surface_routing import partner_surface_hints
+
     hints: list[str] = []
     for n in parse_stick_runs(query):
         cid = _CARDINAL_TO_CID.get(n)
@@ -190,9 +169,7 @@ def _concept_hints_from_surface(query: str) -> list[str]:
     ):
         if word in ql:
             hints.append(cid)
-    for surface, cid in _SOCIAL_SURFACE_TO_CID:
-        if surface in ql:
-            hints.append(cid)
+    hints.extend(partner_surface_hints(query, bundle))
     for m in re.findall(r"\b\d+\b", ql):
         n = int(m)
         cid = _CARDINAL_TO_CID.get(n)
@@ -201,9 +178,9 @@ def _concept_hints_from_surface(query: str) -> list[str]:
     return list(dict.fromkeys(hints))
 
 
-def concept_hints_from_surface(query: str) -> list[str]:
+def concept_hints_from_surface(query: str, bundle: dict[str, Any] | None = None) -> list[str]:
     """Public surface → concept hints (speech situation read per clause)."""
-    return _concept_hints_from_surface(query)
+    return _concept_hints_from_surface(query, bundle)
 
 
 def route_kb_read(
@@ -215,7 +192,7 @@ def route_kb_read(
     extra_concept_hints: list[str] | None = None,
 ) -> QueryRead:
     """Surface hints → KB match → tract competition intent (ADR-0052)."""
-    hints = _concept_hints_from_surface(query)
+    hints = _concept_hints_from_surface(query, bundle)
     if state is not None:
         from casa.prisms.perceptual import perceptual_turn_hints
 
