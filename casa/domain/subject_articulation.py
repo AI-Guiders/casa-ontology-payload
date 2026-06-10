@@ -104,6 +104,7 @@ def realize_subject(plan: UtterancePlan, user_query: str, ctx: SubjectDialogueCo
             stance=ctx.stance,
             agent_tract_profile=ctx.agent_tract_profile,
             concept_hints=ctx.concept_hints,
+            runtime_state=ctx.runtime_state,
         )
 
     return (body or "").strip()

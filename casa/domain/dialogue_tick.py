@@ -12,29 +12,58 @@ from casa.domain.dialogue_turn import (
     last_outbound_turn,
     load_dialogue_turns,
 )
-from casa.domain.subject_agency import SubjectAction, SubjectDisposition
+from casa.domain.subject_agency import SubjectAction, SubjectDisposition, record_disposition
 from casa.domain.subject_mode import is_subject_mode, subject_display_name
 from casa.domain.dialogue_provenance import meaning_provenance
+from casa.domain.boundary_compose import (
+    compose_boundary_partner_reply_with_ctx,
+    disposition_situation_tag,
+)
 from casa.domain.subject_voice import (
     compose_subject_partner_reply_with_ctx,
     initiate_from_autonomy,
     initiate_from_overload,
     initiate_from_retro,
     initiate_from_self_drive,
-    verbalize_disposition,
 )
 from casa.prisms.control.fpn_state import WorkingMemory, read_session_meta, write_session_meta
 from casa.prisms.control.sn_cen_runtime import TaskEmit
 
 
-def _dialogue_can_answer_despite_defer(disp: SubjectDisposition | None, query_intent: str) -> bool:
-    """A stale weak tract should not silence a direct partner turn."""
+def _partner_dialog_hints(query: str, *, store_dir: Path | None = None) -> list[str]:
+    from casa.prisms.shared.store_bundles import load_store_bundles
+    from casa.prisms.tick.routing import route_kb_read
+
+    bundle = load_store_bundles(store_dir) if store_dir else {}
+    read = route_kb_read(query, bundle, store_dir=store_dir)
+    return list(read.concept_hints or [])
+
+
+def _dialogue_can_answer_despite_defer(
+    disp: SubjectDisposition | None,
+    query_intent: str,
+    *,
+    query: str = "",
+    store_dir: Path | None = None,
+) -> bool:
+    """A stale weak tract or own-line defer should not silence a direct partner turn."""
     from casa.prisms.memory.intent import is_agent_tract
+    from casa.domain.partner_cue_policy import social_concept_for_cue
 
     if is_agent_tract(query_intent):
         return True
+    if social_concept_for_cue(query, None) and len((query or "").split()) <= 6:
+        return True
     if disp is None or disp.action != SubjectAction.DEFER:
         return False
+    if query_intent == "social" and disp.reason in ("own_practice_first", "defense_sublimation"):
+        hints = _partner_dialog_hints(query, store_dir=store_dir)
+        if any(
+            h.startswith(p)
+            for h in hints
+            for p in ("ru.dialog.self", "ru.dialog.capabilities", "lang.word.")
+        ):
+            return True
     if not disp.reason.startswith("tract_not_ready:"):
         return False
     return query_intent in {"social", "discuss", "rewrite", "grammar", "explain", "journal", "recall"}
@@ -194,29 +223,41 @@ def process_dialogue_on_tick(
         )
         out["partner"] = partner.to_dict()
 
-    if (
-        disp
-        and disp.action in (SubjectAction.DEFER, SubjectAction.REFUSE)
-        and not (q and _dialogue_can_answer_despite_defer(disp, query_intent))
-    ):
-        text = verbalize_disposition(disp, display_name=display, wm=wm_next)
-        kind = "defer" if disp.action == SubjectAction.DEFER else "refuse"
-        turn = append_subject_turn(
-            store_dir,
-            text,
-            kind=kind,
-            disposition=disp.action.value,
-            provenance={**provenance_base, "reason": disp.reason, "source": "subject_agency"},
-        )
-        out["outbound"].append(turn.to_dict())
-        out["disposition_verbalized"] = disp.action.value
+        from casa.domain.boundary_situations import partner_boundary_disposition
 
-    elif q:
+        boundary_override = partner_boundary_disposition(q, store_dir, state=state, wm=wm_next)
+        if boundary_override is not None:
+            disp = boundary_override
+            record_disposition(state, disp)
+
+    if q:
         from casa.prisms.intelligence.tick import process_intelligence_turn
 
-        ctx, reply_text = compose_subject_partner_reply_with_ctx(
-            q, task, state, wm_next, store_dir=store_dir
+        boundary_turn = (
+            disp
+            and disp.action in (SubjectAction.DEFER, SubjectAction.REFUSE)
+            and not _dialogue_can_answer_despite_defer(disp, query_intent, query=q, store_dir=store_dir)
         )
+        if boundary_turn:
+            ctx, reply_text = compose_boundary_partner_reply_with_ctx(
+                q,
+                disp,
+                task,
+                state,
+                wm_next,
+                store_dir=store_dir,
+            )
+            reply_kind = "defer" if disp.action == SubjectAction.DEFER else "refuse"
+            out["disposition_verbalized"] = disp.action.value
+        else:
+            ctx, reply_text = compose_subject_partner_reply_with_ctx(
+                q, task, state, wm_next, store_dir=store_dir
+            )
+            reply_kind = "reply"
+            if (reply_text or "").strip():
+                from casa.domain.partner_initiative import clear_open_partner_thread
+
+                clear_open_partner_thread(state)
         reply_text = _trim_reply_for_budget(reply_text, state)
         sn = state.get("sn") if isinstance(state.get("sn"), dict) else {}
         surprise_before = int(sn.get("surprise") or 0) or None
@@ -258,6 +299,7 @@ def process_dialogue_on_tick(
             concept_hints=list(getattr(ctx, "concept_hints", None) or []),
             disposition=disp.action.value if disp else "",
             tick=int(wm_next.tick),
+            store_dir=store_dir,
         )
         try:
             from casa.prisms.neuromodulator import neuromodulator_is_active, neuromodulator_snapshot
@@ -285,13 +327,28 @@ def process_dialogue_on_tick(
         else:
             affect_rep["bias"] = affect_compose_bias(state)
         if reply_text.strip():
+            prov_source = "boundary_compose" if boundary_turn else "partner_reply"
+            if boundary_turn and disp and disp.action == SubjectAction.DEFER:
+                from casa.domain.partner_initiative import record_defer_open_thread
+
+                record_defer_open_thread(
+                    state,
+                    partner_text=q,
+                    reason=str(disp.reason or ""),
+                    tick=int(wm_next.tick),
+                )
             turn = append_subject_turn(
                 store_dir,
                 reply_text,
-                kind="reply",
+                kind=reply_kind,
+                disposition=disp.action.value if boundary_turn and disp else "",
                 provenance={
                     **provenance_base,
-                    "source": "partner_reply",
+                    "source": prov_source,
+                    "reason": disp.reason if boundary_turn and disp else "",
+                    "boundary_situation": (
+                        disposition_situation_tag(disp.reason) if boundary_turn and disp else ""
+                    ),
                     "cen_action": task.action if task else "",
                     "yielded_disposition": disp.reason if disp else "",
                     **meaning_provenance(ctx),
@@ -363,6 +420,22 @@ def process_dialogue_on_tick(
 
         out["outbound"].extend(initiated)
         out["initiated"] = bool(initiated)
+        from casa.domain.partner_initiative import (
+            maybe_enqueue_idle_partner_initiative,
+            open_partner_thread,
+        )
+
+        if initiated or open_partner_thread(state):
+            outbox_ids = maybe_enqueue_idle_partner_initiative(
+                store_dir,
+                state,
+                wm_next,
+                display=display,
+                outbound_turns=initiated,
+                tick=int(wm_next.tick),
+            )
+            if outbox_ids:
+                out["partner_outbox"] = outbox_ids
 
     last = last_outbound_turn(store_dir)
     out["turns_total"] = len(load_dialogue_turns(store_dir))

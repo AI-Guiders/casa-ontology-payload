@@ -1,4 +1,4 @@
-"""Partner-turn surface helpers for bind reweight (speech situation, not lexicon lists)."""
+"""Partner-turn surface helpers for bind reweight (field overlap, not lexicon oracles)."""
 
 from __future__ import annotations
 
@@ -6,6 +6,9 @@ import re
 from typing import Any
 
 from casa.domain.dialogue_bind.blocks import score_text
+
+_FIELD_OVERLAP_MIN = 8
+_BIND_ROUTE_MIN = 48
 
 
 def kb_reply_present(kb_hits: list[tuple[dict[str, Any], int]]) -> bool:
@@ -24,13 +27,40 @@ def dialog_block_body(block: dict[str, Any]) -> str:
     return f"{block.get('text') or ''} {body}".strip()
 
 
+def partner_field_overlap(query: str, block: dict[str, Any]) -> int:
+    """Partner turn ↔ ru.dialog block body on field — curriculum/KB text, not cue lists."""
+    return score_text(query, dialog_block_body(block))
+
+
+def _hint_routes_dialog(concept_hints: list[str] | None, cid: str, prefix: str) -> bool:
+    if not cid.startswith(prefix):
+        return False
+    return any(h.startswith(prefix) for h in (concept_hints or []))
+
+
+def field_routed_dialog_slot(
+    cid: str,
+    *,
+    hint_prefix: str,
+    concept_hints: list[str] | None,
+    query: str,
+    block: dict[str, Any] | None,
+) -> bool:
+    """Gated ru.dialog.* enters compose when semantic_read or bind elevated it on field."""
+    if _hint_routes_dialog(concept_hints, cid, hint_prefix):
+        return True
+    if block is not None and partner_field_overlap(query, block) >= _FIELD_OVERLAP_MIN:
+        return True
+    return int((block or {}).get("score") or 0) >= _BIND_ROUTE_MIN
+
+
 def dialog_query_position_boost(
     query: str,
     block: dict[str, Any],
     *,
     concept_hints: list[str] | None,
 ) -> int:
-    """Earlier partner surface → stronger bind (discourse order emerges from field, not compose)."""
+    """Earlier partner surface → stronger bind (stimulus/surface slots + routed hints)."""
     ql = (query or "").lower()
     cid = str(block.get("concept_id") or "")
     slots = block.get("slots") if isinstance(block.get("slots"), dict) else {}
@@ -42,18 +72,17 @@ def dialog_query_position_boost(
             anchors.append(ql.find(surface))
 
     for hint in concept_hints or []:
-        if hint.startswith("ru.dialog.") and (cid == hint or cid.startswith(f"{hint}.")):
-            for surface in ("как дела", "как ты", "как тебе здесь", "как тебе тут"):
-                if surface in ql:
+        if not hint.startswith(("ru.dialog.", "lang.word.")):
+            continue
+        if cid == hint or cid.startswith(f"{hint}.") or hint.startswith("lang.word."):
+            for key in ("stimulus", "word", "surface"):
+                surface = str(slots.get(key) or "").lower()
+                if len(surface) >= 2 and surface in ql:
                     anchors.append(ql.find(surface))
-        if hint == "ru.dialog.affect" and cid.startswith("ru.dialog.affect"):
-            for surface in ("как дела", "как ты"):
-                if surface in ql:
-                    anchors.append(ql.find(surface))
-        if hint.startswith("lang.word.") and cid.startswith("ru.dialog.greeting"):
-            lemma = hint.rsplit(".", 1)[-1].lower()
-            if lemma and lemma in ql:
-                anchors.append(ql.find(lemma))
+            if hint.startswith("lang.word.") and cid.startswith("ru.dialog.greeting"):
+                lemma = hint.rsplit(".", 1)[-1].lower()
+                if lemma and lemma in ql:
+                    anchors.append(ql.find(lemma))
 
     if not anchors:
         return 0
@@ -94,36 +123,50 @@ def partner_speech_turn(
         return False
     if partner_self_label(quote):
         return True
-    if partner_dialog_bind_overlap(quote, blocks) >= 8:
+    if partner_dialog_bind_overlap(quote, blocks) >= _FIELD_OVERLAP_MIN:
         return True
     hints = set(concept_hints or [])
     return bool(hints & {"ru.dialog.capabilities", "ru.dialog.thanks", "ru.dialog.affect"})
 
 
-_SELF_CUE_SURFACES = (
-    "зовут",
-    "кто ты",
-    "ты кто",
-    "как тебя",
-    "о себе",
-    "представ",
-    "занима",
-)
-
-
-def query_implies_self(query: str) -> bool:
-    """A self/identity question routes the self narrative even without a precomputed hint."""
-    ql = (query or "").lower()
-    return any(s in ql for s in _SELF_CUE_SURFACES)
-
-
 def social_dialog_slot_allowed(
-    cid: str, *, concept_hints: list[str] | None, query: str = ""
+    cid: str,
+    *,
+    concept_hints: list[str] | None,
+    query: str = "",
+    block: dict[str, Any] | None = None,
 ) -> bool:
-    """Dialog slot enters compose only when semantic_read routed the speech situation."""
-    hints = set(concept_hints or [])
+    """Dialog slot enters compose when semantic_read hinted or field bind elevated the block."""
     if cid.startswith("ru.dialog.how_are_you"):
         return False
     if cid.startswith("ru.dialog.self"):
-        return any(h.startswith("ru.dialog.self") for h in hints) or query_implies_self(query)
+        return field_routed_dialog_slot(
+            cid, hint_prefix="ru.dialog.self", concept_hints=concept_hints, query=query, block=block
+        )
+    if cid.startswith("ru.dialog.capabilities"):
+        return field_routed_dialog_slot(
+            cid,
+            hint_prefix="ru.dialog.capabilities",
+            concept_hints=concept_hints,
+            query=query,
+            block=block,
+        )
+    if cid.startswith("ru.dialog.affect"):
+        return field_routed_dialog_slot(
+            cid, hint_prefix="ru.dialog.affect", concept_hints=concept_hints, query=query, block=block
+        )
     return True
+
+
+def max_field_overlap_for_prefix(
+    query: str, blocks: list[dict[str, Any]], prefix: str
+) -> int:
+    """Peak partner↔field overlap for a ru.dialog family (reweight demotion)."""
+    from casa.prisms.memory.concept_layer import discourse_concept_id
+
+    best = 0
+    for row in blocks:
+        disc = discourse_concept_id(row)
+        if disc.startswith(prefix):
+            best = max(best, partner_field_overlap(query, row))
+    return best

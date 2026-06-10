@@ -40,6 +40,7 @@ def discourse_budget_from_blocks(
     *,
     stance: str = "partial",
     query_intent: str = "general",
+    state: dict | None = None,
 ) -> DiscourseBudget:
     scores = [int(b.get("score") or 0) for b in blocks if b.get("concept_id")]
     if scores:
@@ -65,5 +66,12 @@ def discourse_budget_from_blocks(
     margin = {"confident": 18, "partial": 10, "unknown": 5}.get(stance, 10)
     if query_intent in ("discuss", "journal", "rewrite"):
         margin += 12
+    if state is not None:
+        try:
+            from casa.prisms.defense.rationalization import rationalization_budget_margin_delta
+
+            margin += rationalization_budget_margin_delta(state)
+        except ImportError:
+            pass
     floor = max(4, top - margin)
     return DiscourseBudget(score_floor=floor, stance=stance)

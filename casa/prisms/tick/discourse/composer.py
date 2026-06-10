@@ -45,6 +45,7 @@ class SubjectDiscourseComposer:
         stance: str = "partial",
         agent_tract_profile: dict[str, Any] | None = None,
         concept_hints: list[str] | None = None,
+        runtime_state: dict | None = None,
     ) -> str | None:
         ctx = DiscourseContext.bind(
             query,
@@ -53,6 +54,7 @@ class SubjectDiscourseComposer:
             stance=stance,
             agent_tract_profile=agent_tract_profile,
             concept_hints=concept_hints,
+            state=runtime_state,
         )
         strategy = self._registry.resolve(query_intent, agent_tract_profile)
         return strategy.compose(plan, ctx, self)

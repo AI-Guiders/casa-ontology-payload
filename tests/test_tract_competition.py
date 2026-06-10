@@ -92,3 +92,10 @@ def test_math_via_route_kb_read() -> None:
 def test_classify_delegates_to_competition() -> None:
     q = "Привет!"
     assert classify_query_intent(q, _bundle()) == "social"
+
+
+def test_parse_math_ops_ignores_word_hyphens() -> None:
+    from casa.prisms.tick.tract.model import parse_math_ops
+
+    assert parse_math_ops("Если что-то не так") == []
+    assert "math.op.sub" in parse_math_ops("5 - 3")

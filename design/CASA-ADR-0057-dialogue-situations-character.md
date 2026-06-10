@@ -34,7 +34,11 @@ Open REPL (`agent_dialogue_repl`) на von-neumann показал разрыв �
 | эпизод: «партнёр смущён после моего молчания — repair линии» | новый `ru.dialog.apology_template` с teacher text |
 | held-out / open probe на **цепочку** ходов | green только на изолированный block family |
 
+| `boundary.*` (0077) | partner greeting / defer / refuse **без** CASA-лексики; compose с поля + stance | фиксированный «inbox» template |
+
 `ru.dialog.*`, `math.*`, `lang.word.*` остаются **материалом поля** для emergent compose (ADR-0056), не **единственным** содержанием ситуации.
+
+**ADR-0077:** defer/refuse → **boundary compose** + **инкапсуляция через partner-scoped bind и situations** (не post-hoc denylist).
 
 ### 2. Говорит субъект — emergent из bind + budget + prior
 

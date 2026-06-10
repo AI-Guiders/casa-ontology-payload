@@ -42,6 +42,7 @@ def compose_subject_phrase(
     stance: str = "partial",
     agent_tract_profile: dict[str, Any] | None = None,
     concept_hints: list[str] | None = None,
+    runtime_state: dict | None = None,
 ) -> str | None:
     """Subject says as much as field bind supports — no fixed sentence quota."""
     return default_composer().compose(
@@ -52,6 +53,7 @@ def compose_subject_phrase(
         stance=stance,
         agent_tract_profile=agent_tract_profile,
         concept_hints=concept_hints,
+        runtime_state=runtime_state,
     )
 
 

@@ -30,7 +30,12 @@ def _taught_row(row: dict) -> bool:
     return bool(tags & _TEACH_TAGS)
 
 
-def journal_recall_tract_boost(store_dir: Path | None, query: str) -> tuple[int, int, list[str]]:
+def journal_recall_tract_boost(
+    store_dir: Path | None,
+    query: str,
+    *,
+    state: dict | None = None,
+) -> tuple[int, int, list[str]]:
     """Boost recall/explain tracts when journal remembers partner teachings."""
     if store_dir is None:
         return 0, 0, []
@@ -48,7 +53,7 @@ def journal_recall_tract_boost(store_dir: Path | None, query: str) -> tuple[int,
             sources.append(f"recall_cue:{cue}")
             break
 
-    rows = journal_recall_records(store_dir, q, limit=6)
+    rows = journal_recall_records(store_dir, q, limit=6, state=state)
     best_overlap = 0
     taught_hit = False
     for row in rows:
@@ -75,8 +80,14 @@ def journal_recall_tract_boost(store_dir: Path | None, query: str) -> tuple[int,
     return recall_boost, explain_boost, sources
 
 
-def should_prefer_recall_intent(store_dir: Path | None, query: str, *, social_score: int = 0) -> bool:
-    recall_boost, _, _ = journal_recall_tract_boost(store_dir, query)
+def should_prefer_recall_intent(
+    store_dir: Path | None,
+    query: str,
+    *,
+    social_score: int = 0,
+    state: dict | None = None,
+) -> bool:
+    recall_boost, _, _ = journal_recall_tract_boost(store_dir, query, state=state)
     if recall_boost < 28:
         return False
     # Journal overlap wins over raw social geometry even if phatic KB lit briefly.

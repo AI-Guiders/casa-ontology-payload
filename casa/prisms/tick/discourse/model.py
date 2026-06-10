@@ -39,6 +39,7 @@ class DiscourseContext:
     focus_query: str | None = None
     concept_hints: list[str] = field(default_factory=list)
     agent_tract_profile: dict[str, Any] | None = None
+    state: dict | None = None
 
     @classmethod
     def bind(
@@ -51,6 +52,7 @@ class DiscourseContext:
         focus_query: str | None = None,
         agent_tract_profile: dict[str, Any] | None = None,
         concept_hints: list[str] | None = None,
+        state: dict | None = None,
     ) -> DiscourseContext:
         return cls(
             query=query,
@@ -60,6 +62,7 @@ class DiscourseContext:
             focus_query=focus_query or query,
             agent_tract_profile=agent_tract_profile,
             concept_hints=list(concept_hints or []),
+            state=state,
         )
 
     @property
@@ -74,6 +77,7 @@ class DiscourseContext:
             self.blocks,
             stance=self.stance,
             query_intent=self.query_intent,
+            state=self.state,
         )
 
     def partner_is_brief(self) -> bool:
@@ -90,4 +94,5 @@ class DiscourseContext:
             focus_query=focus_query if focus_query is not None else self.focus_query,
             agent_tract_profile=self.agent_tract_profile,
             concept_hints=list(self.concept_hints),
+            state=self.state,
         )

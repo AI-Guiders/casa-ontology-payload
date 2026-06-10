@@ -24,6 +24,8 @@ def _compose_partner_intro_reply(
     dialog: DialogBlockRealizer,
     policy: BlockDiscoursePolicy,
 ) -> str | None:
+    from casa.prisms.memory.concept_layer import discourse_concept_id
+
     quote = partner_quote_from_block(partner_block)
     if not quote or not partner_speech_turn(
         quote,
@@ -45,7 +47,7 @@ def _compose_partner_intro_reply(
             break
         if not policy.eligible(block, ctx):
             continue
-        cid = str(block.get("concept_id") or "")
+        cid = discourse_concept_id(block)
         if teaching and cid.startswith("ru.dialog.capabilities"):
             bind_blocks.append(block)
         elif not teaching and cid.startswith("ru.dialog.thanks"):
@@ -58,14 +60,18 @@ def _compose_partner_intro_reply(
                 break
             if not policy.eligible(block, ctx):
                 continue
-            cid = str(block.get("concept_id") or "")
+            cid = discourse_concept_id(block)
             if cid.startswith("ru.dialog.thanks"):
                 bind_blocks.insert(0, block)
                 break
 
     for block in bind_blocks[:2]:
         extra = dialog.realize(block, ctx)
-        take = 1 if teaching and str(block.get("concept_id") or "").startswith("ru.dialog.capabilities") else min(2, len(extra))
+        take = (
+            1
+            if teaching and discourse_concept_id(block).startswith("ru.dialog.capabilities")
+            else min(2, len(extra))
+        )
         for clause in extra[:take]:
             clauses.append(clause)
             scores.append(int(block.get("score") or 0))
@@ -83,6 +89,8 @@ def _compose_social_dialog_from_bind(
     policy: BlockDiscoursePolicy,
 ) -> str | None:
     """Stack ru.dialog blocks by bind score (order already in reweight) until floor."""
+    from casa.prisms.memory.concept_layer import discourse_concept_id
+
     budget = ctx.budget
     seen_cid: set[str] = set()
     seen_clause: set[str] = set()
@@ -93,7 +101,7 @@ def _compose_social_dialog_from_bind(
         score = int(block.get("score") or 0)
         if score < budget.score_floor:
             break
-        cid = str(block.get("concept_id") or "")
+        cid = discourse_concept_id(block)
         if not cid.startswith("ru.dialog.") or cid in seen_cid:
             continue
         if any(cid.startswith(p) for p in _SOCIAL_DIALOG_DENY):
@@ -180,6 +188,9 @@ class SocialIntentStrategy:
                 wm_block = block
 
         if not wm_block:
+            body = composer.infer_text(ctx)
+            if body:
+                return body
             return None
         clauses = wm.realize(wm_block, ctx, allow_tail=not brief)
         if not clauses:

@@ -23,6 +23,7 @@ class SubjectDialogueContext:
     agent_tract_profile: dict[str, Any] | None = None
     wm_bind: dict[str, Any] | None = None
     wm_edge_scores: dict[str, float] = field(default_factory=dict)
+    runtime_state: dict | None = None
 
     @property
     def top_concept_ids(self) -> list[str]:

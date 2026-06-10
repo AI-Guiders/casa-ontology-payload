@@ -83,7 +83,7 @@ class SubjectDialogueBinder:
                 if getattr(row, "tract_id", None) == "social":
                     social_score = int(getattr(row, "score", 0) or 0)
                     break
-            if should_prefer_recall_intent(store_dir.resolve(), q, social_score=social_score):
+            if should_prefer_recall_intent(store_dir.resolve(), q, social_score=social_score, state=state):
                 intent = "recall"
             elif looks_like_field_recall(q, store_dir=store_dir.resolve()):
                 intent = "explain"
@@ -133,6 +133,7 @@ class SubjectDialogueBinder:
                 intent=intent,
                 pt=pt,
                 kb_hits=query_read.kb_hits,
+                state=state,
             )
             blocks.extend(journal_blocks)
             sources.extend(journal_sources)
@@ -212,6 +213,7 @@ class SubjectDialogueBinder:
             wm_bind=wm_bind_rep,
             wm_edge_scores=wm_edge_scores,
             agent_tract_profile=agent_tract_profile,
+            runtime_state=state,
         )
 
 

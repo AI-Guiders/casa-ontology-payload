@@ -77,7 +77,13 @@ def journal_cap_for_intent(intent: str, *, kb_reply_present: bool) -> int:
     return 14
 
 
-def journal_recall_records(store_dir: Path, query: str, *, limit: int = 6) -> list[dict[str, Any]]:
+def journal_recall_records(
+    store_dir: Path,
+    query: str,
+    *,
+    limit: int = 6,
+    state: dict | None = None,
+) -> list[dict[str, Any]]:
     """Full-line recall first; then salient lemma / lang.word concept."""
     q = (query or "").strip()
     seen_ids: set[str] = set()
@@ -102,7 +108,19 @@ def journal_recall_records(store_dir: Path, query: str, *, limit: int = 6) -> li
     m = re.search(r"слово\s+([\w\u0400-\u04FF]+)", q, flags=re.IGNORECASE)
     if m and len(rows) < limit:
         _merge(concept=f"lang.word.{m.group(1).lower()}")
-    return rows[:limit]
+    rows = rows[:limit]
+    try:
+        from casa.prisms.defense.confabulation import apply_confabulated_recall
+
+        rows = apply_confabulated_recall(store_dir, q, rows, state=state, limit=limit)
+    except ImportError:
+        try:
+            from casa.prisms.defense import filter_hot_recall_rows
+
+            rows = filter_hot_recall_rows(rows, state)
+        except ImportError:
+            pass
+    return rows
 
 
 def journal_identity_blocks(
@@ -111,6 +129,7 @@ def journal_identity_blocks(
     *,
     intent: str,
     kb_reply_present: bool,
+    state: dict | None = None,
 ) -> list[dict[str, Any]]:
     blocks: list[dict[str, Any]] = []
     seen_rows: dict[str, dict[str, Any]] = {}
@@ -124,7 +143,7 @@ def journal_identity_blocks(
             eid = str(row.get("id") or "")
             if eid:
                 seen_rows[eid] = row
-    recall_rows = journal_recall_records(store_dir, query, limit=6)
+    recall_rows = journal_recall_records(store_dir, query, limit=6, state=state)
     seen: set[str] = set()
     cap = journal_cap_for_intent(intent, kb_reply_present=kb_reply_present)
     for hit in recall_rows:

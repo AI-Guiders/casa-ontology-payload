@@ -98,7 +98,15 @@ def parse_stick_runs(query: str) -> list[int]:
 
 def parse_math_ops(query: str) -> list[str]:
     ops: list[str] = []
-    for ch in query:
-        if ch in _OP_GLYPH_TO_CID and _OP_GLYPH_TO_CID[ch] not in ops:
-            ops.append(_OP_GLYPH_TO_CID[ch])
+    for i, ch in enumerate(query):
+        cid = _OP_GLYPH_TO_CID.get(ch)
+        if not cid or cid in ops:
+            continue
+        # «что-то», «как-нибудь» — not subtraction
+        if ch in "-−":
+            prev = query[i - 1] if i > 0 else " "
+            nxt = query[i + 1] if i + 1 < len(query) else " "
+            if re.match(r"[\w\u0400-\u04FF]", prev) and re.match(r"[\w\u0400-\u04FF]", nxt):
+                continue
+        ops.append(cid)
     return ops

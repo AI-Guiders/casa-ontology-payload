@@ -182,6 +182,7 @@ def _bootstrap_agent_prisms(
         ("social_zone", "0061", "spawn_social_zone", "casa.prisms.intelligence"),
         ("logical_zone", "0061", "spawn_logical_zone", "casa.prisms.intelligence"),
         ("character_zone", "0061", "spawn_character_zone", "casa.prisms.intelligence"),
+        ("defense_zone", "0076", "spawn_defense_zone", "casa.prisms.intelligence.defense_zone"),
         ("spatial_zone", "0061", "spawn_spatial_zone", "casa.prisms.intelligence"),
         ("metabolic_zone", "0064", "spawn_metabolic_zone", "casa.prisms.metabolic"),
         ("perceptual_zone", "0063", "spawn_perceptual_zone", "casa.prisms.perceptual"),
@@ -203,8 +204,9 @@ def _bootstrap_agent_prisms(
         if key != "character_zone":
             spawn_kwargs["sandbox_lattice_id"] = cfg.get("sandbox_lattice_id")
             spawn_kwargs["concept_prefix_sandbox"] = cfg.get("concept_prefix_sandbox")
-        if key == "emotional_zone":
-            spawn_kwargs["initial_axes"] = cfg.get("initial_axes")
+        if key in ("emotional_zone", "defense_zone"):
+            if cfg.get("initial_axes") is not None:
+                spawn_kwargs["initial_axes"] = cfg.get("initial_axes")
             spawn_kwargs["zone_policy"] = cfg.get("zone_policy")
             rep = spawner(state, tick=tick, config=spawn_kwargs)
         elif key == "spatial_zone":

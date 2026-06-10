@@ -159,14 +159,18 @@ class PassageBlockRealizer:
 
 class DialogBlockRealizer:
     def matches(self, block: dict[str, Any]) -> bool:
-        return str(block.get("concept_id") or "").startswith("ru.dialog.")
+        from casa.prisms.memory.concept_layer import discourse_concept_id
+
+        return discourse_concept_id(block).startswith("ru.dialog.")
 
     def realize(self, block: dict[str, Any], ctx: DiscourseContext) -> list[ClauseSketch]:
         return self._dialog_clauses(block, ctx, allow_tail=True)
 
     @staticmethod
     def narrative_clauses(block: dict[str, Any], query: str) -> list[ClauseSketch]:
-        cid = str(block.get("concept_id") or "")
+        from casa.prisms.memory.concept_layer import discourse_concept_id
+
+        cid = discourse_concept_id(block)
         if not any(cid.startswith(p) for p in _NARRATIVE_DIALOG):
             return []
         slots = BlockSlots.read(block)
@@ -182,17 +186,16 @@ class DialogBlockRealizer:
 
     @staticmethod
     def _narrative_relevant(
-        cid: str, clauses: list[ClauseSketch], ctx: DiscourseContext
+        cid: str, clauses: list[ClauseSketch], ctx: DiscourseContext, block: dict[str, Any]
     ) -> bool:
-        """Narrative dialog paste is on-topic: routed by hint, self-cue, or token overlap."""
+        """Narrative dialog paste is on-topic: routed by hint, bind overlap, or token overlap."""
         for h in ctx.concept_hints or []:
             if cid == h or cid.startswith(f"{h}.") or str(h).startswith(cid):
                 return True
-        if cid.startswith("ru.dialog.self"):
-            from casa.domain.dialogue_bind.partner_scoring import query_implies_self
+        from casa.domain.dialogue_bind.partner_scoring import partner_field_overlap
 
-            if query_implies_self(ctx.query):
-                return True
+        if partner_field_overlap(ctx.query, block) >= 8:
+            return True
         qtokens = {t for t in (ctx.tokens or set()) if len(t) > 3}
         if not qtokens:
             return False
@@ -210,7 +213,9 @@ class DialogBlockRealizer:
         *,
         allow_tail: bool = True,
     ) -> list[ClauseSketch]:
-        cid = str(block.get("concept_id") or "")
+        from casa.prisms.memory.concept_layer import discourse_concept_id
+
+        cid = discourse_concept_id(block)
         brief = partner_turn_is_brief(ctx.query) and any(cid.startswith(p) for p in _BRIEF_DIALOG_PREFIXES)
         if brief:
             allow_tail = False
@@ -222,7 +227,7 @@ class DialogBlockRealizer:
                 # share a content token with the turn — otherwise stay silent rather than
                 # paste off-topic. Honest/clarify blocks always pass (graceful fallback).
                 if cid.startswith(_GATED_NARRATIVE) and not self._narrative_relevant(
-                    cid, narrative, ctx
+                    cid, narrative, ctx, block
                 ):
                     return []
                 return narrative

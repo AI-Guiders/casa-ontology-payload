@@ -59,7 +59,7 @@ def compete_tract_intent(
     if store_dir is not None:
         from casa.domain.dialogue_bind.recall_routing import journal_recall_tract_boost
 
-        r_boost, e_boost, js = journal_recall_tract_boost(store_dir, raw)
+        r_boost, e_boost, js = journal_recall_tract_boost(store_dir, raw, state=state)
         if r_boost:
             scores.setdefault("recall", TractScore("recall", 0))
             scores["recall"].score += r_boost
@@ -72,6 +72,14 @@ def compete_tract_intent(
             if damp:
                 scores["social"].score -= damp
                 scores["social"].sources.append("journal:suppress_phatic_social")
+
+    if state is not None:
+        try:
+            from casa.prisms.defense import apply_defense_tract_adjustment
+
+            apply_defense_tract_adjustment(scores, raw, state)
+        except ImportError:
+            pass
 
     if state is not None:
         from casa.prisms.memory.intent import intent_tract_boosts

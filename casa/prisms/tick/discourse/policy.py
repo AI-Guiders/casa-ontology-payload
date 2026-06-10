@@ -43,8 +43,24 @@ class BlockDiscoursePolicy:
             return query_intent == "social"
         if cid.startswith("subject."):
             return False
+        if cid.startswith("concept."):
+            from casa.prisms.memory.concept_layer import discourse_concept_id
+
+            disc = discourse_concept_id(block)
+            if disc.startswith("ru.dialog."):
+                return self._dialog_eligible(
+                    disc, query_intent, blocks, ctx.concept_hints, query, block=block
+                )
+            return False
         if cid.startswith("ru.dialog."):
-            return self._dialog_eligible(cid, query_intent, blocks, ctx.concept_hints, query)
+            disc = str(block.get("surface_concept_id") or cid)
+            if not disc.startswith("ru.dialog."):
+                from casa.prisms.memory.concept_layer import discourse_concept_id
+
+                disc = discourse_concept_id(block)
+            return self._dialog_eligible(
+                disc, query_intent, blocks, ctx.concept_hints, query, block=block
+            )
         if block.get("source") == "journal":
             return self._journal_eligible(block, query, query_intent)
         if cid.startswith("ru.prop."):
@@ -70,13 +86,16 @@ class BlockDiscoursePolicy:
         blocks: list[dict[str, Any]],
         concept_hints: list[str],
         query: str = "",
+        block: dict[str, Any] | None = None,
     ) -> bool:
         if query_intent in ("explain", "grammar"):
             return not any(cid.startswith(p) for p in self._EXPLAIN_DIALOG_DENY)
         if query_intent == "social":
-            from casa.domain.dialogue_bind.scoring import social_dialog_slot_allowed
+            from casa.domain.dialogue_bind.partner_scoring import social_dialog_slot_allowed
 
-            if not social_dialog_slot_allowed(cid, concept_hints=concept_hints, query=query):
+            if not social_dialog_slot_allowed(
+                cid, concept_hints=concept_hints, query=query, block=block
+            ):
                 return False
             return not any(cid.startswith(p) for p in self._SOCIAL_DIALOG_DENY)
         if query_intent == "rewrite":

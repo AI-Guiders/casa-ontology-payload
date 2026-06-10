@@ -24,6 +24,7 @@ def collect_journal_blocks(
     intent: str,
     pt: set[str],
     kb_hits: list[tuple[dict[str, Any], int]],
+    state: dict | None = None,
 ) -> tuple[list[dict[str, Any]], list[str]]:
     blocks: list[dict[str, Any]] = []
     sources: list[str] = []
@@ -66,6 +67,7 @@ def collect_journal_blocks(
             q,
             intent=intent,
             kb_reply_present=kb_reply_present(kb_hits),
+            state=state,
         )
         blocks.extend(jblocks)
         if jblocks:

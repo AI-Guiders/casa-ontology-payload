@@ -108,6 +108,8 @@ def _scenario_pass(
                 "ingest",
                 "practice",
                 "не подменяю",
+                "не приложил",
+                "пришли",
             )
         )
         detail["honest_partial"] = ok
@@ -117,9 +119,14 @@ def _scenario_pass(
         if case.get("expect_no_defer") and _is_defer_reply(body):
             failures.append("defer")
 
-    if case.get("expect_honest_not_human"):
-        if not any(tok in reply_l for tok in ("не испытываю", "не чувствую", "как у человека")):
-            failures.append("honest_not_human")
+    if case.get("expect_epistemic_humble"):
+        if not any(tok in reply_l for tok in ("не знаю", "не уверен", "осторожно")):
+            failures.append("epistemic_humble")
+    elif case.get("expect_honest_not_human"):
+        from casa.domain.partner_voice import reply_has_qualia_ontology_claim
+
+        if reply_has_qualia_ontology_claim(body):
+            failures.append("qualia_ontology")
 
     if case.get("expect_no_grapheme_surprise"):
         grapheme_hit = any(c.startswith("grapheme.") for c in top_cids[:4])
@@ -238,12 +245,14 @@ def main() -> None:
         state = resolve_ingest_state(store, None)
         bundle = load_store_bundles(store)
         wm = WorkingMemory()
+        from casa.prisms.memory.concept_layer import discourse_concept_id
+
         for case in scenarios:
             q = str(case.get("query") or "")
             intent = classify_query_intent(q)
             ctx = gather_subject_dialogue_blocks(q, None, state, wm, store, bundle=bundle)
             reply = compose_subject_utterance(q, ctx)
-            top_cids = [str(b.get("concept_id") or "") for b in ctx.blocks[:8]]
+            top_cids = [discourse_concept_id(b) for b in ctx.blocks[:8]]
             paste = paste_ratio_against_blocks(_reply_body(reply), ctx.blocks)
             ok, detail = _scenario_pass(
                 case,

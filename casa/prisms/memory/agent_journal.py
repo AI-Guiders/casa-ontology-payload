@@ -207,6 +207,34 @@ def find_journal_entry(
     return None
 
 
+def update_journal_entry(
+    store_dir: Path,
+    entry_id: str,
+    mutator,
+    *,
+    domain: str | None = None,
+) -> dict[str, Any] | None:
+    """In-place journal row update (defense marks, meta patches)."""
+    found = find_journal_entry(store_dir, entry_id, domain=domain)
+    if not found:
+        return None
+    _, shard = found
+    rows = _load_entries(store_dir, shard)
+    updated: dict[str, Any] | None = None
+    for idx, row in enumerate(rows):
+        if row.get("id") != entry_id:
+            continue
+        mutator(row)
+        rows[idx] = row
+        updated = row
+        break
+    if updated is None:
+        return None
+    _write_entries(store_dir, shard, rows)
+    _touch_domain_index(store_dir, shard, entry_count=len(rows))
+    return updated
+
+
 def _touch_domain_index(store_dir: Path, domain: str, *, entry_count: int) -> None:
     index = _load_index(store_dir)
     domains = index.setdefault("domains", {})

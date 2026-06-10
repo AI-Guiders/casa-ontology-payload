@@ -41,11 +41,20 @@ def evaluate_external_proposal(
     if not isinstance(subject_flags, dict):
         subject_flags = {}
 
-    if subject_flags.get("force_accept_external"):
-        return SubjectDisposition(SubjectAction.ACCEPT, "force_accept")
-
     if subject_flags.get("refuse_external"):
         return SubjectDisposition(SubjectAction.REFUSE, "explicit_refusal")
+
+    try:
+        from casa.prisms.defense import defense_sublimation_prefers_defer
+
+        if defense_sublimation_prefers_defer(state, wm, load_rep=load_rep):
+            return SubjectDisposition(
+                SubjectAction.DEFER,
+                "defense_sublimation",
+                competing_source="deliberate_practice",
+            )
+    except ImportError:
+        pass
 
     weak = state.get("last_weakest_link")
     if isinstance(weak, dict) and weak.get("concept_id"):
