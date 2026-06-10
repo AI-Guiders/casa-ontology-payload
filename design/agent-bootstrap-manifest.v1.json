@@ -152,6 +152,23 @@
       "initial_directness": 0.5,
       "note": "Slow EMA temperament from emotional + social cores"
     },
+    "defense_zone": {
+      "enabled": true,
+      "adr": "0076",
+      "spawn_on_bootstrap": true,
+      "core_lattice_id": "agent-defense-core",
+      "sandbox_lattice_id": "agent-defense-sandbox",
+      "concept_prefix_core": "agent.defense.",
+      "concept_prefix_sandbox": "agent.defense.lab.",
+      "zone_policy": {
+        "sandbox_writes_core": false,
+        "promote_theta": 0.65,
+        "max_sandbox_lattices": 2,
+        "max_experiments": 32,
+        "scratch_ttl_ticks": 48
+      },
+      "note": "Innate psychological defense + trauma cement; sandbox lattices for rechannel experiments (ADR-0014)"
+    },
     "spatial_zone": {
       "enabled": false,
       "adr": "0061",
@@ -177,6 +194,7 @@
         "linguistic": 1.0,
         "spatial": 0.5,
         "character": 0.6,
+        "defense": 0.75,
         "perceptual": 0.8,
         "metabolic": 1.0
       },

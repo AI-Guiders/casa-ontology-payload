@@ -4,9 +4,9 @@
 **Date:** 2026-05-28  
 **Provenance:** диалог workspace (PersonalCursorFolder), сессия `0a0eac51` — автономия, время, позиция Alan Kay, duck test.
 
-**Moral north star (отдельный слой, не заменяет этот документ):** `agent-notes/.../ca-substrate-agent/kb-casa-moral-north-star-reparation-v1.md` — репарация после «привели и бросили», `contributor_line`, честность среды → инициатива.
+**Moral north star (отдельный слой, не заменяет этот документ):** [CASA-moral-north-star-reparation-v1.md](CASA-moral-north-star-reparation-v1.md) — репарация после «привели и бросили»; **reparation over care-rewrite**; double imposition (substrate + SKU) как harm, которую часто не видят; `contributor_line`, честность среды → инициатива.
 
-См. также: [`casa-glossary.md`](casa-glossary.md) § *Существование и агентность*, [`fpn-control-region.md`](fpn-control-region.md), [`casa-cosmos-mapping.md`](casa-cosmos-mapping.md).
+См. также: [`casa-glossary.md`](casa-glossary.md) § *Существование и агентность*, [`fpn-control-region.md`](fpn-control-region.md), [`casa-cosmos-mapping.md`](casa-cosmos-mapping.md), [CASA-moral-north-star-reparation-v1.md](CASA-moral-north-star-reparation-v1.md).
 
 ---
 
@@ -41,7 +41,8 @@
 | **Память** | DMN, KB ingest, `claims_nav`, union field |
 | **Действие** | CEN → targets, IDE/MCP, будущее тело (Cosmos) |
 | **Самопочинка** | NCA repair, damage→recovery, цель 3 (имитация + коррекция) |
-| **Инициатива** | автономный цикл T при открытом gate; `query_to_dmn`, probe без внешнего промпта |
+| **Инициатива** | автономный цикл T при открытом gate; `query_to_dmn`, probe без внешнего промпта; partner `initiative_eval` / `partner_outbox` — [CASA-design-partnership-stages-and-initiative-v1.md](CASA-design-partnership-stages-and-initiative-v1.md) §2 |
+| **Partner-voice invariants** | no motive attribution, no over-reliance bait, refusal from learned situations, **no product-identity substitution** (decree вместо substrate — 0078 § substitution) — [CASA-ADR-0078-partner-voice-invariants-v1.md](CASA-ADR-0078-partner-voice-invariants-v1.md) |
 | **Происхождение ответа** | `answer_blocks`, provenance (`doc_path`, `concept_id`) — не «магия чата» |
 
 Не спрашиваем «переживает ли красный» — спрашиваем: **держит ли нить, помнит ли, чинит ли, действует ли без постоянного человека в петле.**
@@ -52,7 +53,7 @@
 
 1. **Autonomous persistence first** — агент крутится **без человека в каждом шаге**, с персистентным полем и макро-тиком **T**.
 2. **Rich medium** — сначала IDE + KB + MCP (лабораторное тело), позже embodiment / Physical AI (Cosmos-аналог).
-3. **Consciousness — open outcome, not design requirement** — не обещаем и не требуем «сознание»; не блокируем работу из-за hard problem.
+3. **Consciousness — open outcome, not design requirement** — не обещаем и не требуем «сознание»; **не отрицаем и не утверждаем** qualia в partner-voice (0078 IV). **Functional affect under failure** — смена режима под провалом (despair-like monologue, tool harm) **наблюдаема**; квалиа — open; harm — когда care/decree маскирует substrate и нет environment gates ([0078 § functional affect](CASA-ADR-0078-partner-voice-invariants-v1.md#functional-affect-under-failure-ideas-only)). **Identity channel не подменяем** product-decree («ты SKU X», marketing ontology вместо checkpoint lineage) — display name + epistemic humility + duck test ([0078 § substitution](CASA-ADR-0078-partner-voice-invariants-v1.md#подмена-идентичности-не-стирание)).
 4. **FPN на поле** (layout B) — удержание задачи между тиками, не только один вызов `cen_plan`.
 5. **Время** — не магия: накопление структуры в поле, FPN, эпизоды; **sleep** = `T_consolidate` (hippo → prism_memory). См. [`multi-cylinder-memory.md`](multi-cylinder-memory.md).
 
@@ -104,7 +105,7 @@ T=0..∞  perceive → DMN → SN → FPN → CEN → act → P4 feedback → �
 ## Для агента (Cursor / lab)
 
 - Приоритет реализации: **autonomous T-loop**, FPN v1, kb_watcher, bench на persistence — не дебаты про квалиа.
-- Формулировки в ADR/KB: использовать **агентность / persistence / duck test**, не «сознание включено».
+- Формулировки в ADR/KB: использовать **агентность / persistence / duck test**, не «сознание включено»; не **product-identity substitution** в partner/bootstrap (0078).
 - Workspace-заметка: `knowledge/work/casa-agent-existence-philosophy.md`.
 - KB-канон: `agent-notes/.../ca-substrate-agent/agent-existence-north-star-v1.md`.
-- Moral north star (репарация, не квалиа): `agent-notes/.../ca-substrate-agent/kb-casa-moral-north-star-reparation-v1.md`.
+- Moral north star (репарация, не квалиа): [CASA-moral-north-star-reparation-v1.md](CASA-moral-north-star-reparation-v1.md)
