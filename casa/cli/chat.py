@@ -1,13 +1,5 @@
 #!/usr/bin/env python3
-"""Fast interactive console chat with the von-neumann subject.
-
-Unlike agent_dialogue_repl, this defers the heavy full-store checkpoint to the
-session boundary (state['_defer_runtime_persist']), so each turn costs only the
-cognitive tick (~sub-second) instead of a ~13s per-turn gzip of the whole field.
-
-Default: full subject agency (may defer/refuse partner turns). Optional --engage
-sets force_accept_external — product overlay only, not the moral default.
-"""
+"""Console host wire to partner_text tract (ADR-0028 afferent/efferent + ADR-0046)."""
 
 from __future__ import annotations
 
@@ -21,34 +13,22 @@ from casa._paths import REPO_ROOT, ensure_import_paths
 
 ensure_import_paths()
 
+from casa.body.text_tract import (
+    TEXT_WIRE_CONSOLE,
+    enqueue_partner_cue,
+    read_pulse,
+    reactor_alive,
+    wait_for_partner_reply,
+)
 from casa.cli.ingest_state import resolve_ingest_state
+from casa.cli.life_daemon import ensure_life_reactor
+from casa.cli.life_tick_bar import LifeTickBar, mount_life_tick_bar
 from casa.domain.dialogue_turn import load_dialogue_turns
 from casa.domain.subject_mode import apply_subject_profile, is_subject_mode, subject_display_name
-from casa.prisms.control.agent_sn_cen_tick import run_dialogue_partner_turn
-from casa.prisms.control.fpn_state import load_session, save_session
-from casa.prisms.shared.store_lock import store_session_lock
+from casa.prisms.control.fpn_state import load_session
 from casa.prisms.memory.agent_memory_ops import agent_remember
+from casa.prisms.shared.store_lock import store_write_lock
 from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
-from casa.prisms.tick.orchestrator import LearningTickConfig
-
-
-def _fast_chat_config() -> LearningTickConfig:
-    """Dialogue-only tick: skip the autonomous learning loop (predict/retain/self-drive)
-    that costs ~3s/turn and is not needed to produce a reply. Compose is unaffected."""
-    return LearningTickConfig(
-        act_rollout=False,
-        surprise_episode=False,
-        remember_on_surprise=False,
-        retain_on_verified_predict=False,
-        sleep_every=0,
-        agent_self_drive=False,
-        goal_from_surprise=False,
-        kolb_relink_on_surprise=False,
-        metacog_gate=False,
-        spacing_on_wake=False,
-        tick_log=False,
-        retro_after_sleep=False,
-    )
 
 
 def _store_dir(store_id: str) -> Path:
@@ -70,14 +50,12 @@ def _configure_stdio_utf8() -> None:
 _HELP = "\n".join(
     [
         "Команды:",
-        "  /quit /exit /q   — выход (сохраняет опыт сессии)",
-        "  /save            — сохранить опыт прямо сейчас",
-        "  /remember <текст>— научить/поправить (запись в журнал; всплывает при следующем вопросе)",
+        "  /quit /exit /q   — выход",
+        "  /status          — полный пульс + wm.T",
+        "  /remember <текст>— научить/поправить (запись в журнал)",
         "  /turns [N]       — последние N реплик",
-        "  /passage         — многострочный ввод (пассаж+вопрос), конец — пустая строка",
-        "  /agency          — субъектность: полная disposition (defer/refuse)  [по умолчанию]",
-        "  /engage          — продуктовый overlay: всегда accept partner-turn",
-        "  /genome          — паспорт генома (species_id, hash, alleles)",
+        "  /passage         — многострочный ввод, конец — пустая строка",
+        "  /genome          — паспорт генома",
         "  /help            — эта справка",
     ]
 )
@@ -87,10 +65,6 @@ _SENT_SPLIT = re.compile(r"(?<=[.!?…])\s+")
 
 
 def _maybe_split_passage(line: str) -> str:
-    """A single-line 'statement(s) + final question?' is reformatted into
-    'passage\\n\\nquestion' so the reading-comprehension path fires — it keys on a
-    blank-line separator (split_passage_query / has_passage_context). Short greetings
-    like 'Привет. Как дела?' are left alone by the >=12-char passage guard."""
     if "\n" in line:
         return line
     sents = [s.strip() for s in _SENT_SPLIT.split(line.strip()) if s.strip()]
@@ -102,21 +76,39 @@ def _maybe_split_passage(line: str) -> str:
     return line
 
 
-def _save(store: Path, state: dict, wm, *, quiet: bool = False) -> None:
-    if not quiet:
-        print("  …сохраняю опыт сессии (это разовая операция)…", flush=True)
-    save_session(store, wm)
-    mark_runtime_dirty(state)
-    save_runtime_state(store, state, force=True, sync_ltm_on_save=False)
+def _format_pulse(store: Path) -> str:
+    pulse = read_pulse(store)
+    if not pulse:
+        return "partner_text: нет пульса (life не запущена?)"
+    alive = reactor_alive(store)
+    tick = pulse.get("macro_tick")
+    sn = pulse.get("sn_mode") or "?"
+    updated = pulse.get("updated_at") or "?"
+    tract = pulse.get("tract_id") or "partner_text"
+    return f"{tract}: {'live' if alive else 'stale'} · T={tick} · sn={sn} · {updated}"
+
+
+def _remember(store: Path, text: str) -> None:
+    with store_write_lock(store, holder="chat_remember", timeout_s=60.0):
+        state = resolve_ingest_state(store, None)
+        apply_subject_profile(store, state)
+        agent_remember(
+            store,
+            state,
+            {"kind": "observation", "text": text, "tags": ["chat", "correction"]},
+            scope="self",
+        )
+        mark_runtime_dirty(state)
+        save_runtime_state(store, state, force=True, sync_ltm_on_save=False)
 
 
 def run_chat(
     store: Path,
     *,
-    engage: bool = False,
-    no_save: bool = False,
-    checkpoint: bool = False,
+    no_daemon: bool = False,
+    timeout_s: float = 120.0,
     verbose: bool = False,
+    quiet: bool = False,
 ) -> int:
     if not store.is_dir():
         print(f"store не найден: {store}", file=sys.stderr)
@@ -124,161 +116,173 @@ def run_chat(
 
     _configure_stdio_utf8()
 
-    with store_session_lock(store, holder="chat"):
-        state = resolve_ingest_state(store, None)
-        apply_subject_profile(store, state)
-        if not is_subject_mode(state, store):
+    state = resolve_ingest_state(store, None)
+    apply_subject_profile(store, state)
+    if not is_subject_mode(state, store):
+        print(
+            f"store {store.name} не в subject_mode — включи subject_mode в store_profile.json",
+            file=sys.stderr,
+        )
+        return 2
+
+    display = subject_display_name(state, store)
+    turns = len(load_dialogue_turns(store))
+
+    if not no_daemon:
+        if not ensure_life_reactor(store):
             print(
-                f"store {store.name} не в subject_mode — включи subject_mode в store_profile.json",
+                "не удалось поднять life reactor — запусти вручную:\n"
+                f"  python tools/agent_inbox_runner.py --store-dir {store} --inbox-dir {store / 'teacher_inbox'}",
                 file=sys.stderr,
             )
             return 2
 
-        # Fast path: defer the heavy per-turn full-store checkpoint to /save and exit.
-        state["_defer_runtime_persist"] = True
-        if engage:
-            state.setdefault("subject", {})["force_accept_external"] = True
+    header_lines = 0
 
-        display = subject_display_name(state, store)
-        wm = load_session(store)
-        turns = len(load_dialogue_turns(store))
+    def _header(line: str = "") -> None:
+        nonlocal header_lines
+        if line:
+            print(line)
+        else:
+            print()
+        header_lines += 1
 
-        print()
-        print(f"CASA chat — {display} ({store.name})")
-        mode = "engage (product overlay)" if engage else "agency (субъектность)"
-        print(f"Режим: {mode} · быстрые ответы · /help · /quit")
-        if turns:
-            print(f"В сессии уже {turns} реплик.")
-        print()
+    _header()
+    _header(f"CASA chat — {display} ({store.name})")
+    _header("Режим: console → partner_text · строка life ♥ T · /status · /help · /quit")
+    if turns:
+        _header(f"В сессии уже {turns} реплик.")
 
-        cfg = _fast_chat_config()
-        dirty = False
-        try:
-            while True:
-                try:
-                    line = input("ты> ").strip()
-                except (EOFError, KeyboardInterrupt):
+    life_bar: LifeTickBar | None = None
+    if not quiet:
+        life_bar = mount_life_tick_bar(store, header_lines_before=header_lines, display=display)
+        header_lines += 1
+        _header()
+
+    try:
+        while True:
+            from casa.domain.partner_initiative import drain_partner_outbox
+
+            for row in drain_partner_outbox(store, limit=4):
+                text = str(row.get("text") or "").strip()
+                if text:
+                    print(f"{display}> {text}")
                     print()
+            try:
+                line = input("ты> ").strip()
+            except (EOFError, KeyboardInterrupt):
+                print()
+                break
+            if not line:
+                continue
+
+            if line.startswith("/"):
+                cmd, _, arg = line[1:].partition(" ")
+                cmd = cmd.lower()
+                if cmd in ("passage", "p"):
+                    print("  (вставь пассаж+вопрос; строка с одной «.» или /end — отправить)")
+                    buf: list[str] = []
+                    while True:
+                        try:
+                            chunk = input("… ")
+                        except (EOFError, KeyboardInterrupt):
+                            break
+                        if chunk.strip() in (".", "/end"):
+                            break
+                        buf.append(chunk)
+                    line = "\n".join(buf).strip()
+                    if not line:
+                        continue
+                elif cmd in ("quit", "exit", "q"):
                     break
-                if not line:
+                elif cmd == "help":
+                    print(_HELP)
+                    continue
+                elif cmd == "status":
+                    wm = load_session(store)
+                    print(f"  · {_format_pulse(store)} · wm.T={wm.tick}")
+                    continue
+                elif cmd in ("remember", "teach"):
+                    if not arg.strip():
+                        print("  · нужен текст: /remember <факт или правка>")
+                    else:
+                        _remember(store, arg.strip())
+                        print("  · записал в журнал")
+                    continue
+                elif cmd == "genome":
+                    from casa.prisms.genetic import format_genome_passport_repl
+
+                    print(format_genome_passport_repl(state))
+                    continue
+                elif cmd == "turns":
+                    n = int(arg) if arg.strip().isdigit() else 6
+                    for t in load_dialogue_turns(store)[-max(1, min(40, n)):]:
+                        who = "ты" if t.speaker == "partner" else display
+                        print(f"  [{t.kind}] {who}: {t.text[:200]}")
+                    continue
+                else:
+                    print(f"  неизвестная команда: /{cmd} (/help)")
                     continue
 
-                if line.startswith("/"):
-                    cmd, _, arg = line[1:].partition(" ")
-                    cmd = cmd.lower()
-                    if cmd in ("passage", "p"):
-                        print("  (вставь пассаж+вопрос; строка с одной «.» или /end — отправить)")
-                        buf: list[str] = []
-                        while True:
-                            try:
-                                chunk = input("… ")
-                            except (EOFError, KeyboardInterrupt):
-                                break
-                            if chunk.strip() in (".", "/end"):
-                                break
-                            buf.append(chunk)
-                        line = "\n".join(buf).strip()
-                        if not line:
-                            continue
-                        # fall through to run the turn with the multi-line query
-                    elif cmd in ("quit", "exit", "q"):
-                        break
-                    elif cmd == "help":
-                        print(_HELP)
-                        continue
-                    elif cmd == "save":
-                        _save(store, state, wm)
-                        dirty = False
-                        continue
-                    elif cmd in ("remember", "teach"):
-                        if not arg.strip():
-                            print("  · нужен текст: /remember <факт или правка>")
-                        else:
-                            agent_remember(
-                                store, state,
-                                {"kind": "observation", "text": arg.strip(), "tags": ["chat", "correction"]},
-                                scope="self",
-                            )
-                            print("  · записал в журнал (спроси про это — всплывёт в ответе)")
-                        continue
-                    elif cmd == "engage":
-                        state.setdefault("subject", {})["force_accept_external"] = True
-                        print("  · engage: partner-turn всегда accept (продуктовый overlay)")
-                        continue
-                    elif cmd == "agency":
-                        state.setdefault("subject", {}).pop("force_accept_external", None)
-                        print("  · agency: полная disposition (defer/refuse возможны)")
-                        continue
-                    elif cmd == "genome":
-                        from casa.prisms.genetic import format_genome_passport_repl
+            if not no_daemon and not reactor_alive(store):
+                print("  · reactor offline — перезапуск…", file=sys.stderr)
+                if not ensure_life_reactor(store):
+                    print("  · не удалось восстановить reactor", file=sys.stderr)
+                    continue
 
-                        print(format_genome_passport_repl(state))
-                        continue
-                    elif cmd == "turns":
-                        n = int(arg) if arg.strip().isdigit() else 6
-                        for t in load_dialogue_turns(store)[-max(1, min(40, n)):]:
-                            who = "ты" if t.speaker == "partner" else display
-                            print(f"  [{t.kind}] {who}: {t.text[:200]}")
-                        continue
-                    else:
-                        print(f"  неизвестная команда: /{cmd} (/help)")
-                        continue
+            query = _maybe_split_passage(line)
+            t0 = time.perf_counter()
+            try:
+                cue_id = enqueue_partner_cue(store, query, wire=TEXT_WIRE_CONSOLE)
+            except TimeoutError:
+                print("  · предыдущий ход ещё обрабатывается — подожди", file=sys.stderr)
+                continue
+            try:
+                done = wait_for_partner_reply(store, cue_id, timeout_s=timeout_s)
+            except TimeoutError:
+                print("  · таймаут ответа — проверь /status", file=sys.stderr)
+                continue
+            except RuntimeError as err:
+                print(f"  · ошибка tick: {err}", file=sys.stderr)
+                continue
 
-                query = _maybe_split_passage(line)
-                t0 = time.perf_counter()
-                reply, report, wm, state = run_dialogue_partner_turn(
-                    store, user_query=query, wm=wm, state=state, config=cfg
+            reply = str(done.get("reply_text") or "").strip()
+            dt = (time.perf_counter() - t0) * 1000
+            print(f"{display}> {reply}")
+            if verbose:
+                hint = done.get("report_hint") or {}
+                print(
+                    f"  · {dt:.0f} ms · tick={done.get('tick')} · sn={hint.get('sn_mode')}",
+                    file=sys.stderr,
                 )
-                dt = (time.perf_counter() - t0) * 1000
-                dirty = True
-                print(f"{display}> {reply}")
-                if verbose:
-                    dlg = report.get("dialogue") or {}
-                    cen = report.get("cen") or {}
-                    print(
-                        f"  · {dt:.0f} ms · intent={cen.get('intent')} "
-                        f"· soft_miss={dlg.get('soft_miss')} · tick={report.get('tick')}",
-                        file=sys.stderr,
-                    )
-                print()
-        finally:
-            if not no_save and dirty:
-                # Dialogue turns persist per-turn already; on exit just flush working
-                # memory (instant). The heavy full-field checkpoint is opt-in.
-                save_session(store, wm)
-                if checkpoint:
-                    _save(store, state, wm)
-                else:
-                    print("  · диалог сохранён (полный чекпойнт поля — /save или --checkpoint)")
+            print()
+    finally:
+        if life_bar is not None:
+            life_bar.stop()
 
     print("Пока.")
     return 0
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="Fast console chat with the von-neumann subject")
+    p = argparse.ArgumentParser(description="Console chat — host wire to partner_text tract")
     p.add_argument("--store", default="von-neumann", help="store id under agents/ or a path")
     p.add_argument(
-        "--engage",
+        "--no-daemon",
         action="store_true",
-        help="product overlay: force_accept_external on partner turns (default: full agency)",
+        help="do not spawn life reactor (must already be running)",
     )
-    p.add_argument(
-        "--agency",
-        action="store_true",
-        help=argparse.SUPPRESS,
-    )
-    p.add_argument("--no-save", action="store_true", help="do not persist anything on exit")
-    p.add_argument("--checkpoint", action="store_true", help="full field checkpoint on exit (~slow); default flushes dialogue only")
-    p.add_argument("--verbose", action="store_true", help="show per-turn latency/intent on stderr")
+    p.add_argument("--timeout", type=float, default=120.0, help="partner reply timeout (seconds)")
+    p.add_argument("--verbose", action="store_true", help="per-turn timing on stderr")
+    p.add_argument("--quiet", action="store_true", help="hide life tick bar")
     args = p.parse_args()
     raise SystemExit(
         run_chat(
             _store_dir(args.store),
-            engage=args.engage and not args.agency,
-            no_save=args.no_save,
-            checkpoint=args.checkpoint,
+            no_daemon=args.no_daemon,
+            timeout_s=args.timeout,
             verbose=args.verbose,
+            quiet=args.quiet,
         )
     )
 
