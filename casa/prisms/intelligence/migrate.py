@@ -15,6 +15,7 @@ ensure_import_paths()
 from casa.prisms.affect import core_affect_state, ensure_emotional_zone, spawn_emotional_zone
 from casa.prisms.affect.zone import consolidate_emotional_zone_wire
 from casa.prisms.intelligence.character import spawn_character_zone
+from casa.prisms.intelligence.defense_zone import migrate_legacy_defense_state, spawn_defense_zone
 from casa.prisms.intelligence.executive import spawn_executive_zone
 from casa.prisms.intelligence.logical import spawn_logical_zone
 from casa.prisms.intelligence.social import spawn_social_zone
@@ -24,7 +25,7 @@ from casa.prisms.memory.bootstrap_agent_manifest import load_agent_bootstrap_man
 from casa.prisms.shared.store_boot import boot_store
 from casa.prisms.shared.store_persist import save_runtime_state
 
-INTELLIGENCE_ZONES_VERSION = 5
+INTELLIGENCE_ZONES_VERSION = 6
 
 
 def infer_emotional_from_dialogue_ring(
@@ -120,6 +121,10 @@ _SPAWNERS = {
         "spawned": True,
         **spawn_character_zone(state, config=cfg),
     },
+    "defense_zone": lambda state, cfg, tick: {
+        "spawned": True,
+        **spawn_defense_zone(state, config=cfg),
+    },
     "spatial_zone": lambda state, cfg, tick: spawn_spatial_zone(state, config=cfg),
     "metabolic_zone": lambda state, cfg, tick: {
         "spawned": True,
@@ -213,6 +218,8 @@ def migrate_all_zones(
 
     if consolidate_emotional_zone_wire(state):
         report["emotional_wire_migrated"] = True
+    if migrate_legacy_defense_state(state):
+        report["defense_wire_migrated"] = True
 
     if store_dir is not None:
         report["zones"]["genetic"] = _migrate_genetic_zone(state, wrapper, store_dir, tick=tick)

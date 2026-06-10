@@ -69,7 +69,16 @@ def character_compose_deltas(state: dict) -> dict[str, int]:
     zone = ensure_character_zone(state)
     openness = float(zone.get("openness") or 0.5)
     directness = float(zone.get("directness") or 0.5)
-    return {
+    deltas = {
         "ru.dialog.greeting": int(6 * openness),
         "ru.dialog.self": int(8 * directness) - 4,
     }
+    matrix = zone.get("bias_matrix") or {}
+    if isinstance(matrix, dict):
+        social = matrix.get("social") or {}
+        if isinstance(social, dict):
+            discuss_bias = float(social.get("discuss") or 1.0)
+            if discuss_bias < 0.85:
+                deltas["ru.dialog.self"] = deltas.get("ru.dialog.self", 0) - 6
+                deltas["ru.dialog.honest."] = deltas.get("ru.dialog.honest.", 0) - 4
+    return deltas

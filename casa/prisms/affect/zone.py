@@ -32,6 +32,8 @@ _EVENT_DELTAS: dict[str, dict[str, float]] = {
     "self_repair_success": {"valence": 0.1, "arousal": -0.05, "security": 0.12},
     "partner_trust": {"valence": 0.08, "security": 0.1},
     "prediction_error": {"valence": -0.05, "arousal": 0.12},
+    "security_threat": {"valence": -0.18, "arousal": 0.28, "security": -0.22},
+    "caregiver_violation": {"valence": -0.25, "arousal": 0.32, "security": -0.3},
 }
 
 _EPISODIC_FLAGS: dict[str, tuple[str, float]] = {
@@ -290,6 +292,16 @@ def infer_life_event_from_turn(
 ) -> str | None:
     """Lightweight event inference for dialogue tick wiring."""
     reply = (subject_reply or "").strip()
+    try:
+        from casa.prisms.defense.infer import infer_trauma_life_event
+
+        trauma = infer_trauma_life_event(
+            partner_text, subject_reply=subject_reply, query_intent=query_intent
+        )
+        if trauma:
+            return trauma
+    except ImportError:
+        pass
     core = core_affect_state(state)
     partner_only = infer_partner_life_event(partner_text, query_intent=query_intent)
     if partner_only and not reply:

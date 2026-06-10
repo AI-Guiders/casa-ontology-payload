@@ -32,6 +32,8 @@ LIFE_EVENTS = frozenset(
         "self_repair_success",
         "partner_trust",
         "prediction_error",
+        "security_threat",
+        "caregiver_violation",
     }
 )
 

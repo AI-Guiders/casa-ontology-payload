@@ -47,6 +47,7 @@ Organ catalog **closed** at T=0 (no new intelligence *types* at runtime). Нов
 | **social** | межличностный | dialogue ring, social tract, partner model | agent-social-sandbox (planned) | **gap** — repair, mentalizing |
 | **spatial** | пространственный | prism_visual, control_vis | vis scratch (roadmap) | design only |
 | **character** | temperament (медленный) | призматическое поле bias / lattice — **0071** | — | 0057; v0 domain×tract matrix |
+| **defense** | психологическая защита / survival | trauma_edges, repression gates — **0074/0076** | `agent-defense-sandbox` | **0076** wired; emotional client |
 | **genetic** | species / meta-instructions | genome hash, promote_canon, zone proportions | **none** (allelic per **0065**) | **0062** design |
 | **perceptual** | sensory gate / thalamic input | VK, text stream, vis quantize | `agent-percept-sandbox` | **0063** design |
 | **metabolic** | ATP / fatigue / sleep pressure | tick budget, forced sleep | `agent-metabolic-sandbox` | **0064** design |

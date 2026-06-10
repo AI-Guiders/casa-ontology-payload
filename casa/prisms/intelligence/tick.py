@@ -58,6 +58,7 @@ def process_intelligence_turn(
     disposition: str = "",
     tick: int = 0,
     prior_hints: list[str] | None = None,
+    store_dir: Any | None = None,
 ) -> dict[str, Any]:
     ensure_emotional_zone(state)
     life = infer_life_event_from_turn(
@@ -126,6 +127,31 @@ def process_intelligence_turn(
     snap = intelligence_snapshot(state)
     if life:
         snap["life_event"] = life
+    try:
+        from casa.prisms.defense.lattice import prune_defense_scratch_lattices
+        from casa.prisms.defense.sandbox import try_auto_promote_rechannel_experiments
+
+        promoted = try_auto_promote_rechannel_experiments(state, tick=tick)
+        if promoted:
+            snap["defense_sandbox_promoted"] = promoted
+        if tick and int(tick) % 16 == 0:
+            snap["defense_sandbox_prune"] = prune_defense_scratch_lattices(state, tick=tick)
+    except ImportError:
+        pass
+    if store_dir is not None and life:
+        try:
+            from pathlib import Path
+
+            from casa.prisms.defense import defense_after_life_event
+
+            snap["defense"] = defense_after_life_event(
+                state,
+                Path(store_dir),
+                life_event=life,
+                tick=tick,
+            )
+        except ImportError:
+            pass
     return snap
 
 

@@ -24,6 +24,7 @@ DEFAULT_GENOME: dict[str, Any] = {
         "linguistic": 1.0,
         "spatial": 0.5,
         "character": 0.6,
+        "defense": 0.75,
         "perceptual": 0.8,
         "metabolic": 1.0,
     },
@@ -36,6 +37,50 @@ DEFAULT_GENOME: dict[str, Any] = {
         "intent_theta_decay_floor": 0.08,
         "wm_theta_decay": 0.2,
         "intent_theta_decay": 0.12,
+    },
+    "defense_genotype": {
+        "repression": {
+            "security_threshold": 0.35,
+            "valence_threshold": -0.12,
+        },
+        "denial": {
+            "security_threshold": 0.42,
+            "arousal_threshold": 0.45,
+        },
+        "projection": {
+            "valence_threshold": -0.08,
+        },
+        "rationalization": {
+            "security_threshold": 0.45,
+        },
+        "sublimation": {
+            "valence_threshold": -0.15,
+            "arousal_threshold": 0.5,
+        },
+        "confabulation": {
+            "valence_threshold": -0.1,
+        },
+    },
+    "trauma_cement_genotype": {
+        "trauma_tier": {
+            "security_threshold": 0.28,
+            "valence_threshold": -0.22,
+            "arousal_threshold": 0.55,
+        },
+        "cement": {
+            "cement_threshold": 0.38,
+            "ema_alpha": 0.12,
+            "bind_scale": 28.0,
+        },
+        "rechannel": {
+            "rechannel_gain": 0.18,
+            "default_proxy_prefixes": [
+                "math.",
+                "ru.grammar.",
+                "lang.word.",
+                "agent.affect.",
+            ],
+        },
     },
     "forgetting_genotype": {
         "implicit": {
