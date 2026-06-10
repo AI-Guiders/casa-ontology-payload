@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from typing import Any
 
-from casa.domain.arithmetic import arithmetic_reply
 from casa.domain.subject_agency import SubjectAction, SubjectDisposition
 from casa.domain.subject_articulation import compose_subject_utterance
 from casa.domain.dialogue_provenance import meaning_provenance
@@ -87,18 +86,6 @@ def compose_subject_partner_reply_with_ctx(
             wm=wm,
         )
         return empty, "Запрос пустой; скажи, о чём говорим."
-
-    # Deterministic two-operand arithmetic (honest evaluator): the field path can't
-    # compute plain sums, so answer '2+3'/'три умножить на три' directly. Fires only on
-    # a clean expression, so word problems fall through to normal field compose.
-    ar = arithmetic_reply(q)
-    if ar is not None:
-        ctx = SubjectDialogueContext(
-            display_name=subject_display_name(state, store_dir),
-            field_version=int(state.get("field_version") or 0),
-            wm=wm,
-        )
-        return ctx, ar
 
     ctx = gather_subject_dialogue_blocks(q, task, state, wm, store_dir)
     text = compose_subject_utterance(q, ctx)
