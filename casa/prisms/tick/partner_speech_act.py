@@ -18,6 +18,7 @@ _ACT_PRIORITY = (
     "thanks",
     "farewell",
     "greeting",
+    "intro_self",
     "ask_thought",
     "how_are_you",
     "mirror_ack",
@@ -80,12 +81,22 @@ def resolve_partner_speech_act_claim(
         pri = _ACT_PRIORITY.index(act) if act in _ACT_PRIORITY else 99
         ranked.append((cue, -pri, act, claim))
     if not ranked:
+        from casa.domain.dialogue_bind.partner_scoring import partner_self_label
+
+        if partner_self_label(query):
+            for claim in partner_speech_act_claims(bundle):
+                slots = claim.get("slots") if isinstance(claim.get("slots"), dict) else {}
+                if str(slots.get("speech_act") or "") == "intro_self":
+                    out = dict(claim)
+                    out["slots"] = {**slots, "speech_act": "intro_self", "cue_score": 2}
+                    return out
         if blocks and any(str(b.get("concept_id") or "") == "subject.dialog.self_recent" for b in blocks):
-            return {
-                "concept_id": "ru.speech_act.partner.thread_turn",
-                "text": "Partner continues an open thread",
-                "slots": {"speech_act": "thread_turn", "cue_score": 1},
-            }
+            for claim in partner_speech_act_claims(bundle):
+                slots = claim.get("slots") if isinstance(claim.get("slots"), dict) else {}
+                if str(slots.get("speech_act") or "") == "thread_turn":
+                    out = dict(claim)
+                    out["slots"] = {**slots, "speech_act": "thread_turn", "cue_score": 1}
+                    return out
         return None
     ranked.sort(key=lambda row: (-row[0], row[1]))
     cue, _, act, claim = ranked[0]

@@ -1,14 +1,19 @@
 {
   "schema_version": 1,
   "bundle_id": "kb-partner-speech-acts-v1",
-  "title": "Partner speech acts as read/bind features (not efferent paste)",
+  "title": "Partner speech acts — read/bind claims (route_hints, bind_boost in slots; not Python tuples)",
   "claims": [
     {
       "concept_id": "ru.speech_act.partner.thanks",
       "text": "Partner thanks",
       "slots": {
         "speech_act": "thanks",
-        "cue_substrings": "спасибо|благодар"
+        "cue_substrings": "спасибо|благодар",
+        "route_hints": "ru.dialog.thanks",
+        "suppress_hints": "ru.dialog.affect|ru.dialog.capabilities",
+        "bind_boost": "ru.dialog.thanks:30",
+        "bind_demote": "ru.dialog.farewell:12|ru.dialog.affect:14|ru.dialog.capabilities:20",
+        "compose_single_hub": "true"
       }
     },
     {
@@ -16,7 +21,11 @@
       "text": "Partner farewell",
       "slots": {
         "speech_act": "farewell",
-        "cue_substrings": "до свидания|пока"
+        "cue_substrings": "до свидания|пока",
+        "route_hints": "ru.dialog.farewell",
+        "bind_boost": "ru.dialog.farewell:28|ru.dialog.thanks:8",
+        "bind_demote": "ru.dialog.affect:10",
+        "compose_single_hub": "true"
       }
     },
     {
@@ -24,7 +33,12 @@
       "text": "Partner greeting",
       "slots": {
         "speech_act": "greeting",
-        "cue_substrings": "привет|здравствуй|добрый день|добрый вечер"
+        "cue_substrings": "привет|здравствуй|добрый день|добрый вечер",
+        "route_hints": "ru.dialog.greeting",
+        "suppress_hints": "ru.dialog.affect",
+        "bind_boost": "ru.dialog.greeting:22|ru.dialog.affect:10",
+        "bind_demote": "ru.dialog.capabilities:14",
+        "compose_single_hub": "true"
       }
     },
     {
@@ -32,7 +46,25 @@
       "text": "Partner asks state / how are you",
       "slots": {
         "speech_act": "how_are_you",
-        "cue_substrings": "как дела|как ты|как тебе"
+        "cue_substrings": "как дела|как ты|как тебе|как у тебя|как у вас",
+        "route_hints": "ru.dialog.how_are_you|ru.dialog.self",
+        "suppress_hints": "ru.dialog.affect",
+        "bind_boost": "ru.dialog.how_are_you:42|ru.dialog.self:22|ru.dialog.honest.:12",
+        "bind_demote": "ru.dialog.affect:52|ru.dialog.capabilities:28|ru.dialog.thanks:18|ru.dialog.self:28",
+        "compose_single_hub": "true"
+      }
+    },
+    {
+      "concept_id": "ru.speech_act.partner.intro_self",
+      "text": "Partner introduces self by name",
+      "slots": {
+        "speech_act": "intro_self",
+        "cue_substrings": "познакомиться|меня зовут|приятно познакомиться",
+        "route_hints": "ru.dialog.greeting|ru.dialog.self",
+        "suppress_hints": "ru.dialog.affect|ru.dialog.capabilities",
+        "bind_boost": "ru.dialog.greeting:28|ru.dialog.self:24|ru.dialog.thanks:12",
+        "bind_demote": "subject.dialog.partner_recent:48|ru.dialog.affect:20|ru.dialog.capabilities:24",
+        "compose_single_hub": "true"
       }
     },
     {
@@ -40,7 +72,12 @@
       "text": "Partner asks subject's thought or opinion",
       "slots": {
         "speech_act": "ask_thought",
-        "cue_substrings": "что думаешь|что ты думаешь|как считаешь|как ты считаешь|твоё мнение|твое мнение|а что ты"
+        "cue_substrings": "что думаешь|что ты думаешь|как считаешь|как ты считаешь|твоё мнение|твое мнение|а что ты",
+        "route_hints": "ru.dialog.self|ru.dialog.honest.",
+        "suppress_hints": "ru.dialog.greeting|ru.dialog.capabilities",
+        "bind_boost": "subject.dialog.self_recent:22|dialog.context.focus_recent:16|ru.dialog.self:34|ru.dialog.honest.:14",
+        "bind_demote": "ru.dialog.greeting:24|ru.dialog.capabilities:20|ru.dialog.affect:52|ru.dialog.how_are_you:36",
+        "compose_single_hub": "true"
       }
     },
     {
@@ -48,7 +85,20 @@
       "text": "Partner aligns / mirrors prior thread",
       "slots": {
         "speech_act": "mirror_ack",
-        "cue_substrings": "тоже не знаю|хорошо, я|не обязан совпадать|согласен|согласна"
+        "cue_substrings": "тоже не знаю|хорошо, я|не обязан совпадать|согласен|согласна",
+        "route_hints": "ru.dialog.affect|ru.dialog.self",
+        "suppress_hints": "ru.dialog.greeting|ru.dialog.capabilities",
+        "bind_boost": "subject.dialog.partner_recent:10|subject.dialog.self_recent:8|ru.dialog.affect:20|ru.dialog.self:14",
+        "bind_demote": "ru.dialog.greeting:56|ru.dialog.capabilities:36"
+      }
+    },
+    {
+      "concept_id": "ru.speech_act.partner.thread_turn",
+      "text": "Partner continues open thread without new act cue",
+      "slots": {
+        "speech_act": "thread_turn",
+        "bind_boost": "subject.dialog.self_recent:12|dialog.context.focus_recent:10",
+        "bind_demote": "subject.dialog.partner_recent:8"
       }
     }
   ],

@@ -3,82 +3,12 @@ from __future__ import annotations
 from typing import Any
 
 from casa.domain.dialogue_bind.field import looks_like_field_recall
-from casa.domain.dialogue_bind.scoring import (
-    partner_dialog_bind_overlap,
-    partner_quote_from_block,
-    partner_speech_turn,
-)
 from casa.prisms.tick.articulation_realize import UtterancePlan
 from casa.prisms.tick.discourse.model import DiscourseContext
 from casa.prisms.tick.discourse.policy import BlockDiscoursePolicy
 from casa.prisms.tick.discourse.realizers.blocks import DialogBlockRealizer
 from casa.prisms.tick.discourse.strategies.base import _SOCIAL_DIALOG_DENY
 from casa.prisms.tick.discourse.wm import WmBlockRealizer
-
-
-def _compose_partner_intro_reply(
-    partner_block: dict[str, Any],
-    ctx: DiscourseContext,
-    composer: Any,
-    *,
-    dialog: DialogBlockRealizer,
-    policy: BlockDiscoursePolicy,
-) -> str | None:
-    from casa.prisms.memory.concept_layer import discourse_concept_id
-
-    quote = partner_quote_from_block(partner_block)
-    if not quote or not partner_speech_turn(
-        quote,
-        intent=ctx.query_intent,
-        concept_hints=ctx.concept_hints,
-        blocks=ctx.blocks,
-    ):
-        return None
-
-    teaching = partner_dialog_bind_overlap(quote, ctx.blocks) >= 8
-    budget = ctx.budget
-    clauses = []
-    scores: list[int] = []
-
-    bind_blocks: list[dict[str, Any]] = []
-    for block in ctx.blocks:
-        score = int(block.get("score") or 0)
-        if score < budget.score_floor:
-            break
-        if not policy.eligible(block, ctx):
-            continue
-        cid = discourse_concept_id(block)
-        if teaching and cid.startswith("ru.dialog.capabilities"):
-            bind_blocks.append(block)
-        elif not teaching and cid.startswith("ru.dialog.thanks"):
-            bind_blocks.append(block)
-
-    if teaching:
-        for block in ctx.blocks:
-            score = int(block.get("score") or 0)
-            if score < budget.score_floor:
-                break
-            if not policy.eligible(block, ctx):
-                continue
-            cid = discourse_concept_id(block)
-            if cid.startswith("ru.dialog.thanks"):
-                bind_blocks.insert(0, block)
-                break
-
-    for block in bind_blocks[:2]:
-        extra = dialog.realize(block, ctx)
-        take = (
-            1
-            if teaching and discourse_concept_id(block).startswith("ru.dialog.capabilities")
-            else min(2, len(extra))
-        )
-        for clause in extra[:take]:
-            clauses.append(clause)
-            scores.append(int(block.get("score") or 0))
-
-    if not clauses:
-        return None
-    return composer._render_discourse(clauses, scores)
 
 
 def _compose_social_dialog_from_bind(
@@ -88,10 +18,13 @@ def _compose_social_dialog_from_bind(
     dialog: DialogBlockRealizer,
     policy: BlockDiscoursePolicy,
 ) -> str | None:
-    """Stack ru.dialog blocks by bind score (order already in reweight) until floor."""
+    """Render bind-ranked ru.dialog utterances — one hub on phatic speech acts."""
+    from casa.domain.dialogue_bind.speech_act_scoring import compose_single_hub_from_bind
     from casa.prisms.memory.concept_layer import discourse_concept_id
 
     budget = ctx.budget
+    single_hub = compose_single_hub_from_bind(ctx.blocks)
+    hub_limit = 1 if single_hub else 2
     seen_hub: set[str] = set()
     seen_clause: set[str] = set()
     clauses = []
@@ -99,8 +32,11 @@ def _compose_social_dialog_from_bind(
 
     for block in ctx.blocks:
         score = int(block.get("score") or 0)
-        if score < budget.score_floor:
-            break
+        floor = budget.score_floor if not seen_hub else max(4, budget.score_floor - 40)
+        if score < floor:
+            if single_hub:
+                break
+            continue
         cid = discourse_concept_id(block)
         hub = str(block.get("bind_hub") or cid)
         if not cid.startswith("ru.dialog.") or hub in seen_hub:
@@ -120,6 +56,8 @@ def _compose_social_dialog_from_bind(
             clauses.append(clause)
             scores.append(score)
         seen_hub.add(hub)
+        if len(seen_hub) >= hub_limit:
+            break
 
     if not clauses:
         return None
@@ -157,26 +95,6 @@ class SocialIntentStrategy:
         body = compose_situated_thread(ctx, composer, dialog=dialog, policy=policy)
         if body:
             return body
-
-        for block in ctx.blocks:
-            if block.get("concept_id") != "subject.dialog.partner_recent":
-                continue
-            quote = partner_quote_from_block(block)
-            if quote and partner_speech_turn(
-                quote,
-                intent=ctx.query_intent,
-                concept_hints=ctx.concept_hints,
-                blocks=ctx.blocks,
-            ):
-                body = _compose_partner_intro_reply(
-                    block,
-                    ctx,
-                    composer,
-                    dialog=dialog,
-                    policy=policy,
-                )
-                if body:
-                    return body
 
         body = _compose_social_dialog_from_bind(ctx, composer, dialog=dialog, policy=policy)
         if body:

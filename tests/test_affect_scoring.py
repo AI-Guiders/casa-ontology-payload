@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Limbic state bind bias — ADR-0058 wire on social how_are_you."""
+"""Limbic on bind — provenance read feature, not hub score oracle."""
 
 from __future__ import annotations
 
-from casa.domain.dialogue_bind.affect_scoring import apply_affect_state_bind_deltas
-from casa.domain.dialogue_bind.scoring import reweight_blocks_for_reply
+from casa.domain.dialogue_bind.affect_scoring import apply_affect_state_bind_deltas, limbic_state_block
 from casa.domain.dialogue_provenance import meaning_provenance
 from casa.domain.dialogue_bind import SubjectDialogueContext
 from casa.prisms.affect import affect_after_turn, spawn_emotional_zone
@@ -18,40 +17,35 @@ def _state_repair_pending() -> dict:
     return state
 
 
-def test_repair_boosts_honest_over_capabilities() -> None:
-    state = _state_repair_pending()
+def test_affect_bind_deltas_are_noop() -> None:
     blocks = [
+        {"concept_id": "ru.dialog.honest.partial", "text": "h", "source": "kb", "score": 40},
         {
-            "concept_id": "ru.dialog.honest.partial",
-            "text": "honest",
-            "source": "kb",
-            "score": 40,
-        },
-        {
-            "concept_id": "ru.dialog.capabilities",
-            "text": "cap",
-            "source": "kb",
-            "score": 45,
-        },
-        {
-            "concept_id": "ru.speech_act.partner.how_are_you",
-            "text": "how",
-            "source": "speech_act",
-            "score": 30,
-            "slots": {"speech_act": "how_are_you"},
+            "concept_id": "subject.limbic.state",
+            "text": "limbic",
+            "source": "limbic",
+            "score": 16,
+            "slots": {"security": 0.2, "repair_pending": True},
         },
     ]
-    reweight_blocks_for_reply(
-        blocks,
-        "Как ты?",
-        kb_hits=[],
-        intent="social",
-        state=state,
-        concept_hints=["ru.dialog.affect"],
-    )
-    honest = next(b for b in blocks if b["concept_id"].startswith("ru.dialog.honest"))
-    assert int(honest["score"]) >= 64
-    assert not any(b["concept_id"].startswith("ru.dialog.capabilities") for b in blocks)
+    before = int(blocks[0]["score"])
+    apply_affect_state_bind_deltas(blocks, "Как ты?", intent="social", state=_state_repair_pending())
+    assert int(blocks[0]["score"]) == before
+
+
+def test_limbic_block_readable() -> None:
+    blocks = [
+        {
+            "concept_id": "subject.limbic.state",
+            "text": "limbic",
+            "source": "limbic",
+            "score": 16,
+            "slots": {"valence": 0.0, "arousal": 0.2, "security": 0.5, "repair_pending": True},
+        }
+    ]
+    row = limbic_state_block(blocks)
+    assert row is not None
+    assert row["slots"]["repair_pending"] is True
 
 
 def test_provenance_includes_affect_axes() -> None:

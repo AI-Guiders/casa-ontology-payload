@@ -73,12 +73,12 @@ def partner_continuer_query(query: str) -> bool:
 
 
 def thread_continuer_turn(blocks: list[dict[str, Any]], query: str) -> bool:
-    """Open thread continuation — focus block or self_recent + continuer query."""
+    """Open thread continuation — continuer query plus focus or prior subject line."""
+    if not partner_continuer_query(query):
+        return False
     if continuer_active(blocks):
         return True
-    if not any(str(b.get("concept_id") or "") == "subject.dialog.self_recent" for b in blocks):
-        return False
-    return partner_continuer_query(query)
+    return any(str(b.get("concept_id") or "") == "subject.dialog.self_recent" for b in blocks)
 
 
 def hub_open_in_focus(blocks: list[dict[str, Any]], hub: str) -> bool:
@@ -224,33 +224,29 @@ def social_dialog_slot_allowed(
     concept_hints: list[str] | None,
     query: str = "",
     block: dict[str, Any] | None = None,
+    bundle: dict[str, Any] | None = None,
 ) -> bool:
-    """Dialog slot enters compose when semantic_read hinted or field bind elevated the block."""
-    if cid.startswith("ru.dialog.how_are_you"):
-        return field_routed_dialog_slot(
-            cid,
-            hint_prefix="ru.dialog.how_are_you",
-            concept_hints=concept_hints,
-            query=query,
-            block=block,
-        )
-    if cid.startswith("ru.dialog.self"):
-        return field_routed_dialog_slot(
-            cid, hint_prefix="ru.dialog.self", concept_hints=concept_hints, query=query, block=block
-        )
-    if cid.startswith("ru.dialog.capabilities"):
-        return field_routed_dialog_slot(
-            cid,
-            hint_prefix="ru.dialog.capabilities",
-            concept_hints=concept_hints,
-            query=query,
-            block=block,
-        )
-    if cid.startswith("ru.dialog.affect"):
-        return field_routed_dialog_slot(
-            cid, hint_prefix="ru.dialog.affect", concept_hints=concept_hints, query=query, block=block
-        )
-    return True
+    """Gated hubs need hint / overlap / bind floor — open hubs always allowed."""
+    from casa.domain.dialogue_bind.dialog_bind_policy import (
+        gated_dialog_prefixes,
+        hub_family_prefix,
+        open_dialog_prefixes,
+    )
+
+    if not cid.startswith("ru.dialog."):
+        return True
+    if any(cid.startswith(p) for p in open_dialog_prefixes(bundle)):
+        return True
+    if not any(cid.startswith(p) for p in gated_dialog_prefixes(bundle)):
+        return True
+    prefix = hub_family_prefix(cid)
+    return field_routed_dialog_slot(
+        cid,
+        hint_prefix=prefix,
+        concept_hints=concept_hints,
+        query=query,
+        block=block,
+    )
 
 
 def max_field_overlap_for_prefix(

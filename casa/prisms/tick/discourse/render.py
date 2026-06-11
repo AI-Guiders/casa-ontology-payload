@@ -25,6 +25,9 @@ def partner_turn_word_count(query: str) -> int:
 
 
 def partner_turn_is_brief(query: str, *, threshold: int = 6) -> bool:
+    ql = (query or "").strip().lower()
+    if any(m in ql for m in ("расскаж", "о себе", "представь", "представ")):
+        return False
     return partner_turn_word_count(query) <= threshold
 
 

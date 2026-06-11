@@ -28,7 +28,12 @@ def slot_cue_hit(query_lower: str, slots: dict[str, str]) -> int:
 
 def _slot_cue_hit(query_lower: str, slots: dict[str, str]) -> int:
     score = 0
-    for key in ("cue_substrings", "boost_cues", "cues"):
+    raw_sub = slots.get("cue_substrings") or ""
+    if raw_sub:
+        for cue in (c.strip().lower() for c in raw_sub.split("|") if c.strip()):
+            if cue in query_lower:
+                score += 12
+    for key in ("boost_cues", "cues"):
         raw = slots.get(key) or ""
         if not raw:
             continue

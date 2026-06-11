@@ -12,16 +12,13 @@ from casa.domain.dialogue_bind.intent_scoring import (
     text_passage_overlap,
 )
 from casa.domain.dialogue_bind.partner_scoring import (
-    dialog_query_position_boost,
     kb_reply_present,
-    max_field_overlap_for_prefix,
     partner_dialog_bind_overlap,
-    partner_field_overlap,
     partner_quote_from_block,
     partner_self_label,
     partner_speech_turn,
-    social_dialog_slot_allowed,
 )
+from casa.domain.dialogue_bind.social_scoring import apply_social_block_deltas
 
 __all__ = [
     "intent_affinity_delta",
@@ -32,7 +29,6 @@ __all__ = [
     "partner_self_label",
     "partner_speech_turn",
     "reweight_blocks_for_reply",
-    "social_dialog_slot_allowed",
     "text_passage_overlap",
 ]
 
@@ -66,14 +62,6 @@ def reweight_blocks_for_reply(
         blocks=blocks,
     )
 
-    max_affect_field_ov = 0
-    max_self_field_ov = 0
-    max_cap_field_ov = 0
-    if intent == "social":
-        max_affect_field_ov = max_field_overlap_for_prefix(query, blocks, "ru.dialog.affect")
-        max_self_field_ov = max_field_overlap_for_prefix(query, blocks, "ru.dialog.self")
-        max_cap_field_ov = max_field_overlap_for_prefix(query, blocks, "ru.dialog.capabilities")
-
     for b in blocks:
         cid = str(b.get("concept_id") or "")
         disc = discourse_concept_id(b)
@@ -81,110 +69,22 @@ def reweight_blocks_for_reply(
         score = int(b.get("score") or 0)
 
         score += intent_affinity_delta(disc, intent=intent)
-        slots = b.get("slots") if isinstance(b.get("slots"), dict) else {}
-        for hint in concept_hints or []:
-            if disc == hint or disc.startswith(f"{hint}.") or hint.startswith(disc):
-                score += 24
-            elif disc.startswith("ru.dialog.") and hint.startswith("lang.word."):
-                lemma = hint.rsplit(".", 1)[-1].lower()
-                slot_word = str(
-                    slots.get("stimulus") or slots.get("word") or slots.get("surface") or ""
-                ).lower()
-                if lemma and slot_word == lemma:
-                    score += 22
 
         if cid.startswith("lang.word."):
             lemma = cid.rsplit(".", 1)[-1].lower()
             if lemma and lemma in ql and intent not in ("explain", "grammar"):
                 score -= 22
-        if intent == "social" and disc.startswith("ru.dialog.how_are_you"):
-            from casa.domain.dialogue_bind.speech_act_scoring import _active_speech_acts
-
-            routed = _active_speech_acts(blocks) == ["how_are_you"] or any(
-                h.startswith("ru.dialog.how_are_you") for h in (concept_hints or [])
-            )
-            if not routed:
-                score = 0
-
-        if intent == "social" and disc.startswith("ru.dialog.self"):
-            if not any(h.startswith("ru.dialog.self") for h in (concept_hints or [])):
-                if partner_field_overlap(query, b) < 8:
-                    score -= 44
 
         if intent == "social":
-            field_ov = partner_field_overlap(query, b)
-            if field_ov >= 8 and disc.startswith("ru.dialog.affect"):
-                score += min(28, field_ov * 2)
-            if field_ov >= 8 and disc.startswith("ru.dialog.self"):
-                score += min(28, field_ov * 2)
-                if cid == "concept.agent.self":
-                    score += 8
-            if field_ov >= 8 and disc.startswith("ru.dialog.capabilities"):
-                score += min(32, field_ov * 2)
-            if max_affect_field_ov >= 8 and disc.startswith(
-                ("ru.dialog.greeting", "ru.dialog.capabilities")
-            ):
-                score -= min(28, max_affect_field_ov * 2)
-            if max_self_field_ov >= 8 and disc.startswith(("ru.dialog.greeting", "ru.dialog.affect")):
-                score -= min(36, max_self_field_ov * 2)
-            if max_cap_field_ov >= 8 and disc.startswith(
-                ("ru.dialog.greeting", "ru.dialog.affect", "ru.dialog.self")
-            ):
-                score -= min(34, max_cap_field_ov * 2)
-
-        if intent == "social" and any(h.startswith("ru.dialog.affect") for h in (concept_hints or [])):
-            from casa.domain.dialogue_bind.speech_act_scoring import _active_speech_acts
-
-            if not (_active_speech_acts(blocks) == ["how_are_you"]):
-                if disc.startswith("ru.dialog.affect"):
-                    score += 20
-            if cid.startswith("ru.dialog.honest."):
-                score += 12
-            if cid.startswith(("ru.dialog.self", "ru.dialog.capabilities", "ru.dialog.how_are_you")):
-                score -= 18
-
-        if intent == "social" and any(h.startswith("ru.dialog.how_are_you") for h in (concept_hints or [])):
-            if disc.startswith("ru.dialog.how_are_you"):
-                score += 26
-
-        if intent == "social" and any(h.startswith("ru.dialog.self") for h in (concept_hints or [])):
-            if disc.startswith("ru.dialog.self") or cid == "concept.agent.self":
-                score += 20
-
-        if intent == "social" and any(
-            h.startswith("ru.dialog.capabilities") for h in (concept_hints or [])
-        ):
-            if disc.startswith("ru.dialog.capabilities"):
-                score += 24
-
-        if intent == "social" and cid.startswith("ru.dialog."):
-            score += dialog_query_position_boost(query, b, concept_hints=concept_hints)
-
-        if intent == "social" and b.get("source") == "dialogue":
-            quote = partner_quote_from_block(b)
-            if quote.strip().lower() == ql.strip():
-                score += 24
-            if quote and partner_speech_turn(
-                quote,
-                intent=intent,
+            score = apply_social_block_deltas(
+                b,
+                query=query,
+                ql=ql,
+                score=score,
                 concept_hints=concept_hints,
                 blocks=blocks,
-            ):
-                score += 36
-            elif cid == "subject.dialog.partner_recent":
-                score += 16
-            if cid == "subject.dialog.self_recent":
-                score += 6
-
-        if intent == "social" and partner_speech_query:
-            if cid.startswith("ru.dialog.thanks"):
-                score += 18
-            if cid.startswith("ru.dialog.capabilities"):
-                score += 10
-            if disc.startswith("ru.dialog.greeting") and not any(
-                m in ql for m in ("привет", "здравств", "добрый день", "добрый вечер")
-            ):
-                score = 0
+                partner_speech_query=partner_speech_query,
+            )
 
         if intent == "recall":
             if b.get("source") == "journal":

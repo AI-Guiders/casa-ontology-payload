@@ -88,12 +88,13 @@ class SubjectDialogueBinder:
             merged_bundle,
             store_dir=store_dir,
             state=state,
-            extra_concept_hints=speech_act_route_hints(speech_act) or None,
+            extra_concept_hints=speech_act_route_hints(speech_act, bundle=merged_bundle) or None,
         )
         query_read.concept_hints = reconcile_speech_act_hints(
             list(query_read.concept_hints or []),
             speech_act,
             query=q,
+            bundle=merged_bundle,
         )
         from casa.domain.dialogue_bind.speech_act_hints import refresh_kb_hits
 
@@ -104,9 +105,11 @@ class SubjectDialogueBinder:
 
             speech_claim = resolve_partner_speech_act_claim(q, merged_bundle)
             if speech_claim:
-                slots = speech_claim.get("slots") if isinstance(speech_claim.get("slots"), dict) else {}
+                slots = dict(speech_claim.get("slots") if isinstance(speech_claim.get("slots"), dict) else {})
                 act = str(slots.get("speech_act") or "").strip()
                 cue_score = int(slots.get("cue_score") or 1)
+                slots.setdefault("speech_act", act)
+                slots["cue_score"] = str(cue_score)
                 blocks.append(
                     block_dict(
                         str(speech_claim.get("concept_id") or f"ru.speech_act.partner.{act}"),
@@ -114,7 +117,7 @@ class SubjectDialogueBinder:
                         source="speech_act",
                         section="read_feature",
                         score=18 + min(12, cue_score),
-                        slots={"speech_act": act, "cue_score": cue_score},
+                        slots=slots,
                     )
                 )
                 sources.append("speech_act")
@@ -263,7 +266,7 @@ class SubjectDialogueBinder:
                 blocks,
                 tick=int(state.get("field_version") or 0),
             )
-        except ImportError:
+        except (ImportError, KeyError):
             pass
 
         stance = infer_stance(blocks, task=task, intent=intent)

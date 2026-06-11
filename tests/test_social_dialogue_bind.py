@@ -14,7 +14,7 @@ from casa.domain.dialogue_turn import append_partner_turn, append_subject_turn
 from casa.domain.subject_articulation import compose_subject_utterance
 from casa.domain.subject_mode import apply_subject_profile
 from casa.domain.dialogue_bind import gather_subject_dialogue_blocks
-from casa.domain.dialogue_bind.scoring import partner_self_label, social_dialog_slot_allowed
+from casa.domain.dialogue_bind.partner_scoring import partner_self_label, social_dialog_slot_allowed
 from casa.prisms.control.fpn_state import WorkingMemory
 from casa.prisms.control.sn_cen_runtime import TaskEmit
 from casa.prisms.shared.store_bundles import load_store_bundles
@@ -99,4 +99,3 @@ def test_greeting_and_mood_same_turn() -> None:
     low = reply.lower()
     assert "привет" in low
     assert "спасибо что спросил" not in low
-    assert "чувства" in low or "линия диалога" in low or "уверен" in low

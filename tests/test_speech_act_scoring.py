@@ -1,10 +1,35 @@
 #!/usr/bin/env python3
-"""Speech-act bind deltas — social zone bias, not compose oracle."""
+"""Speech-act bind deltas from bundle slots — not Python act tables."""
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 from casa.domain.dialogue_bind.scoring import reweight_blocks_for_reply
 from casa.domain.dialogue_bind.speech_act_scoring import apply_speech_act_bind_deltas
+
+
+def _design_claim(act: str) -> dict:
+    raw = json.loads((Path("design") / "kb-partner-speech-acts.v1.json").read_text(encoding="utf-8"))
+    for claim in raw.get("claims") or []:
+        slots = claim.get("slots") or {}
+        if slots.get("speech_act") == act:
+            return claim
+    raise KeyError(act)
+
+
+def _speech_block(act: str, *, cue_score: int = 6) -> dict:
+    claim = _design_claim(act)
+    slots = dict(claim.get("slots") or {})
+    slots["cue_score"] = cue_score
+    return {
+        "concept_id": str(claim.get("concept_id")),
+        "text": str(claim.get("text") or act),
+        "source": "speech_act",
+        "score": 30,
+        "slots": slots,
+    }
 
 
 def _block(cid: str, score: int) -> dict:
@@ -16,13 +41,7 @@ def test_how_are_you_routes_to_state_hub_not_affect() -> None:
         _block("ru.dialog.affect", 40),
         _block("ru.dialog.how_are_you", 38),
         _block("ru.dialog.capabilities", 40),
-        {
-            "concept_id": "ru.speech_act.partner.how_are_you",
-            "text": "how",
-            "source": "speech_act",
-            "score": 30,
-            "slots": {"speech_act": "how_are_you", "cue_score": 6},
-        },
+        _speech_block("how_are_you"),
     ]
     apply_speech_act_bind_deltas(blocks, "Как ты?", intent="social")
     by_id = {b["concept_id"]: int(b["score"]) for b in blocks}
@@ -34,13 +53,7 @@ def test_thanks_boosts_thanks_hub() -> None:
     blocks = [
         _block("ru.dialog.thanks", 35),
         _block("ru.dialog.affect", 45),
-        {
-            "concept_id": "ru.speech_act.partner.thanks",
-            "text": "thanks",
-            "source": "speech_act",
-            "score": 28,
-            "slots": {"speech_act": "thanks", "cue_score": 5},
-        },
+        _speech_block("thanks", cue_score=5),
     ]
     apply_speech_act_bind_deltas(blocks, "Спасибо", intent="social")
     by_id = {b["concept_id"]: int(b["score"]) for b in blocks}
@@ -64,13 +77,7 @@ def test_reweight_orders_thanks_over_affect() -> None:
             "score": 44,
             "slots": {"clause_1": "пожалуйста"},
         },
-        {
-            "concept_id": "ru.speech_act.partner.thanks",
-            "text": "thanks act",
-            "source": "speech_act",
-            "score": 30,
-            "slots": {"speech_act": "thanks", "cue_score": 6},
-        },
+        _speech_block("thanks", cue_score=6),
     ]
     reweight_blocks_for_reply(
         blocks,

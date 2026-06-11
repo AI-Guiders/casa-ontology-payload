@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from casa.domain.dialogue_bind.partner_scoring import (
@@ -18,6 +19,31 @@ def _hub_id(block: dict[str, Any]) -> str:
     return discourse_concept_id(block)
 
 
+def _content_tokens(text: str) -> set[str]:
+    return {
+        w
+        for w in re.findall(r"[\w\u0400-\u04FF]+", str(text or "").lower(), flags=re.UNICODE)
+        if len(w) > 3
+    }
+
+
+def _parrot_penalty(query: str, body: str) -> int:
+    """Variant opens with partner's line — field overlap without novel efferent."""
+    from casa.domain.dialogue_bind.blocks import score_text
+
+    ql = (query or "").lower()
+    bl = (body or "").lower()
+    words = re.findall(r"[\w\u0400-\u04FF]+", bl, flags=re.UNICODE)
+    for n in range(min(6, len(words)), 0, -1):
+        prefix = " ".join(words[:n]).lower()
+        if len(prefix) >= 5 and prefix in ql:
+            return 88
+    stub: dict[str, Any] = {"text": body, "slots": {"phrase": body}}
+    if score_text(query, body, base=0) >= 16 or partner_field_overlap(query, stub) >= 14:
+        return 80
+    return 0
+
+
 def _variant_score(
     hub_score: int,
     *,
@@ -32,6 +58,7 @@ def _variant_score(
     score = hub_score + min(24, partner_field_overlap(query, stub))
     if narrative_recently_spoken(body, blocks):
         return 0
+    score = max(0, score - _parrot_penalty(query, body))
     if continuer and slot_index == min_index and partner_field_overlap(query, stub) < 8:
         score = max(0, score - 72)
     return score
@@ -66,11 +93,16 @@ def materialize_dialog_utterances(
         min_index = min(indices)
         variants: list[dict[str, Any]] = []
 
+        staged: list[tuple[int, str, str, str, int, int]] = []
+        hub_parrot = False
         for i in indices:
             body = str(slots.get(f"clause_{i}") or slots.get(f"sentence_{i}") or "").strip()
             if not body:
                 continue
             slot_key = f"clause_{i}" if f"clause_{i}" in slots else f"sentence_{i}"
+            parrot = _parrot_penalty(query, body)
+            if parrot >= 80:
+                hub_parrot = True
             score = _variant_score(
                 hub_score,
                 query=query,
@@ -82,6 +114,21 @@ def materialize_dialog_utterances(
             )
             if score <= 0:
                 continue
+            staged.append((score, body, slot_key, hub, parrot, i))
+
+        if hub_parrot:
+            adjusted: list[tuple[int, str, str, str, int, int]] = []
+            for score, body, slot_key, hub, parrot, slot_index in staged:
+                if parrot >= 80:
+                    adjusted.append((score, body, slot_key, hub, parrot, slot_index))
+                    continue
+                nudge = 8 * max(0, slot_index - min_index)
+                if slot_index == min_index:
+                    nudge -= 56
+                adjusted.append((score + nudge, body, slot_key, hub, parrot, slot_index))
+            staged = adjusted
+
+        for score, body, slot_key, hub, _, _ in staged:
             row = dict(block)
             row["concept_id"] = f"{hub}@{slot_key}"
             row["bind_hub"] = hub

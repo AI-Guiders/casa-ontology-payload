@@ -19,13 +19,15 @@ from casa.prisms.tick.discourse.slots import BlockSlots
 from casa.prisms.tick.discourse.wm import WmBlockRealizer
 
 _MORPH_ROLE_ORDER = ("prefix", "stem", "root", "suffix", "ending")
+_KB_GLOSS_RE = re.compile(r"«[^»]+»\s*[—\-]")
 
 
 def _materialized_phrase(block: dict[str, Any], slots: dict[str, str]) -> str:
     phrase = str(slots.get("phrase") or "").strip()
     if phrase:
         return phrase
-    if block.get("bind_hub"):
+    cid = str(block.get("concept_id") or "")
+    if block.get("bind_hub") and ("@" in cid or slots.get("slot_key")):
         return str(block.get("text") or "").strip()
     return ""
 
@@ -183,6 +185,11 @@ class DialogBlockRealizer:
         if brief:
             allow_tail = False
         close = closing_for_query(ctx.query)
+        body_text = str(block.get("text") or "")
+        if _KB_GLOSS_RE.search(body_text) and not _materialized_phrase(block, slots):
+            stimulus = str(slots.get("stimulus") or slots.get("word") or slots.get("surface") or "").strip().lower()
+            if not stimulus or stimulus not in ctx.tokens:
+                return []
 
         phrase = _materialized_phrase(block, slots)
         if phrase:

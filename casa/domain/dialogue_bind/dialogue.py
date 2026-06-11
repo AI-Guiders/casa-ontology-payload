@@ -46,12 +46,15 @@ def dialogue_continuity_blocks(store_dir: Path | None, query: str) -> list[dict[
             if skill not in focus_terms:
                 focus_terms.append(skill)
     if latest_partner:
+        ql = query.strip().lower()
+        pq = latest_partner.strip().lower()
+        base = 4 if pq == ql else score_text(query, latest_partner, base=12)
         blocks.append(
             block_dict(
                 "subject.dialog.partner_recent",
                 f"Партнёр недавно: «{latest_partner[:120]}».",
                 source="dialogue",
-                score=score_text(query, latest_partner, base=12),
+                score=base,
             )
         )
     if latest_subject:

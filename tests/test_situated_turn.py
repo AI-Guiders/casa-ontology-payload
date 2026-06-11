@@ -38,7 +38,29 @@ def test_partner_mirror_does_not_replay_affect_preamble() -> None:
     mirror = "Хорошо, я тоже не знаю, но он не обязан совпадать"
     prior_subject = "Осторожно говорю, что чувствую в диалоге."
     blocks = [
-        _AFFECT_BLOCK,
+        {
+            "concept_id": "ru.speech_act.partner.mirror_ack",
+            "text": "mirror",
+            "source": "speech_act",
+            "score": 36,
+            "slots": {"speech_act": "mirror_ack", "cue_score": 4},
+        },
+        {
+            "concept_id": "ru.dialog.affect@clause_2",
+            "bind_hub": "ru.dialog.affect",
+            "text": "не знаю, совпадает ли мой опыт с человеческим",
+            "source": "kb",
+            "score": 58,
+            "slots": {"phrase": "не знаю, совпадает ли мой опыт с человеческим"},
+        },
+        {
+            "concept_id": "ru.dialog.affect@clause_1",
+            "bind_hub": "ru.dialog.affect",
+            "text": "осторожно говорю, что чувствую в диалоге",
+            "source": "kb",
+            "score": 12,
+            "slots": {"phrase": "осторожно говорю, что чувствую в диалоге"},
+        },
         {
             "concept_id": "subject.dialog.partner_recent",
             "text": f"Партнёр недавно: «{mirror}».",
@@ -55,6 +77,7 @@ def test_partner_mirror_does_not_replay_affect_preamble() -> None:
     reply = compose_subject_utterance(mirror, _ctx(mirror, blocks))
     low = reply.lower()
 
+    assert "да —" not in low
     assert "осторожно говорю" not in low
     assert "не знаю" in low or "совпада" in low
 

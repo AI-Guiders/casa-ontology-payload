@@ -189,6 +189,25 @@ def _act_from_cid(cid: str) -> str | None:
     return None
 
 
+# Partner dialogue uses compose_subject_utterance (bind winners) — never these realize templates.
+_PARTNER_DIALOGUE_ACTS = frozenset(
+    {
+        "greeting",
+        "how_are_you",
+        "intro",
+        "intro_self",
+        "thanks",
+        "farewell",
+        "mirror_ack",
+        "ask_thought",
+        "thread_turn",
+        "dialogue",
+        "phrase_call_mama",
+        "phrase_help",
+    }
+)
+
+
 def build_plan(
     user_query: str,
     answer_blocks: tuple[Any, ...] | list[Any],
@@ -213,16 +232,6 @@ def build_plan(
         social_act = None
     if social_act:
         act = social_act
-    elif "как дела" in ql:
-        act = "how_are_you"
-    elif any(x in ql for x in ("привет", "здравствуй", "добрый день", "добрый вечер")):
-        act = "greeting"
-    elif any(x in ql for x in ("что умеешь", "кто ты", "как ты")):
-        act = "intro"
-    elif any(x in ql for x in ("спасибо", "благодар")):
-        act = "thanks"
-    elif any(x in ql for x in ("до свидания", "пока")):
-        act = "farewell"
     elif "мама" in ql or "папа" in ql:
         if any(x in ql for x in ("позвонить", "набрать", "сказать", "сформулировать", "написать")):
             act = "phrase_call_mama"
@@ -240,7 +249,7 @@ def build_plan(
         if not cid:
             continue
         mapped = _act_from_cid(cid)
-        if mapped and not act:
+        if mapped and not act and mapped not in _PARTNER_DIALOGUE_ACTS:
             act = mapped
         lemma = _lemma_from_word_cid(cid, text)
         if lemma:
@@ -259,7 +268,7 @@ def build_plan(
 
     if not act:
         if cids and all(c.startswith("ru.dialog.") or c.startswith("ru.lang.word.") for c in cids[:2]):
-            act = _act_from_cid(cids[0]) or "dialogue"
+            act = "soft_miss"
         elif " или " in ql or " vs " in ql:
             act = "compare_forms"
         elif intent == "проверка нормы":
@@ -303,33 +312,15 @@ def realize(plan: UtterancePlan, user_query: str) -> str:
         if chk:
             return f"Проверка: {chk}"
 
-    if act == "greeting":
-        return (
-            "Привет! Я помощник по русскому: правила, перефразы и короткие формулировки. "
-            "Спроси, что разобрать."
-        )
-    if act == "how_are_you":
-        return (
-            "Спасибо за сообщение. Сам я настроение не чувствую, но здесь и готов помочь с языком. "
-            "О чём поговорим?"
-        )
-    if act == "intro":
-        return (
-            "Я language-agent: читаю запрос, нахожу понятия в памяти и отвечаю связным русским. "
-            "Умею грамматику, перефраз учебных задач и простые бытовые фразы. "
-            "Не притворяюсь живым человеком."
-        )
+    if act in _PARTNER_DIALOGUE_ACTS:
+        return ""
+
     if act == "phrase_call_mama":
         who = L.get("addressee", "мама")
         who_dat = "маме" if who.lower() == "мама" else who
         return (
             f"Можно написать {who_dat}: «{who.capitalize()}, привет! Вечером наберу — "
             f"хочу поговорить.» Или короче: «Добрый вечер, {who}, как у тебя дела?»"
-        )
-    if act == "phrase_help":
-        return (
-            "Сформулирую нейтрально, без выдуманных фактов о человеке: "
-            "одна короткая фраза от первого лица, вежливо и просто."
         )
     if act == "soft_miss":
         cmp = _realize_compare(user_query, plan.atoms)

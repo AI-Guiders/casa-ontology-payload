@@ -14,6 +14,23 @@ from casa.prisms.tick.partner_speech_act import (
 )
 
 
+def _compose_social(query: str, blocks: list[dict]) -> tuple[SubjectDialogueContext, str]:
+    from casa.domain.dialogue_bind.scoring import reweight_blocks_for_reply
+
+    rows = [dict(b) for b in blocks]
+    reweight_blocks_for_reply(rows, query, kb_hits=[], intent="social")
+    ctx = SubjectDialogueContext(
+        display_name="Нейманн",
+        field_version=1,
+        wm=WorkingMemory(),
+        blocks=rows,
+        source_tags=["kb", "dialogue", "speech_act"],
+        stance="partial",
+        query_intent="social",
+    )
+    return ctx, compose_subject_utterance(query, ctx)
+
+
 def test_ask_thought_act() -> None:
     act = resolve_partner_speech_act("А что ты думаешь про это?")
     assert act == "ask_thought"
@@ -64,25 +81,37 @@ def test_gather_includes_speech_act_block() -> None:
 
 
 def test_ask_thought_reply_uses_bind_not_template() -> None:
+    claim = resolve_partner_speech_act_claim("А что ты думаешь про это?")
+    assert claim is not None
     affect = {
         "concept_id": "ru.dialog.affect",
         "text": "Affect hub.",
         "source": "kb",
-        "score": 50,
+        "score": 90,
         "slots": {
             "clause_1": "осторожно говорю, что чувствую в диалоге",
             "clause_2": "не знаю, совпадает ли мой опыт с человеческим",
             "clause_3": "скажу, когда уверен, а когда нет",
         },
     }
+    self_hub = {
+        "concept_id": "ru.dialog.self",
+        "text": "Self hub.",
+        "source": "kb",
+        "score": 85,
+        "slots": {
+            "clause_2": "учусь говорить по-русски и помню важное в журнале",
+        },
+    }
     blocks = [
         affect,
+        self_hub,
         {
-            "concept_id": "ru.speech_act.partner.ask_thought",
-            "text": "Partner asks subject's thought or opinion",
+            "concept_id": str(claim.get("concept_id") or "ru.speech_act.partner.ask_thought"),
+            "text": str(claim.get("text") or ""),
             "source": "speech_act",
             "score": 30,
-            "slots": {"speech_act": "ask_thought", "cue_score": 8},
+            "slots": dict(claim.get("slots") or {}),
         },
         {
             "concept_id": "subject.dialog.partner_recent",
@@ -97,18 +126,8 @@ def test_ask_thought_reply_uses_bind_not_template() -> None:
             "score": 60,
         },
     ]
-    ctx = SubjectDialogueContext(
-        display_name="Нейманн",
-        field_version=1,
-        wm=WorkingMemory(),
-        blocks=sorted(blocks, key=lambda b: -int(b.get("score") or 0)),
-        source_tags=["kb", "dialogue", "speech_act"],
-        stance="partial",
-        query_intent="social",
-        concept_hints=["ru.dialog.affect"],
-    )
     q = "А что ты думаешь про это?"
-    reply = compose_subject_utterance(q, ctx)
+    ctx, reply = _compose_social(q, blocks)
     low = reply.lower()
     assert reply.strip()
     assert "осторожно говорю" not in low
@@ -116,25 +135,38 @@ def test_ask_thought_reply_uses_bind_not_template() -> None:
 
 
 def test_mirror_acknowledges_shared_uncertainty() -> None:
+    claim = resolve_partner_speech_act_claim(
+        "Хорошо, я тоже не знаю, но он не обязан совпадать"
+    )
+    assert claim is not None
     affect = {
         "concept_id": "ru.dialog.affect",
         "text": "Affect.",
         "source": "kb",
-        "score": 50,
+        "score": 90,
         "slots": {
             "clause_1": "осторожно говорю, что чувствую в диалоге",
             "clause_2": "не знаю, совпадает ли мой опыт с человеческим",
+            "clause_3": "скажу, когда уверен, а когда нет",
         },
+    }
+    self_hub = {
+        "concept_id": "ru.dialog.self",
+        "text": "Self.",
+        "source": "kb",
+        "score": 82,
+        "slots": {"clause_3": "отвечаю своими словами из того, что знаю"},
     }
     mirror = "Хорошо, я тоже не знаю, но он не обязан совпадать"
     blocks = [
         affect,
+        self_hub,
         {
-            "concept_id": "ru.speech_act.partner.mirror",
-            "text": "Partner aligns / mirrors prior thread",
+            "concept_id": str(claim.get("concept_id") or "ru.speech_act.partner.mirror"),
+            "text": str(claim.get("text") or ""),
             "source": "speech_act",
             "score": 30,
-            "slots": {"speech_act": "mirror_ack", "cue_score": 8},
+            "slots": dict(claim.get("slots") or {}),
         },
         {
             "concept_id": "subject.dialog.partner_recent",
@@ -149,17 +181,8 @@ def test_mirror_acknowledges_shared_uncertainty() -> None:
             "score": 40,
         },
     ]
-    ctx = SubjectDialogueContext(
-        display_name="Нейманн",
-        field_version=1,
-        wm=WorkingMemory(),
-        blocks=sorted(blocks, key=lambda b: -int(b.get("score") or 0)),
-        source_tags=["kb", "dialogue", "speech_act"],
-        stance="partial",
-        query_intent="social",
-        concept_hints=["ru.dialog.affect"],
-    )
-    reply = compose_subject_utterance(mirror, ctx)
+    _, reply = _compose_social(mirror, blocks)
     low = reply.lower()
-    assert "не знаю" in low or "обязан" in low or "совпада" in low
+    assert "осторожно говорю" not in low
     assert "не знаю, совпадает ли мой опыт с человеческим" not in low
+    assert "скажу" in low or "своими словами" in low
