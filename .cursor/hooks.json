@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "python .cursor/hooks/casa_dialogue_guard.py session"
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "python .cursor/hooks/casa_dialogue_guard.py post-edit",
+        "matcher": "Write|StrReplace|search_replace"
+      }
+    ]
+  }
+}

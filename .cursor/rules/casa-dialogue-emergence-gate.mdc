@@ -1,0 +1,13 @@
+---
+description: CASA dialogue — INVARIANT + oracle_audit before claiming done
+globs: "{casa/**,design/kb-*.json,design/oracle-audit-waivers.v1.json,tools/verify_dialogue_thread.py,tools/oracle_audit.py}"
+alwaysApply: false
+---
+
+# Dialogue emergence gate
+
+1. Перед diff в hot path — **INVARIANT:** одно предложение (experience → bind → compose; не oracle).
+2. **Готово** только если `python tools/verify_dialogue_thread.py` **и** `python tools/oracle_audit.py` — exit 0.
+3. Канон: `design/CASA-scratch-emergence-conditions-dialogue-v1.md`. Waiver только в `design/oracle-audit-waivers.v1.json` с `reason`.
+
+Hot path: `casa/domain/dialogue_bind/`, `casa/prisms/tick/discourse/`, `articulation_realize.py`, `subject_articulation.py`.
