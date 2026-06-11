@@ -213,7 +213,7 @@ def test_self_narrative_multi_sentence() -> None:
             "concept_id": "ru.dialog.self",
             "text": "meta",
             "source": "kb",
-            "score": 45,
+            "score": 52,
             "slots": {
                 "clause_1": "я нейманн",
                 "clause_2": "субъект на поле casa",
@@ -233,6 +233,7 @@ def test_self_narrative_multi_sentence() -> None:
             source_tags=["kb"],
             stance="confident",
             query_intent="social",
+            concept_hints=["ru.dialog.self"],
         ),
     ).lower()
     assert "нейманн" in reply
