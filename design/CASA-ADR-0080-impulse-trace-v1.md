@@ -3,7 +3,7 @@
 **Status:** proposed  
 **Date:** 2026-06-11 (rev.2 — substrate-wide, not dialogue-only)  
 **Provenance:** диалог — «наблюдаемость есть, но не на полную катушку»; аналог нервного импульса (EPSP/IPSP, порог, траектория); *impulse — для всего efferent, не только partner*  
-**Related:** [CASA-scratch-emergence-conditions-dialogue-v1.md](CASA-scratch-emergence-conditions-dialogue-v1.md), [CASA-work-verification-dialogue-thread.v1.md](CASA-work-verification-dialogue-thread.v1.md), [CASA-ADR-0019-control-multi-prism.md](CASA-ADR-0019-control-multi-prism.md), [CASA-ADR-0024-control-thalamus.md](CASA-ADR-0024-control-thalamus.md), [CASA-ADR-0057-dialogue-situations-character.md](CASA-ADR-0057-dialogue-situations-character.md), [CASA-ADR-0078-partner-voice-invariants-v1.md](CASA-ADR-0078-partner-voice-invariants-v1.md), [CASA-ADR-0079-runtime-host-csharp-nativeaot.md](CASA-ADR-0079-runtime-host-csharp-nativeaot.md), `casa/domain/dialogue_provenance.py`
+**Related:** [CASA-ADR-0012-cide-parity-fieldbus-and-migration.md](CASA-ADR-0012-cide-parity-fieldbus-and-migration.md), [CASA-scratch-emergence-conditions-dialogue-v1.md](CASA-scratch-emergence-conditions-dialogue-v1.md), [CASA-work-verification-dialogue-thread.v1.md](CASA-work-verification-dialogue-thread.v1.md), [CASA-ADR-0019-control-multi-prism.md](CASA-ADR-0019-control-multi-prism.md), [CASA-ADR-0024-control-thalamus.md](CASA-ADR-0024-control-thalamus.md), [CASA-ADR-0057-dialogue-situations-character.md](CASA-ADR-0057-dialogue-situations-character.md), [CASA-ADR-0078-partner-voice-invariants-v1.md](CASA-ADR-0078-partner-voice-invariants-v1.md), [CASA-ADR-0079-runtime-host-csharp-nativeaot.md](CASA-ADR-0079-runtime-host-csharp-nativeaot.md), `casa/domain/dialogue_provenance.py`
 
 ---
 
@@ -18,6 +18,36 @@ CASA уже имеет **редкую для agent stack observability**: bind s
 - bind + efferent для **любого** выбранного channel
 
 Impulse trace должен быть **общей нервной подсистемой** (substrate service), а не «логом диалога».
+
+### FieldBus — не то же самое (но стыкуется)
+
+[CASA-ADR-0012](CASA-ADR-0012-cide-parity-fieldbus-and-migration.md): **FieldBus** = in-process **pub/sub typed events** между подсистемами (CIDE DataBus parity). Сейчас v0: `casa/field_bus/` — `FieldVersionDriftEvent`, `ConsolidatePhaseEvent`, `TrainCompleteEvent`; sketch — `PerceiveEvent`, `ActEvent`, `SurpriseEvent` на **границах фаз**.
+
+| | **FieldBus** | **Impulse trace** |
+|---|-------------|-------------------|
+| Гранularity | фаза / подсистема («perceive done», «act emitted», sleep) | synapse / scorer / bind внутри efferent channel |
+| Вопрос | *что случилось между модулями* | *почему выбрали именно этот efferent* |
+| Форма | typed event → handlers | append-only synaptic log + summary |
+| Hot path | **не** каждый NCA step (0012 §2.1) | scoring/bind nodes (summary cheap, full dev-only) |
+| Аналог | **межнейронная сеть / гормональный пульс** | **локальная волна в микросхеме** (EPSP/IPSP → порог) |
+
+**Не дублировать:** FieldBus не заменяет impulse и наоборот.
+
+**Стыковка (решение):**
+
+```text
+macro_tick
+  … scoring/bind (impulse records synaptic events) …
+  efferent committed
+    → impulse.flush_summary()
+    → field_bus.publish(ActEvent | ImpulseSummaryEvent)
+  sleep / train
+    → FieldBus: ConsolidatePhaseEvent, TrainCompleteEvent (как сейчас)
+```
+
+- `ActEvent` (0012 sketch) = **что** вышло (modality, surface, tick_id).
+- Impulse summary = **почему** (winners, thresholds) — attach `impulse_id` в event payload.
+- Watchers (CIDE panel, post_train) подписываются на **FieldBus**; human debug открывает **impulse replay** по id.
 
 ### Что есть сейчас (фрагменты, без единого импульса)
 
@@ -229,4 +259,5 @@ Dialogue verify — **reference implementation**, не граница подси
 - `casa/domain/dialogue_provenance.py` — dialogue-specific; migrate into nervous hooks
 - `casa/domain/dialogue_bind/*_scoring.py`
 - `casa/prisms/tick/discourse/`, `casa/prisms/control/`
+- `casa/field_bus/` — phase events (0012); wire `ImpulseSummaryEvent` in Phase B
 - `tools/verify_dialogue_thread.py`, `tools/oracle_audit.py`
