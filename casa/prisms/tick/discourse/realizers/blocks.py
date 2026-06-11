@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Concrete block realizers — Strategy per bind block family."""
+"""Concrete block realizers — render bind winners, no slot competition."""
 
 from __future__ import annotations
 
@@ -19,28 +19,15 @@ from casa.prisms.tick.discourse.slots import BlockSlots
 from casa.prisms.tick.discourse.wm import WmBlockRealizer
 
 _MORPH_ROLE_ORDER = ("prefix", "stem", "root", "suffix", "ending")
-_NARRATIVE_DIALOG = (
-    "ru.dialog.self",
-    "ru.dialog.capabilities",
-    "ru.dialog.affect",
-    "ru.dialog.explain",
-    "ru.dialog.clarify.",
-    "ru.dialog.honest.",
-)
-# Content-narrative families whose verbatim paste must be relevance-gated (routed by
-# hint or token overlap). Honest/clarify blocks are graceful "I don't know / let me
-# clarify" responses and are intentionally NOT gated.
-_GATED_NARRATIVE = (
-    "ru.dialog.self",
-    "ru.dialog.capabilities",
-    "ru.dialog.affect",
-    "ru.dialog.explain",
-)
-_BRIEF_DIALOG_PREFIXES = (
-    "ru.dialog.greeting",
-    "ru.dialog.thanks",
-    "ru.dialog.farewell",
-)
+
+
+def _materialized_phrase(block: dict[str, Any], slots: dict[str, str]) -> str:
+    phrase = str(slots.get("phrase") or "").strip()
+    if phrase:
+        return phrase
+    if block.get("bind_hub"):
+        return str(block.get("text") or "").strip()
+    return ""
 
 
 class MetaSkipRealizer:
@@ -167,44 +154,22 @@ class DialogBlockRealizer:
         return self._dialog_clauses(block, ctx, allow_tail=True)
 
     @staticmethod
-    def narrative_clauses(block: dict[str, Any], query: str) -> list[ClauseSketch]:
-        from casa.prisms.memory.concept_layer import discourse_concept_id
-
-        cid = discourse_concept_id(block)
-        if not any(cid.startswith(p) for p in _NARRATIVE_DIALOG):
-            return []
+    def narrative_clauses(
+        block: dict[str, Any],
+        query: str,
+        *,
+        ctx: DiscourseContext | None = None,
+    ) -> list[ClauseSketch]:
+        """Backward compat — bind already picked phrase; realize as-is."""
+        if ctx is not None:
+            return DialogBlockRealizer().realize(block, ctx)
         slots = BlockSlots.read(block)
+        phrase = _materialized_phrase(block, slots) or slots.get("clause_1") or slots.get("sentence_1")
+        if not phrase:
+            return []
         close = closing_for_query(query)
-        out: list[ClauseSketch] = []
-        primary = slots.get("clause_1") or slots.get("sentence_1")
-        if primary:
-            c = clause_from_slot_phrase(str(primary), closing=close)
-            if c:
-                out.append(c)
-        out.extend(BlockSlots.extra_clauses(slots))
-        return out
-
-    @staticmethod
-    def _narrative_relevant(
-        cid: str, clauses: list[ClauseSketch], ctx: DiscourseContext, block: dict[str, Any]
-    ) -> bool:
-        """Narrative dialog paste is on-topic: routed by hint, bind overlap, or token overlap."""
-        for h in ctx.concept_hints or []:
-            if cid == h or cid.startswith(f"{h}.") or str(h).startswith(cid):
-                return True
-        from casa.domain.dialogue_bind.partner_scoring import partner_field_overlap
-
-        if partner_field_overlap(ctx.query, block) >= 8:
-            return True
-        qtokens = {t for t in (ctx.tokens or set()) if len(t) > 3}
-        if not qtokens:
-            return False
-        for c in clauses:
-            for piece in c.pieces:
-                for w in re.findall(r"\w+", str(piece).lower(), flags=re.UNICODE):
-                    if len(w) > 3 and w in qtokens:
-                        return True
-        return False
+        c = clause_from_slot_phrase(str(phrase), closing=close)
+        return [c] if c else []
 
     def _dialog_clauses(
         self,
@@ -213,34 +178,24 @@ class DialogBlockRealizer:
         *,
         allow_tail: bool = True,
     ) -> list[ClauseSketch]:
-        from casa.prisms.memory.concept_layer import discourse_concept_id
-
-        cid = discourse_concept_id(block)
-        brief = partner_turn_is_brief(ctx.query) and any(cid.startswith(p) for p in _BRIEF_DIALOG_PREFIXES)
+        slots = BlockSlots.read(block)
+        brief = partner_turn_is_brief(ctx.query)
         if brief:
             allow_tail = False
-
-        if any(cid.startswith(p) for p in _NARRATIVE_DIALOG):
-            narrative = self.narrative_clauses(block, ctx.query)
-            if narrative:
-                # Content-narrative blocks paste verbatim only when routed (hint) or they
-                # share a content token with the turn — otherwise stay silent rather than
-                # paste off-topic. Honest/clarify blocks always pass (graceful fallback).
-                if cid.startswith(_GATED_NARRATIVE) and not self._narrative_relevant(
-                    cid, narrative, ctx, block
-                ):
-                    return []
-                return narrative
-
-        slots = BlockSlots.read(block)
         close = closing_for_query(ctx.query)
+
+        phrase = _materialized_phrase(block, slots)
+        if phrase:
+            c = clause_from_slot_phrase(phrase, closing=close)
+            return [c] if c else []
+
         stimulus = str(slots.get("stimulus") or slots.get("word") or "").strip().lower()
         response = str(slots.get("response") or "").strip().lower()
         surface = str(slots.get("surface") or "").strip().lower()
         out: list[ClauseSketch] = []
 
         primary = slots.get("clause_1") or slots.get("sentence_1")
-        if primary and not brief:
+        if primary:
             c = clause_from_slot_phrase(str(primary), closing=close)
             if c:
                 out.append(c)

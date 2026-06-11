@@ -92,7 +92,7 @@ def _compose_social_dialog_from_bind(
     from casa.prisms.memory.concept_layer import discourse_concept_id
 
     budget = ctx.budget
-    seen_cid: set[str] = set()
+    seen_hub: set[str] = set()
     seen_clause: set[str] = set()
     clauses = []
     scores: list[int] = []
@@ -102,7 +102,8 @@ def _compose_social_dialog_from_bind(
         if score < budget.score_floor:
             break
         cid = discourse_concept_id(block)
-        if not cid.startswith("ru.dialog.") or cid in seen_cid:
+        hub = str(block.get("bind_hub") or cid)
+        if not cid.startswith("ru.dialog.") or hub in seen_hub:
             continue
         if any(cid.startswith(p) for p in _SOCIAL_DIALOG_DENY):
             continue
@@ -118,7 +119,7 @@ def _compose_social_dialog_from_bind(
             seen_clause.add(key)
             clauses.append(clause)
             scores.append(score)
-        seen_cid.add(cid)
+        seen_hub.add(hub)
 
     if not clauses:
         return None
@@ -151,10 +152,14 @@ class SocialIntentStrategy:
         budget = ctx.budget
         brief = ctx.partner_is_brief()
 
+        from casa.prisms.tick.discourse.situated import compose_situated_thread
+
+        body = compose_situated_thread(ctx, composer, dialog=dialog, policy=policy)
+        if body:
+            return body
+
         for block in ctx.blocks:
             if block.get("concept_id") != "subject.dialog.partner_recent":
-                continue
-            if not policy.eligible(block, ctx):
                 continue
             quote = partner_quote_from_block(block)
             if quote and partner_speech_turn(

@@ -204,7 +204,16 @@ def build_plan(
     act = ""
 
     ql = passage_focus_query(q).lower()
-    if "как дела" in ql:
+    social_act = None
+    try:
+        from casa.prisms.tick.partner_speech_act import resolve_partner_speech_act
+
+        social_act = resolve_partner_speech_act(q, blocks=blocks)
+    except ImportError:
+        social_act = None
+    if social_act:
+        act = social_act
+    elif "как дела" in ql:
         act = "how_are_you"
     elif any(x in ql for x in ("привет", "здравствуй", "добрый день", "добрый вечер")):
         act = "greeting"

@@ -39,8 +39,12 @@ class BlockDiscoursePolicy:
                 return mode in ("explain", "journal", "recall", "field", "discuss")
             return mode in ("field", "general", "discuss", "explain")
 
-        if cid.startswith("subject.dialog."):
-            return query_intent == "social"
+        if (
+            cid.startswith("subject.dialog.")
+            or cid.startswith("subject.limbic.")
+            or cid == "dialog.context.focus_recent"
+        ):
+            return False
         if cid.startswith("subject."):
             return False
         if cid.startswith("concept."):
@@ -66,7 +70,11 @@ class BlockDiscoursePolicy:
         if cid.startswith("ru.prop."):
             return query_intent in ("discuss", "rewrite", "journal")
         if block.get("source") == "wm_prism":
-            return query_intent in ("explain", "discuss", "recall", "general", "journal", "social")
+            if query_intent == "social":
+                from casa.prisms.memory.wm.bind import social_wm_block_eligible
+
+                return social_wm_block_eligible(block, query)
+            return query_intent in ("explain", "discuss", "recall", "general", "journal")
         if query_intent in ("discuss", "rewrite") and cid.startswith("passage.surface."):
             return False
         if query_intent == "rewrite" and cid.startswith("passage.sent."):
