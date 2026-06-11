@@ -12,7 +12,6 @@ def test_hot_path_passes_default_rules() -> None:
 
 def test_ack_span_would_fail() -> None:
     from tools import oracle_audit as mod
-    from tools.oracle_audit import Rule, Violation
 
     rule = next(r for r in mod.RULES if r.rule_id == "no_ack_span")
     assert rule.pattern.search("acknowledgment_span(query, block)")
