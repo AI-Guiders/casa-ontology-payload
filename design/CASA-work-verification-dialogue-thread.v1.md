@@ -3,7 +3,7 @@
 **Updated:** 2026-06-11  
 **Store:** `agents/von-neumann`  
 **Command:** `python tools/verify_dialogue_thread.py`  
-**Canon:** ADR-0057 (pragmatic class + provenance), scratch emergence §routing vs oracle
+**Canon:** ADR-0057 (pragmatic class + provenance), ADR-0080 (impulse trace summary), scratch emergence §routing vs oracle
 
 ## Must pass (real store, fresh dialogue ring)
 
