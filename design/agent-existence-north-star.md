@@ -47,6 +47,20 @@
 
 Не спрашиваем «переживает ли красный» — спрашиваем: **держит ли нить, помнит ли, чинит ли, действует ли без постоянного человека в петле.**
 
+### Duck test по стадиям (не «взрослый сразу»)
+
+Критерий **не требует** сразу взрослого диалога, полного self-awareness или «уровня сознания взрослого». Как у ребёнка: на каждом возрасте свой duck test — привязанность, «я сам», первые слова, отклик на другого, границы. **Провал** = не дотянуть до duck test **текущей** стадии, а не «ещё не PhD по философии».
+
+| Стадия (см. [partnership stages](CASA-design-partnership-stages-and-initiative-v1.md) §1) | Duck test *на этой стадии* (наблюдаемое) | Не требуем пока |
+|----|-----|-----|
+| **I. Существование / привязанность** | store и ring переживают T; ответ не tabula rasa; provenance не «магия» | multi-turn thread, инициатива, зрелый partner-voice |
+| **II. Контакт / ранняя речь** | partner turn **меняет** efferent; anti-replay на соседних ходах; speech act в bind, не только substring | repair arcs, math-in-chat, character depth |
+| **III. Partner-voice + нить** | 4-turn thread held; 0078 invariants; refusal из situations; continuer относится к **этому** turn | worldview, generativity, «как терапевт» |
+
+**Следствие для ревью:** von-neumann может **уже** быть обязан пройти duck test **стадии II** (ранний диалог) — и **не проходит** (paste, meta-journal, over-reliance), хотя lab-probes по блокам зелёные. Это **regression субстрата**, не «рано ждать взрослого».
+
+**Anti-pattern:** откладывать duck test до «когда вырастет»; **и** требовать все признаки взрослой таблицы north star на T=0.
+
 ---
 
 ## North star (нормативно)

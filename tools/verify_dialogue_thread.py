@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Real-store dialogue — bind trace + speech-act provenance, not surface anchors."""
+"""Real-store dialogue smoke — bind trace + speech-act provenance (plumbing only).
+
+NOT an emergence / duck-test gate: fixed partner script + hub-prefix expectations
+prescribe routing. See design/CASA-work-verification-dialogue-thread.v1.md §Limits.
+"""
 
 from __future__ import annotations
 
@@ -195,7 +199,7 @@ def main() -> int:
         print(f"Q: {q}")
         print(f"A: {a}")
         print()
-    print("PASS: dialogue thread (bind trace + speech-act + oracle_audit)")
+    print("PASS: dialogue thread smoke (provenance + oracle_audit; NOT duck test)")
     return 0
 
 
