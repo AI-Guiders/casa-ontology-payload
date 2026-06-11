@@ -3,7 +3,7 @@
 **Status:** proposed  
 **Date:** 2026-06-11 (rev.2 — substrate-wide, not dialogue-only)  
 **Provenance:** диалог — «наблюдаемость есть, но не на полную катушку»; аналог нервного импульса (EPSP/IPSP, порог, траектория); *impulse — для всего efferent, не только partner*  
-**Related:** [CASA-ADR-0012-cide-parity-fieldbus-and-migration.md](CASA-ADR-0012-cide-parity-fieldbus-and-migration.md), [CASA-scratch-emergence-conditions-dialogue-v1.md](CASA-scratch-emergence-conditions-dialogue-v1.md), [CASA-work-verification-dialogue-thread.v1.md](CASA-work-verification-dialogue-thread.v1.md), [CASA-ADR-0019-control-multi-prism.md](CASA-ADR-0019-control-multi-prism.md), [CASA-ADR-0024-control-thalamus.md](CASA-ADR-0024-control-thalamus.md), [CASA-ADR-0057-dialogue-situations-character.md](CASA-ADR-0057-dialogue-situations-character.md), [CASA-ADR-0078-partner-voice-invariants-v1.md](CASA-ADR-0078-partner-voice-invariants-v1.md), [CASA-ADR-0079-runtime-host-csharp-nativeaot.md](CASA-ADR-0079-runtime-host-csharp-nativeaot.md), `casa/domain/dialogue_provenance.py`
+**Related:** [CASA-ADR-0061-intelligence-zones.md](CASA-ADR-0061-intelligence-zones.md), [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md), [CASA-ADR-0012-cide-parity-fieldbus-and-migration.md](CASA-ADR-0012-cide-parity-fieldbus-and-migration.md), [CASA-scratch-emergence-conditions-dialogue-v1.md](CASA-scratch-emergence-conditions-dialogue-v1.md), [CASA-work-verification-dialogue-thread.v1.md](CASA-work-verification-dialogue-thread.v1.md), [CASA-ADR-0019-control-multi-prism.md](CASA-ADR-0019-control-multi-prism.md), [CASA-ADR-0024-control-thalamus.md](CASA-ADR-0024-control-thalamus.md), [CASA-ADR-0057-dialogue-situations-character.md](CASA-ADR-0057-dialogue-situations-character.md), [CASA-ADR-0078-partner-voice-invariants-v1.md](CASA-ADR-0078-partner-voice-invariants-v1.md), [CASA-ADR-0079-runtime-host-csharp-nativeaot.md](CASA-ADR-0079-runtime-host-csharp-nativeaot.md), `casa/domain/dialogue_provenance.py`
 
 ---
 
@@ -194,6 +194,65 @@ Dialogue verify — **reference implementation**, не граница подси
 - Mandatory full trace in production
 - Instrument every prism day-one — **phased**; schema and recorder **general** с первого коммита
 
+### 8. Intelligence Zones (0061 / 0068) — не только «виды интеллекта»
+
+[CASA-ADR-0061](CASA-ADR-0061-intelligence-zones.md): **Zone** — единый паттерн `core / sandbox / promote / compose_bias` для **всего** субстрата, не только social/linguistic/logical.
+
+[CASA-ADR-0068](CASA-ADR-0068-memory-zone.md): **Memory** — полноценная zone (**Tier infrastructure**), с внутренней таксономией **explicit / implicit / immutable** (episodic, semantic, procedural, priming). Две **ортогональные** оси:
+
+| Ось | Вопрос | Пример |
+|-----|--------|--------|
+| Intelligence (client) | *какой домен мышления?* | social, linguistic, logical |
+| Infrastructure zone | *какой субстрат обслуживает всех?* | memory (хранение), genetic (meta) |
+
+**Precedent:** zone может быть **инфраструктурой**, не конкурирующим «умом». Linguistic **пользуется** memory (`domain_scope: lang`), **не владеет** `prism_memory`.
+
+#### Где «нervous» уже живёт в карте zones
+
+| Уже в zones | Роль (нervous-like) |
+|-------------|---------------------|
+| **executive** | thalamus, SN, CEN, FPN — relay, salience, orchestration |
+| **perceptual** (0063) | sensory gate / thalamic input |
+| **neuromodulator** (0066) | global gain, arousal, regulatory load |
+| **metabolic** (0064) | tick budget, fatigue → efferent может оборваться |
+| **FieldBus** (0012) | typed events на границах фаз (см. §Context) |
+
+Impulse trace **не заменяет** эти зоны — фиксирует **волну** через них. Поле `zone` в synaptic event = **client zone** (social, defense, …), не «владелец импульса».
+
+#### Варианты размещения (решение отложено до Phase E)
+
+**A. Cross-cutting module (минимальный старт)**
+
+```text
+casa/nervous/          ImpulseRecorder, channels, flush
+executive / perceptual / neuromod   остаются владельцами routing (как сейчас)
+FieldBus              ActEvent + ImpulseSummaryEvent
+```
+
+- Плюс: не трогаем `zone-prism-map.v1.json`, migrate, bootstrap.
+- Минус: нет единого `zone_id` в manifest для «куда смотреть оператору».
+
+**B. Nervous zone — infrastructure (по аналогии с Memory 0068)**
+
+```text
+nervous/                         Tier infrastructure (candidate)
+├── propagation (core)           FieldBus, relay contracts
+├── trace (core)                 ImpulseRecorder, impulse_trace.jsonl
+│   ├── summary                  production / verify
+│   └── full                     lab only
+└── channels (compose_bias)      partner_dialogue, motor, vision_gate, …
+```
+
+- Плюс: симметрия с memory; один адрес в 0061-карте; `migrate_intelligence_zones` может spawn neutral core.
+- Минус: **пересечение с executive** (thalamus/SN уже там) — нужен **ownership audit** (0067): что переезжает в nervous owner_prisms, что остаётся «решением» executive.
+
+**Рекомендация (proposed):**
+
+- **Phase A–D:** вариант **A** — `casa/nervous/` module + hooks; schema channel-agnostic с первого дня.
+- **Phase E (design gate):** решить **A vs B** после impulse replay на 3+ channels; если B — ADR-amendment + строка в [zone-prism-map.v1.json](zone-prism-map.v1.json), **без** автоматического отрезания organ от executive без migrate plan.
+
+**Invariant (either A or B):** nervous / impulse **не конкурирует** с social/linguistic за bind budget как intelligence client; не дублирует memory (хранит **trace**, не LTM).
+
 ---
 
 ## Consequences
@@ -235,6 +294,12 @@ Dialogue verify — **reference implementation**, не граница подси
 - motor, vision_gate, sleep_train summaries.
 - Host JSON fields per tract.
 
+### Phase E — zone placement gate (0061 / 0068)
+
+- Review impulse replay on ≥3 channels.
+- Decide A (module only) vs B (nervous infrastructure zone + zone-prism-map).
+- If B: ownership audit executive vs nervous; idempotent migrate spawn only.
+
 ---
 
 ## Acceptance
@@ -251,6 +316,7 @@ Dialogue verify — **reference implementation**, не граница подси
 1. Ring size для `impulse_trace.jsonl` (100 vs 1000 impulses).
 2. Raw afferent in events vs hash only (privacy / size).
 3. Coordinator API: `with impulse.channel("partner_dialogue"):` vs explicit `impulse_id` threading — pick one in Phase A.
+4. **Zone formalization (0061/0068):** cross-cutting module (A) vs **nervous infrastructure zone** (B) — Phase E gate; ownership split executive ↔ nervous if B.
 
 ---
 
@@ -260,4 +326,5 @@ Dialogue verify — **reference implementation**, не граница подси
 - `casa/domain/dialogue_bind/*_scoring.py`
 - `casa/prisms/tick/discourse/`, `casa/prisms/control/`
 - `casa/field_bus/` — phase events (0012); wire `ImpulseSummaryEvent` in Phase B
+- [CASA-ADR-0061-intelligence-zones.md](CASA-ADR-0061-intelligence-zones.md), [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md), [zone-prism-map.v1.json](zone-prism-map.v1.json)
 - `tools/verify_dialogue_thread.py`, `tools/oracle_audit.py`
