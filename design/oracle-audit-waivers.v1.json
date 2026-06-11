@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "title": "Oracle audit waivers — legacy debt until bundle/thread refactor",
+  "waivers": [
+    {
+      "rule_id": "continuer_marker_oracle",
+      "path": "casa/prisms/tick/discourse/situated.py",
+      "reason": "thread_turn continuer head; replace with bind winner + linker slot"
+    },
+    {
+      "rule_id": "phatic_prefix_tuple",
+      "path": "casa/prisms/tick/discourse/budget.py",
+      "reason": "migrate to kb-dialog-bind open/gated hub policy"
+    },
+    {
+      "rule_id": "continuer_query_markers",
+      "path": "casa/domain/dialogue_bind/partner_scoring.py",
+      "reason": "migrate continuer detection to dialog.context.focus_recent only"
+    },
+    {
+      "rule_id": "recall_cue_substrings",
+      "path": "casa/domain/dialogue_bind/recall_routing.py",
+      "reason": "field recall cues; move to KB claims"
+    },
+    {
+      "rule_id": "no_partner_dialog_templates",
+      "path": "casa/prisms/tick/articulation_realize.py",
+      "reason": "_PARTNER_DIALOGUE_ACTS blocks partner templates in realize; audit on add"
+    }
+  ]
+}

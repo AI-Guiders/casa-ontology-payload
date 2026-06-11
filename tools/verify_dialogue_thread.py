@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Real-store dialogue — pragmatic class + provenance, not surface anchors."""
+"""Real-store dialogue — bind trace + speech-act provenance, not surface anchors."""
 
 from __future__ import annotations
 
@@ -20,40 +20,33 @@ from casa.prisms.control.sn_cen_runtime import TaskEmit
 from casa.prisms.shared.store_layout import default_agent_store
 
 PREAMBLE = "осторожно говорю, что чувствую"
-HUB_ONLY = (
-    "не знаю, совпадает ли мой опыт с человеческим",
-    "скажу, когда уверен, а когда нет",
-)
 
-# Pragmatic class + provenance — ADR-0057 verification, not template anchors.
 TURNS = [
     (
         "Как ты?",
         {
             "speech_act": "how_are_you",
-            "need_dialog_hubs": True,
+            "expect_bind_hub_prefix": "ru.dialog.how_are_you",
             "need_affect_axes": True,
+            "allow_verbatim_winner": True,
         },
     ),
     (
         "Хорошо, я тоже не знаю, но он не обязан совпадать",
         {
             "speech_act": "mirror_ack",
-            "need_dialog_hubs": True,
-            "must_not": ("не знаю, совпадает ли мой опыт с человеческим",),
-            "must_not_only_hub": True,
-            "not_preamble_only": True,
-            "overlap_partner": ("не знаю", "обязан", "совпада"),
+            "expect_bind_hub_prefix": ("ru.dialog.affect", "ru.dialog.self", "ru.dialog.honest"),
+            "forbid_phrase_substrings": (PREAMBLE,),
+            "forbid_verbatim_winner": True,
+            "min_words": 3,
         },
     ),
     (
         "А что ты думаешь про это?",
         {
             "speech_act": "ask_thought",
-            "need_dialog_hubs": True,
-            "must_not": (PREAMBLE, "скажу, когда уверен"),
-            "must_not_only_hub": True,
-            "not_preamble": True,
+            "expect_bind_hub_prefix": ("ru.dialog.self", "ru.dialog.honest", "dialog.context"),
+            "forbid_phrase_substrings": (PREAMBLE,),
             "min_words": 4,
             "differs_from_prior": True,
         },
@@ -62,8 +55,9 @@ TURNS = [
         "Спасибо",
         {
             "speech_act": "thanks",
-            "need_dialog_hubs": True,
-            "must_not": (PREAMBLE,),
+            "expect_bind_hub_prefix": "ru.dialog.thanks",
+            "forbid_phrase_substrings": (PREAMBLE,),
+            "allow_verbatim_winner": True,
         },
     ),
 ]
@@ -81,11 +75,6 @@ def _task() -> TaskEmit:
         answer_blocks=(),
         answer_text="",
     )
-
-
-def _hub_only(low: str) -> bool:
-    t = low.strip().rstrip(".!?")
-    return any(t == h for h in HUB_ONLY)
 
 
 def _token_overlap(a: str, b: str) -> int:
@@ -110,28 +99,29 @@ def _assert_turn(
     if expected_act and expected_act not in acts:
         errors.append(f"missing speech_act {expected_act!r} in provenance {acts!r}")
 
+    trace = prov.get("bind_trace") or {}
+    if not trace.get("winner_bind_hub"):
+        errors.append(f"missing bind_trace: {prov!r}")
+
+    expect_hub = rules.get("expect_bind_hub_prefix")
+    if expect_hub and trace:
+        hub = str(trace.get("winner_bind_hub") or "")
+        if isinstance(expect_hub, str):
+            expect_hub = (expect_hub,)
+        if not any(hub.startswith(p) for p in expect_hub):
+            errors.append(f"bind hub {hub!r} not in {expect_hub!r}")
+
     if rules.get("need_affect_axes") and not prov.get("affect_axes"):
         errors.append(f"missing affect_axes in provenance: {prov!r}")
 
-    if rules.get("need_dialog_hubs") and not prov.get("dialog_hubs"):
-        errors.append(f"no dialog_hubs in provenance: {prov!r}")
-
-    if rules.get("not_preamble") and PREAMBLE in low:
-        errors.append(f"preamble replay: {reply!r}")
-    if rules.get("not_preamble_only") and low.rstrip(".!?") == PREAMBLE.rstrip(".!?"):
-        errors.append(f"only preamble: {reply!r}")
-    if rules.get("must_not_only_hub") and _hub_only(low):
-        errors.append(f"verbatim hub slot only: {reply!r}")
-
-    for banned in rules.get("must_not") or ():
+    for banned in rules.get("forbid_phrase_substrings") or ():
         if banned.lower() in low:
             errors.append(f"banned substring {banned!r}: {reply!r}")
 
-    overlap_need = rules.get("overlap_partner") or ()
-    if overlap_need and not any(m in partner.lower() for m in overlap_need):
-        errors.append(f"probe misconfigured: partner lacks overlap tokens {overlap_need!r}")
-    if overlap_need and not any(m in low for m in overlap_need):
-        errors.append(f"no partner-field overlap in reply {overlap_need!r}: {reply!r}")
+    if rules.get("forbid_verbatim_winner") and not rules.get("allow_verbatim_winner"):
+        winner_phrase = str(trace.get("winner_phrase") or "").strip().lower()
+        if winner_phrase and low.rstrip(".!?") == winner_phrase.rstrip(".!?"):
+            errors.append(f"verbatim bind winner only: {reply!r}")
 
     min_w = rules.get("min_words")
     if min_w and len(low.split()) < int(min_w):
@@ -179,9 +169,25 @@ def run_probe(*, reset_ring: bool = True) -> list[tuple[str, str]]:
     return transcript
 
 
+def run_oracle_audit() -> None:
+    import subprocess
+
+    script = REPO / "tools" / "oracle_audit.py"
+    proc = subprocess.run(
+        [sys.executable, str(script)],
+        cwd=str(REPO),
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode != 0:
+        detail = (proc.stdout or "") + (proc.stderr or "")
+        raise AssertionError(f"oracle_audit: {detail.strip() or 'failed'}")
+
+
 def main() -> int:
     try:
         t = run_probe()
+        run_oracle_audit()
     except AssertionError as err:
         print(f"FAIL: {err}", file=sys.stderr)
         return 1
@@ -189,7 +195,7 @@ def main() -> int:
         print(f"Q: {q}")
         print(f"A: {a}")
         print()
-    print("PASS: dialogue thread (provenance + pragmatic class)")
+    print("PASS: dialogue thread (bind trace + speech-act + oracle_audit)")
     return 0
 
 
