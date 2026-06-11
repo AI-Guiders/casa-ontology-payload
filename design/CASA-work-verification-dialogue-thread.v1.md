@@ -36,6 +36,7 @@
 | **Partner field coupling** | `partner_field_overlap(partner, reply) > floor` OR overlap(partner, bind winner slots) |
 | **Anti-replay** | replyₙ token/embedding overlap с replyₙ₋₁ < θ; hub slot not verbatim repeat across unlike acts |
 | **Continuer coupling** | при continuer cue — bind uses `dialog.context.focus_recent` evidence in provenance |
+| **Anaphora «это/этого»** | «что думаешь **об этом**» после proposition P → reply couples to P, not generic «о чём думаешь» path |
 | **0078 structural** | no over-reliance class («обращайся», «я здесь для тебя», …) — **class detector**, not «must say пожалуйста» |
 | **Thread held (stage III)** | 4-turn **parameterized** script OR session replay; checks above on **transcript**, not one golden thread |
 | **Provenance honesty** | bind_trace.winner correlates with blocks that had highest score (when impulse wired: replay) |

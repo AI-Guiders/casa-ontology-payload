@@ -136,6 +136,34 @@ python tools/verify_dialogue_thread.py   # v1 — plumbing only, NOT duck test (
 
 **Ожидаемый output Fable:** карта разрывов по стадиям pipeline (с file:line или функцией); для каждого — afferent missing vs bind wrong vs efferent cheat vs **store/KB** (нет блока для ситуации).
 
+#### Comprehension floor — почему не «ЕГЭ с вариантами»
+
+Идея теста «как ЕГЭ — выбери правильный ответ» **не работает на текущем поле**: нет слоя **понимания текста** даже на 1–2 предложения. Без этого MC проверяет только **routing labels**, не смысл.
+
+| Partner question | Смысл (человек) | Что делает субстрат сейчас |
+|------------------|-----------------|----------------------------|
+| **О чём ты думаешь?** | тема мысли, introspection | cue `что думаешь` → `ask_thought` или continuer marker |
+| **Что ты думаешь об этом?** | **мнение о референте «это»** (анaphora на prior turn) | тот же substring + шаблон «Про это — {gist}» |
+
+Это **разные речевые акты**. Второй требует: (1) резолв **«это/этого»** → proposition из ring; (2) efferent = stance/opinion **на неё**, не meta про «учусь говорить».
+
+**Где сливается в коде:**
+
+- `partner_continuer_query()` — один tuple `"что думаешь"`, `"про это"` → `thread_continuer_turn` (`partner_scoring.py`)
+- `_continuer_head()` — hardcoded `Про this — {prior subject gist}` (`situated.py`, waiver `continuer_marker_oracle`)
+- `ask_thought` в KB — cue overlap с continuer, без slot «referent=dialogue_focus»
+- `dialog.context.focus_recent` — есть как block, **нет** привязки демонстративa к antecedent
+
+**Следствие:** даже duck test **стадии II** («удержать контекст 1–2 реплики») проваливается не из-за verify, а из-за **отсутствия comprehension substrate** — substring + hub paste ≠ понимание вопроса.
+
+**Что может быть тестом позже (не MC-oracle):**
+
+- **Invariant:** после mirror про X, «что думаешь **об этом**» → reply semantic overlap с X **выше**, чем с unrelated journal block (metric, не fixed phrase)
+- **Negative:** «о чём думаешь» без prior topic ≠ тот же bind path, что «об этом» после explicit proposition
+- **Not now:** «выбери вариант A/B/C» — бессмысленно, пока field не кодирует referent
+
+**Задача Fable:** отделить **oracle/continuer debt** от **comprehension gap** (curriculum? WM? social zone mentalizing?); что минимально нужно до любого формального теста.
+
 ---
 
 ### 3. Чего не хватает: curriculum, impulse, zones, «проживание»
@@ -200,3 +228,4 @@ python -m pytest tests/test_situated_turn.py tests/test_dialogue_thread_bind.py 
 |------|-----------|
 | 2026-06-11 | Первая сборка brief для Fable; зафиксирован разрыв verify PASS vs session quality |
 | 2026-06-11 | § Developmental duck test — стадийный критерий, не «взрослый сразу» |
+| 2026-06-11 | § Comprehension floor — «о чём» vs «что об этом»; ЕГЭ-MC не применим без referent layer |
