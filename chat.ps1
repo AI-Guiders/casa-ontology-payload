@@ -1,5 +1,5 @@
 #!/usr/bin/env pwsh
-# One-click: life reactor (if needed) + console chat.
+# One-click console chat (life reactor auto-start inside chat).
 #   .\chat.ps1
 #   .\chat.ps1 --verbose --store von-neumann
 
@@ -25,23 +25,5 @@ if (-not (Test-Path -LiteralPath $Py)) {
     exit 1
 }
 
-$StoreDir = if ([System.IO.Path]::IsPathRooted($Store)) {
-    $Store
-} else {
-    Join-Path $Root ('agents\' + $Store)
-}
-
-$ensure = @"
-from pathlib import Path
-from casa.cli.life_daemon import ensure_life_reactor
-import sys
-sys.exit(0 if ensure_life_reactor(Path(r'$StoreDir')) else 1)
-"@
-& $Py -c $ensure
-if ($LASTEXITCODE -ne 0) {
-    Write-Host '[chat] Не удалось поднять life reactor.' -ForegroundColor Red
-    exit 1
-}
-
-& $Py -m casa.cli chat --store $Store --no-daemon @ChatArg
+& $Py -m casa.cli chat --store $Store @ChatArg
 exit $LASTEXITCODE

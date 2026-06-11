@@ -73,6 +73,7 @@ def ensure_life_reactor(
     *,
     inbox_dir: Path | None = None,
     spawn: bool = True,
+    boot_timeout_s: float = 120.0,
 ) -> bool:
     """Return True when pulse shows a live reactor; optionally spawn one."""
     store = (store_dir or default_agent_store()).resolve()
@@ -80,11 +81,29 @@ def ensure_life_reactor(
         return True
     if not spawn:
         return False
-    spawn_unified_reactor(store, inbox_dir=inbox_dir)
+    proc = spawn_unified_reactor(store, inbox_dir=inbox_dir)
     import time
 
-    for _ in range(40):
-        time.sleep(0.25)
+    deadline = time.monotonic() + max(15.0, boot_timeout_s)
+    last_msg = 0.0
+    while time.monotonic() < deadline:
         if reactor_alive(store):
             return True
+        if proc.poll() is not None:
+            print(
+                "life reactor завершился при старте — смотри окно CASA life",
+                file=sys.stderr,
+                flush=True,
+            )
+            return False
+        now = time.monotonic()
+        if now - last_msg >= 2.0:
+            print("  · жду life reactor (загрузка store)…", file=sys.stderr, flush=True)
+            last_msg = now
+        time.sleep(0.25)
+    print(
+        f"life reactor не ответил за {boot_timeout_s:.0f} с — store может грузиться дольше",
+        file=sys.stderr,
+        flush=True,
+    )
     return False

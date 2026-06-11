@@ -208,11 +208,13 @@ def poll_partner_text_tract(
         extract_dialogue_reply,
         fail_afferent_cue,
         poll_pending_afferent,
+        write_pulse,
     )
 
     cue = poll_pending_afferent(runtime.store_dir)
     if cue is None:
         return False
+
     cue_id = str(cue.get("id") or "")
     text = str(cue.get("text") or "").strip()
     if emit:
@@ -224,6 +226,13 @@ def poll_partner_text_tract(
                 "text_len": len(text),
             }
         )
+    life_t = int(runtime.wm.tick) if runtime.wm is not None else 0
+    write_pulse(
+        runtime.store_dir,
+        macro_tick=life_t,
+        sn_mode="partner_turn",
+        extra={"phase": "partner_start", "cue_id": cue_id},
+    )
     try:
         report = _run_unified_life_tick(runtime, user_query=text, partner_turn=True)
         reply = extract_dialogue_reply(report)
@@ -234,10 +243,24 @@ def poll_partner_text_tract(
             tick=int(report.get("tick") or 0),
             report=report,
         )
+        if runtime.wm is not None:
+            write_pulse(
+                runtime.store_dir,
+                macro_tick=int(runtime.wm.tick),
+                sn_mode=str(report.get("sn_mode") or ""),
+                extra={"phase": "partner_done", "cue_id": cue_id},
+            )
         if emit:
             emit({"efferent": cue_id, "tick": report.get("tick"), "reply_len": len(reply)})
     except Exception as err:  # noqa: BLE001 — daemon must survive one bad turn
         fail_afferent_cue(runtime.store_dir, cue_id, error=repr(err))
+        if runtime.wm is not None:
+            write_pulse(
+                runtime.store_dir,
+                macro_tick=int(runtime.wm.tick),
+                sn_mode="error",
+                extra={"phase": "partner_error", "cue_id": cue_id},
+            )
         if emit:
             emit({"tract_error": cue_id, "error": repr(err)})
     return True
@@ -257,8 +280,20 @@ def unified_agent_reactor_loop(
     """Continuous agent-life: partner channel + teacher inbox + idle SN/CEN ticks."""
     from casa.body.text_tract import write_pulse
 
+    write_pulse(
+        store_dir,
+        macro_tick=0,
+        sn_mode="boot",
+        extra={"phase": "loading"},
+    )
     print(json.dumps({"life": "loading_store", "mode": "unified"}, ensure_ascii=False), flush=True)
     runtime = load_unified_agent_runtime(store_dir)
+    write_pulse(
+        store_dir,
+        macro_tick=int(runtime.wm.tick) if runtime.wm is not None else 0,
+        sn_mode="ready",
+        extra={"phase": "ready"},
+    )
     print(
         json.dumps(
             {

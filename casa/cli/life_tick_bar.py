@@ -8,7 +8,7 @@ import threading
 import time
 from pathlib import Path
 
-from casa.body.text_tract import read_pulse, reactor_alive
+from casa.body.text_tract import read_afferent_cue, read_pulse, reactor_alive
 
 
 def _enable_vt_on_windows() -> None:
@@ -56,15 +56,29 @@ class LifeTickBar:
     def _line(self) -> str:
         t = self._tick_value(self._store)
         mark = "♥" if reactor_alive(self._store) else "○"
-        return f"  life {mark} {t}"
+        cue = read_afferent_cue(self._store)
+        busy = cue is not None and str(cue.get("status") or "") == "pending"
+        suffix = " · …" if busy else ""
+        return f"  life {mark} {t}{suffix}"
 
     def _paint(self) -> None:
         if not sys.stdout.isatty():
             return
-        text = self._line()
-        r = self._row
-        sys.stdout.write(f"\033[s\033[{r};1H\r{text}\033[K\033[u")
-        sys.stdout.flush()
+        with self._print_lock:
+            text = self._line()
+            r = self._row
+            sys.stdout.write(f"\033[s\033[{r};1H\r{text}\033[K\033[u")
+            sys.stdout.flush()
+
+    def bump_life_tick(self, _life_t: int | None = None, _pulse: dict | None = None) -> None:
+        """Refresh bar row (callback from wait_for_efferent: life_t, pulse)."""
+        self._paint()
+
+    def note_output_lines(self, count: int = 1) -> None:
+        """Shift reserved bar row down after chat printed reply lines."""
+        if count > 0:
+            self._row += count
+            self._paint()
 
     def mount(self) -> None:
         _enable_vt_on_windows()

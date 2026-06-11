@@ -129,6 +129,7 @@ def run_chat(
     turns = len(load_dialogue_turns(store))
 
     if not no_daemon:
+        print("  · проверяю life reactor…", file=sys.stderr, flush=True)
         if not ensure_life_reactor(store):
             print(
                 "не удалось поднять life reactor — запусти вручную:\n"
@@ -237,8 +238,14 @@ def run_chat(
             except TimeoutError:
                 print("  · предыдущий ход ещё обрабатывается — подожди", file=sys.stderr)
                 continue
+            on_life = life_bar.bump_life_tick if life_bar is not None else None
             try:
-                done = wait_for_partner_reply(store, cue_id, timeout_s=timeout_s)
+                done = wait_for_partner_reply(
+                    store,
+                    cue_id,
+                    timeout_s=timeout_s,
+                    on_life_tick=on_life,
+                )
             except TimeoutError:
                 print("  · таймаут ответа — проверь /status", file=sys.stderr)
                 continue
@@ -249,6 +256,8 @@ def run_chat(
             reply = str(done.get("reply_text") or "").strip()
             dt = (time.perf_counter() - t0) * 1000
             print(f"{display}> {reply}")
+            if life_bar is not None:
+                life_bar.note_output_lines(2)
             if verbose:
                 hint = done.get("report_hint") or {}
                 print(

@@ -15,6 +15,8 @@ def collect_wm_blocks(
     q: str,
     blocks: list[dict[str, Any]],
     query_read: Any,
+    *,
+    intent: str = "general",
 ) -> tuple[list[dict[str, Any]], list[str], dict[str, Any] | None, dict[str, float]]:
     """Returns extra blocks, sources, wm_bind report, wm_edge_scores."""
     from casa.domain.load_governor import cognitive_load_from_state
@@ -56,8 +58,9 @@ def collect_wm_blocks(
         surprise_before=surprise_before,
         surprise_after=surprise_before,
         fpn_hints=fpn_co_place_hints(wm),
+        intent=intent,
     )
-    wm_blocks = wm_blocks_for_bind(state, q, k=5)
+    wm_blocks = wm_blocks_for_bind(state, q, k=5, intent=intent)
     if wm_blocks:
         extra_blocks.extend(wm_blocks)
         sources.append("wm_prism")

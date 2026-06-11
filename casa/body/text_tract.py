@@ -116,12 +116,19 @@ def write_pulse(
 
 
 def reactor_alive(store_dir: Path, *, max_age_s: float = _DEFAULT_PULSE_STALE_S) -> bool:
+    """Live reactor: fresh pulse, boot/partner busy, or pending partner afferent."""
     pulse = read_pulse(store_dir)
     if not pulse:
         return False
     pid = int(pulse.get("pid") or 0)
     if pid and not _pid_alive(pid):
         return False
+    phase = str(pulse.get("phase") or "")
+    if phase in ("loading", "boot") and pid:
+        return True
+    cue = read_afferent_cue(store_dir)
+    if cue and str(cue.get("status") or "") == "pending":
+        return True
     updated = str(pulse.get("updated_at") or "")
     if not updated:
         return False
