@@ -82,6 +82,12 @@ zone/
 
 **Вывод:** субстрат ещё **имитирует** диалог, не проживает thread. Против условий emergence, не «мелкий баг».
 
+**Норма (2026-06-10):** один compose path — ranked bind → realizer **конкурирует слоты** по `partner_field_overlap(partner turn, slot)`; replayed слоты (из `self_recent`) молчат; hint только на read/bind, не gate paste.
+
+**Не делаем:** отдельные ветки «если mirror / если continuation» с зашитыми фразами — это снова oracle.
+
+**Wire:** `_competitive_narrative_clauses` в `blocks.py`; social = `_compose_social_dialog_from_bind` только; `test_situated_turn.py`.
+
 ### ~~Math eval oracle~~ → снято (2026-06-10)
 
 Был в master (`907a93f`): `casa/domain/arithmetic.py` + bypass в `subject_voice.py` **до** field compose. Product P0 из [РЕКОМЕНДАЦИИ-Von-Neumann.md](РЕКОМЕНДАЦИИ-Von-Neumann.md) — **удалён**: math tract → поле / `soft_miss`, не `eval()`.
@@ -90,21 +96,21 @@ zone/
 
 ## Инженерные следствия (обсуждаем)
 
-1. **Thread-aware bind** — partner turn + dialogue ring влияют на compose, не только текущий query vs KB hub.
-2. **Anti-replay** — не повторять тот же `clause_1`, если prior subject turn / partner turn уже прошли этот hub.
-3. **Compose ≠ paste** — curriculum на поле **учит** слоты; hot path **собирает** phrase из bind + journal + partner overlap.
+1. **Thread-aware bind** — `dialog_hubs` в provenance + `thread_scoring.apply_dialogue_thread_deltas` (overlap, не ветки).
+2. **Anti-replay** — `narrative_recently_spoken` + competitive slots в realizer.
+3. **Compose ≠ paste** — `_competitive_narrative_clauses`; один social path.
 4. **Life между репликами** — T крутится; initiative/defer_scheduled = efferent без prompt (P22b).
 5. **Lab vs hot path** — situation pack / duck test в lab; не подменять emergent partner path.
-6. **Zone-scoped partner compose** — efferent = executive union emotional + social + linguistic bias, не один narrative hub.
+6. **Zone-scoped efferent** — `affect_compose_bias.budget_scale` + linguistic confidence → `discourse_budget_from_blocks`; bind deltas уже в `zone_scoring`.
 
 ---
 
 ## Открытые вопросы (допиши)
 
 - [ ] Что считать минимальным «thread held» в duck test (метрика / probe)?
-- [ ] Как journal после partner turn должен менять bind на **следующем** tick (не только `partner_recent` block)?
+- [x] Как journal после partner turn должен менять bind на **следующем** tick? → `dialog_hubs` provenance + `thread_scoring` overlap boost
 - [x] Где граница: `semantic_read` hints из bundle OK, substring oracle в compose — нет? → см. § ниже
-- [ ] Partner compose: какой минимальный wire, чтобы emotional/social **compose_bias** доходил до efferent, а не только linguistic paste?
+- [x] Partner compose: zone bias до efferent? → `discourse_budget_from_blocks` + bind `zone_scoring`
 - [ ] …
 
 ---
@@ -140,6 +146,7 @@ zone/
 - [CASA-ADR-0062-genetic-zone.md](CASA-ADR-0062-genetic-zone.md)
 - [CASA-ADR-0077-boundary-compose-encapsulation.md](CASA-ADR-0077-boundary-compose-encapsulation.md)
 - [CASA-ADR-0078-partner-voice-invariants-v1.md](CASA-ADR-0078-partner-voice-invariants-v1.md)
+- [CASA-ADR-0079-runtime-host-csharp-nativeaot.md](CASA-ADR-0079-runtime-host-csharp-nativeaot.md)
 - [CASA-design-partnership-stages-and-initiative-v1.md](CASA-design-partnership-stages-and-initiative-v1.md)
 
 ---
@@ -153,4 +160,4 @@ zone/
 | 2026-06-10 | § Граница routing vs oracle (hints OK on read, не в compose gate) |
 | 2026-06-10 | `_SOCIAL_SURFACE_TO_CID` → `kb-partner-surface-routing.v1.json` + `partner_surface_routing.py` |
 | 2026-06-10 | Verified: `907a93f` math eval oracle в hot path |
-| 2026-06-10 | Math eval oracle удалён (`arithmetic.py`, hook, tests) |
+| 2026-06-10 | Continuer bind + verify script; `subject.dialog` bind-only |
