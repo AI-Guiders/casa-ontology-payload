@@ -6,11 +6,13 @@ import re
 from pathlib import Path
 from typing import Any
 
+from casa.domain.dialogue_bind.blocks import block_dict
 from casa.domain.dialogue_bind.collectors.cen_field import collect_cen_blocks, collect_field_blocks
 from casa.domain.dialogue_bind.collectors.journal import collect_journal_blocks
 from casa.domain.dialogue_bind.collectors.kb import collect_kb_blocks
 from casa.domain.dialogue_bind.collectors.passage import collect_passage_blocks
 from casa.domain.dialogue_bind.collectors.wm import collect_wm_blocks
+from casa.domain.dialogue_bind.partner_scope import apply_partner_bind_scope
 from casa.domain.dialogue_bind.dialogue import infer_stance
 from casa.domain.dialogue_bind.field import looks_like_field_recall
 from casa.domain.dialogue_bind.model import SubjectDialogueContext
@@ -73,8 +75,75 @@ class SubjectDialogueBinder:
         if merged_bundle is None and store_dir is not None:
             merged_bundle = load_store_bundles(store_dir)
 
-        query_read = route_kb_read(q, merged_bundle, store_dir=store_dir, state=state)
+        from casa.prisms.tick.partner_speech_act import resolve_partner_speech_act
+
+        speech_act = resolve_partner_speech_act(q, merged_bundle)
+        from casa.domain.dialogue_bind.speech_act_hints import (
+            reconcile_speech_act_hints,
+            speech_act_route_hints,
+        )
+
+        query_read = route_kb_read(
+            q,
+            merged_bundle,
+            store_dir=store_dir,
+            state=state,
+            extra_concept_hints=speech_act_route_hints(speech_act) or None,
+        )
+        query_read.concept_hints = reconcile_speech_act_hints(
+            list(query_read.concept_hints or []),
+            speech_act,
+            query=q,
+        )
+        from casa.domain.dialogue_bind.speech_act_hints import refresh_kb_hits
+
+        refresh_kb_hits(query_read, merged_bundle, speech_act=speech_act)
         intent = compose_mode if compose_mode else query_read.intent
+        if intent == "social":
+            from casa.prisms.tick.partner_speech_act import resolve_partner_speech_act_claim
+
+            speech_claim = resolve_partner_speech_act_claim(q, merged_bundle)
+            if speech_claim:
+                slots = speech_claim.get("slots") if isinstance(speech_claim.get("slots"), dict) else {}
+                act = str(slots.get("speech_act") or "").strip()
+                cue_score = int(slots.get("cue_score") or 1)
+                blocks.append(
+                    block_dict(
+                        str(speech_claim.get("concept_id") or f"ru.speech_act.partner.{act}"),
+                        str(speech_claim.get("text") or f"Partner speech act: {act}"),
+                        source="speech_act",
+                        section="read_feature",
+                        score=18 + min(12, cue_score),
+                        slots={"speech_act": act, "cue_score": cue_score},
+                    )
+                )
+                sources.append("speech_act")
+            try:
+                from casa.prisms.affect import affect_compose_bias, core_affect_state
+
+                core = core_affect_state(state)
+                bias = affect_compose_bias(state)
+                ax = core.axes.to_dict()
+                blocks.append(
+                    block_dict(
+                        "subject.limbic.state",
+                        (
+                            f"limbic v={ax['valence']:.2f} "
+                            f"a={ax['arousal']:.2f} s={ax['security']:.2f}"
+                        ),
+                        source="limbic",
+                        section="read_feature",
+                        score=16,
+                        slots={
+                            **ax,
+                            "repair_pending": bool(bias.get("repair_pending")),
+                            "repair_invited": bool(bias.get("repair_invited")),
+                        },
+                    )
+                )
+                sources.append("limbic")
+            except ImportError:
+                pass
         if compose_mode is None and store_dir is not None:
             from casa.domain.dialogue_bind.recall_routing import should_prefer_recall_intent
 
@@ -162,16 +231,20 @@ class SubjectDialogueBinder:
             concept_hints=query_read.concept_hints,
             passage_lemmas=pt,
             state=state,
+            store_dir=store_dir,
         )
 
         wm_bind_rep: dict[str, Any] | None = None
         wm_edge_scores: dict[str, float] = {}
         if store_dir is not None:
             wm_extra, wm_sources, wm_bind_rep, wm_edge_scores = collect_wm_blocks(
-                store_dir, state, wm, q, blocks, query_read
+                store_dir, state, wm, q, blocks, query_read, intent=intent
             )
             blocks.extend(wm_extra)
             sources.extend(wm_sources)
+
+        if intent == "social":
+            blocks[:] = apply_partner_bind_scope(blocks, intent=intent)
 
         from casa.prisms.memory.forgetting import memory_priming_record_bind
 

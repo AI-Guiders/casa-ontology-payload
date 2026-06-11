@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "bundle_id": "kb-partner-speech-acts-v1",
+  "title": "Partner speech acts as read/bind features (not efferent paste)",
+  "claims": [
+    {
+      "concept_id": "ru.speech_act.partner.thanks",
+      "text": "Partner thanks",
+      "slots": {
+        "speech_act": "thanks",
+        "cue_substrings": "спасибо|благодар"
+      }
+    },
+    {
+      "concept_id": "ru.speech_act.partner.farewell",
+      "text": "Partner farewell",
+      "slots": {
+        "speech_act": "farewell",
+        "cue_substrings": "до свидания|пока"
+      }
+    },
+    {
+      "concept_id": "ru.speech_act.partner.greeting",
+      "text": "Partner greeting",
+      "slots": {
+        "speech_act": "greeting",
+        "cue_substrings": "привет|здравствуй|добрый день|добрый вечер"
+      }
+    },
+    {
+      "concept_id": "ru.speech_act.partner.how_are_you",
+      "text": "Partner asks state / how are you",
+      "slots": {
+        "speech_act": "how_are_you",
+        "cue_substrings": "как дела|как ты|как тебе"
+      }
+    },
+    {
+      "concept_id": "ru.speech_act.partner.ask_thought",
+      "text": "Partner asks subject's thought or opinion",
+      "slots": {
+        "speech_act": "ask_thought",
+        "cue_substrings": "что думаешь|что ты думаешь|как считаешь|как ты считаешь|твоё мнение|твое мнение|а что ты"
+      }
+    },
+    {
+      "concept_id": "ru.speech_act.partner.mirror",
+      "text": "Partner aligns / mirrors prior thread",
+      "slots": {
+        "speech_act": "mirror_ack",
+        "cue_substrings": "тоже не знаю|хорошо, я|не обязан совпадать|согласен|согласна"
+      }
+    }
+  ],
+  "graph": { "edges": [] }
+}

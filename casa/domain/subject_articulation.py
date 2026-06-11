@@ -47,7 +47,10 @@ def _compose_blocks(ctx: SubjectDialogueContext, query: str) -> list[dict[str, A
     for b in ctx.blocks:
         cid = str(b.get("concept_id") or "")
         if cid.startswith("subject."):
-            if not (ctx.query_intent == "social" and cid.startswith("subject.dialog.")):
+            if not (
+                ctx.query_intent == "social"
+                and cid.startswith(("subject.dialog.", "subject.limbic."))
+            ):
                 continue
         text = _block_text(b)
         if b.get("source") == "journal" and _is_journal_bootstrap_text(text):

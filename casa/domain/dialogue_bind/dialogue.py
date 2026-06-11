@@ -18,28 +18,13 @@ def dialogue_continuity_blocks(store_dir: Path | None, query: str) -> list[dict[
     turns = recent_dialogue(store_dir, limit=10)
     focus_terms: list[str] = []
     focus_intents: list[str] = []
+    latest_partner: str | None = None
+    latest_subject: str | None = None
     for turn in turns:
         if turn.speaker == "partner":
-            blocks.append(
-                block_dict(
-                    "subject.dialog.partner_recent",
-                    f"Партнёр недавно: «{turn.text[:120]}».",
-                    source="dialogue",
-                    score=score_text(query, turn.text, base=6),
-                )
-            )
+            latest_partner = turn.text
         elif turn.speaker == "subject" and turn.kind in ("reply", "initiate"):
-            blocks.append(
-                block_dict(
-                    "subject.dialog.self_recent",
-                    f"Я недавно: «{turn.text[:100]}».",
-                    source="dialogue",
-                    score=4,
-                )
-            )
-        for skill in re.findall(r"skill\.[\w.\-]+", turn.text):
-            if skill not in focus_terms:
-                focus_terms.append(skill)
+            latest_subject = turn.text
         prov = turn.provenance if isinstance(turn.provenance, dict) else {}
         if prov.get("query_intent"):
             intent = str(prov["query_intent"])
@@ -49,6 +34,35 @@ def dialogue_continuity_blocks(store_dir: Path | None, query: str) -> list[dict[
             s = str(cid)
             if s and s not in focus_terms:
                 focus_terms.append(s)
+        for cid in prov.get("dialog_hubs") or []:
+            s = str(cid)
+            if s and s not in focus_terms:
+                focus_terms.append(s)
+        for act in prov.get("partner_speech_acts") or []:
+            s = f"ru.speech_act.partner.{act}"
+            if s not in focus_terms:
+                focus_terms.append(s)
+        for skill in re.findall(r"skill\.[\w.\-]+", turn.text):
+            if skill not in focus_terms:
+                focus_terms.append(skill)
+    if latest_partner:
+        blocks.append(
+            block_dict(
+                "subject.dialog.partner_recent",
+                f"Партнёр недавно: «{latest_partner[:120]}».",
+                source="dialogue",
+                score=score_text(query, latest_partner, base=12),
+            )
+        )
+    if latest_subject:
+        blocks.append(
+            block_dict(
+                "subject.dialog.self_recent",
+                f"Я недавно: «{latest_subject[:100]}».",
+                source="dialogue",
+                score=24,
+            )
+        )
     ql = query.lower()
     if focus_terms and any(m in ql for m in ("что с", "с ним", "с этим", "про это", "контекст", "продолж")):
         parts = ["Текущий фокус диалога: " + ", ".join(focus_terms[:5])]

@@ -11,8 +11,10 @@ OPERATOR_JOURNAL_TAGS = frozenset({"bootstrap", "operator", "debug"})
 
 _PARTNER_SOCIAL_PREFIXES = (
     "ru.dialog.",
+    "ru.speech_act.partner.",
     "lang.word.",
     "subject.dialog.",
+    "subject.limbic.",
 )
 
 
@@ -34,7 +36,7 @@ def block_is_operator_facing(row: dict[str, Any]) -> bool:
         return True
     if source == "wm_prism":
         return True
-    if cid.startswith("subject.") and not cid.startswith("subject.dialog."):
+    if cid.startswith("subject.") and not cid.startswith(("subject.dialog.", "subject.limbic.")):
         return True
     if cid.startswith(("agent.field.", "agent.snapshot", "agent.self.journal.")):
         return True
@@ -61,7 +63,7 @@ def partner_block_allowed(row: dict[str, Any], *, intent: str) -> bool:
         return False
 
     if intent == "social":
-        if source == "dialogue":
+        if source in ("dialogue", "speech_act", "limbic"):
             return True
         if cid.startswith(_PARTNER_SOCIAL_PREFIXES):
             return True

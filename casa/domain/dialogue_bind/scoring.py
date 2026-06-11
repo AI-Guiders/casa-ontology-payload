@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from casa.domain.dialogue_bind.blocks import is_journal_bootstrap_text, is_wake_journal_text
@@ -45,6 +46,7 @@ def reweight_blocks_for_reply(
     concept_hints: list[str] | None = None,
     passage_lemmas: set[str] | None = None,
     state: dict | None = None,
+    store_dir: Path | None = None,
 ) -> None:
     """Emergent reply order: intent affinity + token overlap, not act templates."""
     from casa.prisms.memory.concept_layer import discourse_concept_id
@@ -96,7 +98,13 @@ def reweight_blocks_for_reply(
             if lemma and lemma in ql and intent not in ("explain", "grammar"):
                 score -= 22
         if intent == "social" and disc.startswith("ru.dialog.how_are_you"):
-            score = 0
+            from casa.domain.dialogue_bind.speech_act_scoring import _active_speech_acts
+
+            routed = _active_speech_acts(blocks) == ["how_are_you"] or any(
+                h.startswith("ru.dialog.how_are_you") for h in (concept_hints or [])
+            )
+            if not routed:
+                score = 0
 
         if intent == "social" and disc.startswith("ru.dialog.self"):
             if not any(h.startswith("ru.dialog.self") for h in (concept_hints or [])):
@@ -125,12 +133,19 @@ def reweight_blocks_for_reply(
                 score -= min(34, max_cap_field_ov * 2)
 
         if intent == "social" and any(h.startswith("ru.dialog.affect") for h in (concept_hints or [])):
-            if disc.startswith("ru.dialog.affect"):
-                score += 20
+            from casa.domain.dialogue_bind.speech_act_scoring import _active_speech_acts
+
+            if not (_active_speech_acts(blocks) == ["how_are_you"]):
+                if disc.startswith("ru.dialog.affect"):
+                    score += 20
             if cid.startswith("ru.dialog.honest."):
                 score += 12
             if cid.startswith(("ru.dialog.self", "ru.dialog.capabilities", "ru.dialog.how_are_you")):
                 score -= 18
+
+        if intent == "social" and any(h.startswith("ru.dialog.how_are_you") for h in (concept_hints or [])):
+            if disc.startswith("ru.dialog.how_are_you"):
+                score += 26
 
         if intent == "social" and any(h.startswith("ru.dialog.self") for h in (concept_hints or [])):
             if disc.startswith("ru.dialog.self") or cid == "concept.agent.self":
@@ -166,6 +181,10 @@ def reweight_blocks_for_reply(
                 score += 18
             if cid.startswith("ru.dialog.capabilities"):
                 score += 10
+            if disc.startswith("ru.dialog.greeting") and not any(
+                m in ql for m in ("привет", "здравств", "добрый день", "добрый вечер")
+            ):
+                score = 0
 
         if intent == "recall":
             if b.get("source") == "journal":
@@ -241,7 +260,11 @@ def reweight_blocks_for_reply(
             elif intent != "discuss" and (has_focus_kb or kb_dialog):
                 score = min(score, 8)
 
-        if cid.startswith("subject.") and intent != "discuss":
+        if (
+            cid.startswith("subject.")
+            and intent != "discuss"
+            and not cid.startswith("subject.dialog.")
+        ):
             score = min(score, 5)
 
         b["score"] = score
@@ -264,6 +287,26 @@ def reweight_blocks_for_reply(
             )
         except ImportError:
             pass
+
+    from casa.domain.dialogue_bind.thread_scoring import apply_dialogue_thread_deltas
+
+    apply_dialogue_thread_deltas(blocks, query, store_dir=store_dir, intent=intent)
+
+    from casa.domain.dialogue_bind.continuer_scoring import apply_continuer_bind_deltas
+
+    apply_continuer_bind_deltas(blocks, query, intent=intent)
+
+    from casa.domain.dialogue_bind.speech_act_scoring import apply_speech_act_bind_deltas
+
+    apply_speech_act_bind_deltas(blocks, query, intent=intent)
+
+    from casa.domain.dialogue_bind.affect_scoring import apply_affect_state_bind_deltas
+
+    apply_affect_state_bind_deltas(blocks, query, intent=intent, state=state)
+
+    from casa.domain.dialogue_bind.utterance_materialize import materialize_dialog_utterances
+
+    materialize_dialog_utterances(blocks, query, intent=intent)
 
     blocks[:] = [b for b in blocks if int(b.get("score") or 0) > 0]
     blocks.sort(key=lambda row: int(row.get("score") or 0), reverse=True)

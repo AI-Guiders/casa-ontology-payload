@@ -21,6 +21,91 @@ def partner_quote_from_block(block: dict[str, Any]) -> str:
     return match.group(1).strip() if match else ""
 
 
+def subject_quote_from_block(block: dict[str, Any]) -> str:
+    """Recent subject line from dialogue continuity block («…»)."""
+    return partner_quote_from_block(block)
+
+
+def thread_continuation_active(
+    blocks: list[dict[str, Any]],
+    query: str,
+) -> bool:
+    """Open social thread: partner turn follows a prior subject reply."""
+    if not any(str(b.get("concept_id") or "") == "subject.dialog.self_recent" for b in blocks):
+        return False
+    if partner_self_label(query):
+        return False
+    ql = (query or "").strip().lower()
+    if not ql:
+        return False
+    for block in blocks:
+        if str(block.get("concept_id") or "") != "subject.dialog.partner_recent":
+            continue
+        quote = partner_quote_from_block(block)
+        if not quote:
+            continue
+        if quote.strip().lower() == ql or score_text(query, quote, base=0) >= 12:
+            return True
+    return False
+
+
+def continuer_active(blocks: list[dict[str, Any]]) -> bool:
+    """Bind carries continuer situation (dialog.context.focus_recent from dialogue ring)."""
+    return any(str(b.get("concept_id") or "") == "dialog.context.focus_recent" for b in blocks)
+
+
+def partner_continuer_query(query: str) -> bool:
+    """Partner asks to continue prior thread — bind signal, not compose template."""
+    ql = (query or "").strip().lower()
+    if not ql:
+        return False
+    markers = (
+        "про это",
+        "про то",
+        "что думаешь",
+        "что ты думаешь",
+        "а что ты",
+        "продолж",
+        "контекст",
+        "с этим",
+    )
+    return any(m in ql for m in markers)
+
+
+def thread_continuer_turn(blocks: list[dict[str, Any]], query: str) -> bool:
+    """Open thread continuation — focus block or self_recent + continuer query."""
+    if continuer_active(blocks):
+        return True
+    if not any(str(b.get("concept_id") or "") == "subject.dialog.self_recent" for b in blocks):
+        return False
+    return partner_continuer_query(query)
+
+
+def hub_open_in_focus(blocks: list[dict[str, Any]], hub: str) -> bool:
+    for block in blocks:
+        if str(block.get("concept_id") or "") != "dialog.context.focus_recent":
+            continue
+        return hub in str(block.get("text") or "")
+    return False
+
+
+def narrative_recently_spoken(clause_text: str, blocks: list[dict[str, Any]]) -> bool:
+    """Anti-replay: gated narrative already appeared in recent subject outbound."""
+    key = re.sub(r"\s+", " ", str(clause_text or "").strip().lower())
+    if len(key) < 12:
+        return False
+    prefix = key[:48]
+    for block in blocks:
+        if str(block.get("concept_id") or "") != "subject.dialog.self_recent":
+            continue
+        spoken = subject_quote_from_block(block).lower()
+        if not spoken:
+            continue
+        if prefix in spoken or key in spoken:
+            return True
+    return False
+
+
 def dialog_block_body(block: dict[str, Any]) -> str:
     slots = block.get("slots") if isinstance(block.get("slots"), dict) else {}
     body = " ".join(str(v) for v in slots.values())
@@ -126,7 +211,11 @@ def partner_speech_turn(
     if partner_dialog_bind_overlap(quote, blocks) >= _FIELD_OVERLAP_MIN:
         return True
     hints = set(concept_hints or [])
-    return bool(hints & {"ru.dialog.capabilities", "ru.dialog.thanks", "ru.dialog.affect"})
+    if hints & {"ru.dialog.capabilities", "ru.dialog.thanks", "ru.dialog.affect"}:
+        if thread_continuation_active(blocks, quote):
+            return False
+        return True
+    return False
 
 
 def social_dialog_slot_allowed(
@@ -138,7 +227,13 @@ def social_dialog_slot_allowed(
 ) -> bool:
     """Dialog slot enters compose when semantic_read hinted or field bind elevated the block."""
     if cid.startswith("ru.dialog.how_are_you"):
-        return False
+        return field_routed_dialog_slot(
+            cid,
+            hint_prefix="ru.dialog.how_are_you",
+            concept_hints=concept_hints,
+            query=query,
+            block=block,
+        )
     if cid.startswith("ru.dialog.self"):
         return field_routed_dialog_slot(
             cid, hint_prefix="ru.dialog.self", concept_hints=concept_hints, query=query, block=block
