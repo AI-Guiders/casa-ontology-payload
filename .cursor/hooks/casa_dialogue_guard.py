@@ -8,11 +8,21 @@ import subprocess
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[2]
+def _casa_repo() -> Path:
+    """Script lives in casa-ontology-payload/.cursor/hooks — repo root is parents[2]."""
+    root = Path(__file__).resolve().parents[2]
+    if (root / "tools" / "oracle_audit.py").is_file():
+        return root
+    raise RuntimeError(f"casa repo not found at {root}")
+
+
+REPO = _casa_repo()
 
 HOT_MARKERS = (
     "casa-ontology-payload/casa/",
     "casa-ontology-payload/design/kb-",
+    "financial/software/open/casa-ontology-payload/casa/",
+    "financial/software/open/casa-ontology-payload/design/kb-",
     "casa/domain/",
     "casa/prisms/tick/discourse/",
     "/design/kb-partner",
@@ -39,13 +49,6 @@ def _paths_from_payload(data: dict) -> list[str]:
 def _is_casa_hot(path: str) -> bool:
     norm = path.replace("\\", "/").lower()
     return any(marker in norm for marker in HOT_MARKERS)
-
-
-def _repo_rel(path: Path) -> Path:
-    try:
-        return path.resolve().relative_to(REPO.resolve())
-    except ValueError:
-        return path
 
 
 def session_start() -> int:
@@ -76,12 +79,18 @@ def post_edit() -> int:
     for raw_path in _paths_from_payload(data):
         if not _is_casa_hot(raw_path):
             continue
-        file_path = Path(raw_path)
-        if not file_path.is_absolute():
-            file_path = REPO / file_path
-        if not file_path.is_file():
+        candidate = Path(raw_path)
+        resolved = candidate.resolve() if candidate.is_absolute() else (REPO / candidate).resolve()
+        if not resolved.is_file():
+            cwd_try = (Path.cwd() / candidate).resolve()
+            if cwd_try.is_file():
+                resolved = cwd_try
+        if not resolved.is_file() or not _is_casa_hot(str(resolved)):
             continue
-        rel = _repo_rel(file_path)
+        try:
+            rel = resolved.relative_to(REPO.resolve())
+        except ValueError:
+            continue
         proc = subprocess.run(
             [sys.executable, str(REPO / "tools" / "oracle_audit.py"), str(rel)],
             cwd=str(REPO),
