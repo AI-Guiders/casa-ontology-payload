@@ -30,3 +30,15 @@ class TrainCompleteEvent:
     lattice_id: str
     field_version: int
     model_path: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class ImpulseSummaryEvent:
+    """Post-efferent impulse summary (CASA-ADR-0080)."""
+
+    store_id: str
+    tick_id: int
+    impulse_id: str
+    channel: str
+    outcome: str
+    summary: dict[str, Any] | None = None

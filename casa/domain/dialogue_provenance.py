@@ -8,8 +8,8 @@ from typing import Any
 from casa.domain.dialogue_bind import SubjectDialogueContext
 
 
-def bind_trace(ctx: SubjectDialogueContext) -> dict[str, Any]:
-    """Top bind winner for verify — route-hint tie-break, not list order."""
+def _rank_bind_candidates(ctx: SubjectDialogueContext) -> list[dict[str, Any]]:
+    """Rank dialogue bind candidates — shared by bind_trace and impulse summary."""
     from casa.domain.dialogue_bind.partner_scoring import partner_field_overlap, partner_quote_from_block
     from casa.domain.dialogue_bind.speech_act_scoring import active_speech_act_slots
     from casa.prisms.memory.concept_layer import discourse_concept_id
@@ -56,9 +56,27 @@ def bind_trace(ctx: SubjectDialogueContext) -> dict[str, Any]:
         ranked.append((score, -overlap, _hint_rank(hub), trace_row))
 
     if not ranked:
-        return {}
+        return []
     ranked.sort(key=lambda item: (-item[0], item[1], item[2]))
-    return ranked[0][3]
+    return [item[3] for item in ranked]
+
+
+def bind_trace(ctx: SubjectDialogueContext) -> dict[str, Any]:
+    """Top bind winner for verify — route-hint tie-break, not list order."""
+    rows = _rank_bind_candidates(ctx)
+    return rows[0] if rows else {}
+
+
+def bind_trace_ranked(ctx: SubjectDialogueContext, *, top: int = 3) -> dict[str, Any]:
+    """Winner + runner-up rows for impulse summary (ADR-0080)."""
+    rows = _rank_bind_candidates(ctx)
+    if not rows:
+        return {"candidate_count": 0}
+    return {
+        "candidate_count": len(rows),
+        "winner": rows[0],
+        "runner_up": rows[1 : 1 + int(top)],
+    }
 
 
 def meaning_provenance(ctx: SubjectDialogueContext) -> dict[str, Any]:
