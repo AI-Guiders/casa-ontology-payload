@@ -1,6 +1,6 @@
 # ADR-0080: Impulse trace — общая нервная подсистема (observability)
 
-**Status:** proposed  
+**Status:** accepted (Phase A–D implemented 2026-06-13)  
 **Date:** 2026-06-11 (rev.2 — substrate-wide, not dialogue-only)  
 **Provenance:** диалог — «наблюдаемость есть, но не на полную катушку»; аналог нервного импульса (EPSP/IPSP, порог, траектория); *impulse — для всего efferent, не только partner*  
 **Related:** [CASA-ADR-0061-intelligence-zones.md](CASA-ADR-0061-intelligence-zones.md), [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md), [CASA-ADR-0012-cide-parity-fieldbus-and-migration.md](CASA-ADR-0012-cide-parity-fieldbus-and-migration.md), [CASA-scratch-emergence-conditions-dialogue-v1.md](CASA-scratch-emergence-conditions-dialogue-v1.md), [CASA-work-verification-dialogue-thread.v1.md](CASA-work-verification-dialogue-thread.v1.md), [CASA-ADR-0019-control-multi-prism.md](CASA-ADR-0019-control-multi-prism.md), [CASA-ADR-0024-control-thalamus.md](CASA-ADR-0024-control-thalamus.md), [CASA-ADR-0057-dialogue-situations-character.md](CASA-ADR-0057-dialogue-situations-character.md), [CASA-ADR-0078-partner-voice-invariants-v1.md](CASA-ADR-0078-partner-voice-invariants-v1.md), [CASA-ADR-0079-runtime-host-csharp-nativeaot.md](CASA-ADR-0079-runtime-host-csharp-nativeaot.md), `casa/domain/dialogue_provenance.py`
