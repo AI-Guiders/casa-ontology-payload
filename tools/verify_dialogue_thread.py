@@ -7,6 +7,8 @@ prescribe routing. See design/CASA-work-verification-dialogue-thread.v1.md §Lim
 
 from __future__ import annotations
 
+import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -141,7 +143,9 @@ def _assert_turn(
     return errors
 
 
-def run_probe(*, reset_ring: bool = True) -> list[tuple[str, str]]:
+def run_probe(*, reset_ring: bool = True, impulse: bool = False) -> list[tuple[str, str]]:
+    if impulse:
+        os.environ["CASA_IMPULSE_TRACE"] = "summary"
     store = default_agent_store()
     if reset_ring:
         meta = read_session_meta(store)
@@ -153,6 +157,7 @@ def run_probe(*, reset_ring: bool = True) -> list[tuple[str, str]]:
     task = _task()
     transcript: list[tuple[str, str]] = []
     prior_reply: str | None = None
+    impulse_ids: list[str] = []
     for partner, rules in TURNS:
         append_partner_turn(store, partner, provenance={"source": "verify"})
         ctx, reply = compose_subject_partner_reply_with_ctx(
@@ -162,6 +167,19 @@ def run_probe(*, reset_ring: bool = True) -> list[tuple[str, str]]:
         errors = _assert_turn(partner, reply, prov, rules, prior_reply=prior_reply)
         if errors:
             raise AssertionError(f"turn {partner!r}: " + "; ".join(errors))
+        if impulse:
+            from casa.nervous.dialogue_hooks import record_partner_dialogue_impulse
+
+            summary = record_partner_dialogue_impulse(
+                store_dir=store,
+                ctx=ctx,
+                reply_text=reply,
+                boundary_turn=False,
+                disp_action=None,
+            )
+            if not summary or not summary.get("winners"):
+                raise AssertionError(f"missing impulse winners for turn {partner!r}: {summary!r}")
+            impulse_ids.append(str(summary.get("impulse_id") or ""))
         append_subject_turn(
             store,
             reply,
@@ -170,7 +188,22 @@ def run_probe(*, reset_ring: bool = True) -> list[tuple[str, str]]:
         )
         transcript.append((partner, reply))
         prior_reply = reply
+    if impulse and len(impulse_ids) != len(TURNS):
+        raise AssertionError(f"expected {len(TURNS)} impulse rows, got {len(impulse_ids)}")
     return transcript
+
+
+def _assert_impulse_trace(store: Path) -> None:
+    from casa.nervous.impulse import read_impulse_trace
+
+    rows = read_impulse_trace(store, channel="partner_dialogue", limit=20)
+    if len(rows) < len(TURNS):
+        raise AssertionError(f"impulse_trace.jsonl has {len(rows)} rows, want >= {len(TURNS)}")
+    for row in rows[-len(TURNS) :]:
+        summary = row.get("summary") if isinstance(row.get("summary"), dict) else {}
+        winners = summary.get("winners") or []
+        if not winners:
+            raise AssertionError(f"impulse row missing winners: {row!r}")
 
 
 def run_oracle_audit() -> None:
@@ -189,8 +222,18 @@ def run_oracle_audit() -> None:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Dialogue thread smoke (plumbing)")
+    parser.add_argument(
+        "--impulse",
+        action="store_true",
+        help="Enable CASA_IMPULSE_TRACE=summary and assert partner_dialogue impulse rows",
+    )
+    args = parser.parse_args()
+    store = default_agent_store()
     try:
-        t = run_probe()
+        t = run_probe(impulse=args.impulse)
+        if args.impulse:
+            _assert_impulse_trace(store)
         run_oracle_audit()
     except AssertionError as err:
         print(f"FAIL: {err}", file=sys.stderr)
@@ -200,6 +243,8 @@ def main() -> int:
         print(f"A: {a}")
         print()
     print("PASS: dialogue thread smoke (provenance + oracle_audit; NOT duck test)")
+    if args.impulse:
+        print("PASS: partner_dialogue impulse trace (summary)")
     return 0
 
 

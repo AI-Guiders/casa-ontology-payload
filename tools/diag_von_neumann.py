@@ -146,6 +146,16 @@ def main() -> None:
     }
     report["boot"] = _boot_probe()
     report["wake_once"] = _wake_once()
+    trace_path = STORE / "nervous" / "impulse_trace.jsonl"
+    if trace_path.is_file():
+        lines = [line for line in trace_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        report["impulse_trace"] = {
+            "path": str(trace_path.name),
+            "rows": len(lines),
+            "last": json.loads(lines[-1]) if lines else None,
+        }
+    else:
+        report["impulse_trace"] = {"path": str(trace_path.name), "rows": 0}
     print(json.dumps(report, ensure_ascii=False, indent=2))
 
 
