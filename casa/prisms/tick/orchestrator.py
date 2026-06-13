@@ -144,6 +144,12 @@ def run_learning_tick(
     store_dir = store_dir.resolve()
     field_path = store_dir / "field_state.json"
     t0 = time.perf_counter()
+    from casa.nervous.impulse import impulse_recorder
+    from casa.nervous.channels import ImpulseChannel, ImpulseOutcome
+
+    rec = impulse_recorder()
+    next_tick = int(wm.tick) + 1
+    rec.begin_tick(next_tick, store_dir)
 
     if state is not None:
         bundle_name, bundle, decoded, recovery, decode_ms = _decode_tick_field(
@@ -195,6 +201,31 @@ def run_learning_tick(
     q = effective_user_query(wm, user_query)
     task = cen_plan(gated, bundle=routing_bundle, user_query=q)
     wm_next = fpn_after_cen(wm, task, user_query=q)
+
+    if rec.is_active:
+        with rec.channel(ImpulseChannel.CONTROL_ROUTING, store_dir=store_dir) as control_imp:
+            control_imp.route(
+                "sn_route",
+                inputs={
+                    "sn_mode": gated.gate.mode,
+                    "wm_mode": wm.mode,
+                    "surprise": bool(getattr(gated.gate, "surprise", False)),
+                },
+                selected=[str(gated.gate.mode)],
+            )
+            control_imp.select(
+                "cen_plan",
+                zone="executive",
+                selected=[str(task.action or "")],
+                inputs={
+                    "intent": str(task.intent or ""),
+                    "confidence": float(task.confidence or 0.0),
+                },
+            )
+            route_outcome = ImpulseOutcome.NO_OP
+            if task.action and task.action not in {"silent", "noop"}:
+                route_outcome = ImpulseOutcome.MODE_CHANGED
+            control_imp.finish(route_outcome, zones_touched=["executive"])
 
     from casa.prisms.memory.forgetting import memory_wake_forgetting_hooks
 
@@ -285,6 +316,27 @@ def run_learning_tick(
     pdca_act = pdca_act_rep.get("act_kind")
 
     kolb_rep: dict | None = None
+    if cfg.act_rollout and rec.is_active and act_report and not act_report.get("skipped"):
+        with rec.channel(ImpulseChannel.MOTOR_COMPOSE, store_dir=store_dir) as motor_imp:
+            motor_imp.route(
+                "act_rollout",
+                zone="perceptual",
+                inputs={"device": cfg.act_device, "decoded_keys": list((act_report.get("decoded") or {}).keys())[:6]},
+            )
+            motor_imp.finish(
+                ImpulseOutcome.COMPOSED if act_report.get("decoded") else ImpulseOutcome.NO_OP,
+                zones_touched=["perceptual"],
+            )
+
+    if sleep_rep and rec.is_active:
+        with rec.channel(ImpulseChannel.SLEEP_TRAIN, store_dir=store_dir) as sleep_imp:
+            sleep_imp.route(
+                "sleep_boundary",
+                zone="memory",
+                inputs={"batch_size": cfg.sleep_batch_size, "compact": cfg.compact_persist_on_sleep},
+            )
+            sleep_imp.finish(ImpulseOutcome.QUEUED, zones_touched=["memory"])
+
     if cfg.kolb_session:
         from casa.prisms.hippo.kolb_cycle import kolb_cycle
 
@@ -423,6 +475,9 @@ def run_learning_tick(
             },
         },
     }
+    impulse_summaries = rec.end_tick()
+    if impulse_summaries:
+        report["impulse"] = impulse_summaries
     if cfg.tick_log:
         append_tick_log(store_dir, wm=wm_next, report=report, max_entries=cfg.tick_log_max)
         from casa.domain.experience_ledger import record_experience_from_tick

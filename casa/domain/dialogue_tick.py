@@ -372,6 +372,21 @@ def process_dialogue_on_tick(
         out["metabolic_zone"] = metabolic_rep
         out["neuromodulator_zone"] = neuromod_rep or None
         out["forced_sleep"] = metabolic_should_sleep(state)
+        from casa.nervous.dialogue_hooks import record_partner_dialogue_impulse
+
+        impulse_summary = record_partner_dialogue_impulse(
+            store_dir=store_dir,
+            ctx=ctx,
+            reply_text=reply_text,
+            boundary_turn=bool(boundary_turn),
+            disp_action=disp.action.value if boundary_turn and disp else None,
+            zone_snap=zone_snap,
+            pre_zone=pre_zone,
+            metabolic_rep=metabolic_rep,
+            soft_miss_reason=str(out.get("reason") or ""),
+        )
+        if impulse_summary:
+            out["impulse"] = impulse_summary
 
     else:
         initiated: list[dict[str, Any]] = []
@@ -420,6 +435,22 @@ def process_dialogue_on_tick(
 
         out["outbound"].extend(initiated)
         out["initiated"] = bool(initiated)
+        from casa.nervous.dialogue_hooks import record_idle_efferent_impulse
+
+        if initiated:
+            first = initiated[0]
+            record_idle_efferent_impulse(
+                store_dir=store_dir,
+                kind=str(first.get("kind") or "initiate"),
+                text=str(first.get("text") or ""),
+            )
+        else:
+            record_idle_efferent_impulse(
+                store_dir=store_dir,
+                kind="idle",
+                text=None,
+                skipped=True,
+            )
         from casa.domain.partner_initiative import (
             maybe_enqueue_idle_partner_initiative,
             open_partner_thread,
