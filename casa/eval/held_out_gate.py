@@ -113,6 +113,22 @@ def candidate_id_for(claims: list[dict]) -> str:
     return "cand-" + hashlib.sha256(payload).hexdigest()[:16]
 
 
+def promote_candidate_id(lattice_id: str, concept_ids: list[str]) -> str:
+    """Stable id binding a GateReport to a canon promotion (lattice + concept ids).
+
+    The promote ceremony recomputes this from (lattice_id, concept_ids) and refuses
+    a report whose ``candidate_id`` does not match — so a stale or borrowed report
+    cannot authorize an unrelated promotion.
+    """
+    norm = sorted({str(c) for c in concept_ids})
+    payload = json.dumps(
+        {"lattice_id": str(lattice_id), "concept_ids": norm},
+        sort_keys=True,
+        ensure_ascii=False,
+    ).encode("utf-8")
+    return "cand-" + hashlib.sha256(payload).hexdigest()[:16]
+
+
 # --------------------------------------------------------------------------- #
 # Probe-bank partition (generator != grader)
 # --------------------------------------------------------------------------- #

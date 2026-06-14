@@ -9,6 +9,7 @@ from casa.eval.held_out_gate import (
     gate_decision,
     negative_control_relabel,
     partition_probe_bank,
+    promote_candidate_id,
     score_case,
     score_probe_bank,
 )
@@ -22,6 +23,7 @@ __all__ = [
     "gate_decision",
     "negative_control_relabel",
     "partition_probe_bank",
+    "promote_candidate_id",
     "score_case",
     "score_probe_bank",
 ]

@@ -130,6 +130,41 @@ def canon_promote_candidates(
     return out
 
 
+def _authorize_promote(
+    lattice_id: str,
+    concept_ids: list[str],
+    gate_report: Any,
+) -> dict[str, Any]:
+    """Authorize a canon promotion (ADR-0069 earned postulate).
+
+    A passing held-out GateReport bound to these concept ids is the real authority.
+    When absent, fall back to the legacy confirmed-source path (flagged ungated)
+    until every caller builds a gate report — the next increment makes the gate
+    mandatory and removes the self-grantable status=confirmed / canon-ready bypass.
+    """
+    report = gate_report.as_dict() if hasattr(gate_report, "as_dict") else gate_report
+    if not isinstance(report, dict):
+        return {"authority": "legacy_confirmed_source", "gated": False}
+    if not report.get("passed"):
+        raise ValueError("promote_canon: gate_report present but not passing")
+    from casa.eval.held_out_gate import promote_candidate_id
+
+    expected = promote_candidate_id(lattice_id, concept_ids)
+    if str(report.get("candidate_id") or "") != expected:
+        raise ValueError(
+            f"promote_canon: gate_report candidate_id {report.get('candidate_id')!r} "
+            f"does not match this promotion {expected!r}"
+        )
+    return {
+        "authority": "held_out_gate",
+        "gated": True,
+        "candidate_id": expected,
+        "held_out_score": report.get("held_out_score"),
+        "neg_pass_rate": report.get("neg_pass_rate"),
+        "negative_control_passed": report.get("negative_control_passed"),
+    }
+
+
 def agent_promote_canon_lattice(
     store_dir: Path,
     state: dict[str, Any],
@@ -137,6 +172,7 @@ def agent_promote_canon_lattice(
     *,
     persist: bool = True,
     allow_unconfirmed: bool = False,
+    gate_report: Any = None,
 ) -> dict[str, Any]:
     """Freeze concept ids on agent_canon lattice — agent decision, not teacher approve."""
     lattice_id = canonical_lattice_id(str(request.get("lattice_id") or ""))
@@ -151,6 +187,8 @@ def agent_promote_canon_lattice(
     if source and not concept_ids:
         concept_ids = [str(c) for c in (source.get("concepts") or []) if c]
         assert_concepts_for_lattice(lattice_id, concept_ids)
+
+    gate_prov = _authorize_promote(lattice_id, concept_ids, gate_report)
 
     reason = str(request.get("reason") or "").strip()
     reg = load_canon_registry(store_dir)
@@ -167,6 +205,7 @@ def agent_promote_canon_lattice(
                 "updated_at": now,
                 "reason": reason or existing.get("reason"),
                 "source_journal_id": source_id or existing.get("source_journal_id"),
+                "gate": gate_prov,
             }
         )
         entry_row = existing
@@ -179,6 +218,7 @@ def agent_promote_canon_lattice(
             "promoted_at": now,
             "source_journal_id": source_id,
             "reason": reason,
+            "gate": gate_prov,
         }
         entries.append(entry_row)
     reg["entries"] = entries
@@ -210,6 +250,7 @@ def agent_promote_canon_lattice(
         "registry_path": str(agent_canon_registry_path(store_dir)),
         "journal_id": remember.get("journal_id"),
         "source_journal_id": source_id,
+        "gate": gate_prov,
     }
     from casa.prisms.memory.agent_canon_field import enqueue_canon_sleep_episodes, sync_agent_canon_to_field
 
