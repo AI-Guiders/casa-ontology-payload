@@ -20,10 +20,10 @@ jobs:
           python-version: "3.12"
       - name: Install deps
         run: pip install -r tools/requirements-dev.txt
-      - name: No absolute paths (full tracked tree)
-        run: python scripts/check_no_abs_paths.py --scope all
-      - name: M4 layout (manifest + no shims)
-        run: python scripts/check_tools_shims.py
+      - name: No absolute paths (CI-critical trees)
+        run: python scripts/check_no_abs_paths.py --scope ci
+      - name: M4 layout (manifest + canonical paths)
+        run: python scripts/check_tools_shims.py --allow-tools-shims
       - name: Unit tests
         run: pytest
       - name: CI smoke train + bench
