@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from pathlib import Path
 
 from casa.cli.ingest_lesson_moment import ingest_lesson_moment
@@ -16,6 +18,7 @@ from casa.sensory.sample_ppm import write_synthetic_room_ppm
 
 
 def test_lesson_moment_cooccurrence(tmp_path: Path) -> None:
+    pytest.importorskip("PIL", reason="lesson-moment visual ingest requires Pillow")
     ppm = tmp_path / "card.ppm"
     write_synthetic_room_ppm(ppm, width=64, height=48)
     frame = load_rgb_frame(ppm)
