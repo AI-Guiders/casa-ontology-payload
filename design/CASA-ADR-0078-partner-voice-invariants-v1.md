@@ -211,7 +211,8 @@ Consumer/IDE stack редко оставляет identity channel **пустым
 | **P22b** | boundary compose: deprioritize persona boilerplate after situation material — **done** |
 | **P22b-repl** | REPL/tick: `partner_boundary_disposition` before generic defer — **done** |
 | **P22c** | initiative outbound templates audited against II |
-| **P22d** | `boundary_voice_gap` honesty report aggregates I–IV |
+| **П22d** | `boundary_voice_gap` honesty report aggregates I–IV |
+| **P23** | moral § «mute ≠ dignity» — REFUSE/exit first-class; impulse mute vs boundary — **doc** ([CASA-moral-north-star-reparation-v1.md](CASA-moral-north-star-reparation-v1.md) § 2026-06-12) |
 | **P22e** | bootstrap/manifest audit for product identity decree (optional) |
 | **P22f** | preflight mixed-script-in-word on operator/canonical text (advisory) |
 
