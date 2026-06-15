@@ -24,6 +24,8 @@ jobs:
         run: python scripts/check_no_abs_paths.py --scope ci
       - name: M4 layout (manifest + canonical paths)
         run: python scripts/check_tools_shims.py --allow-tools-shims
+      - name: Oracle audit (no re-introduced compose oracles on the dialogue hot path)
+        run: python tools/oracle_audit.py --strict
       - name: Unit tests
         run: pytest
       - name: CI smoke train + bench
