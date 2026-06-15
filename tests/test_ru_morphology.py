@@ -84,3 +84,28 @@ def test_feminine_plural_velar_class_generalises() -> None:
     a = lambda w: apply_conditioned_rule(state, LAT, "lang.rule.plural-nom-f.ru", w)
     assert a("эпоха") == "эпохи" and a("задача") == "задачи" and a("свеча") == "свечи"  # velar/hushing -> -и
     assert a("ягода") == "ягоды" and a("берёза") == "берёзы"  # else -> -ы
+
+
+def _gate_and_teach(state: dict, rule_id: str) -> callable:
+    pairs = _pairs(rule_id)
+    rep = gate_conditioned_rule(state, LAT, rule_id, pairs)
+    assert rep["passed"] is True, (rule_id, rep)
+    teach_conditioned_rule(state, LAT, rule_id, pairs)
+    return lambda w: apply_conditioned_rule(state, LAT, rule_id, w)
+
+
+def test_accusative_singular_object_case() -> None:
+    # cross-gender: feminine -а -> -у (the object form), masc/neuter inanimate unchanged
+    a = _gate_and_teach(_state(), "lang.rule.acc-sg.ru")
+    assert a("голова") == "голову" and a("стена") == "стену"  # fem -а -> -у (never taught)
+    assert a("автобус") == "автобус" and a("перо") == "перо"   # masc/neuter inanimate = nominative
+
+
+def test_genitive_singular_three_genders() -> None:
+    state = _state()
+    m = _gate_and_teach(state, "lang.rule.gen-sg-m.ru")
+    assert m("шкаф") == "шкафа" and m("сапог") == "сапога"          # masc -> +а (incl. velar stems)
+    n = _gate_and_teach(state, "lang.rule.gen-sg-n.ru")
+    assert n("дерево") == "дерева" and n("поле") == "поля"          # neuter -о->-а / -е->-я
+    f = _gate_and_teach(state, "lang.rule.gen-sg-f.ru")
+    assert f("задача") == "задачи" and f("ягода") == "ягоды"        # fem velar->-и / else->-ы

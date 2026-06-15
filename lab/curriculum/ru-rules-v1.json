@@ -1,6 +1,6 @@
 {
   "name": "ru-rules-v1",
-  "description": "Russian morphology learned by the SAME conditioned-rule inductor as English — only the vowel primitive was extended to Cyrillic. Nominative plural: masculine takes -ы, but -и after the velar/hushing consonants к г х ж ш ч щ (the classic ы/и spelling rule, here discovered as a closed consonant class on the stem's last letter, so it generalises to any masculine noun); neuter -о -> -а, -е -> -я. Hard stems only; irregular/fleeting-vowel/indeclinable nouns (стул->стулья, носок->носки, метро) are out of scope.",
+  "description": "Russian morphology learned by the SAME conditioned-rule inductor as English, given two primitive classes: vowels (Cyrillic) and the velar/hushing consonant class к г х ж ш ч щ (token K). Nominative plural by gender (masc -ы / -и after velar; neuter -о->-а, -е->-я; fem -ы / -и when a velar/hushing precedes -а: книга->книги vs рыба->рыбы). Cases: accusative singular (fem -а->-у object form, masc/neuter inanimate unchanged) and genitive singular (masc +а; neuter -о->-а / -е->-я; fem -ы / velar -и). Hard stems only; irregular/fleeting-vowel/indeclinable nouns and soft -я stems are out of scope; accusative covers inanimate (animate masc takes the genitive form).",
   "lattice_id": "schema-math",
   "rules": {
     "lang.rule.plural-nom-m.ru": [
@@ -34,6 +34,35 @@
       ["школа", "школы"], ["лампа", "лампы"], ["карта", "карты"], ["работа", "работы"],
       ["минута", "минуты"], ["комната", "комнаты"], ["гора", "горы"], ["вода", "воды"],
       ["стена", "стены"], ["беседа", "беседы"]
+    ],
+    "lang.rule.acc-sg.ru": [
+      ["стол", "стол"], ["мост", "мост"], ["дом", "дом"], ["парк", "парк"],
+      ["закон", "закон"], ["банк", "банк"], ["флаг", "флаг"], ["город", "город"],
+      ["телефон", "телефон"], ["завод", "завод"],
+      ["окно", "окно"], ["слово", "слово"], ["море", "море"], ["письмо", "письмо"],
+      ["вода", "воду"], ["книга", "книгу"], ["рыба", "рыбу"], ["школа", "школу"],
+      ["машина", "машину"], ["рука", "руку"], ["нога", "ногу"], ["гора", "гору"],
+      ["лампа", "лампу"], ["карта", "карту"], ["газета", "газету"], ["работа", "работу"]
+    ],
+    "lang.rule.gen-sg-m.ru": [
+      ["стол", "стола"], ["кот", "кота"], ["мост", "моста"], ["дом", "дома"],
+      ["час", "часа"], ["год", "года"], ["закон", "закона"], ["телефон", "телефона"],
+      ["парк", "парка"], ["банк", "банка"], ["флаг", "флага"], ["нож", "ножа"],
+      ["врач", "врача"], ["ключ", "ключа"], ["мяч", "мяча"], ["луч", "луча"],
+      ["завод", "завода"], ["автобус", "автобуса"]
+    ],
+    "lang.rule.gen-sg-n.ru": [
+      ["окно", "окна"], ["слово", "слова"], ["письмо", "письма"], ["место", "места"],
+      ["кресло", "кресла"], ["блюдо", "блюда"], ["дело", "дела"], ["вино", "вина"],
+      ["болото", "болота"],
+      ["море", "моря"], ["поле", "поля"]
+    ],
+    "lang.rule.gen-sg-f.ru": [
+      ["книга", "книги"], ["нога", "ноги"], ["рука", "руки"], ["муха", "мухи"],
+      ["дорога", "дороги"], ["подруга", "подруги"], ["крыша", "крыши"], ["груша", "груши"],
+      ["рыба", "рыбы"], ["школа", "школы"], ["вода", "воды"], ["машина", "машины"],
+      ["лампа", "лампы"], ["карта", "карты"], ["работа", "работы"], ["минута", "минуты"],
+      ["гора", "горы"], ["ваза", "вазы"]
     ]
   }
 }
