@@ -104,10 +104,10 @@ def test_conditioned_plural_induces_three_classes() -> None:
     clauses = induce_conditioned_rule(_rule_pairs("lang.rule.plural.en"))
     assert clauses is not None
     # the consonant+y class is a single general pattern (not memorised bigrams)
-    assert ("Cy", 1, "ies") in clauses
+    assert ("Cy", 1, "ies", False) in clauses
     # sibilants take -es; the elsewhere/default class is +s (empty condition, last)
-    assert any(cut == 0 and add == "es" for _, cut, add in clauses)
-    assert clauses[-1] == ("", 0, "s")
+    assert any(cut == 0 and add == "es" for _, cut, add, _ in clauses)
+    assert clauses[-1] == ("", 0, "s", False)
 
 
 def test_conditioned_plural_gate_passes_with_controls() -> None:
@@ -141,6 +141,39 @@ def test_conditioned_past_tense_gate_and_generation() -> None:
     teach_conditioned_rule(state, LAT, "lang.rule.past.en", pairs)
     assert apply_conditioned_rule(state, LAT, "lang.rule.past.en", "dance") == "danced"  # -e -> +d
     assert apply_conditioned_rule(state, LAT, "lang.rule.past.en", "kick") == "kicked"   # else +ed
+
+
+def test_transform_detects_consonant_doubling() -> None:
+    from casa.curriculum.compose import _transform
+
+    assert _transform("big", "bigger") == (0, "er", True)   # gemination
+    assert _transform("cat", "cats") == (0, "s", False)     # plain suffix
+    assert _transform("baby", "babies") == (1, "ies", False)  # stem change, no double
+
+
+def test_comparative_doubling_gate_and_generation() -> None:
+    state, _ = _state()
+    pairs = _rule_pairs("lang.rule.comparative.en")
+    rep = gate_conditioned_rule(state, LAT, "lang.rule.comparative.en", pairs)
+    assert rep["passed"] is True
+    teach_conditioned_rule(state, LAT, "lang.rule.comparative.en", pairs)
+    a = lambda w: apply_conditioned_rule(state, LAT, "lang.rule.comparative.en", w)
+    assert a("mad") == "madder" and a("dim") == "dimmer"   # CVC -> double consonant
+    assert a("neat") == "neater"                            # VVC -> no doubling
+    assert a("tidy") == "tidier"                            # consonant+y -> -ier
+    assert a("rude") == "ruder"                             # -e -> +r
+
+
+def test_present3sg_gate_and_generation() -> None:
+    state, _ = _state()
+    pairs = _rule_pairs("lang.rule.present3sg.en")
+    rep = gate_conditioned_rule(state, LAT, "lang.rule.present3sg.en", pairs)
+    assert rep["passed"] is True
+    teach_conditioned_rule(state, LAT, "lang.rule.present3sg.en", pairs)
+    a = lambda w: apply_conditioned_rule(state, LAT, "lang.rule.present3sg.en", w)
+    assert a("guess") == "guesses" and a("rush") == "rushes"  # sibilant -> -es
+    assert a("spy") == "spies"                                 # consonant+y -> -ies
+    assert a("sing") == "sings"                                # default -> -s
 
 
 def test_compose_collapses_when_order_rule_ablated() -> None:

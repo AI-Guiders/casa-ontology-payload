@@ -60,19 +60,29 @@ def induce_suffix(pairs: list[tuple[str, str]]) -> str | None:
 def _transform(base: str, form: str) -> tuple[int, str]:
     """Edit from ``base`` to ``form`` as (chars to cut from end, string to add).
 
-    ``cat -> cats`` = (0, 's'); ``box -> boxes`` = (0, 'es'); ``baby -> babies`` =
-    (1, 'ies') — found via the longest common prefix, so stem changes are captured.
+    Returns ``(cut, add, double)``: cut chars from the end, then (if ``double``) a
+    copy of the final char, then ``add``.
+
+    ``cat -> cats`` = (0, 's', False); ``baby -> babies`` = (1, 'ies', False) — found
+    via the longest common prefix; ``big -> bigger`` = (0, 'er', True) — the suffix
+    starts with a copy of the stem's last letter (consonant doubling).
     """
     n = 0
-    for a, b in zip(base, form):
+    for a, b in zip(base.lower(), form.lower()):
         if a != b:
             break
         n += 1
-    return len(base) - n, form[n:]
+    cut, tail = len(base) - n, form[n:]
+    if cut == 0 and tail and base and tail[0].lower() == base[-1].lower():
+        return 0, tail[1:], True  # gemination: copy final char, then the rest
+    return cut, tail, False
 
 
-def _apply_transform(stem: str, cut: int, add: str) -> str:
-    return (stem[: len(stem) - cut] if cut else stem) + add
+def _apply_transform(stem: str, cut: int, add: str, double: bool = False) -> str:
+    s = stem[: len(stem) - cut] if cut else stem
+    if double and s:
+        s = s + s[-1]
+    return s + add
 
 
 _VOWELS = set("aeiou")  # the one given primitive — lets conditions be phonological
@@ -134,21 +144,21 @@ def _induce_condition(group: list[str], others: list[str]) -> list[str] | None:
     return sorted(conds, key=lambda x: (-len(x), x))
 
 
-def induce_conditioned_rule(pairs: list[tuple[str, str]]) -> list[tuple[str, int, str]] | None:
-    """Induce an ordered decision list of ``(ending, cut, add)`` clauses from pairs.
+def induce_conditioned_rule(pairs: list[tuple[str, str]]) -> list[tuple[str, int, str, bool]] | None:
+    """Induce an ordered decision list of ``(ending, cut, add, double)`` clauses.
 
     The most frequent transform becomes the default clause (``ending == ''``); every
     other transform gets the conditions that separate it from the rest. Returns None
     if some class cannot be separated on the given evidence. Empty ``ending`` matches
     any stem and is applied last.
     """
-    groups: dict[tuple[int, str], list[str]] = {}
+    groups: dict[tuple[int, str, bool], list[str]] = {}
     for base, form in pairs:
         groups.setdefault(_transform(str(base), str(form)), []).append(str(base))
     if not groups:
         return None
     default_tf = max(groups, key=lambda t: (len(groups[t]), t))
-    clauses: list[tuple[str, int, str]] = []
+    clauses: list[tuple[str, int, str, bool]] = []
     for tf, stems in groups.items():
         if tf == default_tf:
             continue
@@ -157,9 +167,9 @@ def induce_conditioned_rule(pairs: list[tuple[str, str]]) -> list[tuple[str, int
         if conds is None:
             return None
         for ending in conds:
-            clauses.append((ending, tf[0], tf[1]))
+            clauses.append((ending, tf[0], tf[1], tf[2]))
     clauses.sort(key=lambda c: (-len(c[0]), c[0]))  # specific endings first
-    clauses.append(("", default_tf[0], default_tf[1]))  # default last
+    clauses.append(("", default_tf[0], default_tf[1], default_tf[2]))  # default last
     return clauses
 
 
@@ -220,25 +230,28 @@ def teach_conditioned_rule(
     if clauses is None:
         return {"rule_id": rule_id, "clauses": None, "stored": False}
     lats = _lattices(state)
-    for ending, cut, add in clauses:
-        dst = _CLAUSE_SEP.join((ending or "_", str(cut), add or "_"))
-        strengthen_graph_edge(lats, lattice_id, rule_id, _CLAUSE_REL, dst, copies=copies)
+    for ending, cut, add, double in clauses:
+        strengthen_graph_edge(lats, lattice_id, rule_id, _CLAUSE_REL, _clause_dst(ending, cut, add, double), copies=copies)
     return {"rule_id": rule_id, "clauses": clauses, "stored": True}
 
 
-def read_conditioned_rule(state: dict, lattice_id: str, rule_id: str) -> list[tuple[str, int, str]]:
+def _clause_dst(ending: str, cut: int, add: str, double: bool) -> str:
+    return _CLAUSE_SEP.join((ending or "_", str(cut), add or "_", "1" if double else "0"))
+
+
+def read_conditioned_rule(state: dict, lattice_id: str, rule_id: str) -> list[tuple[str, int, str, bool]]:
     """Read the clause decision list for ``rule_id`` from the field (ordered)."""
     prefix = f"{rule_id}|{_CLAUSE_REL}|"
-    clauses: list[tuple[str, int, str]] = []
+    clauses: list[tuple[str, int, str, bool]] = []
     for edge in _edges(state, lattice_id):
         if not edge.startswith(prefix):
             continue
         parts = edge[len(prefix):].split(_CLAUSE_SEP)
-        if len(parts) != 3 or not parts[1].isdigit():
+        if len(parts) != 4 or not parts[1].isdigit():
             continue
         ending = "" if parts[0] == "_" else parts[0]
         add = "" if parts[2] == "_" else parts[2]
-        clauses.append((ending, int(parts[1]), add))
+        clauses.append((ending, int(parts[1]), add, parts[3] == "1"))
     # most specific first (longer, more literals), default ('') last
     clauses.sort(key=lambda c: (-len(c[0]), -sum(ch not in "CV" for ch in c[0]), c[0]))
     return clauses
@@ -249,9 +262,9 @@ def apply_conditioned_rule(state: dict, lattice_id: str, rule_id: str, stem: str
     clauses = read_conditioned_rule(state, lattice_id, rule_id)
     if not clauses:
         return None
-    for ending, cut, add in clauses:
+    for ending, cut, add, double in clauses:
         if ending == "" or _matches(stem, ending):
-            return _apply_transform(stem, cut, add)
+            return _apply_transform(stem, cut, add, double)
     return None
 
 
@@ -404,9 +417,8 @@ def gate_conditioned_rule(
     neg = [apply_conditioned_rule(state, lattice_id, rule_id, b) == f"{f}X" for b, f in held]
     negative_control_passed = not any(neg)
 
-    for ending, cut, add in rep["clauses"]:
-        dst = _CLAUSE_SEP.join((ending or "_", str(cut), add or "_"))
-        weaken_graph_edge(_lattices(state), lattice_id, rule_id, _CLAUSE_REL, dst)
+    for ending, cut, add, double in rep["clauses"]:
+        weaken_graph_edge(_lattices(state), lattice_id, rule_id, _CLAUSE_REL, _clause_dst(ending, cut, add, double))
     ablated = [apply_conditioned_rule(state, lattice_id, rule_id, b) for b, _ in held]
     ablation_breaks = all(a is None for a in ablated)
     teach_conditioned_rule(state, lattice_id, rule_id, train)  # restore
