@@ -35,7 +35,9 @@ def build_meaning_state() -> tuple[dict, str]:
     bundle = _load("lab/exp_l/kb-math-concrete-schemas-l0.bundle.v1.json")
     state = ensure_prisms({})
     ingest_math_bundle(state, bundle)
-    teach_concept_net(state, LATTICE, _load("lab/curriculum/concept-net-base-v1.json"), bundle=bundle)
+    wide = REPO_ROOT / "lab/curriculum/concept-net-wide-v1.json"  # prefer the wide ontology
+    net = "lab/curriculum/concept-net-wide-v1.json" if wide.exists() else "lab/curriculum/concept-net-base-v1.json"
+    teach_concept_net(state, LATTICE, _load(net), bundle=bundle)
     ru = _load("lab/curriculum/ru-rules-v1.json")["rules"]
     en = _load("lab/curriculum/en-rules-v1.json")["rules"]
     for rid in _RU_RULES:

@@ -113,7 +113,9 @@ def build_state() -> dict:
     teach_clause_constructions(state, LAT)
     teach_np_order(state, LAT)
     teach_sentence_order(state, LAT, [({"subj": "кот", "verb": "читает", "obj": "книгу"}, ["кот", "читает", "книгу"])], rule_id="lang.sentence.svo.ru")
-    net = REPO_ROOT / "lab/curriculum/concept-net-base-v1.json"
+    net = REPO_ROOT / "lab/curriculum/concept-net-wide-v1.json"  # prefer the wide ontology
+    if not net.exists():
+        net = REPO_ROOT / "lab/curriculum/concept-net-base-v1.json"
     if net.exists():
         from casa.curriculum.concept_net import teach_concept_net
         from casa.curriculum.parse import parse_graph

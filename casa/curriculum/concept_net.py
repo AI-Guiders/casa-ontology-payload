@@ -183,8 +183,12 @@ def concept_of(state: dict, lattice_id: str, word: str) -> str | None:
     if not hits:
         return None
     edges = _edges(state, lattice_id)
-    typed = [c for c in hits if any(e.startswith(f"{c}|{_ISA}|") for e in edges)]
-    return (typed or hits)[0]
+    pool = [c for c in hits if any(e.startswith(f"{c}|{_ISA}|") for e in edges)] or hits
+    if len(pool) == 1:
+        return pool[0]
+    # among synonyms prefer the richer-typed concept (most affordances), then by id —
+    # so мясо -> lex.meat (food: edible…) not lex.flesh, самолёт -> lex.plane not aircraft
+    return min(pool, key=lambda c: (-len(affordances_of(state, lattice_id, c)), c))
 
 
 def validate(state: dict, lattice_id: str, rel: str, x: str, y: str) -> dict[str, Any]:

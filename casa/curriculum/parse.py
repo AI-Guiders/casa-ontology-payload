@@ -61,15 +61,27 @@ def _name_index(state: dict, lattice_id: str) -> list[tuple[str, str]]:
 
 
 def resolve_token(state: dict, lattice_id: str, token: str, names: list[tuple[str, str]] | None = None) -> str | None:
-    """Resolve a (possibly inflected) word to a concept: exact name, then stem match."""
+    """Resolve a (possibly inflected) word to a concept: exact name, then lemma match.
+
+    Lemma match picks the surface that is the token's base form: the longest common
+    prefix wins, then the shortest surface — so «столе» resolves to «стол» (lemma,
+    differs by an ending), not «столб» (a different, longer word)."""
     c = concept_of(state, lattice_id, token)
     if c:
         return c
+    best: str | None = None
+    best_key: tuple[int, int] | None = None
     for surface, concept in names if names is not None else _name_index(state, lattice_id):
-        stem = surface[:-1] if len(surface) > 3 else surface
-        if len(stem) >= 3 and token.startswith(stem) and len(token) - len(surface) <= 3:
-            return concept
-    return None
+        n = min(len(token), len(surface))
+        lcp = 0
+        while lcp < n and token[lcp] == surface[lcp]:
+            lcp += 1
+        if lcp < 3 or len(surface) - lcp > 1 or len(token) - lcp > 3:
+            continue  # surface must be the lemma (same prefix, differs only in the tail)
+        key = (-lcp, len(surface))  # longest shared prefix, then shortest lemma
+        if best_key is None or key < best_key:
+            best, best_key = concept, key
+    return best
 
 
 def parse_triples(state: dict, lattice_id: str, text: str) -> list[tuple[str, str, str]]:
