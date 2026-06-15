@@ -1,5 +1,10 @@
 """Auto-curriculum: structured teaching, verification, translation, orchestration."""
 
+from casa.curriculum.clause import (
+    compose_clause,
+    gate_clause_constructions,
+    teach_clause_constructions,
+)
 from casa.curriculum.compose import (
     apply_conditioned_rule,
     apply_order_rule,
@@ -45,6 +50,9 @@ __all__ = [
     "teach_sentence_order",
     "compose_sentence",
     "gate_sentence_order",
+    "teach_clause_constructions",
+    "compose_clause",
+    "gate_clause_constructions",
     "stage_and_promote",
     "mine_targets",
     "run_curriculum",

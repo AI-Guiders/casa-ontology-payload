@@ -16,11 +16,15 @@
       ["baby", "babies"], ["city", "cities"], ["lady", "ladies"]
     ],
     "lang.rule.past.en": [
+      ["like", "liked"], ["love", "loved"], ["use", "used"], ["move", "moved"],
+      ["smile", "smiled"], ["close", "closed"], ["save", "saved"], ["hope", "hoped"],
+      ["carry", "carried"], ["study", "studied"], ["try", "tried"], ["cry", "cried"],
+      ["copy", "copied"], ["marry", "married"],
       ["walk", "walked"], ["play", "played"], ["open", "opened"], ["want", "wanted"],
       ["call", "called"], ["work", "worked"], ["jump", "jumped"], ["help", "helped"],
       ["look", "looked"], ["start", "started"], ["clean", "cleaned"], ["talk", "talked"],
-      ["like", "liked"], ["love", "loved"], ["use", "used"], ["move", "moved"],
-      ["smile", "smiled"], ["close", "closed"], ["save", "saved"], ["hope", "hoped"]
+      ["need", "needed"], ["wait", "waited"], ["rain", "rained"], ["paint", "painted"],
+      ["join", "joined"], ["cook", "cooked"], ["learn", "learned"], ["return", "returned"]
     ],
     "lang.rule.comparative.en": [
       ["big", "bigger"], ["hot", "hotter"], ["thin", "thinner"], ["fat", "fatter"],
