@@ -1,0 +1,17 @@
+{
+  "name": "en-numbers-v1",
+  "description": "Bilingual English<->Russian number vocabulary (teens + twenty). Each lesson teaches one shared math.num.* concept its RU and EN word via a bilingual scene; the field mints concept|names|word edges in both scripts, which the term translator walks for RU<->EN.",
+  "lattice_id": "schema-math",
+  "lessons": [
+    {"digit": "11", "concept_id": "math.num.eleven",    "ru": "одиннадцать",  "en": "eleven"},
+    {"digit": "12", "concept_id": "math.num.twelve",     "ru": "двенадцать",   "en": "twelve"},
+    {"digit": "13", "concept_id": "math.num.thirteen",   "ru": "тринадцать",   "en": "thirteen"},
+    {"digit": "14", "concept_id": "math.num.fourteen",   "ru": "четырнадцать", "en": "fourteen"},
+    {"digit": "15", "concept_id": "math.num.fifteen",    "ru": "пятнадцать",   "en": "fifteen"},
+    {"digit": "16", "concept_id": "math.num.sixteen",    "ru": "шестнадцать",  "en": "sixteen"},
+    {"digit": "17", "concept_id": "math.num.seventeen",  "ru": "семнадцать",   "en": "seventeen"},
+    {"digit": "18", "concept_id": "math.num.eighteen",   "ru": "восемнадцать", "en": "eighteen"},
+    {"digit": "19", "concept_id": "math.num.nineteen",   "ru": "девятнадцать", "en": "nineteen"},
+    {"digit": "20", "concept_id": "math.num.twenty",     "ru": "двадцать",     "en": "twenty"}
+  ]
+}
