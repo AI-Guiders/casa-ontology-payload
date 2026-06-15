@@ -311,6 +311,62 @@ def compose_en_np(state: dict, lattice_id: str, ru_adj: str, ru_noun: str, *, ru
     return apply_order_rule(state, lattice_id, rule_id, {"adj": adj[0], "noun": noun[0]})
 
 
+NP_RULE = "lang.np.en"
+_NP_ORDER = ["det", "num", "adj", "noun"]  # the two big cats
+
+
+def teach_np_order(state: dict, lattice_id: str, *, rule_id: str = NP_RULE) -> dict[str, Any]:
+    """Store the noun-phrase slot order (det, number, adjective, noun) on the field."""
+    return teach_order_rule(state, lattice_id, rule_id, _NP_ORDER)
+
+
+def compose_np(
+    state: dict,
+    lattice_id: str,
+    *,
+    noun: str,
+    adj: str | None = None,
+    number: str | None = None,
+    determiner: str | None = None,
+    plural: bool = False,
+    lang_in: str = "ru",
+    plural_rule: str = "lang.rule.plural.en",
+    rule_id: str = NP_RULE,
+) -> tuple[str | None, bool]:
+    """Build a noun phrase and report its number. A ``number`` other than one forces
+    plural; the noun is pluralised by the learned plural rule. Returns ``(text, is_plural)``
+    — ``(None, False)`` if a word is unknown or the NP order rule is absent."""
+    def en(word: str | None) -> str | None:
+        if word is None:
+            return None
+        if lang_in == "en":
+            return word
+        hits = translate_term(state, lattice_id, word, to_script="latn")
+        return hits[0] if hits else None
+
+    n_en = en(noun)
+    if not n_en:
+        return None, False
+    a_en = en(adj)
+    if adj and not a_en:
+        return None, False
+    num_en = en(number)
+    if number and not num_en:
+        return None, False
+
+    is_plural = bool(plural or (num_en and num_en != "one"))
+    noun_form = (apply_conditioned_rule(state, lattice_id, plural_rule, n_en) or f"{n_en}s") if is_plural else n_en
+
+    fillers = {"det": determiner, "num": num_en, "adj": a_en, "noun": noun_form}
+    order = read_order_rule(state, lattice_id, rule_id)  # field-stored; absent -> decline
+    if not order:
+        return None, False
+    words = [fillers[slot] for slot in order if fillers.get(slot)]
+    if not words:
+        return None, False
+    return " ".join(words), is_plural
+
+
 # --------------------------------------------------------------------------- #
 # held-out gate (anti-tautology: generalisation + negative control + ablation)
 # --------------------------------------------------------------------------- #

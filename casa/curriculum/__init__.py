@@ -2,11 +2,15 @@
 
 from casa.curriculum.clause import (
     compose_clause,
+    compose_full_clause,
     gate_clause_constructions,
+    gate_full_clause,
     teach_clause_constructions,
 )
 from casa.curriculum.compose import (
     apply_conditioned_rule,
+    compose_np,
+    teach_np_order,
     apply_order_rule,
     apply_suffix_rule,
     compose_en_np,
@@ -53,6 +57,10 @@ __all__ = [
     "teach_clause_constructions",
     "compose_clause",
     "gate_clause_constructions",
+    "teach_np_order",
+    "compose_np",
+    "compose_full_clause",
+    "gate_full_clause",
     "stage_and_promote",
     "mine_targets",
     "run_curriculum",
