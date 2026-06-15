@@ -20,6 +20,15 @@ from casa.curriculum.concept_net import (
 )
 from casa.curriculum.grounded import gate_grounded, guarded_clause, meaningful
 from casa.curriculum.parse import parse_fingerprint, parse_graph, parse_triples, resolve_token
+from casa.curriculum.situation_memory import (
+    gate_situation_memory,
+    new_memory,
+    recall_contained,
+    recall_containing,
+    recall_similar,
+    remember,
+    seen,
+)
 from casa.curriculum.situation import (
     contains,
     fingerprint,
@@ -114,6 +123,13 @@ __all__ = [
     "parse_graph",
     "parse_fingerprint",
     "resolve_token",
+    "new_memory",
+    "remember",
+    "seen",
+    "recall_containing",
+    "recall_contained",
+    "recall_similar",
+    "gate_situation_memory",
     "validate",
     "gate_concept_net",
     "meaningful",

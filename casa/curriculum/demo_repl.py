@@ -34,6 +34,9 @@ Commands (type ? for this help):
        e.g.  fp лежит яблоко стол  ==  fp на яблоко стол  ==  fp on apple table
   parse <text>              parse a controlled clause -> graph + fingerprint
        e.g.  parse яблоко лежит на столе   ==   parse на столе яблоко   ==   parse apple on the table
+  remember <text>           store a situation in memory
+  recall <text>             have I seen this? what includes it? what is similar?
+       e.g.  recall яблоко на столе   (finds the stored «яблоко на столе у окна»)
   words                     list the words the field knows
   ?                         help        quit / exit / q!    leave
 """
@@ -109,8 +112,14 @@ def build_state() -> dict:
     net = REPO_ROOT / "lab/curriculum/concept-net-base-v1.json"
     if net.exists():
         from casa.curriculum.concept_net import teach_concept_net
+        from casa.curriculum.parse import parse_graph
+        from casa.curriculum.situation_memory import new_memory, remember
 
         teach_concept_net(state, LAT, json.loads(net.read_text(encoding="utf-8")))
+        mem = new_memory()
+        for t in ("яблоко на столе у окна", "собака ест мясо", "книга на столе", "студент читает книгу"):
+            remember(mem, parse_graph(state, LAT, t), label=t)
+        state["sit_memory"] = mem
     return state
 
 
@@ -229,6 +238,28 @@ def handle(state: dict, line: str) -> str | None:
             return "(не разобрал — нет известных понятий/отношений)"
         g = parse_graph(state, LAT, text)
         return f"{render_graph(g)}\n  отпечаток: id={fingerprint(g)['id']}"
+    if cmd in ("remember", "recall") and args:
+        from casa.curriculum.parse import parse_graph
+        from casa.curriculum.situation_memory import remember, seen, recall_containing, recall_similar
+
+        mem = state.setdefault("sit_memory", {"situations": []})
+        g = parse_graph(state, LAT, " ".join(args))
+        if not g["edges"]:
+            return "(не разобрал ситуацию)"
+        if cmd == "remember":
+            r = remember(mem, g, label=" ".join(args))
+            if r is None:
+                return "(бессмысленная ситуация — нечего запоминать)"
+            return f"запомнил: id={r['id']}  ({r['key']})"
+        known = seen(mem, g)
+        cont = [r["label"] for r in recall_containing(mem, g) if not known or r["id"] != known["id"]]
+        sim = [(r["label"], s) for r, s in recall_similar(mem, g, top=3) if s > 0]
+        out = [f"видел точно: {'да' if known else 'нет'}"]
+        if cont:
+            out.append("входит в ситуации: " + "; ".join(cont))
+        if sim:
+            out.append("похожие: " + "; ".join(f"{l} ({s})" for l, s in sim))
+        return "\n  ".join(out)
     if cmd == "words":
         from casa.curriculum.translate import _name_edges
 
