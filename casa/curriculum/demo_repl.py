@@ -26,6 +26,8 @@ Commands (type ? for this help):
        rel in on/in/eat/drink/wear/ride/read/use; e.g.  val on яблоко стол -> valid
   g <subj> <verb> <obj>     grounded: validate the meaning, THEN render (or refuse)
        e.g.  g студент читать книга -> ok; g стол читать книга -> refused (not an agent)
+  map <rel> <x> <y>         build the meaning map (nodes+typed edge); same for RU/EN
+       e.g.  map on яблоко стол   ==   map on apple table
   words                     list the words the field knows
   ?                         help        quit / exit / q!    leave
 """
@@ -184,6 +186,16 @@ def handle(state: dict, line: str) -> str | None:
         if not r["valid"]:
             return f"✗ бессмыслица [{r['reason']}] — не порождаю"
         return f"✓\nRU: {r['ru'] or '(?)'}\nEN: {r['en'] or '(?)'}"
+    if cmd == "map" and len(args) >= 3:
+        from casa.curriculum.concept_net import relation_map, render_map
+
+        m = relation_map(state, LAT, args[0], args[1], args[2])
+        s = m["subject"] or {}
+        return (
+            f"{render_map(m)}\n"
+            f"  {args[1]}: типы={s.get('types')} аффордансы={s.get('affords')}\n"
+            f"  ребро: {m['edge']}"
+        )
     if cmd == "words":
         from casa.curriculum.translate import _name_edges
 

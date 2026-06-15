@@ -213,6 +213,59 @@ def validate(state: dict, lattice_id: str, rel: str, x: str, y: str) -> dict[str
     }
 
 
+def names_of(state: dict, lattice_id: str, concept: str) -> dict[str, list[str]]:
+    """Surfaces that name ``concept``, split by script — {'ru': [...], 'en': [...]}."""
+    from casa.curriculum.translate import _name_edges, script_of
+
+    prefix = f"{concept}|names|lang.word."
+    out: dict[str, list[str]] = {"ru": [], "en": []}
+    for e in _name_edges(state, lattice_id):
+        if e.startswith(prefix):
+            w = e[len(prefix):]
+            out["ru" if script_of(w) == "cyrl" else "en"].append(w)
+    return {k: sorted(set(v)) for k, v in out.items()}
+
+
+def _node(state: dict, lattice_id: str, concept: str) -> dict[str, Any]:
+    return {
+        "concept": concept,
+        "types": sorted(isa_closure(state, lattice_id, concept) - {concept}),
+        "affords": sorted(affordances_of(state, lattice_id, concept)),
+        "names": names_of(state, lattice_id, concept),
+    }
+
+
+def relation_map(state: dict, lattice_id: str, rel: str, x: str, y: str) -> dict[str, Any]:
+    """Build an auditable meaning map for ``rel(x, y)``: two concept nodes (with their
+    types, affordances and names in both languages) and the typed, checked edge between
+    them. Built on CONCEPTS, so it is identical whether x/y are given in Russian or
+    English — the language-independent «карта связей»."""
+    cx, cy = concept_of(state, lattice_id, x), concept_of(state, lattice_id, y)
+    v = validate(state, lattice_id, rel, x, y)
+    return {
+        "relation": rel,
+        "valid": v["valid"],
+        "reason": v.get("reason"),
+        "subject": _node(state, lattice_id, cx) if cx else None,
+        "object": _node(state, lattice_id, cy) if cy else None,
+        "edge": {"rel": rel, "src": cx, "dst": cy, "satisfied": v["valid"], "needs": v.get("needs")},
+    }
+
+
+def render_map(m: dict[str, Any]) -> str:
+    """One-line bilingual rendering of a relation map."""
+    def label(node: dict[str, Any] | None) -> str:
+        if not node:
+            return "?"
+        nm = node["names"]
+        ru = nm["ru"][0] if nm["ru"] else node["concept"]
+        en = nm["en"][0] if nm["en"] else node["concept"]
+        return f"{ru}/{en}"
+
+    mark = "✓" if m["valid"] else "✗"
+    return f"{mark} [{label(m['subject'])}] --{m['relation']}--> [{label(m['object'])}]  ({m.get('reason')})"
+
+
 # --------------------------------------------------------------------------- #
 # held-out gate (generalisation via inheritance + negative control + ablation)
 # --------------------------------------------------------------------------- #

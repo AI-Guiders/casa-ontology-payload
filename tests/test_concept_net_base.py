@@ -15,6 +15,7 @@ from casa.curriculum.concept_net import (
     has_part,
     isa_closure,
     parts_of,
+    relation_map,
     teach_concept_net,
     validate,
 )
@@ -87,6 +88,21 @@ def test_mereology_inherited_per_type() -> None:
     assert has_part(state, LAT, "человек", "рука") is True
     assert has_part(state, LAT, "яблоко", "колесо") is False
     assert "lex.wheel" in parts_of(state, LAT, concept_of(state, LAT, "машина"))
+
+
+def test_relation_map_is_language_independent() -> None:
+    state, _ = _ready()
+    mru = relation_map(state, LAT, "on", "яблоко", "стол")
+    men = relation_map(state, LAT, "on", "apple", "table")
+    assert mru == men  # same concept map regardless of the input language
+    assert mru["valid"] is True
+    assert mru["subject"]["concept"] == "lex.apple"
+    assert "physical_object" in mru["subject"]["types"]
+    assert mru["subject"]["names"] == {"ru": ["яблоко"], "en": ["apple"]}
+    assert mru["edge"]["needs"] == {"arg1": "positionable", "arg2": "support_surface"}
+    # an invalid combination still maps, marked unsatisfied with a reason
+    bad = relation_map(state, LAT, "on", "идея", "стол")
+    assert bad["valid"] is False and bad["edge"]["satisfied"] is False
 
 
 def test_base_concept_net_gate() -> None:
