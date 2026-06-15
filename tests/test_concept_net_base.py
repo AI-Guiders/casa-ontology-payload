@@ -121,6 +121,21 @@ def test_meaning_graph_multi_edge_and_language_independent() -> None:
     assert [e["satisfied"] for e in bad["edges"]] == [True, False]
 
 
+def test_new_concept_inherits_group_rules_by_one_edge() -> None:
+    # the economy of the hierarchy: a brand-new word joins a group with ONE isa edge and
+    # inherits everything — no per-word affordance or relation rules needed
+    from casa.curriculum.concept_net import teach_isa
+    from casa.curriculum.glossary import teach_glossary
+
+    state, bundle = _ready()
+    teach_glossary(state, [("айва", "quince")], bundle=bundle)
+    teach_isa(state, LAT, [("lex.quince", "fruit")])  # the only thing added for «айва»
+    assert affordances_of(state, LAT, "lex.quince") == {"edible", "ownable", "positionable"}
+    assert validate(state, LAT, "on", "айва", "стол")["valid"] is True       # via inherited positionable
+    assert validate(state, LAT, "eat", "человек", "айва")["valid"] is True   # via inherited edible
+    assert validate(state, LAT, "on", "идея", "айва")["valid"] is False      # quince is not a surface
+
+
 def test_base_concept_net_gate() -> None:
     state, data = _ready()
     rep = gate_concept_net(

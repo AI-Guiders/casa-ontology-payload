@@ -22,6 +22,8 @@ Commands (type ? for this help):
        e.g.  sru девочка читать книга -> Девочка читает книгу.
   b <subj> <verb> <obj>     one meaning -> BOTH languages (source auto-detected)
        e.g.  b девочка читать книга -> RU «Девочка читает книгу.» EN "The girl reads the book."
+  isa <слово> <группа>      add a word to a group with ONE edge; it inherits the group's rules
+       e.g.  isa айва fruit  ->  inherits edible, positionable;  then  val on айва стол -> valid
   val <rel> <x> <y>         validate a relation in the conceptual network (cross-lingual)
        rel in on/in/eat/drink/wear/ride/read/use; e.g.  val on яблоко стол -> valid
   g <subj> <verb> <obj>     grounded: validate the meaning, THEN render (or refuse)
@@ -191,6 +193,20 @@ def handle(state: dict, line: str) -> str | None:
         src = "en" if script_of(args[0]) == "latn" else "ru"
         out = bilingual_clause(state, LAT, subj=args[0], verb=args[1], obj=args[2], source=src)
         return f"RU: {out['ru'] or '(?)'}\nEN: {out['en'] or '(?)'}"
+    if cmd == "isa" and len(args) >= 2:
+        # add a new concept to a group with ONE edge — it inherits the group's affordances
+        from casa.prisms.memory.f0_stack import strengthen_graph_edge
+        from casa.prisms.memory.memory_prisms import memory_lattices
+        from casa.curriculum.concept_net import teach_isa, affordances_of, isa_closure
+
+        word, group = args[0], args[1]
+        cid = f"lex.{word}"
+        strengthen_graph_edge(memory_lattices(state), LAT, cid, "names", f"lang.word.{word}")
+        teach_isa(state, LAT, [(cid, group)])
+        cl = isa_closure(state, LAT, cid)
+        if cl == {cid}:
+            return f"группа '{group}' неизвестна — слово добавлено, но без наследования"
+        return f"добавил «{word}»: isa-замыкание {sorted(cl - {cid})}; унаследовано: {sorted(affordances_of(state, LAT, cid))}"
     if cmd == "val" and len(args) >= 3:
         from casa.curriculum.concept_net import validate
 
