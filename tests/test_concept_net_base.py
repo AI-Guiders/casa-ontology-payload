@@ -12,7 +12,9 @@ from casa.curriculum.concept_net import (
     affordances_of,
     concept_of,
     gate_concept_net,
+    has_part,
     isa_closure,
+    parts_of,
     teach_concept_net,
     validate,
 )
@@ -47,7 +49,7 @@ def test_base_ontology_size_and_grounding() -> None:
 
 def test_inherited_affordances_by_category() -> None:
     state, _ = _ready()
-    assert affordances_of(state, LAT, concept_of(state, LAT, "яблоко")) == {"edible", "positionable"}
+    assert {"edible", "positionable"} <= affordances_of(state, LAT, concept_of(state, LAT, "яблоко"))
     assert "rideable" in affordances_of(state, LAT, concept_of(state, LAT, "машина"))
     assert "wearable" in affordances_of(state, LAT, concept_of(state, LAT, "рубашка"))
     assert "drinkable" in affordances_of(state, LAT, concept_of(state, LAT, "вода"))
@@ -63,6 +65,28 @@ def test_validation_cross_lingual_and_plausibility() -> None:
     assert validate(state, LAT, "wear", "женщина", "платье")["valid"] is True
     assert validate(state, LAT, "eat", "стол", "яблоко")["valid"] is False      # table is not an agent
     assert validate(state, LAT, "drink", "идея", "вода")["valid"] is False      # idea is not an agent
+
+
+def test_location_possession_material_relations() -> None:
+    state, _ = _ready()
+    assert validate(state, LAT, "at", "человек", "парк")["valid"] is True       # positionable in a place
+    assert validate(state, LAT, "at", "человек", "яблоко")["valid"] is False     # apple is not a location
+    assert validate(state, LAT, "has", "женщина", "машина")["valid"] is True     # agent owns an object
+    assert validate(state, LAT, "has", "стол", "машина")["valid"] is False       # a table cannot own
+    assert validate(state, LAT, "made_of", "стол", "древесина")["valid"] is True  # object of a material
+    assert validate(state, LAT, "made_of", "стол", "идея")["valid"] is False      # idea is not a material
+
+
+def test_mereology_inherited_per_type() -> None:
+    state, _ = _ready()
+    # parts inherit along isa: a car is a vehicle (-> wheel) and a car (-> engine)
+    assert has_part(state, LAT, "машина", "колесо") is True
+    assert has_part(state, LAT, "машина", "двигатель") is True
+    assert has_part(state, LAT, "велосипед", "колесо") is True
+    assert has_part(state, LAT, "велосипед", "двигатель") is False   # a bicycle has no engine
+    assert has_part(state, LAT, "человек", "рука") is True
+    assert has_part(state, LAT, "яблоко", "колесо") is False
+    assert "lex.wheel" in parts_of(state, LAT, concept_of(state, LAT, "машина"))
 
 
 def test_base_concept_net_gate() -> None:

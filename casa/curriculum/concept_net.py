@@ -28,6 +28,7 @@ from casa.curriculum.translate import concepts_for_term
 
 _ISA = "isa"
 _AFFORDS = "affords"
+_HAS_PART = "has_part"
 
 
 def _lattices(state: dict) -> dict:
@@ -70,6 +71,31 @@ def teach_relation(state: dict, lattice_id: str, rel: str, *, arg1: str, arg2: s
     _mint(state, lattice_id, rel, "arg2", arg2)
 
 
+def teach_parts(state: dict, lattice_id: str, pairs: list[tuple[str, str]]) -> None:
+    """Mint mereology edges ``whole|has_part|part``. ``whole`` may be a category (so all
+    its members inherit the part) or a concept id; ``part`` is a concept id."""
+    for whole, part in pairs:
+        _mint(state, lattice_id, whole, _HAS_PART, part)
+
+
+def parts_of(state: dict, lattice_id: str, whole: str) -> set[str]:
+    """All parts of ``whole`` (asserted on it or on any of its super-types)."""
+    edges = _edges(state, lattice_id)
+    out: set[str] = set()
+    for typ in isa_closure(state, lattice_id, whole):
+        p = f"{typ}|{_HAS_PART}|"
+        out |= {e[len(p):] for e in edges if e.startswith(p)}
+    return out
+
+
+def has_part(state: dict, lattice_id: str, whole: str, part: str) -> bool:
+    """Does ``whole`` have ``part`` (asserted, inherited along isa)? Cross-lingual."""
+    cw, cp = concept_of(state, lattice_id, whole), concept_of(state, lattice_id, part)
+    if cw is None or cp is None:
+        return False
+    return cp in parts_of(state, lattice_id, cw)
+
+
 def _concept_id(en: str) -> str:
     return f"lex.{en.strip().lower().replace(' ', '_')}"
 
@@ -95,7 +121,13 @@ def teach_concept_net(state: dict, lattice_id: str, data: dict, *, bundle: dict 
     teach_affords(state, lattice_id, [(c["id"], r) for c in data["categories"] for r in c.get("affords", [])])
     for r in data.get("relations", []):
         teach_relation(state, lattice_id, r["rel"], arg1=r["arg1"], arg2=r["arg2"])
-    return {"concepts": len(pairs), "categories": len(data["categories"]), "relations": len(data.get("relations", []))}
+    teach_parts(state, lattice_id, [tuple(p) for p in data.get("parts", [])])
+    return {
+        "concepts": len(pairs),
+        "categories": len(data["categories"]),
+        "relations": len(data.get("relations", [])),
+        "parts": len(data.get("parts", [])),
+    }
 
 
 # --------------------------------------------------------------------------- #
@@ -159,6 +191,9 @@ def validate(state: dict, lattice_id: str, rel: str, x: str, y: str) -> dict[str
     """Validate ``rel(x, y)`` against the affordance/constraint network. Cross-lingual:
     x/y may be surface words in either language or concept ids."""
     cx, cy = concept_of(state, lattice_id, x), concept_of(state, lattice_id, y)
+    if rel == _HAS_PART:  # mereology: asserted fact (inherited), not an affordance check
+        ok = cx is not None and cy is not None and cy in parts_of(state, lattice_id, cx)
+        return {"valid": bool(ok), "relation": rel, "x_concept": cx, "y_concept": cy, "reason": "ok" if ok else "not_a_part"}
     r1, r2 = relation_roles(state, lattice_id, rel)
     if cx is None or cy is None:
         return {"valid": False, "reason": "unknown_concept", "relation": rel, "x": x, "y": y, "x_concept": cx, "y_concept": cy}
@@ -200,12 +235,13 @@ def gate_concept_net(
     valid_rate = pos / len(valid_cases) if valid_cases else 0.0
     negative_control_passed = neg == len(invalid_cases)
 
-    # ablation: drop every affords edge -> no affordance can be confirmed
+    # ablation: drop every affordance AND mereology edge -> nothing can be confirmed
     lat = _lattices(state).get(lattice_id)
-    afford_edges = [e for e in decode_f0_lattice(lat).get("edges") or [] if f"|{_AFFORDS}|" in e] if lat else []
-    for e in afford_edges:
-        src, _, dst = e.split("|", 2)
-        weaken_graph_edge(_lattices(state), lattice_id, src, _AFFORDS, dst)
+    edges = decode_f0_lattice(lat).get("edges") or [] if lat else []
+    for rel in (_AFFORDS, _HAS_PART):
+        for e in [e for e in edges if f"|{rel}|" in e]:
+            src, _, dst = e.split("|", 2)
+            weaken_graph_edge(_lattices(state), lattice_id, src, rel, dst)
     ablation_breaks = not any(validate(state, lattice_id, r, x, y)["valid"] for r, x, y in valid_cases)
 
     passed = bool(

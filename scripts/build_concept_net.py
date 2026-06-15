@@ -14,9 +14,10 @@ import argparse
 import json
 
 CATEGORIES = [
-    {"id": "physical_object", "isa": [], "affords": ["positionable"]},
+    {"id": "physical_object", "isa": [], "affords": ["positionable", "ownable"]},
     {"id": "place", "isa": [], "affords": ["location"]},
     {"id": "abstract", "isa": [], "affords": []},
+    {"id": "part", "isa": ["physical_object"], "affords": []},
     {"id": "animate", "isa": ["physical_object"], "affords": ["agent"]},
     {"id": "food", "isa": ["physical_object"], "affords": ["edible"]},
     {"id": "liquid", "isa": ["physical_object"], "affords": ["drinkable", "pourable"]},
@@ -37,12 +38,12 @@ CATEGORIES = [
     {"id": "vegetable", "isa": ["food"], "affords": []},
     {"id": "natural_feature", "isa": ["place", "physical_object"], "affords": []},
     {"id": "celestial", "isa": ["physical_object"], "affords": []},
-    {"id": "substance", "isa": ["physical_object"], "affords": []},
+    {"id": "substance", "isa": ["physical_object"], "affords": ["material"]},
 ]
 
 CONCEPTS: dict[str, list[tuple[str, str]]] = {
     "person": [
-        ("мужчина", "man"), ("женщина", "woman"), ("ребёнок", "child"), ("мальчик", "boy"),
+        ("человек", "person"), ("мужчина", "man"), ("женщина", "woman"), ("ребёнок", "child"), ("мальчик", "boy"),
         ("девочка", "girl"), ("друг", "friend"), ("учитель", "teacher"), ("врач", "doctor"),
         ("мать", "mother"), ("отец", "father"), ("сын", "son"), ("дочь", "daughter"),
         ("король", "king"), ("студент", "student"), ("рабочий", "worker"), ("сосед", "neighbour"),
@@ -141,10 +142,15 @@ CONCEPTS: dict[str, list[tuple[str, str]]] = {
     "substance": [
         ("песок", "sand"), ("снег", "snow"), ("лёд", "ice"), ("дым", "smoke"),
         ("золото", "gold"), ("железо", "iron"), ("стекло", "glass material"), ("глина", "clay"),
+        ("древесина", "wood"), ("ткань", "cloth"), ("бумага", "paper"), ("пластик", "plastic"),
     ],
     "document": [
         ("книга", "book"), ("письмо", "letter"), ("газета", "newspaper"), ("карта", "map"),
         ("картина", "picture"), ("фотография", "photo"), ("журнал", "magazine"), ("словарь", "dictionary"),
+    ],
+    "part": [
+        ("колесо", "wheel"), ("двигатель", "engine"), ("дверь", "door"), ("окно", "window"),
+        ("крыша", "roof"), ("крыло", "wing"),
     ],
     "abstract": [
         ("идея", "idea"), ("любовь", "love"), ("время", "time"), ("слово", "word"),
@@ -164,19 +170,48 @@ RELATIONS = [
     {"rel": "ride", "arg1": "agent", "arg2": "rideable"},
     {"rel": "read", "arg1": "agent", "arg2": "readable"},
     {"rel": "use", "arg1": "agent", "arg2": "usable"},
+    {"rel": "at", "arg1": "positionable", "arg2": "location"},
+    {"rel": "has", "arg1": "agent", "arg2": "ownable"},
+    {"rel": "made_of", "arg1": "positionable", "arg2": "material"},
 ]
 
-# held-out combinations (never asserted as pairs; valid purely via inheritance)
+
+def _c(en: str) -> str:
+    return f"lex.{en.strip().lower().replace(' ', '_')}"
+
+
+# mereology: whole|has_part|part. whole is a category (members inherit) or a concept id.
+PARTS = (
+    [("person", _c(p)) for p in ("hand", "head", "eye", "foot", "finger", "nose", "ear",
+                                  "mouth", "heart", "hair", "tooth", "neck", "back", "knee", "tongue", "shoulder")]
+    + [("animal", _c(p)) for p in ("head", "eye", "foot", "heart", "tooth")]
+    + [("vehicle", _c("wheel"))]
+    + [(_c("car"), _c("engine")), (_c("car"), _c("door"))]
+    + [(_c("plane"), _c("wing")), (_c("plane"), _c("engine"))]
+    + [("building", _c(p)) for p in ("door", "window", "roof")]
+    + [(_c("house"), _c("room"))]
+    + [(_c("tree"), _c(p)) for p in ("branch", "leaf", "root")]
+)
+
+# held-out combinations (never asserted as pairs; valid via affordance inheritance or
+# inherited mereology)
 VALID = [
     ["on", "книга", "стол"], ["in", "яблоко", "коробка"], ["eat", "собака", "мясо"],
     ["drink", "кошка", "молоко"], ["wear", "мужчина", "рубашка"], ["ride", "мальчик", "велосипед"],
     ["read", "студент", "книга"], ["use", "повар", "нож"], ["on", "чашка", "полка"],
-    ["on", "apple", "table"],
+    ["on", "apple", "table"], ["at", "человек", "парк"], ["has", "женщина", "машина"],
+    ["made_of", "стол", "древесина"], ["made_of", "рубашка", "ткань"],
+    ["has_part", "машина", "колесо"], ["has_part", "машина", "двигатель"],
+    ["has_part", "велосипед", "колесо"], ["has_part", "человек", "рука"],
+    ["has_part", "дом", "окно"], ["has_part", "дерево", "лист"],
 ]
 # category errors (negative control)
 INVALID = [
     ["eat", "стол", "яблоко"], ["drink", "идея", "вода"], ["on", "любовь", "стол"],
     ["wear", "собака", "дом"], ["ride", "книга", "автобус"], ["eat", "человек", "камень"],
+    ["at", "человек", "яблоко"], ["has", "стол", "машина"], ["made_of", "стол", "идея"],
+    ["has_part", "велосипед", "двигатель"], ["has_part", "яблоко", "колесо"],
+    ["has_part", "стол", "рука"],
 ]
 
 
@@ -196,6 +231,7 @@ def main() -> None:
         "categories": CATEGORIES,
         "concepts": {cat: [list(p) for p in members] for cat, members in CONCEPTS.items()},
         "relations": RELATIONS,
+        "parts": [list(p) for p in PARTS],
         "valid": VALID,
         "invalid": INVALID,
     }

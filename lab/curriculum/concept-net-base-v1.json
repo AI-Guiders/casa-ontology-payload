@@ -7,7 +7,8 @@
    "id": "physical_object",
    "isa": [],
    "affords": [
-    "positionable"
+    "positionable",
+    "ownable"
    ]
   },
   {
@@ -20,6 +21,13 @@
   {
    "id": "abstract",
    "isa": [],
+   "affords": []
+  },
+  {
+   "id": "part",
+   "isa": [
+    "physical_object"
+   ],
    "affords": []
   },
   {
@@ -189,11 +197,17 @@
    "isa": [
     "physical_object"
    ],
-   "affords": []
+   "affords": [
+    "material"
+   ]
   }
  ],
  "concepts": {
   "person": [
+   [
+    "человек",
+    "person"
+   ],
    [
     "мужчина",
     "man"
@@ -1199,6 +1213,22 @@
    [
     "глина",
     "clay"
+   ],
+   [
+    "древесина",
+    "wood"
+   ],
+   [
+    "ткань",
+    "cloth"
+   ],
+   [
+    "бумага",
+    "paper"
+   ],
+   [
+    "пластик",
+    "plastic"
    ]
   ],
   "document": [
@@ -1233,6 +1263,32 @@
    [
     "словарь",
     "dictionary"
+   ]
+  ],
+  "part": [
+   [
+    "колесо",
+    "wheel"
+   ],
+   [
+    "двигатель",
+    "engine"
+   ],
+   [
+    "дверь",
+    "door"
+   ],
+   [
+    "окно",
+    "window"
+   ],
+   [
+    "крыша",
+    "roof"
+   ],
+   [
+    "крыло",
+    "wing"
    ]
   ],
   "abstract": [
@@ -1358,7 +1414,156 @@
    "rel": "use",
    "arg1": "agent",
    "arg2": "usable"
+  },
+  {
+   "rel": "at",
+   "arg1": "positionable",
+   "arg2": "location"
+  },
+  {
+   "rel": "has",
+   "arg1": "agent",
+   "arg2": "ownable"
+  },
+  {
+   "rel": "made_of",
+   "arg1": "positionable",
+   "arg2": "material"
   }
+ ],
+ "parts": [
+  [
+   "person",
+   "lex.hand"
+  ],
+  [
+   "person",
+   "lex.head"
+  ],
+  [
+   "person",
+   "lex.eye"
+  ],
+  [
+   "person",
+   "lex.foot"
+  ],
+  [
+   "person",
+   "lex.finger"
+  ],
+  [
+   "person",
+   "lex.nose"
+  ],
+  [
+   "person",
+   "lex.ear"
+  ],
+  [
+   "person",
+   "lex.mouth"
+  ],
+  [
+   "person",
+   "lex.heart"
+  ],
+  [
+   "person",
+   "lex.hair"
+  ],
+  [
+   "person",
+   "lex.tooth"
+  ],
+  [
+   "person",
+   "lex.neck"
+  ],
+  [
+   "person",
+   "lex.back"
+  ],
+  [
+   "person",
+   "lex.knee"
+  ],
+  [
+   "person",
+   "lex.tongue"
+  ],
+  [
+   "person",
+   "lex.shoulder"
+  ],
+  [
+   "animal",
+   "lex.head"
+  ],
+  [
+   "animal",
+   "lex.eye"
+  ],
+  [
+   "animal",
+   "lex.foot"
+  ],
+  [
+   "animal",
+   "lex.heart"
+  ],
+  [
+   "animal",
+   "lex.tooth"
+  ],
+  [
+   "vehicle",
+   "lex.wheel"
+  ],
+  [
+   "lex.car",
+   "lex.engine"
+  ],
+  [
+   "lex.car",
+   "lex.door"
+  ],
+  [
+   "lex.plane",
+   "lex.wing"
+  ],
+  [
+   "lex.plane",
+   "lex.engine"
+  ],
+  [
+   "building",
+   "lex.door"
+  ],
+  [
+   "building",
+   "lex.window"
+  ],
+  [
+   "building",
+   "lex.roof"
+  ],
+  [
+   "lex.house",
+   "lex.room"
+  ],
+  [
+   "lex.tree",
+   "lex.branch"
+  ],
+  [
+   "lex.tree",
+   "lex.leaf"
+  ],
+  [
+   "lex.tree",
+   "lex.root"
+  ]
  ],
  "valid": [
   [
@@ -1410,6 +1615,56 @@
    "on",
    "apple",
    "table"
+  ],
+  [
+   "at",
+   "человек",
+   "парк"
+  ],
+  [
+   "has",
+   "женщина",
+   "машина"
+  ],
+  [
+   "made_of",
+   "стол",
+   "древесина"
+  ],
+  [
+   "made_of",
+   "рубашка",
+   "ткань"
+  ],
+  [
+   "has_part",
+   "машина",
+   "колесо"
+  ],
+  [
+   "has_part",
+   "машина",
+   "двигатель"
+  ],
+  [
+   "has_part",
+   "велосипед",
+   "колесо"
+  ],
+  [
+   "has_part",
+   "человек",
+   "рука"
+  ],
+  [
+   "has_part",
+   "дом",
+   "окно"
+  ],
+  [
+   "has_part",
+   "дерево",
+   "лист"
   ]
  ],
  "invalid": [
@@ -1442,6 +1697,36 @@
    "eat",
    "человек",
    "камень"
+  ],
+  [
+   "at",
+   "человек",
+   "яблоко"
+  ],
+  [
+   "has",
+   "стол",
+   "машина"
+  ],
+  [
+   "made_of",
+   "стол",
+   "идея"
+  ],
+  [
+   "has_part",
+   "велосипед",
+   "двигатель"
+  ],
+  [
+   "has_part",
+   "яблоко",
+   "колесо"
+  ],
+  [
+   "has_part",
+   "стол",
+   "рука"
   ]
  ]
 }
