@@ -1429,6 +1429,11 @@
    "rel": "made_of",
    "arg1": "positionable",
    "arg2": "material"
+  },
+  {
+   "rel": "near",
+   "arg1": "positionable",
+   "arg2": "positionable"
   }
  ],
  "parts": [
@@ -1637,6 +1642,16 @@
    "ткань"
   ],
   [
+   "near",
+   "стол",
+   "окно"
+  ],
+  [
+   "near",
+   "дом",
+   "дерево"
+  ],
+  [
    "has_part",
    "машина",
    "колесо"
@@ -1712,6 +1727,11 @@
    "made_of",
    "стол",
    "идея"
+  ],
+  [
+   "near",
+   "идея",
+   "стол"
   ],
   [
    "has_part",

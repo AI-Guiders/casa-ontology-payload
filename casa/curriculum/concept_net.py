@@ -252,6 +252,40 @@ def relation_map(state: dict, lattice_id: str, rel: str, x: str, y: str) -> dict
     }
 
 
+def meaning_graph(state: dict, lattice_id: str, triples: list[tuple[str, str, str]]) -> dict[str, Any]:
+    """Build a multi-edge meaning graph from several relations — «яблоко на столе у окна»
+    is on(apple, table) + near(table, window): three concept nodes, two typed edges.
+
+    Nodes are deduplicated by concept and carry types/affordances/names; each edge is
+    validated against the network. Built on concepts, so the whole graph is identical
+    whether the triples are given in Russian or English."""
+    nodes: dict[str, Any] = {}
+    edges: list[dict[str, Any]] = []
+    for rel, x, y in triples:
+        cx, cy = concept_of(state, lattice_id, x), concept_of(state, lattice_id, y)
+        for c in (cx, cy):
+            if c and c not in nodes:
+                nodes[c] = _node(state, lattice_id, c)
+        v = validate(state, lattice_id, rel, x, y)
+        edges.append({"rel": rel, "src": cx, "dst": cy, "satisfied": v["valid"], "reason": v.get("reason")})
+    return {"nodes": nodes, "edges": edges, "valid": all(e["satisfied"] for e in edges)}
+
+
+def render_graph(g: dict[str, Any]) -> str:
+    """Multi-line rendering of a meaning graph (one bilingual edge per line)."""
+    def label(cid: str | None) -> str:
+        n = g["nodes"].get(cid or "")
+        if not n:
+            return "?"
+        nm = n["names"]
+        return f"{(nm['ru'] or [n['concept']])[0]}/{(nm['en'] or [n['concept']])[0]}"
+
+    return "\n".join(
+        f"{'✓' if e['satisfied'] else '✗'} [{label(e['src'])}] --{e['rel']}--> [{label(e['dst'])}]  ({e['reason']})"
+        for e in g["edges"]
+    )
+
+
 def render_map(m: dict[str, Any]) -> str:
     """One-line bilingual rendering of a relation map."""
     def label(node: dict[str, Any] | None) -> str:

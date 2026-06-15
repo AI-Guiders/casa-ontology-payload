@@ -28,6 +28,8 @@ Commands (type ? for this help):
        e.g.  g студент читать книга -> ok; g стол читать книга -> refused (not an agent)
   map <rel> <x> <y>         build the meaning map (nodes+typed edge); same for RU/EN
        e.g.  map on яблоко стол   ==   map on apple table
+  graph <rel x y> ; <rel x y> ...   multi-edge meaning graph (semicolon-separated)
+       e.g.  graph on яблоко стол ; near стол окно
   words                     list the words the field knows
   ?                         help        quit / exit / q!    leave
 """
@@ -196,6 +198,14 @@ def handle(state: dict, line: str) -> str | None:
             f"  {args[1]}: типы={s.get('types')} аффордансы={s.get('affords')}\n"
             f"  ребро: {m['edge']}"
         )
+    if cmd == "graph" and args:
+        from casa.curriculum.concept_net import meaning_graph, render_graph
+
+        triples = [tuple(seg.split()) for seg in " ".join(args).split(";") if len(seg.split()) == 3]
+        if not triples:
+            return "нужно: graph <rel x y> ; <rel x y> ...  напр. graph on яблоко стол ; near стол окно"
+        g = meaning_graph(state, LAT, triples)
+        return render_graph(g) + f"\n  граф валиден: {g['valid']}  узлов: {len(g['nodes'])}"
     if cmd == "words":
         from casa.curriculum.translate import _name_edges
 

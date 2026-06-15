@@ -14,6 +14,7 @@ from casa.curriculum.concept_net import (
     gate_concept_net,
     has_part,
     isa_closure,
+    meaning_graph,
     parts_of,
     relation_map,
     teach_concept_net,
@@ -103,6 +104,21 @@ def test_relation_map_is_language_independent() -> None:
     # an invalid combination still maps, marked unsatisfied with a reason
     bad = relation_map(state, LAT, "on", "идея", "стол")
     assert bad["valid"] is False and bad["edge"]["satisfied"] is False
+
+
+def test_meaning_graph_multi_edge_and_language_independent() -> None:
+    state, _ = _ready()
+    # «яблоко на столе у окна» = on(apple, table) + near(table, window)
+    ru = meaning_graph(state, LAT, [("on", "яблоко", "стол"), ("near", "стол", "окно")])
+    en = meaning_graph(state, LAT, [("on", "apple", "table"), ("near", "table", "window")])
+    assert ru == en                                   # same graph regardless of language
+    assert ru["valid"] is True
+    assert set(ru["nodes"]) == {"lex.apple", "lex.table", "lex.window"}  # shared node deduped
+    assert len(ru["edges"]) == 2
+    # one nonsense edge flags the whole graph, with the offending edge marked
+    bad = meaning_graph(state, LAT, [("on", "книга", "стол"), ("eat", "стол", "яблоко")])
+    assert bad["valid"] is False
+    assert [e["satisfied"] for e in bad["edges"]] == [True, False]
 
 
 def test_base_concept_net_gate() -> None:
