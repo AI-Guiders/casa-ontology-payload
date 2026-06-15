@@ -85,7 +85,7 @@ def _apply_transform(stem: str, cut: int, add: str, double: bool = False) -> str
     return s + add
 
 
-_VOWELS = set("aeiou")  # the one given primitive — lets conditions be phonological
+_VOWELS = set("aeiou") | set("аеёиоуыэюя")  # the one given primitive (Latin + Cyrillic)
 
 
 def _matches(stem: str, pattern: str) -> bool:
