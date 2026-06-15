@@ -14,8 +14,8 @@ from casa.prisms.control.fpn_state import WorkingMemory, read_session_meta, writ
 from casa.prisms.control.sn_cen_runtime import TaskEmit
 
 AFFECT_PREAMBLE = "осторожно говорю, что чувствую в диалоге"
-HOW_ARE_YOU_CLAUSE_1 = "спасибо что спросил"
-HOW_ARE_YOU_CLAUSE_2 = "настроение описываю по ходу разговора"
+HOW_ARE_YOU_CLAUSE_1 = "настроение опишу по ходу разговора"
+HOW_ARE_YOU_CLAUSE_2 = "если что-то меняется"
 
 
 def _task() -> TaskEmit:

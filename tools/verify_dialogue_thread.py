@@ -51,7 +51,7 @@ TURNS = [
         "А что ты думаешь про это?",
         {
             "speech_act": "ask_thought",
-            "expect_bind_hub_prefix": ("ru.dialog.self", "ru.dialog.honest", "dialog.context"),
+            "expect_bind_hub_prefix": ("ru.dialog.ask_thought", "ru.dialog.self", "ru.dialog.honest", "dialog.context"),
             "forbid_phrase_substrings": (PREAMBLE,),
             "min_words": 4,
             "differs_from_prior": True,

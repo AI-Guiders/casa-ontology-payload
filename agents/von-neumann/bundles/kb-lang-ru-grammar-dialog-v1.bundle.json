@@ -27,11 +27,9 @@
       "section": "dialogue",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
       "slots": {
-        "clause_1": "спасибо что спросил",
-        "clause_2": "настроение описываю по ходу разговора, не угадывая",
-        "clause_3": "готов продолжить разговор",
-        "linker_2": "но",
-        "linker_3": "и"
+        "clause_1": "настроение опишу по ходу разговора, не угадываю наперёд",
+        "clause_2": "если что-то меняется — скажу",
+        "linker_2": "и"
       }
     },
     {
@@ -104,6 +102,17 @@
       }
     },
     {
+      "concept_id": "ru.dialog.ask_thought",
+      "text": "Мнение или stance на референт — из того, что есть на поле, не наугад.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "clause_1": "своё мнение скажу по тому, что есть на поле, а не наугад",
+        "clause_2": "если опоры мало — так и скажу, выдумывать не буду",
+        "linker_2": "и"
+      }
+    },
+    {
       "concept_id": "ru.dialog.explain",
       "text": "Объяснение понятия: слово на поле + норма если есть.",
       "section": "dialogue",
@@ -122,9 +131,7 @@
       "slots": {
         "stimulus": "спасибо",
         "response": "пожалуйста",
-        "word": "спасибо",
-        "clause_2": "обращайся, если понадобится ещё",
-        "linker_2": "и"
+        "word": "спасибо"
       }
     },
     {

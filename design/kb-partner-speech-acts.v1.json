@@ -73,9 +73,9 @@
       "slots": {
         "speech_act": "ask_thought",
         "cue_substrings": "что думаешь|что ты думаешь|как считаешь|как ты считаешь|твоё мнение|твое мнение|а что ты",
-        "route_hints": "ru.dialog.self|ru.dialog.honest.",
+        "route_hints": "ru.dialog.ask_thought|ru.dialog.self|ru.dialog.honest.",
         "suppress_hints": "ru.dialog.greeting|ru.dialog.capabilities",
-        "bind_boost": "subject.dialog.self_recent:22|dialog.context.focus_recent:16|ru.dialog.self:34|ru.dialog.honest.:14",
+        "bind_boost": "ru.dialog.ask_thought:46|subject.dialog.self_recent:22|dialog.context.focus_recent:16|ru.dialog.self:20|ru.dialog.honest.:14",
         "bind_demote": "ru.dialog.greeting:24|ru.dialog.capabilities:20|ru.dialog.affect:52|ru.dialog.how_are_you:36",
         "compose_single_hub": "true"
       }

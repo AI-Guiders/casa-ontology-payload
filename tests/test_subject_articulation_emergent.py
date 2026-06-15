@@ -71,7 +71,7 @@ def test_thanks_builds_connected_discourse() -> None:
             "slots": {
                 "stimulus": "спасибо",
                 "response": "пожалуйста",
-                "clause_2": "обращайся если понадобится ещё",
+                "clause_2": "рад помочь",
                 "linker_2": "и",
             },
         },
@@ -80,8 +80,8 @@ def test_thanks_builds_connected_discourse() -> None:
     reply = compose_subject_utterance(q, _ctx(q, blocks))
     low = reply.lower()
     assert "пожалуйста" in low
-    assert "обращайся" in low
-    assert " и обращайся" in low
+    assert "рад помочь" in low
+    assert "обращайся" not in low
 
 
 def test_grammar_builds_multi_sentence_discourse() -> None:
