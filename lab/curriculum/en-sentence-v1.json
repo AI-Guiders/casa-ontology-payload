@@ -1,0 +1,21 @@
+{
+  "name": "en-sentence-v1",
+  "description": "Sentence-level English generation from RU meaning triples. Stacks the glossary (RU->EN words), subject-verb agreement (the 3sg rule), and a constituent-order rule INDUCED from example sentences and stored on the field. Given role-tagged (subject, verb, object) triples it produces an ordered, agreeing English clause with a fixed determiner. Honest ceiling: generation from given roles, not parsing free Russian into roles; article selection is simplified to 'the'.",
+  "lattice_id": "schema-math",
+  "glossary": [
+    ["кот", "cat"], ["собака", "dog"], ["мальчик", "boy"], ["девочка", "girl"], ["человек", "man"],
+    ["пить", "drink"], ["есть", "eat"], ["видеть", "see"], ["любить", "love"], ["нести", "carry"], ["знать", "know"],
+    ["вода", "water"], ["молоко", "milk"], ["рыба", "fish"], ["книга", "book"], ["дом", "house"]
+  ],
+  "order_examples": [
+    [{"subj": "cat", "verb": "eat", "obj": "fish"}, ["cat", "eat", "fish"]],
+    [{"subj": "dog", "verb": "see", "obj": "book"}, ["dog", "see", "book"]]
+  ],
+  "held_out": [
+    [{"subj": "кот", "verb": "пить", "obj": "вода"}, "The cat drinks the water."],
+    [{"subj": "собака", "verb": "видеть", "obj": "рыба"}, "The dog sees the fish."],
+    [{"subj": "мальчик", "verb": "любить", "obj": "книга"}, "The boy loves the book."],
+    [{"subj": "девочка", "verb": "нести", "obj": "молоко"}, "The girl carries the milk."],
+    [{"subj": "человек", "verb": "знать", "obj": "дом"}, "The man knows the house."]
+  ]
+}
