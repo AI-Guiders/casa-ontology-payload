@@ -30,6 +30,7 @@ from casa.curriculum.situation_memory import (
     seen,
 )
 from casa.curriculum.analogy import analogous, find_analogy, recall_analogous
+from casa.curriculum.roundtrip import realize_graph, round_trip, translate_through_meaning
 from casa.curriculum.situation_store import forget_situation, load_memory, persist_situation
 from casa.curriculum.situation import (
     contains,
@@ -138,6 +139,9 @@ __all__ = [
     "find_analogy",
     "analogous",
     "recall_analogous",
+    "round_trip",
+    "realize_graph",
+    "translate_through_meaning",
     "validate",
     "gate_concept_net",
     "meaningful",

@@ -32,6 +32,8 @@ Commands (type ? for this help):
        e.g.  graph on яблоко стол ; near стол окно
   fp <pred x y> ; <pred x y> ...    situation fingerprint (synonyms/order/language -> one id)
        e.g.  fp лежит яблоко стол  ==  fp на яблоко стол  ==  fp on apple table
+  rt <text>                 translate THROUGH MEANING: text -> graph -> text (RU & EN)
+       e.g.  rt яблоко лежит на столе  ->  RU «Яблоко на столе.»  EN "The apple is on the table."
   parse <text>              parse a controlled clause -> graph + fingerprint
        e.g.  parse яблоко лежит на столе   ==   parse на столе яблоко   ==   parse apple on the table
   remember <text>           store a situation in memory
@@ -227,6 +229,13 @@ def handle(state: dict, line: str) -> str | None:
             return "нужно: fp <pred x y> ; <pred x y> ...  напр. fp лежит яблоко стол ; у стол окно"
         f = situation_fingerprint(state, LAT, raw)
         return f"отпечаток ситуации: id={f['id']}\n  карта: {f['key']}"
+    if cmd == "rt" and args:
+        from casa.curriculum.roundtrip import translate_through_meaning
+
+        out = translate_through_meaning(state, LAT, " ".join(args))
+        if not (out["ru"] or out["en"]):
+            return "(не разобрал — нет известных понятий/отношений)"
+        return f"через смысл →\n  RU: {out['ru'] or '(?)'}\n  EN: {out['en'] or '(?)'}"
     if cmd == "parse" and args:
         from casa.curriculum.parse import parse_graph, parse_triples
         from casa.curriculum.concept_net import render_graph
