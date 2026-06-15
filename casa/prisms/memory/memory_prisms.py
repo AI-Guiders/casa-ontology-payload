@@ -843,7 +843,22 @@ def run_sleep(
 
     from casa.prisms.memory.write_gate import memory_write_allowed as _mw_allowed
 
-    if _mw_allowed(state, "schema-math", context="sleep_merge"):
+    # Emergent extraction earns new structure into schema-math (immutable). Run it under
+    # the sanctioned promote_canon context when the batch carries episodes the agent has
+    # SANCTIONED to earn structure (structure_tag self_promote/canon_promote, teacher
+    # links) — the same allow_links semantics the per-episode strengthen uses above.
+    # form_extract_allowed alone does NOT sanction the write (it marks eligibility; the
+    # immutable gate still blocks it — test_f0_pattern_extract). The gate-authorized
+    # promote ceremony is what turns a verified form_extract candidate into self_promote.
+    sanctioned_extract = any(
+        e.get("allow_teacher_links")
+        or str(e.get("structure_tag") or "") in ("self_promote", "canon_promote")
+        or str(e.get("correction_kind") or "") == "self_promote"
+        for e in episodes
+    )
+    extract_ctx = "promote_canon" if sanctioned_extract else "sleep_merge"
+
+    if _mw_allowed(state, "schema-math", context=extract_ctx):
         emergent_count = extract_emergent_count_patterns(
             lattices,
             episodes,
@@ -870,7 +885,7 @@ def run_sleep(
 
     from casa.prisms.memory.f0_names_extract import extract_emergent_names_from_episodes
 
-    if _mw_allowed(state, "schema-math", context="sleep_merge"):
+    if _mw_allowed(state, "schema-math", context=extract_ctx):
         emergent_names = extract_emergent_names_from_episodes(
             lattices,
             episodes,
@@ -895,7 +910,7 @@ def run_sleep(
 
     from casa.prisms.memory.f0_equiv_extract import extract_emergent_mul_equiv_from_episodes
 
-    if _mw_allowed(state, "schema-math", context="sleep_merge"):
+    if _mw_allowed(state, "schema-math", context=extract_ctx):
         emergent_equiv = extract_emergent_mul_equiv_from_episodes(
             lattices,
             episodes,

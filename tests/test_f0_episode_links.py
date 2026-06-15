@@ -27,7 +27,7 @@ def test_sleep_mints_emergent_count_pattern() -> None:
             lattice_id="schema-math",
             concept_id=cid,
             scene="count_row:lab",
-            form_extract_allowed=True,
+            structure_tag="self_promote",  # sanctioned earned-write (gate-authorized in production)
         )
     sleep = run_sleep(state, bundle)
     dec = decode_f0_lattice(memory_lattices(state)["schema-math"])
