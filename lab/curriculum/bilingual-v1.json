@@ -1,0 +1,21 @@
+{
+  "name": "bilingual-v1",
+  "description": "Bilingual clause generation: one meaning triple rendered in BOTH English and Russian. The glossary maps the lemmas across languages; each grammar (EN do-support/agreement/articles, RU conjugation/case/no-articles) inflects and orders independently. Translates a GIVEN role triple (either source language), not free text — parsing into roles is the ceiling. Coverage bounded by the glossary + morphology rules.",
+  "lattice_id": "schema-math",
+  "glossary": [
+    ["девочка", "girl"], ["мальчик", "boy"], ["кот", "cat"], ["человек", "man"], ["студент", "student"],
+    ["читать", "read"], ["любить", "love"], ["ловить", "catch"], ["строить", "build"], ["знать", "know"],
+    ["книга", "book"], ["собака", "dog"], ["рыба", "fish"], ["дом", "house"], ["работа", "work"]
+  ],
+  "ru_order_examples": [
+    [{"subj": "кот", "verb": "читает", "obj": "книгу"}, ["кот", "читает", "книгу"]],
+    [{"subj": "мальчик", "verb": "строит", "obj": "дом"}, ["мальчик", "строит", "дом"]]
+  ],
+  "cases": [
+    [{"subj": "девочка", "verb": "читать", "obj": "книга", "source": "ru"}, "Девочка читает книгу.", "The girl reads the book."],
+    [{"subj": "кот", "verb": "ловить", "obj": "рыба", "source": "ru"}, "Кот ловит рыбу.", "The cat catches the fish."],
+    [{"subj": "студент", "verb": "знать", "obj": "работа", "source": "ru"}, "Студент знает работу.", "The student knows the work."],
+    [{"subj": "boy", "verb": "love", "obj": "dog", "source": "en"}, "Мальчик любит собаку.", "The boy loves the dog."],
+    [{"subj": "man", "verb": "build", "obj": "house", "source": "en"}, "Человек строит дом.", "The man builds the house."]
+  ]
+}

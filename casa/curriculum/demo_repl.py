@@ -20,6 +20,8 @@ Commands (type ? for this help):
              s кот пить вода num=два adj=большой -> Two big cats drink the water.
   sru <subj> <verb> <obj>   build a RUSSIAN clause (conjugation + accusative)
        e.g.  sru девочка читать книга -> Девочка читает книгу.
+  b <subj> <verb> <obj>     one meaning -> BOTH languages (source auto-detected)
+       e.g.  b девочка читать книга -> RU «Девочка читает книгу.» EN "The girl reads the book."
   words                     list the words the field knows
   ?                         help        quit / exit / q!    leave
 """
@@ -34,6 +36,7 @@ from casa.prisms.memory.f0_math_ingest import ingest_math_bundle
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.curriculum import (
     apply_conditioned_rule,
+    bilingual_clause,
     compose_full_clause,
     compose_ru_clause,
     teach_clause_constructions,
@@ -63,7 +66,7 @@ def _load_glossary() -> list[tuple[str, str]]:
     pairs: dict[str, str] = {}
     # curated lists first (verbs/adjectives win on setdefault), then the open
     # dictionary sample (~3000 nouns) so `t` covers far more words
-    for name in ("en-np-clause-v1", "en-clause-v1", "en-sentence-v1", "en-vocab-v1", "en-glossary-v1", "en-glossary-ru-open"):
+    for name in ("en-np-clause-v1", "en-clause-v1", "en-sentence-v1", "en-vocab-v1", "bilingual-v1", "en-glossary-v1", "en-glossary-ru-open"):
         p = REPO_ROOT / f"lab/curriculum/{name}.json"
         if not p.exists():
             continue
@@ -154,6 +157,10 @@ def handle(state: dict, line: str) -> str | None:
         return _say(state, args)
     if cmd == "sru" and len(args) >= 3:
         return compose_ru_clause(state, LAT, subj=args[0], verb=args[1], obj=args[2]) or "(нет правила/формы)"
+    if cmd == "b" and len(args) >= 3:
+        src = "en" if script_of(args[0]) == "latn" else "ru"
+        out = bilingual_clause(state, LAT, subj=args[0], verb=args[1], obj=args[2], source=src)
+        return f"RU: {out['ru'] or '(?)'}\nEN: {out['en'] or '(?)'}"
     if cmd == "words":
         from casa.curriculum.translate import _name_edges
 

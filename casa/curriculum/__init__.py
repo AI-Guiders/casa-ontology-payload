@@ -1,5 +1,6 @@
 """Auto-curriculum: structured teaching, verification, translation, orchestration."""
 
+from casa.curriculum.bilingual import bilingual_clause, gate_bilingual, translate_clause
 from casa.curriculum.clause import (
     compose_clause,
     compose_full_clause,
@@ -58,6 +59,9 @@ __all__ = [
     "gate_sentence_order",
     "compose_ru_clause",
     "gate_ru_clause",
+    "bilingual_clause",
+    "translate_clause",
+    "gate_bilingual",
     "teach_clause_constructions",
     "compose_clause",
     "gate_clause_constructions",
