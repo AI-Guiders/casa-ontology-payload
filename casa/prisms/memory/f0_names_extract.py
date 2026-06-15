@@ -33,7 +33,12 @@ def _lang_word_id(bundle: dict | None, surface: str) -> str | None:
     for cand in (f"lang.word.{w}", f"lang.word.{surface.strip()}"):
         if cand in known:
             return cand
-    return None
+    # Derive a lang.word concept for a taught scene word that is not in the curated
+    # set. parse_bilingual_numeral_scene yields only the PRIMARY ru/en word, which is
+    # an explicit teacher signal — so naming it generalizes bilingual vocabulary
+    # beyond the hand-authored words (the linear-authoring ceiling the curriculum
+    # exists to break) without admitting noise from scene decompositions.
+    return f"lang.word.{w}"
 
 
 def parse_bilingual_numeral_scene(scene: str) -> tuple[str | None, str | None]:
