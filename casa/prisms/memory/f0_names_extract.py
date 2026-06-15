@@ -93,9 +93,13 @@ def extract_emergent_names_from_episodes(
         if ep.get("kind") not in (None, "surface"):
             continue
         cid = str(ep.get("concept_id") or "")
-        if not cid.startswith("math.num."):
+        if not cid:
             continue
         ru_w, en_w = parse_bilingual_numeral_scene(str(ep.get("scene") or ""))
+        # a bilingual "ru: X | en: Y" scene is the gate — names mint for ANY taught
+        # concept that carries one, not only numerals (general vocabulary)
+        if not (ru_w or en_w):
+            continue
         for surface in (en_w, ru_w):
             if not surface:
                 continue
