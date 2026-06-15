@@ -52,7 +52,7 @@ def test_sync_agent_canon_creates_lattice_on_field():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
-def test_tick_promote_with_mastery_streak():
+def test_tick_does_not_promote_without_held_out_gate():
     tmp = Path(tempfile.mkdtemp(prefix="casa-canon-tick-"))
     try:
         state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
@@ -69,18 +69,20 @@ def test_tick_promote_with_mastery_streak():
             },
         )
         jid = str(src.get("journal_id"))
+        # a self-granted mastery streak no longer authorizes promotion (bypass closed):
+        # with too few held-out probes the tick must NOT promote (no ungated canon)
         record_gate_attempt(state, f"canon:{jid}", passed=True, tick=1, store_dir=tmp)
         record_gate_attempt(state, f"canon:{jid}", passed=True, tick=2, store_dir=tmp)
 
         rep = maybe_promote_canon_on_tick(tmp, state)
-        assert rep and rep.get("count") == 1
+        assert not (rep or {}).get("count")
         reg = load_canon_registry(tmp)
-        assert any("math.logic.de_morgan" in (e.get("concept_ids") or []) for e in reg.get("entries") or [])
+        assert not any("math.logic.de_morgan" in (e.get("concept_ids") or []) for e in reg.get("entries") or [])
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
 
-def test_canon_ready_tag_skips_predict():
+def test_canon_ready_tag_no_longer_bypasses_gate():
     tmp = Path(tempfile.mkdtemp(prefix="casa-canon-tag-"))
     try:
         state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
@@ -102,7 +104,10 @@ def test_canon_ready_tag_skips_predict():
             "test_cues": ["peano"],
             "suggested_lattices": ["math-axiom"],
         }
+        # the canon-ready tag no longer fast-tracks; the held-out gate is required and
+        # a single self-chosen cue is not enough probes to verify
         verify = verify_canon_candidate(state, tmp, cand, tick=3)
-        assert verify.get("ready")
+        assert not verify.get("ready")
+        assert verify.get("reason") == "insufficient_probes"
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
