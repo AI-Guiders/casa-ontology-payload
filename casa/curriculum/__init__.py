@@ -26,7 +26,9 @@ from casa.curriculum.glossary import load_pairs, teach_glossary
 from casa.curriculum.loop import default_generator, mine_targets, run_curriculum
 from casa.curriculum.metrics import coverage
 from casa.curriculum.sentence import (
+    compose_ru_clause,
     compose_sentence,
+    gate_ru_clause,
     gate_sentence_order,
     induce_order_from_examples,
     teach_sentence_order,
@@ -54,6 +56,8 @@ __all__ = [
     "teach_sentence_order",
     "compose_sentence",
     "gate_sentence_order",
+    "compose_ru_clause",
+    "gate_ru_clause",
     "teach_clause_constructions",
     "compose_clause",
     "gate_clause_constructions",

@@ -25,6 +25,10 @@ from casa.curriculum.translate import translate_term
 SVO_RULE = "lang.sentence.svo.en"
 AGREE_RULE = "lang.rule.present3sg.en"
 
+RU_SVO_RULE = "lang.sentence.svo.ru"
+RU_CONJ_RULE = "lang.rule.present3sg.ru"
+RU_ACC_RULE = "lang.rule.acc-sg.ru"
+
 
 def induce_order_from_examples(examples: list[tuple[dict[str, str], list[str]]]) -> list[str] | None:
     """Learn constituent order from ``(roles, surface_words)`` examples.
@@ -99,6 +103,85 @@ def compose_sentence(
     if punctuate:
         sentence = sentence[:1].upper() + sentence[1:] + "."
     return sentence
+
+
+def compose_ru_clause(
+    state: dict,
+    lattice_id: str,
+    *,
+    subj: str,
+    verb: str,
+    obj: str,
+    conj_rule: str = RU_CONJ_RULE,
+    acc_rule: str = RU_ACC_RULE,
+    rule_id: str = RU_SVO_RULE,
+    punctuate: bool = True,
+) -> str | None:
+    """Compose a Russian S-V-O clause from a meaning triple (all words already Russian).
+
+    The subject stays nominative (its base form), the verb is conjugated to 3rd person
+    singular by the learned rule, and the object is declined to the accusative — so
+    «девочка читать книга» -> «Девочка читает книгу.» No articles. Returns None if the
+    order rule is absent. Verbs/nouns whose forms the rules don't cover fall back to the
+    lemma (honest: irregular conjugation / soft stems are out of scope)."""
+    v = apply_conditioned_rule(state, lattice_id, conj_rule, verb) or verb
+    o = apply_conditioned_rule(state, lattice_id, acc_rule, obj) or obj
+    fillers = {"subj": subj, "verb": v, "obj": o}
+    order = read_order_rule(state, lattice_id, rule_id)
+    if not order or any(slot not in fillers for slot in order):
+        return None
+    sentence = " ".join(fillers[slot] for slot in order)
+    if punctuate:
+        sentence = sentence[:1].upper() + sentence[1:] + "."
+    return sentence
+
+
+def gate_ru_clause(
+    state: dict,
+    lattice_id: str,
+    examples: list[tuple[dict[str, str], list[str]]],
+    held_out: list[tuple[dict[str, str], str]],
+    *,
+    rule_id: str = RU_SVO_RULE,
+    pass_ratio: float = 0.9,
+) -> dict[str, Any]:
+    """Induce RU S-V-O order from examples, verify held-out triples (conjugation +
+    accusative), with negative control (reversed order) and ablation. The conjugation
+    and accusative rules must be taught into ``state`` already."""
+    from casa.prisms.memory.f0_stack import weaken_graph_edge
+    from casa.prisms.memory.memory_prisms import memory_lattices
+
+    rep = teach_sentence_order(state, lattice_id, examples, rule_id=rule_id)
+    if not rep["stored"]:
+        return {"passed": False, "reason": "no_order_induced", "rule_id": rule_id}
+    order = rep["order"]
+
+    def compose(triple: dict[str, str]) -> str | None:
+        return compose_ru_clause(state, lattice_id, rule_id=rule_id, **triple)
+
+    passes = [compose(t) == expected for t, expected in held_out]
+    held_rate = sum(passes) / len(passes) if passes else 0.0
+
+    for i, slot in enumerate(order):
+        weaken_graph_edge(memory_lattices(state), lattice_id, rule_id, "order", f"lang.slot.{slot}@{i}")
+    ablation_breaks = all(compose(t) is None for t, _ in held_out)
+
+    teach_order_rule(state, lattice_id, rule_id, list(reversed(order)))
+    negative_control_passed = not any(compose(t) == expected for t, expected in held_out)
+    teach_order_rule(state, lattice_id, rule_id, order)
+
+    passed = bool(
+        len(held_out) >= 3 and held_rate >= pass_ratio and ablation_breaks and negative_control_passed
+    )
+    return {
+        "passed": passed,
+        "rule_id": rule_id,
+        "order": order,
+        "held_out": len(held_out),
+        "held_out_pass_rate": round(held_rate, 3),
+        "negative_control_passed": negative_control_passed,
+        "ablation_breaks_production": ablation_breaks,
+    }
 
 
 def gate_sentence_order(

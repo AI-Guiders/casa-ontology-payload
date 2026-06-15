@@ -18,6 +18,8 @@ Commands (type ? for this help):
              s кот пить вода pl q       -> Do the cats drink the water?
              s кот пить вода past neg   -> The cat did not drink the water.
              s кот пить вода num=два adj=большой -> Two big cats drink the water.
+  sru <subj> <verb> <obj>   build a RUSSIAN clause (conjugation + accusative)
+       e.g.  sru девочка читать книга -> Девочка читает книгу.
   words                     list the words the field knows
   ?                         help        quit / exit / q!    leave
 """
@@ -33,10 +35,12 @@ from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.curriculum import (
     apply_conditioned_rule,
     compose_full_clause,
+    compose_ru_clause,
     teach_clause_constructions,
     teach_conditioned_rule,
     teach_glossary,
     teach_np_order,
+    teach_sentence_order,
     translate_term,
 )
 from casa.curriculum.translate import script_of
@@ -86,6 +90,7 @@ def build_state() -> dict:
         teach_conditioned_rule(state, LAT, rid, [tuple(p) for p in pairs])
     teach_clause_constructions(state, LAT)
     teach_np_order(state, LAT)
+    teach_sentence_order(state, LAT, [({"subj": "кот", "verb": "читает", "obj": "книгу"}, ["кот", "читает", "книгу"])], rule_id="lang.sentence.svo.ru")
     return state
 
 
@@ -147,6 +152,8 @@ def handle(state: dict, line: str) -> str | None:
         return apply_conditioned_rule(state, LAT, "lang.rule.plural-nom-m.ru", w) or "(нет формы)"  # masculine
     if cmd == "s":
         return _say(state, args)
+    if cmd == "sru" and len(args) >= 3:
+        return compose_ru_clause(state, LAT, subj=args[0], verb=args[1], obj=args[2]) or "(нет правила/формы)"
     if cmd == "words":
         from casa.curriculum.translate import _name_edges
 
