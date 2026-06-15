@@ -53,6 +53,7 @@ _HELP = "\n".join(
         "  /quit /exit /q   — выход",
         "  /status          — полный пульс + wm.T",
         "  /remember <текст>— научить/поправить (запись в журнал)",
+        "  /meaning <фраза> — понятийная сеть: фраза → смысл → RU+EN (перевод через смысл)",
         "  /turns [N]       — последние N реплик",
         "  /passage         — многострочный ввод, конец — пустая строка",
         "  /genome          — паспорт генома",
@@ -154,6 +155,8 @@ def run_chat(
     if turns:
         _header(f"В сессии уже {turns} реплик.")
 
+    meaning_state: tuple[dict, str] | None = None  # lazily built conceptual-network state
+
     life_bar: LifeTickBar | None = None
     if not quiet:
         life_bar = mount_life_tick_bar(store, header_lines_before=header_lines, display=display)
@@ -209,6 +212,30 @@ def run_chat(
                     else:
                         _remember(store, arg.strip())
                         print("  · записал в журнал")
+                    continue
+                elif cmd in ("meaning", "смысл"):
+                    # additive: conceptual-network round-trip on a clause. Does NOT touch
+                    # the dialogue path — pure side-tool over a separate meaning state.
+                    if not arg.strip():
+                        print("  · нужна фраза: /meaning яблоко лежит на столе")
+                        continue
+                    if meaning_state is None:
+                        print("  · строю понятийную сеть…", file=sys.stderr, flush=True)
+                        from casa.curriculum.world import build_meaning_state
+
+                        meaning_state = build_meaning_state()
+                    mst, mlat = meaning_state
+                    from casa.curriculum.parse import parse_triples
+                    from casa.curriculum.roundtrip import translate_through_meaning
+
+                    triples = parse_triples(mst, mlat, arg.strip())
+                    if not triples:
+                        print("  · не разобрал (нет известных понятий/отношений)")
+                        continue
+                    tr = translate_through_meaning(mst, mlat, arg.strip())
+                    print(f"  · смысл: {triples}")
+                    print(f"  · RU: {tr['ru']}")
+                    print(f"  · EN: {tr['en']}")
                     continue
                 elif cmd == "genome":
                     from casa.prisms.genetic import format_genome_passport_repl
