@@ -34,7 +34,8 @@ from casa.curriculum import load_pairs, teach_glossary
 teach_glossary(state, load_pairs("lab/curriculum/en-glossary-ru-open.json"), bundle=bundle)
 ```
 
-Note: the names mint is superlinear in lattice size, so the full 32k load takes
-minutes (a one-time, offline operation). Very large vocabularies want a dedicated
-lexicon lattice rather than `schema-math` for cell headroom.
+Note: the names mint is now batched (one grid copy per sleep instead of one per
+edge), so the load is roughly linear — the full 32k loads in tens of seconds rather
+than minutes. Very large vocabularies (100k+) still want a dedicated lexicon lattice
+rather than `schema-math` for cell headroom.
 ```

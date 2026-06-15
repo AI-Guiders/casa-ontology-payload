@@ -107,12 +107,9 @@ def extract_emergent_names_from_episodes(
             if not dst:
                 continue
             edge = f"{cid}|names|{dst}"
-            if edge in existing:
-                continue
-            link = {"src": cid, "relation": "names", "dst": dst}
-            if link in pending_links:
-                continue
-            pending_links.append(link)
+            if edge in existing:  # the edge-string set already dedupes (O(1)); the
+                continue          # former `link in pending_links` list scan was O(n^2)
+            pending_links.append({"src": cid, "relation": "names", "dst": dst})
             existing.add(edge)
             if ep.get("id"):
                 provenance_eps.append(str(ep["id"]))
