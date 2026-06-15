@@ -85,14 +85,16 @@ def _apply_transform(stem: str, cut: int, add: str, double: bool = False) -> str
     return s + add
 
 
-_VOWELS = set("aeiou") | set("аеёиоуыэюя")  # the one given primitive (Latin + Cyrillic)
+_VOWELS = set("aeiou") | set("аеёиоуыэюя")  # given primitive: vowels (Latin + Cyrillic)
+_VELAR = set("кгхжшчщ")  # given primitive: the Russian velar/hushing class (ы/и spelling)
 
 
 def _matches(stem: str, pattern: str) -> bool:
-    """Match a stem's tail against a pattern of literals + ``C``/``V`` classes.
+    """Match a stem's tail against a pattern of literals + ``C``/``V``/``K`` classes.
 
-    ``''`` matches anything (the default clause); ``Cy`` matches a consonant followed
-    by ``y`` (``baby``, ``puppy``) but not a vowel+y (``day``, ``boy``).
+    ``''`` matches anything (the default clause); ``Cy`` is a consonant+y (``baby``,
+    not ``day``); ``Kа`` is a velar/hushing consonant + а (``книга``, ``нога``, not
+    ``рыба``) — the seam Russian feminine declension turns on.
     """
     s = stem.lower()
     if len(s) < len(pattern):
@@ -105,6 +107,9 @@ def _matches(stem: str, pattern: str) -> bool:
         elif tok == "V":
             if ch not in _VOWELS:
                 return False
+        elif tok == "K":
+            if ch not in _VELAR:
+                return False
         elif ch != tok:
             return False
     return True
@@ -115,14 +120,22 @@ def _candidate_patterns(stem: str) -> list[str]:
     learner prefers the broadest condition that still separates the class."""
     from itertools import product
 
+    def char_opts(ch: str) -> list[str]:
+        if ch in _VOWELS:
+            return ["V", ch]
+        if ch in _VELAR:
+            return ["C", "K", ch]  # general consonant, velar/hushing subclass, literal
+        return ["C", ch]
+
+    def specificity(p: str) -> int:  # class < velar-class < literal
+        return sum({"C": 0, "V": 0, "K": 1}.get(c, 2) for c in p)
+
     s = stem.lower()
     pats: set[str] = set()
     for length in range(1, min(len(s), 4) + 1):
-        tail = s[-length:]
-        opts = [[("V" if ch in _VOWELS else "C"), ch] for ch in tail]  # class before literal
-        for combo in product(*opts):
+        for combo in product(*[char_opts(ch) for ch in s[-length:]]):
             pats.add("".join(combo))
-    return sorted(pats, key=lambda p: (len(p), sum(c not in "CV" for c in p), p))
+    return sorted(pats, key=lambda p: (len(p), specificity(p), p))
 
 
 def _induce_condition(group: list[str], others: list[str]) -> list[str] | None:

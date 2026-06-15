@@ -39,8 +39,9 @@ def _pairs(rule_id: str) -> list[tuple[str, str]]:
 def test_masc_plural_induces_velar_class() -> None:
     clauses = induce_conditioned_rule(_pairs("lang.rule.plural-nom-m.ru"))
     assert clauses is not None
-    velar = {c[0] for c in clauses if c[1:] == (0, "и", False)}
-    assert velar == set("кгхжшчщ"), velar          # the ы/и spelling class, discovered
+    # the ы/и spelling rule is induced as the single velar/hushing class K (one clause),
+    # not seven memorised consonant literals — so it generalises to any such stem
+    assert ("K", 0, "и", False) in clauses
     assert clauses[-1] == ("", 0, "ы", False)       # -ы is the masculine default
 
 
@@ -67,3 +68,19 @@ def test_neuter_plural_gate_and_generalisation() -> None:
     a = lambda w: apply_conditioned_rule(state, LAT, "lang.rule.plural-nom-n.ru", w)
     assert a("вино") == "вина" and a("дерево") == "дерева"   # -о -> -а
     assert a("море") == "моря" and a("поле") == "поля"       # -е -> -я
+
+
+def test_feminine_plural_velar_class_generalises() -> None:
+    # the feminine ы/и rule turns on the consonant BEFORE -а — learnable only with the
+    # velar/hushing primitive (книга->книги but рыба->рыбы), and it then generalises to
+    # never-taught stems including hushing consonants (задача->задачи, свеча->свечи)
+    state = _state()
+    pairs = _pairs("lang.rule.plural-nom-f.ru")
+    clauses = induce_conditioned_rule(pairs)
+    assert any(cut == 1 and add == "и" and "K" in cond for cond, cut, add, _ in clauses)
+    rep = gate_conditioned_rule(state, LAT, "lang.rule.plural-nom-f.ru", pairs)
+    assert rep["passed"] is True and rep["held_out_pass_rate"] >= 0.9
+    teach_conditioned_rule(state, LAT, "lang.rule.plural-nom-f.ru", pairs)
+    a = lambda w: apply_conditioned_rule(state, LAT, "lang.rule.plural-nom-f.ru", w)
+    assert a("эпоха") == "эпохи" and a("задача") == "задачи" and a("свеча") == "свечи"  # velar/hushing -> -и
+    assert a("ягода") == "ягоды" and a("берёза") == "берёзы"  # else -> -ы
