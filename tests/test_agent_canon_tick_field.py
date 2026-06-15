@@ -41,6 +41,7 @@ def test_sync_agent_canon_creates_lattice_on_field():
                 "reason": "smoke",
             },
             persist=False,
+            operator_sign=True,
         )
         rep = sync_agent_canon_to_field(state, tmp)
         assert rep.get("synced")

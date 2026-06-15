@@ -43,6 +43,7 @@ def test_agent_promote_and_demote_logic_law():
                 "source_journal_id": src.get("journal_id"),
                 "reason": "held-out 3/3 на truth-table",
             },
+            operator_sign=True,
         )
         assert rep.get("promoted")
         listing = list_agent_canon_lattices(tmp)
@@ -129,7 +130,7 @@ def test_promote_rejects_failing_gate_report():
     try:
         state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
         report = {"passed": False, "candidate_id": "x"}
-        with pytest.raises(ValueError, match="not passing"):
+        with pytest.raises(ValueError, match="requires a passing"):
             agent_promote_canon_lattice(
                 tmp,
                 state,

@@ -124,6 +124,7 @@ class MemoryWriteGateTests(unittest.TestCase):
                 },
                 persist=False,
                 allow_unconfirmed=True,
+                operator_sign=True,
             )
             self.assertTrue(rep.get("promoted"))
             self.assertEqual(rep.get("earned_theory", {}).get("theory_id"), "math-axiom")

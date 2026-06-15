@@ -134,19 +134,23 @@ def _authorize_promote(
     lattice_id: str,
     concept_ids: list[str],
     gate_report: Any,
+    operator_sign: bool,
 ) -> dict[str, Any]:
     """Authorize a canon promotion (ADR-0069 earned postulate).
 
-    A passing held-out GateReport bound to these concept ids is the real authority.
-    When absent, fall back to the legacy confirmed-source path (flagged ungated)
-    until every caller builds a gate report — the next increment makes the gate
-    mandatory and removes the self-grantable status=confirmed / canon-ready bypass.
+    A passing held-out GateReport bound to these concept ids is the authority; an
+    explicit operator_sign is the only other path. The self-grantable
+    status=confirmed / canon-ready bypass is CLOSED — promotion is impossible
+    without a passing gate report or an operator signature.
     """
+    if operator_sign:
+        return {"authority": "operator", "gated": False}
     report = gate_report.as_dict() if hasattr(gate_report, "as_dict") else gate_report
-    if not isinstance(report, dict):
-        return {"authority": "legacy_confirmed_source", "gated": False}
-    if not report.get("passed"):
-        raise ValueError("promote_canon: gate_report present but not passing")
+    if not isinstance(report, dict) or not report.get("passed"):
+        raise ValueError(
+            "promote_canon requires a passing held-out GateReport (or operator_sign=True); "
+            "self-set status=confirmed / canon-ready no longer authorize promotion"
+        )
     from casa.eval.held_out_gate import promote_candidate_id
 
     expected = promote_candidate_id(lattice_id, concept_ids)
@@ -173,6 +177,7 @@ def agent_promote_canon_lattice(
     persist: bool = True,
     allow_unconfirmed: bool = False,
     gate_report: Any = None,
+    operator_sign: bool = False,
 ) -> dict[str, Any]:
     """Freeze concept ids on agent_canon lattice — agent decision, not teacher approve."""
     lattice_id = canonical_lattice_id(str(request.get("lattice_id") or ""))
@@ -188,7 +193,7 @@ def agent_promote_canon_lattice(
         concept_ids = [str(c) for c in (source.get("concepts") or []) if c]
         assert_concepts_for_lattice(lattice_id, concept_ids)
 
-    gate_prov = _authorize_promote(lattice_id, concept_ids, gate_report)
+    gate_prov = _authorize_promote(lattice_id, concept_ids, gate_report, operator_sign)
 
     reason = str(request.get("reason") or "").strip()
     reg = load_canon_registry(store_dir)

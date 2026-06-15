@@ -47,6 +47,7 @@ def test_promote_enqueues_canon_nca():
                 "reason": "smoke",
             },
             allow_unconfirmed=True,
+            operator_sign=True,
         )
         assert rep.get("nca_train", {}).get("enqueued")
         reg = load_registry(tmp)
