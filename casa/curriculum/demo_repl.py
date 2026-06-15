@@ -24,6 +24,8 @@ Commands (type ? for this help):
        e.g.  b девочка читать книга -> RU «Девочка читает книгу.» EN "The girl reads the book."
   val <rel> <x> <y>         validate a relation in the conceptual network (cross-lingual)
        rel in on/in/eat/drink/wear/ride/read/use; e.g.  val on яблоко стол -> valid
+  g <subj> <verb> <obj>     grounded: validate the meaning, THEN render (or refuse)
+       e.g.  g студент читать книга -> ok; g стол читать книга -> refused (not an agent)
   words                     list the words the field knows
   ?                         help        quit / exit / q!    leave
 """
@@ -174,6 +176,14 @@ def handle(state: dict, line: str) -> str | None:
         v = validate(state, LAT, args[0], args[1], args[2])
         mark = "✓ valid" if v["valid"] else "✗ invalid"
         return f"{mark}  [{v.get('reason')}]  ({v.get('x_concept')} {args[0]} {v.get('y_concept')})"
+    if cmd == "g" and len(args) >= 3:
+        from casa.curriculum.grounded import guarded_clause
+
+        src = "en" if script_of(args[0]) == "latn" else "ru"
+        r = guarded_clause(state, LAT, subj=args[0], verb=args[1], obj=args[2], source=src)
+        if not r["valid"]:
+            return f"✗ бессмыслица [{r['reason']}] — не порождаю"
+        return f"✓\nRU: {r['ru'] or '(?)'}\nEN: {r['en'] or '(?)'}"
     if cmd == "words":
         from casa.curriculum.translate import _name_edges
 

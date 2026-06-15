@@ -4,11 +4,16 @@ from casa.curriculum.bilingual import bilingual_clause, gate_bilingual, translat
 from casa.curriculum.concept_net import (
     affordances_of,
     gate_concept_net,
+    has_part,
+    parts_of,
     teach_affords,
+    teach_concept_net,
     teach_isa,
+    teach_parts,
     teach_relation,
     validate,
 )
+from casa.curriculum.grounded import gate_grounded, guarded_clause, meaningful
 from casa.curriculum.clause import (
     compose_clause,
     compose_full_clause,
@@ -73,9 +78,16 @@ __all__ = [
     "teach_isa",
     "teach_affords",
     "teach_relation",
+    "teach_parts",
+    "teach_concept_net",
     "affordances_of",
+    "parts_of",
+    "has_part",
     "validate",
     "gate_concept_net",
+    "meaningful",
+    "guarded_clause",
+    "gate_grounded",
     "teach_clause_constructions",
     "compose_clause",
     "gate_clause_constructions",
