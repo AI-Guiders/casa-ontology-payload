@@ -138,6 +138,13 @@ LITERACY_STAGE_PROBES: dict[str, StageProbeSpec] = dict(
             reinforce_tail=False,
         ),
         _lit(
+            "stage-08c-meta-grammar-question",
+            "probe_question_frame_pilot.py",
+            GateKind.SIDECAR_SPEC,
+            probe_id="question-frame-pilot",
+            reinforce_tail=False,
+        ),
+        _lit(
             "stage-09-grammar-agreement-pilot",
             "probe_meta_grammar_agreement_quiz.py",
             GateKind.SIDECAR_SPEC,
@@ -151,7 +158,21 @@ LITERACY_STAGE_PROBES: dict[str, StageProbeSpec] = dict(
             probe_id="possessive-pilot",
             reinforce_tail=False,
         ),
+        _lit(
+            "stage-09c-grammar-numeral",
+            "probe_numeral_pilot.py",
+            GateKind.SIDECAR_SPEC,
+            probe_id="numeral-pilot",
+            reinforce_tail=False,
+        ),
         ("stage-11-grapheme-latn", generic_stage_probe("lessons/literacy-cards", "stage-11-grapheme-latn")),
+        _lit(
+            "stage-14-morphemics-root-affix",
+            "probe_morphemics_ru.py",
+            GateKind.SIDECAR_SPEC,
+            probe_id="morphemics-root-affix",
+            reinforce_tail=False,
+        ),
     ]
 )
 
