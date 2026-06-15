@@ -57,7 +57,9 @@ EXTRA_WORDS = [
 
 def _load_glossary() -> list[tuple[str, str]]:
     pairs: dict[str, str] = {}
-    for name in ("en-np-clause-v1", "en-clause-v1", "en-sentence-v1", "en-vocab-v1", "en-glossary-v1"):
+    # curated lists first (verbs/adjectives win on setdefault), then the open
+    # dictionary sample (~3000 nouns) so `t` covers far more words
+    for name in ("en-np-clause-v1", "en-clause-v1", "en-sentence-v1", "en-vocab-v1", "en-glossary-v1", "en-glossary-ru-open"):
         p = REPO_ROOT / f"lab/curriculum/{name}.json"
         if not p.exists():
             continue
