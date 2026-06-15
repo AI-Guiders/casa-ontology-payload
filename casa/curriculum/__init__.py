@@ -1,5 +1,14 @@
 """Auto-curriculum: structured teaching, verification, translation, orchestration."""
 
+from casa.curriculum.compose import (
+    apply_order_rule,
+    apply_suffix_rule,
+    compose_en_np,
+    gate_suffix_rule,
+    induce_suffix,
+    teach_order_rule,
+    teach_suffix_rule,
+)
 from casa.curriculum.glossary import load_pairs, teach_glossary
 from casa.curriculum.loop import default_generator, mine_targets, run_curriculum
 from casa.curriculum.metrics import coverage
@@ -11,6 +20,13 @@ __all__ = [
     "teach",
     "teach_glossary",
     "load_pairs",
+    "induce_suffix",
+    "teach_suffix_rule",
+    "apply_suffix_rule",
+    "gate_suffix_rule",
+    "teach_order_rule",
+    "apply_order_rule",
+    "compose_en_np",
     "stage_and_promote",
     "mine_targets",
     "run_curriculum",
