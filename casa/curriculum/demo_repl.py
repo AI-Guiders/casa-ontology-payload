@@ -22,6 +22,8 @@ Commands (type ? for this help):
        e.g.  sru девочка читать книга -> Девочка читает книгу.
   b <subj> <verb> <obj>     one meaning -> BOTH languages (source auto-detected)
        e.g.  b девочка читать книга -> RU «Девочка читает книгу.» EN "The girl reads the book."
+  val <rel> <x> <y>         validate a relation in the conceptual network (cross-lingual)
+       rel in on/in/eat/drink/wear/ride/read/use; e.g.  val on яблоко стол -> valid
   words                     list the words the field knows
   ?                         help        quit / exit / q!    leave
 """
@@ -94,6 +96,11 @@ def build_state() -> dict:
     teach_clause_constructions(state, LAT)
     teach_np_order(state, LAT)
     teach_sentence_order(state, LAT, [({"subj": "кот", "verb": "читает", "obj": "книгу"}, ["кот", "читает", "книгу"])], rule_id="lang.sentence.svo.ru")
+    net = REPO_ROOT / "lab/curriculum/concept-net-base-v1.json"
+    if net.exists():
+        from casa.curriculum.concept_net import teach_concept_net
+
+        teach_concept_net(state, LAT, json.loads(net.read_text(encoding="utf-8")))
     return state
 
 
@@ -161,6 +168,12 @@ def handle(state: dict, line: str) -> str | None:
         src = "en" if script_of(args[0]) == "latn" else "ru"
         out = bilingual_clause(state, LAT, subj=args[0], verb=args[1], obj=args[2], source=src)
         return f"RU: {out['ru'] or '(?)'}\nEN: {out['en'] or '(?)'}"
+    if cmd == "val" and len(args) >= 3:
+        from casa.curriculum.concept_net import validate
+
+        v = validate(state, LAT, args[0], args[1], args[2])
+        mark = "✓ valid" if v["valid"] else "✗ invalid"
+        return f"{mark}  [{v.get('reason')}]  ({v.get('x_concept')} {args[0]} {v.get('y_concept')})"
     if cmd == "words":
         from casa.curriculum.translate import _name_edges
 

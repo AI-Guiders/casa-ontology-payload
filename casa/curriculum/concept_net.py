@@ -70,6 +70,34 @@ def teach_relation(state: dict, lattice_id: str, rel: str, *, arg1: str, arg2: s
     _mint(state, lattice_id, rel, "arg2", arg2)
 
 
+def _concept_id(en: str) -> str:
+    return f"lex.{en.strip().lower().replace(' ', '_')}"
+
+
+def teach_concept_net(state: dict, lattice_id: str, data: dict, *, bundle: dict | None = None) -> dict[str, Any]:
+    """Load a whole ontology bundle: cross-lingual names (glossary), category taxonomy,
+    leaf isa, type affordances, and relation constraints. Returns counts.
+
+    ``data`` shape: ``{categories:[{id,isa,affords}], concepts:{category:[[ru,en],...]},
+    relations:[{rel,arg1,arg2}]}``."""
+    from casa.curriculum.glossary import teach_glossary
+
+    pairs = [(ru, en) for cat in data["concepts"].values() for ru, en in cat]
+    teach_glossary(state, pairs, lattice_id=lattice_id, bundle=bundle)
+
+    isa: list[tuple[str, str]] = []
+    for cat in data["categories"]:
+        isa += [(cat["id"], sup) for sup in cat.get("isa", [])]
+    for category, members in data["concepts"].items():
+        isa += [(_concept_id(en), category) for _ru, en in members]
+    teach_isa(state, lattice_id, isa)
+
+    teach_affords(state, lattice_id, [(c["id"], r) for c in data["categories"] for r in c.get("affords", [])])
+    for r in data.get("relations", []):
+        teach_relation(state, lattice_id, r["rel"], arg1=r["arg1"], arg2=r["arg2"])
+    return {"concepts": len(pairs), "categories": len(data["categories"]), "relations": len(data.get("relations", []))}
+
+
 # --------------------------------------------------------------------------- #
 # read / infer
 # --------------------------------------------------------------------------- #
@@ -112,11 +140,19 @@ def relation_roles(state: dict, lattice_id: str, rel: str) -> tuple[str | None, 
 
 def concept_of(state: dict, lattice_id: str, word: str) -> str | None:
     """Resolve a surface word (any language) to its concept via names edges; pass a
-    concept id (contains '.') through unchanged."""
+    concept id (contains '.') through unchanged.
+
+    When a word names several concepts (synonyms from a large glossary), prefer the one
+    we have a TYPED model of — a concept with an ``isa`` edge — so «мясо» resolves to
+    the ontology's ``lex.meat`` rather than an untyped synonym."""
     if "." in word and " " not in word:
         return word
     hits = concepts_for_term(state, lattice_id, word)
-    return hits[0] if hits else None
+    if not hits:
+        return None
+    edges = _edges(state, lattice_id)
+    typed = [c for c in hits if any(e.startswith(f"{c}|{_ISA}|") for e in edges)]
+    return (typed or hits)[0]
 
 
 def validate(state: dict, lattice_id: str, rel: str, x: str, y: str) -> dict[str, Any]:

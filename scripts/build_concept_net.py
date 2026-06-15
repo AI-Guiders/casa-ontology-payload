@@ -1,0 +1,209 @@
+#!/usr/bin/env python3
+"""Build the base conceptual-network ontology (~280 concepts) as a JSON bundle.
+
+Categories carry the types (isa) and capabilities (affords); leaf concepts inherit them
+by membership, so the per-concept authoring is just (ru, en, category). Cross-lingual
+names come from the glossary (the (ru, en) pairs). Curated domain ontology, not induced.
+
+    python scripts/build_concept_net.py --out lab/curriculum/concept-net-base-v1.json
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+
+CATEGORIES = [
+    {"id": "physical_object", "isa": [], "affords": ["positionable"]},
+    {"id": "place", "isa": [], "affords": ["location"]},
+    {"id": "abstract", "isa": [], "affords": []},
+    {"id": "animate", "isa": ["physical_object"], "affords": ["agent"]},
+    {"id": "food", "isa": ["physical_object"], "affords": ["edible"]},
+    {"id": "liquid", "isa": ["physical_object"], "affords": ["drinkable", "pourable"]},
+    {"id": "container", "isa": ["physical_object"], "affords": ["containment"]},
+    {"id": "support", "isa": ["physical_object"], "affords": ["support_surface"]},
+    {"id": "tool", "isa": ["physical_object"], "affords": ["usable"]},
+    {"id": "clothing", "isa": ["physical_object"], "affords": ["wearable"]},
+    {"id": "vehicle", "isa": ["physical_object"], "affords": ["rideable"]},
+    {"id": "document", "isa": ["physical_object"], "affords": ["readable"]},
+    {"id": "furniture", "isa": ["physical_object", "support"], "affords": []},
+    {"id": "building", "isa": ["physical_object", "place"], "affords": []},
+    {"id": "area", "isa": ["place"], "affords": []},
+    {"id": "body_part", "isa": ["physical_object"], "affords": []},
+    {"id": "plant", "isa": ["physical_object"], "affords": []},
+    {"id": "animal", "isa": ["animate"], "affords": []},
+    {"id": "person", "isa": ["animate"], "affords": []},
+    {"id": "fruit", "isa": ["food"], "affords": []},
+    {"id": "vegetable", "isa": ["food"], "affords": []},
+    {"id": "natural_feature", "isa": ["place", "physical_object"], "affords": []},
+    {"id": "celestial", "isa": ["physical_object"], "affords": []},
+    {"id": "substance", "isa": ["physical_object"], "affords": []},
+]
+
+CONCEPTS: dict[str, list[tuple[str, str]]] = {
+    "person": [
+        ("мужчина", "man"), ("женщина", "woman"), ("ребёнок", "child"), ("мальчик", "boy"),
+        ("девочка", "girl"), ("друг", "friend"), ("учитель", "teacher"), ("врач", "doctor"),
+        ("мать", "mother"), ("отец", "father"), ("сын", "son"), ("дочь", "daughter"),
+        ("король", "king"), ("студент", "student"), ("рабочий", "worker"), ("сосед", "neighbour"),
+        ("художник", "artist"), ("солдат", "soldier"), ("повар", "cook"), ("гость", "guest"),
+    ],
+    "animal": [
+        ("собака", "dog"), ("кошка", "cat"), ("лошадь", "horse"), ("корова", "cow"),
+        ("птица", "bird"), ("рыба", "fish"), ("медведь", "bear"), ("волк", "wolf"),
+        ("лиса", "fox"), ("лев", "lion"), ("мышь", "mouse"), ("овца", "sheep"),
+        ("свинья", "pig"), ("курица", "chicken"), ("утка", "duck"), ("лягушка", "frog"),
+        ("змея", "snake"), ("слон", "elephant"), ("кролик", "rabbit"), ("коза", "goat"),
+        ("тигр", "tiger"), ("обезьяна", "monkey"), ("заяц", "hare"), ("белка", "squirrel"),
+        ("ёж", "hedgehog"), ("пчела", "bee"), ("бабочка", "butterfly"), ("олень", "deer"),
+    ],
+    "fruit": [
+        ("яблоко", "apple"), ("банан", "banana"), ("апельсин", "orange"), ("груша", "pear"),
+        ("виноград", "grape"), ("лимон", "lemon"), ("слива", "plum"), ("персик", "peach"),
+        ("вишня", "cherry"), ("дыня", "melon"), ("арбуз", "watermelon"), ("ягода", "berry"),
+    ],
+    "vegetable": [
+        ("картофель", "potato"), ("помидор", "tomato"), ("морковь", "carrot"), ("лук", "onion"),
+        ("капуста", "cabbage"), ("огурец", "cucumber"), ("горох", "pea"), ("свёкла", "beet"),
+        ("тыква", "pumpkin"), ("перец", "pepper"),
+    ],
+    "food": [
+        ("хлеб", "bread"), ("сыр", "cheese"), ("мясо", "meat"), ("суп", "soup"),
+        ("яйцо", "egg"), ("масло", "butter"), ("сахар", "sugar"), ("соль", "salt"),
+        ("рис", "rice"), ("каша", "porridge"), ("торт", "cake"), ("конфета", "candy"),
+        ("мёд", "honey"), ("колбаса", "sausage"), ("печенье", "cookie"), ("пирог", "pie"),
+    ],
+    "liquid": [
+        ("вода", "water"), ("молоко", "milk"), ("чай", "tea"), ("кофе", "coffee"),
+        ("сок", "juice"), ("вино", "wine"), ("пиво", "beer"), ("квас", "kvass"),
+        ("лимонад", "lemonade"), ("бензин", "petrol"),
+    ],
+    "furniture": [
+        ("стол", "table"), ("стул", "chair"), ("кровать", "bed"), ("диван", "sofa"),
+        ("полка", "shelf"), ("шкаф", "wardrobe"), ("скамейка", "bench"), ("табурет", "stool"),
+        ("кресло", "armchair"), ("парта", "desk"), ("комод", "dresser"), ("тумба", "cabinet"),
+    ],
+    "container": [
+        ("коробка", "box"), ("бутылка", "bottle"), ("чашка", "cup"), ("стакан", "glass"),
+        ("сумка", "bag"), ("корзина", "basket"), ("банка", "jar"), ("ведро", "bucket"),
+        ("кастрюля", "pot"), ("мешок", "sack"), ("бочка", "barrel"), ("чемодан", "suitcase"),
+        ("ящик", "crate"), ("бак", "tank"),
+    ],
+    "building": [
+        ("дом", "house"), ("школа", "school"), ("магазин", "shop"), ("больница", "hospital"),
+        ("церковь", "church"), ("вокзал", "station"), ("башня", "tower"), ("завод", "factory"),
+        ("библиотека", "library"), ("музей", "museum"), ("театр", "theatre"), ("гостиница", "hotel"),
+        ("замок", "castle"), ("мост", "bridge"),
+    ],
+    "area": [
+        ("комната", "room"), ("кухня", "kitchen"), ("сад", "garden"), ("улица", "street"),
+        ("парк", "park"), ("двор", "yard"), ("площадь", "square"), ("дорога", "road"),
+        ("город", "city"), ("деревня", "village"), ("поле", "field"),
+    ],
+    "clothing": [
+        ("рубашка", "shirt"), ("платье", "dress"), ("пальто", "coat"), ("шляпа", "hat"),
+        ("ботинок", "shoe"), ("носок", "sock"), ("перчатка", "glove"), ("шарф", "scarf"),
+        ("брюки", "trousers"), ("куртка", "jacket"), ("юбка", "skirt"), ("шапка", "cap"),
+        ("пояс", "belt"), ("плащ", "raincoat"),
+    ],
+    "vehicle": [
+        ("машина", "car"), ("автобус", "bus"), ("поезд", "train"), ("самолёт", "plane"),
+        ("корабль", "ship"), ("велосипед", "bicycle"), ("лодка", "boat"), ("грузовик", "truck"),
+        ("трамвай", "tram"), ("мотоцикл", "motorcycle"), ("телега", "cart"), ("ракета", "rocket"),
+    ],
+    "tool": [
+        ("молоток", "hammer"), ("нож", "knife"), ("ложка", "spoon"), ("вилка", "fork"),
+        ("топор", "axe"), ("пила", "saw"), ("ключ", "key"), ("ручка", "pen"),
+        ("карандаш", "pencil"), ("кисть", "brush"), ("игла", "needle"), ("ножницы", "scissors"),
+        ("лопата", "shovel"), ("отвёртка", "screwdriver"), ("гвоздь", "nail"), ("верёвка", "rope"),
+        ("щётка", "broom"), ("удочка", "fishing rod"),
+    ],
+    "body_part": [
+        ("рука", "hand"), ("голова", "head"), ("глаз", "eye"), ("нога", "foot"),
+        ("плечо", "shoulder"), ("палец", "finger"), ("нос", "nose"), ("ухо", "ear"),
+        ("рот", "mouth"), ("сердце", "heart"), ("волосы", "hair"), ("зуб", "tooth"),
+        ("шея", "neck"), ("спина", "back"), ("колено", "knee"), ("язык", "tongue"),
+    ],
+    "plant": [
+        ("дерево", "tree"), ("цветок", "flower"), ("трава", "grass"), ("лист", "leaf"),
+        ("роза", "rose"), ("гриб", "mushroom"), ("куст", "bush"), ("корень", "root"),
+        ("ветка", "branch"), ("семя", "seed"),
+    ],
+    "natural_feature": [
+        ("река", "river"), ("гора", "mountain"), ("море", "sea"), ("озеро", "lake"),
+        ("камень", "stone"), ("холм", "hill"), ("остров", "island"), ("пещера", "cave"),
+        ("водопад", "waterfall"), ("берег", "shore"), ("скала", "cliff"), ("лес", "forest"),
+    ],
+    "celestial": [
+        ("солнце", "sun"), ("луна", "moon"), ("звезда", "star"), ("небо", "sky"),
+        ("облако", "cloud"), ("радуга", "rainbow"),
+    ],
+    "substance": [
+        ("песок", "sand"), ("снег", "snow"), ("лёд", "ice"), ("дым", "smoke"),
+        ("золото", "gold"), ("железо", "iron"), ("стекло", "glass material"), ("глина", "clay"),
+    ],
+    "document": [
+        ("книга", "book"), ("письмо", "letter"), ("газета", "newspaper"), ("карта", "map"),
+        ("картина", "picture"), ("фотография", "photo"), ("журнал", "magazine"), ("словарь", "dictionary"),
+    ],
+    "abstract": [
+        ("идея", "idea"), ("любовь", "love"), ("время", "time"), ("слово", "word"),
+        ("имя", "name"), ("день", "day"), ("год", "year"), ("работа", "work"),
+        ("музыка", "music"), ("мечта", "dream"), ("история", "story"), ("мир", "peace"),
+        ("война", "war"), ("правда", "truth"), ("жизнь", "life"), ("смерть", "death"),
+        ("радость", "joy"), ("страх", "fear"), ("песня", "song"), ("число", "number"),
+    ],
+}
+
+RELATIONS = [
+    {"rel": "on", "arg1": "positionable", "arg2": "support_surface"},
+    {"rel": "in", "arg1": "positionable", "arg2": "containment"},
+    {"rel": "eat", "arg1": "agent", "arg2": "edible"},
+    {"rel": "drink", "arg1": "agent", "arg2": "drinkable"},
+    {"rel": "wear", "arg1": "agent", "arg2": "wearable"},
+    {"rel": "ride", "arg1": "agent", "arg2": "rideable"},
+    {"rel": "read", "arg1": "agent", "arg2": "readable"},
+    {"rel": "use", "arg1": "agent", "arg2": "usable"},
+]
+
+# held-out combinations (never asserted as pairs; valid purely via inheritance)
+VALID = [
+    ["on", "книга", "стол"], ["in", "яблоко", "коробка"], ["eat", "собака", "мясо"],
+    ["drink", "кошка", "молоко"], ["wear", "мужчина", "рубашка"], ["ride", "мальчик", "велосипед"],
+    ["read", "студент", "книга"], ["use", "повар", "нож"], ["on", "чашка", "полка"],
+    ["on", "apple", "table"],
+]
+# category errors (negative control)
+INVALID = [
+    ["eat", "стол", "яблоко"], ["drink", "идея", "вода"], ["on", "любовь", "стол"],
+    ["wear", "собака", "дом"], ["ride", "книга", "автобус"], ["eat", "человек", "камень"],
+]
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--out", required=True)
+    args = ap.parse_args()
+    data = {
+        "name": "concept-net-base-v1",
+        "description": (
+            "Base conceptual network: ~280 common natural-language concepts with types "
+            "(isa, inherited) and capabilities (affords); relations carry selectional "
+            "constraints. Cross-lingual via the glossary names edges. Curated, not induced; "
+            "type/affordance checking, not full physics."
+        ),
+        "lattice_id": "schema-math",
+        "categories": CATEGORIES,
+        "concepts": {cat: [list(p) for p in members] for cat, members in CONCEPTS.items()},
+        "relations": RELATIONS,
+        "valid": VALID,
+        "invalid": INVALID,
+    }
+    n = sum(len(v) for v in CONCEPTS.values())
+    with open(args.out, "w", encoding="utf-8") as fh:
+        json.dump(data, fh, ensure_ascii=False, indent=1)
+    print(f"wrote {n} concepts in {len(CONCEPTS)} categories, {len(RELATIONS)} relations to {args.out}")
+
+
+if __name__ == "__main__":
+    main()
