@@ -1,11 +1,15 @@
 """Auto-curriculum: structured teaching, verification, translation, orchestration."""
 
 from casa.curriculum.compose import (
+    apply_conditioned_rule,
     apply_order_rule,
     apply_suffix_rule,
     compose_en_np,
+    gate_conditioned_rule,
     gate_suffix_rule,
+    induce_conditioned_rule,
     induce_suffix,
+    teach_conditioned_rule,
     teach_order_rule,
     teach_suffix_rule,
 )
@@ -24,6 +28,10 @@ __all__ = [
     "teach_suffix_rule",
     "apply_suffix_rule",
     "gate_suffix_rule",
+    "induce_conditioned_rule",
+    "teach_conditioned_rule",
+    "apply_conditioned_rule",
+    "gate_conditioned_rule",
     "teach_order_rule",
     "apply_order_rule",
     "compose_en_np",

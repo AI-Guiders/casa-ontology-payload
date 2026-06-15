@@ -1,0 +1,26 @@
+{
+  "name": "en-rules-v1",
+  "description": "Generative English morphology rules learned by induction, stored on the field as conditioned clause edges, and verified by the held-out gate (generalisation + negative control + ablation). Each rule is a list of [base, inflected] pairs; the learner induces a class-conditioned decision list (e.g. consonant+y -> -ies, sibilant -> -es, else -> -s) using only the vowel set as a primitive, and applies it to never-taught words. +s is the elsewhere/default class, matching natural frequency.",
+  "lattice_id": "schema-math",
+  "rules": {
+    "lang.rule.plural.en": [
+      ["cat", "cats"], ["dog", "dogs"], ["book", "books"], ["hand", "hands"],
+      ["car", "cars"], ["road", "roads"], ["friend", "friends"], ["word", "words"],
+      ["day", "days"], ["boy", "boys"], ["key", "keys"], ["month", "months"],
+      ["table", "tables"], ["tree", "trees"], ["star", "stars"], ["house", "houses"],
+      ["king", "kings"], ["girl", "girls"], ["door", "doors"], ["year", "years"],
+      ["bird", "birds"], ["hill", "hills"],
+      ["box", "boxes"], ["fox", "foxes"], ["glass", "glasses"], ["class", "classes"],
+      ["buzz", "buzzes"], ["fizz", "fizzes"], ["dish", "dishes"], ["wish", "wishes"],
+      ["watch", "watches"], ["match", "matches"],
+      ["baby", "babies"], ["city", "cities"], ["lady", "ladies"]
+    ],
+    "lang.rule.past.en": [
+      ["walk", "walked"], ["play", "played"], ["open", "opened"], ["want", "wanted"],
+      ["call", "called"], ["work", "worked"], ["jump", "jumped"], ["help", "helped"],
+      ["look", "looked"], ["start", "started"], ["clean", "cleaned"], ["talk", "talked"],
+      ["like", "liked"], ["love", "loved"], ["use", "used"], ["move", "moved"],
+      ["smile", "smiled"], ["close", "closed"], ["save", "saved"], ["hope", "hoped"]
+    ]
+  }
+}

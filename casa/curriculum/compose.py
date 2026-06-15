@@ -30,6 +30,8 @@ _SUFFIX_REL = "suffix"
 _SUFFIX_DST = "lang.morph.suffix."
 _ORDER_REL = "order"
 _SLOT = "lang.slot."
+_CLAUSE_REL = "clause"
+_CLAUSE_SEP = "~"  # edge dst must not contain '|'; '~' separates clause fields
 
 
 # --------------------------------------------------------------------------- #
@@ -50,6 +52,115 @@ def induce_suffix(pairs: list[tuple[str, str]]) -> str | None:
     if len(suffixes) != 1:
         return None
     return next(iter(suffixes))
+
+
+# --------------------------------------------------------------------------- #
+# class-conditioned rules (morphophonology: suffix choice depends on the stem)
+# --------------------------------------------------------------------------- #
+def _transform(base: str, form: str) -> tuple[int, str]:
+    """Edit from ``base`` to ``form`` as (chars to cut from end, string to add).
+
+    ``cat -> cats`` = (0, 's'); ``box -> boxes`` = (0, 'es'); ``baby -> babies`` =
+    (1, 'ies') — found via the longest common prefix, so stem changes are captured.
+    """
+    n = 0
+    for a, b in zip(base, form):
+        if a != b:
+            break
+        n += 1
+    return len(base) - n, form[n:]
+
+
+def _apply_transform(stem: str, cut: int, add: str) -> str:
+    return (stem[: len(stem) - cut] if cut else stem) + add
+
+
+_VOWELS = set("aeiou")  # the one given primitive — lets conditions be phonological
+
+
+def _matches(stem: str, pattern: str) -> bool:
+    """Match a stem's tail against a pattern of literals + ``C``/``V`` classes.
+
+    ``''`` matches anything (the default clause); ``Cy`` matches a consonant followed
+    by ``y`` (``baby``, ``puppy``) but not a vowel+y (``day``, ``boy``).
+    """
+    s = stem.lower()
+    if len(s) < len(pattern):
+        return False
+    for i in range(1, len(pattern) + 1):
+        tok, ch = pattern[-i], s[-i]
+        if tok == "C":
+            if not (ch.isalpha() and ch not in _VOWELS):
+                return False
+        elif tok == "V":
+            if ch not in _VOWELS:
+                return False
+        elif ch != tok:
+            return False
+    return True
+
+
+def _candidate_patterns(stem: str) -> list[str]:
+    """Patterns for a stem's tail, GENERAL first (fewer literals, shorter) so the
+    learner prefers the broadest condition that still separates the class."""
+    from itertools import product
+
+    s = stem.lower()
+    pats: set[str] = set()
+    for length in range(1, min(len(s), 4) + 1):
+        tail = s[-length:]
+        opts = [[("V" if ch in _VOWELS else "C"), ch] for ch in tail]  # class before literal
+        for combo in product(*opts):
+            pats.add("".join(combo))
+    return sorted(pats, key=lambda p: (len(p), sum(c not in "CV" for c in p), p))
+
+
+def _induce_condition(group: list[str], others: list[str]) -> list[str] | None:
+    """Broadest tail-patterns that pick out ``group`` without matching any ``others``.
+
+    Prefers a single general pattern (``Cy`` for the whole consonant+y class) over
+    memorising each bigram, but stays literal where no class generalises (the
+    sibilants ``x``/``s``/``z``/``sh``/``ch`` that take ``-es``).
+    """
+    conds: set[str] = set()
+    for s in group:
+        chosen = next(
+            (p for p in _candidate_patterns(s) if _matches(s, p) and not any(_matches(o, p) for o in others)),
+            None,
+        )
+        if chosen is None:
+            return None  # cannot separate this class from the rest on the evidence
+        conds.add(chosen)
+    return sorted(conds, key=lambda x: (-len(x), x))
+
+
+def induce_conditioned_rule(pairs: list[tuple[str, str]]) -> list[tuple[str, int, str]] | None:
+    """Induce an ordered decision list of ``(ending, cut, add)`` clauses from pairs.
+
+    The most frequent transform becomes the default clause (``ending == ''``); every
+    other transform gets the conditions that separate it from the rest. Returns None
+    if some class cannot be separated on the given evidence. Empty ``ending`` matches
+    any stem and is applied last.
+    """
+    groups: dict[tuple[int, str], list[str]] = {}
+    for base, form in pairs:
+        groups.setdefault(_transform(str(base), str(form)), []).append(str(base))
+    if not groups:
+        return None
+    default_tf = max(groups, key=lambda t: (len(groups[t]), t))
+    clauses: list[tuple[str, int, str]] = []
+    for tf, stems in groups.items():
+        if tf == default_tf:
+            continue
+        others = [s for g, ss in groups.items() if g != tf for s in ss]
+        conds = _induce_condition(stems, others)
+        if conds is None:
+            return None
+        for ending in conds:
+            clauses.append((ending, tf[0], tf[1]))
+    clauses.sort(key=lambda c: (-len(c[0]), c[0]))  # specific endings first
+    clauses.append(("", default_tf[0], default_tf[1]))  # default last
+    return clauses
 
 
 # --------------------------------------------------------------------------- #
@@ -97,6 +208,51 @@ def apply_suffix_rule(state: dict, lattice_id: str, rule_id: str, stem: str) -> 
     """Generate ``stem + suffix`` using the field-stored rule (None if no rule)."""
     suffix = read_suffix_rule(state, lattice_id, rule_id)
     return f"{stem}{suffix}" if suffix is not None else None
+
+
+def teach_conditioned_rule(
+    state: dict, lattice_id: str, rule_id: str, pairs: list[tuple[str, str]], *, copies: int = 4
+) -> dict[str, Any]:
+    """Induce a class-conditioned rule from ``pairs`` and mint one edge per clause."""
+    from casa.prisms.memory.f0_stack import strengthen_graph_edge
+
+    clauses = induce_conditioned_rule(pairs)
+    if clauses is None:
+        return {"rule_id": rule_id, "clauses": None, "stored": False}
+    lats = _lattices(state)
+    for ending, cut, add in clauses:
+        dst = _CLAUSE_SEP.join((ending or "_", str(cut), add or "_"))
+        strengthen_graph_edge(lats, lattice_id, rule_id, _CLAUSE_REL, dst, copies=copies)
+    return {"rule_id": rule_id, "clauses": clauses, "stored": True}
+
+
+def read_conditioned_rule(state: dict, lattice_id: str, rule_id: str) -> list[tuple[str, int, str]]:
+    """Read the clause decision list for ``rule_id`` from the field (ordered)."""
+    prefix = f"{rule_id}|{_CLAUSE_REL}|"
+    clauses: list[tuple[str, int, str]] = []
+    for edge in _edges(state, lattice_id):
+        if not edge.startswith(prefix):
+            continue
+        parts = edge[len(prefix):].split(_CLAUSE_SEP)
+        if len(parts) != 3 or not parts[1].isdigit():
+            continue
+        ending = "" if parts[0] == "_" else parts[0]
+        add = "" if parts[2] == "_" else parts[2]
+        clauses.append((ending, int(parts[1]), add))
+    # most specific first (longer, more literals), default ('') last
+    clauses.sort(key=lambda c: (-len(c[0]), -sum(ch not in "CV" for ch in c[0]), c[0]))
+    return clauses
+
+
+def apply_conditioned_rule(state: dict, lattice_id: str, rule_id: str, stem: str) -> str | None:
+    """Generate the inflected form of ``stem`` using the field-stored decision list."""
+    clauses = read_conditioned_rule(state, lattice_id, rule_id)
+    if not clauses:
+        return None
+    for ending, cut, add in clauses:
+        if ending == "" or _matches(stem, ending):
+            return _apply_transform(stem, cut, add)
+    return None
 
 
 def teach_order_rule(
@@ -201,6 +357,73 @@ def gate_suffix_rule(
         "induced": rep["induced"],
         "train": len(train),
         "held_out": len(held_out),
+        "held_out_pass_rate": round(held_rate, 3),
+        "negative_control_passed": negative_control_passed,
+        "ablation_breaks_production": ablation_breaks,
+    }
+
+
+def gate_conditioned_rule(
+    state: dict,
+    lattice_id: str,
+    rule_id: str,
+    pairs: list[tuple[str, str]],
+    *,
+    held_out_ratio: float = 0.3,
+    pass_ratio: float = 0.9,
+    min_held_out: int = 3,
+) -> dict[str, Any]:
+    """Gate a class-conditioned rule: stratified held-out (every class trained AND
+    tested), negative control, and ablation. Catches over-general conditions — a
+    clause learned too broadly mis-inflects a held-out word of another class and the
+    held-out rate drops below ``pass_ratio``.
+    """
+    from casa.prisms.memory.f0_stack import weaken_graph_edge
+
+    groups: dict[tuple[int, str], list[tuple[str, str]]] = {}
+    for b, f in pairs:
+        groups.setdefault(_transform(str(b), str(f)), []).append((str(b), str(f)))
+    step = max(2, round(1 / held_out_ratio)) if held_out_ratio > 0 else 0
+    train: list[tuple[str, str]] = []
+    held: list[tuple[str, str]] = []
+    for items in groups.values():
+        # stride across the group so held-out spreads over sub-classes (endings),
+        # never removing the last witness of a sibilant ending
+        chosen = set(range(0, len(items), step)) if step and len(items) >= 2 else set()
+        held += [it for i, it in enumerate(items) if i in chosen]
+        train += [it for i, it in enumerate(items) if i not in chosen]
+    if len(held) < min_held_out or not train:
+        return {"passed": False, "reason": "insufficient_pairs", "rule_id": rule_id}
+
+    rep = teach_conditioned_rule(state, lattice_id, rule_id, train)
+    if not rep["stored"]:
+        return {"passed": False, "reason": "no_rule_induced", "rule_id": rule_id}
+
+    passes = [apply_conditioned_rule(state, lattice_id, rule_id, b) == f for b, f in held]
+    held_rate = sum(passes) / len(passes)
+    neg = [apply_conditioned_rule(state, lattice_id, rule_id, b) == f"{f}X" for b, f in held]
+    negative_control_passed = not any(neg)
+
+    for ending, cut, add in rep["clauses"]:
+        dst = _CLAUSE_SEP.join((ending or "_", str(cut), add or "_"))
+        weaken_graph_edge(_lattices(state), lattice_id, rule_id, _CLAUSE_REL, dst)
+    ablated = [apply_conditioned_rule(state, lattice_id, rule_id, b) for b, _ in held]
+    ablation_breaks = all(a is None for a in ablated)
+    teach_conditioned_rule(state, lattice_id, rule_id, train)  # restore
+
+    passed = bool(
+        len(held) >= min_held_out
+        and held_rate >= pass_ratio
+        and negative_control_passed
+        and ablation_breaks
+    )
+    return {
+        "passed": passed,
+        "rule_id": rule_id,
+        "classes": len(groups),
+        "clauses": rep["clauses"],
+        "train": len(train),
+        "held_out": len(held),
         "held_out_pass_rate": round(held_rate, 3),
         "negative_control_passed": negative_control_passed,
         "ablation_breaks_production": ablation_breaks,

@@ -10,10 +10,14 @@ from __future__ import annotations
 import json
 
 from casa.curriculum import (
+    apply_conditioned_rule,
     apply_suffix_rule,
     compose_en_np,
+    gate_conditioned_rule,
     gate_suffix_rule,
+    induce_conditioned_rule,
     induce_suffix,
+    teach_conditioned_rule,
     teach_glossary,
     teach_order_rule,
     teach_suffix_rule,
@@ -25,6 +29,7 @@ from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa._paths import REPO_ROOT
 
 BUNDLE = REPO_ROOT / "lab/exp_l/kb-math-concrete-schemas-l0.bundle.v1.json"
+RULES = REPO_ROOT / "lab/curriculum/en-rules-v1.json"
 LAT = "schema-math"
 PLURAL = [
     ("cat", "cats"), ("dog", "dogs"), ("book", "books"), ("hand", "hands"),
@@ -88,6 +93,54 @@ def test_compose_english_noun_phrase_from_two_russian_words() -> None:
     assert compose_en_np(state, LAT, "большой", "кот") == "big cat"
     assert compose_en_np(state, LAT, "белый", "дом") == "white house"
     assert compose_en_np(state, LAT, "маленький", "собака") == "small dog"
+
+
+def _rule_pairs(rule_id: str) -> list[tuple[str, str]]:
+    data = json.loads(RULES.read_text(encoding="utf-8"))
+    return [tuple(p) for p in data["rules"][rule_id]]
+
+
+def test_conditioned_plural_induces_three_classes() -> None:
+    clauses = induce_conditioned_rule(_rule_pairs("lang.rule.plural.en"))
+    assert clauses is not None
+    # the consonant+y class is a single general pattern (not memorised bigrams)
+    assert ("Cy", 1, "ies") in clauses
+    # sibilants take -es; the elsewhere/default class is +s (empty condition, last)
+    assert any(cut == 0 and add == "es" for _, cut, add in clauses)
+    assert clauses[-1] == ("", 0, "s")
+
+
+def test_conditioned_plural_gate_passes_with_controls() -> None:
+    state, _ = _state()
+    rep = gate_conditioned_rule(state, LAT, "lang.rule.plural.en", _rule_pairs("lang.rule.plural.en"))
+    assert rep["passed"] is True
+    assert rep["classes"] == 3
+    assert rep["held_out_pass_rate"] >= 0.9
+    assert rep["negative_control_passed"] is True
+    assert rep["ablation_breaks_production"] is True
+
+
+def test_conditioned_plural_generates_never_taught_words() -> None:
+    state, _ = _state()
+    teach_conditioned_rule(state, LAT, "lang.rule.plural.en", _rule_pairs("lang.rule.plural.en"))
+    expected = {
+        "fly": "flies", "puppy": "puppies", "story": "stories",   # consonant+y -> -ies
+        "church": "churches", "branch": "branches", "kiss": "kisses",
+        "tax": "taxes", "brush": "brushes",                        # sibilants -> -es
+        "chair": "chairs", "phone": "phones",                      # default -> -s
+    }
+    for stem, plural in expected.items():
+        assert apply_conditioned_rule(state, LAT, "lang.rule.plural.en", stem) == plural, stem
+
+
+def test_conditioned_past_tense_gate_and_generation() -> None:
+    state, _ = _state()
+    pairs = _rule_pairs("lang.rule.past.en")
+    rep = gate_conditioned_rule(state, LAT, "lang.rule.past.en", pairs)
+    assert rep["passed"] is True
+    teach_conditioned_rule(state, LAT, "lang.rule.past.en", pairs)
+    assert apply_conditioned_rule(state, LAT, "lang.rule.past.en", "dance") == "danced"  # -e -> +d
+    assert apply_conditioned_rule(state, LAT, "lang.rule.past.en", "kick") == "kicked"   # else +ed
 
 
 def test_compose_collapses_when_order_rule_ablated() -> None:
