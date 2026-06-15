@@ -113,13 +113,11 @@ def build_state() -> dict:
     if net.exists():
         from casa.curriculum.concept_net import teach_concept_net
         from casa.curriculum.parse import parse_graph
-        from casa.curriculum.situation_memory import new_memory, remember
+        from casa.curriculum.situation_store import persist_situation
 
         teach_concept_net(state, LAT, json.loads(net.read_text(encoding="utf-8")))
-        mem = new_memory()
         for t in ("яблоко на столе у окна", "собака ест мясо", "книга на столе", "студент читает книгу"):
-            remember(mem, parse_graph(state, LAT, t), label=t)
-        state["sit_memory"] = mem
+            persist_situation(state, LAT, parse_graph(state, LAT, t), label=t)  # memory lives on the field
     return state
 
 
@@ -240,17 +238,16 @@ def handle(state: dict, line: str) -> str | None:
         return f"{render_graph(g)}\n  отпечаток: id={fingerprint(g)['id']}"
     if cmd in ("remember", "recall") and args:
         from casa.curriculum.parse import parse_graph
-        from casa.curriculum.situation_memory import remember, seen, recall_containing, recall_similar
+        from casa.curriculum.situation_memory import seen, recall_containing, recall_similar
+        from casa.curriculum.situation_store import persist_situation, load_memory
 
-        mem = state.setdefault("sit_memory", {"situations": []})
         g = parse_graph(state, LAT, " ".join(args))
         if not g["edges"]:
             return "(не разобрал ситуацию)"
         if cmd == "remember":
-            r = remember(mem, g, label=" ".join(args))
-            if r is None:
-                return "(бессмысленная ситуация — нечего запоминать)"
-            return f"запомнил: id={r['id']}  ({r['key']})"
+            fid = persist_situation(state, LAT, g, label=" ".join(args))  # onto the field
+            return "(бессмысленная ситуация — нечего запоминать)" if fid is None else f"запомнил на поле: id={fid}"
+        mem = load_memory(state, LAT)  # reconstruct memory from the field
         known = seen(mem, g)
         cont = [r["label"] for r in recall_containing(mem, g) if not known or r["id"] != known["id"]]
         sim = [(r["label"], s) for r, s in recall_similar(mem, g, top=3) if s > 0]

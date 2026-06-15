@@ -29,6 +29,7 @@ from casa.curriculum.situation_memory import (
     remember,
     seen,
 )
+from casa.curriculum.situation_store import forget_situation, load_memory, persist_situation
 from casa.curriculum.situation import (
     contains,
     fingerprint,
@@ -130,6 +131,9 @@ __all__ = [
     "recall_contained",
     "recall_similar",
     "gate_situation_memory",
+    "persist_situation",
+    "load_memory",
+    "forget_situation",
     "validate",
     "gate_concept_net",
     "meaningful",
