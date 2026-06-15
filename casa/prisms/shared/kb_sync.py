@@ -27,6 +27,11 @@ def _run(cmd: list[str], cwd: Path) -> None:
     subprocess.run(cmd, cwd=str(cwd), check=True)
 
 
+def _mod_run(module: str, args: list[str], cwd: Path) -> None:
+    """Invoke a casa.cli module in a subprocess (replaces the deleted tools/*.py shims)."""
+    _run([sys.executable, "-m", "casa.cli", module, *args], cwd)
+
+
 def _resolve_kb_root(repo: Path, manifest_path: Path | None, kb_root: Path | None) -> Path:
     if kb_root is not None:
         root = kb_root.resolve()
@@ -96,9 +101,7 @@ def sync_and_import(
     delta["bundle"]["path"] = str(rel).replace("\\", "/")
     delta_path.parent.mkdir(parents=True, exist_ok=True)
     delta_path.write_text(json.dumps(delta, ensure_ascii=False, indent=2), encoding="utf-8")
-    cmd = [
-        sys.executable,
-        str(repo / "tools/import_knowledge_delta.py"),
+    args = [
         "--delta",
         str(delta_path),
         "--store-dir",
@@ -107,8 +110,8 @@ def sync_and_import(
         str(agent_card.resolve()),
     ]
     if bench:
-        cmd.append("--bench")
-    _run(cmd, repo)
+        args.append("--bench")
+    _mod_run("import_knowledge_delta", args, repo)
     return {
         "bundle": str(bundle_path),
         "kb_root": str(kb_root),
@@ -128,7 +131,6 @@ def build_one(
     per_doc_graph: bool,
     graphs_dir: Path,
 ) -> Path:
-    tools = repo / "tools"
     md_abs = kb_root / md_rel.replace("/", os.sep)
     if not md_abs.is_file():
         raise SystemExit(f"Markdown not found: {md_abs}")
@@ -139,16 +141,9 @@ def build_one(
 
     if per_doc_graph:
         graphs_dir.mkdir(parents=True, exist_ok=True)
-        _run(
-            [
-                sys.executable,
-                str(tools / "extract_md_graph.py"),
-                str(md_abs),
-                "--root-id",
-                doc_path,
-                "--out",
-                str(graph_out),
-            ],
+        _mod_run(
+            "extract_md_graph",
+            [str(md_abs), "--root-id", doc_path, "--out", str(graph_out)],
             repo,
         )
         graph_path = graph_out
@@ -156,31 +151,16 @@ def build_one(
         raise SystemExit("hub graph mode requires --manifest with hub; use --per-doc-graph for single doc")
 
     payload_out = out_bundle.parent / f"{stem}.payload.json"
-    _run(
-        [
-            sys.executable,
-            str(tools / "semantic_payload.py"),
-            str(md_abs),
-            "--doc-path",
-            doc_path,
-            "--out",
-            str(payload_out),
-        ],
+    _mod_run(
+        "semantic_payload",
+        [str(md_abs), "--doc-path", doc_path, "--out", str(payload_out)],
         repo,
     )
 
     out_bundle.parent.mkdir(parents=True, exist_ok=True)
-    _run(
-        [
-            sys.executable,
-            str(tools / "build_bundle.py"),
-            "--graph",
-            str(graph_path),
-            "--payload",
-            str(payload_out),
-            "--out",
-            str(out_bundle),
-        ],
+    _mod_run(
+        "build_bundle",
+        ["--graph", str(graph_path), "--payload", str(payload_out), "--out", str(out_bundle)],
         repo,
     )
     return out_bundle

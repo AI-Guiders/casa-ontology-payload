@@ -27,6 +27,11 @@ def _run(cmd: list[str], cwd: Path) -> None:
     subprocess.run(cmd, cwd=str(cwd), check=True)
 
 
+def _mod_run(module: str, args: list[str], cwd: Path) -> None:
+    """Invoke a casa.cli module in a subprocess (replaces the deleted tools/*.py shims)."""
+    _run([sys.executable, "-m", "casa.cli", module, *args], cwd)
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description="Build bundles from KB manifest")
     p.add_argument(
@@ -63,7 +68,6 @@ def main() -> None:
     if not kb_root.is_dir():
         raise SystemExit(f"KB root not found: {kb_root}")
 
-    tools = repo / "tools"
     per_doc = args.per_doc_graph
     out_base = args.out_dir
     if out_base is None:
@@ -79,16 +83,9 @@ def main() -> None:
         hub_md = kb_root / hub["md"]
         hub_graph = repo / hub["graph_out"]
         hub_graph.parent.mkdir(parents=True, exist_ok=True)
-        _run(
-            [
-                sys.executable,
-                str(tools / "extract_md_graph.py"),
-                str(hub_md),
-                "--root-id",
-                hub["root_id"],
-                "--out",
-                str(hub_graph),
-            ],
+        _mod_run(
+            "extract_md_graph",
+            [str(hub_md), "--root-id", hub["root_id"], "--out", str(hub_graph)],
             repo,
         )
 
@@ -105,16 +102,9 @@ def main() -> None:
         if per_doc:
             graphs_dir.mkdir(parents=True, exist_ok=True)
             graph_path = graphs_dir / f"{stem}.graph.json"
-            _run(
-                [
-                    sys.executable,
-                    str(tools / "extract_md_graph.py"),
-                    str(md_path),
-                    "--root-id",
-                    doc["doc_path"],
-                    "--out",
-                    str(graph_path),
-                ],
+            _mod_run(
+                "extract_md_graph",
+                [str(md_path), "--root-id", doc["doc_path"], "--out", str(graph_path)],
                 repo,
             )
             graph_for_bundle = graph_path
@@ -124,29 +114,14 @@ def main() -> None:
             assert graph_for_bundle is not None
 
         payload_out.parent.mkdir(parents=True, exist_ok=True)
-        _run(
-            [
-                sys.executable,
-                str(tools / "semantic_payload.py"),
-                str(md_path),
-                "--doc-path",
-                doc["doc_path"],
-                "--out",
-                str(payload_out),
-            ],
+        _mod_run(
+            "semantic_payload",
+            [str(md_path), "--doc-path", doc["doc_path"], "--out", str(payload_out)],
             repo,
         )
-        _run(
-            [
-                sys.executable,
-                str(tools / "build_bundle.py"),
-                "--graph",
-                str(graph_for_bundle),
-                "--payload",
-                str(payload_out),
-                "--out",
-                str(bundle_out),
-            ],
+        _mod_run(
+            "build_bundle",
+            ["--graph", str(graph_for_bundle), "--payload", str(payload_out), "--out", str(bundle_out)],
             repo,
         )
         built.append(str(bundle_out.relative_to(repo)))
