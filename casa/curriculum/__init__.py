@@ -19,6 +19,7 @@ from casa.curriculum.concept_net import (
     validate,
 )
 from casa.curriculum.grounded import gate_grounded, guarded_clause, meaningful
+from casa.curriculum.parse import parse_fingerprint, parse_graph, parse_triples, resolve_token
 from casa.curriculum.situation import (
     contains,
     fingerprint,
@@ -109,6 +110,10 @@ __all__ = [
     "contains",
     "similarity",
     "gate_situation",
+    "parse_triples",
+    "parse_graph",
+    "parse_fingerprint",
+    "resolve_token",
     "validate",
     "gate_concept_net",
     "meaningful",

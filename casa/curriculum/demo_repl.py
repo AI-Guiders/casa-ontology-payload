@@ -32,6 +32,8 @@ Commands (type ? for this help):
        e.g.  graph on яблоко стол ; near стол окно
   fp <pred x y> ; <pred x y> ...    situation fingerprint (synonyms/order/language -> one id)
        e.g.  fp лежит яблоко стол  ==  fp на яблоко стол  ==  fp on apple table
+  parse <text>              parse a controlled clause -> graph + fingerprint
+       e.g.  parse яблоко лежит на столе   ==   parse на столе яблоко   ==   parse apple on the table
   words                     list the words the field knows
   ?                         help        quit / exit / q!    leave
 """
@@ -216,6 +218,17 @@ def handle(state: dict, line: str) -> str | None:
             return "нужно: fp <pred x y> ; <pred x y> ...  напр. fp лежит яблоко стол ; у стол окно"
         f = situation_fingerprint(state, LAT, raw)
         return f"отпечаток ситуации: id={f['id']}\n  карта: {f['key']}"
+    if cmd == "parse" and args:
+        from casa.curriculum.parse import parse_graph, parse_triples
+        from casa.curriculum.concept_net import render_graph
+        from casa.curriculum.situation import fingerprint
+
+        text = " ".join(args)
+        triples = parse_triples(state, LAT, text)
+        if not triples:
+            return "(не разобрал — нет известных понятий/отношений)"
+        g = parse_graph(state, LAT, text)
+        return f"{render_graph(g)}\n  отпечаток: id={fingerprint(g)['id']}"
     if cmd == "words":
         from casa.curriculum.translate import _name_edges
 
