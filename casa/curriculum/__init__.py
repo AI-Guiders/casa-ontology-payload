@@ -29,6 +29,7 @@ from casa.curriculum.situation_memory import (
     remember,
     seen,
 )
+from casa.curriculum.analogy import analogous, find_analogy, recall_analogous
 from casa.curriculum.situation_store import forget_situation, load_memory, persist_situation
 from casa.curriculum.situation import (
     contains,
@@ -134,6 +135,9 @@ __all__ = [
     "persist_situation",
     "load_memory",
     "forget_situation",
+    "find_analogy",
+    "analogous",
+    "recall_analogous",
     "validate",
     "gate_concept_net",
     "meaningful",

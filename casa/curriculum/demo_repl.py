@@ -37,6 +37,8 @@ Commands (type ? for this help):
   remember <text>           store a situation in memory
   recall <text>             have I seen this? what includes it? what is similar?
        e.g.  recall яблоко на столе   (finds the stored «яблоко на столе у окна»)
+  like <text>               find stored situations of the SAME STRUCTURE (analogy)
+       e.g.  like кот на стуле   ->  книга на столе  (cat~book, chair~table)
   words                     list the words the field knows
   ?                         help        quit / exit / q!    leave
 """
@@ -236,7 +238,7 @@ def handle(state: dict, line: str) -> str | None:
             return "(не разобрал — нет известных понятий/отношений)"
         g = parse_graph(state, LAT, text)
         return f"{render_graph(g)}\n  отпечаток: id={fingerprint(g)['id']}"
-    if cmd in ("remember", "recall") and args:
+    if cmd in ("remember", "recall", "like") and args:
         from casa.curriculum.parse import parse_graph
         from casa.curriculum.situation_memory import seen, recall_containing, recall_similar
         from casa.curriculum.situation_store import persist_situation, load_memory
@@ -247,6 +249,13 @@ def handle(state: dict, line: str) -> str | None:
         if cmd == "remember":
             fid = persist_situation(state, LAT, g, label=" ".join(args))  # onto the field
             return "(бессмысленная ситуация — нечего запоминать)" if fid is None else f"запомнил на поле: id={fid}"
+        if cmd == "like":
+            from casa.curriculum.analogy import recall_analogous
+
+            hits = recall_analogous(state, LAT, load_memory(state, LAT), g)
+            if not hits:
+                return "(нет ситуаций той же структуры)"
+            return "\n  ".join(["похоже по структуре:"] + [f"{r['label']}  ←  {mp}" for r, mp in hits])
         mem = load_memory(state, LAT)  # reconstruct memory from the field
         known = seen(mem, g)
         cont = [r["label"] for r in recall_containing(mem, g) if not known or r["id"] != known["id"]]
