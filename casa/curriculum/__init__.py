@@ -19,6 +19,15 @@ from casa.curriculum.concept_net import (
     validate,
 )
 from casa.curriculum.grounded import gate_grounded, guarded_clause, meaningful
+from casa.curriculum.situation import (
+    contains,
+    fingerprint,
+    gate_situation,
+    graph_from_predicates,
+    same_situation,
+    similarity,
+    situation_fingerprint,
+)
 from casa.curriculum.clause import (
     compose_clause,
     compose_full_clause,
@@ -93,6 +102,13 @@ __all__ = [
     "render_map",
     "meaning_graph",
     "render_graph",
+    "situation_fingerprint",
+    "fingerprint",
+    "graph_from_predicates",
+    "same_situation",
+    "contains",
+    "similarity",
+    "gate_situation",
     "validate",
     "gate_concept_net",
     "meaningful",

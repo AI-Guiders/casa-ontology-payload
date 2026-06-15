@@ -30,6 +30,8 @@ Commands (type ? for this help):
        e.g.  map on яблоко стол   ==   map on apple table
   graph <rel x y> ; <rel x y> ...   multi-edge meaning graph (semicolon-separated)
        e.g.  graph on яблоко стол ; near стол окно
+  fp <pred x y> ; <pred x y> ...    situation fingerprint (synonyms/order/language -> one id)
+       e.g.  fp лежит яблоко стол  ==  fp на яблоко стол  ==  fp on apple table
   words                     list the words the field knows
   ?                         help        quit / exit / q!    leave
 """
@@ -206,6 +208,14 @@ def handle(state: dict, line: str) -> str | None:
             return "нужно: graph <rel x y> ; <rel x y> ...  напр. graph on яблоко стол ; near стол окно"
         g = meaning_graph(state, LAT, triples)
         return render_graph(g) + f"\n  граф валиден: {g['valid']}  узлов: {len(g['nodes'])}"
+    if cmd == "fp" and args:
+        from casa.curriculum.situation import situation_fingerprint
+
+        raw = [tuple(seg.split()) for seg in " ".join(args).split(";") if len(seg.split()) == 3]
+        if not raw:
+            return "нужно: fp <pred x y> ; <pred x y> ...  напр. fp лежит яблоко стол ; у стол окно"
+        f = situation_fingerprint(state, LAT, raw)
+        return f"отпечаток ситуации: id={f['id']}\n  карта: {f['key']}"
     if cmd == "words":
         from casa.curriculum.translate import _name_edges
 
