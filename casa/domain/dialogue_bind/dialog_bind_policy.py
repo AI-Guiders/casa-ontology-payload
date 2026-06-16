@@ -68,6 +68,25 @@ def continuer_bind_demote(bundle: dict[str, Any] | None = None) -> list[tuple[st
     return _parse_weighted(raw)
 
 
+def thread_carry_params(bundle: dict[str, Any] | None = None) -> dict[str, float | int | str]:
+    slots = _slots("ru.meta.dialog.thread_carry", bundle)
+    return {
+        "carry_base": int(slots.get("carry_base") or 72),
+        "decay_per_age": float(slots.get("decay_per_age") or 0.15),
+        "ov_cap": int(slots.get("ov_cap") or 28),
+        "ov_mul": int(slots.get("ov_mul") or 2),
+        "continuer_linker": str(slots.get("continuer_linker") or "Про это"),
+    }
+
+
+def continuer_linker(bundle: dict[str, Any] | None = None) -> str:
+    return str(thread_carry_params(bundle).get("continuer_linker") or "Про это")
+
+
+def tone_register_slots(bundle: dict[str, Any] | None = None) -> dict[str, str]:
+    return _slots("ru.meta.dialog.tone_register", bundle)
+
+
 def hub_family_prefix(cid: str) -> str:
     """Longest matching gated/open prefix for a dialog concept id."""
     parts = str(cid or "").split(".")

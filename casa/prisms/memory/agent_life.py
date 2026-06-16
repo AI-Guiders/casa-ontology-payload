@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: E402
 """Agent life zone — вся жизнь агента (wake → tick → sleep → journal → ltm).
 
 Host только поднимает/гасит процесс (`agent_wake` / Ctrl+C). Смысл каждого tick — внутри:
@@ -177,6 +178,7 @@ def _run_unified_life_tick(
     *,
     user_query: str | None,
     partner_turn: bool,
+    partner_turn_kind: str = "chat",
 ) -> dict[str, Any]:
     from casa.body.completion_ingest import ingest_body_completions_on_tick
 
@@ -186,6 +188,7 @@ def _run_unified_life_tick(
         store_dir=runtime.store_dir,
         user_query=user_query,
         wm=runtime.wm,
+        partner_turn_kind=partner_turn_kind,
         config=_reactor_life_config(partner_turn=partner_turn),
         state=runtime.state,
     )
@@ -217,6 +220,7 @@ def poll_partner_text_tract(
 
     cue_id = str(cue.get("id") or "")
     text = str(cue.get("text") or "").strip()
+    kind = str(cue.get("kind") or "chat")
     if emit:
         emit(
             {
@@ -234,7 +238,12 @@ def poll_partner_text_tract(
         extra={"phase": "partner_start", "cue_id": cue_id},
     )
     try:
-        report = _run_unified_life_tick(runtime, user_query=text, partner_turn=True)
+        report = _run_unified_life_tick(
+            runtime,
+            user_query=text,
+            partner_turn=True,
+            partner_turn_kind=kind,
+        )
         reply = extract_dialogue_reply(report)
         complete_efferent(
             runtime.store_dir,

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: E402
 """
 TickOrchestrator — unified macro tick: decode → act rollout → SN/CEN → surprise/hippo → sleep.
 
@@ -21,7 +22,7 @@ from typing import Any
 from casa.prisms.control.fpn_state import WorkingMemory, effective_user_query, fpn_after_cen, salience_mode_bias
 from casa.prisms.control.sn_cen_infer import _run_from_field
 from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict, TaskEmit
-from casa.prisms.control.tick import ControlExtensions, run_control_extensions
+from casa.prisms.control.tick import run_control_extensions
 from casa.prisms.memory.agent_bridges import load_agent_bridges, merge_digest_with_agent_bridges
 from casa.prisms.memory.agent_prism import load_agent_prism
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
@@ -136,6 +137,7 @@ def run_learning_tick(
     store_dir: Path,
     user_query: str | None,
     wm: WorkingMemory,
+    partner_turn_kind: str = "chat",
     config: LearningTickConfig | None = None,
     state: dict | None = None,
 ) -> tuple[dict[str, Any], WorkingMemory, dict]:
@@ -365,6 +367,7 @@ def run_learning_tick(
         user_query=q,
         task=task,
         mem_prep=mem_prep,
+        partner_turn_kind=partner_turn_kind,
         self_drive_rep=self_drive_rep,
         retro_rep=retro_rep,
     )

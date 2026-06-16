@@ -20,8 +20,6 @@ def affect_bind_nudge(state: dict, *, concept_id: str, intent: str) -> int:
             delta += 14
         if cid.startswith("ru.dialog.capabilities"):
             delta -= 18
-        if cid.startswith("ru.dialog.affect") and intent == "social":
-            delta += 6
     return delta
 
 
@@ -41,7 +39,24 @@ def apply_intelligence_zone_block_deltas(
         blocks,
         intelligence_compose_deltas(state, concept_hints=concept_hints),
     )
+    nudges: list[dict[str, Any]] = []
     for block in blocks:
         nudge = affect_bind_nudge(state, concept_id=str(block.get("concept_id") or ""), intent=intent)
         if nudge:
             block["score"] = int(block.get("score") or 0) + nudge
+            nudges.append(
+                {
+                    "concept_id": str(block.get("concept_id") or ""),
+                    "delta": nudge,
+                }
+            )
+    if nudges:
+        from casa.nervous.compose_impulse import record_compose_select
+
+        record_compose_select(
+            state,
+            "intelligence.zone_affect_nudge",
+            zone="emotional",
+            selected=[str(row["concept_id"]) for row in nudges[:4]],
+            inputs={"nudges": nudges[:8]},
+        )

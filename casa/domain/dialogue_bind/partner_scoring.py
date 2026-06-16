@@ -54,31 +54,10 @@ def continuer_active(blocks: list[dict[str, Any]]) -> bool:
     return any(str(b.get("concept_id") or "") == "dialog.context.focus_recent" for b in blocks)
 
 
-def partner_continuer_query(query: str) -> bool:
-    """Partner asks to continue prior thread — bind signal, not compose template."""
-    ql = (query or "").strip().lower()
-    if not ql:
-        return False
-    markers = (
-        "про это",
-        "про то",
-        "что думаешь",
-        "что ты думаешь",
-        "а что ты",
-        "продолж",
-        "контекст",
-        "с этим",
-    )
-    return any(m in ql for m in markers)
-
-
 def thread_continuer_turn(blocks: list[dict[str, Any]], query: str) -> bool:
-    """Open thread continuation — continuer query plus focus or prior subject line."""
-    if not partner_continuer_query(query):
-        return False
-    if continuer_active(blocks):
-        return True
-    return any(str(b.get("concept_id") or "") == "subject.dialog.self_recent" for b in blocks)
+    """Open thread when ring carries focus_recent — no substring cue markers."""
+    _ = query
+    return continuer_active(blocks)
 
 
 def hub_open_in_focus(blocks: list[dict[str, Any]], hub: str) -> bool:
@@ -211,7 +190,7 @@ def partner_speech_turn(
     if partner_dialog_bind_overlap(quote, blocks) >= _FIELD_OVERLAP_MIN:
         return True
     hints = set(concept_hints or [])
-    if hints & {"ru.dialog.capabilities", "ru.dialog.thanks", "ru.dialog.affect"}:
+    if hints & {"ru.dialog.capabilities", "ru.dialog.thanks"}:
         if thread_continuation_active(blocks, quote):
             return False
         return True
