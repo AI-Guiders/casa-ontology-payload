@@ -20,6 +20,87 @@ from casa.prisms.tick.discourse.wm import WmBlockRealizer
 
 _MORPH_ROLE_ORDER = ("prefix", "stem", "root", "suffix", "ending")
 _KB_GLOSS_RE = re.compile(r"«[^»]+»\s*[—\-]")
+_JOURNAL_BOOTSTRAP_MARKERS = (
+    "это мой журнал",
+    "я — нейманн",
+    "я - нейманн",
+)
+_FIELD_MATERIAL_STOP = frozenset(
+    "партнёр недавно текущий фокус диалога последние намерения как что это ты я мы он она они".split()
+)
+
+
+
+def _is_journal_bootstrap(text: str) -> bool:
+    tl = str(text or "").lower()
+    return any(m in tl for m in _JOURNAL_BOOTSTRAP_MARKERS)
+
+
+def _situation_clauses(slots: dict[str, str], close: str) -> list[ClauseSketch]:
+    """L3 pieces for situation hubs — not full-sentence script slots (ADR-0081)."""
+    situation = str(slots.get("situation") or "").strip()
+    if not situation:
+        return []
+    pieces = [
+        str(slots.get(k) or "").strip()
+        for k in (
+            "modifier",
+            "stance",
+            "referent",
+            "role",
+            "surface",
+            "predicate_lemma",
+            "object_lemma",
+            "limit_kind",
+        )
+        if str(slots.get(k) or "").strip()
+    ]
+    if len(pieces) < 2:
+        return []
+    return [clause_from_pieces(pieces, closing=close)]
+
+
+def _minimal_formula_active(block: dict[str, Any], ctx: DiscourseContext) -> bool:
+    slots = BlockSlots.read(block)
+    stimulus = str(slots.get("stimulus") or slots.get("word") or "").strip().lower()
+    response = str(slots.get("response") or slots.get("response_informal") or "").strip()
+    return bool(stimulus and response and stimulus in ctx.tokens)
+
+
+def _episode_clauses_from_ctx(ctx: DiscourseContext) -> list[ClauseSketch]:
+    """Field/journal/subject evidence — not canned ru.dialog clause_* scripts (ADR-0081)."""
+    from casa.domain.dialogue_bind.partner_scoring import partner_quote_from_block
+
+    close = closing_for_query(ctx.query)
+    out: list[ClauseSketch] = []
+    for block in ctx.blocks:
+        cid = str(block.get("concept_id") or "")
+        src = block.get("source")
+        text = str(block.get("text") or "").strip()
+        if len(text) < 8:
+            continue
+        if src == "journal":
+            if _is_journal_bootstrap(text):
+                continue
+        elif not cid.startswith("subject.dialog."):
+            continue
+        if cid.startswith("subject.dialog."):
+            first = partner_quote_from_block(block)
+        else:
+            first = re.split(r"(?<=[.!?])\s+", text, maxsplit=1)[0].strip()
+        first = first.strip(" .")
+        while first.startswith("«") and first.endswith("»"):
+            first = first[1:-1].strip(" .")
+        if "?" in first:
+            continue
+        if len(first) < 8:
+            continue
+        c = clause_from_slot_phrase(first.rstrip(), closing=close)
+        if c:
+            out.append(c)
+        if len(out) >= 2:
+            break
+    return out
 
 
 def _materialized_phrase(block: dict[str, Any], slots: dict[str, str]) -> str:
@@ -30,6 +111,35 @@ def _materialized_phrase(block: dict[str, Any], slots: dict[str, str]) -> str:
     if block.get("bind_hub") and ("@" in cid or slots.get("slot_key")):
         return str(block.get("text") or "").strip()
     return ""
+
+
+def _field_material_active(ctx: DiscourseContext) -> bool:
+    """Live dialogue material is present; ru.dialog scripts must not overwrite it."""
+    for row in ctx.blocks:
+        cid = str(row.get("concept_id") or "")
+        slots = row.get("slots") if isinstance(row.get("slots"), dict) else {}
+        if cid in ("dialog.context.referent", "dialog.context.focus_recent"):
+            if str(slots.get("referent_prop") or "").strip():
+                return True
+        if cid not in (
+            "subject.dialog.partner_recent",
+            "dialog.context.focus_recent",
+            "dialog.context.referent",
+        ):
+            continue
+        text = " ".join(
+            p
+            for p in (
+                str(row.get("text") or ""),
+                " ".join(str(v) for v in slots.values() if v),
+            )
+            if p
+        )
+        for raw in re.findall(r"[\w\u0400-\u04FF]+", text, flags=re.UNICODE):
+            low = raw.lower()
+            if len(low) >= 4 and low not in _FIELD_MATERIAL_STOP:
+                return True
+    return False
 
 
 class MetaSkipRealizer:
@@ -153,7 +263,7 @@ class DialogBlockRealizer:
         return discourse_concept_id(block).startswith("ru.dialog.")
 
     def realize(self, block: dict[str, Any], ctx: DiscourseContext) -> list[ClauseSketch]:
-        return self._dialog_clauses(block, ctx, allow_tail=True)
+        return self._dialog_clauses(block, ctx)
 
     @staticmethod
     def narrative_clauses(
@@ -166,7 +276,7 @@ class DialogBlockRealizer:
         if ctx is not None:
             return DialogBlockRealizer().realize(block, ctx)
         slots = BlockSlots.read(block)
-        phrase = _materialized_phrase(block, slots) or slots.get("clause_1") or slots.get("sentence_1")
+        phrase = _materialized_phrase(block, slots)
         if not phrase:
             return []
         close = closing_for_query(query)
@@ -177,56 +287,68 @@ class DialogBlockRealizer:
         self,
         block: dict[str, Any],
         ctx: DiscourseContext,
-        *,
-        allow_tail: bool = True,
     ) -> list[ClauseSketch]:
         slots = BlockSlots.read(block)
         brief = partner_turn_is_brief(ctx.query)
-        if brief:
-            allow_tail = False
         close = closing_for_query(ctx.query)
         body_text = str(block.get("text") or "")
-        if _KB_GLOSS_RE.search(body_text) and not _materialized_phrase(block, slots):
+        if (
+            _KB_GLOSS_RE.search(body_text)
+            and not _materialized_phrase(block, slots)
+            and not str(slots.get("situation") or "").strip()
+        ):
             stimulus = str(slots.get("stimulus") or slots.get("word") or slots.get("surface") or "").strip().lower()
             if not stimulus or stimulus not in ctx.tokens:
                 return []
 
+        live_field_material = _field_material_active(ctx)
+
         phrase = _materialized_phrase(block, slots)
-        if phrase:
+        if phrase and not live_field_material:
             c = clause_from_slot_phrase(phrase, closing=close)
             return [c] if c else []
 
         stimulus = str(slots.get("stimulus") or slots.get("word") or "").strip().lower()
-        response = str(slots.get("response") or "").strip().lower()
+        response = str(slots.get("response") or slots.get("response_informal") or "").strip().lower()
         surface = str(slots.get("surface") or "").strip().lower()
         out: list[ClauseSketch] = []
 
-        primary = slots.get("clause_1") or slots.get("sentence_1")
-        if primary:
-            c = clause_from_slot_phrase(str(primary), closing=close)
+        if stimulus and response and stimulus in ctx.tokens:
+            c = clause_from_slot_phrase(response, closing=close)
+            if c:
+                out.append(c)
+        elif surface and surface in ctx.tokens:
+            c = clause_from_slot_phrase(surface, closing=close)
+            if c:
+                out.append(c)
+        elif surface and not stimulus and not brief:
+            c = clause_from_slot_phrase(surface, closing=close)
+            if c:
+                out.append(c)
+        elif response and not stimulus and not brief:
+            c = clause_from_slot_phrase(response, closing=close)
             if c:
                 out.append(c)
 
-        if not out:
-            if stimulus and response and stimulus in ctx.tokens:
-                c = clause_from_slot_phrase(response, closing=close)
-                if c:
-                    out.append(c)
-            elif surface and surface in ctx.tokens:
-                c = clause_from_slot_phrase(surface, closing=close)
-                if c:
-                    out.append(c)
-            elif surface and not stimulus and not brief:
-                c = clause_from_slot_phrase(surface, closing=close)
-                if c:
-                    out.append(c)
-            elif response and not stimulus and not brief:
-                c = clause_from_slot_phrase(response, closing=close)
-                if c:
-                    out.append(c)
+        if not out and not live_field_material:
+            from casa.prisms.tick.discourse.meta_glue_guard import should_suppress_dialog_script_efferent
 
-        if allow_tail:
-            out.extend(BlockSlots.extra_clauses(slots))
+            if not should_suppress_dialog_script_efferent(
+                block, ctx.blocks, query=ctx.query, concept_hints=ctx.concept_hints
+            ):
+                out.extend(_situation_clauses(slots, close))
+
+        from casa.prisms.tick.discourse.meta_glue_guard import should_suppress_dialog_script_efferent
+
+        if out and should_suppress_dialog_script_efferent(
+            block, ctx.blocks, query=ctx.query, concept_hints=ctx.concept_hints
+        ):
+            episode = _episode_clauses_from_ctx(ctx)
+            return episode if episode else []
+
+        if not out:
+            out.extend(_episode_clauses_from_ctx(ctx))
+
         return out
 
 
@@ -249,12 +371,6 @@ class GrammarBlockRealizer:
             c = clause_from_pieces(atom.detail.split())
             if c:
                 c.linker = "При этом"
-                out.append(c)
-        quoted = [q.strip() for q in re.findall(r"«([^»]{1,120})»", text) if q.strip()]
-        for q in quoted:
-            c = clause_from_pieces(q.rstrip(".!?").split(), closing=".")
-            if c:
-                c.linker = "Например" if out else ""
                 out.append(c)
         return out
 

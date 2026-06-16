@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from casa.domain.dialogue_bind.affect_surface import apply_affect_register
 from casa.domain.dialogue_bind.field import looks_like_field_recall
 from casa.prisms.tick.articulation_realize import UtterancePlan
 from casa.prisms.tick.discourse.model import DiscourseContext
@@ -18,24 +19,22 @@ def _compose_social_dialog_from_bind(
     dialog: DialogBlockRealizer,
     policy: BlockDiscoursePolicy,
 ) -> str | None:
-    """Render bind-ranked ru.dialog utterances — one hub on phatic speech acts."""
-    from casa.domain.dialogue_bind.speech_act_scoring import compose_single_hub_from_bind
+    """Render bind-ranked ru.dialog utterances — field competition, not speech-act hub paste."""
     from casa.prisms.memory.concept_layer import discourse_concept_id
+    from casa.prisms.tick.discourse.meta_glue_guard import should_suppress_dialog_script_efferent
 
     budget = ctx.budget
-    single_hub = compose_single_hub_from_bind(ctx.blocks)
-    hub_limit = 1 if single_hub else 2
+    hub_limit = 1 if ctx.partner_is_brief() else 2
     seen_hub: set[str] = set()
     seen_clause: set[str] = set()
     clauses = []
     scores: list[int] = []
+    skipped_meta: list[str] = []
 
     for block in ctx.blocks:
         score = int(block.get("score") or 0)
         floor = budget.score_floor if not seen_hub else max(4, budget.score_floor - 40)
         if score < floor:
-            if single_hub:
-                break
             continue
         cid = discourse_concept_id(block)
         hub = str(block.get("bind_hub") or cid)
@@ -45,6 +44,11 @@ def _compose_social_dialog_from_bind(
             continue
         if not policy.eligible(block, ctx):
             continue
+        if should_suppress_dialog_script_efferent(
+            block, ctx.blocks, query=ctx.query, concept_hints=ctx.concept_hints
+        ):
+            skipped_meta.append(cid)
+            continue
         extra = dialog.realize(block, ctx)
         if not extra:
             continue
@@ -52,12 +56,34 @@ def _compose_social_dialog_from_bind(
             key = " ".join(clause.pieces).strip().lower()
             if not key or key in seen_clause:
                 continue
+            apply_affect_register(clause, ctx)
             seen_clause.add(key)
             clauses.append(clause)
             scores.append(score)
         seen_hub.add(hub)
         if len(seen_hub) >= hub_limit:
             break
+
+    if clauses:
+        from casa.nervous.compose_impulse import record_compose_select
+        from casa.prisms.memory.concept_layer import discourse_concept_id
+
+        top_hub = ""
+        for block in ctx.blocks:
+            cid = discourse_concept_id(block)
+            if cid.startswith("ru.dialog.") and int(block.get("score") or 0) >= budget.score_floor:
+                top_hub = cid
+                break
+        record_compose_select(
+            ctx.state,
+            "discourse.social_bind",
+            zone="social",
+            selected=[top_hub] if top_hub else [],
+            inputs={
+                "clause_count": len(clauses),
+                "skipped_meta_glue": skipped_meta[:4],
+            },
+        )
 
     if not clauses:
         return None
