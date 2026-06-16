@@ -1,7 +1,7 @@
 # CASA partner-dialogue — планы изменений для агентов (v1)
 
 **Дата:** 2026-06-14  
-**В связке с:** [CASA-work-fable-review-dialogue-v1.md](CASA-work-fable-review-dialogue-v1.md), [CASA-fable-review-dialogue-response-v1.md](CASA-fable-review-dialogue-response-v1.md)  
+**В связке с:** [CASA-work-fable-review-dialogue-v1.md](CASA-work-fable-review-dialogue-v1.md), [CASA-fable-review-dialogue-response-v1.md](CASA-fable-review-dialogue-response-v1.md), [CASA-ADR-0081-lexical-slots-not-utterance-scripts.md](CASA-ADR-0081-lexical-slots-not-utterance-scripts.md) (норматив: слоты ≠ готовые реплики)  
 **Метод:** каждый план составлен архитектурным агентом с **прогоном кода** (не по памяти); все правки с `file:line`, ключевые фиксы проверены в памяти.
 
 ## Как пользоваться
@@ -13,6 +13,7 @@
 3. **Живые провалы — это КОНТЕНТ бандла**, читается на лету (`load_store_bundles`) — **ре-ингест/rebuild не нужен**, чинится правкой JSON за минуты (План A, Track A).
 4. **Сопутствующий баг `GrammarBlockRealizer`** (`blocks.py:253-258`): дубль-петля `«Например {fragment}»` → `"Например надеть. Например одеть."`. Удаление оракула O7 **без** фикса реализатора уронит качество грамматики → B2 в Плане A **обязателен** вместе с B1.
 5. **Impulse (ADR-0080) уже влит** (Phase A–D, 13 июня) — brief устарел; используем для отладки, добавляем `select`-события (Планы C/D).
+6. **ADR-0081:** правка текста в `clause_*` (План A Track A) — **временное harm reduction**, не целевое состояние. Цель — compose из эпизода + лексика/грамматика; `ru.dialog.*` с полными предложениями в слотах — script layer подлежит снятию.
 
 ## Граф зависимостей и порядок
 ```
