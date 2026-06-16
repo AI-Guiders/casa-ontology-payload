@@ -72,6 +72,11 @@ def compete_tract_intent(
             if damp:
                 scores["social"].score -= damp
                 scores["social"].sources.append("journal:suppress_phatic_social")
+        if r_boost >= 20 and "recall" in scores and "social" in scores:
+            margin = scores["recall"].score - scores["social"].score
+            if 0 <= margin < 8:
+                scores["recall"].score += 8 - margin
+                scores["recall"].sources.append("journal:recall_margin")
 
     if state is not None:
         try:
