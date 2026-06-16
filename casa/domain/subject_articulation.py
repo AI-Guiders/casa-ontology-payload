@@ -14,6 +14,13 @@ from casa.prisms.tick.articulation_realize import (
     _block_text,
     _extract_grammar_atom,
 )
+from casa.prisms.tick.discourse.material import (
+    build_afferent_event,
+    build_material_plan,
+    build_text_understanding,
+    candidates_from_blocks,
+    render_material_plan,
+)
 from casa.prisms.tick.phrase_compose import compose_subject_phrase
 
 _JOURNAL_BOOTSTRAP_MARKERS = (
@@ -41,16 +48,13 @@ def _blocks_with_prefix(ctx: SubjectDialogueContext, prefix: str) -> list[dict[s
 
 
 def _compose_blocks(ctx: SubjectDialogueContext, query: str) -> list[dict[str, Any]]:
-    """Blocks eligible for phrase compose — no meta, no bootstrap; echo lemmas only on social."""
+    """Blocks eligible for legacy phrase compose — no meta/bootstrap; material path runs first."""
     ql = query.lower()
     out: list[dict[str, Any]] = []
     for b in ctx.blocks:
         cid = str(b.get("concept_id") or "")
         if cid.startswith("subject."):
-            if not (
-                ctx.query_intent == "social"
-                and cid.startswith(("subject.dialog.", "subject.limbic."))
-            ):
+            if not cid.startswith("subject.dialog."):
                 continue
         text = _block_text(b)
         if b.get("source") == "journal" and _is_journal_bootstrap_text(text):
@@ -92,8 +96,23 @@ def realize_subject(plan: UtterancePlan, user_query: str, ctx: SubjectDialogueCo
     if not plan.atoms:
         plan.atoms.extend(_atoms_from_blocks(ctx))
 
+    runtime = ctx.runtime_state if isinstance(ctx.runtime_state, dict) else {}
+    meta = runtime.setdefault("meta", {}) if isinstance(runtime, dict) else {}
+    prior_event = meta.get("neumann_afferent_event") if isinstance(meta, dict) else {}
+    turn_kind = str(prior_event.get("turn_kind") or "chat") if isinstance(prior_event, dict) else "chat"
+    event = build_afferent_event(q, turn_kind=turn_kind)
+    trace = build_text_understanding(event)
+    candidates = candidates_from_blocks(trace, ctx.blocks)
+    material_plan = build_material_plan(trace, candidates)
+    if isinstance(meta, dict):
+        meta["neumann_text_understanding"] = trace.to_dict()
+        meta["neumann_material_plan"] = material_plan.to_dict()
+    body = render_material_plan(material_plan)
+    if body:
+        return body.strip()
+
     blocks = _compose_blocks(ctx, q)
-    body: str | None = None
+    body = None
 
     if ctx.query_intent == "math":
         body = _realize_math(ctx, q)
