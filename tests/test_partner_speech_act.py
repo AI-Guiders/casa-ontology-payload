@@ -31,6 +31,20 @@ def _compose_social(query: str, blocks: list[dict]) -> tuple[SubjectDialogueCont
     return ctx, compose_subject_utterance(query, ctx)
 
 
+def test_compose_single_hub_ignored_for_efferent() -> None:
+    from casa.domain.dialogue_bind.speech_act_scoring import compose_single_hub_from_bind
+
+    blocks = [
+        {
+            "concept_id": "ru.speech_act.partner.how_are_you",
+            "source": "speech_act",
+            "score": 50,
+            "slots": {"speech_act": "how_are_you", "compose_single_hub": "true"},
+        },
+    ]
+    assert not compose_single_hub_from_bind(blocks)
+
+
 def test_ask_thought_act() -> None:
     act = resolve_partner_speech_act("А что ты думаешь про это?")
     assert act == "ask_thought"
@@ -83,28 +97,19 @@ def test_gather_includes_speech_act_block() -> None:
 def test_ask_thought_reply_uses_bind_not_template() -> None:
     claim = resolve_partner_speech_act_claim("А что ты думаешь про это?")
     assert claim is not None
-    affect = {
-        "concept_id": "ru.dialog.affect",
-        "text": "Affect hub.",
-        "source": "kb",
-        "score": 90,
-        "slots": {
-            "clause_1": "осторожно говорю, что чувствую в диалоге",
-            "clause_2": "не знаю, совпадает ли мой опыт с человеческим",
-            "clause_3": "скажу, когда уверен, а когда нет",
-        },
-    }
     self_hub = {
         "concept_id": "ru.dialog.self",
         "text": "Self hub.",
         "source": "kb",
         "score": 85,
         "slots": {
-            "clause_2": "учусь говорить по-русски и помню важное в журнале",
+            "situation": "partner_asks_opinion",
+            "hedge": "учусь",
+            "predicate": "говорить",
+            "scope": "по-русски",
         },
     }
     blocks = [
-        affect,
         self_hub,
         {
             "concept_id": str(claim.get("concept_id") or "ru.speech_act.partner.ask_thought"),
@@ -139,27 +144,20 @@ def test_mirror_acknowledges_shared_uncertainty() -> None:
         "Хорошо, я тоже не знаю, но он не обязан совпадать"
     )
     assert claim is not None
-    affect = {
-        "concept_id": "ru.dialog.affect",
-        "text": "Affect.",
-        "source": "kb",
-        "score": 90,
-        "slots": {
-            "clause_1": "осторожно говорю, что чувствую в диалоге",
-            "clause_2": "не знаю, совпадает ли мой опыт с человеческим",
-            "clause_3": "скажу, когда уверен, а когда нет",
-        },
-    }
     self_hub = {
         "concept_id": "ru.dialog.self",
         "text": "Self.",
         "source": "kb",
         "score": 82,
-        "slots": {"clause_3": "отвечаю своими словами из того, что знаю"},
+        "slots": {
+            "situation": "mirror_ack",
+            "hedge": "согласен",
+            "predicate": "отвечаю",
+            "scope": "своими словами",
+        },
     }
     mirror = "Хорошо, я тоже не знаю, но он не обязан совпадать"
     blocks = [
-        affect,
         self_hub,
         {
             "concept_id": str(claim.get("concept_id") or "ru.speech_act.partner.mirror"),
@@ -185,4 +183,4 @@ def test_mirror_acknowledges_shared_uncertainty() -> None:
     low = reply.lower()
     assert "осторожно говорю" not in low
     assert "не знаю, совпадает ли мой опыт с человеческим" not in low
-    assert "скажу" in low or "своими словами" in low
+    assert "скажу" in low or "своими словами" in low or "отвечаю" in low

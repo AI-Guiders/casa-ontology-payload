@@ -35,6 +35,7 @@ SKIP_REL = frozenset(
         "casa/domain/dialogue_bind/blocks.py",
         "casa/domain/dialogue_bind/model.py",
         "casa/domain/dialogue_bind/collectors/",
+        "casa/prisms/tick/articulation_realize.py",
     }
 )
 
@@ -97,6 +98,12 @@ RULES: tuple[Rule, ...] = (
         "recall_cue_substrings",
         re.compile(r"_RECALL_CUE_SUBSTRINGS\s*="),
         "recall cue substring table in Python",
+        strict=True,
+    ),
+    Rule(
+        "no_realize_oracle_in_discourse",
+        re.compile(r"_realize_compare|_realize_explain"),
+        "compare/explain oracle on partner discourse path (CEN-only in articulation_realize)",
         strict=True,
     ),
 )

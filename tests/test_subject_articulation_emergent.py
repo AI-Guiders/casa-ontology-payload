@@ -71,8 +71,6 @@ def test_thanks_builds_connected_discourse() -> None:
             "slots": {
                 "stimulus": "спасибо",
                 "response": "пожалуйста",
-                "clause_2": "рад помочь",
-                "linker_2": "и",
             },
         },
     ]
@@ -80,7 +78,6 @@ def test_thanks_builds_connected_discourse() -> None:
     reply = compose_subject_utterance(q, _ctx(q, blocks))
     low = reply.lower()
     assert "пожалуйста" in low
-    assert "рад помочь" in low
     assert "обращайся" not in low
 
 
@@ -117,7 +114,7 @@ def test_confident_stance_includes_more_clauses_than_unknown() -> None:
             "text": "x",
             "source": "kb",
             "score": 40,
-            "slots": {"stimulus": "спасибо", "response": "пожалуйста", "clause_2": "ещё одна мысль"},
+            "slots": {"stimulus": "спасибо", "response": "пожалуйста"},
         },
         {
             "concept_id": "ru.grammar.punct.comma",
@@ -184,7 +181,7 @@ def test_brief_greeting_is_surface_only() -> None:
     assert reply.strip() in {"привет.", "привет!"}
 
 
-def test_extended_greeting_includes_tail_on_long_cue() -> None:
+def test_extended_greeting_surface_only_on_long_cue() -> None:
     blocks = [
         {
             "concept_id": "ru.dialog.greeting",
@@ -203,24 +200,23 @@ def test_extended_greeting_includes_tail_on_long_cue() -> None:
     q = "Привет, давно не виделись, рад что ты написал снова"
     reply = compose_subject_utterance(q, _ctx(q, blocks)).lower()
     assert "привет" in reply
-    assert "рад слышать" in reply
-    assert "продолжим" in reply
+    assert "рад слышать" not in reply
 
 
-def test_self_narrative_multi_sentence() -> None:
+def test_self_narrative_from_journal_not_script_slots() -> None:
     blocks = [
+        {
+            "concept_id": "agent.self.journal.note",
+            "text": "Я Нейманн — субъект на поле. Говорю из bind и журнала.",
+            "source": "journal",
+            "score": 48,
+        },
         {
             "concept_id": "ru.dialog.self",
             "text": "meta",
             "source": "kb",
             "score": 52,
-            "slots": {
-                "clause_1": "я нейманн",
-                "clause_2": "субъект на поле casa",
-                "clause_3": "говорю из bind",
-                "linker_2": "я",
-                "linker_3": "и",
-            },
+            "slots": {"situation": "partner_asks_identity"},
         },
     ]
     reply = compose_subject_utterance(
@@ -230,15 +226,15 @@ def test_self_narrative_multi_sentence() -> None:
             field_version=1,
             wm=WorkingMemory(),
             blocks=blocks,
-            source_tags=["kb"],
+            source_tags=["kb", "journal"],
             stance="confident",
             query_intent="social",
             concept_hints=["ru.dialog.self"],
         ),
     ).lower()
     assert "нейманн" in reply
-    assert "поле" in reply
-    assert reply.count(".") >= 2
+    assert "поле" in reply or "журнал" in reply
+    assert "говорю из bind" not in reply
 
 
 def test_explain_privet_compose() -> None:
