@@ -54,6 +54,7 @@ _HELP = "\n".join(
         "  /status          — полный пульс + wm.T",
         "  /remember <текст>— научить/поправить (запись в журнал)",
         "  /meaning <фраза> — понятийная сеть: фраза → смысл → RU+EN (перевод через смысл)",
+        "  /demo            — курируемый прогон round-trip (граф смысла + отказ)",
         "  /route [on|off]  — маршрутизация доменных клауз через понятийную сеть",
         "  /turns [N]       — последние N реплик",
         "  /passage         — многострочный ввод, конец — пустая строка",
@@ -243,6 +244,13 @@ def run_chat(
                     ru = realize_graph(mst, mlat, graph, lang="ru")
                     en = realize_graph(mst, mlat, graph, lang="en")
                     print(render_round_trip(graph, source=arg.strip(), ru=ru, en=en))
+                    continue
+                elif cmd == "demo":
+                    # curated round-trip showcase over the separate meaning state
+                    mst, mlat = _ensure_meaning()
+                    from casa.curriculum.demo_meaning import render_demo
+
+                    print(render_demo(mst, mlat))
                     continue
                 elif cmd == "route":
                     a = arg.strip().lower()
