@@ -164,6 +164,9 @@ def run_chat(
     def _ensure_meaning() -> tuple[dict, str]:
         nonlocal meaning_state
         if meaning_state is None:
+            from casa.curriculum.render import ensure_utf8_console
+
+            ensure_utf8_console()  # graph render uses box-drawing — never crash a legacy console
             print("  · строю понятийную сеть…", file=sys.stderr, flush=True)
             from casa.curriculum.world import build_meaning_state
 

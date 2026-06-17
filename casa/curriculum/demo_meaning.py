@@ -60,12 +60,9 @@ def render_demo(state: dict, lattice_id: str, script: list[tuple[str, list[str]]
 
 
 def main(argv: list[str] | None = None) -> int:
-    import sys
+    from casa.curriculum.render import ensure_utf8_console
 
-    try:  # console code page may not be UTF-8 (box-drawing / Cyrillic)
-        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
-    except Exception:
-        pass
+    ensure_utf8_console()  # box-drawing / Cyrillic must not crash a legacy console
     from casa.curriculum.world import build_meaning_state
 
     state, lattice_id = build_meaning_state()
