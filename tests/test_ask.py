@@ -48,8 +48,17 @@ class AskTests(unittest.TestCase):
         self.assertTrue(self.ask("можно ли есть камень?").startswith("Нет"))
         self.assertTrue(self.ask("съедобна ли книга?").startswith("Нет"))
 
-    def test_material_question_is_honest_about_missing_data(self) -> None:
+    def test_material_question_is_honest_when_unknown(self) -> None:
+        # nothing was said about the table's material -> honest "не знаю"
         self.assertIn("не знаю", self.ask("из чего стол?").lower())
+
+    def test_material_recalled_after_being_stated(self) -> None:
+        from casa.curriculum.converse import answer_clause
+
+        answer_clause(self.state, self.lat, "чашка сделана из стекла")
+        a = self.ask("из чего чашка?")
+        self.assertIn("чашка", a.lower())
+        self.assertIn("стекла", a)  # material in the genitive
 
     def test_non_question_returns_none(self) -> None:
         self.assertIsNone(self.ask("просто фраза без смысла тут"))

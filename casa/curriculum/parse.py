@@ -27,7 +27,8 @@ from casa.curriculum.situation import PREDICATE_RELATION, fingerprint, normalize
 
 _PREPS = {"на", "в", "у", "около", "рядом", "под", "над", "on", "in", "near", "by", "under", "inside", "beside"}
 _POSITIONAL = {"лежит", "стоит", "находится", "лежать", "стоять", "находиться", "висит",
-               "lies", "stands", "sits", "is", "hangs"}
+               "lies", "stands", "sits", "is", "hangs",
+               "сделан", "сделана", "сделано", "сделаны", "made"}  # made_of copula
 
 
 def _tokens(text: str) -> list[str]:

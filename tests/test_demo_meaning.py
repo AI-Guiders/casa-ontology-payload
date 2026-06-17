@@ -28,8 +28,8 @@ class DemoMeaningTests(unittest.TestCase):
     def test_refusal_section_shows_missing_agent(self) -> None:
         self.assertIn("✗", self.out)
         self.assertIn("не хватает: agent", self.out)
-        # a refused clause never produces a realised sentence
-        self.assertNotIn("→ RU: Стол", self.out)
+        # the refused «стол ест яблоко» never produces a realised sentence
+        self.assertNotIn("→ RU: Стол ест", self.out)
 
     def test_no_parse_failures_on_the_valid_clauses(self) -> None:
         # only the deliberate category errors are unsatisfied; nothing should fail to parse

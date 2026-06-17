@@ -34,6 +34,7 @@ PREDICATE_RELATION: dict[str, str] = {
     "ест": "eat", "есть": "eat", "eat": "eat", "eats": "eat",
     "пьёт": "drink", "пьет": "drink", "пить": "drink", "drink": "drink", "drinks": "drink",
     "читает": "read", "читать": "read", "read": "read", "reads": "read",
+    "из": "made_of", "of": "made_of",
 }
 
 
