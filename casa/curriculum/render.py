@@ -27,6 +27,12 @@ def _leaf(concept: str) -> str:
     return concept.split(".")[-1]
 
 
+def _node_label(concept: str, nodes: dict[str, Any]) -> str:
+    """Concept leaf plus any adjective attributes: apple -> apple[red]."""
+    attrs = (nodes.get(concept) or {}).get("attrs") or []
+    return f"{_leaf(concept)}[{','.join(attrs)}]" if attrs else _leaf(concept)
+
+
 def _order_path(edges: list[dict[str, Any]]) -> list[dict[str, Any]] | None:
     """If the edges form one simple chain (a─▶b─▶c), return them in path order so the
     graph renders inline; otherwise None (caller renders one edge per line)."""
@@ -48,11 +54,6 @@ def _order_path(edges: list[dict[str, Any]]) -> list[dict[str, Any]] | None:
     return chain if len(chain) == len(edges) else None
 
 
-def _edge_str(e: dict[str, Any]) -> str:
-    arrow = "──" + e["rel"] + "──▶" if e.get("satisfied") else "──" + e["rel"] + "──✗"
-    return f"{_leaf(e['src'])} {arrow} {_leaf(e['dst'])}"
-
-
 def render_graph(graph: dict[str, Any], *, indent: str = "  ") -> str:
     """Render the meaning graph as a labelled block: edges, then a node legend."""
     nodes = graph.get("nodes", {})
@@ -63,14 +64,17 @@ def render_graph(graph: dict[str, Any], *, indent: str = "  ") -> str:
     else:
         chain = _order_path(edges)
         if chain:
-            seq = _leaf(chain[0]["src"])
+            seq = _node_label(chain[0]["src"], nodes)
             for e in chain:
                 tip = "▶" if e.get("satisfied") else "✗"
-                seq += f" ──{e['rel']}──{tip} {_leaf(e['dst'])}"
+                seq += f" ──{e['rel']}──{tip} {_node_label(e['dst'], nodes)}"
             lines.append(f"{indent}│  {seq}")
         else:
             for e in edges:
-                lines.append(f"{indent}│  {_edge_str(e)}")
+                tip = "──▶" if e.get("satisfied") else "──✗"
+                lines.append(
+                    f"{indent}│  {_node_label(e['src'], nodes)} ──{e['rel']}{tip[2:]} {_node_label(e['dst'], nodes)}"
+                )
     # node legend: distinguishing type + affordances
     for cid in _legend_order(nodes, edges):
         node = nodes[cid]

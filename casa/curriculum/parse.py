@@ -84,10 +84,17 @@ def resolve_token(state: dict, lattice_id: str, token: str, names: list[tuple[st
     return best
 
 
-def parse_triples(state: dict, lattice_id: str, text: str) -> list[tuple[str, str, str]]:
-    """Parse a controlled clause into (relation, concept, concept) triples (concept ids)."""
+def parse_situation(
+    state: dict, lattice_id: str, text: str
+) -> tuple[list[tuple[str, str, str]], dict[str, list[str]]]:
+    """Parse a controlled clause into triples plus per-concept adjective attributes.
+
+    Returns ``(triples, attrs)`` where ``attrs[concept_id]`` is the list of attribute ids
+    (e.g. ``["red"]``) modifying that concept. An adjective binds to the next noun."""
+    from casa.curriculum.attributes import attr_of_token
+
     names = _name_index(state, lattice_id)
-    seq: list[tuple[str, Any]] = []  # ('prep'|'verb'|'noun', payload) in order
+    seq: list[tuple[str, Any]] = []  # ('prep'|'verb'|'noun'|'adj', payload) in order
     for tok in _tokens(text):
         if tok in _PREPS:
             seq.append(("prep", normalize_relation(tok)))
@@ -95,10 +102,23 @@ def parse_triples(state: dict, lattice_id: str, text: str) -> list[tuple[str, st
             continue  # positional copula — the preposition carries the relation
         elif tok in PREDICATE_RELATION and tok not in _PREPS:
             seq.append(("verb", normalize_relation(tok)))
+        elif (aid := attr_of_token(tok)) is not None:
+            seq.append(("adj", aid))
         else:
             cid = resolve_token(state, lattice_id, tok, names)
             if cid:
                 seq.append(("noun", cid))
+
+    # bind each adjective to the next noun in sequence
+    attrs: dict[str, list[str]] = {}
+    pending: list[str] = []
+    for kind, payload in seq:
+        if kind == "adj":
+            pending.append(payload)
+        elif kind == "noun" and pending:
+            attrs.setdefault(payload, [])
+            attrs[payload].extend(a for a in pending if a not in attrs[payload])
+            pending = []
 
     nouns = [(i, p) for i, (k, p) in enumerate(seq) if k == "noun"]
     preps = [(i, p) for i, (k, p) in enumerate(seq) if k == "prep"]
@@ -115,15 +135,25 @@ def parse_triples(state: dict, lattice_id: str, text: str) -> list[tuple[str, st
             figure = before[-1] if before else (after[1] if len(after) > 1 else None)
             if figure:
                 triples.append((rel, figure, ground))
-        return triples
+        return triples, attrs
     if verbs and len(nouns) >= 2:  # transitive S-V-O
-        return [(verbs[0][1], nouns[0][1], nouns[1][1])]
-    return []
+        return [(verbs[0][1], nouns[0][1], nouns[1][1])], attrs
+    return [], attrs
+
+
+def parse_triples(state: dict, lattice_id: str, text: str) -> list[tuple[str, str, str]]:
+    """Parse a controlled clause into (relation, concept, concept) triples (concept ids)."""
+    return parse_situation(state, lattice_id, text)[0]
 
 
 def parse_graph(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
-    """Parse text and build its meaning graph."""
-    return meaning_graph(state, lattice_id, parse_triples(state, lattice_id, text))
+    """Parse text and build its meaning graph, with adjective attributes on the nodes."""
+    triples, attrs = parse_situation(state, lattice_id, text)
+    graph = meaning_graph(state, lattice_id, triples)
+    for cid, aids in attrs.items():
+        if cid in graph["nodes"]:
+            graph["nodes"][cid]["attrs"] = aids
+    return graph
 
 
 def parse_fingerprint(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
