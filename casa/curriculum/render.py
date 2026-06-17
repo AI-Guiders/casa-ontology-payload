@@ -14,7 +14,20 @@ reason, so the same renderer serves the refusal showcase.
 
 from __future__ import annotations
 
+import sys
 from typing import Any
+
+
+def ensure_utf8_console() -> None:
+    """Make stdout/stderr emit UTF-8 and never crash on the box-drawing / Cyrillic glyphs.
+
+    A legacy Windows console (cp866/cp1251) raises UnicodeEncodeError on '▶'/'═'/Cyrillic;
+    ``errors='replace'`` degrades an unrenderable glyph to '?' instead of killing the run."""
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
+        except Exception:
+            pass
 
 # generic types/affordances carried by nearly everything — hidden so the distinguishing
 # ones stand out in the legend (every physical object is positionable/ownable).
