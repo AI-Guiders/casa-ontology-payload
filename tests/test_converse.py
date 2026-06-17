@@ -33,6 +33,12 @@ def test_valid_clause_is_confirmed_and_remembered() -> None:
     assert again is not None and ("Понял" in again)
 
 
+def test_clause_with_adjective_is_routed_and_keeps_the_modifier() -> None:
+    state, lat = _state()
+    r = answer_clause(state, lat, "красное яблоко на столе")
+    assert r is not None and "Красное яблоко на столе" in r  # adjective survives, clause routed
+
+
 def test_category_error_is_explained() -> None:
     state, lat = _state()
     assert "не получается" in (answer_clause(state, lat, "идея на столе") or "")

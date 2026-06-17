@@ -285,17 +285,22 @@ def run_chat(
             # (validation + meaning) BEFORE the statistical engine. Strictly gated — a
             # cheap pre-filter then a clean-clause check; anything else falls through.
             if route_on and "\n" not in query:
+                from casa.curriculum.ask import answer_question, looks_question
                 from casa.curriculum.converse import answer_clause, looks_domain
 
-                if looks_domain(query):
+                routed = None
+                if looks_question(query):  # «что на столе?» — answer from the graph/memory
+                    mst, mlat = _ensure_meaning()
+                    routed = answer_question(mst, mlat, query)
+                elif looks_domain(query):  # a clean domain clause — validate + remember
                     mst, mlat = _ensure_meaning()
                     routed = answer_clause(mst, mlat, query)
-                    if routed:
-                        print(f"{display}> {routed}")
-                        if life_bar is not None:
-                            life_bar.note_output_lines(1)
-                        print()
-                        continue
+                if routed:
+                    print(f"{display}> {routed}")
+                    if life_bar is not None:
+                        life_bar.note_output_lines(1)
+                    print()
+                    continue
 
             t0 = time.perf_counter()
             try:

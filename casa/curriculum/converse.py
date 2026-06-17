@@ -31,6 +31,7 @@ _FUNCTION_OK = {"the", "a", "an", "лежит", "стоит", "находитс�
 def _is_clean_clause(state: dict, lattice_id: str, text: str) -> bool:
     """Every token must be a known concept, a preposition, a known verb, or an article —
     so casual sentences with unknown words (e.g. «у меня нет времени») are NOT routed."""
+    from casa.curriculum.attributes import attr_of_token
     from casa.curriculum.parse import _POSITIONAL, _PREPS, _name_index, resolve_token
     from casa.curriculum.situation import PREDICATE_RELATION
 
@@ -41,6 +42,8 @@ def _is_clean_clause(state: dict, lattice_id: str, text: str) -> bool:
             continue
         if t in _PREPS or t in _POSITIONAL or t in PREDICATE_RELATION or t in _FUNCTION_OK:
             continue
+        if attr_of_token(t) is not None:  # an adjective modifier (красное …) is fine
+            continue
         if resolve_token(state, lattice_id, t, names) is None:
             return False
     return True
@@ -48,18 +51,16 @@ def _is_clean_clause(state: dict, lattice_id: str, text: str) -> bool:
 
 def answer_clause(state: dict, lattice_id: str, text: str) -> str | None:
     """Answer a domain clause via the conceptual network, or None if it is not one."""
-    from casa.curriculum.concept_net import meaning_graph
-    from casa.curriculum.parse import parse_triples
+    from casa.curriculum.parse import parse_graph
     from casa.curriculum.roundtrip import realize_graph
     from casa.curriculum.situation_memory import recall_similar
     from casa.curriculum.situation_store import load_memory, persist_situation
 
     if not _is_clean_clause(state, lattice_id, text):
         return None  # unknown words -> not a clean domain clause -> normal engine
-    triples = parse_triples(state, lattice_id, text)
-    if not triples:
+    graph = parse_graph(state, lattice_id, text)  # includes adjective attrs on nodes
+    if not graph.get("edges"):
         return None  # not a clean domain clause -> let the normal engine handle it
-    graph = meaning_graph(state, lattice_id, triples)
     bad = next((e for e in graph["edges"] if not e.get("satisfied")), None)
     if bad:
         miss = (bad.get("reason") or "").replace("missing:", "").strip("/")
