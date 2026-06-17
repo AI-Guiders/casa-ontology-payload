@@ -13,7 +13,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from casa.prisms.memory.grapheme_ingest import L0_ID, merge_l0_lattices
+from casa.prisms.memory.grapheme_ingest import L0_ID_LEGACY as L0_ID, merge_l0_lattices
 from casa.prisms.memory.lexicon_usage_axes import attach_axes_to_state, axes_report, merge_locale_axes
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
 from casa.prisms.memory.lexicon_shard import is_l2_en_word_lattice, sharding_config

@@ -27,16 +27,37 @@ def _content_tokens(text: str) -> set[str]:
     }
 
 
+def _shared_novel(query: str, body: str) -> tuple[int, int]:
+    """(shared, novel) content-concept counts, stem-aware so совпадать~совпадает."""
+    def stem(w: str) -> str:
+        return w[:6] if len(w) > 6 else w
+
+    qs = {stem(w) for w in _content_tokens(query)}
+    bs = {stem(w) for w in _content_tokens(body)}
+    return len(bs & qs), len(bs - qs)
+
+
 def _parrot_penalty(query: str, body: str) -> int:
-    """Variant opens with partner's line — field overlap without novel efferent."""
+    """Variant repeats the partner's line — field overlap WITHOUT novel efferent.
+
+    Three echo signals: (1) the variant repeats TWO+ of the partner's content
+    concepts (stem-aware, so "не знаю"+"совпада…" is caught even across inflection);
+    (2) it opens with the partner's words AND adds little new content; (3) heavy
+    literal field overlap. A variant that echoes ONE concept but adds real new content
+    is genuine mirroring, not parroting ("я тоже не знаю" -> "не знаю, совпадает ли
+    мой опыт"), and is not penalised.
+    """
     from casa.domain.dialogue_bind.blocks import score_text
 
     ql = (query or "").lower()
     bl = (body or "").lower()
+    shared, novel = _shared_novel(query, body)
+    if shared >= 2:
+        return 80
     words = re.findall(r"[\w\u0400-\u04FF]+", bl, flags=re.UNICODE)
     for n in range(min(6, len(words)), 0, -1):
         prefix = " ".join(words[:n]).lower()
-        if len(prefix) >= 5 and prefix in ql:
+        if novel < 2 and len(prefix) >= 5 and prefix in ql:
             return 88
     stub: dict[str, Any] = {"text": body, "slots": {"phrase": body}}
     if score_text(query, body, base=0) >= 16 or partner_field_overlap(query, stub) >= 14:

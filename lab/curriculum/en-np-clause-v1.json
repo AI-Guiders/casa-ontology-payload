@@ -1,0 +1,23 @@
+{
+  "name": "en-np-clause-v1",
+  "description": "The full generator: rich noun phrases (determiner, number, adjective, plural) inside clauses, with the SUBJECT's number driving verb agreement (the cat drinks / the cats drink; Does the cat / Do the cats). Stacks glossary + plural/3sg/past rules + NP order + clause constructions, all field-stored. Numbers force plural and pluralise the noun via the learned plural rule. Generation from given roles+features; not parsing.",
+  "lattice_id": "schema-math",
+  "glossary": [
+    ["кот", "cat"], ["собака", "dog"], ["девочка", "girl"], ["рыба", "fish"],
+    ["вода", "water"], ["книга", "book"],
+    ["большой", "big"], ["маленький", "small"], ["два", "two"], ["три", "three"],
+    ["пить", "drink"], ["видеть", "see"], ["любить", "love"]
+  ],
+  "irregular_past": {"drink": "drank", "see": "saw"},
+  "cases": [
+    [{"subject": {"noun": "кот"}, "obj": {"noun": "вода"}, "verb": "пить"}, "The cat drinks the water."],
+    [{"subject": {"noun": "кот", "plural": true}, "obj": {"noun": "вода"}, "verb": "пить"}, "The cats drink the water."],
+    [{"subject": {"noun": "кот", "number": "два", "adj": "большой", "determiner": null}, "obj": {"noun": "вода"}, "verb": "пить"}, "Two big cats drink the water."],
+    [{"subject": {"noun": "кот"}, "obj": {"noun": "рыба", "adj": "маленький"}, "verb": "видеть"}, "The cat sees the small fish."],
+    [{"subject": {"noun": "кот", "plural": true}, "obj": {"noun": "вода"}, "verb": "пить", "mood": "interrogative"}, "Do the cats drink the water?"],
+    [{"subject": {"noun": "кот"}, "obj": {"noun": "вода"}, "verb": "пить", "mood": "interrogative"}, "Does the cat drink the water?"],
+    [{"subject": {"noun": "кот", "plural": true}, "obj": {"noun": "вода"}, "verb": "пить", "polarity": "negative"}, "The cats do not drink the water."],
+    [{"subject": {"noun": "собака", "number": "три", "adj": "маленький", "determiner": "the"}, "obj": {"noun": "рыба"}, "verb": "любить", "tense": "past"}, "The three small dogs loved the fish."],
+    [{"subject": {"noun": "девочка"}, "obj": {"noun": "книга", "adj": "большой"}, "verb": "любить"}, "The girl loves the big book."]
+  ]
+}

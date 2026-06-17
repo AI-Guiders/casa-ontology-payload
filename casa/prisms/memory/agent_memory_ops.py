@@ -373,6 +373,7 @@ def main() -> None:
                 "reason": args.reason,
             },
             allow_unconfirmed=args.allow_unconfirmed,
+            operator_sign=True,  # the promote-canon CLI is an explicit operator action
         )
     elif args.cmd == "demote-canon":
         fs = field_state_path(store_dir)

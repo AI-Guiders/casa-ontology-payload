@@ -56,7 +56,7 @@ def defense_core_block(state: dict) -> dict[str, Any]:
     return core
 
 
-def spawn_defense_zone(state: dict, *, config: dict[str, Any] | None = None) -> dict[str, Any]:
+def spawn_defense_zone(state: dict, *, tick: int = 0, config: dict[str, Any] | None = None) -> dict[str, Any]:
     cfg = config or {}
     zone = ensure_defense_zone(state)
     if cfg.get("zone_policy"):

@@ -40,4 +40,6 @@ def ensure_lexical_lattices(state: dict) -> None:
         lat = lats.get(lid) or {}
         if lat.get("cells") or lat.get("_cells_in_ltm"):
             continue
-        import_lattice_into_prism(state, PRISM_LANG_RU, lid, _empty_lattice())
+        # bootstrap context: creating the empty lattice container for immutable
+        # lattices (alphabet-ru, syllables) must bypass the hot-write gate
+        import_lattice_into_prism(state, PRISM_LANG_RU, lid, _empty_lattice(), write_context="bootstrap")

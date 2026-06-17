@@ -247,6 +247,19 @@ def main() -> None:
         raise SystemExit(f"requires missing bundles: {missing}")
 
     bundle_name, incoming = _load_incoming_bundle(delta, repo=repo)
+
+    if isinstance(incoming, dict) and isinstance(incoming.get("claims"), list):
+        from casa.prisms.shared.bundle_validate import validate_bundle
+
+        _vrep = validate_bundle(incoming)
+        _verrs = [v for v in _vrep["violations"] if v.get("severity") == "error"]
+        if _verrs:
+            _msg = f"bundle validation failed for {bundle_name}: {_verrs[:8]}"
+            if args.force:
+                print(f"WARNING (forced past validation): {_msg}")
+            else:
+                raise SystemExit(_msg)
+
     bundle_spec = delta.get("bundle") or {}
     action = bundle_spec.get("action") or "replace"
 

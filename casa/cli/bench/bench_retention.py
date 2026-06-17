@@ -26,8 +26,11 @@ from casa.prisms.memory.memory_prisms import (
     run_sleep,
     _strengthen_concept,
 )
+from casa.prisms.shared.lattice_names_v1 import LEXICON_RU
 
-LATTICE_ID = "L2_word"
+# canonical id: append_episode/run_sleep canonicalize the legacy "L2_word" alias to
+# lexicon-ru, so the lattice must be keyed canonically or the retain lookup misses
+LATTICE_ID = LEXICON_RU
 TARGET_CONCEPT = "lang.word.приказ"
 MIN_RETAIN_COPIES = 2
 STRENGTH = 4

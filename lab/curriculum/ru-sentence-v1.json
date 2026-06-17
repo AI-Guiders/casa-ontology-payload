@@ -1,0 +1,16 @@
+{
+  "name": "ru-sentence-v1",
+  "description": "Russian sentence generation from a meaning triple — the mirror of the English generator. Subject stays nominative, the verb is conjugated to 3rd person singular (lang.rule.present3sg.ru), the object is declined to the accusative (lang.rule.acc-sg.ru), and the S-V-O order is induced from examples and field-stored. No articles. Generation from given roles, not parsing; regular conjugation only (writing/motion verbs that mutate the stem, and soft stems, are out of scope).",
+  "lattice_id": "schema-math",
+  "order_examples": [
+    [{"subj": "кот", "verb": "читает", "obj": "книгу"}, ["кот", "читает", "книгу"]],
+    [{"subj": "мальчик", "verb": "строит", "obj": "дом"}, ["мальчик", "строит", "дом"]]
+  ],
+  "held_out": [
+    [{"subj": "девочка", "verb": "читать", "obj": "книга"}, "Девочка читает книгу."],
+    [{"subj": "мальчик", "verb": "любить", "obj": "собака"}, "Мальчик любит собаку."],
+    [{"subj": "кот", "verb": "ловить", "obj": "рыба"}, "Кот ловит рыбу."],
+    [{"subj": "человек", "verb": "строить", "obj": "дом"}, "Человек строит дом."],
+    [{"subj": "студент", "verb": "знать", "obj": "работа"}, "Студент знает работу."]
+  ]
+}

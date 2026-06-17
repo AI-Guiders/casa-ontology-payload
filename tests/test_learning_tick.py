@@ -170,6 +170,13 @@ def test_maybe_sleep_phase_batch_size(tmp_path: Path) -> None:
     from casa.prisms.control.tick import run_control_extensions
 
     _, state = _minimal_store(tmp_path)
+    # words belong on the mutable lexicon lattice, not the immutable grapheme lattice
+    from casa.prisms.shared.lattice_names_v1 import LEXICON_RU
+    from casa.prisms.memory.memory_prisms import memory_lattices, persist_content_lattices
+
+    lats = memory_lattices(state)
+    lats[LEXICON_RU] = {"width": 8, "height": 8, "cells": [[] for _ in range(64)], "concept_prefix": "lang.word."}
+    persist_content_lattices(state, lats)
     bundle = {"claims": [], "graph": {"edges": []}}
     for i in range(3):
         append_episode(
@@ -177,7 +184,7 @@ def test_maybe_sleep_phase_batch_size(tmp_path: Path) -> None:
             cue=f"c{i}",
             surface_attempt="x",
             correct=f"w{i}",
-            lattice_id="L0_grapheme",
+            lattice_id=LEXICON_RU,
             concept_id=f"lang.word.w{i}",
         )
     control = run_control_extensions(

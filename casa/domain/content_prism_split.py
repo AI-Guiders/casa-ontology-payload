@@ -109,7 +109,9 @@ def split_content_prisms(state: dict, *, move: bool = True) -> dict[str, Any]:
         moved[target].append(lid)
         if not move:
             continue
-        import_lattice_into_prism(state, target, lid, lat)
+        # structural migration of the lattice container to its domain prism
+        # (incl. immutable lattices) — a relocation, not a content mutation
+        import_lattice_into_prism(state, target, lid, lat, write_context="bootstrap")
         src.pop(lid, None)
 
     if move:

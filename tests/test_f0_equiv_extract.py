@@ -46,6 +46,7 @@ def test_sleep_extract_enables_equiv_predict() -> None:
             concept_id=cid,
             correction_kind="mul_bridge",
             scene=scene,
+            structure_tag="self_promote",  # sanctioned earned-write (gate-authorized in production)
         )
     sleep = run_sleep(state, b)
     kinds = [it.get("kind") for it in sleep.get("items") or []]

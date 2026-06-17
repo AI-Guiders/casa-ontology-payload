@@ -58,6 +58,7 @@ def test_sleep_mints_names_without_teacher_links() -> None:
         lattice_id="schema-math",
         concept_id="math.num.eleven",
         scene="ru: одиннадцать — один на десятью | en: eleven — one left",
+        structure_tag="self_promote",  # sanctioned earned-write (gate-authorized in production)
     )
     sleep = run_sleep(state, bundle)
     assert any(x.get("kind") == "emergent_names" for x in sleep.get("items") or [])

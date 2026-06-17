@@ -1,0 +1,22 @@
+{
+  "name": "en-clause-v1",
+  "description": "Clause constructions over the S-V-O core: tense (present/past), polarity (affirmative/negative), and mood (declarative/interrogative) via English do-support. Auxiliary does/did carries tense+agreement under negation/questions while the main verb stays base; the plain declarative inflects the verb. Forms come from the learned 3sg and past rules; irregular pasts are a small given lexicon. Generation from given roles+features, not parsing.",
+  "lattice_id": "schema-math",
+  "glossary": [
+    ["кот", "cat"], ["собака", "dog"], ["девочка", "girl"], ["мальчик", "boy"],
+    ["пить", "drink"], ["любить", "love"], ["видеть", "see"], ["нести", "carry"], ["знать", "know"],
+    ["вода", "water"], ["рыба", "fish"], ["книга", "book"], ["молоко", "milk"], ["дом", "house"]
+  ],
+  "irregular_past": {"drink": "drank", "see": "saw", "know": "knew"},
+  "cases": [
+    [{"subj": "кот", "verb": "пить", "obj": "вода", "tense": "present", "polarity": "affirmative", "mood": "declarative"}, "The cat drinks the water."],
+    [{"subj": "кот", "verb": "пить", "obj": "вода", "tense": "present", "polarity": "negative", "mood": "declarative"}, "The cat does not drink the water."],
+    [{"subj": "кот", "verb": "пить", "obj": "вода", "tense": "present", "polarity": "affirmative", "mood": "interrogative"}, "Does the cat drink the water?"],
+    [{"subj": "кот", "verb": "пить", "obj": "вода", "tense": "past", "polarity": "affirmative", "mood": "declarative"}, "The cat drank the water."],
+    [{"subj": "кот", "verb": "пить", "obj": "вода", "tense": "past", "polarity": "negative", "mood": "declarative"}, "The cat did not drink the water."],
+    [{"subj": "кот", "verb": "пить", "obj": "вода", "tense": "past", "polarity": "affirmative", "mood": "interrogative"}, "Did the cat drink the water?"],
+    [{"subj": "собака", "verb": "видеть", "obj": "рыба", "tense": "present", "polarity": "affirmative", "mood": "interrogative"}, "Does the dog see the fish?"],
+    [{"subj": "девочка", "verb": "любить", "obj": "книга", "tense": "past", "polarity": "negative", "mood": "declarative"}, "The girl did not love the book."],
+    [{"subj": "девочка", "verb": "нести", "obj": "молоко", "tense": "present", "polarity": "affirmative", "mood": "declarative"}, "The girl carries the milk."]
+  ]
+}

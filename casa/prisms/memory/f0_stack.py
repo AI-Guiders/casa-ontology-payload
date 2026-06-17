@@ -463,7 +463,16 @@ def mint_episode_links(
     links: list[dict[str, Any]],
     copies: int = 4,
 ) -> list[dict[str, str]]:
-    """Sleep Extract: teacher/agent derived edges (names, prepares, example, …)."""
+    """Sleep Extract: teacher/agent derived edges (names, prepares, example, …).
+
+    Batched: copies the grid ONCE and places every edge on it, instead of calling
+    strengthen_graph_edge per link (which deep-copies the whole grid each time —
+    O(links x grid) = quadratic when minting a large glossary). Equivalent result.
+    """
+    if lattice_id not in lattices:
+        return []
+    lat = lattices[lattice_id]
+    g = Grid(width=int(lat["width"]), height=int(lat["height"]), cells=[list(x) for x in lat["cells"]])
     minted: list[dict[str, str]] = []
     for raw in links or []:
         src = str(raw.get("src") or "")
@@ -471,8 +480,13 @@ def mint_episode_links(
         dst = str(raw.get("dst") or "")
         if not (src and rel and dst):
             continue
-        if strengthen_graph_edge(lattices, lattice_id, src, rel, dst, copies=copies):
-            minted.append({"src": src, "relation": rel, "dst": dst, "edge": f"E:{src}|{rel}|{dst}"})
+        tok = f"E:{src}|{rel}|{dst}"
+        _place_token(g, tok, tok, copies=copies, radius=4)
+        for cid in (src, dst):
+            if cid.startswith(("math.", "lang.")):
+                _place_token(g, f"C:{cid}", f"C:{cid}", copies=max(2, copies // 2), radius=3)
+        minted.append({"src": src, "relation": rel, "dst": dst, "edge": tok})
+    lat["cells"] = g.cells
     return minted
 
 

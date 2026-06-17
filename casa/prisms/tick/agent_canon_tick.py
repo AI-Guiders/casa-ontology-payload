@@ -30,9 +30,10 @@ def _registry_has_concepts(store_dir: Path, lattice_id: str, concept_ids: list[s
     return all(str(c) in have for c in concept_ids)
 
 
-def _candidate_explicit_ready(row: dict[str, Any]) -> bool:
-    tags = [str(t) for t in (row.get("tags") or [])]
-    return "canon-ready" in tags
+def _wrong_sibling(concept_id: str) -> str:
+    """A deliberately-wrong concept in the same prefix family (negative control)."""
+    prefix, _, leaf = str(concept_id).rpartition(".")
+    return f"{prefix}.__not_{leaf}__" if prefix else f"__not_{leaf}__"
 
 
 def verify_canon_candidate(
@@ -40,44 +41,63 @@ def verify_canon_candidate(
     store_dir: Path,
     candidate: dict[str, Any],
     *,
+    lattice_id: str | None = None,
     bundle: dict | None = None,
     tick: int = 0,
 ) -> dict[str, Any]:
-    """Agent held-out check before promote — predict on test_cues, mastery streak."""
-    jid = str(candidate.get("journal_id") or "")
-    if not jid:
-        return {"ready": False, "reason": "no_journal_id"}
+    """Held-out gate before promote (ADR-0037/0069).
 
-    gate = _canon_gate_id(jid)
-    if mastery_ready(state, gate, min_streak=2):
-        return {"ready": True, "reason": "mastery_streak", "gate": gate}
+    Replaces the self-grantable canon-ready tag + mastery-streak bypass: predict on
+    HELD-OUT test_cues with the answer-injection vector (claims_nav) ablated, and
+    require that a deliberately-wrong sibling concept does NOT surface. Returns
+    ``{ready, report, reason}``; the promote ceremony consumes ``report``. Too few
+    probes -> not ready (no ungated promotion).
+    """
+    import hashlib
 
-    for row in _journal_rows(store_dir, jid):
-        if _candidate_explicit_ready(row):
-            record_gate_attempt(state, gate, passed=True, tick=tick, store_dir=store_dir)
-            record_gate_attempt(state, gate, passed=True, tick=tick, store_dir=store_dir)
-            return {"ready": True, "reason": "tag_canon_ready", "gate": gate}
-
-    concepts = [str(c) for c in (candidate.get("concepts") or [])]
-    cues = [str(c) for c in (candidate.get("test_cues") or []) if c]
-    if not cues:
-        return {"ready": False, "reason": "no_test_cues", "gate": gate}
-
+    from casa.eval.held_out_gate import GateReport, ablate_injection_vectors, promote_candidate_id
     from casa.prisms.tick.predict_tick import predict_tick
 
-    passed_cue = False
-    for cue in cues[:4]:
-        rep = predict_tick(state, cue, modality="t9", bundle=bundle)
+    concepts = [str(c) for c in (candidate.get("concepts") or []) if c]
+    cues = [str(c) for c in (candidate.get("test_cues") or []) if c]
+    lid = str(lattice_id or _pick_lattice(candidate, concepts) or "")
+    if not concepts or not lid:
+        return {"ready": False, "reason": "no_concepts_or_lattice", "report": None}
+    if len(cues) < 2:
+        return {"ready": False, "reason": "insufficient_probes", "report": None}
+
+    ordered = sorted(cues, key=lambda c: hashlib.sha1(c.encode("utf-8")).hexdigest())
+    held_out = ordered[len(ordered) - max(1, len(ordered) // 2):]
+    st = ablate_injection_vectors(state)
+
+    def _surfaces(cue: str, targets: list[str]) -> bool:
+        rep = predict_tick(st, cue, modality="t9", bundle=bundle)
         if rep.get("verdict") not in ("pass", "provisional"):
-            continue
-        hyp = str(rep.get("hypothesis") or rep.get("top_concept") or "")
-        if any(c in hyp or c.split(".")[-1] in hyp.lower() for c in concepts):
-            passed_cue = True
-            break
-    record_gate_attempt(state, gate, passed=passed_cue, tick=tick, store_dir=store_dir)
-    if mastery_ready(state, gate, min_streak=2):
-        return {"ready": True, "reason": "predict_mastery", "gate": gate}
-    return {"ready": False, "reason": "mastery_pending", "gate": gate, "last_cue_pass": passed_cue}
+            return False
+        hyp = str((rep.get("predict") or {}).get("hypothesis") or rep.get("hypothesis") or "")
+        return any(c in hyp or c.split(".")[-1] in hyp.lower() for c in targets)
+
+    passes = sum(1 for cue in held_out if _surfaces(cue, concepts))
+    held_score = round(passes / len(held_out), 4)
+    wrong = [_wrong_sibling(c) for c in concepts]
+    neg_hits = sum(1 for cue in held_out if _surfaces(cue, wrong))
+    neg_rate = round(neg_hits / len(held_out), 4)
+    negative_control_passed = neg_rate <= 0.34
+    passed = bool(held_score >= 1.0 and passes >= 1 and negative_control_passed)
+
+    report = GateReport(
+        passed=passed,
+        candidate_id=promote_candidate_id(lid, concepts),
+        held_out_score=held_score,
+        held_out_pass=passes,
+        held_out_n=len(held_out),
+        baseline_delta=0.0,
+        negative_control_passed=negative_control_passed,
+        neg_pass_rate=neg_rate,
+        provenance={"authority": "held_out_gate_tick", "ablations": ["claims_nav"], "held_out_cues": held_out},
+        cases=[],
+    )
+    return {"ready": passed, "reason": "held_out_gate", "report": report, "gate": _canon_gate_id(str(candidate.get("journal_id") or ""))}
 
 
 def _journal_rows(store_dir: Path, journal_id: str) -> list[dict[str, Any]]:
@@ -125,7 +145,7 @@ def maybe_promote_canon_on_tick(
         if _registry_has_concepts(store_dir, lid, concepts):
             continue
 
-        verify = verify_canon_candidate(state, store_dir, cand, bundle=bundle, tick=tick)
+        verify = verify_canon_candidate(state, store_dir, cand, lattice_id=lid, bundle=bundle, tick=tick)
         if not verify.get("ready"):
             continue
 
@@ -137,8 +157,9 @@ def maybe_promote_canon_on_tick(
                 "lattice_id": lid,
                 "concept_ids": concepts,
                 "source_journal_id": jid,
-                "reason": f"tick promote ({verify.get('reason')}): {cand.get('text', '')[:120]}",
+                "reason": f"tick promote (held-out gate): {cand.get('text', '')[:120]}",
             },
+            gate_report=verify.get("report"),
             persist=False,
         )
         cue = " · ".join(str(c) for c in (cand.get("test_cues") or [])[:2])
