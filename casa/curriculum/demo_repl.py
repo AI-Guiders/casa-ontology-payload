@@ -248,12 +248,17 @@ def handle(state: dict, line: str) -> str | None:
         f = situation_fingerprint(state, LAT, raw)
         return f"отпечаток ситуации: id={f['id']}\n  карта: {f['key']}"
     if cmd == "rt" and args:
-        from casa.curriculum.roundtrip import translate_through_meaning
+        from casa.curriculum.parse import parse_graph
+        from casa.curriculum.render import render_round_trip
+        from casa.curriculum.roundtrip import realize_graph
 
-        out = translate_through_meaning(state, LAT, " ".join(args))
-        if not (out["ru"] or out["en"]):
+        text = " ".join(args)
+        graph = parse_graph(state, LAT, text)
+        if not graph.get("edges"):
             return "(не разобрал — нет известных понятий/отношений)"
-        return f"через смысл →\n  RU: {out['ru'] or '(?)'}\n  EN: {out['en'] or '(?)'}"
+        ru = realize_graph(state, LAT, graph, lang="ru")
+        en = realize_graph(state, LAT, graph, lang="en")
+        return render_round_trip(graph, source=text, ru=ru, en=en)
     if cmd == "parse" and args:
         from casa.curriculum.parse import parse_graph, parse_triples
         from casa.curriculum.concept_net import render_graph

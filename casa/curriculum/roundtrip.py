@@ -26,10 +26,12 @@ _LOC_PREP = {
     "in": {"ru": "в", "en": "in", "case": "prep"},
     "near": {"ru": "у", "en": "near", "case": "gen"},
 }
+# relation -> verb. ``ru3sg`` holds an irregular present 3rd-person-singular as a GIVEN
+# lexicon (есть/пить are not covered by the regular -ет rule, which would yield «есет»).
 _TRANS_VERB = {
-    "eat": {"ru": "есть", "en": "eat"},
+    "eat": {"ru": "есть", "ru3sg": "ест", "en": "eat"},
     "read": {"ru": "читать", "en": "read"},
-    "drink": {"ru": "пить", "en": "drink"},
+    "drink": {"ru": "пить", "ru3sg": "пьёт", "en": "drink"},
 }
 
 
@@ -37,6 +39,20 @@ def _word(state: dict, lattice_id: str, concept: str, lang: str) -> str:
     nm = names_of(state, lattice_id, concept)
     cand = nm["ru"] if lang == "ru" else nm["en"]
     return cand[0] if cand else concept.split(".")[-1]
+
+
+def _np(state: dict, lattice_id: str, concept: str, lang: str, graph: dict[str, Any]) -> str:
+    """Noun phrase for a concept: its adjective attributes (if any) + the noun. Russian
+    agrees the adjective with the noun's gender. Use only in nominative positions — the
+    locative figure and the transitive subject; oblique agreement is out of scope."""
+    from casa.curriculum.attributes import en_adjective, ru_adjective
+
+    noun = _word(state, lattice_id, concept, lang)
+    attrs = (graph.get("nodes", {}).get(concept) or {}).get("attrs") or []
+    if not attrs:
+        return noun
+    adjs = [(ru_adjective(a, noun) if lang == "ru" else en_adjective(a)) for a in attrs]
+    return " ".join([*adjs, noun])
 
 
 def _ru_oblique(state: dict, lattice_id: str, word: str, case: str) -> str:
@@ -66,7 +82,7 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
     # locative clause (one figure, a chain of preposition+ground), e.g. on+near
     if all(rel in _LOC_PREP for rel, _, _ in edges):
         first = edges[0]
-        fig = _word(state, lattice_id, first[1], lang)
+        fig = _np(state, lattice_id, first[1], lang, graph)
         pieces: list[str] = []
         prev_ground = None
         for rel, src, dst in edges:
@@ -90,11 +106,12 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
         return None
     if lang == "ru":
         return compose_ru_clause(
-            state, lattice_id, subj=_word(state, lattice_id, src, "ru"), verb=verb["ru"], obj=_word(state, lattice_id, dst, "ru")
+            state, lattice_id, subj=_np(state, lattice_id, src, "ru", graph), verb=verb["ru"],
+            obj=_word(state, lattice_id, dst, "ru"), verb_form=verb.get("ru3sg"),
         )
     return compose_full_clause(
         state, lattice_id,
-        subject={"noun": _word(state, lattice_id, src, "en")}, verb=verb["en"],
+        subject={"noun": _np(state, lattice_id, src, "en", graph)}, verb=verb["en"],
         obj={"noun": _word(state, lattice_id, dst, "en")}, lang_in="en",
     )
 
