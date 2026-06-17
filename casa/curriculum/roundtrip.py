@@ -26,10 +26,12 @@ _LOC_PREP = {
     "in": {"ru": "в", "en": "in", "case": "prep"},
     "near": {"ru": "у", "en": "near", "case": "gen"},
 }
+# relation -> verb. ``ru3sg`` holds an irregular present 3rd-person-singular as a GIVEN
+# lexicon (есть/пить are not covered by the regular -ет rule, which would yield «есет»).
 _TRANS_VERB = {
-    "eat": {"ru": "есть", "en": "eat"},
+    "eat": {"ru": "есть", "ru3sg": "ест", "en": "eat"},
     "read": {"ru": "читать", "en": "read"},
-    "drink": {"ru": "пить", "en": "drink"},
+    "drink": {"ru": "пить", "ru3sg": "пьёт", "en": "drink"},
 }
 
 
@@ -90,7 +92,8 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
         return None
     if lang == "ru":
         return compose_ru_clause(
-            state, lattice_id, subj=_word(state, lattice_id, src, "ru"), verb=verb["ru"], obj=_word(state, lattice_id, dst, "ru")
+            state, lattice_id, subj=_word(state, lattice_id, src, "ru"), verb=verb["ru"],
+            obj=_word(state, lattice_id, dst, "ru"), verb_form=verb.get("ru3sg"),
         )
     return compose_full_clause(
         state, lattice_id,

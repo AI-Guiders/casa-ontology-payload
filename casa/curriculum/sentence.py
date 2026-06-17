@@ -116,6 +116,7 @@ def compose_ru_clause(
     acc_rule: str = RU_ACC_RULE,
     rule_id: str = RU_SVO_RULE,
     punctuate: bool = True,
+    verb_form: str | None = None,
 ) -> str | None:
     """Compose a Russian S-V-O clause from a meaning triple (all words already Russian).
 
@@ -123,8 +124,11 @@ def compose_ru_clause(
     singular by the learned rule, and the object is declined to the accusative — so
     «девочка читать книга» -> «Девочка читает книгу.» No articles. Returns None if the
     order rule is absent. Verbs/nouns whose forms the rules don't cover fall back to the
-    lemma (honest: irregular conjugation / soft stems are out of scope)."""
-    v = apply_conditioned_rule(state, lattice_id, conj_rule, verb) or verb
+    lemma (honest: irregular conjugation / soft stems are out of scope).
+
+    ``verb_form`` supplies an already-conjugated verb (a given-lexicon irregular like
+    есть→ест), used verbatim instead of the regular rule — the rule produces «есет»."""
+    v = verb_form or apply_conditioned_rule(state, lattice_id, conj_rule, verb) or verb
     o = apply_conditioned_rule(state, lattice_id, acc_rule, obj) or obj
     fillers = {"subj": subj, "verb": v, "obj": o}
     order = read_order_rule(state, lattice_id, rule_id)
