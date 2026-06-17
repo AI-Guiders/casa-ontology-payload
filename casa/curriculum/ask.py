@@ -174,11 +174,27 @@ def _answer_affordance(state: dict, lattice_id: str, toks: list[str]) -> str | N
     return f"Нет — «{name}» нельзя {verb}."
 
 
-def _answer_material(toks: list[str]) -> str | None:
-    """«из чего X?» — the ontology carries no made_of facts yet; answer honestly."""
-    if "из" in toks and "чего" in toks:
-        return "Пока не знаю, из чего это сделано — в онтологии нет связей «сделано из»."
-    return None
+def _answer_material(state: dict, lattice_id: str, toks: list[str]) -> str | None:
+    """«из чего X?» — recall a remembered made_of(X, material) fact, else answer honestly."""
+    if not ("из" in toks and ("чего" in toks or "что" in toks)):
+        return None
+    from casa.curriculum.concept_net import concept_of, meaning_graph
+    from casa.curriculum.parse import _name_index, resolve_token
+    from casa.curriculum.roundtrip import realize_graph
+
+    names = _name_index(state, lattice_id)
+    targets = [c for t in toks if t not in ("из", "чего", "что")
+               and (c := (concept_of(state, lattice_id, t) or resolve_token(state, lattice_id, t, names)))]
+    if not targets:
+        return None
+    target = targets[-1]
+    edges = _scan_memory_full(state, lattice_id, _edge_re("made_of", target, None))
+    if edges:
+        g = meaning_graph(state, lattice_id, [edges[0]])
+        answer = realize_graph(state, lattice_id, g, lang="ru")
+        if answer:
+            return answer
+    return f"Пока не знаю, из чего «{_ru_name(state, lattice_id, target)}» — мне про это не говорили."
 
 
 def answer_question(state: dict, lattice_id: str, text: str) -> str | None:
@@ -187,7 +203,7 @@ def answer_question(state: dict, lattice_id: str, text: str) -> str | None:
     if not toks:
         return None
     return (
-        _answer_material(toks)
+        _answer_material(state, lattice_id, toks)
         or _answer_affordance(state, lattice_id, toks)
         or _answer_location(state, lattice_id, toks)
     )

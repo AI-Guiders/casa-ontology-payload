@@ -99,6 +99,20 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
             body = f"the {fig} is " + " ".join(pieces)
         return body[:1].upper() + body[1:] + "."
 
+    # material clause — «сделан из <material-gen>» / «is made of <material>»
+    if len(edges) == 1 and edges[0][0] == "made_of":
+        _, src, dst = edges[0]
+        subj = _np(state, lattice_id, src, lang, graph)
+        mat = _word(state, lattice_id, dst, lang)
+        if lang == "ru":
+            from casa.curriculum.attributes import _gender_of
+
+            made = {"m": "сделан", "n": "сделано", "f": "сделана"}[_gender_of(_word(state, lattice_id, src, "ru"))]
+            body = f"{subj} {made} из {_ru_oblique(state, lattice_id, mat, 'gen')}"
+        else:
+            body = f"the {subj} is made of {mat}"
+        return body[:1].upper() + body[1:] + "."
+
     # transitive clause — reuse the bilingual generators (lemmas + relation->verb)
     rel, src, dst = edges[0]
     verb = _TRANS_VERB.get(rel)
