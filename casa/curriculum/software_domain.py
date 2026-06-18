@@ -18,23 +18,33 @@ from __future__ import annotations
 
 # data shape matches teach_concept_net: {categories:[{id,isa,affords}], concepts:{cat:[[ru,en]]},
 # relations:[{rel,arg1,arg2}]}. Affordances are software-specific capabilities.
+# UI actions apply broadly (you can show / configure / copy / move almost any item), so the
+# common capabilities sit on digital_object and every software concept inherits them; the
+# narrow ones (savable on files, clickable on controls, installable on apps) stay specific.
+_BROAD = ["viewable", "selectable", "configurable", "copyable", "movable", "creatable", "renamable"]
+
 SOFTWARE_PACK: dict = {
     "categories": [
-        {"id": "digital_object", "isa": [], "affords": []},
-        {"id": "file_item", "isa": ["digital_object"], "affords": ["openable", "savable", "deletable", "editable"]},
+        {"id": "digital_object", "isa": [], "affords": _BROAD},
+        {"id": "file_item", "isa": ["digital_object"], "affords": ["openable", "savable", "deletable", "editable", "printable"]},
         {"id": "folder_item", "isa": ["digital_object"], "affords": ["openable", "deletable"]},
-        {"id": "ui_control", "isa": ["digital_object"], "affords": ["clickable", "selectable"]},
+        {"id": "ui_control", "isa": ["digital_object"], "affords": ["clickable"]},
         {"id": "window_item", "isa": ["digital_object"], "affords": ["openable", "closable"]},
-        {"id": "app_item", "isa": ["digital_object"], "affords": ["openable", "closable", "usable"]},
+        {"id": "app_item", "isa": ["digital_object"], "affords": ["openable", "closable", "usable", "installable", "downloadable"]},
+        {"id": "toggle_item", "isa": ["digital_object"], "affords": ["toggleable"]},
         {"id": "addressee", "isa": [], "affords": ["agent"]},  # implicit «you» of an imperative
     ],
     "concepts": {
-        "file_item": [["файл", "file"], ["документ", "document"], ["изображение", "image"]],
+        "file_item": [["файл", "file"], ["документ", "document"], ["изображение", "image"],
+                      ["картинка", "image"], ["палитра", "palette"]],
         "folder_item": [["папка", "folder"], ["каталог", "directory"]],
-        "ui_control": [["кнопка", "button"], ["значок", "icon"], ["меню", "menu"],
-                       ["вкладка", "tab"], ["ссылка", "link"], ["флажок", "checkbox"]],
-        "window_item": [["окно", "window"]],
+        "ui_control": [["кнопка", "button"], ["значок", "icon"], ["пиктограмма", "icon"], ["меню", "menu"],
+                       ["вкладка", "tab"], ["ссылка", "link"], ["флажок", "checkbox"], ["панель", "toolbar"],
+                       ["список", "list"], ["элемент", "item"], ["ярлык", "shortcut"], ["сетка", "grid"]],
+        "window_item": [["окно", "window"], ["редактор", "editor"]],
         "app_item": [["приложение", "application"], ["программа", "program"]],
+        "toggle_item": [["прокси", "proxy"], ["кэш", "cache"], ["настройка", "setting"],
+                        ["опция", "option"], ["параметр", "parameter"]],
         "addressee": [["ты", "you"]],
         "person": [["пользователь", "user"]],  # adds isa(user, person); person already affords agent
     },
@@ -46,6 +56,16 @@ SOFTWARE_PACK: dict = {
         {"rel": "click", "arg1": "agent", "arg2": "clickable"},
         {"rel": "select", "arg1": "agent", "arg2": "selectable"},
         {"rel": "edit", "arg1": "agent", "arg2": "editable"},
+        {"rel": "show", "arg1": "agent", "arg2": "viewable"},
+        {"rel": "configure", "arg1": "agent", "arg2": "configurable"},
+        {"rel": "copy", "arg1": "agent", "arg2": "copyable"},
+        {"rel": "move", "arg1": "agent", "arg2": "movable"},
+        {"rel": "create", "arg1": "agent", "arg2": "creatable"},
+        {"rel": "rename", "arg1": "agent", "arg2": "renamable"},
+        {"rel": "print", "arg1": "agent", "arg2": "printable"},
+        {"rel": "enable", "arg1": "agent", "arg2": "toggleable"},
+        {"rel": "install", "arg1": "agent", "arg2": "installable"},
+        {"rel": "download", "arg1": "agent", "arg2": "downloadable"},
     ],
 }
 

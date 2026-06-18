@@ -43,6 +43,16 @@ PREDICATE_RELATION: dict[str, str] = {
     "нажимает": "click", "нажимать": "click", "нажми": "click", "нажимай": "click", "нажать": "click", "click": "click", "clicks": "click",
     "выбирает": "select", "выбирать": "select", "выбери": "select", "выбирай": "select", "выбрать": "select", "select": "select", "selects": "select",
     "изменяет": "edit", "изменять": "edit", "измени": "edit", "изменяй": "edit", "изменить": "edit", "edit": "edit", "edits": "edit",
+    "показывает": "show", "показывать": "show", "показать": "show", "покажи": "show", "показывай": "show", "show": "show", "shows": "show", "display": "show", "displays": "show",
+    "настраивает": "configure", "настраивать": "configure", "настроить": "configure", "настрой": "configure", "настраивай": "configure", "configure": "configure", "configures": "configure", "set": "configure", "sets": "configure", "установить": "configure", "устанавливает": "configure", "установи": "configure", "устанавливай": "configure",
+    "копирует": "copy", "копировать": "copy", "скопировать": "copy", "скопируй": "copy", "копируй": "copy", "copy": "copy", "copies": "copy",
+    "перемещает": "move", "перемещать": "move", "переместить": "move", "перемести": "move", "перемещай": "move", "move": "move", "moves": "move",
+    "создаёт": "create", "создавать": "create", "создать": "create", "создай": "create", "создавай": "create", "create": "create", "creates": "create",
+    "переименовать": "rename", "переименовывает": "rename", "переименуй": "rename", "переименовывай": "rename", "rename": "rename", "renames": "rename",
+    "печатает": "print", "печатать": "print", "распечатать": "print", "напечатать": "print", "распечатай": "print", "печатай": "print", "print": "print", "prints": "print",
+    "включает": "enable", "включать": "enable", "включить": "enable", "включи": "enable", "включай": "enable", "разрешить": "enable", "разреши": "enable", "enable": "enable", "enables": "enable",
+    "install": "install", "installs": "install",
+    "скачивает": "download", "скачивать": "download", "скачать": "download", "скачай": "download", "скачивай": "download", "загрузить": "download", "загрузи": "download", "download": "download", "downloads": "download",
 }
 
 
