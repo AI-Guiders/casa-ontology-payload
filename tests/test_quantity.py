@@ -62,6 +62,22 @@ class QuantityRoundTripTests(unittest.TestCase):
     def test_count_annotates_the_canonical_edge(self) -> None:
         self.assertIn("delete(lex.you,lex.file×2)", canonical_edges(parse_graph(self.state, self.lat, "удали два файла")))
 
+    def test_measure_with_unit_on_the_node(self) -> None:
+        g = parse_graph(self.state, self.lat, "5 мл воды на столе")
+        self.assertEqual(g["nodes"]["lex.water"].get("measure"), {"value": 5, "unit": "ml"})
+
+    def test_measure_round_trip(self) -> None:
+        tr = translate_through_meaning(self.state, self.lat, "5 мл воды на столе")
+        self.assertEqual(tr["ru"], "5 мл воды на столе.")
+        self.assertEqual(tr["en"], "5 ml of water is on the table.")
+
+    def test_measure_in_fingerprint_distinguishes_unit_and_value(self) -> None:
+        ml5 = fingerprint(parse_graph(self.state, self.lat, "5 мл воды на столе"))["id"]
+        mg5 = fingerprint(parse_graph(self.state, self.lat, "5 мг воды на столе"))["id"]
+        ml50 = fingerprint(parse_graph(self.state, self.lat, "50 мл воды на столе"))["id"]
+        self.assertNotEqual(ml5, mg5)   # ml ≠ mg
+        self.assertNotEqual(ml5, ml50)  # 5 ≠ 50
+
 
 if __name__ == "__main__":
     unittest.main()

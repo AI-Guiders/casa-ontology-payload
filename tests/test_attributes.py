@@ -30,7 +30,7 @@ class AttributeRoundTripTests(unittest.TestCase):
         cls.state, cls.lat = build_meaning_state()
 
     def test_adjective_binds_to_its_noun_in_the_graph(self) -> None:
-        triples, attrs, _polarity, _counts = parse_situation(self.state, self.lat, "красное яблоко на столе")
+        triples, attrs, _pol, _counts, _meas = parse_situation(self.state, self.lat, "красное яблоко на столе")
         self.assertEqual(triples, [("on", "lex.apple", "lex.table")])
         self.assertEqual(attrs.get("lex.apple"), ["red"])
         self.assertNotIn("lex.table", attrs)  # the adjective binds to apple, not table

@@ -49,6 +49,9 @@ def _node_label(concept: str, nodes: dict[str, Any]) -> str:
     cnt = node.get("count")
     if cnt and cnt != 1:
         label += f"×{cnt}"
+    m = node.get("measure")
+    if m:
+        label += f"{{{m['value']}{m['unit']}}}"
     return label
 
 
