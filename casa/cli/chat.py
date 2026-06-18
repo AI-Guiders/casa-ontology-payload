@@ -55,6 +55,7 @@ _HELP = "\n".join(
         "  /remember <текст>— научить/поправить (запись в журнал)",
         "  /meaning <фраза> — понятийная сеть: фраза → смысл → RU+EN (перевод через смысл)",
         "  /demo            — курируемый прогон round-trip (граф смысла + отказ)",
+        "  /check A | B      — валидатор: эквивалентны ли по смыслу две фразы (триаж)",
         "  /route [on|off]  — маршрутизация доменных клауз через понятийную сеть",
         "  /turns [N]       — последние N реплик",
         "  /passage         — многострочный ввод, конец — пустая строка",
@@ -254,6 +255,17 @@ def run_chat(
                     from casa.curriculum.demo_meaning import render_demo
 
                     print(render_demo(mst, mlat))
+                    continue
+                elif cmd in ("check", "сверь"):
+                    # validator: «/check источник | перевод» — equivalence triage
+                    if "|" not in arg:
+                        print("  · нужно две фразы через |: /check открой файл | open the file")
+                        continue
+                    src, _, tgt = arg.partition("|")
+                    mst, mlat = _ensure_meaning()
+                    from casa.curriculum.equivalence import check_equivalence, format_check
+
+                    print(format_check(check_equivalence(mst, mlat, src.strip(), tgt.strip())))
                     continue
                 elif cmd == "route":
                     a = arg.strip().lower()
