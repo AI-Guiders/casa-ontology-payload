@@ -75,15 +75,36 @@ def _name_index(state: dict, lattice_id: str) -> list[tuple[str, str]]:
     return result
 
 
-def resolve_token(state: dict, lattice_id: str, token: str, names: list[tuple[str, str]] | None = None) -> str | None:
-    """Resolve a (possibly inflected) word to a concept: exact name, then lemma match.
+def _en_singulars(token: str) -> list[str]:
+    """Candidate singulars of an English plural (files→file, boxes→box, parties→party)."""
+    cands = []
+    if token.endswith("ies") and len(token) > 4:
+        cands.append(token[:-3] + "y")
+    if token.endswith("es") and len(token) > 3:
+        cands.append(token[:-2])
+    if token.endswith("s") and len(token) > 2:
+        cands.append(token[:-1])
+    return cands
 
-    Lemma match picks the surface that is the token's base form: the longest common
+
+def resolve_token(state: dict, lattice_id: str, token: str, names: list[tuple[str, str]] | None = None) -> str | None:
+    """Resolve a (possibly inflected) word to a concept: exact name, English plural lemma,
+    then Russian stem match.
+
+    Russian lemma match picks the surface that is the token's base form: the longest common
     prefix wins, then the shortest surface — so «столе» resolves to «стол» (lemma,
     differs by an ending), not «столб» (a different, longer word)."""
+    from casa.curriculum.translate import script_of
+
     c = concept_of(state, lattice_id, token)
     if c:
         return c
+    if script_of(token) == "latn":  # English plural -> singular («files» → lex.file)
+        for cand in _en_singulars(token):
+            c = concept_of(state, lattice_id, cand)
+            if c:
+                return c
+        return None  # no Russian-stem matching for Latin tokens
     best: str | None = None
     best_key: tuple[int, int] | None = None
     for surface, concept in names if names is not None else _name_index(state, lattice_id):
