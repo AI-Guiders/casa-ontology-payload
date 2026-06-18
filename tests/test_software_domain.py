@@ -47,6 +47,23 @@ class SoftwareDomainTests(unittest.TestCase):
         tr = translate_through_meaning(self.state, self.lat, "The user saves the document")
         self.assertEqual(tr["ru"], "Пользователь сохраняет документ.")
 
+    def test_imperative_round_trip(self) -> None:
+        tr = translate_through_meaning(self.state, self.lat, "открой файл")
+        self.assertEqual(tr["ru"], "Открой файл.")
+        self.assertEqual(tr["en"], "Open the file.")
+        # accusative on a feminine object
+        self.assertEqual(translate_through_meaning(self.state, self.lat, "удали папку")["ru"], "Удали папку.")
+
+    def test_imperative_from_english(self) -> None:
+        tr = translate_through_meaning(self.state, self.lat, "Save the document")
+        self.assertEqual(tr["ru"], "Сохрани документ.")
+
+    def test_noun_before_verb_is_not_an_imperative(self) -> None:
+        from casa.curriculum.parse import parse_triples
+
+        # «собака ест» (subject-verb) must NOT be read as a command «eat the dog»
+        self.assertEqual(parse_triples(self.state, self.lat, "собака ест"), [])
+
 
 if __name__ == "__main__":
     unittest.main()

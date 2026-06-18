@@ -127,6 +127,19 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
     verb = _TRANS_VERB.get(rel)
     if not verb:
         return None
+
+    # imperative — subject is the implicit «you»: «Открой файл.» / «Open the file.»
+    if src == "lex.you":
+        obj = _word(state, lattice_id, dst, lang)
+        if lang == "ru":
+            from casa.curriculum.sentence import RU_ACC_RULE
+
+            obj_acc = apply_conditioned_rule(state, lattice_id, RU_ACC_RULE, obj) or obj
+            body = f"{verb.get('ruimp', verb['ru'])} {obj_acc}"
+        else:
+            body = f"{verb['en']} the {obj}"
+        return body[:1].upper() + body[1:] + "."
+
     if lang == "ru":
         return compose_ru_clause(
             state, lattice_id, subj=_np(state, lattice_id, src, "ru", graph), verb=verb["ru"],

@@ -27,7 +27,11 @@ _ADJ_AFFORD = {
     "носим": "wearable", "edible": "edible", "drinkable": "drinkable",
 }
 # affordance -> infinitive, for a gender/case-free answer («можно есть» / «нельзя пить»)
-_AFFORD_VERB = {"edible": "есть", "drinkable": "пить", "readable": "читать", "wearable": "носить"}
+_AFFORD_VERB = {
+    "edible": "есть", "drinkable": "пить", "readable": "читать", "wearable": "носить",
+    "openable": "открыть", "savable": "сохранить", "deletable": "удалить",
+    "closable": "закрыть", "clickable": "нажать", "selectable": "выбрать", "editable": "изменить",
+}
 _QUESTION_LEADS = ("что", "где", "из чего", "съедобн", "можно", "what", "where")
 
 
