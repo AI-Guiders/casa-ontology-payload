@@ -46,6 +46,11 @@ def _node_label(concept: str, nodes: dict[str, Any]) -> str:
     return f"{_leaf(concept)}[{','.join(attrs)}]" if attrs else _leaf(concept)
 
 
+def _rel_label(edge: dict[str, Any]) -> str:
+    """Relation with a polarity marker: a negated edge shows «¬» («not on»)."""
+    return ("¬" if edge.get("polarity") == "neg" else "") + edge["rel"]
+
+
 def _order_path(edges: list[dict[str, Any]]) -> list[dict[str, Any]] | None:
     """If the edges form one simple chain (a─▶b─▶c), return them in path order so the
     graph renders inline; otherwise None (caller renders one edge per line)."""
@@ -80,13 +85,13 @@ def render_graph(graph: dict[str, Any], *, indent: str = "  ") -> str:
             seq = _node_label(chain[0]["src"], nodes)
             for e in chain:
                 tip = "▶" if e.get("satisfied") else "✗"
-                seq += f" ──{e['rel']}──{tip} {_node_label(e['dst'], nodes)}"
+                seq += f" ──{_rel_label(e)}──{tip} {_node_label(e['dst'], nodes)}"
             lines.append(f"{indent}│  {seq}")
         else:
             for e in edges:
-                tip = "──▶" if e.get("satisfied") else "──✗"
+                tip = "▶" if e.get("satisfied") else "✗"
                 lines.append(
-                    f"{indent}│  {_node_label(e['src'], nodes)} ──{e['rel']}{tip[2:]} {_node_label(e['dst'], nodes)}"
+                    f"{indent}│  {_node_label(e['src'], nodes)} ──{_rel_label(e)}──{tip} {_node_label(e['dst'], nodes)}"
                 )
     # node legend: distinguishing type + affordances
     for cid in _legend_order(nodes, edges):

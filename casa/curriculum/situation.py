@@ -36,13 +36,13 @@ PREDICATE_RELATION: dict[str, str] = {
     "читает": "read", "читать": "read", "read": "read", "reads": "read",
     "из": "made_of", "of": "made_of",
     # software/UI actions — present 3sg + infinitive + imperative + English
-    "открывает": "open", "открывать": "open", "открой": "open", "открыть": "open", "open": "open", "opens": "open",
-    "закрывает": "close", "закрывать": "close", "закрой": "close", "закрыть": "close", "close": "close", "closes": "close",
-    "сохраняет": "save", "сохранять": "save", "сохрани": "save", "сохранить": "save", "save": "save", "saves": "save",
-    "удаляет": "delete", "удалять": "delete", "удали": "delete", "удалить": "delete", "delete": "delete", "deletes": "delete",
-    "нажимает": "click", "нажимать": "click", "нажми": "click", "нажать": "click", "click": "click", "clicks": "click",
-    "выбирает": "select", "выбирать": "select", "выбери": "select", "выбрать": "select", "select": "select", "selects": "select",
-    "изменяет": "edit", "изменять": "edit", "измени": "edit", "изменить": "edit", "edit": "edit", "edits": "edit",
+    "открывает": "open", "открывать": "open", "открой": "open", "открывай": "open", "открыть": "open", "open": "open", "opens": "open",
+    "закрывает": "close", "закрывать": "close", "закрой": "close", "закрывай": "close", "закрыть": "close", "close": "close", "closes": "close",
+    "сохраняет": "save", "сохранять": "save", "сохрани": "save", "сохраняй": "save", "сохранить": "save", "save": "save", "saves": "save",
+    "удаляет": "delete", "удалять": "delete", "удали": "delete", "удаляй": "delete", "удалить": "delete", "delete": "delete", "deletes": "delete",
+    "нажимает": "click", "нажимать": "click", "нажми": "click", "нажимай": "click", "нажать": "click", "click": "click", "clicks": "click",
+    "выбирает": "select", "выбирать": "select", "выбери": "select", "выбирай": "select", "выбрать": "select", "select": "select", "selects": "select",
+    "изменяет": "edit", "изменять": "edit", "измени": "edit", "изменяй": "edit", "изменить": "edit", "edit": "edit", "edits": "edit",
 }
 
 
@@ -51,14 +51,16 @@ def normalize_relation(predicate: str) -> str:
     return PREDICATE_RELATION.get(predicate.strip().lower(), predicate.strip().lower())
 
 
-def _edge_key(rel: str, src: str, dst: str) -> str:
-    return f"{rel}({src},{dst})"
+def _edge_key(rel: str, src: str, dst: str, polarity: str = "pos") -> str:
+    # «¬» prefix makes a negated edge a DISTINCT situation: «X on table» ≠ «X not on table».
+    return f"{'¬' if polarity == 'neg' else ''}{rel}({src},{dst})"
 
 
 def canonical_edges(graph: dict[str, Any], *, satisfied_only: bool = True) -> list[str]:
-    """Sorted canonical edge keys over CONCEPTS — language-independent, order-free."""
+    """Sorted canonical edge keys over CONCEPTS — language-independent, order-free.
+    Polarity is part of the key, so a negated situation never collides with its positive."""
     out = [
-        _edge_key(e["rel"], e["src"], e["dst"])
+        _edge_key(e["rel"], e["src"], e["dst"], e.get("polarity", "pos"))
         for e in graph.get("edges", [])
         if e.get("src") and e.get("dst") and (e.get("satisfied") or not satisfied_only)
     ]

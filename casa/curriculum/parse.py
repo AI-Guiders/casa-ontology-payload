@@ -29,6 +29,7 @@ _PREPS = {"на", "в", "у", "около", "рядом", "под", "над", "o
 _POSITIONAL = {"лежит", "стоит", "находится", "лежать", "стоять", "находиться", "висит",
                "lies", "stands", "sits", "is", "hangs",
                "сделан", "сделана", "сделано", "сделаны", "made"}  # made_of copula
+_NEG = {"не", "нет", "ни", "not", "don't", "do not", "doesn't", "no", "never"}  # negation markers
 
 
 def _tokens(text: str) -> list[str]:
@@ -87,17 +88,21 @@ def resolve_token(state: dict, lattice_id: str, token: str, names: list[tuple[st
 
 def parse_situation(
     state: dict, lattice_id: str, text: str
-) -> tuple[list[tuple[str, str, str]], dict[str, list[str]]]:
-    """Parse a controlled clause into triples plus per-concept adjective attributes.
+) -> tuple[list[tuple[str, str, str]], dict[str, list[str]], str]:
+    """Parse a controlled clause into triples, adjective attributes, and clause polarity.
 
-    Returns ``(triples, attrs)`` where ``attrs[concept_id]`` is the list of attribute ids
-    (e.g. ``["red"]``) modifying that concept. An adjective binds to the next noun."""
+    Returns ``(triples, attrs, polarity)``: ``attrs[concept_id]`` are attribute ids
+    (e.g. ``["red"]``) modifying that concept (an adjective binds to the next noun);
+    ``polarity`` is ``"neg"`` if the clause is negated («не закрывай окно»), else ``"pos"``."""
     from casa.curriculum.attributes import attr_of_token
 
     names = _name_index(state, lattice_id)
     seq: list[tuple[str, Any]] = []  # ('prep'|'verb'|'noun'|'adj', payload) in order
+    polarity = "pos"
     for tok in _tokens(text):
-        if tok in _PREPS:
+        if tok in _NEG:
+            polarity = "neg"  # negation marker — scopes the clause's relation
+        elif tok in _PREPS:
             seq.append(("prep", normalize_relation(tok)))
         elif tok in _POSITIONAL:
             continue  # positional copula — the preposition carries the relation
@@ -136,14 +141,14 @@ def parse_situation(
             figure = before[-1] if before else (after[1] if len(after) > 1 else None)
             if figure:
                 triples.append((rel, figure, ground))
-        return triples, attrs
+        return triples, attrs, polarity
     if verbs and len(nouns) >= 2:  # transitive S-V-O
-        return [(verbs[0][1], nouns[0][1], nouns[1][1])], attrs
+        return [(verbs[0][1], nouns[0][1], nouns[1][1])], attrs, polarity
     if verbs and len(nouns) == 1 and verbs[0][0] < nouns[0][0]:
         # imperative: a verb BEFORE its only noun, no subject — «открой файл» / «open the
         # file». The implicit agent is «you». (A noun before the verb is S-V, not a command.)
-        return [(verbs[0][1], "lex.you", nouns[0][1])], attrs
-    return [], attrs
+        return [(verbs[0][1], "lex.you", nouns[0][1])], attrs, polarity
+    return [], attrs, polarity
 
 
 def parse_triples(state: dict, lattice_id: str, text: str) -> list[tuple[str, str, str]]:
@@ -152,12 +157,15 @@ def parse_triples(state: dict, lattice_id: str, text: str) -> list[tuple[str, st
 
 
 def parse_graph(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
-    """Parse text and build its meaning graph, with adjective attributes on the nodes."""
-    triples, attrs = parse_situation(state, lattice_id, text)
+    """Parse text and build its meaning graph, with adjective attributes on the nodes and
+    clause polarity on the edges (a negated clause marks its edges ``polarity='neg'``)."""
+    triples, attrs, polarity = parse_situation(state, lattice_id, text)
     graph = meaning_graph(state, lattice_id, triples)
     for cid, aids in attrs.items():
         if cid in graph["nodes"]:
             graph["nodes"][cid]["attrs"] = aids
+    for edge in graph["edges"]:
+        edge["polarity"] = polarity
     return graph
 
 

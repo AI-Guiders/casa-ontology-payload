@@ -32,15 +32,16 @@ _TRANS_VERB = {
     "eat": {"ru": "есть", "ru3sg": "ест", "en": "eat"},
     "read": {"ru": "читать", "en": "read"},
     "drink": {"ru": "пить", "ru3sg": "пьёт", "en": "drink"},
-    # software/UI actions. ``ruimp`` is the Russian imperative (given lexicon, used by the
-    # imperative realizer); English imperative is the bare verb (``en``).
-    "open": {"ru": "открывать", "ru3sg": "открывает", "ruimp": "открой", "en": "open"},
-    "close": {"ru": "закрывать", "ru3sg": "закрывает", "ruimp": "закрой", "en": "close"},
-    "save": {"ru": "сохранять", "ru3sg": "сохраняет", "ruimp": "сохрани", "en": "save"},
-    "delete": {"ru": "удалять", "ru3sg": "удаляет", "ruimp": "удали", "en": "delete"},
-    "click": {"ru": "нажимать", "ru3sg": "нажимает", "ruimp": "нажми", "en": "click"},
-    "select": {"ru": "выбирать", "ru3sg": "выбирает", "ruimp": "выбери", "en": "select"},
-    "edit": {"ru": "изменять", "ru3sg": "изменяет", "ruimp": "измени", "en": "edit"},
+    # software/UI actions. ``ruimp`` is the Russian (perfective) imperative; ``ruimpneg`` is
+    # the imperfective imperative a negative command needs («не закрывай», not «не закрой»).
+    # Both are a given lexicon. English imperative is the bare verb (``en``).
+    "open": {"ru": "открывать", "ru3sg": "открывает", "ruimp": "открой", "ruimpneg": "открывай", "en": "open"},
+    "close": {"ru": "закрывать", "ru3sg": "закрывает", "ruimp": "закрой", "ruimpneg": "закрывай", "en": "close"},
+    "save": {"ru": "сохранять", "ru3sg": "сохраняет", "ruimp": "сохрани", "ruimpneg": "сохраняй", "en": "save"},
+    "delete": {"ru": "удалять", "ru3sg": "удаляет", "ruimp": "удали", "ruimpneg": "удаляй", "en": "delete"},
+    "click": {"ru": "нажимать", "ru3sg": "нажимает", "ruimp": "нажми", "ruimpneg": "нажимай", "en": "click"},
+    "select": {"ru": "выбирать", "ru3sg": "выбирает", "ruimp": "выбери", "ruimpneg": "выбирай", "en": "select"},
+    "edit": {"ru": "изменять", "ru3sg": "изменяет", "ruimp": "измени", "ruimpneg": "изменяй", "en": "edit"},
 }
 
 
@@ -87,6 +88,7 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
     edges = [(e["rel"], e["src"], e["dst"]) for e in graph.get("edges", []) if e.get("satisfied")]
     if not edges:
         return None
+    neg = any(e.get("polarity") == "neg" for e in graph.get("edges", []) if e.get("satisfied"))
 
     # locative clause (one figure, a chain of preposition+ground), e.g. on+near
     if all(rel in _LOC_PREP for rel, _, _ in edges):
@@ -103,13 +105,15 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
                 pieces.append(f"{_LOC_PREP[rel]['en']} the {g}")
             prev_ground = dst
         if lang == "ru":
-            body = f"{fig} " + " ".join(pieces)
+            body = f"{fig} {'не ' if neg else ''}" + " ".join(pieces)  # «Яблоко не на столе.»
         else:
-            body = f"the {fig} is " + " ".join(pieces)
+            body = f"the {fig} is {'not ' if neg else ''}" + " ".join(pieces)
         return body[:1].upper() + body[1:] + "."
 
     # material clause — «сделан из <material-gen>» / «is made of <material>»
     if len(edges) == 1 and edges[0][0] == "made_of":
+        if neg:
+            return None  # negated material is out of scope
         _, src, dst = edges[0]
         subj = _np(state, lattice_id, src, lang, graph)
         mat = _word(state, lattice_id, dst, lang)
@@ -128,27 +132,31 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
     if not verb:
         return None
 
-    # imperative — subject is the implicit «you»: «Открой файл.» / «Open the file.»
+    # imperative — subject is the implicit «you»: «Открой файл.» / «Не закрывай окно.»
     if src == "lex.you":
         obj = _word(state, lattice_id, dst, lang)
         if lang == "ru":
             from casa.curriculum.sentence import RU_ACC_RULE
 
             obj_acc = apply_conditioned_rule(state, lattice_id, RU_ACC_RULE, obj) or obj
-            body = f"{verb.get('ruimp', verb['ru'])} {obj_acc}"
+            # a negative command takes the imperfective imperative («не закрывай», not «закрой»)
+            form = verb.get("ruimpneg", verb.get("ru", "")) if neg else verb.get("ruimp", verb["ru"])
+            body = f"не {form} {obj_acc}" if neg else f"{form} {obj_acc}"
         else:
-            body = f"{verb['en']} the {obj}"
+            body = f"do not {verb['en']} the {obj}" if neg else f"{verb['en']} the {obj}"
         return body[:1].upper() + body[1:] + "."
 
     if lang == "ru":
+        v3 = verb.get("ru3sg") or apply_conditioned_rule(state, lattice_id, "lang.rule.present3sg.ru", verb["ru"]) or verb["ru"]
         return compose_ru_clause(
             state, lattice_id, subj=_np(state, lattice_id, src, "ru", graph), verb=verb["ru"],
-            obj=_word(state, lattice_id, dst, "ru"), verb_form=verb.get("ru3sg"),
+            obj=_word(state, lattice_id, dst, "ru"), verb_form=(f"не {v3}" if neg else verb.get("ru3sg")),
         )
     return compose_full_clause(
         state, lattice_id,
         subject={"noun": _np(state, lattice_id, src, "en", graph)}, verb=verb["en"],
         obj={"noun": _word(state, lattice_id, dst, "en")}, lang_in="en",
+        polarity=("negative" if neg else "affirmative"),
     )
 
 
