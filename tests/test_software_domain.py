@@ -81,6 +81,15 @@ class SoftwareDomainTests(unittest.TestCase):
         # «собака ест» (subject-verb) must NOT be read as a command «eat the dog»
         self.assertEqual(parse_triples(self.state, self.lat, "собака ест"), [])
 
+    def test_compound_head_by_language(self) -> None:
+        from casa.curriculum.parse import parse_triples
+
+        # English head-last «icon file» -> file; Russian genitive head-first «файл …» -> file
+        self.assertEqual(parse_triples(self.state, self.lat, "open the icon file"),
+                         [("open", "lex.you", "lex.file")])
+        self.assertEqual(parse_triples(self.state, self.lat, "открой файл пиктограммы"),
+                         [("open", "lex.you", "lex.file")])
+
 
 if __name__ == "__main__":
     unittest.main()
