@@ -35,6 +35,14 @@ PREDICATE_RELATION: dict[str, str] = {
     "пьёт": "drink", "пьет": "drink", "пить": "drink", "drink": "drink", "drinks": "drink",
     "читает": "read", "читать": "read", "read": "read", "reads": "read",
     "из": "made_of", "of": "made_of",
+    # software/UI actions — present 3sg + infinitive + imperative + English
+    "открывает": "open", "открывать": "open", "открой": "open", "открыть": "open", "open": "open", "opens": "open",
+    "закрывает": "close", "закрывать": "close", "закрой": "close", "закрыть": "close", "close": "close", "closes": "close",
+    "сохраняет": "save", "сохранять": "save", "сохрани": "save", "сохранить": "save", "save": "save", "saves": "save",
+    "удаляет": "delete", "удалять": "delete", "удали": "delete", "удалить": "delete", "delete": "delete", "deletes": "delete",
+    "нажимает": "click", "нажимать": "click", "нажми": "click", "нажать": "click", "click": "click", "clicks": "click",
+    "выбирает": "select", "выбирать": "select", "выбери": "select", "выбрать": "select", "select": "select", "selects": "select",
+    "изменяет": "edit", "изменять": "edit", "измени": "edit", "изменить": "edit", "edit": "edit", "edits": "edit",
 }
 
 

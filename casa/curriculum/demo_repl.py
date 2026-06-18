@@ -307,6 +307,9 @@ def handle(state: dict, line: str) -> str | None:
 
 
 def main() -> None:
+    from casa.curriculum.render import ensure_utf8_console
+
+    ensure_utf8_console()  # `rt` renders box-drawing — never crash a legacy console
     print("Загружаю поле и обучаю словарю/правилам…", file=sys.stderr)
     state = build_state()
     print("Готово. Английская консоль над куррикулумом. Нажми ? для справки, quit — выход.", file=sys.stderr)

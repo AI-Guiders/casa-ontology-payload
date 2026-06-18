@@ -139,6 +139,10 @@ def parse_situation(
         return triples, attrs
     if verbs and len(nouns) >= 2:  # transitive S-V-O
         return [(verbs[0][1], nouns[0][1], nouns[1][1])], attrs
+    if verbs and len(nouns) == 1 and verbs[0][0] < nouns[0][0]:
+        # imperative: a verb BEFORE its only noun, no subject — «открой файл» / «open the
+        # file». The implicit agent is «you». (A noun before the verb is S-V, not a command.)
+        return [(verbs[0][1], "lex.you", nouns[0][1])], attrs
     return [], attrs
 
 

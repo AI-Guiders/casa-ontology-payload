@@ -32,6 +32,15 @@ _TRANS_VERB = {
     "eat": {"ru": "есть", "ru3sg": "ест", "en": "eat"},
     "read": {"ru": "читать", "en": "read"},
     "drink": {"ru": "пить", "ru3sg": "пьёт", "en": "drink"},
+    # software/UI actions. ``ruimp`` is the Russian imperative (given lexicon, used by the
+    # imperative realizer); English imperative is the bare verb (``en``).
+    "open": {"ru": "открывать", "ru3sg": "открывает", "ruimp": "открой", "en": "open"},
+    "close": {"ru": "закрывать", "ru3sg": "закрывает", "ruimp": "закрой", "en": "close"},
+    "save": {"ru": "сохранять", "ru3sg": "сохраняет", "ruimp": "сохрани", "en": "save"},
+    "delete": {"ru": "удалять", "ru3sg": "удаляет", "ruimp": "удали", "en": "delete"},
+    "click": {"ru": "нажимать", "ru3sg": "нажимает", "ruimp": "нажми", "en": "click"},
+    "select": {"ru": "выбирать", "ru3sg": "выбирает", "ruimp": "выбери", "en": "select"},
+    "edit": {"ru": "изменять", "ru3sg": "изменяет", "ruimp": "измени", "en": "edit"},
 }
 
 
@@ -118,6 +127,19 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
     verb = _TRANS_VERB.get(rel)
     if not verb:
         return None
+
+    # imperative — subject is the implicit «you»: «Открой файл.» / «Open the file.»
+    if src == "lex.you":
+        obj = _word(state, lattice_id, dst, lang)
+        if lang == "ru":
+            from casa.curriculum.sentence import RU_ACC_RULE
+
+            obj_acc = apply_conditioned_rule(state, lattice_id, RU_ACC_RULE, obj) or obj
+            body = f"{verb.get('ruimp', verb['ru'])} {obj_acc}"
+        else:
+            body = f"{verb['en']} the {obj}"
+        return body[:1].upper() + body[1:] + "."
+
     if lang == "ru":
         return compose_ru_clause(
             state, lattice_id, subj=_np(state, lattice_id, src, "ru", graph), verb=verb["ru"],
