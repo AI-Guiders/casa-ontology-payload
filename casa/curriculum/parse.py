@@ -196,16 +196,19 @@ def parse_situation(
                 triples.append((rel, figure, ground))
         return triples, attrs, polarity, counts, measures
     if verbs and nouns:
+        # the head of a noun-noun compound differs by language: English is head-LAST
+        # («icon file» → file), Russian genitive is head-FIRST («файл пиктограммы» → файл).
+        is_ru = bool(re.search(r"[Ѐ-ӿ]", text))
+        head = (lambda ns: ns[0][1] if is_ru else ns[-1][1])
         verb_pos = verbs[0][0]
-        before = [c for ni, c in nouns if ni < verb_pos]
-        if not before:
-            # imperative: the verb precedes every noun, so there is no subject — the agent is
-            # implicit «you» and the OBJECT is the last noun, the head of any compound
-            # («открой файл», «open the icon file» → open the file). Gerund headings parse
-            # the same way («opening a file»).
-            return [(verbs[0][1], "lex.you", nouns[-1][1])], attrs, polarity, counts, measures
-        if len(nouns) >= 2:  # transitive S-V-O — a subject before the verb
-            return [(verbs[0][1], before[-1], nouns[-1][1])], attrs, polarity, counts, measures
+        before = [(ni, c) for ni, c in nouns if ni < verb_pos]
+        after = [(ni, c) for ni, c in nouns if ni > verb_pos]
+        if not before and after:
+            # imperative: the verb precedes every noun -> no subject, agent is implicit «you»,
+            # object is the compound head. Gerund headings parse the same («opening a file»).
+            return [(verbs[0][1], "lex.you", head(after))], attrs, polarity, counts, measures
+        if before and after:  # transitive S-V-O — subject before the verb, object after
+            return [(verbs[0][1], before[-1][1], head(after))], attrs, polarity, counts, measures
     return [], attrs, polarity, counts, measures
 
 
