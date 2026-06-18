@@ -56,12 +56,18 @@ def _np(state: dict, lattice_id: str, concept: str, lang: str, graph: dict[str, 
     the noun's case (1 → nominative, 2-4 → genitive singular; 5+ approximated). Russian
     agrees the adjective with the noun's gender. Nominative-position use (figure/subject)."""
     from casa.curriculum.attributes import _gender_of, en_adjective, ru_adjective
-    from casa.curriculum.quantity import en_number_word, ru_noun_case, ru_number_word
+    from casa.curriculum.quantity import en_number_word, ru_noun_case, ru_number_word, unit_surface
 
     node = graph.get("nodes", {}).get(concept) or {}
     noun = _word(state, lattice_id, concept, lang)
     attrs = node.get("attrs") or []
     count = node.get("count")
+    measure = node.get("measure")
+    if measure:  # «5 мл воды» / «5 ml of water» — value + unit + partitive noun
+        unit = unit_surface(measure["unit"], lang)
+        if lang == "ru":
+            return f"{measure['value']} {unit} {_ru_oblique(state, lattice_id, noun, 'gen')}"
+        return f"{measure['value']} {unit} of {noun}"
     if lang == "ru":
         adjs = [ru_adjective(a, noun) for a in attrs]
         if count:
@@ -76,9 +82,10 @@ def _np(state: dict, lattice_id: str, concept: str, lang: str, graph: dict[str, 
 
 
 def _obj(state: dict, lattice_id: str, concept: str, lang: str, graph: dict[str, Any]) -> str:
-    """Render an object. A counted object follows the numeral's case («удали два файла»);
-    an uncounted Russian object goes to the accusative («удали папку»)."""
-    if (graph.get("nodes", {}).get(concept) or {}).get("count"):
+    """Render an object. A counted/measured object follows the numeral's case («удали два
+    файла», «выпей 5 мл воды»); an uncounted Russian object goes to the accusative."""
+    node = graph.get("nodes", {}).get(concept) or {}
+    if node.get("count") or node.get("measure"):
         return _np(state, lattice_id, concept, lang, graph)
     word = _word(state, lattice_id, concept, lang)
     if lang == "ru":
@@ -127,11 +134,12 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
             else:
                 pieces.append(f"{_LOC_PREP[rel]['en']} the {g}")
             prev_ground = dst
-        fig_count = (graph.get("nodes", {}).get(first[1]) or {}).get("count")
+        fig_node = graph.get("nodes", {}).get(first[1]) or {}
+        fig_count = fig_node.get("count")
         if lang == "ru":
             body = f"{fig} {'не ' if neg else ''}" + " ".join(pieces)  # «Яблоко не на столе.»
         else:
-            det = "" if fig_count else "the "
+            det = "" if (fig_count or fig_node.get("measure")) else "the "
             cop = "are" if fig_count and fig_count != 1 else "is"
             body = f"{det}{fig} {cop} {'not ' if neg else ''}" + " ".join(pieces)
         return body[:1].upper() + body[1:] + "."
@@ -158,7 +166,8 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
     if not verb:
         return None
 
-    counted = bool((graph.get("nodes", {}).get(dst) or {}).get("count"))
+    dst_node = graph.get("nodes", {}).get(dst) or {}
+    quantified = bool(dst_node.get("count") or dst_node.get("measure"))  # numeral governs case
 
     # imperative — subject is the implicit «you»: «Открой файл.» / «Удали два файла.»
     if src == "lex.you":
@@ -168,7 +177,7 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
             form = verb.get("ruimpneg", verb.get("ru", "")) if neg else verb.get("ruimp", verb["ru"])
             body = f"не {form} {obj}" if neg else f"{form} {obj}"
         else:
-            det = "" if counted else "the "  # «Delete two files» (no article when counted)
+            det = "" if quantified else "the "  # «Delete two files» (no article when quantified)
             body = f"do not {verb['en']} {det}{obj}" if neg else f"{verb['en']} {det}{obj}"
         return body[:1].upper() + body[1:] + "."
 
@@ -177,14 +186,14 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
         return compose_ru_clause(
             state, lattice_id, subj=_np(state, lattice_id, src, "ru", graph), verb=verb["ru"],
             obj=_word(state, lattice_id, dst, "ru"), verb_form=(f"не {v3}" if neg else verb.get("ru3sg")),
-            obj_form=(_np(state, lattice_id, dst, "ru", graph) if counted else None),
+            obj_form=(_np(state, lattice_id, dst, "ru", graph) if quantified else None),
         )
-    obj_spec = {"noun": _word(state, lattice_id, dst, "en")}
-    if counted:
+    obj_spec: dict[str, Any] = {"noun": _word(state, lattice_id, dst, "en")}
+    if dst_node.get("count"):  # English plural NP for a plain count (measures use _obj path)
         from casa.curriculum.quantity import en_number_word
 
         obj_spec = {"noun": _word(state, lattice_id, dst, "en"),
-                    "number": en_number_word((graph["nodes"][dst]["count"])), "determiner": ""}
+                    "number": en_number_word(dst_node["count"]), "determiner": ""}
     return compose_full_clause(
         state, lattice_id,
         subject={"noun": _np(state, lattice_id, src, "en", graph)}, verb=verb["en"],

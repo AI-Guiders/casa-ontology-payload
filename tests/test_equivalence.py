@@ -31,6 +31,11 @@ class EquivalenceTests(unittest.TestCase):
         self.assertEqual(r["verdict"], "divergent")
         self.assertTrue(any(d["class"] == "quantity" for d in r["divergences"]))
 
+    def test_unit_swap_is_flagged(self) -> None:
+        r = self.verdict("5 мл воды на столе", "5 мг воды на столе")
+        self.assertEqual(r["verdict"], "divergent")
+        self.assertTrue(any(d["class"] == "unit" for d in r["divergences"]))
+
     def test_unparsable_side_is_uncheckable_never_equivalent(self) -> None:
         r = self.verdict("открой файл", "это просто свободный текст без понятий")
         self.assertEqual(r["verdict"], "uncheckable")

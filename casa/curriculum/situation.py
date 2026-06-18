@@ -52,8 +52,9 @@ def normalize_relation(predicate: str) -> str:
 
 
 def _node_token(cid: str, nodes: dict[str, Any]) -> str:
-    """A node's fingerprint token: concept id annotated with its adjective attributes and
-    count, so «red file» / «два файла» are DISTINCT from the bare concept in the key."""
+    """A node's fingerprint token: concept id annotated with its adjective attributes,
+    count and measure, so «red file» / «два файла» / «5 мл воды» are each DISTINCT from the
+    bare concept (and «5 ml» ≠ «5 mg» ≠ «50 ml») in the key."""
     node = nodes.get(cid) or {}
     tok = cid
     if node.get("attrs"):
@@ -61,6 +62,9 @@ def _node_token(cid: str, nodes: dict[str, Any]) -> str:
     cnt = node.get("count")
     if cnt and cnt != 1:
         tok += f"×{cnt}"
+    m = node.get("measure")
+    if m:
+        tok += f"{{{m['value']}{m['unit']}}}"
     return tok
 
 

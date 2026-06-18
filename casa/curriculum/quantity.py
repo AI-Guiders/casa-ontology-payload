@@ -47,6 +47,28 @@ def number_of_token(token: str) -> int | None:
     return _SURFACE_TO_INT.get(t)
 
 
+# measurement units: every surface -> canonical unit id (the key the fingerprint compares).
+# Scope: mass/volume that tokenize cleanly; °C / decimals are out of scope for now.
+_UNIT_OF: dict[str, str] = {
+    "мг": "mg", "mg": "mg", "мл": "ml", "ml": "ml", "г": "g", "g": "g",
+    "кг": "kg", "kg": "kg", "л": "l", "l": "l", "грамм": "g", "gram": "g", "grams": "g",
+}
+_UNIT_SURFACE: dict[str, tuple[str, str]] = {  # canonical -> (ru, en)
+    "mg": ("мг", "mg"), "ml": ("мл", "ml"), "g": ("г", "g"), "kg": ("кг", "kg"), "l": ("л", "l"),
+}
+
+
+def unit_of_token(token: str) -> str | None:
+    """Return the canonical unit for a unit surface («мг»/«mg» → 'mg'), or None."""
+    return _UNIT_OF.get(token.strip().lower())
+
+
+def unit_surface(unit: str, lang: str) -> str:
+    """The display form of a canonical unit in ``lang`` ('ru'/'en')."""
+    ru, en = _UNIT_SURFACE.get(unit, (unit, unit))
+    return ru if lang == "ru" else en
+
+
 def ru_number_word(count: int, gender: str) -> str:
     """The Russian numeral, agreeing in gender for 1 and 2 (gender ∈ {m,n,f})."""
     forms = _RU_CARDINAL.get(count)

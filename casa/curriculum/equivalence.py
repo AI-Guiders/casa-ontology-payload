@@ -26,20 +26,23 @@ def _structured_edges(graph: dict[str, Any]) -> list[dict[str, Any]]:
     """Satisfied edges with their node modifiers pulled in — for classification."""
     nodes = graph.get("nodes", {})
 
-    def mods(cid: str) -> tuple[tuple[str, ...], int]:
+    def mods(cid: str) -> tuple[tuple[str, ...], int, tuple | None]:
         n = nodes.get(cid) or {}
-        return tuple(sorted(n.get("attrs") or [])), int(n.get("count") or 1)
+        m = n.get("measure")
+        return (tuple(sorted(n.get("attrs") or [])), int(n.get("count") or 1),
+                (m["value"], m["unit"]) if m else None)
 
     out = []
     for e in graph.get("edges", []):
         if not (e.get("src") and e.get("dst") and e.get("satisfied")):
             continue
-        s_attrs, s_count = mods(e["src"])
-        d_attrs, d_count = mods(e["dst"])
+        s_attrs, s_count, s_meas = mods(e["src"])
+        d_attrs, d_count, d_meas = mods(e["dst"])
         out.append({
             "rel": e["rel"], "src": e["src"], "dst": e["dst"],
             "polarity": e.get("polarity", "pos"),
-            "src_attrs": s_attrs, "src_count": s_count, "d_attrs": d_attrs, "d_count": d_count,
+            "src_attrs": s_attrs, "src_count": s_count, "src_meas": s_meas,
+            "d_attrs": d_attrs, "d_count": d_count, "d_meas": d_meas,
         })
     return out
 
@@ -64,6 +67,14 @@ def _classify(src_edges: list[dict], tgt_edges: list[dict]) -> list[dict[str, st
             sc = s["d_count"] if s["src_count"] == t["src_count"] else s["src_count"]
             tc = t["d_count"] if s["src_count"] == t["src_count"] else t["src_count"]
             divs.append({"class": "quantity", "note": f"«{rel}»: количество {sc} vs {tc}"})
+        sm = s["src_meas"] or s["d_meas"]
+        tm = t["src_meas"] or t["d_meas"]
+        if sm != tm:
+            fmt = lambda m: f"{m[0]}{m[1]}" if m else "—"
+            if sm and tm and sm[1] != tm[1]:  # units differ — the dangerous mg↔ml swap
+                divs.append({"class": "unit", "note": f"«{rel}»: единица {sm[1]} vs {tm[1]}"})
+            else:
+                divs.append({"class": "quantity", "note": f"«{rel}»: мера {fmt(sm)} vs {fmt(tm)}"})
         if s["src_attrs"] != t["src_attrs"] or s["d_attrs"] != t["d_attrs"]:
             divs.append({"class": "attribute",
                          "note": f"«{rel}»: признаки {s['src_attrs'] or s['d_attrs']} vs {t['src_attrs'] or t['d_attrs']}"})

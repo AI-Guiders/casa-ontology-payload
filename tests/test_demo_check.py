@@ -23,6 +23,7 @@ class DemoCheckTests(unittest.TestCase):
     def test_dangerous_classes_named(self) -> None:
         self.assertIn("[polarity]", self.out)
         self.assertIn("[quantity]", self.out)
+        self.assertIn("[unit]", self.out)
 
     def test_correct_negation_not_false_flagged(self) -> None:
         # «не закрывай окно» / «do not close the window» must read as equivalent
