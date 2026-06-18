@@ -46,10 +46,21 @@ def _typed_concepts(state: dict, lattice_id: str) -> set[str]:
     return {e.split("|isa|")[0] for e in edges if "|isa|" in e}
 
 
+_NAME_INDEX_CACHE: dict[tuple[int, str], list[tuple[str, str]]] = {}
+
+
 def _name_index(state: dict, lattice_id: str) -> list[tuple[str, str]]:
     """(russian surface, ontology-concept) pairs, longest surface first — for stem
     resolution. Restricted to concepts in the ontology so stem matches don't drift into
-    untyped synonyms from a large merged glossary (столе -> стол/table, not столб/post)."""
+    untyped synonyms from a large merged glossary (столе -> стол/table, not столб/post).
+
+    Memoised per (state, lattice): the name edges don't change during a session (persisting
+    a situation adds situation edges, not names), so repeated parses don't rescan the
+    ontology — a large speedup for batch use (the reality-check, many chat turns)."""
+    key = (id(state), lattice_id)
+    cached = _NAME_INDEX_CACHE.get(key)
+    if cached is not None:
+        return cached
     from casa.curriculum.translate import _name_edges, script_of
 
     typed = _typed_concepts(state, lattice_id)
@@ -59,7 +70,9 @@ def _name_index(state: dict, lattice_id: str) -> list[tuple[str, str]]:
         concept, _, surface = e.partition(pre)
         if surface and concept in typed and script_of(surface) == "cyrl":
             out.append((surface, concept))
-    return sorted(set(out), key=lambda p: -len(p[0]))
+    result = sorted(set(out), key=lambda p: -len(p[0]))
+    _NAME_INDEX_CACHE[key] = result
+    return result
 
 
 def resolve_token(state: dict, lattice_id: str, token: str, names: list[tuple[str, str]] | None = None) -> str | None:
