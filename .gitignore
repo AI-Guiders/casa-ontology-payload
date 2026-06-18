@@ -25,6 +25,8 @@ agents/*/memory_manifest.json
 # Lab snapshot shards and fat stores
 lab/snapshots/**/_parallel_shards/
 lab/snapshots/**/field_state*.json
+lab/snapshots/**/ltm/
+lab/snapshots/**/nca/
 
 # Python
 __pycache__/
@@ -67,6 +69,8 @@ lab/kb-bundles/
 lab/inbox/_processed/
 lab/_bench*
 lab/_tmp*
+lab/_scratch/
+lab/nca_*.json
 lab/**/*.log
 lab/layered_out/
 lab/mm/
