@@ -195,12 +195,17 @@ def parse_situation(
             if figure:
                 triples.append((rel, figure, ground))
         return triples, attrs, polarity, counts, measures
-    if verbs and len(nouns) >= 2:  # transitive S-V-O
-        return [(verbs[0][1], nouns[0][1], nouns[1][1])], attrs, polarity, counts, measures
-    if verbs and len(nouns) == 1 and verbs[0][0] < nouns[0][0]:
-        # imperative: a verb BEFORE its only noun, no subject — «открой файл» / «open the
-        # file». The implicit agent is «you». (A noun before the verb is S-V, not a command.)
-        return [(verbs[0][1], "lex.you", nouns[0][1])], attrs, polarity, counts, measures
+    if verbs and nouns:
+        verb_pos = verbs[0][0]
+        before = [c for ni, c in nouns if ni < verb_pos]
+        if not before:
+            # imperative: the verb precedes every noun, so there is no subject — the agent is
+            # implicit «you» and the OBJECT is the last noun, the head of any compound
+            # («открой файл», «open the icon file» → open the file). Gerund headings parse
+            # the same way («opening a file»).
+            return [(verbs[0][1], "lex.you", nouns[-1][1])], attrs, polarity, counts, measures
+        if len(nouns) >= 2:  # transitive S-V-O — a subject before the verb
+            return [(verbs[0][1], before[-1], nouns[-1][1])], attrs, polarity, counts, measures
     return [], attrs, polarity, counts, measures
 
 

@@ -53,6 +53,12 @@ PREDICATE_RELATION: dict[str, str] = {
     "включает": "enable", "включать": "enable", "включить": "enable", "включи": "enable", "включай": "enable", "разрешить": "enable", "разреши": "enable", "enable": "enable", "enables": "enable",
     "install": "install", "installs": "install",
     "скачивает": "download", "скачивать": "download", "скачать": "download", "скачай": "download", "скачивай": "download", "загрузить": "download", "загрузи": "download", "download": "download", "downloads": "download",
+    # English gerund headings — «Opening a file», «Configuring the proxy»
+    "opening": "open", "closing": "close", "saving": "save", "deleting": "delete",
+    "clicking": "click", "selecting": "select", "editing": "edit", "showing": "show",
+    "configuring": "configure", "copying": "copy", "moving": "move", "creating": "create",
+    "renaming": "rename", "printing": "print", "enabling": "enable", "installing": "install",
+    "downloading": "download",
 }
 
 
