@@ -92,8 +92,6 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
 
     # locative clause (one figure, a chain of preposition+ground), e.g. on+near
     if all(rel in _LOC_PREP for rel, _, _ in edges):
-        if neg:
-            return None  # negated locative («яблока нет на столе») — handled separately
         first = edges[0]
         fig = _np(state, lattice_id, first[1], lang, graph)
         pieces: list[str] = []
@@ -107,9 +105,9 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
                 pieces.append(f"{_LOC_PREP[rel]['en']} the {g}")
             prev_ground = dst
         if lang == "ru":
-            body = f"{fig} " + " ".join(pieces)
+            body = f"{fig} {'не ' if neg else ''}" + " ".join(pieces)  # «Яблоко не на столе.»
         else:
-            body = f"the {fig} is " + " ".join(pieces)
+            body = f"the {fig} is {'not ' if neg else ''}" + " ".join(pieces)
         return body[:1].upper() + body[1:] + "."
 
     # material clause — «сделан из <material-gen>» / «is made of <material>»

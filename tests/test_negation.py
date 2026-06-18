@@ -38,6 +38,19 @@ class NegationTests(unittest.TestCase):
         self.assertEqual(tr["ru"], "Пользователь не открывает файл.")
         self.assertEqual(tr["en"], "The user does not open the file.")
 
+    def test_negative_locative_round_trip(self) -> None:
+        tr = self.rt("яблоко не на столе")
+        self.assertEqual(tr["ru"], "Яблоко не на столе.")
+        self.assertEqual(tr["en"], "The apple is not on the table.")
+
+    def test_negative_locative_input_forms_agree(self) -> None:
+        # «не на», existential «нет», and English «is not on» all yield the same negation
+        a = parse_graph(self.state, self.lat, "яблоко не на столе")
+        b = parse_graph(self.state, self.lat, "яблока нет на столе")
+        c = parse_graph(self.state, self.lat, "The apple is not on the table")
+        self.assertEqual(fingerprint(a)["id"], fingerprint(b)["id"])
+        self.assertEqual(fingerprint(a)["id"], fingerprint(c)["id"])
+
     def test_polarity_is_in_the_fingerprint(self) -> None:
         pos = fingerprint(parse_graph(self.state, self.lat, "пользователь открывает файл"))["id"]
         neg = fingerprint(parse_graph(self.state, self.lat, "пользователь не открывает файл"))["id"]
