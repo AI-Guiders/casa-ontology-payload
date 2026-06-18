@@ -42,6 +42,16 @@ _TRANS_VERB = {
     "click": {"ru": "нажимать", "ru3sg": "нажимает", "ruimp": "нажми", "ruimpneg": "нажимай", "en": "click"},
     "select": {"ru": "выбирать", "ru3sg": "выбирает", "ruimp": "выбери", "ruimpneg": "выбирай", "en": "select"},
     "edit": {"ru": "изменять", "ru3sg": "изменяет", "ruimp": "измени", "ruimpneg": "изменяй", "en": "edit"},
+    "show": {"ru": "показывать", "ru3sg": "показывает", "ruimp": "покажи", "ruimpneg": "показывай", "en": "show"},
+    "configure": {"ru": "настраивать", "ru3sg": "настраивает", "ruimp": "настрой", "ruimpneg": "настраивай", "en": "configure"},
+    "copy": {"ru": "копировать", "ru3sg": "копирует", "ruimp": "скопируй", "ruimpneg": "копируй", "en": "copy"},
+    "move": {"ru": "перемещать", "ru3sg": "перемещает", "ruimp": "перемести", "ruimpneg": "перемещай", "en": "move"},
+    "create": {"ru": "создавать", "ru3sg": "создаёт", "ruimp": "создай", "ruimpneg": "создавай", "en": "create"},
+    "rename": {"ru": "переименовывать", "ru3sg": "переименовывает", "ruimp": "переименуй", "ruimpneg": "переименовывай", "en": "rename"},
+    "print": {"ru": "печатать", "ru3sg": "печатает", "ruimp": "распечатай", "ruimpneg": "печатай", "en": "print"},
+    "enable": {"ru": "включать", "ru3sg": "включает", "ruimp": "включи", "ruimpneg": "включай", "en": "enable"},
+    "install": {"ru": "устанавливать", "ru3sg": "устанавливает", "ruimp": "установи", "ruimpneg": "устанавливай", "en": "install"},
+    "download": {"ru": "скачивать", "ru3sg": "скачивает", "ruimp": "скачай", "ruimpneg": "скачивай", "en": "download"},
 }
 
 

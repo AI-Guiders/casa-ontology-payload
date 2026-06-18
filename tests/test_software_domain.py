@@ -58,6 +58,23 @@ class SoftwareDomainTests(unittest.TestCase):
         tr = translate_through_meaning(self.state, self.lat, "Save the document")
         self.assertEqual(tr["ru"], "Сохрани документ.")
 
+    def test_expanded_verbs_round_trip(self) -> None:
+        cases = {
+            "покажи изображение": ("Покажи изображение.", "Show the image."),
+            "скопируй файл": ("Скопируй файл.", "Copy the file."),
+            "настрой прокси": ("Настрой прокси.", "Configure the proxy."),
+            "скачай программу": ("Скачай программу.", "Download the program."),
+        }
+        for src, (ru, en) in cases.items():
+            tr = translate_through_meaning(self.state, self.lat, src)
+            self.assertEqual(tr["ru"], ru)
+            self.assertEqual(tr["en"], en)
+
+    def test_expanded_concepts_resolve(self) -> None:
+        for w, cid in [("палитра", "lex.palette"), ("прокси", "lex.proxy"),
+                       ("пиктограмма", "lex.icon"), ("редактор", "lex.editor")]:
+            self.assertEqual(concept_of(self.state, self.lat, w), cid)
+
     def test_noun_before_verb_is_not_an_imperative(self) -> None:
         from casa.curriculum.parse import parse_triples
 
