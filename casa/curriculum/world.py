@@ -38,6 +38,9 @@ def build_meaning_state() -> tuple[dict, str]:
     wide = REPO_ROOT / "lab/curriculum/concept-net-wide-v1.json"  # prefer the wide ontology
     net = "lab/curriculum/concept-net-wide-v1.json" if wide.exists() else "lab/curriculum/concept-net-base-v1.json"
     teach_concept_net(state, LATTICE, _load(net), bundle=bundle)
+    from casa.curriculum.software_domain import teach_software_domain
+
+    teach_software_domain(state, LATTICE, bundle=bundle)  # additive software/UI layer
     ru = _load("lab/curriculum/ru-rules-v1.json")["rules"]
     en = _load("lab/curriculum/en-rules-v1.json")["rules"]
     for rid in _RU_RULES:
