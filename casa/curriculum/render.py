@@ -41,9 +41,15 @@ def _leaf(concept: str) -> str:
 
 
 def _node_label(concept: str, nodes: dict[str, Any]) -> str:
-    """Concept leaf plus any adjective attributes: apple -> apple[red]."""
-    attrs = (nodes.get(concept) or {}).get("attrs") or []
-    return f"{_leaf(concept)}[{','.join(attrs)}]" if attrs else _leaf(concept)
+    """Concept leaf with adjective attributes and count: file -> file[red]×2."""
+    node = nodes.get(concept) or {}
+    label = _leaf(concept)
+    if node.get("attrs"):
+        label += "[" + ",".join(node["attrs"]) + "]"
+    cnt = node.get("count")
+    if cnt and cnt != 1:
+        label += f"×{cnt}"
+    return label
 
 
 def _rel_label(edge: dict[str, Any]) -> str:

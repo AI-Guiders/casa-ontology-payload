@@ -51,16 +51,31 @@ def normalize_relation(predicate: str) -> str:
     return PREDICATE_RELATION.get(predicate.strip().lower(), predicate.strip().lower())
 
 
+def _node_token(cid: str, nodes: dict[str, Any]) -> str:
+    """A node's fingerprint token: concept id annotated with its adjective attributes and
+    count, so «red file» / «два файла» are DISTINCT from the bare concept in the key."""
+    node = nodes.get(cid) or {}
+    tok = cid
+    if node.get("attrs"):
+        tok += "[" + ",".join(sorted(node["attrs"])) + "]"
+    cnt = node.get("count")
+    if cnt and cnt != 1:
+        tok += f"×{cnt}"
+    return tok
+
+
 def _edge_key(rel: str, src: str, dst: str, polarity: str = "pos") -> str:
     # «¬» prefix makes a negated edge a DISTINCT situation: «X on table» ≠ «X not on table».
     return f"{'¬' if polarity == 'neg' else ''}{rel}({src},{dst})"
 
 
 def canonical_edges(graph: dict[str, Any], *, satisfied_only: bool = True) -> list[str]:
-    """Sorted canonical edge keys over CONCEPTS — language-independent, order-free.
-    Polarity is part of the key, so a negated situation never collides with its positive."""
+    """Sorted canonical edge keys over CONCEPTS — language-independent, order-free. Polarity,
+    adjective attributes and counts are all in the key, so a negated / modified / counted
+    situation never collides with the bare one (the meaning is captured, not just relations)."""
+    nodes = graph.get("nodes", {})
     out = [
-        _edge_key(e["rel"], e["src"], e["dst"], e.get("polarity", "pos"))
+        _edge_key(e["rel"], _node_token(e["src"], nodes), _node_token(e["dst"], nodes), e.get("polarity", "pos"))
         for e in graph.get("edges", [])
         if e.get("src") and e.get("dst") and (e.get("satisfied") or not satisfied_only)
     ]

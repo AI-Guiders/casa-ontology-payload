@@ -52,17 +52,40 @@ def _word(state: dict, lattice_id: str, concept: str, lang: str) -> str:
 
 
 def _np(state: dict, lattice_id: str, concept: str, lang: str, graph: dict[str, Any]) -> str:
-    """Noun phrase for a concept: its adjective attributes (if any) + the noun. Russian
-    agrees the adjective with the noun's gender. Use only in nominative positions — the
-    locative figure and the transitive subject; oblique agreement is out of scope."""
-    from casa.curriculum.attributes import en_adjective, ru_adjective
+    """Noun phrase for a concept: count + adjective attributes + the noun. A count governs
+    the noun's case (1 → nominative, 2-4 → genitive singular; 5+ approximated). Russian
+    agrees the adjective with the noun's gender. Nominative-position use (figure/subject)."""
+    from casa.curriculum.attributes import _gender_of, en_adjective, ru_adjective
+    from casa.curriculum.quantity import en_number_word, ru_noun_case, ru_number_word
 
+    node = graph.get("nodes", {}).get(concept) or {}
     noun = _word(state, lattice_id, concept, lang)
-    attrs = (graph.get("nodes", {}).get(concept) or {}).get("attrs") or []
-    if not attrs:
-        return noun
-    adjs = [(ru_adjective(a, noun) if lang == "ru" else en_adjective(a)) for a in attrs]
+    attrs = node.get("attrs") or []
+    count = node.get("count")
+    if lang == "ru":
+        adjs = [ru_adjective(a, noun) for a in attrs]
+        if count:
+            form = noun if ru_noun_case(count) == "nom" else _ru_oblique(state, lattice_id, noun, "gen")
+            return " ".join([ru_number_word(count, _gender_of(noun)), *adjs, form])
+        return " ".join([*adjs, noun])
+    adjs = [en_adjective(a) for a in attrs]
+    if count:
+        form = noun if count == 1 else (apply_conditioned_rule(state, lattice_id, "lang.rule.plural.en", noun) or f"{noun}s")
+        return " ".join([en_number_word(count), *adjs, form])
     return " ".join([*adjs, noun])
+
+
+def _obj(state: dict, lattice_id: str, concept: str, lang: str, graph: dict[str, Any]) -> str:
+    """Render an object. A counted object follows the numeral's case («удали два файла»);
+    an uncounted Russian object goes to the accusative («удали папку»)."""
+    if (graph.get("nodes", {}).get(concept) or {}).get("count"):
+        return _np(state, lattice_id, concept, lang, graph)
+    word = _word(state, lattice_id, concept, lang)
+    if lang == "ru":
+        from casa.curriculum.sentence import RU_ACC_RULE
+
+        return apply_conditioned_rule(state, lattice_id, RU_ACC_RULE, word) or word
+    return word
 
 
 def _ru_oblique(state: dict, lattice_id: str, word: str, case: str) -> str:
@@ -104,10 +127,13 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
             else:
                 pieces.append(f"{_LOC_PREP[rel]['en']} the {g}")
             prev_ground = dst
+        fig_count = (graph.get("nodes", {}).get(first[1]) or {}).get("count")
         if lang == "ru":
             body = f"{fig} {'не ' if neg else ''}" + " ".join(pieces)  # «Яблоко не на столе.»
         else:
-            body = f"the {fig} is {'not ' if neg else ''}" + " ".join(pieces)
+            det = "" if fig_count else "the "
+            cop = "are" if fig_count and fig_count != 1 else "is"
+            body = f"{det}{fig} {cop} {'not ' if neg else ''}" + " ".join(pieces)
         return body[:1].upper() + body[1:] + "."
 
     # material clause — «сделан из <material-gen>» / «is made of <material>»
@@ -132,18 +158,18 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
     if not verb:
         return None
 
-    # imperative — subject is the implicit «you»: «Открой файл.» / «Не закрывай окно.»
-    if src == "lex.you":
-        obj = _word(state, lattice_id, dst, lang)
-        if lang == "ru":
-            from casa.curriculum.sentence import RU_ACC_RULE
+    counted = bool((graph.get("nodes", {}).get(dst) or {}).get("count"))
 
-            obj_acc = apply_conditioned_rule(state, lattice_id, RU_ACC_RULE, obj) or obj
+    # imperative — subject is the implicit «you»: «Открой файл.» / «Удали два файла.»
+    if src == "lex.you":
+        obj = _obj(state, lattice_id, dst, lang, graph)
+        if lang == "ru":
             # a negative command takes the imperfective imperative («не закрывай», not «закрой»)
             form = verb.get("ruimpneg", verb.get("ru", "")) if neg else verb.get("ruimp", verb["ru"])
-            body = f"не {form} {obj_acc}" if neg else f"{form} {obj_acc}"
+            body = f"не {form} {obj}" if neg else f"{form} {obj}"
         else:
-            body = f"do not {verb['en']} the {obj}" if neg else f"{verb['en']} the {obj}"
+            det = "" if counted else "the "  # «Delete two files» (no article when counted)
+            body = f"do not {verb['en']} {det}{obj}" if neg else f"{verb['en']} {det}{obj}"
         return body[:1].upper() + body[1:] + "."
 
     if lang == "ru":
@@ -151,11 +177,18 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
         return compose_ru_clause(
             state, lattice_id, subj=_np(state, lattice_id, src, "ru", graph), verb=verb["ru"],
             obj=_word(state, lattice_id, dst, "ru"), verb_form=(f"не {v3}" if neg else verb.get("ru3sg")),
+            obj_form=(_np(state, lattice_id, dst, "ru", graph) if counted else None),
         )
+    obj_spec = {"noun": _word(state, lattice_id, dst, "en")}
+    if counted:
+        from casa.curriculum.quantity import en_number_word
+
+        obj_spec = {"noun": _word(state, lattice_id, dst, "en"),
+                    "number": en_number_word((graph["nodes"][dst]["count"])), "determiner": ""}
     return compose_full_clause(
         state, lattice_id,
         subject={"noun": _np(state, lattice_id, src, "en", graph)}, verb=verb["en"],
-        obj={"noun": _word(state, lattice_id, dst, "en")}, lang_in="en",
+        obj=obj_spec, lang_in="en",
         polarity=("negative" if neg else "affirmative"),
     )
 

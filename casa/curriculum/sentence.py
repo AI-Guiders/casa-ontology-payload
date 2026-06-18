@@ -117,6 +117,7 @@ def compose_ru_clause(
     rule_id: str = RU_SVO_RULE,
     punctuate: bool = True,
     verb_form: str | None = None,
+    obj_form: str | None = None,
 ) -> str | None:
     """Compose a Russian S-V-O clause from a meaning triple (all words already Russian).
 
@@ -129,7 +130,7 @@ def compose_ru_clause(
     ``verb_form`` supplies an already-conjugated verb (a given-lexicon irregular like
     есть→ест), used verbatim instead of the regular rule — the rule produces «есет»."""
     v = verb_form or apply_conditioned_rule(state, lattice_id, conj_rule, verb) or verb
-    o = apply_conditioned_rule(state, lattice_id, acc_rule, obj) or obj
+    o = obj_form or apply_conditioned_rule(state, lattice_id, acc_rule, obj) or obj
     fillers = {"subj": subj, "verb": v, "obj": o}
     order = read_order_rule(state, lattice_id, rule_id)
     if not order or any(slot not in fillers for slot in order):

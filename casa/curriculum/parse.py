@@ -88,16 +88,18 @@ def resolve_token(state: dict, lattice_id: str, token: str, names: list[tuple[st
 
 def parse_situation(
     state: dict, lattice_id: str, text: str
-) -> tuple[list[tuple[str, str, str]], dict[str, list[str]], str]:
-    """Parse a controlled clause into triples, adjective attributes, and clause polarity.
+) -> tuple[list[tuple[str, str, str]], dict[str, list[str]], str, dict[str, int]]:
+    """Parse a controlled clause into triples, adjective attributes, polarity, and counts.
 
-    Returns ``(triples, attrs, polarity)``: ``attrs[concept_id]`` are attribute ids
-    (e.g. ``["red"]``) modifying that concept (an adjective binds to the next noun);
-    ``polarity`` is ``"neg"`` if the clause is negated («не закрывай окно»), else ``"pos"``."""
+    Returns ``(triples, attrs, polarity, counts)``: ``attrs[cid]`` are attribute ids
+    («red») and ``counts[cid]`` is the quantity («два файла» → 2) modifying that concept —
+    both bind to the next noun; ``polarity`` is ``"neg"`` for a negated clause, else
+    ``"pos"``."""
     from casa.curriculum.attributes import attr_of_token
+    from casa.curriculum.quantity import number_of_token
 
     names = _name_index(state, lattice_id)
-    seq: list[tuple[str, Any]] = []  # ('prep'|'verb'|'noun'|'adj', payload) in order
+    seq: list[tuple[str, Any]] = []  # ('prep'|'verb'|'noun'|'adj'|'num', payload) in order
     polarity = "pos"
     for tok in _tokens(text):
         if tok in _NEG:
@@ -108,6 +110,8 @@ def parse_situation(
             continue  # positional copula — the preposition carries the relation
         elif tok in PREDICATE_RELATION and tok not in _PREPS:
             seq.append(("verb", normalize_relation(tok)))
+        elif (num := number_of_token(tok)) is not None:
+            seq.append(("num", num))
         elif (aid := attr_of_token(tok)) is not None:
             seq.append(("adj", aid))
         else:
@@ -115,16 +119,23 @@ def parse_situation(
             if cid:
                 seq.append(("noun", cid))
 
-    # bind each adjective to the next noun in sequence
+    # bind each adjective and number to the next noun in sequence
     attrs: dict[str, list[str]] = {}
+    counts: dict[str, int] = {}
     pending: list[str] = []
+    pending_count: int | None = None
     for kind, payload in seq:
         if kind == "adj":
             pending.append(payload)
-        elif kind == "noun" and pending:
-            attrs.setdefault(payload, [])
-            attrs[payload].extend(a for a in pending if a not in attrs[payload])
-            pending = []
+        elif kind == "num":
+            pending_count = payload
+        elif kind == "noun":
+            if pending:
+                attrs.setdefault(payload, [])
+                attrs[payload].extend(a for a in pending if a not in attrs[payload])
+            if pending_count is not None:
+                counts[payload] = pending_count
+            pending, pending_count = [], None
 
     nouns = [(i, p) for i, (k, p) in enumerate(seq) if k == "noun"]
     preps = [(i, p) for i, (k, p) in enumerate(seq) if k == "prep"]
@@ -141,14 +152,14 @@ def parse_situation(
             figure = before[-1] if before else (after[1] if len(after) > 1 else None)
             if figure:
                 triples.append((rel, figure, ground))
-        return triples, attrs, polarity
+        return triples, attrs, polarity, counts
     if verbs and len(nouns) >= 2:  # transitive S-V-O
-        return [(verbs[0][1], nouns[0][1], nouns[1][1])], attrs, polarity
+        return [(verbs[0][1], nouns[0][1], nouns[1][1])], attrs, polarity, counts
     if verbs and len(nouns) == 1 and verbs[0][0] < nouns[0][0]:
         # imperative: a verb BEFORE its only noun, no subject — «открой файл» / «open the
         # file». The implicit agent is «you». (A noun before the verb is S-V, not a command.)
-        return [(verbs[0][1], "lex.you", nouns[0][1])], attrs, polarity
-    return [], attrs, polarity
+        return [(verbs[0][1], "lex.you", nouns[0][1])], attrs, polarity, counts
+    return [], attrs, polarity, counts
 
 
 def parse_triples(state: dict, lattice_id: str, text: str) -> list[tuple[str, str, str]]:
@@ -157,13 +168,16 @@ def parse_triples(state: dict, lattice_id: str, text: str) -> list[tuple[str, st
 
 
 def parse_graph(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
-    """Parse text and build its meaning graph, with adjective attributes on the nodes and
-    clause polarity on the edges (a negated clause marks its edges ``polarity='neg'``)."""
-    triples, attrs, polarity = parse_situation(state, lattice_id, text)
+    """Parse text and build its meaning graph, with adjective attributes and counts on the
+    nodes and clause polarity on the edges (a negated clause marks ``polarity='neg'``)."""
+    triples, attrs, polarity, counts = parse_situation(state, lattice_id, text)
     graph = meaning_graph(state, lattice_id, triples)
     for cid, aids in attrs.items():
         if cid in graph["nodes"]:
             graph["nodes"][cid]["attrs"] = aids
+    for cid, n in counts.items():
+        if cid in graph["nodes"]:
+            graph["nodes"][cid]["count"] = n
     for edge in graph["edges"]:
         edge["polarity"] = polarity
     return graph
