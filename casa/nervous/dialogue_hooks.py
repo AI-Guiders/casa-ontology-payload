@@ -89,6 +89,7 @@ def record_partner_dialogue_impulse(
                     "focus": material_plan.get("focus"),
                     "relation_marker": material_plan.get("relation_marker"),
                     "renderer_mode": material_plan.get("renderer_mode"),
+                    "object_overlay": material_plan.get("object_overlay"),
                 },
             )
             imp.select(

@@ -11,6 +11,13 @@ import re
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
+from casa.prisms.tick.discourse.slots import BlockSlots
+from casa.prisms.tick.discourse.slot_compose import (
+    compose_lexical_slots,
+    l3_pieces,
+    slots_composable,
+)
+
 _WORD_RE = re.compile(r"[\w\u0400-\u04FF]+", flags=re.UNICODE)
 _PUNCT_RE = re.compile(r"[.!?;:,\u2026\u00ab\u00bb\"'()-]+", flags=re.UNICODE)
 _CYR_RE = re.compile(r"[\u0400-\u04FF]")
@@ -99,6 +106,7 @@ class EfferentMaterialPlan:
     relation_marker: str = ""
     renderer_mode: str = "fragment"
     register: str = ""
+    object_overlay: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -109,6 +117,7 @@ class EfferentMaterialPlan:
             "relation_marker": self.relation_marker,
             "renderer_mode": self.renderer_mode,
             "register": self.register,
+            "object_overlay": self.object_overlay,
         }
 
 
@@ -242,15 +251,18 @@ def candidates_from_blocks(
             )
             continue
         if cid.startswith("ru.dialog."):
+            slots = BlockSlots.read(row)
+            composable = slots_composable(slots, set(trace.event.tokens))
             out.append(
                 EfferentCandidate(
                     candidate_id=cid,
                     source=source or "kb",
-                    role="telemetry",
+                    role="lexical_hub",
                     material=[],
                     score=int(row.get("score") or 0),
-                    surface_eligible=False,
-                    reason="predefined_dialog_label_not_surface",
+                    surface_eligible=composable and not event.is_developmental_turn,
+                    reason="" if composable else "slots_not_composable",
+                    provenance={"slots": slots},
                 )
             )
             continue
@@ -272,7 +284,7 @@ def candidates_from_blocks(
             eligible = False
             reason = "self_memory_not_surface"
         elif cid.startswith("dialog.context."):
-            role = "context"
+            role = "referent" if cid == "dialog.context.referent" else "context"
             if "?" in text:
                 eligible = False
                 reason = "context_question_not_surface"
@@ -297,46 +309,148 @@ def candidates_from_blocks(
 
 def build_material_plan(trace: TextUnderstandingTrace, candidates: list[EfferentCandidate]) -> EfferentMaterialPlan:
     selected: list[EfferentCandidate] = []
-    rejected: list[EfferentCandidate] = []
-    eligible = [c for c in candidates if c.surface_eligible and c.material]
     relation = next((r for r in trace.relations if r.target), None)
-    if relation is not None and not relation.unresolved_deictic:
+    eligible = [c for c in candidates if c.surface_eligible]
+    lexical_hubs = sorted(
+        [c for c in eligible if c.role == "lexical_hub"],
+        key=lambda c: c.score,
+        reverse=True,
+    )
+    field_eligible = [
+        c
+        for c in eligible
+        if c.role in {"field_material", "context", "partner_turn", "referent"} and c.material
+    ]
+
+    if trace.event.is_developmental_turn:
+        return EfferentMaterialPlan(
+            trace=trace,
+            selected=[],
+            rejected=candidates,
+            renderer_mode="developmental_ack",
+        )
+
+    if lexical_hubs:
+        winner = lexical_hubs[0]
+        slots_raw = winner.provenance.get("slots")
+        slots = slots_raw if isinstance(slots_raw, dict) else {}
+        stimulus = str(slots.get("stimulus") or slots.get("word") or "").strip().lower()
+        if stimulus and stimulus in trace.event.tokens:
+            selected = [winner]
+        elif trace.event.has_question_mark:
+            selected = [winner]
+        elif _field_overlay_text(field_eligible, relation):
+            selected = [winner]
+
+    if not selected and relation is not None and not relation.unresolved_deictic:
         for item in eligible:
             if item.role == "relation_target":
-                selected.append(item)
+                selected = [item]
                 break
-    if not selected and relation is not None and relation.unresolved_deictic:
-        for item in sorted(eligible, key=lambda c: c.score, reverse=True):
-            if item.role in {"context", "field_material"}:
-                selected.append(item)
-                break
+
     if not selected and not trace.event.has_question_mark:
-        selected.extend(sorted(eligible, key=lambda c: c.score, reverse=True)[:1])
+        for item in sorted(field_eligible, key=lambda c: c.score, reverse=True)[:1]:
+            selected = [item]
+
     selected_ids = {id(c) for c in selected}
     rejected = [c for c in candidates if id(c) not in selected_ids]
-    focus = " ".join(selected[0].material).strip() if selected else ""
-    mode = "question_relation" if trace.event.has_question_mark and focus else "fragment"
-    if trace.event.is_developmental_turn:
-        mode = "developmental_ack"
+    object_overlay = _field_overlay_text(field_eligible, relation)
+    relation_marker = relation.marker if relation else ("про" if object_overlay else "")
+    focus = ""
+    if selected:
+        first = selected[0]
+        if first.role == "lexical_hub":
+            slots_raw = first.provenance.get("slots")
+            slots: dict[str, str] = (
+                {str(k): str(v) for k, v in slots_raw.items()}
+                if isinstance(slots_raw, dict)
+                else {}
+            )
+            pieces = l3_pieces(slots, object_overlay=object_overlay, relation_marker=relation_marker)
+            focus = " ".join(pieces)
+        elif first.material:
+            focus = " ".join(first.material).strip()
+
+    mode = "slot_compose" if selected and selected[0].role == "lexical_hub" else "fragment"
+    if trace.event.has_question_mark and selected and selected[0].role != "lexical_hub" and focus:
+        mode = "question_relation"
     return EfferentMaterialPlan(
         trace=trace,
         selected=selected,
         rejected=rejected,
         focus=focus,
-        relation_marker=relation.marker if relation else "",
+        relation_marker=relation_marker,
         renderer_mode=mode,
+        register=_register_from_candidates(candidates),
+        object_overlay=object_overlay,
     )
+
+
+def _field_overlay_text(
+    field_eligible: list[EfferentCandidate],
+    relation: TextRelation | None,
+) -> str:
+    role_rank = {"referent": 0, "field_material": 1, "partner_turn": 2, "context": 3}
+
+    def sort_key(item: EfferentCandidate) -> tuple[int, int]:
+        return (role_rank.get(item.role, 9), -int(item.score or 0))
+
+    for item in sorted(field_eligible, key=sort_key):
+        text = " ".join(item.material).strip(" .!?«»")
+        if not text or "?" in text:
+            continue
+        if relation and relation.unresolved_deictic:
+            return _focus_term(text)
+        if relation is None and item.role in {"partner_turn", "referent"}:
+            return _focus_term(text)
+    return ""
+
+
+def _focus_term(text: str) -> str:
+    body = str(text or "")
+    words = [w for w in _WORD_RE.findall(body) if len(w) >= 4 and _CYR_RE.search(w)]
+    if len(words) <= 2:
+        return words[0] if words else body.strip()
+    if re.search(r"\s+но\s+", body, flags=re.IGNORECASE):
+        tail = re.split(r"\s+но\s+", body, maxsplit=1, flags=re.IGNORECASE)[-1]
+        tail_words = [w for w in _WORD_RE.findall(tail) if len(w) >= 5 and _CYR_RE.search(w)]
+        if tail_words:
+            return tail_words[-1]
+    return words[0]
+
+
+def _register_from_candidates(candidates: list[EfferentCandidate]) -> str:
+    for item in candidates:
+        if item.role == "register":
+            return item.candidate_id
+    return ""
 
 
 def render_material_plan(plan: EfferentMaterialPlan) -> str | None:
     event = plan.trace.event
-    if event.is_developmental_turn:
+    if plan.renderer_mode == "developmental_ack" or event.is_developmental_turn:
         return "Поправку держу как сигнал."
+
+    if plan.renderer_mode == "slot_compose" and plan.selected:
+        hub = plan.selected[0]
+        slots_raw = hub.provenance.get("slots")
+        slots: dict[str, str] = (
+            {str(k): str(v) for k, v in slots_raw.items()} if isinstance(slots_raw, dict) else {}
+        )
+        composed = compose_lexical_slots(
+            slots,
+            tokens=set(event.tokens),
+            has_question_mark=event.has_question_mark,
+            object_overlay=plan.object_overlay,
+            relation_marker=plan.relation_marker,
+        )
+        if composed:
+            return composed
+
     focus = plan.focus.strip(" .!?")
     if plan.renderer_mode == "question_relation" and focus:
         return f"Про {focus} пока держу вопрос."
-    if focus:
-        return focus if focus.endswith((".", "!", "?")) else f"{focus}."
-    if event.has_question_mark:
-        return "(пока не могу собрать ответ)"
+    if focus and plan.renderer_mode == "fragment":
+        body = focus if focus.endswith((".", "!", "?")) else f"{focus}."
+        return body
     return None

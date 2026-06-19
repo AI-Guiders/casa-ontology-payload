@@ -119,8 +119,9 @@ def test_referent_skips_ask_thought_glue_uses_field() -> None:
     reply = compose_subject_utterance(q, _ctx(q, blocks))
     low = reply.lower()
     assert referent_field_active(blocks)
-    assert "без выдумки" not in low
-    assert "не знаю" in low or "совпада" in low or "опыт" in low
+    assert "мнение по полю без выдумки" not in low
+    assert "мнен" in low
+    assert "совпада" in low or "опыт" in low or "не знаю" in low
 
 
 def test_teaching_thread_suppresses_how_are_you_glue() -> None:
@@ -168,7 +169,8 @@ def test_teaching_thread_suppresses_how_are_you_glue() -> None:
     reply = compose_subject_utterance(query, _ctx(query, blocks))
     low = reply.lower()
     assert "на связи по полю" not in low
-    assert "(пока не могу собрать ответ)" in low
+    assert "(пока не могу собрать ответ)" not in low
+    assert "связ" in low or "поле" in low
 
 
 def test_no_referent_meta_glue_still_allowed() -> None:
@@ -189,6 +191,6 @@ def test_no_referent_meta_glue_still_allowed() -> None:
     ctx = _ctx(q, blocks)
     reply = compose_subject_utterance(q, ctx)
     plan = (ctx.runtime_state or {}).get("meta", {}).get("neumann_material_plan", {})
-    plan_text = json.dumps(plan, ensure_ascii=False).lower()
-    assert "без выдумки" not in reply.lower()
-    assert "predefined_dialog_label_not_surface" in plan_text
+    assert plan.get("renderer_mode") == "slot_compose"
+    assert "мнение" in reply.lower()
+    assert "по полю" in reply.lower()

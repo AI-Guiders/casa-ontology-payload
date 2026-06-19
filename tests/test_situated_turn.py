@@ -185,5 +185,5 @@ def test_fresh_how_are_you_uses_situation_pieces_not_affect_script() -> None:
 
     assert "осторожно говорю" not in low
 
-    assert "(пока не могу собрать ответ)" in low
+    assert "связ" in low or "поле" in low
 

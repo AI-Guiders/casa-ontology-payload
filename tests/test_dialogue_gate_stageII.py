@@ -94,8 +94,9 @@ def test_same_speech_act_uses_different_partner_field_material() -> None:
     assert "апельсин" in orange_material
     assert "магазин" in shop_material
     assert orange_plan != shop_plan
-    assert "мнение по полю без выдумки" not in orange.lower()
-    assert "мнение по полю без выдумки" not in shop.lower()
+    assert "апельсин" in orange.lower()
+    assert "магазин" in shop.lower()
+    assert orange.lower() != shop.lower()
 
 
 def test_field_social_has_no_keyword_surface_oracle() -> None:

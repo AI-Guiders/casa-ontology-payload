@@ -51,8 +51,8 @@ def test_how_are_you_not_locked_to_affect_preamble() -> None:
     assert AFFECT_PREAMBLE not in reply
     assert SCRIPT_HOW_ARE_YOU not in reply
     plan = (state.get("meta") or {}).get("neumann_material_plan") or {}
-    assert plan.get("renderer_mode") == "fragment"
-    assert "(пока не могу собрать ответ)" in reply
+    assert plan.get("renderer_mode") == "slot_compose"
+    assert "связ" in reply or "поле" in reply
 
 
 def test_how_are_you_low_security_prefers_honest_material() -> None:
