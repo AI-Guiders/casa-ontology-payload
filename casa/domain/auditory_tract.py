@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+"""Auditory tract constants (ADR-0011 / ADR-0028)."""
+
+from __future__ import annotations
+
+from casa.domain.prism_ids import PRISM_AUDITORY
+
+LATTICE_AUDIO_SPECTRUM = "A0_spectrum"
+LATTICE_AUDIO_BINAURAL = "A0_binaural"
+LATTICE_AUDIO_PHONEME = "A1_phon"
+LATTICE_AUDIO_EVENT = "A2_event"
+
+AUDITORY_LATTICE_IDS = (
+    LATTICE_AUDIO_SPECTRUM,
+    LATTICE_AUDIO_BINAURAL,
+    LATTICE_AUDIO_PHONEME,
+    LATTICE_AUDIO_EVENT,
+)
+
+CODEC_COCHLEAR_STUB = "cochlear_stub_v0"
+DEFAULT_AUDIO_GRID = 32
+DEFAULT_ENERGY_LEVELS = 16
+DEFAULT_SPECTRAL_BINS = 8
+BINAURAL_ITD_LEVELS = 32
+BINAURAL_ILD_LEVELS = 16
