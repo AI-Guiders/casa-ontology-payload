@@ -6,6 +6,7 @@ from enum import StrEnum
 
 
 class ImpulseChannel(StrEnum):
+    LISTEN_IMPRINT = "listen_imprint"
     PARTNER_DIALOGUE = "partner_dialogue"
     IDLE_EFFERENT = "idle_efferent"
     MOTOR_COMPOSE = "motor_compose"

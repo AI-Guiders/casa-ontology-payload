@@ -88,3 +88,7 @@ lab/visual-curriculum/out/
 
 # Stray generated corpus copy
 casa/prisms/lab/
+
+# Listen mass cold-path media (README tracked under listen_corpus/)
+listen_corpus/**
+!listen_corpus/README.md

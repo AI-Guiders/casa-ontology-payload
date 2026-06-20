@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Real-store dialogue smoke — bind trace + speech-act provenance (plumbing only).
+"""STAGE 3 — real-store dialogue smoke (bind trace + speech-act provenance).
+
+Developmental validation ladder (run in order):
+  0. tools/verify_listen_imprint.py — listen/imprint on field, no efferent
+  1. micro-duck retention (? vs ., recast not quoted) — partial wiring
+  2. fragment speech via slot compose — awkward OK
+  3. this script — plumbing only, NOT emergence / duck test
 
 NOT an emergence / duck-test gate: fixed partner script + hub-prefix expectations
 prescribe routing. See design/CASA-work-verification-dialogue-thread.v1.md §Limits.
@@ -25,6 +31,8 @@ from casa.domain.subject_voice import compose_subject_partner_reply_with_ctx
 from casa.prisms.control.fpn_state import WorkingMemory, read_session_meta, write_session_meta
 from casa.prisms.control.sn_cen_runtime import TaskEmit
 from casa.prisms.shared.store_layout import default_agent_store
+
+STAGE_LABEL = "STAGE 3 — dialogue plumbing smoke"
 
 PREAMBLE = "осторожно говорю, что чувствую"
 
@@ -216,7 +224,7 @@ def run_oracle_audit() -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Dialogue thread smoke (plumbing)")
+    parser = argparse.ArgumentParser(description=f"{STAGE_LABEL} (plumbing)")
     parser.add_argument(
         "--impulse",
         action="store_true",
@@ -232,6 +240,8 @@ def main() -> int:
     except AssertionError as err:
         print(f"FAIL: {err}", file=sys.stderr)
         return 1
+    print(STAGE_LABEL)
+    print("(stages 0–2 should pass first for meaningful duck; this gate is plumbing only)")
     for q, a in t:
         print(f"Q: {q}")
         print(f"A: {a}")
