@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import mimetypes
+import re
 import sys
 import webbrowser
 from http import HTTPStatus
@@ -55,17 +56,57 @@ class AnnotatorHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def _send_bytes(self, data: bytes, content_type: str) -> None:
+    def _send_bytes(self, data: bytes, content_type: str, *, extra_headers: dict[str, str] | None = None) -> None:
         self.send_response(HTTPStatus.OK)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(data)))
+        if extra_headers:
+            for key, value in extra_headers.items():
+                self.send_header(key, value)
         self.end_headers()
         self.wfile.write(data)
+
+    def _serve_video(self) -> None:
+        """Stream video with Accept-Ranges so the browser can seek in mp4/webm."""
+        size = self.video_path.stat().st_size
+        ctype = mimetypes.guess_type(str(self.video_path))[0] or "application/octet-stream"
+        range_header = self.headers.get("Range", "")
+        match = re.fullmatch(r"bytes=(\d+)-(\d*)", range_header.strip())
+        if match:
+            start = int(match.group(1))
+            end = int(match.group(2)) if match.group(2) else size - 1
+            end = min(end, size - 1)
+            if start > end or start >= size:
+                self.send_error(HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE)
+                return
+            length = end - start + 1
+            self.send_response(HTTPStatus.PARTIAL_CONTENT)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Accept-Ranges", "bytes")
+            self.send_header("Content-Range", f"bytes {start}-{end}/{size}")
+            self.send_header("Content-Length", str(length))
+            self.end_headers()
+            with self.video_path.open("rb") as fh:
+                fh.seek(start)
+                self.wfile.write(fh.read(length))
+            return
+        self.send_response(HTTPStatus.OK)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Accept-Ranges", "bytes")
+        self.send_header("Content-Length", str(size))
+        self.end_headers()
+        with self.video_path.open("rb") as fh:
+            while chunk := fh.read(1024 * 1024):
+                self.wfile.write(chunk)
 
     def do_GET(self) -> None:
         path = urlparse(self.path).path
         if path in ("/", "/index.html"):
-            self._send_bytes(HTML.read_bytes(), "text/html; charset=utf-8")
+            self._send_bytes(
+                HTML.read_bytes(),
+                "text/html; charset=utf-8",
+                extra_headers={"Cache-Control": "no-cache"},
+            )
             return
         if path == "/api/config":
             self._send_json(
@@ -78,9 +119,7 @@ class AnnotatorHandler(BaseHTTPRequestHandler):
             )
             return
         if path == "/video":
-            data = self.video_path.read_bytes()
-            ctype = mimetypes.guess_type(str(self.video_path))[0] or "application/octet-stream"
-            self._send_bytes(data, ctype)
+            self._serve_video()
             return
         self.send_error(HTTPStatus.NOT_FOUND, f"not found: {path}")
 

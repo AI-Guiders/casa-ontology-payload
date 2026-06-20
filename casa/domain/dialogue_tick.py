@@ -161,7 +161,7 @@ def process_dialogue_on_tick(
         from casa.prisms.intelligence.executive import ensure_executive_zone, executive_before_compose
         from casa.prisms.intelligence.tick import intelligence_before_partner_compose
         from casa.prisms.metabolic import metabolic_begin_tick
-        from casa.prisms.perceptual import perceptual_prepare_turn, perceptual_turn_hints
+        from casa.prisms.perceptual import perceptual_turn_hints
         from casa.prisms.tick.routing import route_kb_read
         from casa.prisms.shared.store_bundles import load_store_bundles
 
@@ -171,7 +171,6 @@ def process_dialogue_on_tick(
         wake_last = (state.get("forgetting") or {}).get("wake_last") or {}
         priming_decay_rep = wake_last.get("priming_decay") or {}
         episodic_fade_rep = wake_last.get("episodic_fade") or {}
-        perceptual_prepare_turn(state, q, modality="text_stream")
         prior_digest = list(wm.last_concepts or []) if wm.last_concepts else None
         executive_before_compose(
             state,

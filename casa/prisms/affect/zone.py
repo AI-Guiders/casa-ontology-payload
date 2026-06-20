@@ -150,6 +150,49 @@ def _apply_deltas(axes: AffectAxes, deltas: dict[str, float]) -> AffectAxes:
     return AffectAxes.from_dict(merged).clamped()
 
 
+def affect_after_listen_scene(
+    state: dict,
+    scene_id: str,
+    *,
+    scene: dict[str, Any] | None = None,
+    caption_cluster: str = "",
+    tick: int = 0,
+) -> CoreAffectState:
+    """Passive listen — theme/cluster bias only (no text oracle, wire-gap W5)."""
+    zone = ensure_emotional_zone(state)
+    core = CoreAffectState.from_dict(zone.get("core"))
+    cluster = (caption_cluster or listen_theme_cluster(scene or {})).strip().lower()
+    deltas = dict(_LISTEN_THEME_DELTAS.get(cluster, _LISTEN_THEME_DEFAULT))
+    core.axes = _apply_deltas(core.axes, deltas)
+    core.last_event = f"listen_scene:{cluster or scene_id}"
+    core.tick = int(tick)
+    zone["core"] = core.to_dict()
+    return core
+
+
+def listen_theme_cluster(scene: dict[str, Any]) -> str:
+    """Map manifest metadata → coarse theme (collection, profile, tags)."""
+    for key in ("collection", "profile", "playlist", "series"):
+        raw = str(scene.get(key) or "").strip().lower()
+        if raw:
+            return raw.split("/")[0].split(":")[0]
+    caption = str(scene.get("caption") or scene.get("chapter_title") or "").strip().lower()
+    if any(word in caption for word in ("сон", "bedtime", "спать")):
+        return "bedtime"
+    if any(word in caption for word in ("эмоц", "emotion", "чувств")):
+        return "emotions"
+    return "listen"
+
+
+_LISTEN_THEME_DEFAULT: dict[str, float] = {"arousal": 0.04}
+_LISTEN_THEME_DELTAS: dict[str, dict[str, float]] = {
+    "emotions": {"valence": 0.03, "arousal": 0.08},
+    "bedtime": {"valence": 0.05, "arousal": -0.06, "security": 0.04},
+    "speech": {"valence": 0.02, "arousal": 0.05},
+    "listen": {"arousal": 0.04},
+}
+
+
 def affect_after_turn(
     state: dict,
     event: str,

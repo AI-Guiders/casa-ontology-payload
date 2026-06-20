@@ -319,9 +319,16 @@
         const b = beats[i];
         draftIn = b.t0;
         draftOut = b.t1;
-        draftFrame = b.frame_t ?? round3((b.t0 + b.t1) / 2);
+        if (b.frame_t != null) {
+          draftFrame = round3(b.frame_t);
+        } else if (b.keyframes?.length) {
+          draftFrame = round3(b.keyframes[0].frame_t);
+        } else {
+          draftFrame = round3((b.t0 + b.t1) / 2);
+        }
         noteEl.value = b.note || "";
-        video.currentTime = b.t0;
+        video.pause();
+        seekVideo(beatSeekTime(b));
       }
       refreshMarks();
       renderBeats();
@@ -345,6 +352,34 @@
     }
 
     function currentTime() { return round3(video.currentTime || 0); }
+
+    function beatSeekTime(b) {
+      if (!b) return 0;
+      if (beatKind(b) === "motion" && b.keyframes?.length) {
+        return Number(b.keyframes[0].frame_t);
+      }
+      if (b.frame_t != null) return Number(b.frame_t);
+      return Number(b.t0);
+    }
+
+    function seekVideo(t) {
+      const target = Math.max(0, Number(t) || 0);
+      const apply = () => {
+        const dur = video.duration;
+        const clamped = Number.isFinite(dur) && dur > 0
+          ? Math.min(target, Math.max(0, dur - 0.05))
+          : target;
+        const verify = () => {
+          if (Math.abs(video.currentTime - clamped) > 0.2) {
+            video.currentTime = clamped;
+          }
+        };
+        video.addEventListener("seeked", verify, { once: true });
+        video.currentTime = clamped;
+      };
+      if (video.readyState >= 2) apply();
+      else video.addEventListener("canplay", apply, { once: true });
+    }
 
     function addBeat() {
       if (draftIn == null || draftOut == null) {
@@ -455,8 +490,8 @@
     document.getElementById("btnAdd").onclick = addBeat;
     document.getElementById("btnUpdate").onclick = updateSelected;
     document.getElementById("btnDelete").onclick = deleteSelected;
-    document.getElementById("btnSeekIn").onclick = () => { if (draftIn != null) video.currentTime = draftIn; };
-    document.getElementById("btnSeekOut").onclick = () => { if (draftOut != null) video.currentTime = draftOut; };
+    document.getElementById("btnSeekIn").onclick = () => { if (draftIn != null) seekVideo(draftIn); };
+    document.getElementById("btnSeekOut").onclick = () => { if (draftOut != null) seekVideo(draftOut); };
     document.getElementById("btnKeyframe").onclick = addKeyframe;
     document.getElementById("btnMid").onclick = () => {
       if (draftIn != null && draftOut != null) {
@@ -503,13 +538,17 @@
       video.src = cfg.video_url;
       videoMeta.textContent = cfg.video_label || cfg.video_url;
       savePath = cfg.save_path || "";
-      if (cfg.beats?.length) {
-        beats = cfg.beats;
-        selectBeat(0);
-      } else {
-        renderBeats();
-      }
-      setStatus("Готов. Space — play/pause.");
+      const initBeats = () => {
+        if (cfg.beats?.length) {
+          beats = cfg.beats;
+          selectBeat(0);
+        } else {
+          renderBeats();
+        }
+        setStatus("Готов. Space — play/pause.");
+      };
+      if (video.readyState >= 1) initBeats();
+      else video.addEventListener("loadedmetadata", initBeats, { once: true });
     }
 
     tickClock();

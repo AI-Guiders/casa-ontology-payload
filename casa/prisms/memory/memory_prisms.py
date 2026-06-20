@@ -969,6 +969,43 @@ def run_sleep(
             }
         )
 
+    from casa.prisms.auditory.bridge_vis import extract_emergent_aud_vis_bridges
+    from casa.domain.auditory_tract import LATTICE_AUDIO_SPECTRUM
+
+    for item in extract_emergent_aud_vis_bridges(
+        lattices,
+        episodes,
+        state,
+        copies=strength,
+    ):
+        merged.append(
+            {
+                "episode_id": item.get("episode_id"),
+                "kind": "emergent_aud_vis",
+                "lattice_id": LATTICE_AUDIO_SPECTRUM,
+                "concept_id": item.get("aud_concept_id"),
+                "extract": item,
+            }
+        )
+
+    from casa.prisms.auditory.bridge_motor import extract_emergent_motor_heard_bridges
+
+    for item in extract_emergent_motor_heard_bridges(
+        lattices,
+        episodes,
+        state,
+        copies=strength,
+    ):
+        merged.append(
+            {
+                "episode_id": item.get("episode_id"),
+                "kind": "emergent_motor_heard",
+                "lattice_id": LATTICE_AUDIO_SPECTRUM,
+                "concept_id": item.get("motor_concept_id"),
+                "extract": item,
+            }
+        )
+
     compose = apply_z_compose(lattices, bundle, stack)
 
     hippo["episodes"] = pending

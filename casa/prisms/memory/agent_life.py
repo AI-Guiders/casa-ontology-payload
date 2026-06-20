@@ -200,6 +200,22 @@ def _run_unified_life_tick(
     return report
 
 
+def run_life_tick(
+    runtime: AgentRuntime,
+    *,
+    user_query: str | None = None,
+    partner_turn: bool = False,
+    partner_turn_kind: str = "chat",
+) -> dict[str, Any]:
+    """One unified macro tick — all active percept channels on this step."""
+    return _run_unified_life_tick(
+        runtime,
+        user_query=user_query,
+        partner_turn=partner_turn,
+        partner_turn_kind=partner_turn_kind,
+    )
+
+
 def poll_partner_text_tract(
     runtime: AgentRuntime,
     *,
