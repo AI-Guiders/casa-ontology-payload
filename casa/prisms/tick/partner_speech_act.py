@@ -8,7 +8,6 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-from casa.domain.dialogue_bind.blocks import answer_block_to_dict
 from casa.prisms.tick.tract.claims import slot_cue_hit
 
 _SPEECH_PREFIX = "ru.speech_act.partner."
@@ -60,6 +59,13 @@ def partner_speech_act_claims(bundle: dict[str, Any] | None) -> list[dict[str, A
     return list(by_id.values())
 
 
+def _block_concept_id(b: Any) -> str:
+    """Read concept_id from a block that may be a dict or an AnswerBlock-like object."""
+    if isinstance(b, dict):
+        return str(b.get("concept_id") or "")
+    return str(getattr(b, "concept_id", "") or "")
+
+
 def resolve_partner_speech_act_claim(
     query: str,
     bundle: dict[str, Any] | None = None,
@@ -91,10 +97,7 @@ def resolve_partner_speech_act_claim(
                     out = dict(claim)
                     out["slots"] = {**slots, "speech_act": "intro_self", "cue_score": 2}
                     return out
-        if blocks and any(
-            str(answer_block_to_dict(b).get("concept_id") or "") == "subject.dialog.self_recent"
-            for b in blocks
-        ):
+        if blocks and any(_block_concept_id(b) == "subject.dialog.self_recent" for b in blocks):
             for claim in partner_speech_act_claims(bundle):
                 slots = claim.get("slots") if isinstance(claim.get("slots"), dict) else {}
                 if str(slots.get("speech_act") or "") == "thread_turn":

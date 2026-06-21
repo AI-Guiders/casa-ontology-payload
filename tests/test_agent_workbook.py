@@ -53,6 +53,7 @@ def test_workbook_check_updates_status(tmp_path: Path) -> None:
         lattice_id="schema-math",
         concept_id="math.num.fourteen",
         scene="lab",
+        structure_tag="self_promote",  # sanctioned earned-write so the numeral mint runs
     )
     run_sleep(state, bundle)
 

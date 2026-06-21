@@ -1,0 +1,35 @@
+{
+  "name": "concept-net-v1",
+  "description": "A small typed conceptual network («понятийная сеть»): objects carry types (isa, with inheritance) and capabilities (affords); relations carry selectional constraints (arg1/arg2 roles). Combinations are validated deterministically against the affordance closure. The map lives on concepts and the glossary's names edges bridge to any language, so «яблоко на столе» and 'apple on the table' validate identically. Curated domain ontology (authored, not induced); checks type/affordance compatibility, not full physics.",
+  "lattice_id": "schema-math",
+  "glossary": [
+    ["яблоко", "apple"], ["банан", "banana"], ["стол", "table"], ["стул", "chair"],
+    ["тарелка", "plate"], ["коробка", "box"], ["человек", "man"], ["идея", "idea"],
+    ["вода", "water"], ["собака", "dog"]
+  ],
+  "isa": [
+    ["lex.apple", "fruit"], ["lex.banana", "fruit"], ["fruit", "food"], ["fruit", "physical_object"],
+    ["lex.table", "furniture"], ["lex.chair", "furniture"], ["furniture", "physical_object"], ["furniture", "support"],
+    ["lex.plate", "dish"], ["dish", "physical_object"], ["dish", "support"],
+    ["lex.box", "container"], ["container", "physical_object"],
+    ["lex.man", "person"], ["person", "physical_object"], ["person", "animate"],
+    ["lex.dog", "animal"], ["animal", "physical_object"], ["animal", "animate"],
+    ["lex.idea", "abstract"]
+  ],
+  "affords": [
+    ["physical_object", "positionable"], ["food", "edible"], ["support", "support_surface"],
+    ["container", "containment"], ["animate", "agent"]
+  ],
+  "relations": [
+    {"rel": "on", "arg1": "positionable", "arg2": "support_surface"},
+    {"rel": "in", "arg1": "positionable", "arg2": "containment"},
+    {"rel": "eat", "arg1": "agent", "arg2": "edible"}
+  ],
+  "valid": [
+    ["on", "банан", "стул"], ["in", "яблоко", "коробка"], ["eat", "собака", "банан"],
+    ["on", "тарелка", "стол"], ["on", "apple", "table"]
+  ],
+  "invalid": [
+    ["on", "идея", "стол"], ["eat", "яблоко", "человек"], ["on", "стол", "идея"]
+  ]
+}

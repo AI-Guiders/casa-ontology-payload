@@ -31,9 +31,11 @@ lab/snapshots/**/nca/
 # Python
 __pycache__/
 *.py[cod]
+.venv/
 
 # Temp
 .tmp-pdf-read/
+.tmp/
 
 # Local hybrid codebase index (MCP / IDE cache)
 .hybrid-codebase-index/

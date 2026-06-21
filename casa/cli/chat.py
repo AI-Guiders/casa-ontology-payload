@@ -53,6 +53,10 @@ _HELP = "\n".join(
         "  /quit /exit /q   — выход",
         "  /status          — полный пульс + wm.T",
         "  /remember <текст>— научить/поправить (запись в журнал)",
+        "  /meaning <фраза> — понятийная сеть: фраза → смысл → RU+EN (перевод через смысл)",
+        "  /demo            — курируемый прогон round-trip (граф смысла + отказ)",
+        "  /check A | B      — валидатор: эквивалентны ли по смыслу две фразы (триаж)",
+        "  /route [on|off]  — маршрутизация доменных клауз через понятийную сеть",
         "  /turns [N]       — последние N реплик",
         "  /passage         — многострочный ввод, конец — пустая строка",
         "  /genome          — паспорт генома",
@@ -109,6 +113,7 @@ def run_chat(
     timeout_s: float = 120.0,
     verbose: bool = False,
     quiet: bool = False,
+    route: bool = True,
 ) -> int:
     if not store.is_dir():
         print(f"store не найден: {store}", file=sys.stderr)
@@ -153,6 +158,21 @@ def run_chat(
     _header("Режим: console → partner_text · строка life ♥ T · /status · /help · /quit")
     if turns:
         _header(f"В сессии уже {turns} реплик.")
+
+    meaning_state: tuple[dict, str] | None = None  # lazily built conceptual-network state
+    route_on = route  # route clean domain clauses through the conceptual network
+
+    def _ensure_meaning() -> tuple[dict, str]:
+        nonlocal meaning_state
+        if meaning_state is None:
+            from casa.curriculum.render import ensure_utf8_console
+
+            ensure_utf8_console()  # graph render uses box-drawing — never crash a legacy console
+            print("  · строю понятийную сеть…", file=sys.stderr, flush=True)
+            from casa.curriculum.world import build_meaning_state
+
+            meaning_state = build_meaning_state()
+        return meaning_state
 
     life_bar: LifeTickBar | None = None
     if not quiet:
@@ -210,6 +230,49 @@ def run_chat(
                         _remember(store, arg.strip())
                         print("  · записал в журнал")
                     continue
+                elif cmd in ("meaning", "смысл"):
+                    # additive: conceptual-network round-trip on a clause. Does NOT touch
+                    # the dialogue path — pure side-tool over a separate meaning state.
+                    if not arg.strip():
+                        print("  · нужна фраза: /meaning яблоко лежит на столе")
+                        continue
+                    mst, mlat = _ensure_meaning()
+                    from casa.curriculum.parse import parse_graph
+                    from casa.curriculum.render import render_round_trip
+                    from casa.curriculum.roundtrip import realize_graph
+
+                    graph = parse_graph(mst, mlat, arg.strip())
+                    if not graph.get("edges"):
+                        print("  · не разобрал (нет известных понятий/отношений)")
+                        continue
+                    ru = realize_graph(mst, mlat, graph, lang="ru")
+                    en = realize_graph(mst, mlat, graph, lang="en")
+                    print(render_round_trip(graph, source=arg.strip(), ru=ru, en=en))
+                    continue
+                elif cmd == "demo":
+                    # curated round-trip showcase over the separate meaning state
+                    mst, mlat = _ensure_meaning()
+                    from casa.curriculum.demo_meaning import render_demo
+
+                    print(render_demo(mst, mlat))
+                    continue
+                elif cmd in ("check", "сверь"):
+                    # validator: «/check источник | перевод» — equivalence triage
+                    if "|" not in arg:
+                        print("  · нужно две фразы через |: /check открой файл | open the file")
+                        continue
+                    src, _, tgt = arg.partition("|")
+                    mst, mlat = _ensure_meaning()
+                    from casa.curriculum.equivalence import check_equivalence, format_check
+
+                    print(format_check(check_equivalence(mst, mlat, src.strip(), tgt.strip())))
+                    continue
+                elif cmd == "route":
+                    a = arg.strip().lower()
+                    if a in ("on", "off"):
+                        route_on = a == "on"
+                    print(f"  · маршрутизация через понятийную сеть: {'on' if route_on else 'off'}")
+                    continue
                 elif cmd == "genome":
                     from casa.prisms.genetic import format_genome_passport_repl
 
@@ -232,6 +295,28 @@ def run_chat(
                     continue
 
             query = _maybe_split_passage(line)
+
+            # deep routing: a clean domain clause is answered by the conceptual network
+            # (validation + meaning) BEFORE the statistical engine. Strictly gated — a
+            # cheap pre-filter then a clean-clause check; anything else falls through.
+            if route_on and "\n" not in query:
+                from casa.curriculum.ask import answer_question, looks_question
+                from casa.curriculum.converse import answer_clause, looks_domain
+
+                routed = None
+                if looks_question(query):  # «что на столе?» — answer from the graph/memory
+                    mst, mlat = _ensure_meaning()
+                    routed = answer_question(mst, mlat, query)
+                elif looks_domain(query):  # a clean domain clause — validate + remember
+                    mst, mlat = _ensure_meaning()
+                    routed = answer_clause(mst, mlat, query)
+                if routed:
+                    print(f"{display}> {routed}")
+                    if life_bar is not None:
+                        life_bar.note_output_lines(1)
+                    print()
+                    continue
+
             t0 = time.perf_counter()
             try:
                 cue_id = enqueue_partner_cue(store, query, wire=TEXT_WIRE_CONSOLE)
@@ -284,6 +369,7 @@ def main() -> None:
     p.add_argument("--timeout", type=float, default=120.0, help="partner reply timeout (seconds)")
     p.add_argument("--verbose", action="store_true", help="per-turn timing on stderr")
     p.add_argument("--quiet", action="store_true", help="hide life tick bar")
+    p.add_argument("--no-route", action="store_true", help="disable conceptual-network routing of domain clauses")
     args = p.parse_args()
     raise SystemExit(
         run_chat(
@@ -292,6 +378,7 @@ def main() -> None:
             timeout_s=args.timeout,
             verbose=args.verbose,
             quiet=args.quiet,
+            route=not args.no_route,
         )
     )
 

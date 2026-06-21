@@ -31,6 +31,7 @@ def _trained_state() -> dict:
         lattice_id="schema-math",
         concept_id="math.num.fourteen",
         scene="lab",
+        structure_tag="self_promote",  # sanctioned earned-write so the numeral mint runs
     )
     run_sleep(state, bundle)
     return state

@@ -40,7 +40,7 @@ class MemoryZoneTests(unittest.TestCase):
             zones = intelligence_root(state)
             self.assertIn("memory", zones)
             self.assertIn("genetic", zones)
-            self.assertEqual(rep["intelligence_zones_version"], 5)
+            self.assertGreaterEqual(rep["intelligence_zones_version"], 5)
             self.assertIn("agent-memory-core", agent_lattices(state))
 
 

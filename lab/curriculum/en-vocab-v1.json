@@ -1,0 +1,22 @@
+{
+  "name": "en-vocab-v1",
+  "description": "Bilingual English<->Russian common-word vocabulary (nouns + adjectives). Each lesson teaches a shared lexical concept (lex.*) its RU and EN word via a bilingual scene; the generalized names-mint records concept|names|word edges in both scripts, which the term translator walks for RU<->EN. Demonstrates vocabulary teaching beyond numerals.",
+  "lattice_id": "schema-math",
+  "lessons": [
+    {"concept_id": "lex.cat",   "ru": "кот",       "en": "cat"},
+    {"concept_id": "lex.dog",   "ru": "собака",    "en": "dog"},
+    {"concept_id": "lex.house", "ru": "дом",       "en": "house"},
+    {"concept_id": "lex.water", "ru": "вода",      "en": "water"},
+    {"concept_id": "lex.sun",   "ru": "солнце",    "en": "sun"},
+    {"concept_id": "lex.book",  "ru": "книга",     "en": "book"},
+    {"concept_id": "lex.hand",  "ru": "рука",      "en": "hand"},
+    {"concept_id": "lex.day",   "ru": "день",      "en": "day"},
+    {"concept_id": "lex.night", "ru": "ночь",      "en": "night"},
+    {"concept_id": "lex.big",   "ru": "большой",   "en": "big"},
+    {"concept_id": "lex.small", "ru": "маленький", "en": "small"},
+    {"concept_id": "lex.good",  "ru": "хороший",   "en": "good"},
+    {"concept_id": "lex.white", "ru": "белый",     "en": "white"},
+    {"concept_id": "lex.fire",  "ru": "огонь",     "en": "fire"},
+    {"concept_id": "lex.road",  "ru": "дорога",    "en": "road"}
+  ]
+}

@@ -36,7 +36,8 @@ def _seed_math_concept(state: dict, concept_id: str, *, copies: int = 6) -> None
 
     g = _place_token(g, f"C:{concept_id}", f"C:{concept_id}", copies=copies, radius=4)
     lat["cells"] = g.cells
-    persist_content_lattices(state, {SCHEMA_MATH: lat})
+    # seeding schema-math (immutable) is bootstrap-like; the default "hot" context is gated
+    persist_content_lattices(state, {SCHEMA_MATH: lat}, write_context="bootstrap")
 
 
 def test_sleep_cooccurrence_bridge(tmp_path) -> None:
@@ -56,6 +57,7 @@ def test_sleep_cooccurrence_bridge(tmp_path) -> None:
         concept_id="math.num.three",
         scene="lab:math",
         episode_source="ingest",
+        structure_tag="self_promote",  # sanctioned earned-write (gate-authorized in production)
     )
     rep = imprint_visual_frame(
         state,

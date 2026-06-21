@@ -70,6 +70,7 @@ def test_roman_infix_not_livestock_after_sub_teacher() -> None:
         concept_id="math.op.sub",
         bundle=b,
         scene="sticks_sub",
+        structure_tag="self_promote",  # sanctioned earned-write (gate-authorized in production)
     )
     run_sleep(state, b)
     tick = predict_tick(state, "III - II", modality="schema", expect="math.op.sub", bundle=b)
@@ -102,6 +103,7 @@ def test_sleep_mint_denotes_enables_sub_predict() -> None:
         concept_id="math.op.sub",
         bundle=b,
         scene="minus_teacher",
+        structure_tag="self_promote",  # sanctioned earned-write (gate-authorized in production)
     )
     sleep = run_sleep(state, b)
     assert sleep["merged"] == 1

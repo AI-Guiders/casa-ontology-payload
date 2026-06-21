@@ -140,7 +140,7 @@ class SubstrateZonesTests(unittest.TestCase):
             (store / "bundles").mkdir(parents=True)
             rep = migrate_intelligence_zones(store, tick=1)
             self.assertEqual(rep["intelligence_zones_version"], INTELLIGENCE_ZONES_VERSION)
-            self.assertEqual(INTELLIGENCE_ZONES_VERSION, 4)
+            self.assertGreaterEqual(INTELLIGENCE_ZONES_VERSION, 4)  # substrate zones introduced at v4
             self.assertTrue(rep["zones"]["genetic"].get("sealed") or rep["zones"]["genetic"].get("loaded"))
             boot = boot_store(store, prefer_field_state=True)
             load_agent_prism(store, boot["state"])

@@ -1,0 +1,56 @@
+{
+  "name": "en-rules-v1",
+  "description": "Generative English morphology rules learned by induction, stored on the field as conditioned clause edges, and verified by the held-out gate (generalisation + negative control + ablation). Each rule is a list of [base, inflected] pairs; the learner induces a class-conditioned decision list (e.g. consonant+y -> -ies, sibilant -> -es, else -> -s) using only the vowel set as a primitive, and applies it to never-taught words. +s is the elsewhere/default class, matching natural frequency.",
+  "lattice_id": "schema-math",
+  "rules": {
+    "lang.rule.plural.en": [
+      ["cat", "cats"], ["dog", "dogs"], ["book", "books"], ["hand", "hands"],
+      ["car", "cars"], ["road", "roads"], ["friend", "friends"], ["word", "words"],
+      ["day", "days"], ["boy", "boys"], ["key", "keys"], ["month", "months"],
+      ["table", "tables"], ["tree", "trees"], ["star", "stars"], ["house", "houses"],
+      ["king", "kings"], ["girl", "girls"], ["door", "doors"], ["year", "years"],
+      ["bird", "birds"], ["hill", "hills"],
+      ["box", "boxes"], ["fox", "foxes"], ["glass", "glasses"], ["class", "classes"],
+      ["buzz", "buzzes"], ["fizz", "fizzes"], ["dish", "dishes"], ["wish", "wishes"],
+      ["watch", "watches"], ["match", "matches"],
+      ["baby", "babies"], ["city", "cities"], ["lady", "ladies"]
+    ],
+    "lang.rule.past.en": [
+      ["like", "liked"], ["love", "loved"], ["use", "used"], ["move", "moved"],
+      ["smile", "smiled"], ["close", "closed"], ["save", "saved"], ["hope", "hoped"],
+      ["carry", "carried"], ["study", "studied"], ["try", "tried"], ["cry", "cried"],
+      ["copy", "copied"], ["marry", "married"],
+      ["walk", "walked"], ["play", "played"], ["open", "opened"], ["want", "wanted"],
+      ["call", "called"], ["work", "worked"], ["jump", "jumped"], ["help", "helped"],
+      ["look", "looked"], ["start", "started"], ["clean", "cleaned"], ["talk", "talked"],
+      ["need", "needed"], ["wait", "waited"], ["rain", "rained"], ["paint", "painted"],
+      ["join", "joined"], ["cook", "cooked"], ["learn", "learned"], ["return", "returned"]
+    ],
+    "lang.rule.comparative.en": [
+      ["big", "bigger"], ["hot", "hotter"], ["thin", "thinner"], ["fat", "fatter"],
+      ["sad", "sadder"], ["wet", "wetter"], ["fit", "fitter"], ["red", "redder"],
+      ["slim", "slimmer"],
+      ["nice", "nicer"], ["large", "larger"], ["late", "later"], ["safe", "safer"],
+      ["wide", "wider"], ["brave", "braver"], ["close", "closer"], ["fine", "finer"],
+      ["happy", "happier"], ["easy", "easier"], ["lucky", "luckier"], ["heavy", "heavier"],
+      ["busy", "busier"],
+      ["soft", "softer"], ["fast", "faster"], ["sweet", "sweeter"], ["great", "greater"],
+      ["light", "lighter"], ["short", "shorter"], ["clean", "cleaner"], ["green", "greener"],
+      ["brown", "browner"], ["plain", "plainer"], ["cold", "colder"], ["loud", "louder"],
+      ["hard", "harder"], ["wild", "wilder"], ["warm", "warmer"], ["firm", "firmer"],
+      ["long", "longer"], ["strong", "stronger"], ["cheap", "cheaper"], ["dark", "darker"],
+      ["slow", "slower"], ["high", "higher"], ["weak", "weaker"], ["rich", "richer"]
+    ],
+    "lang.rule.present3sg.en": [
+      ["watch", "watches"], ["pass", "passes"], ["fix", "fixes"], ["buzz", "buzzes"],
+      ["wash", "washes"], ["push", "pushes"], ["miss", "misses"], ["mix", "mixes"],
+      ["teach", "teaches"],
+      ["try", "tries"], ["study", "studies"], ["fly", "flies"], ["carry", "carries"],
+      ["cry", "cries"],
+      ["run", "runs"], ["eat", "eats"], ["play", "plays"], ["read", "reads"],
+      ["sit", "sits"], ["walk", "walks"], ["call", "calls"], ["know", "knows"],
+      ["open", "opens"], ["jump", "jumps"], ["help", "helps"], ["want", "wants"],
+      ["need", "needs"], ["love", "loves"]
+    ]
+  }
+}

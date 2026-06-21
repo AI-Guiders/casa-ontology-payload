@@ -33,7 +33,12 @@ def _lang_word_id(bundle: dict | None, surface: str) -> str | None:
     for cand in (f"lang.word.{w}", f"lang.word.{surface.strip()}"):
         if cand in known:
             return cand
-    return None
+    # Derive a lang.word concept for a taught scene word that is not in the curated
+    # set. parse_bilingual_numeral_scene yields only the PRIMARY ru/en word, which is
+    # an explicit teacher signal — so naming it generalizes bilingual vocabulary
+    # beyond the hand-authored words (the linear-authoring ceiling the curriculum
+    # exists to break) without admitting noise from scene decompositions.
+    return f"lang.word.{w}"
 
 
 def parse_bilingual_numeral_scene(scene: str) -> tuple[str | None, str | None]:
@@ -88,9 +93,13 @@ def extract_emergent_names_from_episodes(
         if ep.get("kind") not in (None, "surface"):
             continue
         cid = str(ep.get("concept_id") or "")
-        if not cid.startswith("math.num."):
+        if not cid:
             continue
         ru_w, en_w = parse_bilingual_numeral_scene(str(ep.get("scene") or ""))
+        # a bilingual "ru: X | en: Y" scene is the gate — names mint for ANY taught
+        # concept that carries one, not only numerals (general vocabulary)
+        if not (ru_w or en_w):
+            continue
         for surface in (en_w, ru_w):
             if not surface:
                 continue
@@ -98,12 +107,9 @@ def extract_emergent_names_from_episodes(
             if not dst:
                 continue
             edge = f"{cid}|names|{dst}"
-            if edge in existing:
-                continue
-            link = {"src": cid, "relation": "names", "dst": dst}
-            if link in pending_links:
-                continue
-            pending_links.append(link)
+            if edge in existing:  # the edge-string set already dedupes (O(1)); the
+                continue          # former `link in pending_links` list scan was O(n^2)
+            pending_links.append({"src": cid, "relation": "names", "dst": dst})
             existing.add(edge)
             if ep.get("id"):
                 provenance_eps.append(str(ep["id"]))

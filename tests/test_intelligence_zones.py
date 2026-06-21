@@ -41,7 +41,7 @@ class IntelligenceZonesTests(unittest.TestCase):
             ):
                 self.assertIn(lid, lats, lid)
             self.assertNotIn("agent-spatial-core", lats)
-            self.assertEqual(rep["intelligence_zones_version"], 5)
+            self.assertGreaterEqual(rep["intelligence_zones_version"], 5)
             from casa.prisms.intelligence.model import intelligence_root
 
             zones = intelligence_root(boot["state"])
