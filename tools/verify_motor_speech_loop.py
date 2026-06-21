@@ -14,8 +14,10 @@ if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
 from casa.prisms.auditory.bridge_motor import bind_motor_heard_on_tick
+from casa.prisms.auditory.imprint import imprint_auditory_window
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.motor.speech_tick import maybe_motor_speech_on_tick
+from casa.sensory.load_wav import write_synthetic_contour_wav
 
 
 def main() -> int:
@@ -34,7 +36,10 @@ def main() -> int:
         store.mkdir(parents=True, exist_ok=True)
 
     state = ensure_prisms({"schema_version": "multi_prism_v1", "field_version": 0})
-    state["motor_speech"] = {"enabled": True, "babble": True, "babble_only": True}
+    state["subject"] = {"subject_mode": True}
+    seed_wav = store / "_verify_listen_seed.wav"
+    write_synthetic_contour_wav(seed_wav)
+    imprint_auditory_window(state, seed_wav, scene_id="verify-motor", window_id="verify-motor-w0")
 
     reports: list[dict] = []
     for tick in range(1, max(1, args.ticks) + 1):

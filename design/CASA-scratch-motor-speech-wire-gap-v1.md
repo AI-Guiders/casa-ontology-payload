@@ -43,11 +43,11 @@ life tick @ T:
 
 ## Что такое «motor unit» (не wave, не TTS string)
 
-Из ADR-0026 `mm_action`:
+Из ADR-0026 `mm_action` и ADR-0082:
 
 | Поле | Смысл |
 |------|--------|
-| `motor.units[]` | устойчивые токены на поле: слог / `A:ph:*` / cluster — **не** MP3, **не** ASR text |
+| `motor.units[]` | токены **уже на поле** (`A:*` cochlear, `A:ph:*`, `lang.word.*` после bind) — **не** Python-меню в `speech_compose.py` |
 | `canon.intent` | `imitate:…`, `label:…`, babble — из поля, не из LLM |
 | `canon.said_plan` | что агент **намеревался** произвести (motor trace id) |
 | `canon.heard_self` | что **ушо** imprint'нуло с self-listen window — не «Whisper сказал» в hot path |
@@ -176,6 +176,7 @@ Inbound Lalabook = **чужие** голоса. Outbound = **свой** аппа
 | M1–M2 | one life tick: motor hints in digest before SN/CEN |
 | M5–M6 | self-listen episode + link on field |
 | No TTS in hot path | audit: zero `tts`/`kokoro` import in orchestrator/dialogue hot path |
+| Agency gate | phonation из disposition/CEN/compose — **не** operator `enabled` flag |
 | M9 babble | 20 plans → 20 self-windows → sleep ≥1 motor↔heard edge |
 
 ---
