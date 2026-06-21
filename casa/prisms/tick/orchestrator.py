@@ -185,6 +185,13 @@ def run_learning_tick(
         user_query=q_preview,
         preserve_existing=True,
     )
+    from casa.nervous.sensory_hooks import record_av_coactive_bind_impulse, record_percept_life_impulse
+
+    record_percept_life_impulse(
+        store_dir=store_dir,
+        tick_id=next_tick,
+        percept_rep=percept_life_rep if isinstance(percept_life_rep, dict) else state.get("_perceptual_turn"),
+    )
 
     from casa.prisms.memory.prism_router import tick_prepare_memory
 
@@ -212,6 +219,7 @@ def run_learning_tick(
     from casa.prisms.auditory.bridge_vis import bind_av_coactive_on_tick
 
     av_bind = bind_av_coactive_on_tick(state)
+    record_av_coactive_bind_impulse(store_dir=store_dir, tick_id=next_tick, bind_rep=av_bind)
     bias = salience_mode_bias(wm, digest.concept_ids)
     gated = sn_route(digest, bundle=routing_bundle, wm_mode=wm.mode, wm_salience_bias=bias)
     q = effective_user_query(wm, user_query)
@@ -392,9 +400,11 @@ def run_learning_tick(
         store_dir,
         state,
         tick=int(wm_next.tick),
-        reply_text=str(dialogue_rep.get("reply_text") or "") or None,
+        dialogue_rep=dialogue_rep,
+        task=task,
+        mem_prep=mem_prep,
+        self_drive_rep=self_drive_rep,
         concept_hints=perceptual_turn_hints(state),
-        task_action=str(task.action or "") if task else None,
     )
     if dialogue_rep.get("subject_mode") and dialogue_rep.get("reply_text"):
         task = TaskEmit(

@@ -157,6 +157,7 @@ def run_listen_womb_stream(
     video_path: Path,
     wav_path: Path | None,
     work_dir: Path,
+    store_dir: Path | None = None,
     interval_sec: float = 0.5,
     t_start_rel: float | None = None,
     t_end_rel: float | None = None,
@@ -203,6 +204,9 @@ def run_listen_womb_stream(
         frame_id = f"{stream_id}-f{seq:04d}"
         window_id = f"{stream_id}-tick{seq:04d}"
         t_window_start = max(t0_rel, t_rel - interval_sec)
+        macro_tick = int(runtime.wm.tick) + 1 if runtime is not None and runtime.wm is not None else seq
+        fv_before = int(state.get("field_version") or 0)
+        impulse_row: dict[str, Any] | None = None
 
         visual = imprint_visual_scene_frame(
             state,
@@ -244,18 +248,67 @@ def run_listen_womb_stream(
             vis_frame_id=frame_id,
         )
 
-        from casa.prisms.affect import affect_after_listen_scene
+        from casa.prisms.affect import affect_after_listen_scene, listen_theme_cluster
 
-        affect_after_listen_scene(state, sid, scene=scene, tick=seq)
+        affect_core = affect_after_listen_scene(state, sid, scene=scene, tick=macro_tick)
+
+        if store_dir is not None:
+            from casa.prisms.auditory.imprint import auditory_tokens_on_field
+            from casa.prisms.visual.imprint import visual_tokens_on_field
+            from casa.nervous.sensory_hooks import (
+                ensure_impulse_macro_tick,
+                record_affect_listen_impulse,
+                record_listen_stream_step_impulse,
+                record_vision_gate_impulse,
+            )
+
+            ensure_impulse_macro_tick(tick_id=macro_tick, store_dir=store_dir)
+            fv_after_imprint = int(state.get("field_version") or 0)
+            impulse_row = {
+                "listen": record_listen_stream_step_impulse(
+                    store_dir=store_dir,
+                    tick_id=macro_tick,
+                    scene_id=sid,
+                    stream_id=stream_id,
+                    seq=seq,
+                    t_rel=t_rel,
+                    field_version_before=fv_before,
+                    field_version_after=fv_after_imprint,
+                    visual=visual,
+                    visual_tokens=visual_tokens_on_field(state, sid),
+                    auditory=audio,
+                    auditory_tokens=auditory_tokens_on_field(state, sid) if audio else [],
+                    visual_delta=vis_delta,
+                ),
+                "vision": record_vision_gate_impulse(
+                    store_dir=store_dir,
+                    tick_id=macro_tick,
+                    frame_id=frame_id,
+                    visual_delta=vis_delta,
+                    coactive=bool(percept_rep.get("coactive")),
+                ),
+                "affect": record_affect_listen_impulse(
+                    store_dir=store_dir,
+                    tick_id=macro_tick,
+                    scene_id=sid,
+                    theme_cluster=listen_theme_cluster(scene),
+                    core_axes=dict(affect_core.axes),
+                ),
+            }
 
         life_rep: dict[str, Any] | None = None
         if runtime is not None and run_life_tick:
             from casa.prisms.memory.agent_life import run_life_tick as agent_run_life_tick
 
-            tick_report = agent_run_life_tick(runtime, partner_turn=False)
+            tick_report = agent_run_life_tick(runtime, partner_turn=False, tick_log=True)
             state = runtime.state
             life_rep = _life_tick_summary(tick_report)
             life_rep["coactive"] = bool(percept_rep.get("coactive"))
+            if impulse_row is not None:
+                life_rep["impulse"] = {
+                    **impulse_row,
+                    "orchestrator": tick_report.get("impulse"),
+                }
 
         report.ticks.append(
             WombTickRecord(
@@ -275,6 +328,15 @@ def run_listen_womb_stream(
 
     if run_sleep_at_end and report.ticks:
         report.sleep = run_sleep(state, bundle=bundle)
+        if store_dir is not None and report.sleep:
+            from casa.nervous.sensory_hooks import record_sleep_boundary_impulse
+
+            last_tick = int(runtime.wm.tick) if runtime is not None and runtime.wm is not None else len(report.ticks)
+            record_sleep_boundary_impulse(
+                store_dir=store_dir,
+                tick_id=last_tick,
+                sleep_rep=report.sleep if isinstance(report.sleep, dict) else None,
+            )
 
     report.field_version = int(state.get("field_version") or 0)
     return state, report

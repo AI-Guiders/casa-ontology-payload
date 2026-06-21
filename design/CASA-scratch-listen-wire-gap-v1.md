@@ -60,7 +60,7 @@ stream @ t (frame + audio window)
 | Sleep vis↔lex/math | `memory_prisms.run_sleep` → `extract_emergent_vis_*_bridges` |
 | **Sleep A↔V** | `auditory/bridge_vis.py` → `extract_emergent_aud_vis_bridges` |
 | Limbic theme (listen) | `affect_after_listen_scene` — collection/profile, не OCR |
-| Impulse trace | `record_listen_imprint_impulse` из `listen_moment` |
+| Impulse trace | `listen_moment` + **stream** `sensory_hooks` + orchestrator `percept_life` / `av_coactive` |
 | Phase B replay | `tools/listen_replay_scenes.py` (life tick, skip unchanged FV) |
 | Zones @ T=0 | `agents/.../agent-limbic-core`, percept, social… |
 | Partner ↔ limbic | `intelligence/tick.py`, `dialogue_bind/binder.py` |
@@ -106,7 +106,7 @@ python tools/verify_listen_imprint.py --store-dir agents/von-neumann --visual
 |----|-----|--------|-----|
 | **W4** | Perceptual joint visual+listen | **done** | `visual_stream` + `listen_stream`, `percept.av.coactive` |
 | **W5** | Пассивный просмотр → limbic theme | **done** | `affect_after_listen_scene`, `listen_theme_cluster` |
-| **W6** | Impulse trace listen | **done** | `listen_moment` → `record_listen_imprint_impulse` |
+| **W6** | Impulse trace listen | **done** | cold: `listen_moment`; stream: `sensory_hooks`; tick: `percept_life`, `av_coactive`, `vision_gate`, `affect_listen` |
 
 **Принцип:** limbic delta от **жанра/коллекции** + co-bound A+V, не от расшифровки текста в кадре.
 
@@ -185,7 +185,8 @@ Online / replay + partner (unified macro tick @ T=0):
 | `casa/prisms/affect/zone.py` | `affect_after_listen_scene` |
 | `casa/domain/listen_womb_tick.py` | stream driver → life tick |
 | `casa/prisms/memory/agent_life.py` | `run_life_tick` |
-| `casa/nervous/listen_hooks.py` | observability |
+| `casa/nervous/listen_hooks.py` | cold ingest observability |
+| `casa/nervous/sensory_hooks.py` | stream + bind + sleep impulse |
 | `tools/listen_mass_ingest.py` | cold path |
 | `tools/listen_womb_tick.py` | online stream + life tick |
 | `tools/listen_replay_scenes.py` | phase B replay |

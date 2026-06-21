@@ -99,6 +99,7 @@ def main() -> int:
         video_path=video_path,
         wav_path=wav_path,
         work_dir=work_dir,
+        store_dir=store_dir,
         interval_sec=max(0.1, float(args.interval)),
         t_start_rel=max(0.0, float(args.start)),
         t_end_rel=t_end,

@@ -290,8 +290,12 @@ class ImpulseRecorder:
     def begin_tick(self, tick_id: int, store_dir: Path) -> None:
         if not self.is_active:
             return
-        self._tick_id = int(tick_id)
-        self._store_dir = store_dir.resolve()
+        tid = int(tick_id)
+        resolved = store_dir.resolve()
+        if self._tick_id == tid and self._store_dir == resolved:
+            return
+        self._tick_id = tid
+        self._store_dir = resolved
         self._impulses = []
 
     @contextmanager

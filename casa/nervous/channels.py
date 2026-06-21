@@ -12,6 +12,9 @@ class ImpulseChannel(StrEnum):
     MOTOR_SPEECH = "motor_speech"
     MOTOR_COMPOSE = "motor_compose"
     VISION_GATE = "vision_gate"
+    PERCEPT_LIFE = "percept_life"
+    AFFECT_LISTEN = "affect_listen"
+    AV_COACTIVE = "av_coactive"
     CONTROL_ROUTING = "control_routing"
     SLEEP_TRAIN = "sleep_train"
 
