@@ -179,7 +179,8 @@ REPL / MEMORY.md (опционально): «рождён @ mix с погодо�
 | Сценарий | H_a | H_b | Энтропия |
 |----------|-----|-----|----------|
 | **Два родителя** | winner A | winner B | W + blend |
-| **Партеногенез + мир** | parent | parent | только W |
+| **Партеногенез + мир** | parent | parent | только W → jitter (см. **0084** для full wild donor) |
+| **Один агент, anti-inbreed** | combat | **wild_donor** @ E | **[ADR-0084](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md)** |
 | **Кэш replay** | * | * | тот же W → тот же child (repro test) |
 | **AiNet cohort** | разные пары | разные fork ticks → разные W | |
 
@@ -298,6 +299,7 @@ REPL / MEMORY.md (опционально): «рождён @ mix с погодо�
 - Child genome **воспроизводим** при сохранённом W.
 - Разные системы (0070, 0071, 0062) unroll из **одного** `H_mix` — согласованный фенотип.
 - 0065 Track B′ — краткая ссылка; норматив здесь.
+- **0084** — single-agent anti-inbreeding: wild donor genome, не только jitter @ `H_a = H_b`.
 
 ## Links
 
@@ -305,3 +307,4 @@ REPL / MEMORY.md (опционально): «рождён @ mix с погодо�
 - [CASA-ADR-0065-controlled-mutations.md](CASA-ADR-0065-controlled-mutations.md)
 - [CASA-ADR-0071-character-field-prismatic.md](CASA-ADR-0071-character-field-prismatic.md)
 - [CASA-ADR-0070-forgetting-policies.md](CASA-ADR-0070-forgetting-policies.md)
+- [CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md)

@@ -126,7 +126,8 @@ genome.v1.json
 **Fork (new store / AiNet child):** см. **ADR-0065**.
 - Default `fork_policy.mode = inherit_verbatim` — copy parent `genome.v1.json` без изменений.
 - `mutate_alleles` — bounded step по `mutation_policy.allelic`; новый `genome_hash`, тот же `species_id`.
-- `weather_cross` — два `genome_hash` + многоосный снимок погоды → `H_mix` → child genome — **0072**; `character_topology` — **0071**.
+- `weather_cross` — два `genome_hash` + многоосный снимок погоды → `H_mix` → child genome — **[0072](CASA-ADR-0072-genetic-weather-cross.md)**; `character_topology` — **0071**.
+- `wild_donor_cross` — combat × wild genome из entropy bundle @ один агент — **[0084](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md)** (anti-inbreeding).
 - New `store_id`, new journal; **species fork** (новый `species_id`, топология) — operator gate, не allele drift.
 
 **AiNet delta exchange:** experiential layers (WM edges, sandbox, bundles) — **mutable**; genetic hash mismatch → **reject merge** on meta-instructions.
