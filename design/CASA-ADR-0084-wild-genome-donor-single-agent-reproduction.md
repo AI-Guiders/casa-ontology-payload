@@ -73,17 +73,20 @@ child = crossover(parent.genome, parent.genome)   # self × self
 
 ### 3. Entropy whitelist (v0)
 
+**Зачем API мира (оператор / Света):** линейная комбинация двух геномов с **псевдослучайными** коэффициентами (PRNG, Mersenne, …) — **конечный период**; при self×self траектория замкнута. Нужен **внешний** якорь, не выводимый из `seed` и combat genome. Аппаратный TRNG — см. §3.1; **API** — погода, рынки, трафик и т.п.
+
 Каждый fork фиксирует `entropy_bundle.json` со **схемой**, **источником**, **timestamp UTC**, **нормализацией**.
 
 | Source id | Данные | Примечание |
 |-----------|--------|------------|
 | `weather` | многоосный bundle | Open-Meteo / cache — **как 0072** |
 | **`cpu_drng`** | **RDSEED/RDRAND @ fork** | **Intel DRNG / AMD on-chip** — thermal noise в кремнии; см. §3.1 |
+| `market` | индексы, returns, vol @ ts | фондовые/spot рынки; **не** торговый сигнал, snapshot для entropy |
+| `air_traffic` | count + density @ points | ADS-B: число ВС в радиусе R @ (lat,lon) точек; см. §3.2 |
 | `host_ambient` | hash(audio_rms_1s) @ fork | микрофон/шум rack; **без** PII, без raw audio в lineage |
-| `market_spot` | volatility @ ts | Vast.ai / spot index; **не** торговый сигнал |
 | `hardware_jitter` | load avg, thermal sensors | OS-level fallback tier (не путать с `cpu_drng`) |
 
-**Минимум v0:** `weather` **или** (`cpu_drng` + `hardware_jitter`) **или** (`host_ambient` + `hardware_jitter`) — не пустой bundle.
+**Минимум v0:** один **world-API** слой (`weather` | `market` | `air_traffic`) **или** (`cpu_drng` + `hardware_jitter`) **или** (`host_ambient` + `hardware_jitter`) — не пустой bundle. Рекомендуется **mix ≥2** независимых source id.
 
 **Offline:** cached bundle OK для teaching fork; lineage **обязан** хранить полный E.
 
@@ -110,6 +113,53 @@ child = crossover(parent.genome, parent.genome)   # self × self
 - Явный path: ctypes / tiny native shim → `RDSEED` 64×4; fallback → `secrets.token_bytes(32)` **только** если CPUID + probe OK, иначе tier downgrade + WARN в lineage.
 
 **Сценарий:** headless VPS @ Amsterdam — нет микрофона, weather cache stale → **`cpu_drng` + `hardware_jitter`** даёт локальный wild donor без сети.
+
+### 3.2 World API — рынки и воздушный трафик (`market`, `air_traffic`)
+
+**Идея (оператор / Света, 2026-06):** те же свойства, что у погоды — **высокая размерность**, **вне контроля** fork-кода, **snapshot @ ts** в lineage.
+
+#### `market`
+
+| Поле (пример) | Единица | Примечание |
+|---------------|---------|------------|
+| `symbol` | id | индекс / ETF / spot proxy (не секреты брокера) |
+| `last` / `return_1h` | price / % | rounded для canonical JSON |
+| `volume` | contracts/shares | optional |
+| `realized_vol_1h` | % | optional |
+
+**Источники (v0):** публичные market data API (exchange delayed, Yahoo-style free tier, cloud spot price для compute — **entropy only**).  
+**Invariant:** fork не торгует; в lineage — только нормализованный snapshot.
+
+#### `air_traffic`
+
+Много точек (как `genetic-weather-points.v1.json`) → для каждой **круг** (lat, lon, `radius_km`) @ `ts_utc`:
+
+| Поле | Примечание |
+|------|------------|
+| `aircraft_count` | ВС с ADS-B в радиусе |
+| `avg_altitude_m` | optional, rounded |
+| `avg_ground_speed_kts` | optional |
+| `heading_entropy` | optional: binned распределение курсов |
+
+**Источники (v0):** ADS-B aggregators (OpenSky Network, adsb.lol-style read-only APIs) — **counts only**, без tail numbers / flight ids в lineage (privacy + не нужно для entropy).
+
+**Manifest:** `design/genetic-entropy-points.v1.json` — union weather hubs + market symbols + air circles (Amsterdam, Reykjavik, Singapore, …).
+
+```json
+{
+  "schema": "entropy_bundle_v1",
+  "fetched_at_utc": "2026-06-21T12:00:00Z",
+  "sources": [
+    { "id": "weather", "points": ["…"] },
+    { "id": "market", "symbols": ["^GSPC", "…"], "return_1h": [0.0012, "…"] },
+    { "id": "air_traffic", "circles": [
+      { "id": "ams", "lat": 52.3, "lon": 4.76, "radius_km": 50, "aircraft_count": 47 }
+    ]}
+  ]
+}
+```
+
+**PRNG роль:** HKDF распределяет байты из `H_entropy = SHA-256(E)`; **E** не заменяется Mersenne — период PRNG не ограничивает пространство child при **разных** E.
 
 ### 4. Построение wild donor
 
@@ -174,7 +224,7 @@ lineage/
 python -m casa.prisms.genetic.wild_donor_cross \
   --combat agents/von-neumann/agent/genome.v1.json \
   --child-store agents/child-new \
-  --entropy weather,cpu_drng,host_ambient \
+  --entropy weather,market,air_traffic,cpu_drng \
   --weather-points design/genetic-weather-points.v1.json \
   --at 2026-06-21T12:00:00Z \
   --dry-run
@@ -194,7 +244,7 @@ python -m casa.prisms.genetic.wild_donor_cross \
 "fork_policy": {
   "mode": "wild_donor_cross",
   "wild_donor_cross": {
-    "entropy_sources": ["weather", "cpu_drng", "host_ambient"],
+    "entropy_sources": ["weather", "market", "air_traffic", "cpu_drng"],
     "cpu_drng": {
       "instruction_prefer": "rdseed",
       "width_bits": 64,
