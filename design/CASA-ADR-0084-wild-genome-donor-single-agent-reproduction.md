@@ -78,13 +78,38 @@ child = crossover(parent.genome, parent.genome)   # self × self
 | Source id | Данные | Примечание |
 |-----------|--------|------------|
 | `weather` | многоосный bundle | Open-Meteo / cache — **как 0072** |
+| **`cpu_drng`** | **RDSEED/RDRAND @ fork** | **Intel DRNG / AMD on-chip** — thermal noise в кремнии; см. §3.1 |
 | `host_ambient` | hash(audio_rms_1s) @ fork | микрофон/шум rack; **без** PII, без raw audio в lineage |
 | `market_spot` | volatility @ ts | Vast.ai / spot index; **не** торговый сигнал |
-| `hardware_jitter` | optional: thermal, load avg | fallback tier |
+| `hardware_jitter` | load avg, thermal sensors | OS-level fallback tier (не путать с `cpu_drng`) |
 
-**Минимум v0:** `weather` **или** (`host_ambient` + `hardware_jitter`) — не пустой bundle.
+**Минимум v0:** `weather` **или** (`cpu_drng` + `hardware_jitter`) **или** (`host_ambient` + `hardware_jitter`) — не пустой bundle.
 
-**Offline:** cached bundle OK для teaching fork; lineage **обязан** хранить полный W.
+**Offline:** cached bundle OK для teaching fork; lineage **обязан** хранить полный E.
+
+### 3.1 CPU DRNG — Intel & AMD (`cpu_drng`)
+
+**Идея (оператор / Света, 2026-06):** использовать **аппаратный** источник на хосте Neumann — тепловой шум в кремнии, а не только «погоду снаружи».
+
+| CPU | Инструкции | Статус |
+|-----|------------|--------|
+| **Intel** (Ivy Bridge+) | `RDSEED`, `RDRAND` | DRNG (Bull Mountain): ES на thermal noise → [Intel DRNG guide](https://www.intel.com/content/www/us/en/developer/articles/guide/intel-digital-random-number-generator-drng-software-implementation-guide.html) |
+| **AMD** (Bulldozer / Zen+) | `RDSEED`, `RDRAND` | свой on-chip DRNG; **не** Intel-лицензия, тот же x86 API |
+
+**Норматив v0:**
+
+1. **Предпочитать `RDSEED`** (сырая энтропия для seed) над `RDRAND` (DRBG поверх ES) — для wild donor достаточно качества seed.
+2. **Только 64-bit** форма `RDSEED` / `RDRAND` (AMD Zen 5: 16/32-bit RDSEED — [AMD-SB-7055](https://www.amd.com/en/resources/product-security/bulletin/amd-sb-7055.html); retry + reject `0` при CF=1).
+3. **Retry loop:** инструкция может вернуть CF=0 (entropy not ready) — до N попыток с backoff; FAIL fork если не получили ≥256 bit entropy.
+4. **Не единственный источник:** `cpu_drng` **микшируется** в E вместе с weather/host — один слой whitelist, не «только CPU». Защита от битых microcode / VM без passthrough.
+5. **Lineage:** в `entropy_bundle` писать **не** сырые биты, а `{ "source": "cpu_drng", "bytes_hex": "…", "width_bits": 256, "instruction": "rdseed", "cpu_vendor": "GenuineIntel|AuthenticAMD", "cpuid_leaf": "…" }` — repro audit без секретов.
+
+**Python path (implementation note):**
+
+- Linux/Windows: `os.getrandom(32, flags=os.GRND_RANDOM)` — часто уже смешивает hwrng + rdrand в ядре.
+- Явный path: ctypes / tiny native shim → `RDSEED` 64×4; fallback → `secrets.token_bytes(32)` **только** если CPUID + probe OK, иначе tier downgrade + WARN в lineage.
+
+**Сценарий:** headless VPS @ Amsterdam — нет микрофона, weather cache stale → **`cpu_drng` + `hardware_jitter`** даёт локальный wild donor без сети.
 
 ### 4. Построение wild donor
 
@@ -149,7 +174,7 @@ lineage/
 python -m casa.prisms.genetic.wild_donor_cross \
   --combat agents/von-neumann/agent/genome.v1.json \
   --child-store agents/child-new \
-  --entropy weather,host_ambient \
+  --entropy weather,cpu_drng,host_ambient \
   --weather-points design/genetic-weather-points.v1.json \
   --at 2026-06-21T12:00:00Z \
   --dry-run
@@ -169,7 +194,14 @@ python -m casa.prisms.genetic.wild_donor_cross \
 "fork_policy": {
   "mode": "wild_donor_cross",
   "wild_donor_cross": {
-    "entropy_sources": ["weather", "host_ambient"],
+    "entropy_sources": ["weather", "cpu_drng", "host_ambient"],
+    "cpu_drng": {
+      "instruction_prefer": "rdseed",
+      "width_bits": 64,
+      "min_entropy_bytes": 32,
+      "max_retries": 16,
+      "reject_zero_on_success": true
+    },
     "weather_points_file": "design/genetic-weather-points.v1.json",
     "blend": "allele_lerp",
     "require_wild_hash_ne_combat": true,
@@ -211,6 +243,9 @@ python -m casa.prisms.genetic.wild_donor_cross \
 | Wild donor меняет `species_id` / zone topology | spine copy from combat |
 | Entropy без lineage file | `entropy_bundle.json` @ child |
 | Случайный `random.random()` без E | детерминизм @ fixed E |
+| **Только** `cpu_drng` без mix / probe | blend с weather или host; AMD RDSEED 64-bit + retry |
+| RDSEED 16/32-bit на Zen 5 | **64-bit only** (AMD-SB-7055) |
+| Сырые DRNG bytes в git lineage | только hex digest + metadata в `entropy_bundle` |
 | Fork без diversity report | P6wd-f honesty gate |
 
 ---
