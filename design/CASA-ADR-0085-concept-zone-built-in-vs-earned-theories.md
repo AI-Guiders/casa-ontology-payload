@@ -19,7 +19,7 @@
 | `theories[]`: bootstrap + earned | `concept_layer`: один `species-concept-bootstrap-v1`; earned wire частично в `write_gate` |
 | Ошибка в Built-In → агент **сам** пересматривает | `demote_canon` блокирует host bootstrap; нет **supersede** ceremony для concept domain |
 
-**0083 §7 (устаревшая формулировка):** curriculum только как side-lattice `agent-curriculum-net`, **не** catalog `concept.*`. Это был компромисс C0 («не выглядеть как earned agency»), но **ломает** north star concept cells: authored species prior **должен** быть `concept.*` hub + `lex.{ru,en}.*`, не параллельный мир `lex.apple`.
+**0083 §7 (устаревшая формулировка):** curriculum только как side-lattice `agent-curriculum-net`, **не** catalog `concept.*`. Это был компромисс C0 («не выглядеть как earned agency»), но **ломает** north star concept cells: authored species prior **должен** быть `concept.*` hub + `lemma.{ru,en}.*`, не параллельный мир `lex.apple`.
 
 ### Операторский тезис (нормативный)
 
@@ -81,9 +81,9 @@ Curriculum base (`concept-net-base-v1.json`) teach **как Built-In catalog**, 
 | Artifact | Normative id | Host |
 |----------|--------------|------|
 | Concept hub | `concept.{slug}` | `domains.concept.catalog` + index `C:concept.*` @ `agent-concept-core` |
-| RU lemma (dictionary unit) | `lex.ru.{slug}` | `E:concept.*:lex.ru.*` — **lemma**, not inflected word form |
-| EN lemma | `lex.en.{slug}` | `E:concept.*:lex.en.*` |
-| Types / relations | `type.food`, `on\|arg1\|…` | `agent-concept-graph` @ `prism_agent` |
+| RU lemma (dictionary unit) | `lemma.ru.{slug}` | `E:concept.*:lemma.ru.*` — **lemma**, not inflected word form |
+| EN lemma | `lemma.en.{slug}` | `E:concept.*:lemma.en.*` |
+| Types / relations | `food`, `physical_object`, `on\|arg1\|…` | `agent-concept-graph` @ `prism_agent` |
 | Word forms in text | *(no catalog hub)* | parse stem / [ADR-0081](CASA-ADR-0081-lexical-slots-not-utterance-scripts.md) L1 morph → lemma |
 
 **Teach API (C0+, amended):**
@@ -101,7 +101,7 @@ ensure_concept_built_in(state, profile=base|wide)
 
 **Clean cut (normative, 2026-06-22):** teach + parse + tests mint/read **`concept.*` only** — **без** transitional read-path `lex.*` hub → `concept.*`. Curriculum на store ещё не залит → dual-read не нужен.
 
-**Id migration (code + JSON + tests, one PR):** Dima `lex.apple` hub → `concept.apple`; names `|names|lang.word.поверхность|` → `concept.*|names|lex.ru.*` / `lex.en.*` (lemma ids, not word forms).
+**Id migration (code + JSON + tests, one PR):** Dima `lex.apple` hub → `concept.apple`; names `|names|lang.word.поверхность|` → `concept.*|names|lemma.ru.*` / `lemma.en.*` (lemma ids, not word forms); P18 bootstrap `lex.ru.*` → `lemma.ru.*`.
 
 ### 2.1 Concept vs lemma vs word form (уточнение к 0073)
 
@@ -109,7 +109,7 @@ ensure_concept_built_in(state, profile=base|wide)
 
 ```text
 concept.orange           ← смысл (Concept Zone)
-└── lex.ru.apelsin       ← lemma / словарная единица (префикс lex.ru.* сохраняем; семантика = lemma)
+└── lemma.ru.apelsin     ← lemma / словарная единица (префикс lemma.ru.* / lemma.en.*)
     └── «апельсинами»    ← word form — morph + parse, не отдельный concept hub
 ```
 

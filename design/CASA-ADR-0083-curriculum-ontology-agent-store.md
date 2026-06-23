@@ -202,8 +202,8 @@ domains.concept (Concept Zone shelf)
 ├── lattice_ids: agent-concept-core, agent-concept-graph
 │
 agent-concept-graph (F0)
-├── type.food|affords|edible, on|arg1|positionable
-└── concept.apple|isa|type.food
+├── food|affords|edible, on|arg1|positionable
+└── concept.apple|isa|food
 
 experience ──earned──► promote_canon → NEW concept.*
 bootstrap error ──agent──► supersede_concept_theory → correction theory (0085 §4)
@@ -213,7 +213,7 @@ bootstrap error ──agent──► supersede_concept_theory → correction the
 
 **C0 interim:** lattice id may remain `agent-curriculum-net` until P1 rename; **не** `schema-math`.
 
-**Clean cut:** teach/read **only** `concept.*` + lemma `lex.{ru,en}.*` on concept graph — **no** `lex.*` hub, **no** transitional alias layer. **missing map ≠ auto-promote**.
+**Clean cut:** teach/read **only** `concept.*` + lemma `lemma.{ru,en}.*` on concept graph — **no** `lex.*` hub, **no** transitional alias layer. **missing map ≠ auto-promote**.
 
 **`lang.word.*` lexicon store:** **не** мигрируем в этом ADR; coexist с Concept Zone (§2.2 в 0085).
 
