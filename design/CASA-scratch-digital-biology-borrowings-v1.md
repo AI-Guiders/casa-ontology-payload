@@ -3,7 +3,7 @@
 **Status:** scratch — зафиксировано для обсуждения (не normative)  
 **Date:** 2026-06-21  
 **Provenance:** диалог оператор (Света) + агент — после ADR-0084 wild donor; «пока не всё поняла, но принимаю, потом обсудим»  
-**Related:** [CASA-ADR-0062-genetic-zone.md](CASA-ADR-0062-genetic-zone.md), [CASA-ADR-0065-controlled-mutations.md](CASA-ADR-0065-controlled-mutations.md), [CASA-ADR-0072-genetic-weather-cross.md](CASA-ADR-0072-genetic-weather-cross.md), [CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md), KB: `agent-notes/.../note-casa-synthetic-genome-donor-v1.md`, `playbook-casa-levin-biology-bridge-operational-v1.md`, `kb-distill-growing-neural-ca-fundamentals-v1.md`
+**Related:** [CASA-ADR-0062-genetic-zone.md](CASA-ADR-0062-genetic-zone.md), [CASA-ADR-0065-controlled-mutations.md](CASA-ADR-0065-controlled-mutations.md), [CASA-ADR-0072-genetic-weather-cross.md](CASA-ADR-0072-genetic-weather-cross.md), [CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md), **[CASA-ADR-0086-epigenome-expression-layer.md](CASA-ADR-0086-epigenome-expression-layer.md)** (normative epigenome), KB: `agent-notes/.../note-casa-synthetic-genome-donor-v1.md`, `playbook-casa-levin-biology-bridge-operational-v1.md`, `kb-distill-growing-neural-ca-fundamentals-v1.md`
 
 ---
 
@@ -23,7 +23,18 @@
 | **Регенерация после урона** | NCA training + honesty на recovery |
 | **Bioelectric / поле как согласование** | Levin playbook (KB) |
 | **Рекомbination / внешняя энтропия** | ADR-0072 weather; ADR-0084 wild donor + `cpu_drng` |
-| **«Эpigénome» без смены ДНК** | character zone, trauma cement, WM — опыт меняет экспрессию, не `genome.v1.json` |
+| **«Эpigénome» без смены ДНК** | character zone, trauma cement, WM — опыт меняет экспрессию, не `genome.v1.json` → **[ADR-0086](CASA-ADR-0086-epigenome-expression-layer.md)** |
+
+---
+
+## Epigenome v0 / v1 (→ ADR-0086)
+
+| Версия | Что | Статус |
+|--------|-----|--------|
+| **v0** | Распределённо: character (0071), limbic (0060), trauma (0075–0076), effective forgetting (0070) — **без** отдельного файла | **есть в коде**, именовано в 0086 |
+| **v1** | `prism_agent.epigenome_profile` — slow modifiers (`stress_factor` → effective α), audit @ fork reset | **target** P2 в 0086 |
+
+**Fork:** child **не** наследует parent epigenome nor Self-Earned concepts (0085 §7 + 0086 §4). Культура — HGT (P3 ниже), не эпигенетика.
 
 ---
 
@@ -115,7 +126,7 @@ GRN unroll             →  child @ T=0       (согласованный фен
 canalization probe     →  тот же вид        (spine держит)             [P2 —— обсудить]
 phenotype battery      →  honesty           (не oracle в чате)         [P1— обсудить]
 HGT track              →  AiNet lattices    (обмен без инбридинга)     [P3— обсудить]
-epigenome              →  character/WM      (опыт без rewrite genome)  [есть, назвать?]
+epigenome              →  character/WM      (опыт без rewrite genome)  [0086 ✓ draft]
 ```
 
 ---
@@ -134,12 +145,13 @@ epigenome              →  character/WM      (опыт без rewrite genome)  
 - [ ] Phenotype battery: минимальный набор probes @ T=0?
 - [ ] Canalization: какой ε и какой коридор «тот же вид»?
 - [ ] HGT: какие lattice ids разрешены к обмену?
-- [ ] Нужен ли отдельный ADR или расширение 0084/0065?
+- [x] Отдельный ADR epigenome? → **[0086](CASA-ADR-0086-epigenome-expression-layer.md)**
 - [ ] Что из списка **не** резонирует — вычеркнуть явно.
 
 ---
 
 ## Links
 
+- [CASA-ADR-0086-epigenome-expression-layer.md](CASA-ADR-0086-epigenome-expression-layer.md)
 - [CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md)
 - [CASA-scratch-listen-wire-gap-v1.md](CASA-scratch-listen-wire-gap-v1.md) — параллельный контур (sensory), не смешивать scope

@@ -17,7 +17,7 @@
 | **Два трека в репо (listen vs meaning)?** | [CASA-scratch-track-integration-v1.md](CASA-scratch-track-integration-v1.md) | только `develop` diff |
 | **Concept Zone vs понятийная сеть Димы?** | **§ ниже** + [CASA-ADR-0085](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md) | [CASA-ADR-0073](CASA-ADR-0073-concept-layer-lexicalization.md) **в одиночку** |
 | **Listen / Lalabook pilot?** | [CASA-scratch-listen-wire-gap-v1.md](CASA-scratch-listen-wire-gap-v1.md) | curriculum ROADMAP |
-| **Геном / размножение / погода?** | [CASA-ADR-0084](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md) | весь 0061–0076 |
+| **Геном / размножение / погода?** | [CASA-ADR-0084](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md), [0086](CASA-ADR-0086-epigenome-expression-layer.md) (epigenome) | весь 0061–0076 |
 | **Техдолг / M* / R* id?** | [TECH-DEBT-INDEX.md](TECH-DEBT-INDEX.md) | случайные ADR |
 
 **Правило для агента:** если задача про **X**, открой **одну** строку таблицы выше → только Related из того файла → не grep весь `design/`.
@@ -87,7 +87,7 @@ Listen imprint (0028)   = A/V опыт → позже edges на concept.*
 | **Motor / speech** | оператор | [CASA-scratch-motor-speech-wire-gap-v1.md](CASA-scratch-motor-speech-wire-gap-v1.md) |
 | **Meaning / validator** | Дима + агент | [ВАЛИДАТОР-СМЫСЛА-статус-и-план.md](ВАЛИДАТОР-СМЫСЛА-статус-и-план.md) |
 | **Curriculum / Concept @ store** | оператор + Дима | [CASA-ADR-0085](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md) → [0083](CASA-ADR-0083-curriculum-ontology-agent-store.md) |
-| **Genetics / fork** | оператор | [CASA-ADR-0062](CASA-ADR-0062-genetic-zone.md) → [0084](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md) |
+| **Genetics / fork** | оператор | [CASA-ADR-0062](CASA-ADR-0062-genetic-zone.md) → [0084](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md) → [0086](CASA-ADR-0086-epigenome-expression-layer.md) |
 | **Integration / git** | оба | [CASA-scratch-track-integration-v1.md](CASA-scratch-track-integration-v1.md) |
 
 ---
@@ -101,7 +101,7 @@ Listen imprint (0028)   = A/V опыт → позже edges на concept.*
 | **0 — память / поле** | 0002, 0014, 0016 | LTM, agent prism |
 | **1 — tick / control** | 0010, 0024, 0055, 0057 | executive, WM, intent |
 | **2 — zones** | 0061, 0060, 0063, 0064, 0068–0071 | intelligence zones |
-| **3 — genetic** | 0062, 0065, 0072, **0084** | genome, fork, entropy |
+| **3 — genetic** | 0062, 0065, 0072, **0084**, **0086** | genome, fork, epigenome, entropy |
 | **4 — partner / speech** | 0078, 0081, 0056 | efferent, slots |
 | **5 — sensory** | 0028, scratch-listen | imprint, stream |
 | **6 — concept / curriculum** | 0073, **0085**, 0083 | Built-In / Self-Earned; teach @ store |

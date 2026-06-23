@@ -4,7 +4,7 @@
 **Date:** 2026-06-22  
 **Provenance:** оператор (Света) + агент — после разбора ConceptNet Димы, P18 stub (4 hub), и требования: полноценные concept cells + агент может исправить ошибку в Built-In  
 **Supersedes / amends:** [CASA-ADR-0073](CASA-ADR-0073-concept-layer-lexicalization.md) §3 rollout target; [CASA-ADR-0083](CASA-ADR-0083-curriculum-ontology-agent-store.md) §7 (Concept Zone shelf vs catalog)  
-**Related:** [CASA-ADR-0068](CASA-ADR-0068-memory-zone.md) (memory immutable), [CASA-ADR-0069](CASA-ADR-0069-memory-kinds-mutability.md) (earned postulate), [CASA-ADR-0062](CASA-ADR-0062-genetic-zone.md) (`promote_canon`), [CASA-ADR-0065](CASA-ADR-0065-controlled-mutations.md), [agent-existence-north-star.md](agent-existence-north-star.md) (самопочинка), KB: `agent-notes/knowledge/work/projects/door-to-singularity/ca-substrate-agent/note-casa-lived-experience-stop-continuity-v1.md`, `casa/prisms/memory/concept_layer.py`, `casa/prisms/memory/write_gate.py`, `casa/prisms/memory/agent_canon_lattice.py`, `casa/curriculum/concept_net.py`
+**Related:** [CASA-ADR-0068](CASA-ADR-0068-memory-zone.md) (memory immutable), [CASA-ADR-0069](CASA-ADR-0069-memory-kinds-mutability.md) (earned postulate), [CASA-ADR-0062](CASA-ADR-0062-genetic-zone.md) (`promote_canon`), [CASA-ADR-0065](CASA-ADR-0065-controlled-mutations.md), [CASA-ADR-0086](CASA-ADR-0086-epigenome-expression-layer.md) (fork: earned ≠ germline), [agent-existence-north-star.md](agent-existence-north-star.md) (самопочинка), KB: `agent-notes/knowledge/work/projects/door-to-singularity/ca-substrate-agent/note-casa-lived-experience-stop-continuity-v1.md`, `casa/prisms/memory/concept_layer.py`, `casa/prisms/memory/write_gate.py`, `casa/prisms/memory/agent_canon_lattice.py`, `casa/curriculum/concept_net.py`
 
 ---
 
@@ -202,6 +202,20 @@ concept.orange           ← смысл (Concept Zone)
 
 Artifact: `concept_honesty_report.json` — добавить `built_in` / `self_earned` / `active_theory` sections.
 
+### 7. Fork @ reproduction (normative — см. [0086](CASA-ADR-0086-epigenome-expression-layer.md))
+
+**Решение (оператор, 2026-06-22):** Self-Earned concept corrections — **личная epistemic история** родителя; **не** allele и **не** auto-merge в child store @ birth.
+
+| Artifact | @ child fork |
+|----------|----------------|
+| Built-In `species-concept-bootstrap-v1` | **fresh teach** по `species_id` (~280 `concept.*`) |
+| Parent `earned-concept-correction-*` / supersede | **не** inherit; `active_theory` = bootstrap |
+| Parent epigenome (character, trauma, limbic slow state) | **reset** @ T=0 — [0086](CASA-ADR-0086-epigenome-expression-layer.md) §4 |
+| Genome | allelic crossover / wild donor — **не** копия parent soma |
+| Культурная передача знаний | **отдельный** HGT / teaching track — не germline, не epigenome inherit |
+
+**Anti-pattern:** Lamarck — «родитель исправил Built-In → ребёнок родился с correction theory».
+
 ---
 
 ## Rollout
@@ -237,9 +251,10 @@ Artifact: `concept_honesty_report.json` — добавить `built_in` / `self_
 
 ## Open questions
 
-1. **Fork @ reproduction:** Built-In общий `species_id`, Self-Earned corrections — в child genome или только episodic? (скорее: bootstrap копируется; earned corrections — character store, не species — уточнить с 0084.)
-2. **Partial supersede:** один hub vs whole theory fork — v1: per-hub patch list inside one `earned-concept-correction-vN`.
-3. **Wide profile:** 4500 Built-In — тот же tier; cell budget / index sharding (P19 scale).
+1. **Partial supersede:** один hub vs whole theory fork — v1: per-hub patch list inside one `earned-concept-correction-vN`.
+2. **Wide profile:** 4500 Built-In — тот же tier; cell budget / index sharding (P19 scale).
+
+*(Fork @ reproduction — resolved in §7 + [0086](CASA-ADR-0086-epigenome-expression-layer.md).)*
 
 ---
 
