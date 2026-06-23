@@ -213,7 +213,9 @@ bootstrap error ──agent──► supersede_concept_theory → correction the
 
 **C0 interim:** lattice id may remain `agent-curriculum-net` until P1 rename; **не** `schema-math`.
 
-Read-path: legacy `lex.*` → `concept.*` aliases during migration; **missing map ≠ auto-promote**.
+**Clean cut:** teach/read **only** `concept.*` + lemma `lex.{ru,en}.*` on concept graph — **no** `lex.*` hub, **no** transitional alias layer. **missing map ≠ auto-promote**.
+
+**`lang.word.*` lexicon store:** **не** мигрируем в этом ADR; coexist с Concept Zone (§2.2 в 0085).
 
 **Lab legacy (`world.py`):** всё в `schema-math` — **не** модель store; refactor lab harness отдельно, не блокирует C0 store teach.
 

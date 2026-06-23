@@ -56,7 +56,7 @@ memory.immutable.domains.concept
 │         active: true|false,
 │         supersedes: species-concept-bootstrap-v1? }
 ├── concept_ids[]          — union active theories (hub ids only)
-├── catalog[concept.*]     — per-hub: lex, legacy, theory_id, indexed_at_tick
+├── catalog[concept.*]     — per-hub: lemma locales, theory_id, indexed_at_tick
 ├── lattice_ids[]
 │     agent-concept-core     — sparse hub index (P19)
 │     agent-concept-graph    — type/isa/affords/relations (бывш. curriculum-net)
@@ -81,9 +81,10 @@ Curriculum base (`concept-net-base-v1.json`) teach **как Built-In catalog**, 
 | Artifact | Normative id | Host |
 |----------|--------------|------|
 | Concept hub | `concept.{slug}` | `domains.concept.catalog` + index `C:concept.*` @ `agent-concept-core` |
-| RU surface | `lex.ru.{slug}` | edge `E:concept.*:lex.ru.*` |
-| EN surface | `lex.en.{slug}` | edge `E:concept.*:lex.en.*` |
+| RU lemma (dictionary unit) | `lex.ru.{slug}` | `E:concept.*:lex.ru.*` — **lemma**, not inflected word form |
+| EN lemma | `lex.en.{slug}` | `E:concept.*:lex.en.*` |
 | Types / relations | `type.food`, `on\|arg1\|…` | `agent-concept-graph` @ `prism_agent` |
+| Word forms in text | *(no catalog hub)* | parse stem / [ADR-0081](CASA-ADR-0081-lexical-slots-not-utterance-scripts.md) L1 morph → lemma |
 
 **Teach API (C0+, amended):**
 
@@ -96,9 +97,32 @@ ensure_concept_built_in(state, profile=base|wide)
 
 **Anti-pattern (earned only):** mint ~280 hub **без** `tier=built_in` / **без** bootstrap context → ложная agency.
 
-**Anti-pattern (0083 legacy):** держать species prior только на `lex.*` identity без `concept.*` hub.
+**Anti-pattern (0083 legacy):** держать species prior только на `lex.*` hub identity без `concept.*`.
 
-**Migration:** Dima `lex.apple` → `concept.apple` + `lex.ru`/`lex.en`; read-path aliases `lex.*` → `concept.*` на переходный период.
+**Clean cut (normative, 2026-06-22):** teach + parse + tests mint/read **`concept.*` only** — **без** transitional read-path `lex.*` hub → `concept.*`. Curriculum на store ещё не залит → dual-read не нужен.
+
+**Id migration (code + JSON + tests, one PR):** Dima `lex.apple` hub → `concept.apple`; names `|names|lang.word.поверхность|` → `concept.*|names|lex.ru.*` / `lex.en.*` (lemma ids, not word forms).
+
+### 2.1 Concept vs lemma vs word form (уточнение к 0073)
+
+**Лексема в бытовом смысле ≠ слово-форма в тексте.** Нормативная лестница — [ADR-0081](CASA-ADR-0081-lexical-slots-not-utterance-scripts.md) L0–L3:
+
+```text
+concept.orange           ← смысл (Concept Zone)
+└── lex.ru.apelsin       ← lemma / словарная единица (префикс lex.ru.* сохраняем; семантика = lemma)
+    └── «апельсинами»    ← word form — morph + parse, не отдельный concept hub
+```
+
+**Built-In ~280** = `concept.*` + **lemma** RU/EN. **Не** каталог всех словоформ. **Не** mass-migration `lang.word.*` lexicon store (см. §2.2).
+
+### 2.2 Что **не** входит в Built-In teach
+
+| Контур | Трогаем? |
+|--------|----------|
+| Curriculum / concept graph @ `prism_agent` | **да** — `concept.*` + lemma names |
+| P18 bootstrap `legacy_concept_ids` (`lang.word.okno` → hub) | **убрать** в новом teach/bind |
+| Весь `lang.word.*` lexicon @ `domains.lang` / `field_state` | **нет** — отдельный контур, coexist |
+| Math `\|names\|lang.word.five` | **нет** в этом slice |
 
 ### 3. Self-Earned — novel + correction
 
@@ -185,7 +209,7 @@ Artifact: `concept_honesty_report.json` — добавить `built_in` / `self_
 | Phase | Action | Depends |
 |-------|--------|---------|
 | **P0** | This ADR accepted | — |
-| **P1** | Amend teach: `concept.*` + graph; aliases `lex.*` | 0083 P1 |
+| **P1** | Amend teach: `concept.*` + graph; **clean cut** ids (no `lex.*` hub) | 0083 P1 |
 | **P2** | `theories[]` schema in `ensure_concept_domain`; catalog `theory_id` | P1 |
 | **P3** | `supersede_concept_theory` stub + test (operator_sign) | P2, promote_canon |
 | **P4** | held-out gate for correction path | P3, eval held_out_gate |
@@ -200,7 +224,8 @@ Artifact: `concept_honesty_report.json` — добавить `built_in` / `self_
 | ❌ | ✅ |
 |----|-----|
 | 4 hub glue как «Concept Zone готова» | P18c Built-In catalog @ base |
-| Curriculum `lex.*` as permanent identity | `concept.*` hub + locale lex |
+| Transitional `lex.*` hub aliases | **clean cut** @ teach |
+| Dual-read `lex.apple` forever | one id: `concept.apple` |
 | Built-In ошибка → только `/remember` оператора | supersede ceremony + agent journal |
 | hot_write исправляет bootstrap | `supersede_concept_theory` |
 | 280 hub без tier → looks earned | `tier=built_in`, `provenance=authored_species` |

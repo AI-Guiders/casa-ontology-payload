@@ -78,14 +78,17 @@ CASA **не** копирует LLM на hot path. Concept layer — это **con
 
 ```text
 concept:{id}                    ← «concept cell» (sparse, invariant, provenance hub)
-├── lex.ru.surface → "апельсин"   grapheme/syllable lattices (lexicon-ru)
-├── lex.en.surface → "orange"     grapheme/syllable lattices (lexicon-en)
+├── lex.ru.{lemma} → "апельсин"   dictionary lemma (NOT every inflected form)
+├── lex.en.{lemma} → "orange"
+├── word forms in text            ← parse / morph (0081 L1), not concept catalog rows
 ├── vis.frame_id   → retinal cue  (prism_visual)
 ├── audio.*        → (future perceptual)
 └── meta.morph.*   → paradigm hooks (0036 — inflection as lex layer, not concept)
 
 discourse.ru.* / discourse.en.*   ← compose realizers (0056), NOT concept identity
 ```
+
+**Amended (0085, 2026-06-22):** префикс `lex.ru.*` / `lex.en.*` = **lemma slot** к hub; слово-формы («столе», «апельсинами») — **не** отдельные `concept.*`. См. [0085 §2.1](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md).
 
 **Invariant:** один `concept:orange` активируется от RU-текста, EN-текста и vis-cue **через разные lex/vis edges**, но **один** concept token в bind budget.
 
@@ -94,13 +97,15 @@ discourse.ru.* / discourse.en.*   ← compose realizers (0056), NOT concept iden
 | Layer | Prefix | Example | Memory kind (0068/0069) |
 |-------|--------|---------|-------------------------|
 | **Concept** | `concept.` | `concept.orange`, `concept.window` | **immutable** @ `domains.concept` (bootstrap or earned) |
-| **Lexeme RU** | `lex.ru.` | `lex.ru.apelsin` → `concept.orange` | explicit.semantic |
-| **Lexeme EN** | `lex.en.` | `lex.en.orange` → `concept.orange` | explicit.semantic |
+| **Lemma RU** | `lex.ru.` | `lex.ru.apelsin` → `concept.orange` | explicit.semantic (lemma id; forms via morph/parse) |
+| **Lemma EN** | `lex.en.` | `lex.en.orange` → `concept.orange` | explicit.semantic |
 | **Meta (grammar/epistemic)** | `lang.meta.` | `lang.meta.compare.greater` | immutable @ `domains.lang` |
 | **Discourse frame** | `discourse.{locale}.` | `discourse.ru.self` (migrate from `ru.dialog.self`) | explicit / sandbox |
-| **Legacy** | `lang.word.*`, `ru.*` | read-path aliases only | migrate → concept+lex |
+| **Legacy lexicon** | `lang.word.*`, `ru.*` | **domains.lang** store — **not** Concept Built-In; no new concept identity | coexist until separate lexicon migration |
 
-**Anti-pattern:** новые `lang.word.{russian_surface}` как **identity** концепта.
+**Anti-pattern:** новые `lang.word.{russian_surface}` как **identity** концепта в Concept Zone / curriculum teach.
+
+**Anti-pattern:** хранить каждую слово-форму как отдельный `concept.*` hub вместо lemma + morph.
 
 ### 3. Concept Zone — `memory.immutable.domains.concept` (не intelligence zone)
 
