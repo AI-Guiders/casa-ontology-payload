@@ -20,22 +20,7 @@ from casa.prisms.memory.prism_spawn import spawn_content_lattice
 from casa.prisms.memory.memory_prisms import ensure_prisms
 from casa.prisms.shared.store_layout import default_agent_store
 from casa.prisms.shared.store_persist import mark_runtime_dirty, save_runtime_state
-
-
-def _resolve_wav(store_dir: Path, scene: dict[str, Any], *, manifest_dir: Path | None = None) -> Path | None:
-    wav = str(scene.get("wav") or "").strip()
-    if not wav:
-        return None
-    path = Path(wav)
-    if path.is_file():
-        return path
-    for base in (manifest_dir, store_dir):
-        if base is None:
-            continue
-        candidate = base / wav
-        if candidate.is_file():
-            return candidate
-    return None
+from casa.sensory.adapters import resolve_scene_wav
 
 
 def ingest_listen_manifest(
@@ -71,7 +56,7 @@ def ingest_listen_manifest(
         ch_idx = scene.get("chapter_index")
         if chapter_indices is not None and ch_idx is not None and int(ch_idx) not in chapter_indices:
             continue
-        wav_path = _resolve_wav(store_dir, scene, manifest_dir=manifest_dir)
+        wav_path = resolve_scene_wav(store_dir, scene, manifest_dir=manifest_dir)
         moment = listen_moment(
             state,
             scene,

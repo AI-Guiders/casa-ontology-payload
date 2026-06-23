@@ -14,14 +14,7 @@ if str(REPO) not in sys.path:
 
 from casa.domain.listen_beat_apply import apply_external_beats_to_scene, load_external_beats
 from casa.domain.listen_beat_verify import format_beat_report, validate_scene_beats
-
-
-def _find_video(bundle_dir: Path) -> Path:
-    for ext in ("webm", "mp4", "mkv"):
-        candidate = bundle_dir / f"video.{ext}"
-        if candidate.is_file():
-            return candidate
-    raise FileNotFoundError(f"no video.* in {bundle_dir}")
+from casa.sensory.adapters import find_bundle_video
 
 
 def main() -> int:
@@ -34,7 +27,7 @@ def main() -> int:
 
     manifest = args.manifest.resolve()
     bundle_dir = manifest.parent
-    video_path = _find_video(bundle_dir)
+    video_path = find_bundle_video(bundle_dir)
     external = load_external_beats(args.beats.resolve())
     want = {int(x.strip()) for x in args.chapters.split(",") if x.strip()}
 

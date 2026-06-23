@@ -18,7 +18,7 @@ from casa.prisms.auditory.imprint import auditory_tokens_on_field
 from casa.prisms.memory.agent_life import load_unified_agent_runtime, persist_unified_runtime
 from casa.prisms.shared.store_layout import default_agent_store
 from casa.prisms.visual.imprint import visual_tokens_on_field
-from tools.listen_womb_tick import _find_video, _load_chapter_scene, _resolve_wav
+from casa.sensory.adapters import find_bundle_video, resolve_scene_wav
 
 
 def scene_has_sensory_imprint(state: dict, scene_id: str) -> bool:
@@ -71,7 +71,7 @@ def replay_listen_manifest(
             continue
         chapters.append(scene)
 
-    video_path = _find_video(bundle_dir)
+    video_path = find_bundle_video(bundle_dir)
     reports: list[dict[str, Any]] = []
     skipped: list[str] = []
 
@@ -87,7 +87,7 @@ def replay_listen_manifest(
             continue
 
         ch = int(scene.get("chapter_index") or 0)
-        wav_path = _resolve_wav(store_dir, scene, manifest_dir=bundle_dir)
+        wav_path = resolve_scene_wav(store_dir, scene, manifest_dir=bundle_dir)
         work_dir = (work_root or bundle_dir / "preview" / "replay" / f"ch{ch:02d}").resolve()
         chapter_t1 = float(scene.get("t1") or scene.get("t0") or 0.0) - float(scene.get("t0") or 0.0)
         t_end = float(t_end_rel) if t_end_rel is not None else chapter_t1

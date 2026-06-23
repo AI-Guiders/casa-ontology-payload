@@ -17,38 +17,7 @@ from casa.cli.ingest_state import resolve_ingest_state
 from casa.domain.listen_womb_tick import run_listen_womb_stream, write_womb_report
 from casa.prisms.memory.agent_life import load_unified_agent_runtime, persist_unified_runtime
 from casa.prisms.shared.store_layout import default_agent_store
-
-
-def _find_video(bundle_dir: Path) -> Path:
-    for ext in ("mp4", "webm", "mkv"):
-        candidate = bundle_dir / f"video.{ext}"
-        if candidate.is_file():
-            return candidate
-    raise FileNotFoundError(f"no video.* in {bundle_dir}")
-
-
-def _resolve_wav(store_dir: Path, scene: dict[str, Any], *, manifest_dir: Path) -> Path | None:
-    wav = str(scene.get("wav") or "").strip()
-    if not wav:
-        return None
-    path = Path(wav)
-    if path.is_file():
-        return path
-    for base in (manifest_dir, store_dir):
-        candidate = base / wav
-        if candidate.is_file():
-            return candidate
-    return None
-
-
-def _load_chapter_scene(manifest: Path, chapter: int) -> dict[str, Any]:
-    for line in manifest.read_text(encoding="utf-8").splitlines():
-        if not line.strip():
-            continue
-        scene = json.loads(line)
-        if int(scene.get("chapter_index", -1)) == chapter:
-            return scene
-    raise ValueError(f"chapter {chapter} not found in {manifest}")
+from casa.sensory.adapters import capture_listen_stream, load_chapter_scene
 
 
 def main() -> int:
@@ -80,9 +49,14 @@ def main() -> int:
     manifest = args.manifest.resolve()
     bundle_dir = manifest.parent
     store_dir = (args.store_dir or default_agent_store()).resolve()
-    scene = _load_chapter_scene(manifest, args.chapter)
-    video_path = _find_video(bundle_dir)
-    wav_path = _resolve_wav(store_dir, scene, manifest_dir=bundle_dir)
+    scene = load_chapter_scene(manifest, args.chapter)
+    stream_capture = capture_listen_stream(
+        scene,
+        bundle_dir=bundle_dir,
+        store_dir=store_dir,
+    )
+    video_path = stream_capture.video_path
+    wav_path = stream_capture.wav_path
     work_dir = (args.work_dir or bundle_dir / "preview" / "womb_tick" / f"ch{args.chapter:02d}").resolve()
 
     chapter_t0 = float(scene.get("t0") or 0.0)

@@ -5,6 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from casa.sensory.adapters.media_path import resolve_media_path
+
 BEAT_KIND_PAIRED = "paired"
 BEAT_KIND_MOTION = "motion"
 
@@ -82,19 +84,6 @@ def count_expected_frame_files(beat: dict[str, Any]) -> int:
     if kind == BEAT_KIND_MOTION:
         return len(normalize_keyframes(beat))
     return 1 if str(beat.get("path") or "").strip() else 0
-
-
-def resolve_media_path(ref: str, bases: tuple[Path | None, ...]) -> Path | None:
-    path = Path(ref)
-    if path.is_file():
-        return path
-    for base in bases:
-        if base is None:
-            continue
-        candidate = base / ref
-        if candidate.is_file():
-            return candidate
-    return None
 
 
 def resolve_beat_visuals(
