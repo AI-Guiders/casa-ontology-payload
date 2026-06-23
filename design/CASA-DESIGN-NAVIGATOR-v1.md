@@ -15,7 +15,7 @@
 | **Зачем CASA вообще?** | [CASA-PROJECT-CONSTITUTION.md](CASA-PROJECT-CONSTITUTION.md) | 200 файлов ADR подряд |
 | **Что такое «живой агент»?** | [agent-existence-north-star.md](agent-existence-north-star.md) | философия квалиа |
 | **Два трека в репо (listen vs meaning)?** | [CASA-scratch-track-integration-v1.md](CASA-scratch-track-integration-v1.md) | только `develop` diff |
-| **Concept Zone vs понятийная сеть Димы?** | **§ ниже** + [CASA-ADR-0083](CASA-ADR-0083-curriculum-ontology-agent-store.md) | [CASA-ADR-0073](CASA-ADR-0073-concept-layer-lexicalization.md) **в одиночку** |
+| **Concept Zone vs понятийная сеть Димы?** | **§ ниже** + [CASA-ADR-0085](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md) | [CASA-ADR-0073](CASA-ADR-0073-concept-layer-lexicalization.md) **в одиночку** |
 | **Listen / Lalabook pilot?** | [CASA-scratch-listen-wire-gap-v1.md](CASA-scratch-listen-wire-gap-v1.md) | curriculum ROADMAP |
 | **Геном / размножение / погода?** | [CASA-ADR-0084](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md) | весь 0061–0076 |
 | **Техдолг / M* / R* id?** | [TECH-DEBT-INDEX.md](TECH-DEBT-INDEX.md) | случайные ADR |
@@ -47,18 +47,19 @@
 
 | Слой | Документ / код | Что это | Что **не** это |
 |------|----------------|---------|----------------|
-| **Concept Zone** | ADR-0073, `concept_layer.py` | **4 hub** @ bootstrap, wire + honesty; **полка** `lattice_ids` | **не** полный catalog ~280 hub; **не** teach Dima net wholesale |
-| **Curriculum concept net** | `concept_net.py`, `world.py`, ADR-0083 | authored **parse/validate/school** graph (isa, affords) | **не** Concept Zone; **не** `schema-math` на store |
+| **Concept Zone** | ADR-0073, **0085**, `concept_layer.py` | **полка** `domains.concept`: **Built-In** + **Self-Earned** theories | **не** 4-hub glue как финал; **не** отдельная OntologyZone |
+| **Built-In (curriculum)** | `concept_net.py`, ADR-0083, **0085** | species `concept.*` @ T=0 + type graph | **не** earned agency; **не** `schema-math` |
+| **Self-Earned** | promote_canon, **0085** §4 supersede | novel hub + исправление Built-In после gate | **не** hot_write bootstrap |
 | **Chat `/meaning` lab** | `build_meaning_state()` | ephemeral demo | **не** life tick; **не** character store default |
 
 **Почему Дима не «использовал Concept Zone» — часто норма:** curriculum teach шёл в **lab harness** (`LATTICE = schema-math`) — это **ошибка placement**, не «забыли 0073». См. ADR-0083 § Postmortem.
 
-**Куда teach curriculum на store (normative):** `agent-curriculum-net` @ `prism_agent`, регистрация в `domains.concept` как **shelf** — ADR-0083 § Decision.
+**Куда teach curriculum на store (normative):** Built-In tier @ `domains.concept` — [ADR-0085](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md); C0 lattice: ADR-0083 § Decision.
 
 ```text
-Concept Zone (0073)     = зонтик + 4 hub + earned promote
-Curriculum net (Dima)   = школьная онтология для parse/validate
-Listen imprint (0028)   = A/V опыт, не text graph
+Concept Zone (0085)     = Built-In (curriculum concept.*) + Self-Earned (promote/supersede)
+Curriculum teach        = Built-In neurons + agent-concept-graph (не side-lex forever)
+Listen imprint (0028)   = A/V опыт → позже edges на concept.*
 ```
 
 ---
@@ -85,7 +86,7 @@ Listen imprint (0028)   = A/V опыт, не text graph
 | **Life tick / sensory** | оператор + listen | [CASA-scratch-listen-wire-gap-v1.md](CASA-scratch-listen-wire-gap-v1.md) |
 | **Motor / speech** | оператор | [CASA-scratch-motor-speech-wire-gap-v1.md](CASA-scratch-motor-speech-wire-gap-v1.md) |
 | **Meaning / validator** | Дима + агент | [ВАЛИДАТОР-СМЫСЛА-статус-и-план.md](ВАЛИДАТОР-СМЫСЛА-статус-и-план.md) |
-| **Curriculum @ store** | оператор (C0) | [CASA-ADR-0083](CASA-ADR-0083-curriculum-ontology-agent-store.md) |
+| **Curriculum / Concept @ store** | оператор + Дима | [CASA-ADR-0085](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md) → [0083](CASA-ADR-0083-curriculum-ontology-agent-store.md) |
 | **Genetics / fork** | оператор | [CASA-ADR-0062](CASA-ADR-0062-genetic-zone.md) → [0084](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md) |
 | **Integration / git** | оба | [CASA-scratch-track-integration-v1.md](CASA-scratch-track-integration-v1.md) |
 
@@ -103,7 +104,7 @@ Listen imprint (0028)   = A/V опыт, не text graph
 | **3 — genetic** | 0062, 0065, 0072, **0084** | genome, fork, entropy |
 | **4 — partner / speech** | 0078, 0081, 0056 | efferent, slots |
 | **5 — sensory** | 0028, scratch-listen | imprint, stream |
-| **6 — concept / curriculum** | 0073, **0083** | Concept Zone vs teach |
+| **6 — concept / curriculum** | 0073, **0085**, 0083 | Built-In / Self-Earned; teach @ store |
 | **7 — runtime** | 0079, 0025 | host, engine tier |
 
 ---

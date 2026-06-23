@@ -3,7 +3,7 @@
 **Status:** proposed (draft)  
 **Date:** 2026-06-21  
 **Provenance:** оператор + агент — sync с Dima отложен; listen/motor track нужен species prior для parse/validate до stream pilot (аналогия с младенцем: «фу/мм» идут из **вкуса/обоняния/осязания**, не из абстрактной «оси оценки» — см. § Context)  
-**Related:** [CASA-ADR-0073-concept-layer-lexicalization.md](CASA-ADR-0073-concept-layer-lexicalization.md), [CASA-ADR-0081-lexical-slots-not-utterance-scripts.md](CASA-ADR-0081-lexical-slots-not-utterance-scripts.md), [CASA-ADR-0028-field-native-sensory-experience.md](CASA-ADR-0028-field-native-sensory-experience.md), [CASA-ADR-0060-emotional-zone.md](CASA-ADR-0060-emotional-zone.md), [CASA-ADR-0063-perceptual-zone.md](CASA-ADR-0063-perceptual-zone.md), [CASA-scratch-listen-wire-gap-v1.md](CASA-scratch-listen-wire-gap-v1.md), [CASA-scratch-listen-0027-layer-map-v1.md](CASA-scratch-listen-0027-layer-map-v1.md), [CASA-scratch-track-integration-v1.md](CASA-scratch-track-integration-v1.md), [ВАЛИДАТОР-СМЫСЛА-статус-и-план.md](ВАЛИДАТОР-СМЫСЛА-статус-и-план.md), KB: `agent-notes/knowledge/domains/agent-operations/playbook-agent-process-debt-amplifier-v1.md`, `casa/curriculum/concept_net.py`, `casa/curriculum/world.py`, `casa/prisms/memory/concept_layer.py`
+**Related:** [CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md) (amends §7 Concept Zone catalog), [CASA-ADR-0073-concept-layer-lexicalization.md](CASA-ADR-0073-concept-layer-lexicalization.md), [CASA-ADR-0081-lexical-slots-not-utterance-scripts.md](CASA-ADR-0081-lexical-slots-not-utterance-scripts.md), [CASA-ADR-0028-field-native-sensory-experience.md](CASA-ADR-0028-field-native-sensory-experience.md), [CASA-ADR-0060-emotional-zone.md](CASA-ADR-0060-emotional-zone.md), [CASA-ADR-0063-perceptual-zone.md](CASA-ADR-0063-perceptual-zone.md), [CASA-scratch-listen-wire-gap-v1.md](CASA-scratch-listen-wire-gap-v1.md), [CASA-scratch-listen-0027-layer-map-v1.md](CASA-scratch-listen-0027-layer-map-v1.md), [CASA-scratch-track-integration-v1.md](CASA-scratch-track-integration-v1.md), [ВАЛИДАТОР-СМЫСЛА-статус-и-план.md](ВАЛИДАТОР-СМЫСЛА-статус-и-план.md), KB: `agent-notes/knowledge/domains/agent-operations/playbook-agent-process-debt-amplifier-v1.md`, `casa/curriculum/concept_net.py`, `casa/curriculum/world.py`, `casa/prisms/memory/concept_layer.py`
 
 ---
 
@@ -187,23 +187,33 @@ Wide **не** блокирует pilot; base достаточен для locativ
 
 Character chat: **`--no-route`** (or default route off for subject pilot) until C1 explicitly reviewed.
 
-### 7. Связь с Concept Zone (0073)
+### 7. Связь с Concept Zone (0073) — **amended by [0085](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md)**
 
-Curriculum net **может и должен** жить **под полкой** Concept Zone как **решётка(и)**, не как 280 новых `concept.*` prism.
+**C0 (this ADR):** teach graph + glossary on dedicated lattice @ `prism_agent` — placement gate, idempotent store.
+
+**Normative target (0085):** curriculum → **Built-In** tier Concept Zone — `concept.*` catalog + `agent-concept-graph` (types/relations), не parallel `lex.*` identity forever.
 
 ```text
 domains.concept (Concept Zone shelf)
-├── catalog: concept.orange, concept.window, …     ← sparse hub, earned promote
-├── lattice_ids: agent-concept-core, agent-curriculum-net
+├── theories[]
+│   ├── species-concept-bootstrap-v1   ← Built-In (curriculum @ T=0)
+│   └── earned-concept-*               ← Self-Earned @ promote / supersede
+├── catalog: concept.apple, concept.window, …   ← ~base profile @ Built-In
+├── lattice_ids: agent-concept-core, agent-concept-graph
 │
-agent-curriculum-net (F0 graph)
-├── food|affords|edible, eat|arg1|agent, lex.*|isa|…
-└── read/map ──► concept.* hub (when aliased)
+agent-concept-graph (F0)
+├── type.food|affords|edible, on|arg1|positionable
+└── concept.apple|isa|type.food
 
-experience later ──earned──► promote_canon → NEW concept.* in catalog
+experience ──earned──► promote_canon → NEW concept.*
+bootstrap error ──agent──► supersede_concept_theory → correction theory (0085 §4)
 ```
 
-Read-path: `canonical_concept_id` / `bind_concept_id` may map curriculum `lex.*` to stub hubs; **missing map ≠ auto-promote**.
+**Anti-pattern (earned only):** ~280 hub **без** `tier=built_in` → false agency. **Authored Built-In catalog — OK** (0085 §2).
+
+**C0 interim:** lattice id may remain `agent-curriculum-net` until P1 rename; **не** `schema-math`.
+
+Read-path: legacy `lex.*` → `concept.*` aliases during migration; **missing map ≠ auto-promote**.
 
 **Lab legacy (`world.py`):** всё в `schema-math` — **не** модель store; refactor lab harness отдельно, не блокирует C0 store teach.
 

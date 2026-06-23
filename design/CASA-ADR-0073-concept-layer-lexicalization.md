@@ -2,7 +2,7 @@
 
 **Status:** proposed (draft)  
 **Date:** 2026-06-09  
-**Related:** ADR-0061 (linguistic zone), ADR-0068/0069 (memory kinds), ADR-0070 (forgetting λ), ADR-0062/0072 (genome / fork), ADR-0065 (promote / distill), ADR-0036 (morphology — design ref), [meta_concept_aliases.py](../casa/prisms/memory/meta_concept_aliases.py), [design/РЕКОМЕНДАЦИИ-Von-Neumann.md](РЕКОМЕНДАЦИИ-Von-Neumann.md) §5, [agent-existence-north-star.md](agent-existence-north-star.md)
+**Related:** ADR-0061 (linguistic zone), ADR-0068/0069 (memory kinds), ADR-0070 (forgetting λ), ADR-0062/0072 (genome / fork), ADR-0065 (promote / distill), ADR-0036 (morphology — design ref), [CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md) (Built-In vs Self-Earned, supersede bootstrap), [meta_concept_aliases.py](../casa/prisms/memory/meta_concept_aliases.py), [design/РЕКОМЕНДАЦИИ-Von-Neumann.md](РЕКОМЕНДАЦИИ-Von-Neumann.md) §5, [agent-existence-north-star.md](agent-existence-north-star.md)
 
 **Neuroscience refs (external):** Quian Quiroga et al., *Nature* 435 (2005) — invariant concept cells, MTL; multimodal percepts (PMC3032396); perspective *Neuron* 2026. ML: «Separating Tongue from Thought» (ACL 2025); cross-lingual shared neurons (ACL 2025); brain–LM shared conceptual space (arXiv:2506.20489).
 
