@@ -3,7 +3,7 @@
 **Status:** proposed (draft)  
 **Date:** 2026-06-22  
 **Provenance:** оператор (Света) — impulse trace (0080) даёт observability, но сырой JSON; нужна карта зон / призм / решёток и replay активаций @ tick для Neumann pilot (Tier-1 без Cursor)  
-**Related:** [CASA-ADR-0080-impulse-trace-v1.md](CASA-ADR-0080-impulse-trace-v1.md), [CASA-ADR-0012-cide-parity-fieldbus-and-migration.md](CASA-ADR-0012-cide-parity-fieldbus-and-migration.md), [CASA-ADR-0061-intelligence-zones.md](CASA-ADR-0061-intelligence-zones.md), [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md), [CASA-ADR-0067-zone-prism-wire-migration.md](CASA-ADR-0067-zone-prism-wire-migration.md), [zone-prism-map.v1.json](zone-prism-map.v1.json), `tools/listen_beat_annotator.html`, `tools/listen_beat_annotator_serve.py`, `casa/nervous/impulse.py`
+**Related:** [CASA-ADR-0080-impulse-trace-v1.md](CASA-ADR-0080-impulse-trace-v1.md), [CASA-ADR-0012-cide-parity-fieldbus-and-migration.md](CASA-ADR-0012-cide-parity-fieldbus-and-migration.md), [CASA-ADR-0061-intelligence-zones.md](CASA-ADR-0061-intelligence-zones.md), [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md), [CASA-ADR-0067-zone-prism-wire-migration.md](CASA-ADR-0067-zone-prism-wire-migration.md), [zone-prism-map.v1.json](zone-prism-map.v1.json), `tools/listen_beat_annotator.html`, `tools/listen_beat_annotator_serve.py`, `casa/nervous/impulse.py`, UX mockup: [assets/substrate-activation-heatmap-vs-list.png](assets/substrate-activation-heatmap-vs-list.png)
 
 ---
 
@@ -70,6 +70,27 @@ tools/substrate_dashboard_serve.py  ──►  substrate_dashboard.html
 
 **Scrubber:** `macro_tick` / `field_version` — синхронизирует три панели. Default: **latest** impulse + matching tick.
 
+**Layout (normative UX — parity с beat annotator):**
+
+```text
+┌ header: store path · field_version · tick scrubber ◀ 42 ▶ ─────────┐
+├ topology tree (left, ~30%) │ activation (center) │ impulse (right) ┤
+└ footer: decode_ms · truncated flag · CASA_IMPULSE_TRACE level ──────┘
+```
+
+**Visual tokens** (reuse `listen_beat_annotator.html` CSS variables):
+
+| Token | Value | Use |
+|-------|-------|-----|
+| `--bg` | `#12141a` | page |
+| `--panel` | `#1c2030` | cards |
+| `--text` / `--muted` | `#e8ecf4` / `#9aa3b8` | body / hints |
+| `--accent` | `#6ea8ff` | heatmap hot, scrubber, links |
+| `--ok` / `--warn` | `#5fd38d` / `#ffcc66` | gate pass / orphan lattice |
+| `--border` | `#2d3548` | grid lines |
+
+**Reference mockup:** [assets/substrate-activation-heatmap-vs-list.png](assets/substrate-activation-heatmap-vs-list.png) — target look for Activation panel (operator-approved 2026-06-22).
+
 ### 3. Topology tree (normative shape)
 
 ```text
@@ -94,27 +115,76 @@ agent blocks
 
 **Anti-pattern:** отдавать весь `field_state` или full NCA grid в браузер.
 
-**Normative digest per lattice @ tick:**
+#### 4.1 View modes (`view_mode`)
+
+| `view_mode` | When (auto) | UI |
+|-------------|---------------|-----|
+| **`heatmap`** | `width × height ≤ 4096` (max side ≤64) | 2D grid: cell color = token weight @ (x,y) |
+| **`tokens`** | `width × height > 4096` **or** operator override | Ranked list: bar + monospace token + % weight |
+| **`graph`** | lattice tagged `concept-graph` or id `agent-concept-graph` | Force-directed / layered nodes + isa/affords edges |
+
+**Auto rule:**
+
+```text
+if lattice_id in CONCEPT_GRAPH_IDS or edge_sample dominates digest:
+    view_mode = graph
+elif width <= 64 and height <= 64:
+    view_mode = heatmap
+else:
+    view_mode = tokens   # caption: «grid hidden — lattice WxH»
+```
+
+Operator may **force** `?view=tokens|heatmap|graph` in UI; default = auto.
+
+#### 4.2 Heatmap UX (≤64×64)
+
+- Canvas or CSS grid; **empty cells** `--border` / `#2d3548`; **active** lerp toward `--accent` by normalized weight.
+- Sparse hubs (concept index): second accent `--warn` / orange for `C:concept.*` tokens.
+- **Hover:** tooltip `token @ (x,y) · weight · decode_ms`.
+- **Click:** pin selection → side strip: `edge_sample` for that token.
+- **Zoom:** optional 2×2 binning when `width,height ≥ 32` so panel fits ~256px; label «each cell = 2×2».
+- Subtitle under title: *«spatial prior — где на решётке сидит hub»* (RU) or English in `lang=en` toggle later.
+
+#### 4.3 Token list UX (>64×64 or override)
+
+- Virtual scroll list, **K≤64** rows from `top_tokens`.
+- Each row: horizontal bar (width ∝ weight), `token` monospace, `NN%` right-aligned.
+- Header: lattice id + `token_count` + `decode_ms`; badge **«grid hidden»** when auto-fallback from heatmap.
+- Filter chips: `concept.*`, `lemma.*`, `lang.*` — client-side prefix on loaded digest only.
+- Subtitle: *«слишком большая сетка — только top-K, без ложной геометрии»*.
+
+#### 4.4 Graph UX (concept graph lattices)
+
+- Nodes = active concepts + one-hop types from `edge_sample`; edge labels `isa` / `affords` / `names`.
+- Highlight nodes present in `bind_blocks` @ tick.
+- Not a heatmap substitute — **topology of meaning**, not NCA coordinates.
+
+#### 4.5 Snapshot digest per lattice @ tick
 
 ```json
 {
   "lattice_id": "agent-concept-core",
   "width": 32,
   "height": 32,
+  "view_mode": "heatmap",
   "token_count": 128,
-  "top_tokens": [{"token": "C:concept.orange", "weight": 0.82}],
+  "top_tokens": [{"token": "C:concept.orange", "weight": 0.82, "x": 12, "y": 7}],
+  "cells": [{"x": 12, "y": 7, "token": "C:concept.orange", "weight": 0.82}],
   "edge_sample": ["concept.orange|E:lemma.ru.apelsin"],
-  "decode_ms": 4
+  "decode_ms": 4,
+  "truncated": false
 }
 ```
 
 | Field | Cap | Notes |
 |-------|-----|-------|
-| `top_tokens` | K≤64 | sparse hub / NCA tokens |
-| `edge_sample` | ≤32 edges | concept graph subset |
-| `bind_blocks` | ≤16 | normalized hubs @ tick (0073) |
+| `view_mode` | enum | server hint; UI may override |
+| `top_tokens` | K≤64 | always present (list + graph) |
+| `cells` | ≤4096 | **heatmap only** — sparse (x,y,weight,token); omit if `tokens` mode |
+| `edge_sample` | ≤32 | concept graph / bind context |
+| `bind_blocks` | ≤16 | global in `activations.bind`, overlay on any view |
 
-**Optional overlays:** `affect_axes`, `character_ema` slice, `active_concept_theory` (0085).
+**Optional overlays:** `affect_axes`, `character_ema` slice, `active_concept_theory` (0085) — slim bar above activation panel.
 
 ### 5. Impulse replay panel
 
@@ -182,7 +252,7 @@ CascadeIDE panel / substrate_dashboard.html  ← same JSON shape
 |-------|-------------|------|
 | **P0** | This ADR + `substrate_snapshot.py` (topology only) + static HTML tree | manifest keys match store |
 | **P1** | Impulse replay panel + tick scrubber | `verify_dialogue_thread --impulse` tick aligns |
-| **P2** | Activation digest (one lattice + bind blocks) | decode < budget on von-neumann store |
+| **P2** | Activation digest + **heatmap / token list / graph** per §4.1 UX | matches [mockup](assets/substrate-activation-heatmap-vs-list.png); decode < budget |
 | **P3** | Live poll @ `listen_womb_tick` / life tick | optional SSE `/api/stream` |
 | **P4** | CIDE watcher + `ImpulseSummaryEvent` wire | 0012 roadmap |
 
@@ -201,22 +271,29 @@ CascadeIDE panel / substrate_dashboard.html  ← same JSON shape
 | Impulse parity | UI `select` node == summary in jsonl |
 | No oracle | panel has no «expected reply» column |
 | Size bound | snapshot < configurable MB; truncate with `truncated: true` |
+| Heatmap honesty | >64×64 never renders fake grid; shows «grid hidden» badge |
 
 | ❌ | ✅ |
 |----|-----|
 | Dump full field_state to browser | bounded projection |
 | Second impulse writer | read 0080 ring only |
 | Hand-drawn zone map in HTML | generate from `zone-prism-map` + manifest |
+| Fake heatmap on wide lattice | auto `tokens` + caption |
+| Replace verify scripts | complement `verify_*` / `impulse_replay` |
+
+---
+
 | Replace verify scripts | complement `verify_*` / `impulse_replay` |
 
 ---
 
 ## Open questions
 
-1. **Heatmap vs list:** 2D grid for lattices ≤64×64 only; larger → token list only?
-2. **SSE vs poll** for P3 live mode on slow stores.
-3. **Auth:** local bind `127.0.0.1` only v0; token if remote Tier-1 host.
-4. **Nervous zone (0080 Phase E):** topology panel shows `casa/nervous/` as infrastructure row before/without formal zone id.
+1. **SSE vs poll** for P3 live mode on slow stores.
+2. **Auth:** local bind `127.0.0.1` only v0; token if remote Tier-1 host.
+3. **Nervous zone (0080 Phase E):** topology panel shows `casa/nervous/` as infrastructure row before/without formal zone id.
+
+*(Heatmap vs list — **resolved** §4.1–4.3; mockup [assets/substrate-activation-heatmap-vs-list.png](assets/substrate-activation-heatmap-vs-list.png).)*
 
 ---
 
