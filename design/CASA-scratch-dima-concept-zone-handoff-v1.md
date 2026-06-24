@@ -41,7 +41,35 @@ git log fix/neumann-free-speech-recovery..origin/develop   # пусто — не
 - **`origin/feat/conceptual-network`**, **`origin/feat/auto-curriculum`** — не ушли вперёд от `develop`.
 - **`backup/develop`** (GitLab) — тоже без дельты вперёд.
 
-**Вывод (2026-06-22):** не отстаём от Диминого `develop`; listen/motor + ADR 0083–0087 на `fix/neumann-free-speech-recovery`. **Merge в `develop` — отложен** до готовности треков (зелёные тесты); id-миграция — **после** merge.
+**Вывод (2026-06-22):** listen/motor + ADR на `fix/neumann-free-speech-recovery`. **Merge в `develop` — в конце**, после нашей миграции store и пилота на поле.
+
+---
+
+## Порядок работ (оператор — normative)
+
+**На ветке `fix/neumann-free-speech-recovery`, без merge в `develop`.**
+
+```text
+1. МИГРАЦИЯ (мы) — store + P18
+   lemma.ru/en в concept_layer; ensure_concept_built_in;
+   teach base → Built-In полка @ domains.concept + agent-concept-graph
+
+2. ПИЛОТ НА ПОЛЕ — только когда полка есть
+   «Колготки» (listen-сцена) + смотрим что на поле:
+   imprint, impulse trace, bind/concept hubs @ tick
+   (позже — substrate dashboard 0087)
+
+3. GATE шире
+   Lalabook / G0 checklist, pytest зелёный
+
+4. MERGE → develop
+
+5. ДИМА — curriculum id-флип в коде (их слайс), после п.4
+```
+
+**Не наоборот:** колготки **не** прогоняем как критерий «до» concept teach — иначе на поле нечего смотреть кроме сырого listen. Lalabook — после того как полка + колготки дали картину на store.
+
+**Дима (п.5):** их `_concept_id` / names / тесты — **после** нашего merge; **не** блокирует наш п.1–3 на ветке.
 
 ---
 
@@ -53,7 +81,7 @@ git log fix/neumann-free-speech-recovery..origin/develop   # пусто — не
 
 ### 2. Порядок merge — **схема утверждена, выполнение позже**
 
-Когда будем готовы: `fix/neumann-free-speech-recovery` → `develop` (ожидается ff, наш develop уже в предке). **Id-миграция — отдельным слайсом после merge**, merge её не блокирует. Перед заливкой — прогнать ветку зелёной (listen/motor/sensory — реальный код, не только доки). Merge делаем **мы**, когда скажем «готовы».
+Когда будем готовы: `fix/neumann-free-speech-recovery` → `develop` (**после** п.1–3 в §«Порядок работ»). Merge делаем **мы**. Димина curriculum-миграция в **их** коде — **после** merge (п.5); merge её не блокирует.
 
 ### 3. Скоуп вырос
 
