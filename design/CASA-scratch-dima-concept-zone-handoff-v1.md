@@ -1,7 +1,7 @@
 # Handoff: Concept Zone + curriculum id model (для Димы)
 
 **Status:** scratch — **согласовано** (ответ Димы 2026-06-24); код и merge — **ещё не делали**  
-**Date:** 2026-06-22 (amend 2026-06-24)  
+**Date:** 2026-06-22 (amend 2026-06-24, порядок п.1→колготки→merge 2026-06-25)
 **Audience:** Дима Ратнер + Света  
 **Normative:** [0085](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md), [0073](CASA-ADR-0073-concept-layer-lexicalization.md), [0083](CASA-ADR-0083-curriculum-ontology-agent-store.md)  
 **Дима (детали миграции):** `feat/conceptual-network` → [CASA-scratch-curriculum-id-migration-map-v1.md](CASA-scratch-curriculum-id-migration-map-v1.md) *(пока на их ветке, не в `develop`)*
@@ -105,26 +105,24 @@ names:  concept.*|names|lemma.{ru,en}.*  (+ surface в metadata)
 types:  food, physical_object, on|arg1|…   (JSON категории без префикса type.*)
 ```
 
-**Старт curriculum-миграции (Дима):** сразу после нашего merge в `develop` (не раньше).
+**Старт curriculum-миграции (Дима):** после merge (§ п.5). Наш store teach (§ п.1) — **до** колготок.
 
 ---
 
-## Планируемый slice (после merge в develop)
+## Наш slice (п.1 — на ветке, до merge)
 
-**Разделение по шву § выше** — не один общий PR.
-
-### Света / store (наш слайс)
+**Разделение с Димой** — см. таблицу §4; здесь только **store / P18**.
 
 1. **Lemma rename в P18:** `concept_layer.py`, `test_concept_layer*`, `test_concept_index*`.
-2. **`ensure_concept_built_in`** + `tools/teach_curriculum_ontology.py` — idempotent teach base на agent store; lattice `agent-concept-graph`.
+2. **`ensure_concept_built_in`** + `tools/teach_curriculum_ontology.py` — idempotent teach base на `agents/von-neumann`; lattice `agent-concept-graph` @ `prism_agent`.
 3. **Регистрация Built-In:** `domains.concept.theories[]`, catalog, `agent-concept-core` index.
-4. **Lab vs store:** `world.py` может остаться lab-only `schema-math` (0083 §5); store teach — `prism_agent`.
+4. **Lab vs store:** `world.py` может остаться lab-only `schema-math` (0083 §5).
 
-### Дима / curriculum (их слайс — см. migration map)
+**Gate п.2:** колготки + осмотр поля (imprint / impulse / concept bind на store с полкой).
 
-1. Константы `CONCEPT_PREFIX`, `CURRICULUM_LATTICE`, `NAMES_PREFIX` → флип на `concept.` / `agent-concept-graph` / `lemma.`.
-2. `_concept_id`, parse/roundtrip/demo_repl/analogy/equivalence, glossary teach/read.
-3. ~40 тест-ассертов; категории JSON **не** трогаем.
+### Дима / curriculum-код (п.5 — после merge)
+
+См. [migration map](CASA-scratch-curriculum-id-migration-map-v1.md): `_concept_id`, names, equivalence, ~40 тестов.
 
 **Вне scope обоих слайсов:**
 
