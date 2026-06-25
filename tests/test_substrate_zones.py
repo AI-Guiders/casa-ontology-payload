@@ -90,7 +90,26 @@ class SubstrateZonesTests(unittest.TestCase):
         )
         self.assertIn("percept.av.coactive", digest.concept_ids)
 
-    def test_affect_after_listen_scene_theme(self) -> None:
+    def test_affect_after_listen_tick_emergent(self) -> None:
+        from casa.prisms.affect import affect_after_listen_tick, core_affect_state, spawn_emotional_zone
+
+        state: dict = {}
+        spawn_emotional_zone(state)
+        before = core_affect_state(state).axes.to_dict()
+        rep = affect_after_listen_tick(
+            state,
+            "scene-ch00",
+            visual_delta=0.2,
+            coactive=True,
+            surprise=True,
+        )
+        after = core_affect_state(state).axes.to_dict()
+        self.assertIn("prediction_error", rep.drivers)
+        self.assertIn("motion", rep.drivers)
+        self.assertIn("av_coactive", rep.drivers)
+        self.assertGreater(after["arousal"], before["arousal"])
+
+    def test_affect_after_listen_scene_theme_legacy(self) -> None:
         from casa.prisms.affect import affect_after_listen_scene, core_affect_state, spawn_emotional_zone
 
         state: dict = {}

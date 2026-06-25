@@ -211,7 +211,6 @@ def run_listen_womb_stream(
         t_window_start = max(t0_rel, t_rel - interval_sec)
         macro_tick = int(runtime.wm.tick) + 1 if runtime is not None and runtime.wm is not None else seq
         fv_before = int(state.get("field_version") or 0)
-        impulse_row: dict[str, Any] | None = None
 
         visual = imprint_visual_scene_frame(
             state,
@@ -253,9 +252,26 @@ def run_listen_womb_stream(
             vis_frame_id=frame_id,
         )
 
-        from casa.prisms.affect import affect_after_listen_scene, listen_theme_cluster
+        life_rep: dict[str, Any] | None = None
+        tick_report: dict[str, Any] | None = None
+        if runtime is not None and run_life_tick:
+            from casa.prisms.memory.agent_life import run_life_tick as agent_run_life_tick
 
-        affect_core = affect_after_listen_scene(state, sid, scene=scene, tick=macro_tick)
+            tick_report = agent_run_life_tick(runtime, partner_turn=False, tick_log=True)
+            state = runtime.state
+            life_rep = _life_tick_summary(tick_report)
+            life_rep["coactive"] = bool(percept_rep.get("coactive"))
+
+        from casa.prisms.affect import affect_after_listen_tick
+
+        affect_rep = affect_after_listen_tick(
+            state,
+            sid,
+            tick=macro_tick,
+            visual_delta=vis_delta,
+            coactive=bool(percept_rep.get("coactive")),
+            surprise=bool(life_rep and life_rep.get("surprise")),
+        )
 
         impulse_row: dict[str, Any] | None = None
         if store_dir is not None:
@@ -303,24 +319,18 @@ def run_listen_womb_stream(
                     store_dir=store_dir,
                     tick_id=macro_tick,
                     scene_id=sid,
-                    theme_cluster=listen_theme_cluster(scene),
-                    core_axes=affect_core.axes.to_dict(),
+                    core_axes=affect_rep.core.axes.to_dict(),
+                    drivers=affect_rep.drivers,
                 ),
             }
 
-        life_rep: dict[str, Any] | None = None
-        if runtime is not None and run_life_tick:
-            from casa.prisms.memory.agent_life import run_life_tick as agent_run_life_tick
-
-            tick_report = agent_run_life_tick(runtime, partner_turn=False, tick_log=True)
-            state = runtime.state
-            life_rep = _life_tick_summary(tick_report)
-            life_rep["coactive"] = bool(percept_rep.get("coactive"))
+        if life_rep is not None:
+            life_rep["affect_drivers"] = list(affect_rep.drivers)
             if impulse_row is not None:
-                life_rep["impulse"] = {
-                    **impulse_row,
-                    "orchestrator": tick_report.get("impulse"),
-                }
+                merged = {**impulse_row}
+                if tick_report is not None:
+                    merged["orchestrator"] = tick_report.get("impulse")
+                life_rep["impulse"] = merged
 
         report.ticks.append(
             WombTickRecord(

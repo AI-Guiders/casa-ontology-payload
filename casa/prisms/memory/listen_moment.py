@@ -146,9 +146,14 @@ def listen_moment(
     visual = visual_frames[0] if visual_frames else None
     motion_beats = sum(1 for p in beat_plans if p.get("kind") == "motion")
     if sid and (audio or visual_frames):
-        from casa.prisms.affect import affect_after_listen_scene
+        from casa.prisms.affect import affect_after_listen_tick
 
-        affect_after_listen_scene(state, sid, scene=scene)
+        affect_after_listen_tick(
+            state,
+            sid,
+            visual_delta=0.12 if motion_beats else 0.0,
+            coactive=bool(audio and visual_frames),
+        )
     result = {
         "scene_id": sid,
         "lexical": lexical,

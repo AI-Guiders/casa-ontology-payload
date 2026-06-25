@@ -171,25 +171,29 @@ def record_affect_listen_impulse(
     store_dir: Path,
     tick_id: int,
     scene_id: str,
-    theme_cluster: str,
     core_axes: dict[str, Any] | None,
+    drivers: list[str] | None = None,
+    theme_cluster: str = "",
 ) -> dict[str, Any] | None:
     rec = impulse_recorder()
     if not rec.is_active:
         return None
     ensure_impulse_macro_tick(tick_id=tick_id, store_dir=store_dir)
+    drv = list(drivers or [])
     with rec.channel(ImpulseChannel.AFFECT_LISTEN, store_dir=store_dir) as imp:
         imp.activate(
-            "listen_theme",
+            "listen_experience",
             zone="emotional",
             inputs={
                 "tick_id": tick_id,
                 "scene_id": scene_id,
-                "theme_cluster": theme_cluster,
+                "drivers": drv,
+                "theme_cluster": theme_cluster or None,
                 "axes": dict(core_axes or {}),
             },
         )
-        summary = imp.finish(ImpulseOutcome.NO_OP, zones_touched=["emotional"])
+        outcome = ImpulseOutcome.FRAME_SELECTED if drv else ImpulseOutcome.NO_OP
+        summary = imp.finish(outcome, zones_touched=["emotional"])
         return dict(summary)
     return None
 

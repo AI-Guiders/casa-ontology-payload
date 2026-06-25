@@ -9,7 +9,9 @@ from casa.prisms.affect.model import (
     SandboxExperiment,
 )
 from casa.prisms.affect.zone import (
+    ListenAffectReport,
     affect_after_listen_scene,
+    affect_after_listen_tick,
     affect_after_turn,
     affect_compose_bias,
     core_affect_state,
@@ -29,7 +31,9 @@ __all__ = [
     "AffectAxes",
     "CoreAffectState",
     "SandboxExperiment",
+    "ListenAffectReport",
     "affect_after_listen_scene",
+    "affect_after_listen_tick",
     "affect_after_turn",
     "affect_compose_bias",
     "core_affect_state",

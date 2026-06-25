@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from typing import Any
 
 from casa.prisms.affect.model import (
@@ -150,6 +151,51 @@ def _apply_deltas(axes: AffectAxes, deltas: dict[str, float]) -> AffectAxes:
     return AffectAxes.from_dict(merged).clamped()
 
 
+LISTEN_MOTION_DELTA_THRESHOLD = 0.08
+_LISTEN_MOTION_AROUSAL = 0.06
+_LISTEN_COACTIVE_DELTAS: dict[str, float] = {"valence": 0.02, "security": 0.03}
+
+
+@dataclass
+class ListenAffectReport:
+    core: CoreAffectState
+    drivers: list[str] = field(default_factory=list)
+
+
+def affect_after_listen_tick(
+    state: dict,
+    scene_id: str,
+    *,
+    tick: int = 0,
+    visual_delta: float = 0.0,
+    coactive: bool = False,
+    surprise: bool = False,
+) -> ListenAffectReport:
+    """Emergent limbic update from lived listen signals (W5b) — no manifest theme oracle."""
+    ensure_emotional_zone(state)
+    drivers: list[str] = []
+    if surprise:
+        affect_after_turn(state, "prediction_error", tick=tick)
+        drivers.append("prediction_error")
+    if float(visual_delta) >= LISTEN_MOTION_DELTA_THRESHOLD:
+        zone = ensure_emotional_zone(state)
+        core = CoreAffectState.from_dict(zone.get("core"))
+        core.axes = _apply_deltas(core.axes, {"arousal": _LISTEN_MOTION_AROUSAL})
+        core.last_event = f"listen_motion:{scene_id}"
+        core.tick = int(tick)
+        zone["core"] = core.to_dict()
+        drivers.append("motion")
+    if coactive:
+        zone = ensure_emotional_zone(state)
+        core = CoreAffectState.from_dict(zone.get("core"))
+        core.axes = _apply_deltas(core.axes, dict(_LISTEN_COACTIVE_DELTAS))
+        core.last_event = f"listen_coactive:{scene_id}"
+        core.tick = int(tick)
+        zone["core"] = core.to_dict()
+        drivers.append("av_coactive")
+    return ListenAffectReport(core=core_affect_state(state), drivers=drivers)
+
+
 def affect_after_listen_scene(
     state: dict,
     scene_id: str,
@@ -158,7 +204,7 @@ def affect_after_listen_scene(
     caption_cluster: str = "",
     tick: int = 0,
 ) -> CoreAffectState:
-    """Passive listen — theme/cluster bias only (no text oracle, wire-gap W5)."""
+    """Legacy W5 theme bias from manifest metadata — prefer affect_after_listen_tick."""
     zone = ensure_emotional_zone(state)
     core = CoreAffectState.from_dict(zone.get("core"))
     cluster = (caption_cluster or listen_theme_cluster(scene or {})).strip().lower()
