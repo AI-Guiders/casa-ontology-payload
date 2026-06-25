@@ -128,9 +128,14 @@ class WombStreamReport:
 
 
 def _ensure_listen_state(state: dict | None) -> dict:
+    from casa.prisms.memory.memory_prisms import memory_lattices
+
     runtime = ensure_prisms(state or {"schema_version": "multi_prism_v1", "field_version": 0})
-    spawn_content_lattice(runtime, "prism_memory", "L3_phrase", z_level=3)
-    spawn_content_lattice(runtime, "prism_memory", "L2_word", z_level=2)
+    lats = memory_lattices(runtime, "prism_memory")
+    if "L3_phrase" not in lats:
+        spawn_content_lattice(runtime, "prism_memory", "L3_phrase", z_level=3)
+    if "L2_word" not in lats:
+        spawn_content_lattice(runtime, "prism_memory", "L2_word", z_level=2)
     from casa.prisms.auditory.bootstrap import ensure_prism_auditory
     from casa.prisms.visual.bootstrap import ensure_prism_visual
 
@@ -252,6 +257,7 @@ def run_listen_womb_stream(
 
         affect_core = affect_after_listen_scene(state, sid, scene=scene, tick=macro_tick)
 
+        impulse_row: dict[str, Any] | None = None
         if store_dir is not None:
             from casa.prisms.auditory.imprint import auditory_tokens_on_field
             from casa.prisms.visual.imprint import visual_tokens_on_field
@@ -259,6 +265,7 @@ def run_listen_womb_stream(
                 ensure_impulse_macro_tick,
                 record_affect_listen_impulse,
                 record_listen_stream_step_impulse,
+                record_percept_life_impulse,
                 record_vision_gate_impulse,
             )
 
@@ -287,12 +294,17 @@ def run_listen_womb_stream(
                     visual_delta=vis_delta,
                     coactive=bool(percept_rep.get("coactive")),
                 ),
+                "percept": record_percept_life_impulse(
+                    store_dir=store_dir,
+                    tick_id=macro_tick,
+                    percept_rep=percept_rep if isinstance(percept_rep, dict) else None,
+                ),
                 "affect": record_affect_listen_impulse(
                     store_dir=store_dir,
                     tick_id=macro_tick,
                     scene_id=sid,
                     theme_cluster=listen_theme_cluster(scene),
-                    core_axes=dict(affect_core.axes),
+                    core_axes=affect_core.axes.to_dict(),
                 ),
             }
 
