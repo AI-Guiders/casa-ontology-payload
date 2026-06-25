@@ -14,6 +14,7 @@ if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
 from casa.domain.listen_womb_tick import run_listen_womb_stream
+from casa.nervous.impulse import activate_impulse_trace, read_impulse_trace
 from casa.prisms.auditory.imprint import auditory_tokens_on_field
 from casa.prisms.memory.agent_life import load_unified_agent_runtime, persist_unified_runtime
 from casa.prisms.shared.store_layout import default_agent_store
@@ -52,7 +53,10 @@ def replay_listen_manifest(
     replay_log: Path | None = None,
     skip_unchanged: bool = True,
     persist: bool = True,
+    impulse_trace: str = "summary",
 ) -> dict[str, Any]:
+    if impulse_trace.strip().lower() not in ("off", ""):
+        activate_impulse_trace(impulse_trace, only_if_unset=False)
     store_dir = store_dir.resolve()
     manifest_path = manifest_path.resolve()
     bundle_dir = manifest_path.parent
@@ -133,6 +137,15 @@ def replay_listen_manifest(
         out["replay_log"] = str(replay_log)
     if persist:
         out["persist"] = persist_unified_runtime(runtime, force=True, sync_ltm=True)
+    trace_rows = read_impulse_trace(store_dir, limit=5000)
+    if trace_rows:
+        channels = sorted({str(r.get("channel") or "") for r in trace_rows if r.get("channel")})
+        out["impulse_trace"] = {
+            "path": str(store_dir / "nervous" / "impulse_trace.jsonl"),
+            "rows": len(trace_rows),
+            "channels": channels,
+            "tail": trace_rows[-3:],
+        }
     return out
 
 
@@ -148,6 +161,12 @@ def main() -> int:
     parser.add_argument("--replay-log", type=Path, default=None)
     parser.add_argument("--force", action="store_true", help="replay even if field_version unchanged")
     parser.add_argument("--no-persist", action="store_true")
+    parser.add_argument(
+        "--impulse-trace",
+        choices=("off", "summary", "full"),
+        default="summary",
+        help="ADR-0080 jsonl at store/nervous/impulse_trace.jsonl (default: summary)",
+    )
     args = parser.parse_args()
 
     chapters: set[int] | None = None
@@ -165,6 +184,7 @@ def main() -> int:
         replay_log=args.replay_log,
         skip_unchanged=not args.force,
         persist=not args.no_persist,
+        impulse_trace=args.impulse_trace,
     )
     print(json.dumps(out, ensure_ascii=False, indent=2))
     return 0

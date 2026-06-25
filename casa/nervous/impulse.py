@@ -32,6 +32,26 @@ def resolve_debug_level(explicit: str | None = None) -> DebugLevel:
         return DebugLevel.OFF
 
 
+def activate_impulse_trace(
+    level: DebugLevel | str = DebugLevel.SUMMARY,
+    *,
+    only_if_unset: bool = True,
+) -> DebugLevel:
+    """Enable impulse jsonl for replay / verify tools (ADR-0080). Idempotent when env already set."""
+    if only_if_unset and os.environ.get("CASA_IMPULSE_TRACE"):
+        resolved = resolve_debug_level()
+    elif isinstance(level, DebugLevel):
+        resolved = level
+    else:
+        try:
+            resolved = DebugLevel(str(level).strip().lower())
+        except ValueError:
+            resolved = DebugLevel.SUMMARY
+        os.environ["CASA_IMPULSE_TRACE"] = resolved.value
+    _GLOBAL.level = resolved
+    return resolved
+
+
 @dataclass
 class SynapticEvent:
     seq: int
