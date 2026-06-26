@@ -31,13 +31,13 @@ class AttributeRoundTripTests(unittest.TestCase):
 
     def test_adjective_binds_to_its_noun_in_the_graph(self) -> None:
         triples, attrs, _pol, _counts, _meas = parse_situation(self.state, self.lat, "красное яблоко на столе")
-        self.assertEqual(triples, [("on", "lex.apple", "lex.table")])
-        self.assertEqual(attrs.get("lex.apple"), ["red"])
-        self.assertNotIn("lex.table", attrs)  # the adjective binds to apple, not table
+        self.assertEqual(triples, [("on", "concept.apple", "concept.table")])
+        self.assertEqual(attrs.get("concept.apple"), ["red"])
+        self.assertNotIn("concept.table", attrs)  # the adjective binds to apple, not table
 
     def test_locative_figure_agrees_and_translates(self) -> None:
         g = parse_graph(self.state, self.lat, "красное яблоко на столе")
-        self.assertEqual(g["nodes"]["lex.apple"].get("attrs"), ["red"])
+        self.assertEqual(g["nodes"]["concept.apple"].get("attrs"), ["red"])
         self.assertEqual(realize_graph(self.state, self.lat, g, lang="ru"), "Красное яблоко на столе.")
         self.assertEqual(realize_graph(self.state, self.lat, g, lang="en"), "The red apple is on the table.")
 
@@ -49,7 +49,7 @@ class AttributeRoundTripTests(unittest.TestCase):
     def test_same_graph_from_both_languages_with_adjective(self) -> None:
         ru = parse_graph(self.state, self.lat, "красное яблоко на столе")
         en = parse_graph(self.state, self.lat, "red apple on the table")
-        self.assertEqual(ru["nodes"]["lex.apple"].get("attrs"), en["nodes"]["lex.apple"].get("attrs"))
+        self.assertEqual(ru["nodes"]["concept.apple"].get("attrs"), en["nodes"]["concept.apple"].get("attrs"))
         # the English input still round-trips into agreed Russian
         self.assertEqual(realize_graph(self.state, self.lat, en, lang="ru"), "Красное яблоко на столе.")
 

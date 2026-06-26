@@ -30,7 +30,7 @@ def teach_glossary(
     *,
     lattice_id: str = "schema-math",
     bundle: dict[str, Any] | None = None,
-    concept_prefix: str = "lex.",
+    concept_prefix: str = "concept.",  # ADR-0085: concept.* hub (was lex.*)
 ) -> dict[str, Any]:
     """Teach ``(ru, en)`` pairs in one sleep. Returns ``{taught, concepts}``."""
     from casa.prisms.memory.memory_prisms import append_episode, run_sleep

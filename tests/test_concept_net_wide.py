@@ -35,7 +35,7 @@ def test_wide_network_scale_and_grounding() -> None:
     # spot-check grounding (no orphans) on a sample
     for cat, members in list(data["concepts"].items()):
         for _ru, en in members[:5]:
-            cid = f"lex.{en.strip().lower().replace(' ', '_')}"
+            cid = f"concept.{en.strip().lower().replace(' ', '_')}"
             assert cat in isa_closure(state, LAT, cid), (cid, cat)
 
 

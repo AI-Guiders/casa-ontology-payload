@@ -5,8 +5,8 @@ The in-session memory (situation_memory.py) becomes durable by minting each reme
 situation as edges on the CASA field, so it lives in field_state and survives across
 sessions like everything else:
 
-    sit.<id>|edge|on(lex.apple,lex.table)
-    sit.<id>|edge|near(lex.table,lex.window)
+    sit.<id>|edge|on(concept.apple,concept.table)
+    sit.<id>|edge|near(concept.table,concept.window)
     sit.<id>|label|яблоко_на_столе_у_окна
 
 load_memory decodes the lattice and reconstructs the in-memory structure that the

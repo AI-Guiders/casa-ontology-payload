@@ -6,7 +6,7 @@ structure: on(X, Y) with X positionable and Y a support. An analogy is a consist
 bijection between the two graphs' concepts that turns one edge set into the other (same
 relations, mapped endpoints) — Gentner-style structure mapping, deterministic and exact:
 
-    find_analogy({on(cat,chair)}, {on(apple,table)}) -> {lex.cat: lex.apple, lex.chair: lex.table}
+    find_analogy({on(cat,chair)}, {on(apple,table)}) -> {concept.cat: concept.apple, concept.chair: concept.table}
 
 By default mapped concepts must be type-compatible (share a type in the network), so the
 analogy is semantically sound (cat~apple are both physical objects; cat~idea is not).
@@ -29,7 +29,7 @@ def _edges_of(graph: dict[str, Any]) -> list[tuple[str, str, str]]:
 
 
 def edges_from_keys(keys: list[str]) -> list[tuple[str, str, str]]:
-    """Parse canonical edge keys 'on(lex.apple,lex.table)' -> (rel, src, dst)."""
+    """Parse canonical edge keys 'on(concept.apple,concept.table)' -> (rel, src, dst)."""
     out: list[tuple[str, str, str]] = []
     for k in keys:
         m = _EDGE_RE.match(k)

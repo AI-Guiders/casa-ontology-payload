@@ -36,7 +36,7 @@ _GENERIC_AFFORDS = {"ownable", "positionable"}
 
 
 def _leaf(concept: str) -> str:
-    """The language-independent node label: the concept id's leaf (lex.apple -> apple)."""
+    """The language-independent node label: the concept id's leaf (concept.apple -> apple)."""
     return concept.split(".")[-1]
 
 
