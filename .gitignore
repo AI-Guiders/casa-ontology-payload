@@ -25,13 +25,17 @@ agents/*/memory_manifest.json
 # Lab snapshot shards and fat stores
 lab/snapshots/**/_parallel_shards/
 lab/snapshots/**/field_state*.json
+lab/snapshots/**/ltm/
+lab/snapshots/**/nca/
 
 # Python
 __pycache__/
 *.py[cod]
+.venv/
 
 # Temp
 .tmp-pdf-read/
+.tmp/
 
 # Local hybrid codebase index (MCP / IDE cache)
 .hybrid-codebase-index/
@@ -67,6 +71,8 @@ lab/kb-bundles/
 lab/inbox/_processed/
 lab/_bench*
 lab/_tmp*
+lab/_scratch/
+lab/nca_*.json
 lab/**/*.log
 lab/layered_out/
 lab/mm/
@@ -84,4 +90,7 @@ lab/visual-curriculum/out/
 
 # Stray generated corpus copy
 casa/prisms/lab/
-.tmp/
+
+# Listen mass cold-path media (README tracked under listen_corpus/)
+listen_corpus/**
+!listen_corpus/README.md

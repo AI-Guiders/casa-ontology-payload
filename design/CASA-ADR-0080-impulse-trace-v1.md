@@ -3,7 +3,7 @@
 **Status:** accepted (Phase A–D implemented 2026-06-13)  
 **Date:** 2026-06-11 (rev.2 — substrate-wide, not dialogue-only)  
 **Provenance:** диалог — «наблюдаемость есть, но не на полную катушку»; аналог нервного импульса (EPSP/IPSP, порог, траектория); *impulse — для всего efferent, не только partner*  
-**Related:** [CASA-ADR-0061-intelligence-zones.md](CASA-ADR-0061-intelligence-zones.md), [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md), [CASA-ADR-0012-cide-parity-fieldbus-and-migration.md](CASA-ADR-0012-cide-parity-fieldbus-and-migration.md), [CASA-scratch-emergence-conditions-dialogue-v1.md](CASA-scratch-emergence-conditions-dialogue-v1.md), [CASA-work-verification-dialogue-thread.v1.md](CASA-work-verification-dialogue-thread.v1.md), [CASA-ADR-0019-control-multi-prism.md](CASA-ADR-0019-control-multi-prism.md), [CASA-ADR-0024-control-thalamus.md](CASA-ADR-0024-control-thalamus.md), [CASA-ADR-0057-dialogue-situations-character.md](CASA-ADR-0057-dialogue-situations-character.md), [CASA-ADR-0078-partner-voice-invariants-v1.md](CASA-ADR-0078-partner-voice-invariants-v1.md), [CASA-ADR-0079-runtime-host-csharp-nativeaot.md](CASA-ADR-0079-runtime-host-csharp-nativeaot.md), `casa/domain/dialogue_provenance.py`
+**Related:** [CASA-ADR-0061-intelligence-zones.md](CASA-ADR-0061-intelligence-zones.md), [CASA-ADR-0068-memory-zone.md](CASA-ADR-0068-memory-zone.md), [CASA-ADR-0012-cide-parity-fieldbus-and-migration.md](CASA-ADR-0012-cide-parity-fieldbus-and-migration.md), [CASA-ADR-0087-substrate-visualizer-v1.md](CASA-ADR-0087-substrate-visualizer-v1.md), [CASA-scratch-emergence-conditions-dialogue-v1.md](CASA-scratch-emergence-conditions-dialogue-v1.md), [CASA-work-verification-dialogue-thread.v1.md](CASA-work-verification-dialogue-thread.v1.md), [CASA-ADR-0019-control-multi-prism.md](CASA-ADR-0019-control-multi-prism.md), [CASA-ADR-0024-control-thalamus.md](CASA-ADR-0024-control-thalamus.md), [CASA-ADR-0057-dialogue-situations-character.md](CASA-ADR-0057-dialogue-situations-character.md), [CASA-ADR-0078-partner-voice-invariants-v1.md](CASA-ADR-0078-partner-voice-invariants-v1.md), [CASA-ADR-0079-runtime-host-csharp-nativeaot.md](CASA-ADR-0079-runtime-host-csharp-nativeaot.md), `casa/domain/dialogue_provenance.py`
 
 ---
 
@@ -299,6 +299,12 @@ nervous/                         Tier infrastructure (candidate)
 - Review impulse replay on ≥3 channels.
 - Decide A (module only) vs B (nervous infrastructure zone + zone-prism-map).
 - If B: ownership audit executive vs nervous; idempotent migrate spawn only.
+
+### Phase F — substrate visualizer (0087)
+
+- `tools/substrate_snapshot.py` + `substrate_dashboard.html` + serve.
+- Topology from [zone-prism-map.v1.json](zone-prism-map.v1.json); impulse panel reads existing ring (no second writer).
+- P0–P1 before CIDE panel; shared `substrate_snapshot.v1` contract.
 
 ---
 

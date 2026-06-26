@@ -58,8 +58,9 @@ def active_speech_act_slots(blocks: list[dict[str, Any]]) -> dict[str, str]:
 
 
 def compose_single_hub_from_bind(blocks: list[dict[str, Any]]) -> bool:
-    slots = active_speech_act_slots(blocks)
-    return str(slots.get("compose_single_hub") or "").lower() in ("1", "true", "yes")
+    """Speech-act classes are bind-nudge only — never efferent hub-count policy."""
+    _ = blocks
+    return False
 
 
 def apply_speech_act_bind_deltas(
@@ -80,6 +81,14 @@ def apply_speech_act_bind_deltas(
     demotes = _parse_weighted_prefixes(slots.get("bind_demote") or "")
     if not boosts and not demotes:
         return
+
+    from casa.prisms.tick.discourse.meta_glue_guard import dialogue_thread_carries
+
+    if dialogue_thread_carries(blocks):
+        boosts = [(p, max(4, n // 3)) for p, n in boosts]
+        for prefix, _ in boosts:
+            if prefix.startswith("ru.dialog."):
+                demotes.append((prefix, 18))
 
     for row in blocks:
         cid = str(row.get("concept_id") or "")

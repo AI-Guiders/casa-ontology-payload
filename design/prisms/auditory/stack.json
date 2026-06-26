@@ -5,7 +5,7 @@
   "description": "Auditory stack — lattice_id = v1 kebab.",
   "lattices": [
     { "lattice_id": "audio-spectrum", "legacy_id": "A0_spectrum", "semantic_id": "sensory.audio.spectrum", "z_level": 0, "nca_profile": "sss" },
-    { "lattice_id": "audio-binaural", "legacy_id": "A0_binaural", "semantic_id": "sensory.audio.binaural", "z_level": 0, "nca_profile": "sss", "status": "roadmap" },
+    { "lattice_id": "audio-binaural", "legacy_id": "A0_binaural", "semantic_id": "sensory.audio.binaural", "z_level": 0, "nca_profile": "sss" },
     { "lattice_id": "audio-phoneme", "legacy_id": "A1_phon", "semantic_id": "sensory.audio.phoneme", "z_level": 1, "nca_profile": "sss" },
     { "lattice_id": "audio-event", "legacy_id": "A2_event", "semantic_id": "sensory.audio.event", "z_level": 2, "nca_profile": "sss" },
     { "lattice_id": "audio-localization", "legacy_id": "A2_localization", "semantic_id": "sensory.audio.localization", "z_level": 2, "nca_profile": "sss", "status": "roadmap" }

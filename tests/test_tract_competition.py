@@ -94,6 +94,30 @@ def test_classify_delegates_to_competition() -> None:
     assert classify_query_intent(q, _bundle()) == "social"
 
 
+def test_factual_question_not_social() -> None:
+    intent, ranked = compete_tract_intent("Кто такой Тьюринг?", _bundle())
+    by_id = {t.tract_id: t.score for t in ranked}
+    assert intent != "social"
+    assert by_id.get("explain", 0) >= by_id.get("social", 0)
+
+
+def test_content_request_not_social() -> None:
+    intent, _ = compete_tract_intent("Расскажи про числа", _bundle())
+    assert intent in ("general", "explain")
+
+
+def test_word_math_beats_social() -> None:
+    intent, ranked = compete_tract_intent("Сколько будет 2 и 3?", _bundle())
+    by_id = {t.tract_id: t.score for t in ranked}
+    assert by_id.get("math", 0) > by_id.get("social", 0)
+
+
+def test_social_preserved_for_greeting_and_opinion() -> None:
+    assert compete_tract_intent("Привет!", _bundle())[0] == "social"
+    assert compete_tract_intent("Как ты?", _bundle())[0] == "social"
+    assert compete_tract_intent("Что думаешь?", _bundle())[0] == "social"
+
+
 def test_parse_math_ops_ignores_word_hyphens() -> None:
     from casa.prisms.tick.tract.model import parse_math_ops
 

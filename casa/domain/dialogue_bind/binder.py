@@ -217,6 +217,13 @@ class SubjectDialogueBinder:
                 blocks.extend(dialogue_blocks)
                 sources.append("dialogue")
 
+            from casa.domain.dialogue_bind.anaphora import anaphora_referent_blocks
+
+            ref_blocks = anaphora_referent_blocks(store_dir, q, merged_bundle)
+            if ref_blocks:
+                blocks.extend(ref_blocks)
+                sources.append("dialogue")
+
         field_blocks, field_sources = collect_field_blocks(state, wm, task, intent)
         blocks.extend(field_blocks)
         sources.extend(field_sources)

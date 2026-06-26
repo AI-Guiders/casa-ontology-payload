@@ -7,6 +7,8 @@
 
 **Канон (agent-notes, при доступности):** `agent-existence-north-star-v1.md`, `agent-first-learn/README.md`, `casa-goals-and-roadmap-v1.md`, `research-ml-ca-substrate-agent-v1.md`
 
+**Навигация по `design/` (250+ файлов):** [`CASA-DESIGN-NAVIGATOR-v1.md`](CASA-DESIGN-NAVIGATOR-v1.md) — **вход для людей и агентов**; Concept Zone vs curriculum — § главная путаница.
+
 ---
 
 ## Одной фразой

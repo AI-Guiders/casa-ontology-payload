@@ -79,6 +79,22 @@ def ensure_life_reactor(
     store = (store_dir or default_agent_store()).resolve()
     if reactor_alive(store):
         return True
+    from casa.body.text_tract import read_pulse
+
+    pulse = read_pulse(store)
+    holder_pid = int(pulse.get("pid") or 0) if isinstance(pulse, dict) else 0
+    if holder_pid:
+        from casa.body.agent_wire import _pid_alive
+
+        if _pid_alive(holder_pid):
+            import time
+
+            deadline = time.monotonic() + max(15.0, boot_timeout_s)
+            while time.monotonic() < deadline:
+                if reactor_alive(store):
+                    return True
+                time.sleep(0.25)
+            return reactor_alive(store)
     if not spawn:
         return False
     proc = spawn_unified_reactor(store, inbox_dir=inbox_dir)

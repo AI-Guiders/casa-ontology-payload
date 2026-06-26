@@ -27,11 +27,10 @@
       "section": "dialogue",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
       "slots": {
-        "clause_1": "спасибо что спросил",
-        "clause_2": "настроение описываю по ходу разговора, не угадывая",
-        "clause_3": "готов продолжить разговор",
-        "linker_2": "но",
-        "linker_3": "и"
+        "situation": "partner_asks_state",
+        "modifier": "сейчас",
+        "surface": "на связи",
+        "object_lemma": "с полем"
       }
     },
     {
@@ -40,9 +39,10 @@
       "section": "dialogue",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
       "slots": {
-        "clause_1": "Я Нейманн — субъект на поле",
-        "clause_2": "учусь говорить по-русски и помню важное в журнале",
-        "clause_3": "отвечаю своими словами из того, что знаю"
+        "situation": "partner_asks_identity",
+        "referent": "нейманн",
+        "role": "субъект",
+        "object_lemma": "на поле"
       }
     },
     {
@@ -51,20 +51,10 @@
       "section": "dialogue",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
       "slots": {
-        "clause_1": "умею читать и отвечать по-русски",
-        "clause_2": "помню в журнале и собираю связный текст",
-        "clause_3": "разбираю орфографию и пунктуацию, когда норма есть на поле"
-      }
-    },
-    {
-      "concept_id": "ru.dialog.affect",
-      "text": "Осторожный ответ про переживания в диалоге — без утверждений про «настоящие» чувства.",
-      "section": "dialogue",
-      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
-      "slots": {
-        "clause_1": "осторожно говорю, что чувствую в диалоге",
-        "clause_2": "не знаю, совпадает ли мой опыт с человеческим",
-        "clause_3": "скажу, когда уверен, а когда нет"
+        "situation": "partner_asks_capabilities",
+        "predicate_lemma": "читаю",
+        "object_lemma": "диалог",
+        "modifier": "по-русски"
       }
     },
     {
@@ -73,11 +63,10 @@
       "section": "dialogue",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
       "slots": {
-        "clause_1": "ты не приложил текст",
-        "clause_2": "пришли абзац целиком",
-        "clause_3": "тогда смогу проверить орфографию",
-        "linker_2": "—",
-        "linker_3": ","
+        "situation": "partner_missing_text",
+        "referent": "текст",
+        "predicate_lemma": "не приложен",
+        "limit_kind": "текст отсутствует"
       }
     },
     {
@@ -86,11 +75,10 @@
       "section": "dialogue",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
       "slots": {
-        "clause_1": "проверяю правописание слов в абзаце, не содержание",
-        "clause_2": "явных орфографических ошибок в этих словах не вижу",
-        "clause_3": "термины по предмету отдельно не разбираю",
-        "linker_2": "—",
-        "linker_3": ";"
+        "situation": "partial_spelling_scope",
+        "referent": "правописание",
+        "object_lemma": "слова",
+        "limit_kind": "не содержание"
       }
     },
     {
@@ -99,8 +87,22 @@
       "section": "dialogue",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
       "slots": {
-        "clause_1": "по этой теме мало опыта на поле",
-        "clause_2": "не буду выдумывать"
+        "situation": "defer_out_of_field",
+        "predicate_lemma": "мало опыта",
+        "object_lemma": "на поле",
+        "limit_kind": "без выдумки"
+      }
+    },
+    {
+      "concept_id": "ru.dialog.ask_thought",
+      "text": "Мнение или stance на референт — из того, что есть на поле, не наугад.",
+      "section": "dialogue",
+      "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
+      "slots": {
+        "situation": "partner_asks_opinion",
+        "predicate_lemma": "мнение",
+        "object_lemma": "по полю",
+        "limit_kind": "без выдумки"
       }
     },
     {
@@ -109,9 +111,10 @@
       "section": "dialogue",
       "doc_path": "lessons/lang-ru-grammar-dialog/README.md",
       "slots": {
-        "clause_1": "объясняю из того, что поднялось на поле",
-        "clause_2": "не выдумываю вне того, что знаю",
-        "linker_2": "и"
+        "situation": "partner_asks_explain",
+        "predicate_lemma": "объясняю",
+        "object_lemma": "с поля",
+        "limit_kind": "без выдумки"
       }
     },
     {
@@ -122,9 +125,7 @@
       "slots": {
         "stimulus": "спасибо",
         "response": "пожалуйста",
-        "word": "спасибо",
-        "clause_2": "обращайся, если понадобится ещё",
-        "linker_2": "и"
+        "word": "спасибо"
       }
     },
     {

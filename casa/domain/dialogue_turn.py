@@ -80,6 +80,7 @@ def append_partner_turn(
     store_dir: Path,
     text: str,
     *,
+    kind: str = "reply",
     provenance: dict[str, Any] | None = None,
 ) -> DialogueTurn:
     return append_dialogue_turn(
@@ -88,7 +89,7 @@ def append_partner_turn(
             at=_utc_now(),
             speaker="partner",
             text=text.strip(),
-            kind="reply",
+            kind=kind,
             provenance=provenance or {},
         ),
     )

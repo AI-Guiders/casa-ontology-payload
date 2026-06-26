@@ -10,6 +10,12 @@ from casa.domain.dialogue_bind.blocks import block_dict, score_text
 from casa.domain.dialogue_turn import recent_dialogue
 from casa.prisms.control.sn_cen_runtime import TaskEmit
 
+_DEVELOPMENTAL_TURN_KINDS = frozenset({"recast", "expand", "clarify", "correction"})
+
+
+def _surface_partner_turn(turn: Any) -> bool:
+    return turn.speaker == "partner" and turn.kind not in _DEVELOPMENTAL_TURN_KINDS
+
 
 def dialogue_continuity_blocks(store_dir: Path | None, query: str) -> list[dict[str, Any]]:
     if store_dir is None:
@@ -21,7 +27,7 @@ def dialogue_continuity_blocks(store_dir: Path | None, query: str) -> list[dict[
     latest_partner: str | None = None
     latest_subject: str | None = None
     for turn in turns:
-        if turn.speaker == "partner":
+        if _surface_partner_turn(turn):
             latest_partner = turn.text
         elif turn.speaker == "subject" and turn.kind in ("reply", "initiate"):
             latest_subject = turn.text
@@ -66,18 +72,42 @@ def dialogue_continuity_blocks(store_dir: Path | None, query: str) -> list[dict[
                 score=24,
             )
         )
-    ql = query.lower()
-    if focus_terms and any(m in ql for m in ("что с", "с ним", "с этим", "про это", "контекст", "продолж")):
+    thread_age = 0 if latest_partner else min(len(turns), 4)
+    thread_overlap = 0
+    referent_prop = ""
+    if latest_partner:
+        thread_overlap = max(thread_overlap, score_text(query, latest_partner, base=0))
+    if latest_subject:
+        thread_overlap = max(thread_overlap, score_text(query, latest_subject, base=0))
+    from casa.domain.dialogue_bind.anaphora import query_has_deictic, recent_ring_referent
+
+    if store_dir is not None and query_has_deictic(query):
+        referent_prop, _, ring_age = recent_ring_referent(store_dir, exclude_text=query)
+        if ring_age:
+            thread_age = ring_age
+    if focus_terms:
         parts = ["Текущий фокус диалога: " + ", ".join(focus_terms[:5])]
         if focus_intents:
             parts.append("последние намерения: " + ", ".join(focus_intents[:3]))
+        base_score = 12
+        if thread_overlap >= 8:
+            base_score += min(24, thread_overlap)
+        elif thread_age > 0:
+            base_score = max(4, base_score - thread_age * 3)
         blocks.append(
             block_dict(
                 "dialog.context.focus_recent",
                 "; ".join(parts) + ".",
                 source="dialogue",
-                score=20,
+                score=base_score,
                 section="dialogue_focus",
+                slots={
+                    "thread_terms": "|".join(focus_terms[:5]),
+                    "thread_age": str(thread_age),
+                    "thread_overlap": str(thread_overlap),
+                    "thread_intents": "|".join(focus_intents[:3]),
+                    **({"referent_prop": referent_prop} if referent_prop else {}),
+                },
             )
         )
     return blocks

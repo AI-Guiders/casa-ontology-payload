@@ -100,6 +100,16 @@ genome.v1.json
 
 **Teaching agent (von-neumann):** standard allele — `canon_susceptibility ≈ 0`; разнообразие в **профиле систем**, не в сломанном alphabet @ curriculum.
 
+### 3.1 Glossary: genome vs epigenome vs soma
+
+| Term | Tier | Mutability | Example |
+|------|------|------------|---------|
+| **Genome** | −1 | sealed @ T=0; fork / re-seal only | `forgetting_genotype.alpha`, `species_id` |
+| **Epigenome** | 0 | slow life-state; **reset @ child fork** | character EMA, trauma tier, v1 `epigenome_profile` ([0086](CASA-ADR-0086-epigenome-expression-layer.md)) |
+| **Soma** | 1+ | memory, journal, concept theories | Self-Earned supersede, episodic, listen imprint |
+
+**Fork (0086 §4):** child inherits **genome alleles**, **не** parent epigenome snapshot, **не** parent Self-Earned concept theories.
+
 ### 4. Что Genetic Zone **задаёт** (normative, v0 wired)
 
 | Parameter group | Status v0 | Example |
@@ -114,7 +124,7 @@ genome.v1.json
 | `affect_baseline` | roadmap 0058 | neutral @ T=0 + gains |
 | `neuromodulator_gains` | roadmap 0066 | compose budget coupling |
 
-**Invariant:** runtime hooks **read** genetic constants; они **не** подменяются episodic state.
+**Invariant:** runtime hooks **read** genetic constants; episodic state **не** меняет `genome_hash` — опыт модулирует **effective** значения через epigenome ([0086](CASA-ADR-0086-epigenome-expression-layer.md)).
 
 ### 5. Seal & fork
 
@@ -126,8 +136,10 @@ genome.v1.json
 **Fork (new store / AiNet child):** см. **ADR-0065**.
 - Default `fork_policy.mode = inherit_verbatim` — copy parent `genome.v1.json` без изменений.
 - `mutate_alleles` — bounded step по `mutation_policy.allelic`; новый `genome_hash`, тот же `species_id`.
-- `weather_cross` — два `genome_hash` + многоосный снимок погоды → `H_mix` → child genome — **0072**; `character_topology` — **0071**.
+- `weather_cross` — два `genome_hash` + многоосный снимок погоды → `H_mix` → child genome — **[0072](CASA-ADR-0072-genetic-weather-cross.md)**; `character_topology` — **0071**.
+- `wild_donor_cross` — combat × wild genome из entropy bundle @ один агент — **[0084](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md)** (anti-inbreeding).
 - New `store_id`, new journal; **species fork** (новый `species_id`, топология) — operator gate, не allele drift.
+- **Epigenome + Self-Earned soma:** child **не** наследует parent expression snapshot nor earned concept theories — fresh Built-In teach; см. [0086](CASA-ADR-0086-epigenome-expression-layer.md), [0085](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md) §7.
 
 **AiNet delta exchange:** experiential layers (WM edges, sandbox, bundles) — **mutable**; genetic hash mismatch → **reject merge** on meta-instructions.
 
@@ -199,6 +211,7 @@ genome.v1.json
 
 ## Links
 
+- [CASA-ADR-0086-epigenome-expression-layer.md](CASA-ADR-0086-epigenome-expression-layer.md)
 - [CASA-ADR-0070-forgetting-policies.md](CASA-ADR-0070-forgetting-policies.md)
 - [CASA-ADR-0071-character-field-prismatic.md](CASA-ADR-0071-character-field-prismatic.md)
 - [CASA-ADR-0072-genetic-weather-cross.md](CASA-ADR-0072-genetic-weather-cross.md)

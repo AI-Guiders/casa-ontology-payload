@@ -7,15 +7,54 @@
       "concept_id": "ru.meta.dialog.bind_policy",
       "text": "Which ru.dialog families need field route vs always compose-eligible",
       "slots": {
-        "gated_hub_prefixes": "ru.dialog.how_are_you|ru.dialog.self|ru.dialog.capabilities|ru.dialog.affect",
-        "open_hub_prefixes": "ru.dialog.greeting|ru.dialog.thanks|ru.dialog.farewell|ru.dialog.honest.|ru.dialog.clarify."
+        "gated_hub_prefixes": "ru.dialog.how_are_you|ru.dialog.self|ru.dialog.capabilities",
+        "open_hub_prefixes": "ru.dialog.greeting|ru.dialog.thanks|ru.dialog.farewell|ru.dialog.honest.|ru.dialog.clarify.|ru.dialog.ask_thought"
+      }
+    },
+    {
+      "concept_id": "ru.meta.dialog.thread_carry",
+      "text": "Thread carry scoring — decay by ring age + field overlap (not cue markers)",
+      "slots": {
+        "carry_base": "72",
+        "decay_per_age": "0.15",
+        "ov_cap": "28",
+        "ov_mul": "2",
+        "continuer_linker": "Про это"
       }
     },
     {
       "concept_id": "ru.meta.dialog.continuer_bind",
-      "text": "Continuer focus demotes preamble hubs",
+      "text": "Continuer focus demotes preamble hubs when partner field is off-thread",
       "slots": {
-        "bind_demote": "ru.dialog.affect:58|ru.dialog.self:58|ru.dialog.capabilities:58"
+        "bind_demote": "ru.dialog.self:58|ru.dialog.capabilities:58"
+      }
+    },
+    {
+      "concept_id": "ru.meta.dialog.tone_register",
+      "text": "Affect-driven tone variants — Python picks register index only",
+      "slots": {
+        "hedge_opener": "если честно|пожалуй",
+        "hedge_linker": "хотя|впрочем",
+        "warm_opener": "хорошо|приятно",
+        "warm_linker": "и правда",
+        "assertive_opener": "скажу прямо|по сути",
+        "assertive_linker": "то есть",
+        "neutral_opener": "",
+        "neutral_linker": ""
+      }
+    },
+    {
+      "concept_id": "ru.meta.dialog.anaphora",
+      "text": "Closed deictic class for anaphora resolution — data not Python tuple",
+      "slots": {
+        "deictic_markers": "про это|об этом|этого|этом|на это|к этому"
+      }
+    },
+    {
+      "concept_id": "ru.meta.dialog.meta_glue",
+      "text": "Situation keys that emit meta-promise only — suppress as sole efferent when referent active",
+      "slots": {
+        "situation_keys": "partner_asks_opinion|partner_asks_state|defer_out_of_field"
       }
     }
   ],

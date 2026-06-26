@@ -253,6 +253,32 @@ def listen_word(
     }
 
 
+def listen_scene_anchor(
+    state: dict,
+    scene_id: str,
+    caption: str = "",
+    *,
+    copies: int = 2,
+    punctuation: list[str] | None = None,
+) -> dict[str, Any]:
+    """Scene frame without lexical tokens — for vocalization / pre-verbal listen."""
+    state = ensure_prisms(state)
+    sid = str(scene_id or "").strip()
+    if not sid:
+        return {"scene_id": "", "kind": "anchor"}
+    cap = str(caption or "").strip()
+    _listen_scene_on_l3(
+        state,
+        sid,
+        cap,
+        [],
+        copies=max(1, copies),
+        punctuation=punctuation or [],
+    )
+    state["field_version"] = int(state.get("field_version") or 0) + 1
+    return {"scene_id": sid, "caption": cap, "kind": "anchor", "words": []}
+
+
 def listen_scene(
     state: dict,
     scene: dict,

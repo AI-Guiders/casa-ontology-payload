@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Dialog hub slots compete at bind — compose only renders bind winners."""
+"""ADR-0081: materialize is a no-op — no clause_* competition at bind."""
 
 from __future__ import annotations
 
@@ -20,26 +20,9 @@ def _affect_hub(score: int = 50) -> dict:
     }
 
 
-def test_replayed_preamble_loses_at_bind() -> None:
-    blocks = [
-        _affect_hub(),
-        {
-            "concept_id": "subject.dialog.self_recent",
-            "text": "Я недавно: «Осторожно говорю, что чувствую в диалоге.».",
-            "source": "dialogue",
-            "score": 20,
-        },
-    ]
+def test_materialize_does_not_split_dialog_hubs() -> None:
+    blocks = [_affect_hub(), {"concept_id": "subject.dialog.self_recent", "score": 20}]
+    before = [dict(b) for b in blocks]
     materialize_dialog_utterances(blocks, "я тоже не знаю", intent="social")
-    winners = [b for b in blocks if str(b.get("bind_hub") or "") == "ru.dialog.affect"]
-    assert winners
-    top = max(winners, key=lambda b: int(b.get("score") or 0))
-    assert "не знаю" in str(top.get("text") or "").lower()
-    assert all("осторожно" not in str(b.get("text") or "").lower() or int(b.get("score") or 0) == 0 for b in winners)
-
-
-def test_fresh_turn_keeps_open_variant() -> None:
-    blocks = [_affect_hub()]
-    materialize_dialog_utterances(blocks, "Как ты?", intent="social")
-    winners = [b for b in blocks if str(b.get("bind_hub") or "") == "ru.dialog.affect"]
-    assert any("осторожно" in str(b.get("text") or "").lower() for b in winners)
+    assert blocks == before
+    assert not any(str(b.get("bind_hub") or "") for b in blocks)

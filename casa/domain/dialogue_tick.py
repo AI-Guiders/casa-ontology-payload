@@ -48,22 +48,14 @@ def _dialogue_can_answer_despite_defer(
 ) -> bool:
     """A stale weak tract or own-line defer should not silence a direct partner turn."""
     from casa.prisms.memory.intent import is_agent_tract
-    from casa.domain.partner_cue_policy import social_concept_for_cue
 
+    _ = store_dir
     if is_agent_tract(query_intent):
-        return True
-    if social_concept_for_cue(query, None) and len((query or "").split()) <= 6:
         return True
     if disp is None or disp.action != SubjectAction.DEFER:
         return False
-    if query_intent == "social" and disp.reason in ("own_practice_first", "defense_sublimation"):
-        hints = _partner_dialog_hints(query, store_dir=store_dir)
-        if any(
-            h.startswith(p)
-            for h in hints
-            for p in ("ru.dialog.self", "ru.dialog.capabilities", "lang.word.")
-        ):
-            return True
+    if disp.reason in ("own_practice_first", "defense_sublimation") and (query or "").strip():
+        return True
     if not disp.reason.startswith("tract_not_ready:"):
         return False
     return query_intent in {"social", "discuss", "rewrite", "grammar", "explain", "journal", "recall"}
@@ -137,6 +129,7 @@ def process_dialogue_on_tick(
     user_query: str | None,
     task: TaskEmit | None,
     mem_prep: dict[str, Any],
+    partner_turn_kind: str = "chat",
     self_drive_rep: dict[str, Any] | None = None,
     retro_rep: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
@@ -168,7 +161,7 @@ def process_dialogue_on_tick(
         from casa.prisms.intelligence.executive import ensure_executive_zone, executive_before_compose
         from casa.prisms.intelligence.tick import intelligence_before_partner_compose
         from casa.prisms.metabolic import metabolic_begin_tick
-        from casa.prisms.perceptual import perceptual_prepare_turn, perceptual_turn_hints
+        from casa.prisms.perceptual import perceptual_turn_hints
         from casa.prisms.tick.routing import route_kb_read
         from casa.prisms.shared.store_bundles import load_store_bundles
 
@@ -178,7 +171,6 @@ def process_dialogue_on_tick(
         wake_last = (state.get("forgetting") or {}).get("wake_last") or {}
         priming_decay_rep = wake_last.get("priming_decay") or {}
         episodic_fade_rep = wake_last.get("episodic_fade") or {}
-        perceptual_prepare_turn(state, q, modality="text_stream")
         prior_digest = list(wm.last_concepts or []) if wm.last_concepts else None
         executive_before_compose(
             state,
@@ -215,9 +207,11 @@ def process_dialogue_on_tick(
         partner = append_partner_turn(
             store_dir,
             q,
+            kind=partner_turn_kind,
             provenance={
                 **provenance_base,
                 "source": "tick_query",
+                "partner_turn_kind": partner_turn_kind,
                 "query_intent": pre_read.intent,
             },
         )
@@ -251,7 +245,12 @@ def process_dialogue_on_tick(
             out["disposition_verbalized"] = disp.action.value
         else:
             ctx, reply_text = compose_subject_partner_reply_with_ctx(
-                q, task, state, wm_next, store_dir=store_dir
+                q,
+                task,
+                state,
+                wm_next,
+                store_dir=store_dir,
+                partner_turn_kind=partner_turn_kind,
             )
             reply_kind = "reply"
             if (reply_text or "").strip():
@@ -365,6 +364,9 @@ def process_dialogue_on_tick(
             out["soft_miss"] = True
             out["reason"] = "empty_compose"
         out["reply_text"] = reply_text
+        thread_focus = meaning_provenance(ctx).get("thread_focus")
+        if thread_focus:
+            out["thread_focus"] = thread_focus
         out["wm_prism"] = wm_rep
         out["intent_prism"] = intent_rep
         out["emotional_zone"] = affect_rep

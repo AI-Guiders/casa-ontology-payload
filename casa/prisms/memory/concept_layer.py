@@ -11,37 +11,36 @@ from typing import Any
 from casa.prisms.memory.meta_concept_aliases import canonical_lex_concept_id
 
 CONCEPT_PREFIX = "concept."
+LEMMA_RU_PREFIX = "lemma.ru."
+LEMMA_EN_PREFIX = "lemma.en."
 LEX_RU_PREFIX = "lex.ru."
 LEX_EN_PREFIX = "lex.en."
 CONCEPT_CORE_LATTICE = "agent-concept-core"
 CONCEPT_HONESTY_JSON = "concept_honesty_report.json"
 DEFAULT_THEORY_ID = "species-concept-bootstrap-v1"
 
-# Species scaffold @ T=0 — hub + lex surfaces + legacy read aliases (P18c).
+# Species scaffold @ T=0 — hub + lemma slots (read: legacy lang.word / lex.* still resolves).
 SPECIES_CONCEPT_BOOTSTRAP: dict[str, dict[str, Any]] = {
     "concept.orange": {
         "lex": {
-            "ru": ("lex.ru.apelsin", "апельсин"),
-            "en": ("lex.en.orange", "orange"),
+            "ru": ("lemma.ru.apelsin", "апельсин"),
+            "en": ("lemma.en.orange", "orange"),
         },
-        "legacy_concept_ids": ["lang.word.apelsin", "lang.word.apelsin_cap"],
     },
     "concept.window": {
         "lex": {
-            "ru": ("lex.ru.okno", "окно"),
-            "en": ("lex.en.window", "window"),
+            "ru": ("lemma.ru.okno", "окно"),
+            "en": ("lemma.en.window", "window"),
         },
-        "legacy_concept_ids": ["lang.word.okno"],
     },
     "concept.door": {
         "lex": {
-            "ru": ("lex.ru.dver", "дверь"),
-            "en": ("lex.en.door", "door"),
+            "ru": ("lemma.ru.dver", "дверь"),
+            "en": ("lemma.en.door", "door"),
         },
-        "legacy_concept_ids": ["lang.word.dver", "lang.word.dverь"],
     },
     "concept.agent.self": {
-        "lex": {"ru": ("lex.ru.self", "я"), "en": ("lex.en.self", "I")},
+        "lex": {"ru": ("lemma.ru.self", "я"), "en": ("lemma.en.self", "I")},
         "legacy_concept_ids": ["ru.dialog.self"],
         "discourse": {"ru": "discourse.ru.self", "en": "discourse.en.self"},
     },
@@ -64,6 +63,23 @@ def _slugify(surface: str) -> str:
     return raw.strip("_") or "item"
 
 
+def _lemma_read_aliases(lemma_id: str) -> tuple[str, ...]:
+    cid = str(lemma_id or "")
+    if cid.startswith(LEMMA_RU_PREFIX):
+        tail = cid[len(LEMMA_RU_PREFIX) :]
+        return (cid, f"{LEX_RU_PREFIX}{tail}")
+    if cid.startswith(LEMMA_EN_PREFIX):
+        tail = cid[len(LEMMA_EN_PREFIX) :]
+        return (cid, f"{LEX_EN_PREFIX}{tail}")
+    if cid.startswith(LEX_RU_PREFIX):
+        tail = cid[len(LEX_RU_PREFIX) :]
+        return (cid, f"{LEMMA_RU_PREFIX}{tail}")
+    if cid.startswith(LEX_EN_PREFIX):
+        tail = cid[len(LEX_EN_PREFIX) :]
+        return (cid, f"{LEMMA_EN_PREFIX}{tail}")
+    return (cid,)
+
+
 def legacy_to_concept_map() -> dict[str, str]:
     out: dict[str, str] = {}
     for hub, spec in SPECIES_CONCEPT_BOOTSTRAP.items():
@@ -71,7 +87,11 @@ def legacy_to_concept_map() -> dict[str, str]:
             out[str(legacy)] = hub
         for loc, pair in (spec.get("lex") or {}).items():
             if isinstance(pair, (list, tuple)) and pair:
-                out[str(pair[0])] = hub
+                lemma_id = str(pair[0])
+                for alias in _lemma_read_aliases(lemma_id):
+                    out[alias] = hub
+                if "." in lemma_id:
+                    out[f"lang.word.{lemma_id.rsplit('.', 1)[-1]}"] = hub
     return out
 
 
@@ -139,7 +159,7 @@ def is_concept_hub(concept_id: str) -> bool:
 
 def is_lexeme(concept_id: str) -> bool:
     cid = str(concept_id or "")
-    return cid.startswith((LEX_RU_PREFIX, LEX_EN_PREFIX))
+    return cid.startswith((LEMMA_RU_PREFIX, LEMMA_EN_PREFIX, LEX_RU_PREFIX, LEX_EN_PREFIX))
 
 
 def lex_for_locale(concept_id: str, locale: str = "ru") -> str | None:
@@ -193,6 +213,7 @@ def spawn_concept_prism(
     theory_id: str = "",
     provenance: str = "bootstrap",
     tick: int | None = None,
+    lex: dict[str, tuple[str, str]] | None = None,
 ) -> dict[str, Any]:
     """Catalog one concept hub under immutable.domains.concept (P18g)."""
     from casa.prisms.memory.agent_prism import ensure_agent_prism
@@ -213,12 +234,13 @@ def spawn_concept_prism(
     dom["updated_at_tick"] = fv
     catalog = dom.setdefault("catalog", {})
     slug = hub.removeprefix(CONCEPT_PREFIX)
+    lex_source = lex if lex is not None else (SPECIES_CONCEPT_BOOTSTRAP.get(hub, {}).get("lex") or {})
     catalog[hub] = {
         "concept_id": hub,
         "slug": slug,
         "lex": {
             loc: {"concept_id": pair[0], "surface": pair[1]}
-            for loc, pair in (SPECIES_CONCEPT_BOOTSTRAP.get(hub, {}).get("lex") or {}).items()
+            for loc, pair in lex_source.items()
             if isinstance(pair, (list, tuple)) and len(pair) >= 2
         },
         "legacy_concept_ids": list(SPECIES_CONCEPT_BOOTSTRAP.get(hub, {}).get("legacy_concept_ids") or []),
@@ -314,11 +336,12 @@ def concept_layer_snapshot(state: dict) -> dict[str, Any]:
 def probe_cross_surface_activation() -> dict[str, Any]:
     """RU lex, EN lex, legacy lang.word → same concept hub (P18f)."""
     cases = [
+        ("lemma.ru.apelsin", "concept.orange"),
+        ("lemma.en.orange", "concept.orange"),
         ("lex.ru.apelsin", "concept.orange"),
-        ("lex.en.orange", "concept.orange"),
         ("lang.word.apelsin", "concept.orange"),
-        ("lex.ru.okno", "concept.window"),
-        ("lex.en.window", "concept.window"),
+        ("lemma.ru.okno", "concept.window"),
+        ("lemma.en.window", "concept.window"),
         ("ru.dialog.self", "concept.agent.self"),
     ]
     results = [
@@ -334,7 +357,7 @@ def probe_locale_router() -> dict[str, Any]:
         ("concept.window", "ru", "concept.window"),
         ("concept.window", "en", "concept.window"),
         ("lang.word.okno", "ru", "concept.window"),
-        ("lex.en.window", "en", "concept.window"),
+        ("lemma.en.window", "en", "concept.window"),
     ]
     results = []
     for cid, loc, expected in pairs:

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from casa.prisms.tick.articulation_realize import UtterancePlan, _realize_compare
+from casa.prisms.tick.articulation_realize import UtterancePlan
 from casa.prisms.tick.discourse.model import ClauseSketch, DiscourseContext
 from casa.prisms.tick.discourse.policy import BlockDiscoursePolicy
 from casa.prisms.tick.discourse.realizers.blocks import (
@@ -77,11 +77,6 @@ class ExplainIntentStrategy:
                 for c in grammar.realize(block, ctx):
                     clauses.append(c)
                     clause_scores.append(score)
-
-        cmp = _realize_compare(ctx.query, plan.atoms)
-        if cmp and not clauses:
-            clauses.append(ClauseSketch(cmp.rstrip(".!?").split(), closing="."))
-            clause_scores.append(90)
 
         if not clauses:
             from casa.prisms.tick.passage import has_passage_context

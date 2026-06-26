@@ -15,6 +15,7 @@ PRISM_AGENT = "prism_agent"
 PRISM_HOT_CONTEXT = "prism_hot_context"
 PRISM_ROUTER = "prism_router"
 PRISM_VISUAL = "prism_visual"
+PRISM_AUDITORY = "prism_auditory"
 PRISM_CONTROL_VIS = "prism_control_vis"
 PRISM_CONTROL_THALAMUS = "prism_control_thalamus"
 

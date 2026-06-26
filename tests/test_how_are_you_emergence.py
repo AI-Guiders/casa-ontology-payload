@@ -14,8 +14,7 @@ from casa.prisms.control.fpn_state import WorkingMemory, read_session_meta, writ
 from casa.prisms.control.sn_cen_runtime import TaskEmit
 
 AFFECT_PREAMBLE = "осторожно говорю, что чувствую в диалоге"
-HOW_ARE_YOU_CLAUSE_1 = "спасибо что спросил"
-HOW_ARE_YOU_CLAUSE_2 = "настроение описываю по ходу разговора"
+SCRIPT_HOW_ARE_YOU = "настроение опишу по ходу разговора"
 
 
 def _task() -> TaskEmit:
@@ -50,7 +49,10 @@ def test_how_are_you_not_locked_to_affect_preamble() -> None:
     state = resolve_ingest_state(store, None)
     reply = _reply(state, store).lower()
     assert AFFECT_PREAMBLE not in reply
-    assert HOW_ARE_YOU_CLAUSE_1 in reply or HOW_ARE_YOU_CLAUSE_2 in reply
+    assert SCRIPT_HOW_ARE_YOU not in reply
+    plan = (state.get("meta") or {}).get("neumann_material_plan") or {}
+    assert plan.get("renderer_mode") == "slot_compose"
+    assert "связ" in reply or "поле" in reply
 
 
 def test_how_are_you_low_security_prefers_honest_material() -> None:

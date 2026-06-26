@@ -31,16 +31,20 @@ _AFFORDS = "affords"
 _HAS_PART = "has_part"
 
 
-def _lattices(state: dict) -> dict:
+def _lattices(state: dict, lattice_id: str | None = None) -> dict:
+    from casa.prisms.memory.agent_prism import agent_lattices
     from casa.prisms.memory.memory_prisms import memory_lattices
 
+    lid = str(lattice_id or "")
+    if lid.startswith("agent-"):
+        return agent_lattices(state)
     return memory_lattices(state)
 
 
 def _edges(state: dict, lattice_id: str) -> list[str]:
     from casa.prisms.memory.f0_stack import decode_f0_lattice
 
-    lat = _lattices(state).get(lattice_id)
+    lat = _lattices(state, lattice_id).get(lattice_id)
     return list(decode_f0_lattice(lat).get("edges") or []) if lat else []
 
 

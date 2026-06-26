@@ -160,4 +160,4 @@ master не тронут; диалоговые тесты зелёные (вкл
 
 **Главный посыл:** стройте на проверенных активах (§1), ломайте потолок авторинга через «LLM учит CASA» (§4), и **проверьте центральную CA-ставку экспериментом** (§7) — чтобы инвестировать в то, что реально окупается.
 
-**Update (2026-06-09):** архитектурный ответ на «EN = месяцы `ru.* → en.*`» — [CASA-ADR-0073-concept-layer-lexicalization.md](CASA-ADR-0073-concept-layer-lexicalization.md): shared `concept.*` + locale `lex.{ru,en}.*`, не дублирование онтологии.
+**Update (2026-06-09):** архитектурный ответ на «EN = месяцы `ru.* → en.*`» — [CASA-ADR-0073-concept-layer-lexicalization.md](CASA-ADR-0073-concept-layer-lexicalization.md): shared `concept.*` + locale `lemma.{ru,en}.*`, не дублирование онтологии.

@@ -38,6 +38,9 @@ def score_row_match(row: dict[str, Any], geo_sig: tuple[str, ...], tokens: set[s
     geo_hit = len(set(stored_geo) & set(geo_sig))
     cue = set(row.get("cue_tokens") or [])
     cue_hit = len(cue & tokens)
+    tract_id = str(row.get("tract_id") or "")
+    if tract_id == "social" and cue_hit == 0:
+        return 0
     sigma = float(row.get("score") or 0)
     if geo_hit == 0 and cue_hit == 0:
         return 0

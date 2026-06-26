@@ -39,13 +39,14 @@ class ConceptLayerTests(unittest.TestCase):
         self.assertEqual(canonical_concept_id("lang.meta.compare.greater"), "lang.meta.compare.greater")
 
     def test_bind_concept_id_unifies_ru_en_surfaces(self) -> None:
+        self.assertEqual(bind_concept_id("lemma.ru.okno"), "concept.window")
+        self.assertEqual(bind_concept_id("lemma.en.window"), "concept.window")
         self.assertEqual(bind_concept_id("lex.ru.okno"), "concept.window")
-        self.assertEqual(bind_concept_id("lex.en.window"), "concept.window")
         self.assertEqual(bind_concept_id("ru.dialog.self"), "concept.agent.self")
 
     def test_lex_for_locale(self) -> None:
-        self.assertEqual(lex_for_locale("concept.orange", "ru"), "lex.ru.apelsin")
-        self.assertEqual(lex_for_locale("concept.orange", "en"), "lex.en.orange")
+        self.assertEqual(lex_for_locale("concept.orange", "ru"), "lemma.ru.apelsin")
+        self.assertEqual(lex_for_locale("concept.orange", "en"), "lemma.en.orange")
 
     def test_spawn_concept_layer_bootstraps_catalog(self) -> None:
         state = self._state()
@@ -59,8 +60,8 @@ class ConceptLayerTests(unittest.TestCase):
     def test_normalize_bind_blocks_dedupes_by_hub(self) -> None:
         blocks = normalize_bind_blocks(
             [
-                block_dict("lex.ru.apelsin", "апельсин", source="kb", score=12),
-                block_dict("lex.en.orange", "orange", source="kb", score=10),
+                block_dict("lemma.ru.apelsin", "апельсин", source="kb", score=12),
+                block_dict("lemma.en.orange", "orange", source="kb", score=10),
                 block_dict("lang.word.apelsin", "апельсин", source="kb", score=8),
             ]
         )
@@ -71,8 +72,8 @@ class ConceptLayerTests(unittest.TestCase):
     def test_binder_dedupe_uses_concept_hub(self) -> None:
         rows = _dedupe_blocks(
             [
-                {"concept_id": "lex.ru.okno", "text": "окно", "source": "kb", "score": 9},
-                {"concept_id": "lex.en.window", "text": "window", "source": "kb", "score": 8},
+                {"concept_id": "lemma.ru.okno", "text": "окно", "source": "kb", "score": 9},
+                {"concept_id": "lemma.en.window", "text": "window", "source": "kb", "score": 8},
             ]
         )
         self.assertEqual(len(rows), 1)
@@ -81,8 +82,8 @@ class ConceptLayerTests(unittest.TestCase):
     def test_discourse_budget_collapses_lex_to_one_hub_score(self) -> None:
         budget = discourse_budget_from_blocks(
             [
-                {"concept_id": "lex.ru.apelsin", "score": 20},
-                {"concept_id": "lex.en.orange", "score": 18},
+                {"concept_id": "lemma.ru.apelsin", "score": 20},
+                {"concept_id": "lemma.en.orange", "score": 18},
             ],
             query_intent="discuss",
         )

@@ -109,6 +109,9 @@ def meaning_provenance(ctx: SubjectDialogueContext) -> dict[str, Any]:
             speech_acts.append(act)
     if speech_acts:
         out["partner_speech_acts"] = list(dict.fromkeys(speech_acts))[:4]
+    state_meta = ctx.runtime_state.get("meta") if isinstance(ctx.runtime_state, dict) else {}
+    if isinstance(state_meta, dict) and state_meta.get("discourse_affect_select"):
+        out["discourse_affect_register"] = str(state_meta["discourse_affect_select"])
     for b in ctx.blocks:
         if str(b.get("concept_id") or "") != "subject.limbic.state":
             continue
@@ -153,4 +156,12 @@ def meaning_provenance(ctx: SubjectDialogueContext) -> dict[str, Any]:
     trace = bind_trace(ctx)
     if trace:
         out["bind_trace"] = trace
+    try:
+        from casa.domain.dialogue_bind.anaphora import thread_focus_from_blocks
+
+        thread_focus = thread_focus_from_blocks(ctx.blocks)
+        if thread_focus:
+            out["thread_focus"] = thread_focus
+    except ImportError:
+        pass
     return out

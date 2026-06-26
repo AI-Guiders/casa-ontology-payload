@@ -78,7 +78,7 @@ def executive_after_turn(
     model = lp.fit_transitions([prior_digest or [], digest]) if prior_digest is not None else {}
     expected = lp.predict_next(digest, model) if model.get("succ") else set()
     observed = set(digest)
-    err = lp.prediction_error(observed, expected) if expected else set()
+    err = lp.surprise(expected, observed) if expected else set()
     zone["predict_surprise_n"] = len(err)
     zone["last_digest_size"] = len(digest)
     return {"surprise_n": len(err), "prediction_error": sorted(err)}

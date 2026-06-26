@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: E402
 """
 TickOrchestrator — unified macro tick: decode → act rollout → SN/CEN → surprise/hippo → sleep.
 
@@ -21,7 +22,7 @@ from typing import Any
 from casa.prisms.control.fpn_state import WorkingMemory, effective_user_query, fpn_after_cen, salience_mode_bias
 from casa.prisms.control.sn_cen_infer import _run_from_field
 from casa.prisms.control.sn_cen_runtime import cen_plan, digest_from_decoded, sn_route, task_to_dict, TaskEmit
-from casa.prisms.control.tick import ControlExtensions, run_control_extensions
+from casa.prisms.control.tick import run_control_extensions
 from casa.prisms.memory.agent_bridges import load_agent_bridges, merge_digest_with_agent_bridges
 from casa.prisms.memory.agent_prism import load_agent_prism
 from casa.prisms.memory.memory_prisms import ensure_prisms, memory_lattices
@@ -136,6 +137,7 @@ def run_learning_tick(
     store_dir: Path,
     user_query: str | None,
     wm: WorkingMemory,
+    partner_turn_kind: str = "chat",
     config: LearningTickConfig | None = None,
     state: dict | None = None,
 ) -> tuple[dict[str, Any], WorkingMemory, dict]:
@@ -172,12 +174,27 @@ def run_learning_tick(
     load_agent_prism(store_dir, state)
     load_agent_bridges(store_dir, state)
 
-    from casa.prisms.memory.prism_router import tick_prepare_memory
-
     q_preview = effective_user_query(wm, user_query)
     from casa.domain.partner_cue_policy import prepare_wm_for_partner_cue
 
     prepare_wm_for_partner_cue(wm, q_preview or "")
+    from casa.prisms.perceptual import perceptual_prepare_life_tick
+
+    percept_life_rep = perceptual_prepare_life_tick(
+        state,
+        user_query=q_preview,
+        preserve_existing=True,
+    )
+    from casa.nervous.sensory_hooks import record_av_coactive_bind_impulse, record_percept_life_impulse
+
+    record_percept_life_impulse(
+        store_dir=store_dir,
+        tick_id=next_tick,
+        percept_rep=percept_life_rep if isinstance(percept_life_rep, dict) else state.get("_perceptual_turn"),
+    )
+
+    from casa.prisms.memory.prism_router import tick_prepare_memory
+
     mem_prep = tick_prepare_memory(
         state, cue=q_preview or "", modality="segment", wm=wm, store_dir=store_dir
     )
@@ -196,6 +213,13 @@ def run_learning_tick(
     )
 
     digest = merge_digest_with_agent_bridges(digest_from_decoded(decoded), state)
+    from casa.prisms.perceptual import merge_digest_with_perceptual_turn
+
+    digest = merge_digest_with_perceptual_turn(digest, state)
+    from casa.prisms.auditory.bridge_vis import bind_av_coactive_on_tick
+
+    av_bind = bind_av_coactive_on_tick(state)
+    record_av_coactive_bind_impulse(store_dir=store_dir, tick_id=next_tick, bind_rep=av_bind)
     bias = salience_mode_bias(wm, digest.concept_ids)
     gated = sn_route(digest, bundle=routing_bundle, wm_mode=wm.mode, wm_salience_bias=bias)
     q = effective_user_query(wm, user_query)
@@ -365,8 +389,22 @@ def run_learning_tick(
         user_query=q,
         task=task,
         mem_prep=mem_prep,
+        partner_turn_kind=partner_turn_kind,
         self_drive_rep=self_drive_rep,
         retro_rep=retro_rep,
+    )
+    from casa.prisms.motor import maybe_motor_speech_on_tick
+    from casa.prisms.perceptual import perceptual_turn_hints
+
+    motor_speech_rep = maybe_motor_speech_on_tick(
+        store_dir,
+        state,
+        tick=int(wm_next.tick),
+        dialogue_rep=dialogue_rep,
+        task=task,
+        mem_prep=mem_prep,
+        self_drive_rep=self_drive_rep,
+        concept_hints=perceptual_turn_hints(state),
     )
     if dialogue_rep.get("subject_mode") and dialogue_rep.get("reply_text"):
         task = TaskEmit(
@@ -425,6 +463,8 @@ def run_learning_tick(
         "field_version": state.get("field_version"),
         "recovery_concepts_f1": (recovery or {}).get("concepts", {}).get("f1"),
         "sn_mode": gated.gate.mode,
+        "av_coactive_bind": av_bind,
+        "percept_life": percept_life_rep,
         "cen": task_to_dict(task, fpn=wm_next.to_dict()),
         "control": control.to_dict(),
         "act_rollout": act_report,
@@ -460,6 +500,7 @@ def run_learning_tick(
         },
         "memory_wake_forgetting": wake_forget_rep,
         "dialogue": dialogue_rep,
+        "motor_speech": motor_speech_rep,
         "wm_prism_sleep": wm_sleep_rep,
         "intent_prism_sleep": intent_sleep_rep,
         "learning_cycle": {

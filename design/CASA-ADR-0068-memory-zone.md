@@ -160,7 +160,7 @@ intelligence_zones.logical
 
 **Invariant:** promote_canon всегда append в **единый** `memory.immutable` catalog с `domain` + `theory_id`; theory fork = новая ветка в том же store, не новая intelligence zone.
 
-**Concept Zone (`domains.concept`):** не intelligence zone и не linguistic owner — **полка immutable** под `concept.*` hub/prism. Bootstrap = species teaching set; **earned** = ceremony после sandbox + verify (агент может открыть concept, которого не было @ T=0). Lex (`lex.ru.*`) остаётся **explicit mutable**; vis/audio edges — explicit или crosslink к hub.
+**Concept Zone (`domains.concept`):** не intelligence zone и не linguistic owner — **полка immutable** под `concept.*` hub/prism. Bootstrap = species teaching set; **earned** = ceremony после sandbox + verify (агент может открыть concept, которого не было @ T=0). Lemma (`lemma.ru.*` / `lemma.en.*`) остаётся **explicit mutable**; vis/audio edges — explicit или crosslink к hub.
 
 Подробнее: [CASA-ADR-0073-concept-layer-lexicalization.md](CASA-ADR-0073-concept-layer-lexicalization.md) § Concept Zone.
 
