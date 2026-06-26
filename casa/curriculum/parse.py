@@ -30,6 +30,7 @@ _POSITIONAL = {"лежит", "стоит", "находится", "лежать",
                "lies", "stands", "sits", "is", "hangs",
                "сделан", "сделана", "сделано", "сделаны", "made"}  # made_of copula
 _NEG = {"не", "нет", "ни", "not", "don't", "do not", "doesn't", "no", "never"}  # negation markers
+_AND = {"и", "and"}  # coordinator — distributes a role over conjuncts
 
 
 def _tokens(text: str) -> list[str]:
@@ -138,6 +139,8 @@ def parse_situation(
     for tok in _tokens(text):
         if tok in _NEG:
             polarity = "neg"  # negation marker — scopes the clause's relation
+        elif tok in _AND:
+            seq.append(("and", None))  # coordinator
         elif tok in _PREPS:
             seq.append(("prep", normalize_relation(tok)))
         elif tok in _POSITIONAL:
@@ -182,33 +185,53 @@ def parse_situation(
     nouns = [(i, p) for i, (k, p) in enumerate(seq) if k == "noun"]
     preps = [(i, p) for i, (k, p) in enumerate(seq) if k == "prep"]
     verbs = [(i, p) for i, (k, p) in enumerate(seq) if k == "verb"]
+    has_and = any(k == "and" for k, _ in seq)
+    # the head of a noun-noun compound differs by language: English head-LAST («icon file» →
+    # file), Russian genitive head-FIRST («файл пиктограммы» → файл).
+    is_ru = bool(re.search(r"[Ѐ-ӿ]", text))
+    head = lambda ns: ns[0][1] if is_ru else ns[-1][1]  # noqa: E731
 
     if preps:  # locative: each preposition links the noun before it to the noun after it
         triples: list[tuple[str, str, str]] = []
+        first_pi = preps[0][0]
+        pre_first = [c for ni, c in nouns if ni < first_pi]
+        # «X и Y на Z» — coordinated figures (only the single-prep case, to keep nesting safe)
+        coord_figs = pre_first if (has_and and len(preps) == 1 and len(pre_first) >= 2) else None
         for pi, rel in preps:
             before = [c for ni, c in nouns if ni < pi]
             after = [c for ni, c in nouns if ni > pi]
             if not after:
                 continue
             ground = after[0]
-            figure = before[-1] if before else (after[1] if len(after) > 1 else None)
-            if figure:
-                triples.append((rel, figure, ground))
+            if coord_figs is not None and pi == first_pi:
+                figures = coord_figs
+            elif before:
+                figures = [before[-1]]  # closest noun before the prep is the figure
+            else:
+                figures = [after[1]] if len(after) > 1 else []
+            triples += [(rel, fig, ground) for fig in figures]
         return triples, attrs, polarity, counts, measures
-    if verbs and nouns:
-        # the head of a noun-noun compound differs by language: English is head-LAST
-        # («icon file» → file), Russian genitive is head-FIRST («файл пиктограммы» → файл).
-        is_ru = bool(re.search(r"[Ѐ-ӿ]", text))
-        head = (lambda ns: ns[0][1] if is_ru else ns[-1][1])
+
+    if len(verbs) >= 2:  # coordinated clauses: «открой файл и сохрани документ»
+        subj_nouns = [(ni, c) for ni, c in nouns if ni < verbs[0][0]]
+        subject = subj_nouns[-1][1] if subj_nouns else "concept.you"  # shared subject
+        triples = []
+        for idx, (vp, rel) in enumerate(verbs):
+            nxt = verbs[idx + 1][0] if idx + 1 < len(verbs) else len(seq)
+            objs = [(ni, c) for ni, c in nouns if vp < ni < nxt]
+            if objs:
+                triples.append((rel, subject, head(objs)))
+        return triples, attrs, polarity, counts, measures
+
+    if verbs and nouns:  # single verb — imperative (no subject) or transitive S-V-O
         verb_pos = verbs[0][0]
         before = [(ni, c) for ni, c in nouns if ni < verb_pos]
         after = [(ni, c) for ni, c in nouns if ni > verb_pos]
-        if not before and after:
-            # imperative: the verb precedes every noun -> no subject, agent is implicit «you»,
-            # object is the compound head. Gerund headings parse the same («opening a file»).
-            return [(verbs[0][1], "concept.you", head(after))], attrs, polarity, counts, measures
-        if before and after:  # transitive S-V-O — subject before the verb, object after
-            return [(verbs[0][1], before[-1][1], head(after))], attrs, polarity, counts, measures
+        subject = before[-1][1] if before else "concept.you"  # implicit «you» for imperative
+        if after:
+            # «удали файл и папку» — coordinated objects (one edge each); else compound head
+            objs = [c for _, c in after] if (has_and and len(after) >= 2) else [head(after)]
+            return [(verbs[0][1], subject, o) for o in objs], attrs, polarity, counts, measures
     return [], attrs, polarity, counts, measures
 
 
