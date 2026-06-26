@@ -25,7 +25,8 @@ from typing import Any
 from casa.curriculum.concept_net import concept_of, meaning_graph
 from casa.curriculum.situation import PREDICATE_RELATION, fingerprint, normalize_relation
 
-_PREPS = {"на", "в", "у", "около", "рядом", "под", "над", "on", "in", "near", "by", "under", "inside", "beside"}
+_PREPS = {"на", "в", "у", "около", "рядом", "под", "над", "on", "in", "near", "by", "under", "inside", "beside",
+          "to", "into"}  # «to/into» — action destination
 _POSITIONAL = {"лежит", "стоит", "находится", "лежать", "стоять", "находиться", "висит",
                "lies", "stands", "sits", "is", "hangs",
                "сделан", "сделана", "сделано", "сделаны", "made"}  # made_of copula
@@ -190,6 +191,19 @@ def parse_situation(
     # file), Russian genitive head-FIRST («файл пиктограммы» → файл).
     is_ru = bool(re.search(r"[Ѐ-ӿ]", text))
     head = lambda ns: ns[0][1] if is_ru else ns[-1][1]  # noqa: E731
+
+    # action with a destination: «сохрани файл в папку» — a verb BEFORE a preposition. Two
+    # edges: the action and the resultant location of its object («save»: in(file, folder)).
+    if verbs and preps and verbs[0][0] < preps[0][0]:
+        vp, vrel = verbs[0]
+        pp, prel = preps[0]
+        subj_nouns = [(ni, c) for ni, c in nouns if ni < vp]
+        subject = subj_nouns[-1][1] if subj_nouns else "concept.you"
+        obj_nouns = [(ni, c) for ni, c in nouns if vp < ni < pp]
+        dest = [c for ni, c in nouns if ni > pp]
+        if obj_nouns and dest:
+            obj = head(obj_nouns)
+            return [(vrel, subject, obj), (prel, obj, dest[0])], attrs, polarity, counts, measures
 
     if preps:  # locative: each preposition links the noun before it to the noun after it
         triples: list[tuple[str, str, str]] = []
