@@ -145,6 +145,25 @@ def _en_det(graph: dict[str, Any], cid: str) -> str:
     return "" if (node.get("count") or node.get("measure")) else "the "
 
 
+def _realize_action_dest(state: dict, lattice_id: str, graph: dict[str, Any],
+                         act: tuple[str, str, str], dst_e: tuple[str, str, str], *, lang: str) -> str | None:
+    """Render an action with a destination: «Сохрани файл в папку.» / «Save the file to the
+    folder.» — the action clause + the goal («в» + accusative in RU, «to the» in EN)."""
+    head = realize_graph(state, lattice_id, _subgraph(graph, act), lang=lang)
+    if not head:
+        return None
+    head = head.rstrip(".")
+    prel, _, dest = dst_e
+    dest_word = _word(state, lattice_id, dest, lang)
+    if lang == "ru":
+        from casa.curriculum.sentence import RU_ACC_RULE
+
+        prep = _LOC_PREP.get(prel, {}).get("ru", "в")
+        dest_acc = apply_conditioned_rule(state, lattice_id, RU_ACC_RULE, dest_word) or dest_word
+        return f"{head} {prep} {dest_acc}."
+    return f"{head} to the {dest_word}."
+
+
 def _realize_coordination(state: dict, lattice_id: str, graph: dict[str, Any],
                           edges: list[tuple[str, str, str]], *, lang: str) -> str | None:
     """Render coordinated edges, joined by «и»/«and», factoring a shared element where it
@@ -212,6 +231,14 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
     if not edges:
         return None
     neg = any(e.get("polarity") == "neg" for e in graph.get("edges", []) if e.get("satisfied"))
+
+    # action with a destination: «сохрани файл в папку» — an action edge plus a locative edge
+    # on its object («save»: in(file, folder)) → «<action> <prep> <destination>»
+    if len(edges) == 2:
+        act = next((e for e in edges if e[0] in _TRANS_VERB), None)
+        dst_e = next((e for e in edges if e[0] in _LOC_PREP), None)
+        if act and dst_e and dst_e[1] == act[2]:
+            return _realize_action_dest(state, lattice_id, graph, act, dst_e, lang=lang)
 
     # coordination — several edges that are not one locative chain («открой файл и сохрани
     # документ», «удали файл и папку», «яблоко и книга на столе»)
