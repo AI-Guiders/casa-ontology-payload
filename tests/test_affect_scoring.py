@@ -17,7 +17,7 @@ def _state_repair_pending() -> dict:
     return state
 
 
-def test_affect_bind_deltas_are_noop() -> None:
+def test_affect_bind_deltas_shift_honest_hub() -> None:
     blocks = [
         {"concept_id": "ru.dialog.honest.partial", "text": "h", "source": "kb", "score": 40},
         {
@@ -30,7 +30,8 @@ def test_affect_bind_deltas_are_noop() -> None:
     ]
     before = int(blocks[0]["score"])
     apply_affect_state_bind_deltas(blocks, "Как ты?", intent="social", state=_state_repair_pending())
-    assert int(blocks[0]["score"]) == before
+    assert int(blocks[0]["score"]) > before
+    assert int(blocks[1]["score"]) > 16
 
 
 def test_limbic_block_readable() -> None:

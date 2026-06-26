@@ -178,7 +178,7 @@ RELATIONS = [
 
 
 def _c(en: str) -> str:
-    return f"lex.{en.strip().lower().replace(' ', '_')}"
+    return f"concept.{en.strip().lower().replace(' ', '_')}"
 
 
 # mereology: whole|has_part|part. whole is a category (members inherit) or a concept id.

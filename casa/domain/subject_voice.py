@@ -7,7 +7,6 @@ from typing import Any
 
 from casa.domain.subject_agency import SubjectAction, SubjectDisposition
 from casa.domain.subject_articulation import compose_subject_utterance
-from casa.domain.dialogue_provenance import meaning_provenance
 from casa.domain.dialogue_bind import SubjectDialogueContext, gather_subject_dialogue_blocks
 from casa.domain.subject_mode import subject_display_name
 from casa.prisms.control.fpn_state import WorkingMemory
@@ -61,10 +60,11 @@ def compose_subject_partner_reply(
     wm: WorkingMemory,
     *,
     store_dir=None,
+    partner_turn_kind: str = "chat",
 ) -> str:
     """Subject-mode reply from field + journal + CEN bind → articulate (no keyword templates)."""
     _ctx, text = compose_subject_partner_reply_with_ctx(
-        user_query, task, state, wm, store_dir=store_dir
+        user_query, task, state, wm, store_dir=store_dir, partner_turn_kind=partner_turn_kind
     )
     return text
 
@@ -76,6 +76,7 @@ def compose_subject_partner_reply_with_ctx(
     wm: WorkingMemory,
     *,
     store_dir=None,
+    partner_turn_kind: str = "chat",
 ) -> tuple[SubjectDialogueContext, str]:
     """Reply + bind context (for dialogue provenance / journal prior)."""
     q = (user_query or "").strip()
@@ -87,13 +88,19 @@ def compose_subject_partner_reply_with_ctx(
         )
         return empty, "Запрос пустой; скажи, о чём говорим."
 
+    from casa.prisms.tick.discourse.material import (
+        build_afferent_event,
+        build_text_understanding,
+    )
+
+    event = build_afferent_event(q, turn_kind=partner_turn_kind)
+    trace = build_text_understanding(event)
+    meta = state.setdefault("meta", {})
+    meta["neumann_afferent_event"] = event.to_dict()
+    meta["neumann_text_understanding"] = trace.to_dict()
+
     ctx = gather_subject_dialogue_blocks(q, task, state, wm, store_dir)
     text = compose_subject_utterance(q, ctx)
-
-    if task and task.answer_text:
-        legacy = task.answer_text.strip()
-        if "language store нет болтовни" in legacy or "Не отвечаю уроком про Console" in legacy:
-            return ctx, text
 
     return ctx, text
 

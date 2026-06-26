@@ -19,7 +19,7 @@ class SoftwareDomainTests(unittest.TestCase):
         return affordances_of(self.state, self.lat, concept_of(self.state, self.lat, word))
 
     def test_software_concepts_carry_their_affordances(self) -> None:
-        self.assertEqual(concept_of(self.state, self.lat, "файл"), "lex.file")
+        self.assertEqual(concept_of(self.state, self.lat, "файл"), "concept.file")
         self.assertIn("openable", self.afford("файл"))
         self.assertIn("savable", self.afford("файл"))
         self.assertIn("clickable", self.afford("кнопка"))
@@ -71,8 +71,8 @@ class SoftwareDomainTests(unittest.TestCase):
             self.assertEqual(tr["en"], en)
 
     def test_expanded_concepts_resolve(self) -> None:
-        for w, cid in [("палитра", "lex.palette"), ("прокси", "lex.proxy"),
-                       ("пиктограмма", "lex.icon"), ("редактор", "lex.editor")]:
+        for w, cid in [("палитра", "concept.palette"), ("прокси", "concept.proxy"),
+                       ("пиктограмма", "concept.icon"), ("редактор", "concept.editor")]:
             self.assertEqual(concept_of(self.state, self.lat, w), cid)
 
     def test_noun_before_verb_is_not_an_imperative(self) -> None:
@@ -86,9 +86,9 @@ class SoftwareDomainTests(unittest.TestCase):
 
         # English head-last «icon file» -> file; Russian genitive head-first «файл …» -> file
         self.assertEqual(parse_triples(self.state, self.lat, "open the icon file"),
-                         [("open", "lex.you", "lex.file")])
+                         [("open", "concept.you", "concept.file")])
         self.assertEqual(parse_triples(self.state, self.lat, "открой файл пиктограммы"),
-                         [("open", "lex.you", "lex.file")])
+                         [("open", "concept.you", "concept.file")])
 
 
 if __name__ == "__main__":

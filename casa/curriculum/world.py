@@ -13,6 +13,10 @@ import json
 
 from casa._paths import REPO_ROOT
 
+# lab-only ephemeral lattice (ADR-0083 §5): build_meaning_state is the round-trip/validator
+# harness, NOT the agent store. The normative Built-In Concept Zone is taught onto
+# `agent-concept-graph` @ prism_agent (concept_built_in.py / teach_curriculum_ontology.py);
+# this `schema-math` lattice here is lab scaffolding and not the store model.
 LATTICE = "schema-math"
 _RU_RULES = (
     "lang.rule.acc-sg.ru", "lang.rule.present3sg.ru", "lang.rule.prep-sg.ru",

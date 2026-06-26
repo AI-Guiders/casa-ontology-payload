@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from casa.prisms.memory.memory_prisms import append_episode, ensure_prisms, memory_lattices, run_sleep
-from casa.prisms.memory.vocab import listen_scene
+from casa.prisms.memory.listen_moment import listen_moment
 from casa.prisms.shared.lattice_names_v1 import SCHEMA_MATH
 from casa.prisms.shared.store_boot import boot_store
 from casa.prisms.shared.store_layout import default_agent_store
@@ -112,8 +112,7 @@ def ingest_mm_events(
         ocr_text = str(vision.get("ocr_text") or "").strip()
 
         words = _norm_words(canon.get("words") or [])
-        if not words:
-            # fallback: split ASR text
+        if not words and canon.get("include_text_as_words"):
             words = _norm_words(re.findall(r"[\w\-]+", asr_text, flags=re.UNICODE))
 
         glyphs = [str(x) for x in (canon.get("math_glyphs") or []) if str(x).strip()]
@@ -128,19 +127,48 @@ def ingest_mm_events(
         if not caption:
             caption = "mm_event"
 
-        listen_scene(
+        wav_ref = str(audio.get("wav") or audio.get("path") or "").strip()
+        wav_path = Path(wav_ref) if wav_ref else None
+        if wav_path and not wav_path.is_file():
+            candidate = store_dir / wav_ref
+            wav_path = candidate if candidate.is_file() else None
+
+        frame_ref = ""
+        for img in vision.get("images") or []:
+            if isinstance(img, dict):
+                frame_ref = str(img.get("path") or img.get("file") or "").strip()
+            elif isinstance(img, str):
+                frame_ref = img.strip()
+            if frame_ref:
+                break
+        frame_path = Path(frame_ref) if frame_ref else None
+        if frame_path and not frame_path.is_file():
+            candidate = store_dir / frame_ref
+            frame_path = candidate if candidate.is_file() else None
+
+        moment = listen_moment(
             state,
             {
                 "id": sid,
-                "caption": caption[:240],
+                "caption": caption[:240] if caption != "mm_event" else "",
                 "words": words,
-                "punctuation": punct,
+                "punctuation": punct if words else [],
+                "speaker": str(canon.get("speaker") or audio.get("speaker") or "").strip() or None,
+                "speakers": canon.get("speakers"),
+                "t0": audio.get("t0"),
+                "t1": audio.get("t1"),
+                "frame": frame_ref,
             },
+            wav_path=wav_path,
+            frame_path=frame_path,
+            store_dir=store_dir,
             copies=3,
             bundle={"claims": [], "graph": {"edges": []}},
         )
         scenes += 1
         word_count += len(words)
+        if moment.get("audio"):
+            pass  # auditory imprint counted with scene
 
         # Each glyph cue becomes an episode on schema-math.
         # We do not assume concept_id (no runtime oracle): perception can supply it later.

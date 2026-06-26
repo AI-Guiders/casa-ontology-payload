@@ -25,6 +25,7 @@ DIRECTION_EFFERENT: Literal["efferent"] = "efferent"
 AFFERENT_FUNCTION = f"body.tract.{PARTNER_TEXT_TRACT_ID}.afferent"
 EFFERENT_FUNCTION = f"body.tract.{PARTNER_TEXT_TRACT_ID}.efferent"
 TEXT_WIRE_CONSOLE = "console"
+TEXT_WIRE_AGENT = "agent"
 
 _CUE_NAME = "cue.json"
 _PULSE_NAME = "pulse.json"
@@ -126,6 +127,16 @@ def reactor_alive(store_dir: Path, *, max_age_s: float = _DEFAULT_PULSE_STALE_S)
     phase = str(pulse.get("phase") or "")
     if phase in ("loading", "boot") and pid:
         return True
+    if phase == "partner_start" and pid:
+        updated = str(pulse.get("updated_at") or "")
+        age = None
+        if updated:
+            try:
+                ts = datetime.fromisoformat(updated.replace("Z", "+00:00"))
+                age = (datetime.now(timezone.utc) - ts).total_seconds()
+            except ValueError:
+                age = None
+        return age is None or age <= 180.0
     cue = read_afferent_cue(store_dir)
     if cue and str(cue.get("status") or "") == "pending":
         return True

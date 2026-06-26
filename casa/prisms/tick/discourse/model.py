@@ -40,6 +40,7 @@ class DiscourseContext:
     concept_hints: list[str] = field(default_factory=list)
     agent_tract_profile: dict[str, Any] | None = None
     state: dict | None = None
+    affect_select: str | None = None
 
     @classmethod
     def bind(
@@ -63,6 +64,7 @@ class DiscourseContext:
             agent_tract_profile=agent_tract_profile,
             concept_hints=list(concept_hints or []),
             state=state,
+            affect_select=None,
         )
 
     @property
@@ -95,4 +97,5 @@ class DiscourseContext:
             agent_tract_profile=self.agent_tract_profile,
             concept_hints=list(self.concept_hints),
             state=self.state,
+            affect_select=self.affect_select,
         )

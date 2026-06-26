@@ -6,10 +6,15 @@ from enum import StrEnum
 
 
 class ImpulseChannel(StrEnum):
+    LISTEN_IMPRINT = "listen_imprint"
     PARTNER_DIALOGUE = "partner_dialogue"
     IDLE_EFFERENT = "idle_efferent"
+    MOTOR_SPEECH = "motor_speech"
     MOTOR_COMPOSE = "motor_compose"
     VISION_GATE = "vision_gate"
+    PERCEPT_LIFE = "percept_life"
+    AFFECT_LISTEN = "affect_listen"
+    AV_COACTIVE = "av_coactive"
     CONTROL_ROUTING = "control_routing"
     SLEEP_TRAIN = "sleep_train"
 

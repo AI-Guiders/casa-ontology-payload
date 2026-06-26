@@ -33,15 +33,15 @@ def test_structural_analogy_across_disjoint_concepts() -> None:
     state = _state()
     g = lambda t: parse_graph(state, LAT, t)
     assert find_analogy(state, LAT, g("кот на стуле"), g("яблоко на столе")) == {
-        "lex.cat": "lex.apple", "lex.chair": "lex.table"
+        "concept.cat": "concept.apple", "concept.chair": "concept.table"
     }
     # chained structure maps consistently
     assert find_analogy(state, LAT, g("кот на стуле у окна"), g("книга на столе у двери")) == {
-        "lex.cat": "lex.book", "lex.chair": "lex.table", "lex.window": "lex.door"
+        "concept.cat": "concept.book", "concept.chair": "concept.table", "concept.window": "concept.door"
     }
     # transitive structure
     assert find_analogy(state, LAT, g("собака ест мясо"), g("человек ест яблоко")) == {
-        "lex.dog": "lex.person", "lex.meat": "lex.apple"
+        "concept.dog": "concept.person", "concept.meat": "concept.apple"
     }
 
 
@@ -62,4 +62,4 @@ def test_recall_analogous_finds_same_structure() -> None:
     assert "книга на столе" in labels          # structural match, no shared concept
     assert "собака ест мясо" not in labels      # different relation
     rec, mapping = next((r, mp) for r, mp in hits if r["label"] == "книга на столе")
-    assert mapping == {"lex.cat": "lex.book", "lex.chair": "lex.table"}
+    assert mapping == {"concept.cat": "concept.book", "concept.chair": "concept.table"}

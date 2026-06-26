@@ -45,7 +45,7 @@ def test_base_ontology_size_and_grounding() -> None:
     # every leaf concept reaches its category in the isa-closure — no typo'd category
     for category, members in data["concepts"].items():
         for _ru, en in members:
-            cid = f"lex.{en.strip().lower().replace(' ', '_')}"
+            cid = f"concept.{en.strip().lower().replace(' ', '_')}"
             assert category in isa_closure(state, LAT, cid), (cid, category)
 
 
@@ -88,7 +88,7 @@ def test_mereology_inherited_per_type() -> None:
     assert has_part(state, LAT, "велосипед", "двигатель") is False   # a bicycle has no engine
     assert has_part(state, LAT, "человек", "рука") is True
     assert has_part(state, LAT, "яблоко", "колесо") is False
-    assert "lex.wheel" in parts_of(state, LAT, concept_of(state, LAT, "машина"))
+    assert "concept.wheel" in parts_of(state, LAT, concept_of(state, LAT, "машина"))
 
 
 def test_relation_map_is_language_independent() -> None:
@@ -97,7 +97,7 @@ def test_relation_map_is_language_independent() -> None:
     men = relation_map(state, LAT, "on", "apple", "table")
     assert mru == men  # same concept map regardless of the input language
     assert mru["valid"] is True
-    assert mru["subject"]["concept"] == "lex.apple"
+    assert mru["subject"]["concept"] == "concept.apple"
     assert "physical_object" in mru["subject"]["types"]
     assert mru["subject"]["names"] == {"ru": ["яблоко"], "en": ["apple"]}
     assert mru["edge"]["needs"] == {"arg1": "positionable", "arg2": "support_surface"}
@@ -113,7 +113,7 @@ def test_meaning_graph_multi_edge_and_language_independent() -> None:
     en = meaning_graph(state, LAT, [("on", "apple", "table"), ("near", "table", "window")])
     assert ru == en                                   # same graph regardless of language
     assert ru["valid"] is True
-    assert set(ru["nodes"]) == {"lex.apple", "lex.table", "lex.window"}  # shared node deduped
+    assert set(ru["nodes"]) == {"concept.apple", "concept.table", "concept.window"}  # shared node deduped
     assert len(ru["edges"]) == 2
     # one nonsense edge flags the whole graph, with the offending edge marked
     bad = meaning_graph(state, LAT, [("on", "книга", "стол"), ("eat", "стол", "яблоко")])
@@ -129,8 +129,8 @@ def test_new_concept_inherits_group_rules_by_one_edge() -> None:
 
     state, bundle = _ready()
     teach_glossary(state, [("айва", "quince")], bundle=bundle)
-    teach_isa(state, LAT, [("lex.quince", "fruit")])  # the only thing added for «айва»
-    assert affordances_of(state, LAT, "lex.quince") == {"edible", "ownable", "positionable"}
+    teach_isa(state, LAT, [("concept.quince", "fruit")])  # the only thing added for «айва»
+    assert affordances_of(state, LAT, "concept.quince") == {"edible", "ownable", "positionable"}
     assert validate(state, LAT, "on", "айва", "стол")["valid"] is True       # via inherited positionable
     assert validate(state, LAT, "eat", "человек", "айва")["valid"] is True   # via inherited edible
     assert validate(state, LAT, "on", "идея", "айва")["valid"] is False      # quince is not a surface

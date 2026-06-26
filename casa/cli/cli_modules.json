@@ -10,6 +10,7 @@
   "migrate_intelligence_zones": "casa.prisms.intelligence.migrate",
   "migrate_zone_prism_wire": "casa.prisms.intelligence.migrate_zone_prism_wire",
   "agent_bridge": "casa.prisms.memory.agent_bridges",
+  "partner_agent_wire": "casa.cli.partner_agent_wire",
   "agent_journal": "casa.prisms.memory.agent_journal",
   "agent_workbook": "casa.prisms.memory.agent_workbook",
   "agent_memory_ops": "casa.prisms.memory.agent_memory_ops",

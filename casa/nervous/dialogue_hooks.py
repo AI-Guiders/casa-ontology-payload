@@ -7,6 +7,7 @@ from typing import Any
 from casa.domain.dialogue_bind import SubjectDialogueContext
 from casa.domain.dialogue_provenance import bind_trace_ranked
 from casa.nervous.channels import ImpulseChannel, ImpulseOutcome
+from casa.nervous.compose_impulse import flush_compose_pending
 from casa.nervous.impulse import impulse_recorder
 
 
@@ -36,7 +37,69 @@ def record_partner_dialogue_impulse(
     if not rec.is_active:
         return None
     with rec.channel(ImpulseChannel.PARTNER_DIALOGUE, store_dir=store_dir) as imp:
+        runtime = ctx.runtime_state if isinstance(getattr(ctx, "runtime_state", None), dict) else None
+        meta = runtime.get("meta") if isinstance(runtime, dict) and isinstance(runtime.get("meta"), dict) else {}
+        afferent = meta.get("neumann_afferent_event") if isinstance(meta, dict) else None
+        if isinstance(afferent, dict):
+            imp.select(
+                "afferent_event",
+                zone="linguistic",
+                selected=["observed"],
+                inputs={
+                    "text": afferent.get("normalized_text"),
+                    "turn_kind": afferent.get("turn_kind"),
+                    "has_question_mark": afferent.get("has_question_mark"),
+                    "punctuation": afferent.get("punctuation"),
+                    "correction_kind": afferent.get("correction_kind"),
+                },
+            )
+        understanding = meta.get("neumann_text_understanding") if isinstance(meta, dict) else None
+        if isinstance(understanding, dict):
+            imp.select(
+                "text_understanding",
+                zone="linguistic",
+                selected=["observed"],
+                inputs={
+                    "relations": understanding.get("relations") or [],
+                    "uncertainty": understanding.get("uncertainty") or [],
+                },
+            )
+        material_plan = meta.get("neumann_material_plan") if isinstance(meta, dict) else None
+        if isinstance(material_plan, dict):
+            selected = material_plan.get("selected") if isinstance(material_plan.get("selected"), list) else []
+            rejected = material_plan.get("rejected") if isinstance(material_plan.get("rejected"), list) else []
+            potentials = []
+            for row in (selected + rejected)[:12]:
+                if not isinstance(row, dict):
+                    continue
+                potentials.append(
+                    {
+                        "id": str(row.get("candidate_id") or ""),
+                        "score": int(row.get("score") or 0),
+                        "reason": str(row.get("reason") or row.get("role") or ""),
+                    }
+                )
+            imp.select(
+                "material_plan",
+                zone="linguistic",
+                selected=[str(row.get("candidate_id") or "") for row in selected if isinstance(row, dict)],
+                potentials=potentials,
+                rejected_above_floor=len(rejected),
+                inputs={
+                    "focus": material_plan.get("focus"),
+                    "relation_marker": material_plan.get("relation_marker"),
+                    "renderer_mode": material_plan.get("renderer_mode"),
+                    "object_overlay": material_plan.get("object_overlay"),
+                },
+            )
+            imp.select(
+                "renderer_decision",
+                zone="linguistic",
+                selected=[str(material_plan.get("renderer_mode") or "")],
+                inputs={"reply_preview": (reply_text or "")[:120]},
+            )
         imp.record_bind_ranked(bind_trace_ranked(ctx))
+        flush_compose_pending(runtime, imp)
         if metabolic_rep and metabolic_rep.get("budget_exhausted"):
             imp.budget(
                 "metabolic.compose_budget",

@@ -180,7 +180,7 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
     quantified = bool(dst_node.get("count") or dst_node.get("measure"))  # numeral governs case
 
     # imperative — subject is the implicit «you»: «Открой файл.» / «Удали два файла.»
-    if src == "lex.you":
+    if src == "concept.you":
         obj = _obj(state, lattice_id, dst, lang, graph)
         if lang == "ru":
             # a negative command takes the imperfective imperative («не закрывай», not «закрой»)

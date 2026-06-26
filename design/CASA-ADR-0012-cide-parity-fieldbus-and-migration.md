@@ -75,7 +75,7 @@ class FieldVersionDriftEvent: old_fv: int; new_fv: int; stale_count: int
 | CIDE DataBus | FieldBus |
 |--------------|----------|
 | `Publish<T>` / `Subscribe<T>` | same pattern; sync v1 (как 0099 in-memory) |
-| UI projections | **watchers**: post_train, bench, CascadeIDE agent panel (roadmap) |
+| UI projections | **watchers**: post_train, bench, CascadeIDE agent panel ([0087](CASA-ADR-0087-substrate-visualizer-v1.md) `substrate_snapshot.v1`) |
 | Не заменяет transport 0094 | Не заменяет **codec I/O** (mic, git KB) — только **нормализованные события домена поля** |
 
 **Правило:** hot path NCA **не** подписан на bus для каждой клетки; bus — **границы фаз** (perceive done, surprise, act emitted, sleep done).

@@ -44,6 +44,11 @@ class BlockDiscoursePolicy:
             or cid.startswith("subject.limbic.")
             or cid == "dialog.context.focus_recent"
         ):
+            if query_intent == "social":
+                from casa.prisms.tick.discourse.meta_glue_guard import dialogue_thread_carries
+
+                if dialogue_thread_carries(blocks):
+                    return True
             return False
         if cid.startswith("subject."):
             return False

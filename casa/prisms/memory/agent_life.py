@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: E402
 """Agent life zone — вся жизнь агента (wake → tick → sleep → journal → ltm).
 
 Host только поднимает/гасит процесс (`agent_wake` / Ctrl+C). Смысл каждого tick — внутри:
@@ -121,7 +122,7 @@ class AgentRuntime:
     wm: WorkingMemory | None = None
 
 
-def _reactor_life_config(*, partner_turn: bool) -> LearningTickConfig:
+def _reactor_life_config(*, partner_turn: bool, tick_log: bool | None = None) -> LearningTickConfig:
     """One continuous life engine — partner cue or idle heartbeat."""
     return LearningTickConfig(
         act_rollout=False,
@@ -133,7 +134,7 @@ def _reactor_life_config(*, partner_turn: bool) -> LearningTickConfig:
         goal_from_surprise=True,
         metacog_gate=True,
         spacing_on_wake=False,
-        tick_log=partner_turn,
+        tick_log=bool(tick_log) if tick_log is not None else partner_turn,
         retro_after_sleep=True,
     )
 
@@ -177,6 +178,8 @@ def _run_unified_life_tick(
     *,
     user_query: str | None,
     partner_turn: bool,
+    partner_turn_kind: str = "chat",
+    tick_log: bool | None = None,
 ) -> dict[str, Any]:
     from casa.body.completion_ingest import ingest_body_completions_on_tick
 
@@ -186,7 +189,8 @@ def _run_unified_life_tick(
         store_dir=runtime.store_dir,
         user_query=user_query,
         wm=runtime.wm,
-        config=_reactor_life_config(partner_turn=partner_turn),
+        partner_turn_kind=partner_turn_kind,
+        config=_reactor_life_config(partner_turn=partner_turn, tick_log=tick_log),
         state=runtime.state,
     )
     runtime.wm = wm_next
@@ -195,6 +199,24 @@ def _run_unified_life_tick(
     if body_ingest.get("ingested") or body_ingest.get("committed"):
         report = {**report, "body_completions": body_ingest}
     return report
+
+
+def run_life_tick(
+    runtime: AgentRuntime,
+    *,
+    user_query: str | None = None,
+    partner_turn: bool = False,
+    partner_turn_kind: str = "chat",
+    tick_log: bool | None = None,
+) -> dict[str, Any]:
+    """One unified macro tick — all active percept channels on this step."""
+    return _run_unified_life_tick(
+        runtime,
+        user_query=user_query,
+        partner_turn=partner_turn,
+        partner_turn_kind=partner_turn_kind,
+        tick_log=tick_log,
+    )
 
 
 def poll_partner_text_tract(
@@ -217,6 +239,7 @@ def poll_partner_text_tract(
 
     cue_id = str(cue.get("id") or "")
     text = str(cue.get("text") or "").strip()
+    kind = str(cue.get("kind") or "chat")
     if emit:
         emit(
             {
@@ -234,7 +257,12 @@ def poll_partner_text_tract(
         extra={"phase": "partner_start", "cue_id": cue_id},
     )
     try:
-        report = _run_unified_life_tick(runtime, user_query=text, partner_turn=True)
+        report = _run_unified_life_tick(
+            runtime,
+            user_query=text,
+            partner_turn=True,
+            partner_turn_kind=kind,
+        )
         reply = extract_dialogue_reply(report)
         complete_efferent(
             runtime.store_dir,

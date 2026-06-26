@@ -40,7 +40,7 @@ class QuantityRoundTripTests(unittest.TestCase):
 
     def test_count_binds_to_the_noun_in_the_graph(self) -> None:
         g = parse_graph(self.state, self.lat, "удали два файла")
-        self.assertEqual(g["nodes"]["lex.file"].get("count"), 2)
+        self.assertEqual(g["nodes"]["concept.file"].get("count"), 2)
 
     def test_counted_object_imperative(self) -> None:
         tr = self.rt("удали два файла")
@@ -60,7 +60,7 @@ class QuantityRoundTripTests(unittest.TestCase):
         self.assertNotEqual(two, bare)
 
     def test_count_annotates_the_canonical_edge(self) -> None:
-        self.assertIn("delete(lex.you,lex.file×2)", canonical_edges(parse_graph(self.state, self.lat, "удали два файла")))
+        self.assertIn("delete(concept.you,concept.file×2)", canonical_edges(parse_graph(self.state, self.lat, "удали два файла")))
 
     def test_english_plural_input_with_count(self) -> None:
         # the English side is first-class: «two files» (plural) resolves and round-trips
@@ -70,7 +70,7 @@ class QuantityRoundTripTests(unittest.TestCase):
 
     def test_measure_with_unit_on_the_node(self) -> None:
         g = parse_graph(self.state, self.lat, "5 мл воды на столе")
-        self.assertEqual(g["nodes"]["lex.water"].get("measure"), {"value": 5, "unit": "ml"})
+        self.assertEqual(g["nodes"]["concept.water"].get("measure"), {"value": 5, "unit": "ml"})
 
     def test_measure_round_trip(self) -> None:
         tr = translate_through_meaning(self.state, self.lat, "5 мл воды на столе")

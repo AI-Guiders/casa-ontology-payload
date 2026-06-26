@@ -42,7 +42,7 @@ class ConceptIndexTests(unittest.TestCase):
     def test_touch_edges_on_bind(self) -> None:
         state = self._state()
         blocks = [
-            block_dict("lex.ru.apelsin", "апельсин", source="kb", score=12),
+            block_dict("lemma.ru.apelsin", "апельсин", source="kb", score=12),
         ]
         from casa.prisms.memory.concept_layer import normalize_bind_blocks
 

@@ -44,8 +44,8 @@ def _ready() -> tuple[dict, dict]:
 
 def test_affordances_inherited_along_isa() -> None:
     state, _ = _ready()
-    assert affordances_of(state, LAT, "lex.apple") == {"edible", "positionable"}
-    assert affordances_of(state, LAT, "lex.table") == {"positionable", "support_surface"}
+    assert affordances_of(state, LAT, "concept.apple") == {"edible", "positionable"}
+    assert affordances_of(state, LAT, "concept.table") == {"positionable", "support_surface"}
 
 
 def test_validation_is_cross_lingual_and_same_map() -> None:

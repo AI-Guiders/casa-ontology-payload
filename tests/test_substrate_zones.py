@@ -64,6 +64,89 @@ class SubstrateZonesTests(unittest.TestCase):
         self.assertTrue(any(str(h).startswith("percept.") for h in hints))
         self.assertTrue(any("lang.word.привет" == h for h in hints))
 
+    def test_perceptual_prepare_life_sensory_coactive(self) -> None:
+        from casa.prisms.perceptual import merge_digest_with_perceptual_turn, perceptual_prepare_life_sensory
+
+        state: dict = {}
+        spawn_perceptual_zone(state)
+        rep = perceptual_prepare_life_sensory(
+            state,
+            stream_id="ch00-kolgotki",
+            seq=3,
+            t_rel=9.5,
+            visual_delta=0.25,
+            audio_active=True,
+            audio_placements=4,
+        )
+        hints = rep.get("concept_hints") or []
+        self.assertIn("percept.av.coactive", hints)
+        self.assertIn("percept.vis.motion", hints)
+        self.assertIn("percept.listen.active", hints)
+        from casa.prisms.control.sn_cen_runtime import FieldDigest
+
+        digest = merge_digest_with_perceptual_turn(
+            FieldDigest(concept_ids=["field.seed"], edge_tokens=[], concept_scores={"field.seed": 1.0}),
+            state,
+        )
+        self.assertIn("percept.av.coactive", digest.concept_ids)
+
+    def test_affect_after_listen_tick_emergent(self) -> None:
+        from casa.prisms.affect import affect_after_listen_tick, core_affect_state, spawn_emotional_zone
+
+        state: dict = {}
+        spawn_emotional_zone(state)
+        before = core_affect_state(state).axes.to_dict()
+        rep = affect_after_listen_tick(
+            state,
+            "scene-ch00",
+            visual_delta=0.2,
+            coactive=True,
+            surprise=True,
+        )
+        after = core_affect_state(state).axes.to_dict()
+        self.assertIn("prediction_error", rep.drivers)
+        self.assertIn("motion", rep.drivers)
+        self.assertIn("av_coactive", rep.drivers)
+        self.assertGreater(after["arousal"], before["arousal"])
+
+    def test_affect_after_listen_scene_theme_legacy(self) -> None:
+        from casa.prisms.affect import affect_after_listen_scene, core_affect_state, spawn_emotional_zone
+
+        state: dict = {}
+        spawn_emotional_zone(state)
+        before = core_affect_state(state).axes.arousal
+        affect_after_listen_scene(
+            state,
+            "lalabook-ch00",
+            scene={"collection": "emotions", "caption": "Колготки"},
+        )
+        after = core_affect_state(state).axes.arousal
+        self.assertGreater(after, before)
+
+    def test_perceptual_prepare_life_tick_merges_text_and_sensory(self) -> None:
+        from casa.prisms.perceptual import perceptual_prepare_life_sensory, perceptual_prepare_life_tick
+
+        state: dict = {}
+        spawn_perceptual_zone(state)
+        perceptual_prepare_life_sensory(
+            state,
+            stream_id="ch00",
+            seq=1,
+            t_rel=9.0,
+            visual_delta=0.3,
+            audio_active=True,
+            aud_window_id="w1",
+            vis_frame_id="f1",
+        )
+        rep = perceptual_prepare_life_tick(state, user_query="привет", preserve_existing=True)
+        assert rep is not None
+        hints = rep.get("concept_hints") or []
+        self.assertIn("percept.av.coactive", hints)
+        self.assertTrue(any(str(h).startswith("lang.word.") for h in hints))
+        mods = rep.get("modalities") or []
+        self.assertIn("text_stream", mods)
+        self.assertIn("visual_stream", mods)
+
     def test_linguistic_tract_boosts_with_lang_hints(self) -> None:
         state: dict = {}
         spawn_linguistic_zone(state)

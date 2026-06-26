@@ -2,7 +2,7 @@
 
 **Status:** proposed (draft)  
 **Date:** 2026-06-09  
-**Related:** ADR-0061 (linguistic zone), ADR-0068/0069 (memory kinds), ADR-0070 (forgetting λ), ADR-0062/0072 (genome / fork), ADR-0065 (promote / distill), ADR-0036 (morphology — design ref), [meta_concept_aliases.py](../casa/prisms/memory/meta_concept_aliases.py), [design/РЕКОМЕНДАЦИИ-Von-Neumann.md](РЕКОМЕНДАЦИИ-Von-Neumann.md) §5, [agent-existence-north-star.md](agent-existence-north-star.md)
+**Related:** ADR-0061 (linguistic zone), ADR-0068/0069 (memory kinds), ADR-0070 (forgetting λ), ADR-0062/0072 (genome / fork), ADR-0065 (promote / distill), ADR-0036 (morphology — design ref), [CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md) (Built-In vs Self-Earned, supersede bootstrap), [meta_concept_aliases.py](../casa/prisms/memory/meta_concept_aliases.py), [design/РЕКОМЕНДАЦИИ-Von-Neumann.md](РЕКОМЕНДАЦИИ-Von-Neumann.md) §5, [agent-existence-north-star.md](agent-existence-north-star.md)
 
 **Neuroscience refs (external):** Quian Quiroga et al., *Nature* 435 (2005) — invariant concept cells, MTL; multimodal percepts (PMC3032396); perspective *Neuron* 2026. ML: «Separating Tongue from Thought» (ACL 2025); cross-lingual shared neurons (ACL 2025); brain–LM shared conceptual space (arXiv:2506.20489).
 
@@ -78,14 +78,17 @@ CASA **не** копирует LLM на hot path. Concept layer — это **con
 
 ```text
 concept:{id}                    ← «concept cell» (sparse, invariant, provenance hub)
-├── lex.ru.surface → "апельсин"   grapheme/syllable lattices (lexicon-ru)
-├── lex.en.surface → "orange"     grapheme/syllable lattices (lexicon-en)
+├── lemma.ru.{slug} → "апельсин"   dictionary lemma (NOT every inflected form)
+├── lemma.en.{slug} → "orange"
+├── word forms in text            ← parse / morph (0081 L1), not concept catalog rows
 ├── vis.frame_id   → retinal cue  (prism_visual)
 ├── audio.*        → (future perceptual)
 └── meta.morph.*   → paradigm hooks (0036 — inflection as lex layer, not concept)
 
 discourse.ru.* / discourse.en.*   ← compose realizers (0056), NOT concept identity
 ```
+
+**Amended (0085, 2026-06-22):** префикс **`lemma.ru.*` / `lemma.en.*`** = **lemma slot** к hub (rename от lab `lex.ru.*` / `lex.en.*` — не путать с `lex.*` hub identity в concept graph); слово-формы («столе», «апельсинами») — **не** отдельные `concept.*`. См. [0085 §2.1](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md).
 
 **Invariant:** один `concept:orange` активируется от RU-текста, EN-текста и vis-cue **через разные lex/vis edges**, но **один** concept token в bind budget.
 
@@ -94,13 +97,15 @@ discourse.ru.* / discourse.en.*   ← compose realizers (0056), NOT concept iden
 | Layer | Prefix | Example | Memory kind (0068/0069) |
 |-------|--------|---------|-------------------------|
 | **Concept** | `concept.` | `concept.orange`, `concept.window` | **immutable** @ `domains.concept` (bootstrap or earned) |
-| **Lexeme RU** | `lex.ru.` | `lex.ru.apelsin` → `concept.orange` | explicit.semantic |
-| **Lexeme EN** | `lex.en.` | `lex.en.orange` → `concept.orange` | explicit.semantic |
+| **Lemma RU** | `lemma.ru.` | `lemma.ru.apelsin` → `concept.orange` | explicit.semantic (lemma id; forms via morph/parse) |
+| **Lemma EN** | `lemma.en.` | `lemma.en.orange` → `concept.orange` | explicit.semantic |
 | **Meta (grammar/epistemic)** | `lang.meta.` | `lang.meta.compare.greater` | immutable @ `domains.lang` |
 | **Discourse frame** | `discourse.{locale}.` | `discourse.ru.self` (migrate from `ru.dialog.self`) | explicit / sandbox |
-| **Legacy** | `lang.word.*`, `ru.*` | read-path aliases only | migrate → concept+lex |
+| **Legacy lexicon** | `lang.word.*`, `ru.*` | **domains.lang** store — **not** Concept Built-In; no new concept identity | coexist until separate lexicon migration |
 
-**Anti-pattern:** новые `lang.word.{russian_surface}` как **identity** концепта.
+**Anti-pattern:** новые `lang.word.{russian_surface}` как **identity** концепта в Concept Zone / curriculum teach.
+
+**Anti-pattern:** хранить каждую слово-форму как отдельный `concept.*` hub вместо lemma + morph.
 
 ### 3. Concept Zone — `memory.immutable.domains.concept` (не intelligence zone)
 
@@ -135,7 +140,7 @@ memory.immutable.domains.concept
 
 | Zone | Read |
 |------|------|
-| linguistic | `concept.*` + `lex.{locale}.*` |
+| linguistic | `concept.*` + `lemma.{locale}.*` |
 | spatial | `concept.*` + vis edges |
 | logical | `concept.*` + math bridges |
 | social | `concept.agent.*`, partner model |
@@ -160,7 +165,7 @@ prism_memory / agent-concept-core   (or shared concept lattice in memory zone)
 
 ```text
 percept (text/vis) → locale surface tokens
-                  → lex.{locale}.* lookup → concept.*
+                  → lemma.{locale}.* lookup → concept.*
                   → bind budget on concept.* (NOT on surface string)
                   → discourse.{locale}.* realizers for utterance
 ```
@@ -172,7 +177,7 @@ percept (text/vis) → locale surface tokens
 | Object | Forgetting @ healthy | Notes |
 |--------|----------------------|-------|
 | `concept.*` hub @ **Concept Zone** | λ=0; demote/supersede ceremony only | immutable `domains.concept` |
-| `lex.ru.*` / `lex.en.*` | normal episodic / priming | «забыл слово», не «забыл апельсин» |
+| `lemma.ru.*` / `lemma.en.*` | normal episodic / priming | «забыл слово», не «забыл апельсин» |
 | weak lex → strong concept | bind через concept hub | vis + один lex достаточно для compose |
 | `lang.meta.*` bootstrap | λ=0 | 0069 |
 
@@ -189,7 +194,7 @@ percept (text/vis) → locale surface tokens
 ### 8. Distillation (0065 / рекомендации §4)
 
 ```text
-LLM draft frame → adversarial gate (0037 ref) → candidate concept.orange + lex.ru.*
+LLM draft frame → adversarial gate (0037 ref) → candidate concept.orange + lemma.ru.*
   → promote_canon (0069) → immutable OR explicit with high θ
 ```
 
@@ -207,7 +212,7 @@ Runtime **без** LLM. Concept layer **усиливает** gating: promote п�
 |-------|------|------|
 | **Cross-surface activation** | bind на `concept.orange` от RU text, EN text, vis — **same concept id** in provenance | разные concept ids за одну идею |
 | **Sparse invariant** | concept hub degree bounded; no «every lexeme is its own concept» | >80% lexemes without concept hub @ teaching store |
-| **Lex-only forget** | decay `lex.en.*` does **not** drop `concept.*` votes below compose threshold if `lex.ru.*`+vis hold | concept votes collapse when one lex fades |
+| **Lemma-only forget** | decay `lemma.en.*` does **not** drop `concept.*` votes below compose threshold if `lemma.ru.*`+vis hold | concept votes collapse when one lemma fades |
 | **Locale router** | swap locale table EN; **same** concept bind for «window» / «окно» | duplicate `ru.prop` / `en.prop` logic in code |
 
 **Артефакт:** `concept_honesty_report.json` @ P18f.
@@ -220,7 +225,7 @@ Runtime **без** LLM. Concept layer **усиливает** gating: promote п�
 
 | Legacy | Target |
 |--------|--------|
-| `lang.word.apelsin` | `concept.orange` + `lex.ru.apelsin` |
+| `lang.word.apelsin` | `concept.orange` + `lemma.ru.apelsin` |
 | `lang.meta.*` | **keep** (already concept-like) |
 | `ru.dialog.self` | `discourse.ru.self` + bind `concept.agent.self` |
 | `ru.prop.*` | `concept.*` + `discourse.ru.*` realizer |
@@ -263,7 +268,7 @@ Runtime **без** LLM. Concept layer **усиливает** gating: promote п�
 | Phase | Action | Depends |
 |-------|--------|---------|
 | **P18a** | ADR-0073 + manifest `concept_layer` + `immutable.domains.concept` | **P12g–h** |
-| **P18b** | `concept.*` / `lex.{ru,en}.*` schema + alias read path | P18a |
+| **P18b** | `concept.*` / `lemma.{ru,en}.*` schema (clean cut; no `lex.*` hub) | P18a |
 | **P18c** | migrate top N teaching concepts → **Concept Zone bootstrap** | P18b |
 | **P18d** | bind budget on `concept.*`; provenance shows concept id | P11 wire |
 | **P18e** | locale tables for intent (`discourse.{locale}.*`) | P18d |

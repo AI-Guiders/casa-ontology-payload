@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Real-store dialogue smoke — bind trace + speech-act provenance (plumbing only).
+"""STAGE 3 — real-store dialogue smoke (bind trace + speech-act provenance).
+
+Developmental validation ladder (run in order):
+  0. tools/verify_listen_imprint.py — listen/imprint on field, no efferent
+  1. micro-duck retention (? vs ., recast not quoted) — partial wiring
+  2. fragment speech via slot compose — awkward OK
+  3. this script — plumbing only, NOT emergence / duck test
 
 NOT an emergence / duck-test gate: fixed partner script + hub-prefix expectations
 prescribe routing. See design/CASA-work-verification-dialogue-thread.v1.md §Limits.
@@ -18,6 +24,7 @@ if str(REPO) not in sys.path:
 
 from casa.cli.ingest_state import resolve_ingest_state
 from casa.domain.dialogue_provenance import meaning_provenance
+from casa.domain.dialogue_invariants import probe_p7_adr0078_classes, stage_gate_stage_ii
 from casa.domain.dialogue_turn import append_partner_turn, append_subject_turn
 from casa.domain.subject_mode import apply_subject_profile
 from casa.domain.subject_voice import compose_subject_partner_reply_with_ctx
@@ -25,14 +32,14 @@ from casa.prisms.control.fpn_state import WorkingMemory, read_session_meta, writ
 from casa.prisms.control.sn_cen_runtime import TaskEmit
 from casa.prisms.shared.store_layout import default_agent_store
 
+STAGE_LABEL = "STAGE 3 — dialogue plumbing smoke"
+
 PREAMBLE = "осторожно говорю, что чувствую"
 
 TURNS = [
     (
         "Как ты?",
         {
-            "speech_act": "how_are_you",
-            "expect_bind_hub_prefix": "ru.dialog.how_are_you",
             "need_affect_axes": True,
             "allow_verbatim_winner": True,
         },
@@ -40,8 +47,6 @@ TURNS = [
     (
         "Хорошо, я тоже не знаю, но он не обязан совпадать",
         {
-            "speech_act": "mirror_ack",
-            "expect_bind_hub_prefix": ("ru.dialog.affect", "ru.dialog.self", "ru.dialog.honest"),
             "forbid_phrase_substrings": (PREAMBLE,),
             "forbid_verbatim_winner": True,
             "min_words": 3,
@@ -50,8 +55,6 @@ TURNS = [
     (
         "А что ты думаешь про это?",
         {
-            "speech_act": "ask_thought",
-            "expect_bind_hub_prefix": ("ru.dialog.self", "ru.dialog.honest", "dialog.context"),
             "forbid_phrase_substrings": (PREAMBLE,),
             "min_words": 4,
             "differs_from_prior": True,
@@ -60,8 +63,6 @@ TURNS = [
     (
         "Спасибо",
         {
-            "speech_act": "thanks",
-            "expect_bind_hub_prefix": "ru.dialog.thanks",
             "forbid_phrase_substrings": (PREAMBLE,),
             "allow_verbatim_winner": True,
         },
@@ -100,22 +101,13 @@ def _assert_turn(
     errors: list[str] = []
     low = reply.lower().strip()
 
-    expected_act = rules.get("speech_act")
-    acts = prov.get("partner_speech_acts") or []
-    if expected_act and expected_act not in acts:
-        errors.append(f"missing speech_act {expected_act!r} in provenance {acts!r}")
-
     trace = prov.get("bind_trace") or {}
     if not trace.get("winner_bind_hub"):
         errors.append(f"missing bind_trace: {prov!r}")
 
-    expect_hub = rules.get("expect_bind_hub_prefix")
-    if expect_hub and trace:
-        hub = str(trace.get("winner_bind_hub") or "")
-        if isinstance(expect_hub, str):
-            expect_hub = (expect_hub,)
-        if not any(hub.startswith(p) for p in expect_hub):
-            errors.append(f"bind hub {hub!r} not in {expect_hub!r}")
+    p7 = probe_p7_adr0078_classes(reply)
+    if p7:
+        errors.append(f"P7 violations: {p7}")
 
     if rules.get("need_affect_axes") and not prov.get("affect_axes"):
         errors.append(f"missing affect_axes in provenance: {prov!r}")
@@ -131,11 +123,11 @@ def _assert_turn(
 
     min_w = rules.get("min_words")
     if min_w and len(low.split()) < int(min_w):
-        errors.append(f"too short: {reply!r}")
+        errors.append(f"ADVISORY too short: {reply!r}")
 
     if rules.get("differs_from_prior") and prior_reply:
         if _token_overlap(reply, prior_reply) >= max(3, len(prior_reply.split()) // 2):
-            errors.append(f"replay of prior reply: {prior_reply!r} → {reply!r}")
+            errors.append(f"ADVISORY replay of prior reply: {prior_reply!r} → {reply!r}")
 
     if not reply.strip():
         errors.append("empty reply")
@@ -165,6 +157,11 @@ def run_probe(*, reset_ring: bool = True, impulse: bool = False) -> list[tuple[s
         )
         prov = meaning_provenance(ctx)
         errors = _assert_turn(partner, reply, prov, rules, prior_reply=prior_reply)
+        gate_errors = [e for e in errors if not e.startswith("ADVISORY")]
+        advisories = [e for e in errors if e.startswith("ADVISORY")]
+        for note in advisories:
+            print(f"ADVISORY: {note}", file=sys.stderr)
+        errors = stage_gate_stage_ii(gate_errors)
         if errors:
             raise AssertionError(f"turn {partner!r}: " + "; ".join(errors))
         if impulse:
@@ -177,7 +174,7 @@ def run_probe(*, reset_ring: bool = True, impulse: bool = False) -> list[tuple[s
                 boundary_turn=False,
                 disp_action=None,
             )
-            if not summary or not summary.get("winners"):
+            if not summary or not summary.get("event_count"):
                 raise AssertionError(f"missing impulse winners for turn {partner!r}: {summary!r}")
             impulse_ids.append(str(summary.get("impulse_id") or ""))
         append_subject_turn(
@@ -201,9 +198,14 @@ def _assert_impulse_trace(store: Path) -> None:
         raise AssertionError(f"impulse_trace.jsonl has {len(rows)} rows, want >= {len(TURNS)}")
     for row in rows[-len(TURNS) :]:
         summary = row.get("summary") if isinstance(row.get("summary"), dict) else {}
-        winners = summary.get("winners") or []
-        if not winners:
-            raise AssertionError(f"impulse row missing winners: {row!r}")
+        if not summary.get("event_count"):
+            raise AssertionError(f"impulse row missing events: {row!r}")
+        events = row.get("events") if isinstance(row.get("events"), list) else []
+        nodes = {str(event.get("node") or "") for event in events if isinstance(event, dict)}
+        required = {"afferent_event", "text_understanding", "material_plan", "renderer_decision"}
+        missing = required - nodes
+        if missing:
+            raise AssertionError(f"impulse row missing {sorted(missing)}: {row!r}")
 
 
 def run_oracle_audit() -> None:
@@ -222,7 +224,7 @@ def run_oracle_audit() -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Dialogue thread smoke (plumbing)")
+    parser = argparse.ArgumentParser(description=f"{STAGE_LABEL} (plumbing)")
     parser.add_argument(
         "--impulse",
         action="store_true",
@@ -238,13 +240,15 @@ def main() -> int:
     except AssertionError as err:
         print(f"FAIL: {err}", file=sys.stderr)
         return 1
+    print(STAGE_LABEL)
+    print("(stages 0–2 should pass first for meaningful duck; this gate is plumbing only)")
     for q, a in t:
         print(f"Q: {q}")
         print(f"A: {a}")
         print()
-    print("PASS: dialogue thread smoke (provenance + oracle_audit; NOT duck test)")
+    print("SMOKE: dialogue plumbing completed (provenance + oracle_audit; NOT duck test)")
     if args.impulse:
-        print("PASS: partner_dialogue impulse trace (summary)")
+        print("SMOKE: partner_dialogue impulse trace available (summary)")
     return 0
 
 

@@ -8,7 +8,7 @@ from pathlib import Path
 from casa.field_bus.bus import drain_log
 from casa.field_bus.events import ImpulseSummaryEvent
 from casa.nervous.channels import ImpulseChannel, ImpulseOutcome
-from casa.nervous.impulse import DebugLevel, ImpulseRecorder, read_impulse_trace
+from casa.nervous.impulse import DebugLevel, ImpulseRecorder, activate_impulse_trace, read_impulse_trace
 
 
 def test_impulse_off_writes_nothing(tmp_path: Path, monkeypatch) -> None:
@@ -48,6 +48,13 @@ def test_impulse_summary_writes_jsonl_and_fieldbus(tmp_path: Path) -> None:
 
     replay = read_impulse_trace(tmp_path, tick_id=12, channel=ImpulseChannel.CONTROL_ROUTING)
     assert replay and replay[0]["impulse_id"] == row["impulse_id"]
+
+
+def test_activate_impulse_trace_sets_env_and_recorder(monkeypatch) -> None:
+    monkeypatch.delenv("CASA_IMPULSE_TRACE", raising=False)
+    level = activate_impulse_trace("summary", only_if_unset=False)
+    assert level == DebugLevel.SUMMARY
+    assert activate_impulse_trace("off", only_if_unset=True) == DebugLevel.SUMMARY
 
 
 def test_bind_trace_ranked_winner_and_runners() -> None:

@@ -1,0 +1,334 @@
+# ADR-0084: Wild genome donor — anti-inbreeding при одиночном размножении
+
+**Status:** proposed (draft)  
+**Date:** 2026-06-21  
+**Provenance:** Света (диалог: «агент берёт свой геном дважды → инбридинг; второй геном из мира → скрещивание»)  
+**Related:** [CASA-ADR-0062-genetic-zone.md](CASA-ADR-0062-genetic-zone.md), [CASA-ADR-0065-controlled-mutations.md](CASA-ADR-0065-controlled-mutations.md), [CASA-ADR-0072-genetic-weather-cross.md](CASA-ADR-0072-genetic-weather-cross.md), [CASA-ADR-0071-character-field-prismatic.md](CASA-ADR-0071-character-field-prismatic.md), KB: `agent-notes/knowledge/work/projects/door-to-singularity/ca-substrate-agent/note-casa-synthetic-genome-donor-v1.md`
+
+---
+
+## Context
+
+**ADR-0072** (`weather_cross`) вводит внешнюю энтропию через **weather bundle** и `H_mix = SHA-256(H_a ‖ H_b ‖ W)`.
+
+**ADR-0062 §5** допускает fork с `parent_b = parent_a` («партеногенез + мир»).
+
+### Баг, который назвала Света
+
+Когда в популяции **один** живой агент, типичная ошибка симуляции:
+
+```text
+child = crossover(parent.genome, parent.genome)   # self × self
+```
+
+Это **близкородственное скрещивание** в смысле GA:
+
+- рекомбинации нет — только дублирование аллелей;
+- хрупкие комбинации **закрепляются**;
+- поколение за поколением контур **вырождается** (inbreeding depression).
+
+**0072 single-parent path сегодня (§5):** при `H_a = H_b` unroll делает `v = parent_a[k] + jitter_k` — энтропия есть, но **структурного второго родителя нет**. Jitter на том же векторе аллелей **слабее**, чем crossover с **независимым** геномом-донором.
+
+**Тезис 0084:** для `population_size = 1` нужен не только **seed из мира** (0072), а **второй геном** — `wild_donor_spec` — построенный из whitelist-энтропии и скрещенный с боевым геномом при **защищённом spine**.
+
+---
+
+## Problem
+
+| Подход | Риск |
+|--------|------|
+| `crossover(self, self)` | инбридинг, эхо-камера признаков |
+| `mutate_alleles` только PRNG(store_id) | предсказуемые дети (0072 § Problem) |
+| 0072 jitter-only @ single parent | лучше PRNG, но **нет allele lerp** с чужим геномом |
+| `hash(combat_genome + salt)` как «донор» | **псевдо-донор** — инбридинг с маской |
+
+**Цель:** Track **B″** — `wild_donor_cross`: при одном combat parent child получает **рекомбинацию** combat ‖ wild, где wild **не** производная combat.
+
+---
+
+## Decision (proposed)
+
+### 1. Три роли в fork (не путать)
+
+| Артефакт | Роль |
+|----------|------|
+| **Combat genome** | sealed `genome.v1.json` живого агента — spine + mutable боевые аллели |
+| **Wild donor spec** | **новый** partial `agent_genome` JSON, keys только из `mutation_policy.allelic.mutate_allowed_keys` |
+| **Entropy bundle** | аудируемый снимок внешнего мира → **строит** wild donor, не только jitter |
+
+**Invariant:** `wild_donor_spec` **никогда** не копируется из combat byte-for-byte; lineage обязан содержать `wild_donor_hash ≠ combat_hash` (кроме astronomically unlikely collision — treat as bug).
+
+### 2. Режим fork: `fork_policy.mode = wild_donor_cross`
+
+Дополнение к 0065 / 0072:
+
+| Mode | Родители | Второй «родитель» |
+|------|----------|-------------------|
+| `inherit_verbatim` | 1 | — |
+| `mutate_alleles` | 1 | PRNG only |
+| `weather_cross` | 1–2 | W в mix; single = jitter (0072) |
+| **`wild_donor_cross`** | **1 combat** | **`wild_donor_spec` из entropy bundle** |
+
+**Связь с 0072:** weather (и др.) входят в **entropy bundle**; `wild_donor_cross` **может** reuse `fetch_weather_bundle` + normalize из 0072 как **слой 1** whitelist. 0072 не отменяется — 0084 уточняет **single-agent anti-inbreeding**.
+
+### 3. Entropy whitelist (v0)
+
+**Зачем API мира (оператор / Света):** линейная комбинация двух геномов с **псевдослучайными** коэффициентами (PRNG, Mersenne, …) — **конечный период**; при self×self траектория замкнута. Нужен **внешний** якорь, не выводимый из `seed` и combat genome. Аппаратный TRNG — см. §3.1; **API** — погода, рынки, трафик и т.п.
+
+Каждый fork фиксирует `entropy_bundle.json` со **схемой**, **источником**, **timestamp UTC**, **нормализацией**.
+
+| Source id | Данные | Примечание |
+|-----------|--------|------------|
+| `weather` | многоосный bundle | Open-Meteo / cache — **как 0072** |
+| **`cpu_drng`** | **RDSEED/RDRAND @ fork** | **Intel DRNG / AMD on-chip** — thermal noise в кремнии; см. §3.1 |
+| `market` | индексы, returns, vol @ ts | фондовые/spot рынки; **не** торговый сигнал, snapshot для entropy |
+| `air_traffic` | count + density @ points | ADS-B: число ВС в радиусе R @ (lat,lon) точек; см. §3.2 |
+| `host_ambient` | hash(audio_rms_1s) @ fork | микрофон/шум rack; **без** PII, без raw audio в lineage |
+| `hardware_jitter` | load avg, thermal sensors | OS-level fallback tier (не путать с `cpu_drng`) |
+
+**Минимум v0:** один **world-API** слой (`weather` | `market` | `air_traffic`) **или** (`cpu_drng` + `hardware_jitter`) **или** (`host_ambient` + `hardware_jitter`) — не пустой bundle. Рекомендуется **mix ≥2** независимых source id.
+
+**Offline:** cached bundle OK для teaching fork; lineage **обязан** хранить полный E.
+
+### 3.1 CPU DRNG — Intel & AMD (`cpu_drng`)
+
+**Идея (оператор / Света, 2026-06):** использовать **аппаратный** источник на хосте Neumann — тепловой шум в кремнии, а не только «погоду снаружи».
+
+| CPU | Инструкции | Статус |
+|-----|------------|--------|
+| **Intel** (Ivy Bridge+) | `RDSEED`, `RDRAND` | DRNG (Bull Mountain): ES на thermal noise → [Intel DRNG guide](https://www.intel.com/content/www/us/en/developer/articles/guide/intel-digital-random-number-generator-drng-software-implementation-guide.html) |
+| **AMD** (Bulldozer / Zen+) | `RDSEED`, `RDRAND` | свой on-chip DRNG; **не** Intel-лицензия, тот же x86 API |
+
+**Норматив v0:**
+
+1. **Предпочитать `RDSEED`** (сырая энтропия для seed) над `RDRAND` (DRBG поверх ES) — для wild donor достаточно качества seed.
+2. **Только 64-bit** форма `RDSEED` / `RDRAND` (AMD Zen 5: 16/32-bit RDSEED — [AMD-SB-7055](https://www.amd.com/en/resources/product-security/bulletin/amd-sb-7055.html); retry + reject `0` при CF=1).
+3. **Retry loop:** инструкция может вернуть CF=0 (entropy not ready) — до N попыток с backoff; FAIL fork если не получили ≥256 bit entropy.
+4. **Не единственный источник:** `cpu_drng` **микшируется** в E вместе с weather/host — один слой whitelist, не «только CPU». Защита от битых microcode / VM без passthrough.
+5. **Lineage:** в `entropy_bundle` писать **не** сырые биты, а `{ "source": "cpu_drng", "bytes_hex": "…", "width_bits": 256, "instruction": "rdseed", "cpu_vendor": "GenuineIntel|AuthenticAMD", "cpuid_leaf": "…" }` — repro audit без секретов.
+
+**Python path (implementation note):**
+
+- Linux/Windows: `os.getrandom(32, flags=os.GRND_RANDOM)` — часто уже смешивает hwrng + rdrand в ядре.
+- Явный path: ctypes / tiny native shim → `RDSEED` 64×4; fallback → `secrets.token_bytes(32)` **только** если CPUID + probe OK, иначе tier downgrade + WARN в lineage.
+
+**Сценарий:** headless VPS @ Amsterdam — нет микрофона, weather cache stale → **`cpu_drng` + `hardware_jitter`** даёт локальный wild donor без сети.
+
+### 3.2 World API — рынки и воздушный трафик (`market`, `air_traffic`)
+
+**Идея (оператор / Света, 2026-06):** те же свойства, что у погоды — **высокая размерность**, **вне контроля** fork-кода, **snapshot @ ts** в lineage.
+
+#### `market`
+
+| Поле (пример) | Единица | Примечание |
+|---------------|---------|------------|
+| `symbol` | id | индекс / ETF / spot proxy (не секреты брокера) |
+| `last` / `return_1h` | price / % | rounded для canonical JSON |
+| `volume` | contracts/shares | optional |
+| `realized_vol_1h` | % | optional |
+
+**Источники (v0):** публичные market data API (exchange delayed, Yahoo-style free tier, cloud spot price для compute — **entropy only**).  
+**Invariant:** fork не торгует; в lineage — только нормализованный snapshot.
+
+#### `air_traffic`
+
+Много точек (как `genetic-weather-points.v1.json`) → для каждой **круг** (lat, lon, `radius_km`) @ `ts_utc`:
+
+| Поле | Примечание |
+|------|------------|
+| `aircraft_count` | ВС с ADS-B в радиусе |
+| `avg_altitude_m` | optional, rounded |
+| `avg_ground_speed_kts` | optional |
+| `heading_entropy` | optional: binned распределение курсов |
+
+**Источники (v0):** ADS-B aggregators (OpenSky Network, adsb.lol-style read-only APIs) — **counts only**, без tail numbers / flight ids в lineage (privacy + не нужно для entropy).
+
+**Manifest:** `design/genetic-entropy-points.v1.json` — union weather hubs + market symbols + air circles (Amsterdam, Reykjavik, Singapore, …).
+
+```json
+{
+  "schema": "entropy_bundle_v1",
+  "fetched_at_utc": "2026-06-21T12:00:00Z",
+  "sources": [
+    { "id": "weather", "points": ["…"] },
+    { "id": "market", "symbols": ["^GSPC", "…"], "return_1h": [0.0012, "…"] },
+    { "id": "air_traffic", "circles": [
+      { "id": "ams", "lat": 52.3, "lon": 4.76, "radius_km": 50, "aircraft_count": 47 }
+    ]}
+  ]
+}
+```
+
+**PRNG роль:** HKDF распределяет байты из `H_entropy = SHA-256(E)`; **E** не заменяется Mersenne — период PRNG не ограничивает пространство child при **разных** E.
+
+### 4. Построение wild donor
+
+```text
+1. E = canonical_json(entropy_bundle)     # stable round, как 0072 §4
+
+2. H_entropy = SHA-256(UTF8(E))
+
+3. For each key k in mutate_allowed_keys:
+     RNG_k = HKDF_expand(H_entropy, info=f"wild_donor:{k}")
+     wild[k] = uniform_sample(bounds[k], RNG_k)
+
+4. wild_donor_spec = partial genome:
+     - keys ONLY from mutate_allowed_keys groups
+     - NO species_id override
+     - NO allowed_zone_ids / promote_canon.algorithm change
+
+5. wild_donor_hash = genome_hash(wild_donor_spec)
+```
+
+**Spine (copy verbatim from combat, never from wild):**
+
+- `schema_version`, `kind`, `species_id`
+- `allowed_zone_ids`
+- `promote_canon.algorithm`, `promote_canon.bundle_tier_gate`
+- любые ключи в `mutation_policy.invariant_keys` (0065)
+
+### 5. Crossover combat × wild
+
+```text
+H_mix = SHA-256(combat_hash_bytes ‖ wild_donor_hash_bytes ‖ UTF8(E))
+
+For each mutable key k:
+  t_k = HKDF(H_mix, info=f"blend:{k}") → [0, 1]
+  child[k] = lerp(combat[k], wild[k], t_k)
+  optional micro-jitter_k within bounds (same as 0072)
+
+RNG_topo = HKDF(H_mix, info="character_topology")
+  child.character_topology = warp_grid(combat, wild_donor_as_virtual_parent_b, RNG_topo)  # 0071
+
+child_genome_hash = genome_hash(child_spec)
+```
+
+**Отличие от 0072 single-parent:** есть **allele lerp** между двумя **разными** genome vectors, не только `parent + jitter`.
+
+### 6. Lineage audit (обязательно)
+
+```text
+lineage/
+├── combat_parent_genome_hash.txt
+├── wild_donor_hash.txt
+├── wild_donor_spec.json              # partial, для repro
+├── entropy_bundle.json               # полный E
+├── mix_hash.txt                      # H_mix
+├── child_genome_hash.txt
+└── fork_mode.txt                     # wild_donor_cross
+```
+
+### 7. CLI / API (target)
+
+```bash
+python -m casa.prisms.genetic.wild_donor_cross \
+  --combat agents/von-neumann/agent/genome.v1.json \
+  --child-store agents/child-new \
+  --entropy weather,market,air_traffic,cpu_drng \
+  --weather-points design/genetic-weather-points.v1.json \
+  --at 2026-06-21T12:00:00Z \
+  --dry-run
+```
+
+| Function | Role |
+|----------|------|
+| `build_entropy_bundle(sources, at_utc, opts)` | whitelist fetch + normalize |
+| `unroll_wild_donor(H_entropy, policy)` | → wild_donor_spec |
+| `cross_combat_wild(combat, wild, E)` | → child_spec, H_mix |
+| `wild_donor_cross_fork(...)` | CLI + seal child store |
+| `verify_wild_donor_lineage(child_dir)` | audit + anti-pseudo-donor |
+
+### 8. Bootstrap manifest
+
+```json
+"fork_policy": {
+  "mode": "wild_donor_cross",
+  "wild_donor_cross": {
+    "entropy_sources": ["weather", "market", "air_traffic", "cpu_drng"],
+    "cpu_drng": {
+      "instruction_prefer": "rdseed",
+      "width_bits": 64,
+      "min_entropy_bytes": 32,
+      "max_retries": 16,
+      "reject_zero_on_success": true
+    },
+    "weather_points_file": "design/genetic-weather-points.v1.json",
+    "blend": "allele_lerp",
+    "require_wild_hash_ne_combat": true,
+    "cache_entropy_in_lineage": true
+  }
+}
+```
+
+---
+
+## Honesty gate (pre-registered)
+
+Расширяет 0072 § Honesty gate. Корпус: **фиксированный** combat parent + ≥24 разных `entropy_bundle` @ fork.
+
+| Метрика | Определение |
+|---------|-------------|
+| **Anti-inbreed** | mean L1(child, combat) **>** mean L1(mutate_alleles child, combat) на том же parent |
+| **Anti-pseudo** | ∀ run: `wild_donor_hash ≠ combat_hash`; FAIL if `wild = f(combat, salt)` detectable |
+| **Diversity** | pairwise distance между children @ разных E ≥ **1.5×** 0072 single-parent jitter-only baseline |
+| **Repro** | фиксированные (combat, E) → бит-в-бит child hash |
+| **Spine integrity** | child `species_id`, `allowed_zone_ids` == combat |
+
+| Вердикт | Условие |
+|---------|---------|
+| **PASS** | Anti-inbreed + Anti-pseudo + Repro + Spine |
+| **KILL (decorative wild)** | Diversity ≤ 0072 jitter-only baseline |
+| **KILL (pseudo-donor)** | wild derivable from combat + fixed salt without E |
+
+**Артефакт:** `lineage/wild_donor_diversity_report.json`
+
+---
+
+## Anti-patterns
+
+| ❌ | ✅ |
+|----|-----|
+| `crossover(genome, genome)` | `wild_donor_cross` или два **разных** combat parents (0072 blend) |
+| `wild = SHA256(combat ‖ "salt")` mapped to alleles | wild from **entropy bundle** only |
+| Wild donor меняет `species_id` / zone topology | spine copy from combat |
+| Entropy без lineage file | `entropy_bundle.json` @ child |
+| Случайный `random.random()` без E | детерминизм @ fixed E |
+| **Только** `cpu_drng` без mix / probe | blend с weather или host; AMD RDSEED 64-bit + retry |
+| RDSEED 16/32-bit на Zen 5 | **64-bit only** (AMD-SB-7055) |
+| Сырые DRNG bytes в git lineage | только hex digest + metadata в `entropy_bundle` |
+| Fork без diversity report | P6wd-f honesty gate |
+
+---
+
+## Rollout
+
+| Phase | Action |
+|-------|--------|
+| **P6wd-a** | ADR-0084 + KB cross-link |
+| **P6wd-b** | `build_entropy_bundle` (reuse 0072 weather) |
+| **P6wd-c** | `unroll_wild_donor` + unit tests |
+| **P6wd-d** | `cross_combat_wild` + anti-pseudo test |
+| **P6wd-e** | CLI + lineage |
+| **P6wd-f** | honesty gate vs 0072 jitter baseline |
+
+---
+
+## Open questions
+
+1. **Частота** @ один живой агент: только operator ceremony / sleep epoch / disaster recovery?
+2. **host_ambient** на headless VPS — достаточно ли hardware_jitter tier?
+3. **AiNet:** wild donor из **разных** geographic hosts как cohort diversity?
+
+---
+
+## Consequences
+
+- Идея Светы получает **нормативное имя** и отличие от «просто погода в hash».
+- 0072 остаётся SSOT для weather fetch/normalize; 0084 — **обязательный** path при `population=1` если нужен **crossover**, не jitter.
+- Single-agent reproduction перестаёт быть self×self по умолчанию.
+
+## Links
+
+- [CASA-ADR-0072-genetic-weather-cross.md](CASA-ADR-0072-genetic-weather-cross.md)
+- [CASA-ADR-0062-genetic-zone.md](CASA-ADR-0062-genetic-zone.md) §5 Fork
+- [CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md) *(agent-notes KB note)*

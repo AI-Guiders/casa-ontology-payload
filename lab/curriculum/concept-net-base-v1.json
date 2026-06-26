@@ -1443,135 +1443,135 @@
  "parts": [
   [
    "person",
-   "lex.hand"
+   "concept.hand"
   ],
   [
    "person",
-   "lex.head"
+   "concept.head"
   ],
   [
    "person",
-   "lex.eye"
+   "concept.eye"
   ],
   [
    "person",
-   "lex.foot"
+   "concept.foot"
   ],
   [
    "person",
-   "lex.finger"
+   "concept.finger"
   ],
   [
    "person",
-   "lex.nose"
+   "concept.nose"
   ],
   [
    "person",
-   "lex.ear"
+   "concept.ear"
   ],
   [
    "person",
-   "lex.mouth"
+   "concept.mouth"
   ],
   [
    "person",
-   "lex.heart"
+   "concept.heart"
   ],
   [
    "person",
-   "lex.hair"
+   "concept.hair"
   ],
   [
    "person",
-   "lex.tooth"
+   "concept.tooth"
   ],
   [
    "person",
-   "lex.neck"
+   "concept.neck"
   ],
   [
    "person",
-   "lex.back"
+   "concept.back"
   ],
   [
    "person",
-   "lex.knee"
+   "concept.knee"
   ],
   [
    "person",
-   "lex.tongue"
+   "concept.tongue"
   ],
   [
    "person",
-   "lex.shoulder"
+   "concept.shoulder"
   ],
   [
    "animal",
-   "lex.head"
+   "concept.head"
   ],
   [
    "animal",
-   "lex.eye"
+   "concept.eye"
   ],
   [
    "animal",
-   "lex.foot"
+   "concept.foot"
   ],
   [
    "animal",
-   "lex.heart"
+   "concept.heart"
   ],
   [
    "animal",
-   "lex.tooth"
+   "concept.tooth"
   ],
   [
    "vehicle",
-   "lex.wheel"
+   "concept.wheel"
   ],
   [
-   "lex.car",
-   "lex.engine"
+   "concept.car",
+   "concept.engine"
   ],
   [
-   "lex.car",
-   "lex.door"
+   "concept.car",
+   "concept.door"
   ],
   [
-   "lex.plane",
-   "lex.wing"
+   "concept.plane",
+   "concept.wing"
   ],
   [
-   "lex.plane",
-   "lex.engine"
-  ],
-  [
-   "building",
-   "lex.door"
+   "concept.plane",
+   "concept.engine"
   ],
   [
    "building",
-   "lex.window"
+   "concept.door"
   ],
   [
    "building",
-   "lex.roof"
+   "concept.window"
   ],
   [
-   "lex.house",
-   "lex.room"
+   "building",
+   "concept.roof"
   ],
   [
-   "lex.tree",
-   "lex.branch"
+   "concept.house",
+   "concept.room"
   ],
   [
-   "lex.tree",
-   "lex.leaf"
+   "concept.tree",
+   "concept.branch"
   ],
   [
-   "lex.tree",
-   "lex.root"
+   "concept.tree",
+   "concept.leaf"
+  ],
+  [
+   "concept.tree",
+   "concept.root"
   ]
  ],
  "valid": [

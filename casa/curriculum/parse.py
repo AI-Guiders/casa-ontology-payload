@@ -10,7 +10,7 @@ RULE-BASED parser for simple clauses in the domain, not open-domain understandin
   transitive:  [subject] VERB [object]      «собака ест мясо», «студент читает книгу»
 
 Words are resolved to concepts by exact name, then by a domain stem heuristic (столе ->
-стол -> lex.table) so inflected forms work. The relation comes from the preposition or
+стол -> concept.table) so inflected forms work. The relation comes from the preposition or
 verb (synonyms collapse via normalize_relation). Because the output is a concept graph,
 all three phrasings of one situation parse to the SAME triples — and hence the same
 fingerprint. Role assignment uses preposition position + word order; it is deliberately
@@ -99,7 +99,7 @@ def resolve_token(state: dict, lattice_id: str, token: str, names: list[tuple[st
     c = concept_of(state, lattice_id, token)
     if c:
         return c
-    if script_of(token) == "latn":  # English plural -> singular («files» → lex.file)
+    if script_of(token) == "latn":  # English plural -> singular («files» → concept.file)
         for cand in _en_singulars(token):
             c = concept_of(state, lattice_id, cand)
             if c:
@@ -206,7 +206,7 @@ def parse_situation(
         if not before and after:
             # imperative: the verb precedes every noun -> no subject, agent is implicit «you»,
             # object is the compound head. Gerund headings parse the same («opening a file»).
-            return [(verbs[0][1], "lex.you", head(after))], attrs, polarity, counts, measures
+            return [(verbs[0][1], "concept.you", head(after))], attrs, polarity, counts, measures
         if before and after:  # transitive S-V-O — subject before the verb, object after
             return [(verbs[0][1], before[-1][1], head(after))], attrs, polarity, counts, measures
     return [], attrs, polarity, counts, measures
