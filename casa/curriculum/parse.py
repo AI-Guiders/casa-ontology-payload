@@ -193,6 +193,15 @@ def parse_situation(
     is_ru = bool(re.search(r"[Ѐ-ӿ]", text))
     head = lambda ns: ns[0][1] if is_ru else ns[-1][1]  # noqa: E731
 
+    # habitat: «кошка живёт в доме» — lives_in absorbs the following preposition (one edge,
+    # not action+location), because a home is a habitat, not a container
+    live = [i for i, (k, r) in enumerate(seq) if k == "verb" and r == "lives_in"]
+    if live and preps:
+        subj = [c for ni, c in nouns if ni < live[0]]
+        habitat = [c for ni, c in nouns if ni > preps[0][0]]
+        if subj and habitat:
+            return [("lives_in", subj[-1], habitat[0])], attrs, polarity, counts, measures
+
     # action with a destination: «сохрани файл в папку» — a verb BEFORE a preposition. Two
     # edges: the action and the resultant location of its object («save»: in(file, folder)).
     if verbs and preps and verbs[0][0] < preps[0][0]:
