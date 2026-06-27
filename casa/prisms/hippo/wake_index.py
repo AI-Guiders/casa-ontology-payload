@@ -161,8 +161,14 @@ def hippo_wake_index_tick(
     coactive: bool = False,
     affect_snapshot: dict[str, Any] | None = None,
     modality_tags: list[str] | None = None,
+    record_tick: bool = True,
 ) -> dict[str, Any]:
-    """Index one life-tick into episodic wake buffer (ADR-0088 R2 slice 0/1)."""
+    """Index one life-tick into episodic wake buffer (ADR-0088 R2 slice 0/1).
+
+    When ``record_tick`` is False, only episode/moment boundaries are updated — used
+    before life tick so surprise episodes can attach active ids; call again with
+    ``record_tick=True`` after affect to append the tick row.
+    """
     set_hippo_mode(state, HIPPO_MODE_WAKE)
     idx = ensure_hippo_index(state)
     scene_id = str(scene_id or "").strip()
@@ -189,6 +195,17 @@ def hippo_wake_index_tick(
 
     moment_id = str(idx["active_moment_id"])
     episode_id = str(idx["active_episode_id"])
+    if not record_tick:
+        return {
+            "moment_id": moment_id,
+            "episode_id": episode_id,
+            "scene_id": scene_id,
+            "beat_id": beat_key,
+            "boundaries": boundaries,
+            "hippo_mode": HIPPO_MODE_WAKE,
+            "record_tick": False,
+        }
+
     buf = idx.setdefault("moment_buffer", {}).setdefault(
         moment_id,
         {"scene_id": scene_id, "beat_id": beat_key, "modalities": []},

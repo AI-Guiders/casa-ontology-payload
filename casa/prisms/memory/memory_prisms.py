@@ -309,6 +309,9 @@ def append_episode(
     crosslink_hypotheses: list[dict[str, Any]] | None = None,
     episode_source: str = "wake",
     bind_class: str | None = None,
+    moment_id: str | None = None,
+    episode_id: str | None = None,
+    modality_tags: list[str] | None = None,
 ) -> dict | None:
     state = ensure_cylinders(state)
     if episode_source == "ingest":
@@ -357,6 +360,14 @@ def append_episode(
         "recurrence_seen": 0,
         "min_recurrence": max(1, int(min_recurrence)),
     }
+    if moment_id:
+        ep["moment_id"] = str(moment_id).strip()[:64]
+    if episode_id:
+        ep["episode_id"] = str(episode_id).strip()[:64]
+    if modality_tags:
+        ep["modality_tags"] = [str(x).strip() for x in modality_tags if str(x).strip()][:16]
+    if episode_source:
+        ep["episode_source"] = str(episode_source).strip()[:32]
     if form_extract_allowed:
         ep["form_extract_allowed"] = True
     if allow_teacher_links:

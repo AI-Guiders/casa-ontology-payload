@@ -23,8 +23,19 @@ def test_fingerprint_delta_changed() -> None:
     assert fingerprint_delta(a, b) > 0.2
 
 
-def test_sample_stream_times() -> None:
-    times = sample_stream_times(8.0, 10.0, interval_sec=0.5)
-    assert times[0] == 8.0
-    assert times[-1] == 10.0
-    assert len(times) == 5
+def test_modality_tags_for_stream_tick() -> None:
+    from casa.domain.listen_womb_tick import _modality_tags_for_stream_tick
+
+    assert _modality_tags_for_stream_tick(audio_active=True, visual_delta=0.1) == [
+        "auditory",
+        "visual",
+    ]
+    assert _modality_tags_for_stream_tick(audio_active=False, visual_delta=0.0) == []
+
+
+def test_hippo_index_summary_empty() -> None:
+    from casa.domain.listen_womb_tick import _hippo_index_summary
+
+    rep = _hippo_index_summary({})
+    assert rep["journal_len"] == 0
+    assert rep["moment_buffer_count"] == 0

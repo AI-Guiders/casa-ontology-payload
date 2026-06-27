@@ -30,6 +30,23 @@ from casa.prisms.tick.surprise_policy import (
 )
 
 
+def _active_hippo_wake_ids(state: dict) -> tuple[str | None, str | None, list[str]]:
+    from casa.prisms.hippo.wake_index import ensure_hippo_index
+
+    idx = ensure_hippo_index(state)
+    moment_id = idx.get("active_moment_id")
+    episode_id = idx.get("active_episode_id")
+    mods: list[str] = []
+    if moment_id:
+        buf = idx.get("moment_buffer") or {}
+        row = buf.get(moment_id)
+        if isinstance(row, dict):
+            mods = [str(x) for x in (row.get("modalities") or []) if str(x).strip()]
+    mid = str(moment_id).strip() if moment_id else None
+    eid = str(episode_id).strip() if episode_id else None
+    return mid, eid, mods
+
+
 @dataclass(frozen=True, slots=True)
 class PdcaCheckConfig:
     surprise_episode: bool = True
@@ -91,6 +108,7 @@ def surprise_to_hippo_episode(
     predicted = ", ".join(control.predicted[:8]) or "?"
     observed = ", ".join(control.surprise[:8]) or "?"
     concept_id = primary_surprise_concept(control, user_query=user_query, bundle=bundle)
+    wake_moment_id, wake_episode_id, wake_mods = _active_hippo_wake_ids(state)
     ep = append_episode(
         state,
         cue=cue,
@@ -102,6 +120,10 @@ def surprise_to_hippo_episode(
         scene="predict_surprise",
         structure_tag="predict_mismatch",
         bind_class="bindable_surprise",
+        moment_id=wake_moment_id,
+        episode_id=wake_episode_id,
+        modality_tags=wake_mods or None,
+        episode_source="wake",
     )
     mark_runtime_dirty(state)
     return ep

@@ -71,6 +71,9 @@ class WombTickRecord:
     audio_placements: dict[str, int] | None
     field_version: int
     episode_id: str | None
+    moment_id: str | None = None
+    beat_id: str | None = None
+    hippo_wake: dict[str, Any] | None = None
     life_tick: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
@@ -85,7 +88,11 @@ class WombTickRecord:
             "audio_placements": self.audio_placements,
             "field_version": self.field_version,
             "episode_id": self.episode_id,
+            "moment_id": self.moment_id,
+            "beat_id": self.beat_id,
         }
+        if self.hippo_wake is not None:
+            out["hippo_wake"] = self.hippo_wake
         if self.life_tick is not None:
             out["life_tick"] = self.life_tick
         return out
@@ -99,13 +106,14 @@ class WombStreamReport:
     ticks: list[WombTickRecord] = field(default_factory=list)
     sleep: dict[str, Any] | None = None
     field_version: int = 0
+    hippo_index: dict[str, Any] | None = None
 
     def summary(self) -> dict[str, Any]:
         deltas = [t.visual_delta for t in self.ticks]
         motion_ticks = sum(1 for d in deltas if d >= 0.08)
         life_ticks = [t.life_tick for t in self.ticks if t.life_tick]
         surprise_ticks = sum(1 for rep in life_ticks if rep.get("surprise"))
-        return {
+        out = {
             "scene_id": self.scene_id,
             "stream_id": self.stream_id,
             "tick_count": len(self.ticks),
@@ -118,12 +126,16 @@ class WombStreamReport:
             "field_version": self.field_version,
             "sleep_ran": self.sleep is not None,
         }
+        if self.hippo_index is not None:
+            out["hippo_index"] = self.hippo_index
+        return out
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "summary": self.summary(),
             "ticks": [t.to_dict() for t in self.ticks],
             "sleep": self.sleep,
+            "hippo_index": self.hippo_index,
         }
 
 
@@ -152,6 +164,35 @@ def _life_tick_summary(report: dict[str, Any]) -> dict[str, Any]:
         "sn_mode": report.get("sn_mode"),
         "surprise": bool(surprise),
         "control_value": control.get("value"),
+    }
+
+
+def _modality_tags_for_stream_tick(*, audio_active: bool, visual_delta: float) -> list[str]:
+    tags: list[str] = []
+    if audio_active:
+        tags.append("auditory")
+    if visual_delta > 0.0:
+        tags.append("visual")
+    return tags
+
+
+def _hippo_index_summary(state: dict) -> dict[str, Any]:
+    from casa.prisms.hippo.wake_index import ensure_hippo_index
+
+    idx = ensure_hippo_index(state)
+    journal = idx.get("journal") or []
+    events: dict[str, int] = {}
+    for row in journal:
+        if isinstance(row, dict):
+            ev = str(row.get("event") or "")
+            events[ev] = events.get(ev, 0) + 1
+    return {
+        "active_episode_id": idx.get("active_episode_id"),
+        "active_moment_id": idx.get("active_moment_id"),
+        "active_beat_id": idx.get("active_beat_id"),
+        "moment_buffer_count": len(idx.get("moment_buffer") or {}),
+        "journal_len": len(journal),
+        "journal_events": events,
     }
 
 
@@ -195,6 +236,9 @@ def run_listen_womb_stream(
     )
     prev_fp: frozenset[str] | None = None
     bundle = sleep_bundle or {"claims": [], "graph": {"edges": []}}
+
+    from casa.domain.listen_beat_lookup import resolve_beat_id_at_t_rel
+    from casa.prisms.hippo.wake_index import close_moment_boundary, hippo_wake_index_tick
 
     for seq, t_rel in enumerate(times):
         t_abs = chapter_t0 + t_rel
@@ -252,6 +296,20 @@ def run_listen_womb_stream(
             vis_frame_id=frame_id,
         )
 
+        beat_id = resolve_beat_id_at_t_rel(scene, t_rel)
+        modality_tags = _modality_tags_for_stream_tick(audio_active=audio_active, visual_delta=vis_delta)
+        hippo_wake_index_tick(
+            state,
+            scene_id=sid,
+            beat_id=beat_id,
+            stream_id=stream_id,
+            seq=seq,
+            visual_delta=vis_delta,
+            coactive=bool(percept_rep.get("coactive")),
+            modality_tags=modality_tags,
+            record_tick=False,
+        )
+
         life_rep: dict[str, Any] | None = None
         tick_report: dict[str, Any] | None = None
         if runtime is not None and run_life_tick:
@@ -271,6 +329,22 @@ def run_listen_womb_stream(
             visual_delta=vis_delta,
             coactive=bool(percept_rep.get("coactive")),
             surprise=bool(life_rep and life_rep.get("surprise")),
+        )
+
+        hippo_rep = hippo_wake_index_tick(
+            state,
+            scene_id=sid,
+            beat_id=beat_id,
+            stream_id=stream_id,
+            seq=seq,
+            visual_delta=vis_delta,
+            coactive=bool(percept_rep.get("coactive")),
+            affect_snapshot={
+                "core_axes": affect_rep.core.axes.to_dict(),
+                "drivers": list(affect_rep.drivers),
+            },
+            modality_tags=modality_tags,
+            record_tick=True,
         )
 
         impulse_row: dict[str, Any] | None = None
@@ -343,10 +417,16 @@ def run_listen_womb_stream(
                 audio_duration_ms=int(audio.get("duration_ms") or 0) if audio else None,
                 audio_placements=audio_placements or None,
                 field_version=int(state.get("field_version") or 0),
-                episode_id=str(visual.get("episode_id") or "") or None,
+                episode_id=str(hippo_rep.get("episode_id") or "") or None,
+                moment_id=str(hippo_rep.get("moment_id") or "") or None,
+                beat_id=beat_id,
+                hippo_wake=hippo_rep,
                 life_tick=life_rep,
             )
         )
+
+    if report.ticks:
+        close_moment_boundary(state, reason="stream_end")
 
     if run_sleep_at_end and report.ticks:
         report.sleep = run_sleep(state, bundle=bundle)
@@ -361,6 +441,7 @@ def run_listen_womb_stream(
             )
 
     report.field_version = int(state.get("field_version") or 0)
+    report.hippo_index = _hippo_index_summary(state)
     return state, report
 
 

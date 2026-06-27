@@ -13,7 +13,7 @@ REPO = Path(__file__).resolve().parents[1]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-from casa.domain.listen_womb_tick import run_listen_womb_stream
+from casa.domain.listen_womb_tick import run_listen_womb_stream, _hippo_index_summary
 from casa.nervous.impulse import activate_impulse_trace, read_impulse_trace
 from casa.prisms.auditory.imprint import auditory_tokens_on_field
 from casa.prisms.memory.agent_life import load_unified_agent_runtime, persist_unified_runtime
@@ -115,6 +115,7 @@ def replay_listen_manifest(
             "chapter": ch,
             "summary": report.summary(),
             "field_version": int(state.get("field_version") or 0),
+            "hippo_index": report.hippo_index,
         }
         reports.append(row)
         scenes_log[sid] = {
@@ -130,6 +131,7 @@ def replay_listen_manifest(
         "skipped": skipped,
         "reports": reports,
         "field_version": int(state.get("field_version") or 0),
+        "hippo_index": _hippo_index_summary(state) if reports else None,
     }
     if replay_log:
         replay_log.parent.mkdir(parents=True, exist_ok=True)

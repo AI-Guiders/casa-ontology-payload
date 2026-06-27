@@ -74,6 +74,51 @@ class HippoWakeIndexTests(unittest.TestCase):
         self.assertEqual(rep["episode_id"], active)
         self.assertIsNone(ensure_hippo_index(self.state)["active_episode_id"])
 
+    def test_record_tick_false_then_true(self) -> None:
+        r_prep = hippo_wake_index_tick(
+            self.state, scene_id="scene-a", beat_id="b004", seq=0, record_tick=False
+        )
+        self.assertTrue(r_prep["moment_id"].startswith("mom-"))
+        idx = ensure_hippo_index(self.state)
+        self.assertEqual(len(idx["journal"]), 2)  # episode_opened, moment_opened
+        r_tick = hippo_wake_index_tick(
+            self.state,
+            scene_id="scene-a",
+            beat_id="b004",
+            seq=0,
+            coactive=True,
+            record_tick=True,
+        )
+        self.assertEqual(r_prep["moment_id"], r_tick["moment_id"])
+        buf = idx["moment_buffer"][r_tick["moment_id"]]
+        self.assertEqual(len(buf["ticks"]), 1)
+        self.assertIn("av_coactive", buf["modalities"])
+
+
+class ResolveBeatAtTRelTests(unittest.TestCase):
+    def test_resolve_beat_in_window(self) -> None:
+        from casa.domain.listen_beat_lookup import resolve_beat_id_at_t_rel
+
+        scene = {
+            "beats": [
+                {"id": "b003", "t0": 15.5, "t1": 22.5},
+                {"id": "b004", "t0": 22.5, "t1": 28.0},
+                {"id": "b005", "t0": 28.0, "t1": 30.5},
+            ]
+        }
+        self.assertEqual(resolve_beat_id_at_t_rel(scene, 24.0), "b004")
+        self.assertEqual(resolve_beat_id_at_t_rel(scene, 22.5), "b004")
+        self.assertEqual(resolve_beat_id_at_t_rel(scene, 28.0), "b005")
+        self.assertEqual(resolve_beat_id_at_t_rel(scene, 30.0), "b005")
+        self.assertIsNone(resolve_beat_id_at_t_rel(scene, 10.0))
+        self.assertIsNone(resolve_beat_id_at_t_rel(scene, 31.0))
+
+    def test_last_beat_includes_chapter_end(self) -> None:
+        from casa.domain.listen_beat_lookup import resolve_beat_id_at_t_rel
+
+        scene = {"beats": [{"id": "b042", "t0": 194.25, "t1": 201.0}]}
+        self.assertEqual(resolve_beat_id_at_t_rel(scene, 201.0), "b042")
+
 
 if __name__ == "__main__":
     unittest.main()
