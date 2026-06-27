@@ -40,6 +40,20 @@ def _teach_colors(state: dict) -> None:
     teach_relation(state, LATTICE, "bigger_than", arg1="sizable", arg2="sizable")
 
 
+def _teach_verbs(state: dict) -> None:
+    """Everyday transitive verbs whose constraints aren't in the base ontology yet
+    (wear/use/read/eat/drink already are). Each: an arg2 affordance + the relation."""
+    from casa.curriculum.concept_net import teach_affords, teach_relation
+
+    teach_affords(state, LATTICE, [
+        ("document", "writable"), ("food", "cookable"),
+        ("physical_object", "washable"),  # washing is broadly applicable (an idea is not washable)
+    ])
+    for rel, arg2 in [("write", "writable"), ("cook", "cookable"), ("wash", "washable"),
+                      ("give", "ownable"), ("take", "ownable")]:  # ownable: any physical_object
+        teach_relation(state, LATTICE, rel, arg1="agent", arg2=arg2)
+
+
 def build_meaning_state() -> tuple[dict, str]:
     """Return ``(state, lattice_id)`` with the conceptual network + round-trip grammars taught."""
     from casa.curriculum.clause import teach_clause_constructions
@@ -62,6 +76,7 @@ def build_meaning_state() -> tuple[dict, str]:
 
     teach_software_domain(state, LATTICE, bundle=bundle)  # additive software/UI layer
     _teach_colors(state)  # color_of relation + colour concepts
+    _teach_verbs(state)  # everyday transitive verbs (write/cook/wash/give/take)
     ru = _load("lab/curriculum/ru-rules-v1.json")["rules"]
     en = _load("lab/curriculum/en-rules-v1.json")["rules"]
     for rid in _RU_RULES:

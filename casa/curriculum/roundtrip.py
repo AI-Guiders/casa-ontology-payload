@@ -32,6 +32,13 @@ _TRANS_VERB = {
     "eat": {"ru": "есть", "ru3sg": "ест", "en": "eat"},
     "read": {"ru": "читать", "en": "read"},
     "drink": {"ru": "пить", "ru3sg": "пьёт", "en": "drink"},
+    "wear": {"ru": "носить", "ru3sg": "носит", "ruimp": "надень", "ruimpneg": "носи", "en": "wear"},
+    "use": {"ru": "использовать", "ru3sg": "использует", "ruimp": "используй", "ruimpneg": "используй", "en": "use"},
+    "write": {"ru": "писать", "ru3sg": "пишет", "ruimp": "напиши", "ruimpneg": "пиши", "en": "write"},
+    "cook": {"ru": "готовить", "ru3sg": "готовит", "ruimp": "приготовь", "ruimpneg": "готовь", "en": "cook"},
+    "wash": {"ru": "мыть", "ru3sg": "моет", "ruimp": "помой", "ruimpneg": "мой", "en": "wash"},
+    "give": {"ru": "давать", "ru3sg": "даёт", "ruimp": "дай", "ruimpneg": "давай", "en": "give"},
+    "take": {"ru": "брать", "ru3sg": "берёт", "ruimp": "возьми", "ruimpneg": "бери", "en": "take"},
     # software/UI actions. ``ruimp`` is the Russian (perfective) imperative; ``ruimpneg`` is
     # the imperfective imperative a negative command needs («не закрывай», not «не закрой»).
     # Both are a given lexicon. English imperative is the bare verb (``en``).
