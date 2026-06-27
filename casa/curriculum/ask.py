@@ -48,8 +48,9 @@ def looks_question(text: str) -> bool:
 def _ru_name(state: dict, lattice_id: str, concept: str) -> str:
     from casa.curriculum.concept_net import names_of
 
-    ru = names_of(state, lattice_id, concept)["ru"]
-    return ru[0] if ru else concept.split(".")[-1]
+    base = re.split(r"[\[×{]", concept)[0]  # strip a node token's attrs/count/measure annotations
+    ru = names_of(state, lattice_id, base)["ru"]
+    return ru[0] if ru else base.split(".")[-1]
 
 
 def _edge_re(rel: str | None, src: str | None, dst: str | None) -> re.Pattern[str]:
