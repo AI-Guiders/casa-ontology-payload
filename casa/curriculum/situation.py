@@ -32,6 +32,7 @@ PREDICATE_RELATION: dict[str, str] = {
     "в": "in", "внутри": "in", "in": "in", "inside": "in",
     "у": "near", "около": "near", "рядом": "near", "near": "near", "by": "near", "beside": "near",
     "to": "in", "into": "in",  # destination of an action («save … to the folder» → in)
+    "больше": "bigger_than", "bigger": "bigger_than",  # comparison «слон больше мыши»
     "ест": "eat", "есть": "eat", "eat": "eat", "eats": "eat",
     "пьёт": "drink", "пьет": "drink", "пить": "drink", "drink": "drink", "drinks": "drink",
     "читает": "read", "читать": "read", "read": "read", "reads": "read",

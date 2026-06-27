@@ -26,6 +26,7 @@ _DOMAIN_HINTS = {
     "to", "into",  # action destination
     "красный", "красная", "красное", "белый", "белая", "белое", "чёрный", "чёрная", "чёрное",  # predicative colour
     "зелёный", "зелёная", "зелёное", "red", "white", "black", "green",
+    "больше", "bigger",  # comparison
 }
 
 

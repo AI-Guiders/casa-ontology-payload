@@ -109,6 +109,8 @@ def _ru_oblique(state: dict, lattice_id: str, word: str, case: str) -> str:
     """Decline a Russian noun for an oblique case. Genitive picks the rule by gender
     (ending): consonant -> masc, -о/-е -> neuter, -а/-я -> feminine."""
     if case == "gen":
+        if word.endswith("ь"):
+            return word[:-1] + "и"  # soft-sign feminine genitive: мышь→мыши, дверь→двери
         end = word[-1:]
         rid = (
             "lang.rule.gen-sg-n.ru" if end in "ое"
@@ -296,6 +298,17 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
             body = f"{noun} {'не ' if neg else ''}{ru_adjective(color, noun)}"
         else:
             body = f"the {noun} is {'not ' if neg else ''}{en_adjective(color)}"
+        return body[:1].upper() + body[1:] + "."
+
+    # comparison — «Слон больше мыши.» / «The elephant is bigger than the mouse.»
+    if len(edges) == 1 and edges[0][0] == "bigger_than":
+        _, src, dst = edges[0]
+        x = _word(state, lattice_id, src, lang)
+        y = _word(state, lattice_id, dst, lang)
+        if lang == "ru":
+            body = f"{x} {'не ' if neg else ''}больше {_ru_oblique(state, lattice_id, y, 'gen')}"
+        else:
+            body = f"the {x} is {'not ' if neg else ''}bigger than the {y}"
         return body[:1].upper() + body[1:] + "."
 
     # transitive clause — reuse the bilingual generators (lemmas + relation->verb)
