@@ -29,7 +29,8 @@ _PREPS = {"на", "в", "у", "около", "рядом", "под", "над", "o
           "to", "into"}  # «to/into» — action destination
 _POSITIONAL = {"лежит", "стоит", "находится", "лежать", "стоять", "находиться", "висит",
                "lies", "stands", "sits", "is", "hangs",
-               "сделан", "сделана", "сделано", "сделаны", "made"}  # made_of copula
+               "сделан", "сделана", "сделано", "сделаны", "made",  # made_of copula
+               "than", "чем"}  # comparison connector («bigger than», «больше, чем»)
 _NEG = {"не", "нет", "ни", "not", "don't", "do not", "doesn't", "no", "never"}  # negation markers
 _AND = {"и", "and"}  # coordinator — distributes a role over conjuncts
 

@@ -35,6 +35,9 @@ def _teach_colors(state: dict) -> None:
     teach_affords(state, LATTICE, [("colour_concept", "is_colour"),
                                    ("physical_object", "colorable"), ("digital_object", "colorable")])
     teach_relation(state, LATTICE, "color_of", arg1="colorable", arg2="is_colour")
+    # comparison: «слон больше мыши» — both must be sizable (physical things have a size)
+    teach_affords(state, LATTICE, [("physical_object", "sizable")])
+    teach_relation(state, LATTICE, "bigger_than", arg1="sizable", arg2="sizable")
 
 
 def build_meaning_state() -> tuple[dict, str]:

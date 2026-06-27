@@ -176,6 +176,43 @@ def _answer_color(state: dict, lattice_id: str, toks: list[str]) -> str | None:
     return f"Не знаю, какого цвета «{name}»."
 
 
+def _answer_comparison(state: dict, lattice_id: str, toks: list[str]) -> str | None:
+    """«слон больше мыши?» — yes/no over the bigger_than graph, with transitive inference
+    («слон больше мыши» + «мышь больше муравья» ⊢ «слон больше муравья»)."""
+    if not ("больше" in toks or "bigger" in toks):
+        return None
+    from casa.curriculum.concept_net import concept_of
+    from casa.curriculum.parse import _name_index, resolve_token
+
+    names = _name_index(state, lattice_id)
+    skip = {"больше", "bigger", "than", "чем", "ли", "что", "кто", "what", "who", "is", "the", "или", "or"}
+    nouns = [c for t in toks if t.strip("?.,!") not in skip
+             and (c := (concept_of(state, lattice_id, t) or resolve_token(state, lattice_id, t, names)))]
+    if len(nouns) < 2:
+        return None
+    x, y = nouns[0], nouns[1]
+    pairs = {(s, d) for _, s, d in _scan_memory_full(state, lattice_id, _edge_re("bigger_than", None, None))}
+
+    def reaches(start: str, goal: str) -> bool:  # transitive closure of bigger_than
+        seen, frontier = set(), [start]
+        while frontier:
+            cur = frontier.pop()
+            for s, d in pairs:
+                if s == cur and d not in seen:
+                    if d == goal:
+                        return True
+                    seen.add(d)
+                    frontier.append(d)
+        return False
+
+    xn, yn = _ru_name(state, lattice_id, x), _ru_name(state, lattice_id, y)
+    if reaches(x, y):
+        return f"Да, «{xn}» больше «{yn}»."
+    if reaches(y, x):
+        return f"Нет, наоборот: «{yn}» больше «{xn}»."
+    return f"Не знаю, больше ли «{xn}», чем «{yn}»."
+
+
 def _answer_affordance(state: dict, lattice_id: str, toks: list[str]) -> str | None:
     """«съедобно ли X?» / «можно ли <verb> X?» — does X's type afford the capability?"""
     from casa.curriculum.concept_net import affordances_of, concept_of, relation_roles
@@ -244,7 +281,8 @@ def answer_question(state: dict, lattice_id: str, text: str) -> str | None:
     if not toks:
         return None
     return (
-        _answer_color(state, lattice_id, toks)
+        _answer_comparison(state, lattice_id, toks)
+        or _answer_color(state, lattice_id, toks)
         or _answer_material(state, lattice_id, toks)
         or _answer_affordance(state, lattice_id, toks)
         or _answer_location(state, lattice_id, toks)
