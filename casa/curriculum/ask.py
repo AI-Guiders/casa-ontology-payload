@@ -48,8 +48,9 @@ def looks_question(text: str) -> bool:
 def _ru_name(state: dict, lattice_id: str, concept: str) -> str:
     from casa.curriculum.concept_net import names_of
 
-    ru = names_of(state, lattice_id, concept)["ru"]
-    return ru[0] if ru else concept.split(".")[-1]
+    base = re.split(r"[\[×{]", concept)[0]  # strip a node token's attrs/count/measure annotations
+    ru = names_of(state, lattice_id, base)["ru"]
+    return ru[0] if ru else base.split(".")[-1]
 
 
 def _edge_re(rel: str | None, src: str | None, dst: str | None) -> re.Pattern[str]:
@@ -112,16 +113,28 @@ def _answer_location(state: dict, lattice_id: str, toks: list[str]) -> str | Non
                 return f"{loc[:1].upper() + loc[1:]}: {names_ru}."
             return f"Про «{_ru_name(state, lattice_id, ground)}» я ничего не помню."
 
-    # «где <figure>?» — unbound ground+relation
+    # «где <figure>?» / «где живёт <figure>?» — unbound ground+relation
     if toks[0] in ("где", "where"):
         figs = [c for t in toks[1:] if (c := resolve(t))]
         if figs:
             figure = figs[0]
             edges = _scan_memory_full(state, lattice_id, _edge_re(None, figure, None))
             fname = _ru_name(state, lattice_id, figure)
+            cap = fname[:1].upper() + fname[1:]
+            habitat = "живёт" in toks or "lives" in toks  # «где живёт X?» asks about the home
+            live_edges = [e for e in edges if e[0] == "lives_in"]
+            if habitat and live_edges:
+                from casa.curriculum.roundtrip import _ru_oblique
+
+                dst = live_edges[0][2]
+                return f"{cap} живёт в {_ru_oblique(state, lattice_id, _ru_name(state, lattice_id, dst), 'prep')}."
             if edges:
                 rel, _, dst = edges[0]
-                return f"{fname[:1].upper() + fname[1:]} {_ru_locative(state, lattice_id, rel, dst)}."
+                if rel == "lives_in":
+                    from casa.curriculum.roundtrip import _ru_oblique
+
+                    return f"{cap} живёт в {_ru_oblique(state, lattice_id, _ru_name(state, lattice_id, dst), 'prep')}."
+                return f"{cap} {_ru_locative(state, lattice_id, rel, dst)}."
             return f"Где «{fname}» — я не помню."
     return None
 
@@ -137,6 +150,80 @@ def _scan_memory_full(state: dict, lattice_id: str, pattern: re.Pattern[str]) ->
             if m and pattern.match(edge):
                 out.append((m.group(1), m.group(2), m.group(3)))
     return out
+
+
+def _color_attr_from_memory(state: dict, lattice_id: str, target: str) -> str | None:
+    """A colour adjective attribute on ``target`` in any remembered edge (concept.apple[red])."""
+    from casa.curriculum.attributes import COLOR_IDS
+    from casa.curriculum.situation_store import load_memory
+
+    for rec in load_memory(state, lattice_id)["situations"]:
+        for edge in rec["edges"]:
+            for m in re.finditer(rf"{re.escape(target)}\[([^\]]+)\]", edge):
+                for a in m.group(1).split(","):
+                    if a in COLOR_IDS:
+                        return a
+    return None
+
+
+def _answer_color(state: dict, lattice_id: str, toks: list[str]) -> str | None:
+    """«какого цвета X?» — recall a stated colour (color_of edge) or a colour attribute."""
+    if not (any(t.startswith("цвет") for t in toks) or "color" in toks or "colour" in toks):
+        return None
+    from casa.curriculum.attributes import ru_adjective
+    from casa.curriculum.concept_net import concept_of
+    from casa.curriculum.parse import _name_index, resolve_token
+
+    names = _name_index(state, lattice_id)
+    skip = {"какого", "цвета", "цвет", "какой", "what", "color", "colour", "is", "the", "of"}
+    targets = [c for t in toks if t not in skip
+               and (c := (concept_of(state, lattice_id, t) or resolve_token(state, lattice_id, t, names)))]
+    if not targets:
+        return None
+    target = targets[-1]
+    edges = _scan_memory_full(state, lattice_id, _edge_re("color_of", target, None))
+    color = edges[0][2].split(".")[-1] if edges else _color_attr_from_memory(state, lattice_id, target)
+    name = _ru_name(state, lattice_id, target)
+    if color:
+        return f"{name[:1].upper() + name[1:]} {ru_adjective(color, name)}."
+    return f"Не знаю, какого цвета «{name}»."
+
+
+def _answer_comparison(state: dict, lattice_id: str, toks: list[str]) -> str | None:
+    """«слон больше мыши?» — yes/no over the bigger_than graph, with transitive inference
+    («слон больше мыши» + «мышь больше муравья» ⊢ «слон больше муравья»)."""
+    if not ("больше" in toks or "bigger" in toks):
+        return None
+    from casa.curriculum.concept_net import concept_of
+    from casa.curriculum.parse import _name_index, resolve_token
+
+    names = _name_index(state, lattice_id)
+    skip = {"больше", "bigger", "than", "чем", "ли", "что", "кто", "what", "who", "is", "the", "или", "or"}
+    nouns = [c for t in toks if t.strip("?.,!") not in skip
+             and (c := (concept_of(state, lattice_id, t) or resolve_token(state, lattice_id, t, names)))]
+    if len(nouns) < 2:
+        return None
+    x, y = nouns[0], nouns[1]
+    pairs = {(s, d) for _, s, d in _scan_memory_full(state, lattice_id, _edge_re("bigger_than", None, None))}
+
+    def reaches(start: str, goal: str) -> bool:  # transitive closure of bigger_than
+        seen, frontier = set(), [start]
+        while frontier:
+            cur = frontier.pop()
+            for s, d in pairs:
+                if s == cur and d not in seen:
+                    if d == goal:
+                        return True
+                    seen.add(d)
+                    frontier.append(d)
+        return False
+
+    xn, yn = _ru_name(state, lattice_id, x), _ru_name(state, lattice_id, y)
+    if reaches(x, y):
+        return f"Да, «{xn}» больше «{yn}»."
+    if reaches(y, x):
+        return f"Нет, наоборот: «{yn}» больше «{xn}»."
+    return f"Не знаю, больше ли «{xn}», чем «{yn}»."
 
 
 def _answer_affordance(state: dict, lattice_id: str, toks: list[str]) -> str | None:
@@ -207,7 +294,9 @@ def answer_question(state: dict, lattice_id: str, text: str) -> str | None:
     if not toks:
         return None
     return (
-        _answer_material(state, lattice_id, toks)
+        _answer_comparison(state, lattice_id, toks)
+        or _answer_color(state, lattice_id, toks)
+        or _answer_material(state, lattice_id, toks)
         or _answer_affordance(state, lattice_id, toks)
         or _answer_location(state, lattice_id, toks)
     )

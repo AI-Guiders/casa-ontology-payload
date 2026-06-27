@@ -23,9 +23,24 @@ ADJ_LEXICON: dict[str, dict[str, str]] = {
     "white": {"m": "белый", "n": "белое", "f": "белая"},
     "black": {"m": "чёрный", "n": "чёрное", "f": "чёрная"},
     "green": {"m": "зелёный", "n": "зелёное", "f": "зелёная"},
+    "blue": {"m": "синий", "n": "синее", "f": "синяя"},
+    "yellow": {"m": "жёлтый", "n": "жёлтое", "f": "жёлтая"},
+    "grey": {"m": "серый", "n": "серое", "f": "серая"},
+    "brown": {"m": "коричневый", "n": "коричневое", "f": "коричневая"},
     "big": {"m": "большой", "n": "большое", "f": "большая"},
     "small": {"m": "маленький", "n": "маленькое", "f": "маленькая"},
+    "hot": {"m": "горячий", "n": "горячее", "f": "горячая"},
+    "cold": {"m": "холодный", "n": "холодное", "f": "холодная"},
+    "new": {"m": "новый", "n": "новое", "f": "новая"},
+    "old": {"m": "старый", "n": "старое", "f": "старая"},
+    "clean": {"m": "чистый", "n": "чистое", "f": "чистая"},
+    "dirty": {"m": "грязный", "n": "грязное", "f": "грязная"},
+    "wet": {"m": "мокрый", "n": "мокрое", "f": "мокрая"},
+    "dry": {"m": "сухой", "n": "сухое", "f": "сухая"},
 }
+
+# which attribute ids are colours (vs sizes/qualities) — used by the color_of relation/question
+COLOR_IDS = {"red", "white", "black", "green", "blue", "yellow", "grey", "brown"}
 
 # every surface (English word + the three Russian nominative forms) -> attribute id
 _SURFACE_TO_ID: dict[str, str] = {}

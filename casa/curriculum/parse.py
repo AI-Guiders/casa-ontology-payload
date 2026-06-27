@@ -29,7 +29,8 @@ _PREPS = {"на", "в", "у", "около", "рядом", "под", "над", "o
           "to", "into"}  # «to/into» — action destination
 _POSITIONAL = {"лежит", "стоит", "находится", "лежать", "стоять", "находиться", "висит",
                "lies", "stands", "sits", "is", "hangs",
-               "сделан", "сделана", "сделано", "сделаны", "made"}  # made_of copula
+               "сделан", "сделана", "сделано", "сделаны", "made",  # made_of copula
+               "than", "чем"}  # comparison connector («bigger than», «больше, чем»)
 _NEG = {"не", "нет", "ни", "not", "don't", "do not", "doesn't", "no", "never"}  # negation markers
 _AND = {"и", "and"}  # coordinator — distributes a role over conjuncts
 
@@ -131,7 +132,7 @@ def parse_situation(
     ids («red»), ``counts[cid]`` a plain count («два файла» → 2), and ``measures[cid]`` a
     measure with a unit («5 мл воды» → {value:5, unit:'ml'}) — all bind to the next noun;
     ``polarity`` is ``"neg"`` for a negated clause, else ``"pos"``."""
-    from casa.curriculum.attributes import attr_of_token
+    from casa.curriculum.attributes import COLOR_IDS, attr_of_token
     from casa.curriculum.quantity import number_of_token, unit_of_token
 
     names = _name_index(state, lattice_id)
@@ -192,6 +193,15 @@ def parse_situation(
     is_ru = bool(re.search(r"[Ѐ-ӿ]", text))
     head = lambda ns: ns[0][1] if is_ru else ns[-1][1]  # noqa: E731
 
+    # habitat: «кошка живёт в доме» — lives_in absorbs the following preposition (one edge,
+    # not action+location), because a home is a habitat, not a container
+    live = [i for i, (k, r) in enumerate(seq) if k == "verb" and r == "lives_in"]
+    if live and preps:
+        subj = [c for ni, c in nouns if ni < live[0]]
+        habitat = [c for ni, c in nouns if ni > preps[0][0]]
+        if subj and habitat:
+            return [("lives_in", subj[-1], habitat[0])], attrs, polarity, counts, measures
+
     # action with a destination: «сохрани файл в папку» — a verb BEFORE a preposition. Two
     # edges: the action and the resultant location of its object («save»: in(file, folder)).
     if verbs and preps and verbs[0][0] < preps[0][0]:
@@ -246,6 +256,18 @@ def parse_situation(
             # «удали файл и папку» — coordinated objects (one edge each); else compound head
             objs = [c for _, c in after] if (has_and and len(after) >= 2) else [head(after)]
             return [(verbs[0][1], subject, o) for o in objs], attrs, polarity, counts, measures
+
+    # predicative colour: «яблоко красное» → color_of(apple, concept.red) — a colour adjective
+    # AFTER a noun, with no relation of its own
+    if nouns and not preps and not verbs:
+        color_triples = []
+        for ci, (k, p) in enumerate(seq):
+            if k == "adj" and p in COLOR_IDS:
+                figs = [c for ni, c in nouns if ni < ci]
+                if figs:
+                    color_triples.append(("color_of", figs[-1], f"concept.{p}"))
+        if color_triples:
+            return color_triples, attrs, polarity, counts, measures
     return [], attrs, polarity, counts, measures
 
 

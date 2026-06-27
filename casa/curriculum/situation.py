@@ -32,6 +32,7 @@ PREDICATE_RELATION: dict[str, str] = {
     "в": "in", "внутри": "in", "in": "in", "inside": "in",
     "у": "near", "около": "near", "рядом": "near", "near": "near", "by": "near", "beside": "near",
     "to": "in", "into": "in",  # destination of an action («save … to the folder» → in)
+    "больше": "bigger_than", "bigger": "bigger_than",  # comparison «слон больше мыши»
     "ест": "eat", "есть": "eat", "eat": "eat", "eats": "eat",
     "пьёт": "drink", "пьет": "drink", "пить": "drink", "drink": "drink", "drinks": "drink",
     "читает": "read", "читать": "read", "read": "read", "reads": "read",
@@ -54,6 +55,15 @@ PREDICATE_RELATION: dict[str, str] = {
     "включает": "enable", "включать": "enable", "включить": "enable", "включи": "enable", "включай": "enable", "разрешить": "enable", "разреши": "enable", "enable": "enable", "enables": "enable",
     "install": "install", "installs": "install",
     "скачивает": "download", "скачивать": "download", "скачать": "download", "скачай": "download", "скачивай": "download", "загрузить": "download", "загрузи": "download", "download": "download", "downloads": "download",
+    # everyday transitive verbs
+    "носит": "wear", "носить": "wear", "надень": "wear", "носи": "wear", "надеть": "wear", "wear": "wear", "wears": "wear",
+    "использует": "use", "использовать": "use", "используй": "use", "use": "use", "uses": "use",
+    "пишет": "write", "писать": "write", "напиши": "write", "пиши": "write", "написать": "write", "write": "write", "writes": "write",
+    "готовит": "cook", "готовить": "cook", "приготовь": "cook", "готовь": "cook", "приготовить": "cook", "cook": "cook", "cooks": "cook",
+    "моет": "wash", "мыть": "wash", "помой": "wash", "мой": "wash", "помыть": "wash", "wash": "wash", "washes": "wash",
+    "даёт": "give", "дает": "give", "давать": "give", "дай": "give", "давай": "give", "дать": "give", "give": "give", "gives": "give",
+    "берёт": "take", "берет": "take", "брать": "take", "возьми": "take", "бери": "take", "взять": "take", "take": "take", "takes": "take",
+    "живёт": "lives_in", "живет": "lives_in", "живут": "lives_in", "жить": "lives_in", "lives": "lives_in", "live": "lives_in",
     # English gerund headings — «Opening a file», «Configuring the proxy»
     "opening": "open", "closing": "close", "saving": "save", "deleting": "delete",
     "clicking": "click", "selecting": "select", "editing": "edit", "showing": "show",

@@ -32,6 +32,13 @@ _TRANS_VERB = {
     "eat": {"ru": "есть", "ru3sg": "ест", "en": "eat"},
     "read": {"ru": "читать", "en": "read"},
     "drink": {"ru": "пить", "ru3sg": "пьёт", "en": "drink"},
+    "wear": {"ru": "носить", "ru3sg": "носит", "ruimp": "надень", "ruimpneg": "носи", "en": "wear"},
+    "use": {"ru": "использовать", "ru3sg": "использует", "ruimp": "используй", "ruimpneg": "используй", "en": "use"},
+    "write": {"ru": "писать", "ru3sg": "пишет", "ruimp": "напиши", "ruimpneg": "пиши", "en": "write"},
+    "cook": {"ru": "готовить", "ru3sg": "готовит", "ruimp": "приготовь", "ruimpneg": "готовь", "en": "cook"},
+    "wash": {"ru": "мыть", "ru3sg": "моет", "ruimp": "помой", "ruimpneg": "мой", "en": "wash"},
+    "give": {"ru": "давать", "ru3sg": "даёт", "ruimp": "дай", "ruimpneg": "давай", "en": "give"},
+    "take": {"ru": "брать", "ru3sg": "берёт", "ruimp": "возьми", "ruimpneg": "бери", "en": "take"},
     # software/UI actions. ``ruimp`` is the Russian (perfective) imperative; ``ruimpneg`` is
     # the imperfective imperative a negative command needs («не закрывай», not «не закрой»).
     # Both are a given lexicon. English imperative is the bare verb (``en``).
@@ -109,6 +116,8 @@ def _ru_oblique(state: dict, lattice_id: str, word: str, case: str) -> str:
     """Decline a Russian noun for an oblique case. Genitive picks the rule by gender
     (ending): consonant -> masc, -о/-е -> neuter, -а/-я -> feminine."""
     if case == "gen":
+        if word.endswith("ь"):
+            return word[:-1] + "и"  # soft-sign feminine genitive: мышь→мыши, дверь→двери
         end = word[-1:]
         rid = (
             "lang.rule.gen-sg-n.ru" if end in "ое"
@@ -283,6 +292,41 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
             body = f"{subj} {made} из {_ru_oblique(state, lattice_id, mat, 'gen')}"
         else:
             body = f"the {subj} is made of {mat}"
+        return body[:1].upper() + body[1:] + "."
+
+    # colour predicate — «Яблоко красное.» / «The apple is red.»
+    if len(edges) == 1 and edges[0][0] == "color_of":
+        from casa.curriculum.attributes import en_adjective, ru_adjective
+
+        _, src, dst = edges[0]
+        color = dst.split(".")[-1]  # concept.red -> red
+        noun = _word(state, lattice_id, src, lang)
+        if lang == "ru":
+            body = f"{noun} {'не ' if neg else ''}{ru_adjective(color, noun)}"
+        else:
+            body = f"the {noun} is {'not ' if neg else ''}{en_adjective(color)}"
+        return body[:1].upper() + body[1:] + "."
+
+    # comparison — «Слон больше мыши.» / «The elephant is bigger than the mouse.»
+    if len(edges) == 1 and edges[0][0] == "bigger_than":
+        _, src, dst = edges[0]
+        x = _word(state, lattice_id, src, lang)
+        y = _word(state, lattice_id, dst, lang)
+        if lang == "ru":
+            body = f"{x} {'не ' if neg else ''}больше {_ru_oblique(state, lattice_id, y, 'gen')}"
+        else:
+            body = f"the {x} is {'not ' if neg else ''}bigger than the {y}"
+        return body[:1].upper() + body[1:] + "."
+
+    # habitat — «Кошка живёт в доме.» / «The cat lives in the house.»
+    if len(edges) == 1 and edges[0][0] == "lives_in":
+        _, src, dst = edges[0]
+        x = _word(state, lattice_id, src, lang)
+        h = _word(state, lattice_id, dst, lang)
+        if lang == "ru":
+            body = f"{x} {'не ' if neg else ''}живёт в {_ru_oblique(state, lattice_id, h, 'prep')}"
+        else:
+            body = f"the {x} {'does not live' if neg else 'lives'} in the {h}"
         return body[:1].upper() + body[1:] + "."
 
     # transitive clause — reuse the bilingual generators (lemmas + relation->verb)

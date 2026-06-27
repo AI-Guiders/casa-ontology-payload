@@ -23,6 +23,16 @@ _DOMAIN_HINTS = {
     "on", "in", "near", "by", "under", "eats", "reads", "drinks", "made",
     "open", "close", "save", "delete", "click", "select", "edit",
     "show", "configure", "copy", "move", "create", "rename", "print", "enable", "install", "download", "set", "display",
+    "to", "into",  # action destination
+    "красный", "красная", "красное", "белый", "белая", "белое", "чёрный", "чёрная", "чёрное",  # predicative colour
+    "зелёный", "зелёная", "зелёное", "red", "white", "black", "green",
+    "синий", "синяя", "синее", "жёлтый", "жёлтая", "жёлтое", "серый", "серая", "серое",
+    "коричневый", "коричневая", "коричневое", "blue", "yellow", "grey", "brown",
+    "больше", "bigger",  # comparison
+    "носит", "использует", "пишет", "готовит", "моет", "даёт", "берёт",  # everyday verbs
+    "надень", "напиши", "приготовь", "помой", "дай", "возьми", "используй",
+    "wear", "use", "write", "cook", "wash", "give", "take",
+    "живёт", "живут", "lives", "live",  # habitat
 }
 
 
