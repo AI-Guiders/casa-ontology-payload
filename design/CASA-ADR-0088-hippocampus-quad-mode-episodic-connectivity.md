@@ -208,13 +208,15 @@ WAKE (use)
 |---|-------------|---------|------------|
 | R1 | ADR-0088 + navigator row | — | этот документ |
 | R2 | `moment_id` + episode boundary on **life tick** | listen 0027, orchestrator | journal shows stable episode spans |
-| R3 | `sleep_integrate` stub: distant link pass (deterministic) | R2, ADR-0047 | 1 synthetic A→B link across 2 episodes |
+| R3 | `sleep_integrate`: distant link pass (deterministic, full) | R2, ADR-0047 | b004↔b029 link on ch00 pilot |
 | R4 | `bridges_emergent` probe on life listen stream (not only vis↔math) | R2 | lab report >0 on pilot chapter |
 | R5 | Integrate + consolidate ablation in UC bench | ADR-0009 | retention@N + link recall metric |
 | R6 | Partner provenance sample in efferent | ADR-0081, 5α wire | bind cites `episode_id` / `concept_id` |
 | R7 | `idle_micro` on life activity gap / orchestrator idle | R2, ADR-0023 | journal handoff; micro replay without full merge |
 
-**FSR branch:** R2–R4 могут идти на `fix/neumann-free-speech-recovery` после G0 gate; R5–R7 — следующий merge slice.
+**Execution plan (full impl, not stub):** [CASA-scratch-phase0-quad-mode-implementation-v1.md](CASA-scratch-phase0-quad-mode-implementation-v1.md)
+
+**FSR branch:** R2–R7 on `fix/neumann-free-speech-recovery` as **Phase 0 understanding**; kolgotki mass replay after duck test (b004↔b029).
 
 ---
 
@@ -253,3 +255,4 @@ Free speech = **motor + partner efferent** из накопленного пол�
 |------|-----------|
 | 2026-06-25 | Draft ADR-0088 (оператор + агент, post-FSR modalities) |
 | 2026-06-25 | Четвёртый режим `idle_micro`; rename `…-quad-mode-…`; scope = life, не womb |
+| 2026-06-25 | Execution scratch phase0 full impl; roadmap R2–R7 = Phase 0 (operator) |
