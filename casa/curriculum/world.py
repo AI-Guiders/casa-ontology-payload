@@ -48,10 +48,12 @@ def _teach_verbs(state: dict) -> None:
     teach_affords(state, LATTICE, [
         ("document", "writable"), ("food", "cookable"),
         ("physical_object", "washable"),  # washing is broadly applicable (an idea is not washable)
+        ("place", "habitat"),  # animals live in places («кошка живёт в доме»)
     ])
     for rel, arg2 in [("write", "writable"), ("cook", "cookable"), ("wash", "washable"),
                       ("give", "ownable"), ("take", "ownable")]:  # ownable: any physical_object
         teach_relation(state, LATTICE, rel, arg1="agent", arg2=arg2)
+    teach_relation(state, LATTICE, "lives_in", arg1="agent", arg2="habitat")
 
 
 def build_meaning_state() -> tuple[dict, str]:

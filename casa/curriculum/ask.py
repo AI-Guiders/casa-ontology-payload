@@ -113,16 +113,28 @@ def _answer_location(state: dict, lattice_id: str, toks: list[str]) -> str | Non
                 return f"{loc[:1].upper() + loc[1:]}: {names_ru}."
             return f"Про «{_ru_name(state, lattice_id, ground)}» я ничего не помню."
 
-    # «где <figure>?» — unbound ground+relation
+    # «где <figure>?» / «где живёт <figure>?» — unbound ground+relation
     if toks[0] in ("где", "where"):
         figs = [c for t in toks[1:] if (c := resolve(t))]
         if figs:
             figure = figs[0]
             edges = _scan_memory_full(state, lattice_id, _edge_re(None, figure, None))
             fname = _ru_name(state, lattice_id, figure)
+            cap = fname[:1].upper() + fname[1:]
+            habitat = "живёт" in toks or "lives" in toks  # «где живёт X?» asks about the home
+            live_edges = [e for e in edges if e[0] == "lives_in"]
+            if habitat and live_edges:
+                from casa.curriculum.roundtrip import _ru_oblique
+
+                dst = live_edges[0][2]
+                return f"{cap} живёт в {_ru_oblique(state, lattice_id, _ru_name(state, lattice_id, dst), 'prep')}."
             if edges:
                 rel, _, dst = edges[0]
-                return f"{fname[:1].upper() + fname[1:]} {_ru_locative(state, lattice_id, rel, dst)}."
+                if rel == "lives_in":
+                    from casa.curriculum.roundtrip import _ru_oblique
+
+                    return f"{cap} живёт в {_ru_oblique(state, lattice_id, _ru_name(state, lattice_id, dst), 'prep')}."
+                return f"{cap} {_ru_locative(state, lattice_id, rel, dst)}."
             return f"Где «{fname}» — я не помню."
     return None
 
