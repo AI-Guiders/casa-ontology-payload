@@ -4,7 +4,7 @@
 **Status:** concept (канон для lab; уточняет терминологию)  
 **Audience:** разработка BiT9, sleep, Extract  
 **Parent:** [`understanding-contract.md`](understanding-contract.md), [`context-axis.md`](context-axis.md)  
-**Companion:** [`bit9-lexicon-parallel-roadmap.md`](bit9-lexicon-parallel-roadmap.md), [`infancy-corpus-phases.md`](infancy-corpus-phases.md), [`lexicon-usage-axes.md`](lexicon-usage-axes.md), [`sss-layer-names.md`](sss-layer-names.md), [`CASA-ADR-0023-sleep-scale-thin-first.md`](CASA-ADR-0023-sleep-scale-thin-first.md) (batched sleep, thin-first, **вытесняющая многозадачность** — non-claim)
+**Companion:** [`bit9-lexicon-parallel-roadmap.md`](bit9-lexicon-parallel-roadmap.md), [`infancy-corpus-phases.md`](infancy-corpus-phases.md), [`lexicon-usage-axes.md`](lexicon-usage-axes.md), [`sss-layer-names.md`](sss-layer-names.md), [`CASA-ADR-0023-sleep-scale-thin-first.md`](CASA-ADR-0023-sleep-scale-thin-first.md) (batched sleep, thin-first, **вытесняющая многозадачность** — non-claim), [`CASA-ADR-0088-hippocampus-quad-mode-episodic-connectivity.md`](CASA-ADR-0088-hippocampus-quad-mode-episodic-connectivity.md) (hippo quad-mode: wake + consolidate + integrate + idle_micro; **life** loop)
 
 **Имена слоёв:** в prose — **T0…T3** (APLF) или язык ЗССФ; **`L0_*`…`L3_phrase`** только как ID в коде. Карта коллизий: [`sss-layer-names.md`](sss-layer-names.md) § «Почему Lx путаются».
 

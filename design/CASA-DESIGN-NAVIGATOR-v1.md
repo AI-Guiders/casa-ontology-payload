@@ -17,6 +17,7 @@
 | **Два трека в репо (listen vs meaning)?** | [CASA-scratch-track-integration-v1.md](CASA-scratch-track-integration-v1.md) | только `develop` diff |
 | **Concept Zone vs понятийная сеть Димы?** | **§ ниже** + [CASA-ADR-0085](CASA-ADR-0085-concept-zone-built-in-vs-earned-theories.md) | [CASA-ADR-0073](CASA-ADR-0073-concept-layer-lexicalization.md) **в одиночку** |
 | **Listen / Lalabook pilot?** | [CASA-scratch-listen-wire-gap-v1.md](CASA-scratch-listen-wire-gap-v1.md) | curriculum ROADMAP |
+| **Связность эпизодов / понимание после FSR?** | [CASA-ADR-0088](CASA-ADR-0088-hippocampus-quad-mode-episodic-connectivity.md) | только `run_sleep` без wake/integrate |
 | **Субстрат / impulse — картина, не JSON?** | [CASA-ADR-0087](CASA-ADR-0087-substrate-visualizer-v1.md) + [0080](CASA-ADR-0080-impulse-trace-v1.md) | сырой `impulse_trace.jsonl` |
 | **Геном / размножение / погода?** | [CASA-ADR-0084](CASA-ADR-0084-wild-genome-donor-single-agent-reproduction.md), [0086](CASA-ADR-0086-epigenome-expression-layer.md) (epigenome) | весь 0061–0076 |
 | **Техдолг / M* / R* id?** | [TECH-DEBT-INDEX.md](TECH-DEBT-INDEX.md) | случайные ADR |
@@ -107,6 +108,7 @@ Listen imprint (0028)   = A/V опыт → позже edges на concept.*
 | **4 — partner / speech** | 0078, 0081, 0056 | efferent, slots |
 | **5 — sensory** | 0028, scratch-listen | imprint, stream |
 | **6 — concept / curriculum** | 0073, **0085**, 0083 | Built-In / Self-Earned; teach @ store |
+| **7 — episodic connectivity** | **0088**, 0047, 0009, 0023 | hippo_wake + consolidate + integrate + idle_micro |
 | **7 — runtime** | 0079, 0025 | host, engine tier |
 
 ---
