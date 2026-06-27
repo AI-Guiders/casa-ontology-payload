@@ -21,23 +21,27 @@ from __future__ import annotations
 # UI actions apply broadly (you can show / configure / copy / move almost any item), so the
 # common capabilities sit on digital_object and every software concept inherits them; the
 # narrow ones (savable on files, clickable on controls, installable on apps) stay specific.
-_BROAD = ["viewable", "selectable", "configurable", "copyable", "movable", "creatable", "renamable"]
+# positionable too: a digital object can be located/placed (a file «in» a folder), which
+# is what an action's destination («сохрани файл в папку») needs.
+_BROAD = ["viewable", "selectable", "configurable", "copyable", "movable", "creatable", "renamable", "positionable"]
 
 SOFTWARE_PACK: dict = {
     "categories": [
         {"id": "digital_object", "isa": [], "affords": _BROAD},
         {"id": "file_item", "isa": ["digital_object"], "affords": ["openable", "savable", "deletable", "editable", "printable"]},
-        {"id": "folder_item", "isa": ["digital_object"], "affords": ["openable", "deletable"]},
+        {"id": "folder_item", "isa": ["digital_object"], "affords": ["openable", "deletable", "containment"]},
         {"id": "ui_control", "isa": ["digital_object"], "affords": ["clickable"]},
         {"id": "window_item", "isa": ["digital_object"], "affords": ["openable", "closable"]},
         {"id": "app_item", "isa": ["digital_object"], "affords": ["openable", "closable", "usable", "installable", "downloadable"]},
         {"id": "toggle_item", "isa": ["digital_object"], "affords": ["toggleable"]},
+        {"id": "store_item", "isa": ["digital_object"], "affords": ["containment"]},  # action destinations
         {"id": "addressee", "isa": [], "affords": ["agent"]},  # implicit «you» of an imperative
     ],
     "concepts": {
         "file_item": [["файл", "file"], ["документ", "document"], ["изображение", "image"],
                       ["картинка", "image"], ["палитра", "palette"]],
         "folder_item": [["папка", "folder"], ["каталог", "directory"]],
+        "store_item": [["буфер", "clipboard"], ["диск", "disk"], ["корзина", "trash"]],
         "ui_control": [["кнопка", "button"], ["значок", "icon"], ["пиктограмма", "icon"], ["меню", "menu"],
                        ["вкладка", "tab"], ["ссылка", "link"], ["флажок", "checkbox"], ["панель", "toolbar"],
                        ["список", "list"], ["элемент", "item"], ["ярлык", "shortcut"], ["сетка", "grid"]],

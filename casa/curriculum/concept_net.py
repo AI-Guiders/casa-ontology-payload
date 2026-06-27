@@ -7,7 +7,7 @@ on CONCEPTS, and the glossary's ``concept|names|word`` edges bridge to any langu
 so «яблоко на столе» and "apple on the table" validate to the same relation, in the
 same way, with no statistical model and no hallucination.
 
-  isa     taxonomy with inheritance:  lex.apple|isa|fruit, fruit|isa|food, fruit|isa|physical_object
+  isa     taxonomy with inheritance:  concept.apple|isa|fruit, fruit|isa|food, fruit|isa|physical_object
   affords capabilities on a type:     food|affords|edible, physical_object|affords|positionable
   arg1/2  a relation's selectional constraints: on|arg1|positionable, on|arg2|support_surface
 
@@ -100,8 +100,13 @@ def has_part(state: dict, lattice_id: str, whole: str, part: str) -> bool:
     return cp in parts_of(state, lattice_id, cw)
 
 
+# normative concept-hub prefix (ADR-0085): the language-independent meaning hub is
+# `concept.{slug}`; `lex.*` is no longer a hub identity (vocabulary units are `lemma.{ru,en}.*`).
+CONCEPT_PREFIX = "concept."
+
+
 def _concept_id(en: str) -> str:
-    return f"lex.{en.strip().lower().replace(' ', '_')}"
+    return f"{CONCEPT_PREFIX}{en.strip().lower().replace(' ', '_')}"
 
 
 def teach_concept_net(state: dict, lattice_id: str, data: dict, *, bundle: dict | None = None) -> dict[str, Any]:
@@ -113,7 +118,7 @@ def teach_concept_net(state: dict, lattice_id: str, data: dict, *, bundle: dict 
     from casa.curriculum.glossary import teach_glossary
 
     pairs = [(ru, en) for cat in data["concepts"].values() for ru, en in cat]
-    teach_glossary(state, pairs, lattice_id=lattice_id, bundle=bundle)
+    teach_glossary(state, pairs, lattice_id=lattice_id, bundle=bundle, concept_prefix=CONCEPT_PREFIX)
 
     isa: list[tuple[str, str]] = []
     for cat in data["categories"]:
@@ -180,7 +185,7 @@ def concept_of(state: dict, lattice_id: str, word: str) -> str | None:
 
     When a word names several concepts (synonyms from a large glossary), prefer the one
     we have a TYPED model of — a concept with an ``isa`` edge — so «мясо» resolves to
-    the ontology's ``lex.meat`` rather than an untyped synonym."""
+    the ontology's ``concept.meat`` rather than an untyped synonym."""
     if "." in word and " " not in word:
         return word
     hits = concepts_for_term(state, lattice_id, word)
@@ -191,7 +196,7 @@ def concept_of(state: dict, lattice_id: str, word: str) -> str | None:
     if len(pool) == 1:
         return pool[0]
     # among synonyms prefer the richer-typed concept (most affordances), then by id —
-    # so мясо -> lex.meat (food: edible…) not lex.flesh, самолёт -> lex.plane not aircraft
+    # so мясо -> concept.meat (food: edible…) not concept.flesh, самолёт -> concept.plane not aircraft
     return min(pool, key=lambda c: (-len(affordances_of(state, lattice_id, c)), c))
 
 

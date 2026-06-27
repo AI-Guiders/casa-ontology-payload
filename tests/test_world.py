@@ -15,7 +15,7 @@ def test_meaning_state_supports_round_trip() -> None:
     state, lat = build_meaning_state()
     assert lat == "schema-math"
     # parses to one meaning and renders back in both languages
-    assert parse_triples(state, lat, "яблоко лежит на столе") == [("on", "lex.apple", "lex.table")]
+    assert parse_triples(state, lat, "яблоко лежит на столе") == [("on", "concept.apple", "concept.table")]
     tr = translate_through_meaning(state, lat, "на столе яблоко")
     assert tr == {"ru": "Яблоко на столе.", "en": "The apple is on the table."}
     assert translate_through_meaning(state, lat, "apple on the table")["ru"] == "Яблоко на столе."

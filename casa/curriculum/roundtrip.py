@@ -120,6 +120,108 @@ def _ru_oblique(state: dict, lattice_id: str, word: str, case: str) -> str:
     return apply_conditioned_rule(state, lattice_id, rid, word) or word
 
 
+def _is_chain(edges: list[tuple[str, str, str]]) -> bool:
+    """True if the edges form one simple path (a─▶b─▶c) — a nested locative, not coordination
+    («яблоко на столе у окна»); False for coordinated figures/objects (a repeated src/dst)."""
+    srcs = [s for _, s, _ in edges]
+    dsts = [d for _, _, d in edges]
+    if len(set(srcs)) != len(srcs):
+        return False  # two edges share a source -> coordinated, not a chain
+    starts = [s for s in srcs if s not in dsts]
+    return len(starts) == 1
+
+
+def _subgraph(graph: dict[str, Any], edge: tuple[str, str, str]) -> dict[str, Any]:
+    """A one-edge graph (edge dict + its two nodes) for realizing a single conjunct."""
+    rel, src, dst = edge
+    e = next(x for x in graph["edges"]
+             if x.get("satisfied") and (x["rel"], x["src"], x["dst"]) == (rel, src, dst))
+    nodes = graph.get("nodes", {})
+    return {"nodes": {src: nodes.get(src, {}), dst: nodes.get(dst, {})}, "edges": [e]}
+
+
+def _en_det(graph: dict[str, Any], cid: str) -> str:
+    node = graph.get("nodes", {}).get(cid) or {}
+    return "" if (node.get("count") or node.get("measure")) else "the "
+
+
+def _realize_action_dest(state: dict, lattice_id: str, graph: dict[str, Any],
+                         act: tuple[str, str, str], dst_e: tuple[str, str, str], *, lang: str) -> str | None:
+    """Render an action with a destination: «Сохрани файл в папку.» / «Save the file to the
+    folder.» — the action clause + the goal («в» + accusative in RU, «to the» in EN)."""
+    head = realize_graph(state, lattice_id, _subgraph(graph, act), lang=lang)
+    if not head:
+        return None
+    head = head.rstrip(".")
+    prel, _, dest = dst_e
+    dest_word = _word(state, lattice_id, dest, lang)
+    if lang == "ru":
+        from casa.curriculum.sentence import RU_ACC_RULE
+
+        prep = _LOC_PREP.get(prel, {}).get("ru", "в")
+        dest_acc = apply_conditioned_rule(state, lattice_id, RU_ACC_RULE, dest_word) or dest_word
+        return f"{head} {prep} {dest_acc}."
+    return f"{head} to the {dest_word}."
+
+
+def _realize_coordination(state: dict, lattice_id: str, graph: dict[str, Any],
+                          edges: list[tuple[str, str, str]], *, lang: str) -> str | None:
+    """Render coordinated edges, joined by «и»/«and», factoring a shared element where it
+    reads cleanly (one verb / one subject / one location)."""
+    conj = "и" if lang == "ru" else "and"
+    rels = {r for r, _, _ in edges}
+    srcs = {s for _, s, _ in edges}
+    dsts = {d for _, _, d in edges}
+
+    def cap(body: str) -> str:
+        return body[:1].upper() + body[1:] + "."
+
+    # coordinated figures of one location: «Яблоко и книга на столе.»
+    if len(rels) == 1 and len(dsts) == 1 and edges[0][0] in _LOC_PREP:
+        rel, _, ground = edges[0]
+        spec = _LOC_PREP[rel]
+        figs = [_np(state, lattice_id, s, lang, graph) for _, s, _ in edges]
+        gword = _word(state, lattice_id, ground, lang)
+        if lang == "ru":
+            return cap(f"{f' {conj} '.join(figs)} {spec['ru']} {_ru_oblique(state, lattice_id, gword, spec['case'])}")
+        figs_the = [f"the {f}" for f in figs]
+        return cap(f"{f' {conj} '.join(figs_the)} are {spec['en']} the {gword}")
+
+    # coordinated objects of one action: «Удали файл и папку.»
+    if len(rels) == 1 and len(srcs) == 1 and edges[0][0] in _TRANS_VERB:
+        head = realize_graph(state, lattice_id, _subgraph(graph, edges[0]), lang=lang)
+        if not head:
+            return None
+        head = head.rstrip(".")
+        for _, _, dst in edges[1:]:
+            obj = _obj(state, lattice_id, dst, lang, graph)
+            head += f" {conj} {obj}" if lang == "ru" else f" {conj} {_en_det(graph, dst)}{obj}"
+        return head + "."
+
+    # one subject, several predicates: «Собака ест мясо и пьёт молоко.» (subject once)
+    if len(srcs) == 1 and edges[0][1] != "concept.you" and all(r in _TRANS_VERB for r, _, _ in edges):
+        head = realize_graph(state, lattice_id, _subgraph(graph, edges[0]), lang=lang)
+        if head:
+            head = head.rstrip(".")
+            for rel, _, dst in edges[1:]:
+                verb = _TRANS_VERB[rel]
+                obj = _obj(state, lattice_id, dst, lang, graph)
+                if lang == "ru":
+                    v3 = verb.get("ru3sg") or apply_conditioned_rule(state, lattice_id, "lang.rule.present3sg.ru", verb["ru"]) or verb["ru"]
+                    head += f" {conj} {v3} {obj}"
+                else:
+                    v3 = apply_conditioned_rule(state, lattice_id, "lang.rule.present3sg.en", verb["en"]) or f"{verb['en']}s"
+                    head += f" {conj} {v3} {_en_det(graph, dst)}{obj}"
+            return head + "."
+
+    # general: realize each conjunct as its own clause and join
+    parts = [realize_graph(state, lattice_id, _subgraph(graph, e), lang=lang) for e in edges]
+    parts = [p.rstrip(".") for p in parts if p]
+    if not parts:
+        return None
+    return cap(parts[0] + "".join(f" {conj} {p[:1].lower() + p[1:]}" for p in parts[1:]))
+
+
 def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: str) -> str | None:
     """Render a meaning graph back into a sentence in ``lang`` ('ru'/'en')."""
     from casa.curriculum.clause import compose_full_clause
@@ -129,6 +231,19 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
     if not edges:
         return None
     neg = any(e.get("polarity") == "neg" for e in graph.get("edges", []) if e.get("satisfied"))
+
+    # action with a destination: «сохрани файл в папку» — an action edge plus a locative edge
+    # on its object («save»: in(file, folder)) → «<action> <prep> <destination>»
+    if len(edges) == 2:
+        act = next((e for e in edges if e[0] in _TRANS_VERB), None)
+        dst_e = next((e for e in edges if e[0] in _LOC_PREP), None)
+        if act and dst_e and dst_e[1] == act[2]:
+            return _realize_action_dest(state, lattice_id, graph, act, dst_e, lang=lang)
+
+    # coordination — several edges that are not one locative chain («открой файл и сохрани
+    # документ», «удали файл и папку», «яблоко и книга на столе»)
+    if len(edges) > 1 and not _is_chain(edges):
+        return _realize_coordination(state, lattice_id, graph, edges, lang=lang)
 
     # locative clause (one figure, a chain of preposition+ground), e.g. on+near
     if all(rel in _LOC_PREP for rel, _, _ in edges):
@@ -180,7 +295,7 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
     quantified = bool(dst_node.get("count") or dst_node.get("measure"))  # numeral governs case
 
     # imperative — subject is the implicit «you»: «Открой файл.» / «Удали два файла.»
-    if src == "lex.you":
+    if src == "concept.you":
         obj = _obj(state, lattice_id, dst, lang, graph)
         if lang == "ru":
             # a negative command takes the imperfective imperative («не закрывай», not «закрой»)

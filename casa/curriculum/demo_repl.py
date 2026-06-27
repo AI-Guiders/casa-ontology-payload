@@ -200,7 +200,7 @@ def handle(state: dict, line: str) -> str | None:
         from casa.curriculum.concept_net import teach_isa, affordances_of, isa_closure
 
         word, group = args[0], args[1]
-        cid = f"lex.{word}"
+        cid = f"concept.{word}"
         strengthen_graph_edge(memory_lattices(state), LAT, cid, "names", f"lang.word.{word}")
         teach_isa(state, LAT, [(cid, group)])
         cl = isa_closure(state, LAT, cid)

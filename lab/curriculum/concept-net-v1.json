@@ -8,13 +8,13 @@
     ["вода", "water"], ["собака", "dog"]
   ],
   "isa": [
-    ["lex.apple", "fruit"], ["lex.banana", "fruit"], ["fruit", "food"], ["fruit", "physical_object"],
-    ["lex.table", "furniture"], ["lex.chair", "furniture"], ["furniture", "physical_object"], ["furniture", "support"],
-    ["lex.plate", "dish"], ["dish", "physical_object"], ["dish", "support"],
-    ["lex.box", "container"], ["container", "physical_object"],
-    ["lex.man", "person"], ["person", "physical_object"], ["person", "animate"],
-    ["lex.dog", "animal"], ["animal", "physical_object"], ["animal", "animate"],
-    ["lex.idea", "abstract"]
+    ["concept.apple", "fruit"], ["concept.banana", "fruit"], ["fruit", "food"], ["fruit", "physical_object"],
+    ["concept.table", "furniture"], ["concept.chair", "furniture"], ["furniture", "physical_object"], ["furniture", "support"],
+    ["concept.plate", "dish"], ["dish", "physical_object"], ["dish", "support"],
+    ["concept.box", "container"], ["container", "physical_object"],
+    ["concept.man", "person"], ["person", "physical_object"], ["person", "animate"],
+    ["concept.dog", "animal"], ["animal", "physical_object"], ["animal", "animate"],
+    ["concept.idea", "abstract"]
   ],
   "affords": [
     ["physical_object", "positionable"], ["food", "edible"], ["support", "support_surface"],

@@ -30,10 +30,10 @@ def _state() -> dict:
 
 def test_inflected_words_resolve_to_concepts() -> None:
     state = _state()
-    assert resolve_token(state, LAT, "столе") == "lex.table"   # prepositional case
-    assert resolve_token(state, LAT, "рыбу") == "lex.fish"      # accusative
-    assert resolve_token(state, LAT, "окна") == "lex.window"    # genitive
-    assert resolve_token(state, LAT, "apple") == "lex.apple"    # English base
+    assert resolve_token(state, LAT, "столе") == "concept.table"   # prepositional case
+    assert resolve_token(state, LAT, "рыбу") == "concept.fish"      # accusative
+    assert resolve_token(state, LAT, "окна") == "concept.window"    # genitive
+    assert resolve_token(state, LAT, "apple") == "concept.apple"    # English base
 
 
 def test_paraphrases_parse_to_one_situation() -> None:
@@ -43,7 +43,7 @@ def test_paraphrases_parse_to_one_situation() -> None:
         "на столе лежит яблоко", "apple on the table",
     ]
     triples = [parse_triples(state, LAT, t) for t in phrasings]
-    assert all(t == [("on", "lex.apple", "lex.table")] for t in triples)
+    assert all(t == [("on", "concept.apple", "concept.table")] for t in triples)
     ids = {parse_fingerprint(state, LAT, t)["id"] for t in phrasings}
     assert len(ids) == 1  # one situation fingerprint across order and language
 
@@ -51,10 +51,10 @@ def test_paraphrases_parse_to_one_situation() -> None:
 def test_chained_prepositions_and_svo() -> None:
     state = _state()
     assert parse_triples(state, LAT, "яблоко на столе у окна") == [
-        ("on", "lex.apple", "lex.table"), ("near", "lex.table", "lex.window")
+        ("on", "concept.apple", "concept.table"), ("near", "concept.table", "concept.window")
     ]
-    assert parse_triples(state, LAT, "собака ест мясо") == [("eat", "lex.dog", "lex.meat")]
-    assert parse_triples(state, LAT, "студент читает книгу") == [("read", "lex.student", "lex.book")]
+    assert parse_triples(state, LAT, "собака ест мясо") == [("eat", "concept.dog", "concept.meat")]
+    assert parse_triples(state, LAT, "студент читает книгу") == [("read", "concept.student", "concept.book")]
 
 
 def test_nested_situation_from_text() -> None:
