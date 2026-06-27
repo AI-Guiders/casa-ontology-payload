@@ -141,3 +141,10 @@ def resolve_scene_beat_timeline(
             }
         )
     return plans
+
+
+def resolve_beat_id_at_t_rel(scene: dict[str, Any], t_rel: float) -> str | None:
+    """Re-export — implementation in ``listen_beat_lookup`` (no circular imports)."""
+    from casa.domain.listen_beat_lookup import resolve_beat_id_at_t_rel as _resolve
+
+    return _resolve(scene, t_rel)
