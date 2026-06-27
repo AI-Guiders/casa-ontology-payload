@@ -24,6 +24,19 @@ _RU_RULES = (
 )
 
 
+def _teach_colors(state: dict) -> None:
+    """Colours as concepts + the ``color_of`` relation, so «яблоко красное» validates and
+    «какого цвета яблоко?» can be answered. The colour concept ids mirror the adjective
+    attribute ids (red → concept.red); names come from the adjective lexicon, not a glossary."""
+    from casa.curriculum.attributes import COLOR_IDS
+    from casa.curriculum.concept_net import teach_affords, teach_isa, teach_relation
+
+    teach_isa(state, LATTICE, [(f"concept.{c}", "colour_concept") for c in COLOR_IDS])
+    teach_affords(state, LATTICE, [("colour_concept", "is_colour"),
+                                   ("physical_object", "colorable"), ("digital_object", "colorable")])
+    teach_relation(state, LATTICE, "color_of", arg1="colorable", arg2="is_colour")
+
+
 def build_meaning_state() -> tuple[dict, str]:
     """Return ``(state, lattice_id)`` with the conceptual network + round-trip grammars taught."""
     from casa.curriculum.clause import teach_clause_constructions
@@ -45,6 +58,7 @@ def build_meaning_state() -> tuple[dict, str]:
     from casa.curriculum.software_domain import teach_software_domain
 
     teach_software_domain(state, LATTICE, bundle=bundle)  # additive software/UI layer
+    _teach_colors(state)  # color_of relation + colour concepts
     ru = _load("lab/curriculum/ru-rules-v1.json")["rules"]
     en = _load("lab/curriculum/en-rules-v1.json")["rules"]
     for rid in _RU_RULES:

@@ -285,6 +285,19 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
             body = f"the {subj} is made of {mat}"
         return body[:1].upper() + body[1:] + "."
 
+    # colour predicate — «Яблоко красное.» / «The apple is red.»
+    if len(edges) == 1 and edges[0][0] == "color_of":
+        from casa.curriculum.attributes import en_adjective, ru_adjective
+
+        _, src, dst = edges[0]
+        color = dst.split(".")[-1]  # concept.red -> red
+        noun = _word(state, lattice_id, src, lang)
+        if lang == "ru":
+            body = f"{noun} {'не ' if neg else ''}{ru_adjective(color, noun)}"
+        else:
+            body = f"the {noun} is {'not ' if neg else ''}{en_adjective(color)}"
+        return body[:1].upper() + body[1:] + "."
+
     # transitive clause — reuse the bilingual generators (lemmas + relation->verb)
     rel, src, dst = edges[0]
     verb = _TRANS_VERB.get(rel)

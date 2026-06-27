@@ -23,6 +23,9 @@ _DOMAIN_HINTS = {
     "on", "in", "near", "by", "under", "eats", "reads", "drinks", "made",
     "open", "close", "save", "delete", "click", "select", "edit",
     "show", "configure", "copy", "move", "create", "rename", "print", "enable", "install", "download", "set", "display",
+    "to", "into",  # action destination
+    "красный", "красная", "красное", "белый", "белая", "белое", "чёрный", "чёрная", "чёрное",  # predicative colour
+    "зелёный", "зелёная", "зелёное", "red", "white", "black", "green",
 }
 
 

@@ -27,6 +27,9 @@ ADJ_LEXICON: dict[str, dict[str, str]] = {
     "small": {"m": "маленький", "n": "маленькое", "f": "маленькая"},
 }
 
+# which attribute ids are colours (vs sizes) — used by the color_of relation/question
+COLOR_IDS = {"red", "white", "black", "green"}
+
 # every surface (English word + the three Russian nominative forms) -> attribute id
 _SURFACE_TO_ID: dict[str, str] = {}
 for _aid, _forms in ADJ_LEXICON.items():
