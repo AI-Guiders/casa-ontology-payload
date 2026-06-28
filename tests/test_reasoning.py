@@ -98,6 +98,7 @@ class ReasoningTests(unittest.TestCase):
         self.assertIn("СЛОЙ РАССУЖДЕНИЯ", text)   # header present
         self.assertIn("ПРОТИВОРЕЧИ", text)         # at least one contradiction shown
         self.assertIn("следует", text)             # at least one entailment shown
+        self.assertIn("НАРУШ", text)               # the conditional-rules section fired a violation
 
 
 if __name__ == "__main__":

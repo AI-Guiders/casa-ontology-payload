@@ -307,6 +307,19 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
             body = f"the {noun} is {'not ' if neg else ''}{en_adjective(color)}"
         return body[:1].upper() + body[1:] + "."
 
+    # state predicate — «Файл открыт.» / «The file is open.»
+    if len(edges) == 1 and edges[0][0] == "has_state":
+        from casa.curriculum.states import en_state, ru_state
+
+        _, src, dst = edges[0]
+        sid = dst.split(".")[-1]  # concept.open -> open
+        noun = _word(state, lattice_id, src, lang)
+        if lang == "ru":
+            body = f"{noun} {'не ' if neg else ''}{ru_state(sid, noun)}"
+        else:
+            body = f"the {noun} is {'not ' if neg else ''}{en_state(sid)}"
+        return body[:1].upper() + body[1:] + "."
+
     # comparison — «Слон больше мыши.» / «The elephant is bigger than the mouse.»
     if len(edges) == 1 and edges[0][0] == "bigger_than":
         _, src, dst = edges[0]

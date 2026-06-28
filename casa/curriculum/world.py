@@ -40,6 +40,20 @@ def _teach_colors(state: dict) -> None:
     teach_relation(state, LATTICE, "bigger_than", arg1="sizable", arg2="sizable")
 
 
+def _teach_states(state: dict) -> None:
+    """Predicative states as concepts + the ``has_state`` relation, so «файл открыт» /
+    «the file is open» validates and feeds conditional rules. State concept ids mirror the
+    state ids (open → concept.open); a thing must be ``stateful`` to carry a state (an idea
+    is not). Multiple states are allowed (open AND saved); only polarity contradicts."""
+    from casa.curriculum.concept_net import teach_affords, teach_isa, teach_relation
+    from casa.curriculum.states import STATE_IDS
+
+    teach_isa(state, LATTICE, [(f"concept.{s}", "a_state") for s in STATE_IDS])
+    teach_affords(state, LATTICE, [("a_state", "is_state"),
+                                   ("digital_object", "stateful"), ("physical_object", "stateful")])
+    teach_relation(state, LATTICE, "has_state", arg1="stateful", arg2="is_state")
+
+
 def _teach_verbs(state: dict) -> None:
     """Everyday transitive verbs whose constraints aren't in the base ontology yet
     (wear/use/read/eat/drink already are). Each: an arg2 affordance + the relation."""
@@ -78,6 +92,7 @@ def build_meaning_state() -> tuple[dict, str]:
 
     teach_software_domain(state, LATTICE, bundle=bundle)  # additive software/UI layer
     _teach_colors(state)  # color_of relation + colour concepts
+    _teach_states(state)  # has_state relation + predicative state concepts (open/active/…)
     _teach_verbs(state)  # everyday transitive verbs (write/cook/wash/give/take)
     ru = _load("lab/curriculum/ru-rules-v1.json")["rules"]
     en = _load("lab/curriculum/en-rules-v1.json")["rules"]

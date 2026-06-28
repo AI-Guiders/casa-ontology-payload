@@ -33,6 +33,7 @@ _POSITIONAL = {"лежит", "стоит", "находится", "лежать",
                "than", "чем"}  # comparison connector («bigger than», «больше, чем»)
 _NEG = {"не", "нет", "ни", "not", "don't", "do not", "doesn't", "no", "never"}  # negation markers
 _AND = {"и", "and"}  # coordinator — distributes a role over conjuncts
+_COPULA = {"is", "are"}  # English predicative copula — marks the next word as a state predicate
 
 
 def _tokens(text: str) -> list[str]:
@@ -134,19 +135,25 @@ def parse_situation(
     ``polarity`` is ``"neg"`` for a negated clause, else ``"pos"``."""
     from casa.curriculum.attributes import COLOR_IDS, attr_of_token
     from casa.curriculum.quantity import number_of_token, unit_of_token
+    from casa.curriculum.states import state_of_token
 
     names = _name_index(state, lattice_id)
-    seq: list[tuple[str, Any]] = []  # ('prep'|'verb'|'noun'|'adj'|'num'|'unit', payload)
+    seq: list[tuple[str, Any]] = []  # ('prep'|'verb'|'noun'|'adj'|'num'|'unit'|'state', payload)
     polarity = "pos"
+    copula = False  # saw an English copula «is/are» — the next state word is predicative
     for tok in _tokens(text):
         if tok in _NEG:
             polarity = "neg"  # negation marker — scopes the clause's relation
         elif tok in _AND:
             seq.append(("and", None))  # coordinator
+        elif tok in _COPULA:
+            copula = True  # «the file is open» — marks the following state predicate
         elif tok in _PREPS:
             seq.append(("prep", normalize_relation(tok)))
         elif tok in _POSITIONAL:
             continue  # positional copula — the preposition carries the relation
+        elif (sid := state_of_token(tok)) is not None and (copula or tok not in PREDICATE_RELATION):
+            seq.append(("state", sid))  # predicative state; an EN verb/adj clash («open») needs the copula
         elif tok in PREDICATE_RELATION and tok not in _PREPS:
             seq.append(("verb", normalize_relation(tok)))
         elif (num := number_of_token(tok)) is not None:
@@ -257,6 +264,18 @@ def parse_situation(
             objs = [c for _, c in after] if (has_and and len(after) >= 2) else [head(after)]
             return [(verbs[0][1], subject, o) for o in objs], attrs, polarity, counts, measures
 
+    # predicative state: «файл открыт» / «the file is open» → has_state(file, concept.open) —
+    # a state predicate after a noun, no relation of its own (the building block of a rule)
+    if nouns and not preps and not verbs and any(k == "state" for k, _ in seq):
+        state_triples = []
+        for ci, (k, p) in enumerate(seq):
+            if k == "state":
+                figs = [c for ni, c in nouns if ni < ci]
+                if figs:
+                    state_triples.append(("has_state", figs[-1], f"concept.{p}"))
+        if state_triples:
+            return state_triples, attrs, polarity, counts, measures
+
     # predicative colour: «яблоко красное» → color_of(apple, concept.red) — a colour adjective
     # AFTER a noun, with no relation of its own
     if nouns and not preps and not verbs:
@@ -298,3 +317,31 @@ def parse_graph(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
 def parse_fingerprint(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
     """Parse text all the way to its situation fingerprint."""
     return fingerprint(parse_graph(state, lattice_id, text))
+
+
+def parse_rule(state: dict, lattice_id: str, text: str) -> dict[str, Any] | None:
+    """Parse a conditional «если X, то Y» / «if X then Y» into a RULE — an antecedent graph
+    and a consequent graph, each a normal clause. Returns ``None`` if the text is not a
+    conditional or a side does not parse to a situation. The two sub-clauses are parsed by
+    the same clause parser, so a rule can relate any forms it already supports (states,
+    locatives, actions, …). This is the building block reasoning checks facts against."""
+    t = str(text or "").strip()
+    m = re.match(r"(?is)^\s*(?:если|if)\b\s*(.+)$", t)
+    if not m:
+        return None
+    rest = m.group(1)
+    parts = re.split(r"(?i)(?:,\s*)?\b(?:то|then)\b", rest, maxsplit=1)
+    if len(parts) == 2:
+        ante, cons = parts
+    elif "," in rest:  # «если X, Y» — comma separates when «то/then» is dropped
+        ante, cons = rest.split(",", 1)
+    else:
+        return None
+    ante, cons = ante.strip(" ,\t"), cons.strip(" ,\t")
+    if not ante or not cons:
+        return None
+    ga, gc = parse_graph(state, lattice_id, ante), parse_graph(state, lattice_id, cons)
+    if not any(e.get("satisfied") for e in ga["edges"]) or not any(e.get("satisfied") for e in gc["edges"]):
+        return None  # a side did not parse — honest, like the validator's «uncheckable»
+    return {"text": t, "antecedent_text": ante, "consequent_text": cons,
+            "antecedent": ga, "consequent": gc}

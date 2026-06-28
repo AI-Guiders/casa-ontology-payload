@@ -73,6 +73,21 @@ def _contradictions(a_edges: list[dict], b_edges: list[dict]) -> list[dict[str, 
                 other = sorted(a_vals[e["src"]])[0].split(".")[-1]
                 out.append({"class": "functional",
                             "note": f"«{rel}»: {e['src'].split('.')[-1]} → {other} vs {e['dst'].split('.')[-1]}"})
+
+    # mutually exclusive states: has_state(x, open) vs has_state(x, closed) -> contradiction
+    from casa.curriculum.states import are_antonyms
+
+    a_states: dict[str, set[str]] = {}
+    for e in a_edges:
+        if e["rel"] == "has_state" and e["polarity"] == "pos":
+            a_states.setdefault(e["src"], set()).add(e["dst"].split(".")[-1])
+    for e in b_edges:
+        if e["rel"] == "has_state" and e["polarity"] == "pos":
+            sb = e["dst"].split(".")[-1]
+            for sa in a_states.get(e["src"], ()):
+                if are_antonyms(sa, sb):
+                    out.append({"class": "state",
+                                "note": f"«{e['src'].split('.')[-1]}»: {sa} vs {sb} — взаимоисключающие"})
     return out
 
 
@@ -146,6 +161,62 @@ def check_consistency(state: dict, lattice_id: str, statements: list[str]) -> di
     }
 
 
+def check_against_rules(state: dict, lattice_id: str, facts: list[str], rules: list[str]) -> dict[str, Any]:
+    """Check a fact base against conditional RULES «если X, то Y» — the «rules + facts →
+    violations» capability. For each rule whose antecedent the facts entail (X holds), the
+    consequent Y must hold: if the facts CONTRADICT Y (the dangerous kernel / state mutex),
+    that is a **violation** — an auditable «if the file is open the button must be active,
+    but the button is inactive». A rule whose antecedent does not hold is ``inactive``; one
+    whose consequent is present is ``satisfied``; present-neither is ``fired_unknown``
+    (fired but the consequent is simply unstated). Honest: unparsed facts/rules are reported,
+    not assumed."""
+    from casa.curriculum.equivalence import _structured_edges
+    from casa.curriculum.parse import parse_graph, parse_rule
+    from casa.curriculum.situation import canonical_edges
+
+    fact_edges: list[dict] = []
+    fact_canon: set[str] = set()
+    unparsed_facts: list[dict[str, Any]] = []
+    for i, f in enumerate(facts):
+        g = parse_graph(state, lattice_id, f)
+        se = _structured_edges(g)
+        if se:
+            fact_edges += se
+            fact_canon |= set(canonical_edges(g))
+        else:
+            unparsed_facts.append({"index": i, "text": f})
+
+    results: list[dict[str, Any]] = []
+    for j, r in enumerate(rules):
+        rule = parse_rule(state, lattice_id, r)
+        if rule is None:
+            results.append({"index": j, "text": r, "status": "unparsed_rule"})
+            continue
+        ante_canon = set(canonical_edges(rule["antecedent"]))
+        cons_canon = set(canonical_edges(rule["consequent"]))
+        cons_struct = _structured_edges(rule["consequent"])
+        entry = {"index": j, "text": r, "antecedent_text": rule["antecedent_text"],
+                 "consequent_text": rule["consequent_text"], "conflicts": []}
+        if not ante_canon <= fact_canon:
+            entry["status"] = "inactive"  # antecedent not established by the facts
+        elif (conflicts := _contradictions(cons_struct, fact_edges)):
+            entry["status"], entry["conflicts"] = "violated", conflicts
+        elif cons_canon <= fact_canon:
+            entry["status"] = "satisfied"
+        else:
+            entry["status"] = "fired_unknown"  # fired, consequent neither present nor denied
+        results.append(entry)
+
+    violations = [e for e in results if e["status"] == "violated"]
+    return {
+        "facts": len(facts), "rules": len(rules),
+        "unparsed_facts": unparsed_facts,
+        "results": results,
+        "violations": violations,
+        "consistent": not violations,
+    }
+
+
 _MARK = {
     "equivalent": "≡ ЭКВИВАЛЕНТНО", "entails": "⊨ A → B (A влечёт B)",
     "entailed_by": "⊨ B → A (B влечёт A)", "contradicts": "✗ ПРОТИВОРЕЧИЕ",
@@ -175,4 +246,22 @@ def format_consistency(result: dict[str, Any], *, indent: str = "  ") -> str:
             lines.append(f"{indent}      • [{d['class']}] {d['note']}")
     for u in result["unparsed"]:
         lines.append(f"{indent}  ❓ #{u['index']} «{u['text']}» — не разобрано, исключено из проверки")
+    return "\n".join(lines)
+
+
+_RULE_MARK = {"violated": "✗ НАРУШЕНО", "satisfied": "✓ соблюдено", "inactive": "· не сработало",
+              "fired_unknown": "? сработало, следствие не указано", "unparsed_rule": "❓ не разобрано"}
+
+
+def format_rule_check(result: dict[str, Any], *, indent: str = "  ") -> str:
+    """Render a check_against_rules() result for a console (the audit artifact)."""
+    head = "✓ ПРАВИЛА СОБЛЮДЕНЫ" if result["consistent"] else "✗ НАРУШЕНИЕ ПРАВИЛ"
+    lines = [f"{indent}{head} (фактов: {result['facts']}, правил: {result['rules']})"]
+    for e in result["results"]:
+        mark = _RULE_MARK.get(e["status"], e["status"])
+        lines.append(f"{indent}  {mark}: «{e['text']}»")
+        for d in e.get("conflicts", []):
+            lines.append(f"{indent}      • [{d['class']}] {d['note']} — следствие опровергнуто фактами")
+    for u in result["unparsed_facts"]:
+        lines.append(f"{indent}  ❓ факт не разобран: «{u['text']}»")
     return "\n".join(lines)
