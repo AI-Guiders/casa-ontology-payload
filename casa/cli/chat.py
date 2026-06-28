@@ -56,6 +56,8 @@ _HELP = "\n".join(
         "  /meaning <фраза> — понятийная сеть: фраза → смысл → RU+EN (перевод через смысл)",
         "  /demo            — курируемый прогон round-trip (граф смысла + отказ)",
         "  /check A | B      — валидатор: эквивалентны ли по смыслу две фразы (триаж)",
+        "  /relate A | B     — рассуждение: логическая связь (≡ / следование / ✗ противоречие / ∥)",
+        "  /consistent A;B;C — рассуждение: согласован ли набор утверждений (ловит противоречия)",
         "  /route [on|off]  — маршрутизация доменных клауз через понятийную сеть",
         "  /turns [N]       — последние N реплик",
         "  /passage         — многострочный ввод, конец — пустая строка",
@@ -266,6 +268,28 @@ def run_chat(
                     from casa.curriculum.equivalence import check_equivalence, format_check
 
                     print(format_check(check_equivalence(mst, mlat, src.strip(), tgt.strip())))
+                    continue
+                elif cmd in ("relate", "связь"):
+                    # reasoning: «/relate A | B» — logical relation (≡ / ⊨ / ✗ / ∥)
+                    if "|" not in arg:
+                        print("  · нужно две фразы через |: /relate яблоко на столе | яблоко не на столе")
+                        continue
+                    a, _, b = arg.partition("|")
+                    mst, mlat = _ensure_meaning()
+                    from casa.curriculum.reasoning import format_relation, relate
+
+                    print(format_relation(relate(mst, mlat, a.strip(), b.strip())))
+                    continue
+                elif cmd in ("consistent", "согласовано"):
+                    # reasoning: «/consistent A ; B ; C» — consistency of a SET of claims
+                    parts = [s.strip() for s in arg.split(";") if s.strip()]
+                    if len(parts) < 2:
+                        print("  · нужно ≥2 фраз через ;: /consistent яблоко на столе ; яблоко не на столе")
+                        continue
+                    mst, mlat = _ensure_meaning()
+                    from casa.curriculum.reasoning import check_consistency, format_consistency
+
+                    print(format_consistency(check_consistency(mst, mlat, parts)))
                     continue
                 elif cmd == "route":
                     a = arg.strip().lower()
