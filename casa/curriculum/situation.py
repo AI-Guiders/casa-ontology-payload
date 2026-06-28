@@ -46,6 +46,7 @@ PREDICATE_RELATION: dict[str, str] = {
     "выбирает": "select", "выбирать": "select", "выбери": "select", "выбирай": "select", "выбрать": "select", "select": "select", "selects": "select",
     "изменяет": "edit", "изменять": "edit", "измени": "edit", "изменяй": "edit", "изменить": "edit", "edit": "edit", "edits": "edit",
     "показывает": "show", "показывать": "show", "показать": "show", "покажи": "show", "показывай": "show", "show": "show", "shows": "show", "display": "show", "displays": "show",
+    "скрывает": "hide", "скрывать": "hide", "скрыть": "hide", "скрой": "hide", "скрывай": "hide", "прячет": "hide", "прятать": "hide", "спрятать": "hide", "спрячь": "hide", "hide": "hide", "hides": "hide",  # antonym of show (toggle visibility)
     "настраивает": "configure", "настраивать": "configure", "настроить": "configure", "настрой": "configure", "настраивай": "configure", "configure": "configure", "configures": "configure", "set": "configure", "sets": "configure", "установить": "configure", "устанавливает": "configure", "установи": "configure", "устанавливай": "configure",
     "копирует": "copy", "копировать": "copy", "скопировать": "copy", "скопируй": "copy", "копируй": "copy", "copy": "copy", "copies": "copy",
     "перемещает": "move", "перемещать": "move", "переместить": "move", "перемести": "move", "перемещай": "move", "move": "move", "moves": "move",
@@ -66,7 +67,7 @@ PREDICATE_RELATION: dict[str, str] = {
     "живёт": "lives_in", "живет": "lives_in", "живут": "lives_in", "жить": "lives_in", "lives": "lives_in", "live": "lives_in",
     # English gerund headings — «Opening a file», «Configuring the proxy»
     "opening": "open", "closing": "close", "saving": "save", "deleting": "delete",
-    "clicking": "click", "selecting": "select", "editing": "edit", "showing": "show",
+    "clicking": "click", "selecting": "select", "editing": "edit", "showing": "show", "hiding": "hide",
     "configuring": "configure", "copying": "copy", "moving": "move", "creating": "create",
     "renaming": "rename", "printing": "print", "enabling": "enable", "installing": "install",
     "downloading": "download",

@@ -70,6 +70,21 @@ class SoftwareDomainTests(unittest.TestCase):
             self.assertEqual(tr["ru"], ru)
             self.assertEqual(tr["en"], en)
 
+    def test_hide_is_the_antonym_of_show(self) -> None:
+        # show/hide are a natural pair (both act on a viewable item). «hide» was the most
+        # frequent real verb gap in the raw KDE corpus (show/hide toggle menu items).
+        ok = lambda r, y: validate(self.state, self.lat, r, "пользователь", y)["valid"]  # noqa: E731
+        self.assertTrue(ok("hide", "окно"))
+        self.assertTrue(ok("hide", "панель"))
+        tr = translate_through_meaning(self.state, self.lat, "скрой панель")
+        self.assertEqual(tr["ru"], "Скрой панель.")
+        self.assertEqual(tr["en"], "Hide the toolbar.")
+        # from English input, and the negative command (imperfective imperative «не скрывай»)
+        self.assertEqual(translate_through_meaning(self.state, self.lat, "hide the window")["ru"], "Скрой окно.")
+        neg = translate_through_meaning(self.state, self.lat, "не скрывай окно")
+        self.assertEqual(neg["ru"], "Не скрывай окно.")
+        self.assertEqual(neg["en"], "Do not hide the window.")
+
     def test_expanded_concepts_resolve(self) -> None:
         for w, cid in [("палитра", "concept.palette"), ("прокси", "concept.proxy"),
                        ("пиктограмма", "concept.icon"), ("редактор", "concept.editor")]:
