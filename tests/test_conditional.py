@@ -69,6 +69,40 @@ class ConditionalTests(unittest.TestCase):
         res = check_against_rules(self.state, self.lat, ["файл открыт", "qwzx бессмыслица"], [RULE])
         self.assertEqual([u["text"] for u in res["unparsed_facts"]], ["qwzx бессмыслица"])
 
+    # --- multi-condition rules «если X и Y, то Z» --------------------------------------
+    def test_multi_condition_antecedent_parses_all(self) -> None:
+        rule = parse_rule(self.state, self.lat, "если файл открыт и кнопка активна, то окно видно")
+        ante = {(e["rel"], e["src"], e["dst"]) for e in rule["antecedent"]["edges"] if e["satisfied"]}
+        self.assertEqual(ante, {("has_state", "concept.file", "concept.open"),
+                                ("has_state", "concept.button", "concept.active")})
+
+    def test_multi_condition_mixes_forms(self) -> None:
+        # a state AND a locative — impossible in a single clause parse, works as a conjunction
+        rule = parse_rule(self.state, self.lat, "если файл открыт и яблоко на столе, то окно видно")
+        ante = {(e["rel"], e["src"], e["dst"]) for e in rule["antecedent"]["edges"] if e["satisfied"]}
+        self.assertEqual(ante, {("has_state", "concept.file", "concept.open"),
+                                ("on", "concept.apple", "concept.table")})
+
+    def test_intra_clause_coordination_is_not_split(self) -> None:
+        # «яблоко и книга на столе» is ONE clause (two figures), not two conditions
+        rule = parse_rule(self.state, self.lat, "если яблоко и книга на столе, то окно видно")
+        ante = {(e["rel"], e["src"], e["dst"]) for e in rule["antecedent"]["edges"] if e["satisfied"]}
+        self.assertEqual(ante, {("on", "concept.apple", "concept.table"),
+                                ("on", "concept.book", "concept.table")})
+
+    MULTI = "если файл открыт и кнопка активна, то окно видно"
+
+    def test_multi_condition_fires_only_when_all_hold(self) -> None:
+        # only one condition present -> antecedent not established -> inactive
+        self.assertEqual(self.status(["файл открыт", "окно скрыто"], [self.MULTI]), "inactive")
+
+    def test_multi_condition_violation_when_all_hold(self) -> None:
+        # both conditions hold and the consequent is contradicted -> violated
+        self.assertEqual(self.status(["файл открыт", "кнопка активна", "окно скрыто"], [self.MULTI]), "violated")
+
+    def test_multi_condition_satisfied(self) -> None:
+        self.assertEqual(self.status(["файл открыт", "кнопка активна", "окно видно"], [self.MULTI]), "satisfied")
+
 
 if __name__ == "__main__":
     unittest.main()

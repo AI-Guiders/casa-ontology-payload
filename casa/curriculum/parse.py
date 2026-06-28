@@ -319,12 +319,52 @@ def parse_fingerprint(state: dict, lattice_id: str, text: str) -> dict[str, Any]
     return fingerprint(parse_graph(state, lattice_id, text))
 
 
+def _clause_parses(state: dict, lattice_id: str, text: str) -> bool:
+    return any(e.get("satisfied") for e in parse_graph(state, lattice_id, text).get("edges", []))
+
+
+def split_conditions(state: dict, lattice_id: str, text: str) -> list[str]:
+    """Split one rule side into independently-parsing condition clauses. Splits on a
+    separator («,» «;» «и» «and») ONLY when every fragment parses on its own — so a
+    conjunction of clauses («файл открыт и яблоко на столе») becomes two conditions, while
+    intra-clause coordination («яблоко и книга на столе», where «яблоко» alone is no clause)
+    is left whole for the clause parser. This is what lets «если X и Y, то Z» mix forms
+    (a state AND a locative) that a single clause parse cannot express together."""
+    text = text.strip(" ,;\t")
+    for sep in (r"\s*[,;]\s*", r"\s+и\s+", r"\s+and\s+"):
+        parts = [p.strip() for p in re.split(sep, text, flags=re.IGNORECASE) if p.strip()]
+        if len(parts) > 1 and all(_clause_parses(state, lattice_id, p) for p in parts):
+            return [c for p in parts for c in split_conditions(state, lattice_id, p)]
+    return [text]
+
+
+def _merge_graphs(graphs: list[dict[str, Any]]) -> dict[str, Any]:
+    """Union several meaning graphs into one — the conjunction of conditions (nodes merged,
+    satisfied edges concatenated, deduplicated by (rel, src, dst, polarity))."""
+    nodes: dict[str, Any] = {}
+    edges: list[dict[str, Any]] = []
+    seen: set[tuple] = set()
+    for g in graphs:
+        nodes.update(g.get("nodes", {}))
+        for e in g.get("edges", []):
+            key = (e.get("rel"), e.get("src"), e.get("dst"), e.get("polarity", "pos"))
+            if key not in seen:
+                seen.add(key)
+                edges.append(e)
+    return {"nodes": nodes, "edges": edges, "valid": all(e.get("satisfied") for e in edges)}
+
+
+def _parse_conjunction(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
+    """Parse a rule side (possibly «X и Y и …») into one merged graph of all its conditions."""
+    return _merge_graphs([parse_graph(state, lattice_id, c) for c in split_conditions(state, lattice_id, text)])
+
+
 def parse_rule(state: dict, lattice_id: str, text: str) -> dict[str, Any] | None:
     """Parse a conditional «если X, то Y» / «if X then Y» into a RULE — an antecedent graph
-    and a consequent graph, each a normal clause. Returns ``None`` if the text is not a
-    conditional or a side does not parse to a situation. The two sub-clauses are parsed by
-    the same clause parser, so a rule can relate any forms it already supports (states,
-    locatives, actions, …). This is the building block reasoning checks facts against."""
+    and a consequent graph. Each side may be a CONJUNCTION of conditions («если X и Y, то Z»):
+    it is split into independently-parsing clauses (so it can mix forms — a state AND a
+    locative) and unioned. Returns ``None`` if the text is not a conditional or a side does
+    not parse to any situation. The building block reasoning checks facts against."""
     t = str(text or "").strip()
     m = re.match(r"(?is)^\s*(?:если|if)\b\s*(.+)$", t)
     if not m:
@@ -340,8 +380,10 @@ def parse_rule(state: dict, lattice_id: str, text: str) -> dict[str, Any] | None
     ante, cons = ante.strip(" ,\t"), cons.strip(" ,\t")
     if not ante or not cons:
         return None
-    ga, gc = parse_graph(state, lattice_id, ante), parse_graph(state, lattice_id, cons)
+    ga, gc = _parse_conjunction(state, lattice_id, ante), _parse_conjunction(state, lattice_id, cons)
     if not any(e.get("satisfied") for e in ga["edges"]) or not any(e.get("satisfied") for e in gc["edges"]):
         return None  # a side did not parse — honest, like the validator's «uncheckable»
     return {"text": t, "antecedent_text": ante, "consequent_text": cons,
-            "antecedent": ga, "consequent": gc}
+            "antecedent": ga, "consequent": gc,
+            "antecedent_conditions": split_conditions(state, lattice_id, ante),
+            "consequent_conditions": split_conditions(state, lattice_id, cons)}
