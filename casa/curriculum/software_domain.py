@@ -61,6 +61,7 @@ SOFTWARE_PACK: dict = {
         {"rel": "select", "arg1": "agent", "arg2": "selectable"},
         {"rel": "edit", "arg1": "agent", "arg2": "editable"},
         {"rel": "show", "arg1": "agent", "arg2": "viewable"},
+        {"rel": "hide", "arg1": "agent", "arg2": "viewable"},  # antonym of show — toggle visibility of any viewable item
         {"rel": "configure", "arg1": "agent", "arg2": "configurable"},
         {"rel": "copy", "arg1": "agent", "arg2": "copyable"},
         {"rel": "move", "arg1": "agent", "arg2": "movable"},

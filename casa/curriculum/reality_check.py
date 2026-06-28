@@ -93,6 +93,52 @@ def recall_report(state: dict, lattice_id: str, cases: list[tuple[str, str, str]
             "per_class": {k: f"{a}/{b}" for k, (a, b) in per_class.items()}, "misses": misses}
 
 
+def _side_class(state: dict, lattice_id: str, text: str) -> str:
+    """Classify ONE side of a pair for the ceiling. ``parses`` — a satisfied edge was built.
+    ``ceiling`` — no word that could carry a relation (a bare label: «Configuration»,
+    «Icon Size»); never a validator target, because there is nothing to compare. ``fixable``
+    — a relation word IS present but no edge was built (unknown noun / unmodelled structure):
+    recoverable in principle by more parser/vocabulary work."""
+    from casa.curriculum.parse import _POSITIONAL, _PREPS, _tokens, parse_graph
+    from casa.curriculum.situation import PREDICATE_RELATION
+
+    if any(e.get("satisfied") for e in parse_graph(state, lattice_id, text).get("edges", [])):
+        return "parses"
+    has_relation_word = any(
+        t in _PREPS or t in _POSITIONAL or (t in PREDICATE_RELATION and t not in _PREPS)
+        for t in _tokens(text)
+    )
+    return "fixable" if has_relation_word else "ceiling"
+
+
+def ceiling_report(state: dict, lattice_id: str, pairs: list[tuple[str, str]]) -> dict[str, Any]:
+    """Pair-level coverage CEILING — the maximum coverage any amount of parser/vocabulary
+    work could reach on this corpus. A pair can only ever validate if BOTH sides carry a
+    relation; a bare-label side has nothing to compare, so any pair with even one ceiling
+    side is structurally out of reach. ``addressable`` (no ceiling side) is that ceiling —
+    it separates «grind the parser» from «wrong corpus»: if the ceiling itself is low, the
+    text is the problem, not the parser, and the lever is a more controlled domain."""
+    from collections import Counter
+
+    combos: Counter = Counter()
+    both = 0
+    for s, t in pairs:
+        cs, ct = _side_class(state, lattice_id, s), _side_class(state, lattice_id, t)
+        combos[tuple(sorted((cs, ct)))] += 1
+        both += int(cs == "parses" and ct == "parses")
+    total = len(pairs) or 1
+    addressable = sum(n for combo, n in combos.items() if "ceiling" not in combo)
+    return {
+        "total": len(pairs),
+        "both": both,
+        "coverage": round(both / total, 4),
+        "addressable": addressable,
+        "max_coverage": round(addressable / total, 4),
+        "both_ceiling": combos.get(("ceiling", "ceiling"), 0),
+        "combos": {f"{a}+{b}": n for (a, b), n in sorted(combos.items(), key=lambda kv: -kv[1])},
+    }
+
+
 def _load_corpus(en_path: str, ru_path: str, limit: int) -> list[tuple[str, str]]:
     with open(en_path, encoding="utf-8") as f:
         en = [ln.strip() for ln in f]
@@ -112,10 +158,26 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Validator reality-check (coverage + recall).")
     ap.add_argument("--corpus", nargs=2, metavar=("EN", "RU"), help="aligned bitext (en file, ru file)")
     ap.add_argument("--limit", type=int, default=2000)
+    ap.add_argument("--ceiling", action="store_true",
+                    help="report the pair-level coverage ceiling (max reachable by any parser work)")
     args = ap.parse_args(argv)
 
     state, lat = build_meaning_state()
     pairs = _load_corpus(args.corpus[0], args.corpus[1], args.limit) if args.corpus else CURATED_PAIRS
+
+    if args.ceiling:
+        cei = ceiling_report(state, lat, pairs)
+        print("═" * 60)
+        print("  ВАЛИДАТОР — ПОТОЛОК ПОКРЫТИЯ (макс. достижимое любым парсером)")
+        print("═" * 60)
+        print(f"  пар: {cei['total']} · разобраны сейчас: {cei['both']} ({cei['coverage']:.1%})")
+        print(f"  ПОТОЛОК (нет «голой» стороны-ярлыка): {cei['addressable']} = {cei['max_coverage']:.1%}")
+        print(f"  обе стороны — голый ярлык (структурно недостижимо): {cei['both_ceiling']}")
+        print("  раскладка пар (состояния сторон):")
+        for combo, n in cei["combos"].items():
+            print(f"    {n:5d}  {combo}")
+        return 0
+
     cov = coverage_report(state, lat, pairs)
     rec = recall_report(state, lat, RECALL_CASES)
     print("═" * 60)

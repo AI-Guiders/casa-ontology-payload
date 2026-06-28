@@ -50,6 +50,7 @@ _TRANS_VERB = {
     "select": {"ru": "выбирать", "ru3sg": "выбирает", "ruimp": "выбери", "ruimpneg": "выбирай", "en": "select"},
     "edit": {"ru": "изменять", "ru3sg": "изменяет", "ruimp": "измени", "ruimpneg": "изменяй", "en": "edit"},
     "show": {"ru": "показывать", "ru3sg": "показывает", "ruimp": "покажи", "ruimpneg": "показывай", "en": "show"},
+    "hide": {"ru": "скрывать", "ru3sg": "скрывает", "ruimp": "скрой", "ruimpneg": "скрывай", "en": "hide"},
     "configure": {"ru": "настраивать", "ru3sg": "настраивает", "ruimp": "настрой", "ruimpneg": "настраивай", "en": "configure"},
     "copy": {"ru": "копировать", "ru3sg": "копирует", "ruimp": "скопируй", "ruimpneg": "копируй", "en": "copy"},
     "move": {"ru": "перемещать", "ru3sg": "перемещает", "ruimp": "перемести", "ruimpneg": "перемещай", "en": "move"},
