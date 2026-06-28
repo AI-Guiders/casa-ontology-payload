@@ -217,6 +217,91 @@ def check_against_rules(state: dict, lattice_id: str, facts: list[str], rules: l
     }
 
 
+def forward_chain(state: dict, lattice_id: str, facts: list[str], rules: list[str],
+                  *, max_steps: int = 32) -> dict[str, Any]:
+    """Forward-chaining inference — derive new facts from rules, then keep checking until a
+    fixpoint. A rule whose antecedent the facts entail and whose consequent is CONSISTENT
+    adds that consequent to the fact base; the enlarged base can then fire further rules.
+    A consequent that CONTRADICTS the base is a **violation** — and because facts are
+    derived transitively, this catches contradictions several steps ahead that the direct
+    one-shot check (`check_against_rules`) cannot see: «A», «если A то B», «если B то C»,
+    «не C» → C is derived and clashes with ¬C two hops in.
+
+    Every derived fact carries its rule + step (the audit trail); a violation is flagged
+    ``chained`` when it is NOT explainable by the given facts alone (it needed a derivation).
+    Facts grow monotonically, so this terminates; ``max_steps`` is a backstop."""
+    from casa.curriculum.equivalence import _structured_edges
+    from casa.curriculum.parse import _merge_graphs, parse_graph, parse_rule
+    from casa.curriculum.situation import canonical_edges
+
+    fact_graph: dict[str, Any] = {"nodes": {}, "edges": []}
+    unparsed_facts: list[dict[str, Any]] = []
+    for i, f in enumerate(facts):
+        g = parse_graph(state, lattice_id, f)
+        if any(e.get("satisfied") for e in g["edges"]):
+            fact_graph = _merge_graphs([fact_graph, g])
+        else:
+            unparsed_facts.append({"index": i, "text": f})
+
+    given_canon = set(canonical_edges(fact_graph))
+    given_struct = _structured_edges(fact_graph)
+
+    parsed_rules: list[tuple[int, str, dict]] = []
+    unparsed_rules: list[dict[str, Any]] = []
+    for j, r in enumerate(rules):
+        rule = parse_rule(state, lattice_id, r)
+        if rule:
+            parsed_rules.append((j, r, rule))
+        else:
+            unparsed_rules.append({"index": j, "text": r})
+
+    origin: dict[str, str] = {e: "given" for e in given_canon}  # edge -> 'given' | rule text
+    derived: list[dict[str, Any]] = []
+    violations: list[dict[str, Any]] = []
+    violated: set[int] = set()
+
+    steps = 0
+    changed = True
+    while changed and steps < max_steps:
+        changed, steps = False, steps + 1
+        fact_canon = set(canonical_edges(fact_graph))
+        fact_struct = _structured_edges(fact_graph)
+        for j, rtext, rule in parsed_rules:
+            ante_canon = set(canonical_edges(rule["antecedent"]))
+            if not ante_canon <= fact_canon:
+                continue
+            cons_struct = _structured_edges(rule["consequent"])
+            cons_canon = set(canonical_edges(rule["consequent"]))
+            if (conflicts := _contradictions(cons_struct, fact_struct)):
+                if j not in violated:
+                    # direct iff the given facts alone establish the antecedent AND deny the consequent
+                    direct = ante_canon <= given_canon and bool(_contradictions(cons_struct, given_struct))
+                    violations.append({"rule_index": j, "rule": rtext, "conflicts": conflicts,
+                                       "antecedent_text": rule["antecedent_text"],
+                                       "consequent_text": rule["consequent_text"], "chained": not direct})
+                    violated.add(j)
+                continue
+            if cons_canon - fact_canon:  # consistent new consequent -> derive it
+                fact_graph = _merge_graphs([fact_graph, rule["consequent"]])
+                fact_canon = set(canonical_edges(fact_graph))
+                fact_struct = _structured_edges(fact_graph)
+                for e in cons_canon:
+                    if e not in origin:  # a genuinely new fact
+                        origin[e] = rtext
+                        derived.append({"edge": e, "rule_index": j, "rule": rtext, "step": steps})
+                changed = True
+
+    return {
+        "given_facts": sorted(given_canon),
+        "derived_facts": derived,
+        "violations": violations,
+        "consistent": not violations,
+        "steps": steps,
+        "unparsed_facts": unparsed_facts,
+        "unparsed_rules": unparsed_rules,
+    }
+
+
 _MARK = {
     "equivalent": "≡ ЭКВИВАЛЕНТНО", "entails": "⊨ A → B (A влечёт B)",
     "entailed_by": "⊨ B → A (B влечёт A)", "contradicts": "✗ ПРОТИВОРЕЧИЕ",
@@ -261,6 +346,27 @@ def format_rule_check(result: dict[str, Any], *, indent: str = "  ") -> str:
         mark = _RULE_MARK.get(e["status"], e["status"])
         lines.append(f"{indent}  {mark}: «{e['text']}»")
         for d in e.get("conflicts", []):
+            lines.append(f"{indent}      • [{d['class']}] {d['note']} — следствие опровергнуто фактами")
+    for u in result["unparsed_facts"]:
+        lines.append(f"{indent}  ❓ факт не разобран: «{u['text']}»")
+    return "\n".join(lines)
+
+
+def format_forward_chain(result: dict[str, Any], *, indent: str = "  ") -> str:
+    """Render a forward_chain() result — derived facts (the inference trail) and any
+    violations, flagging the multi-step (chained) ones — for a console audit artifact."""
+    head = "✓ СОГЛАСОВАНО" if result["consistent"] else "✗ ПРОТИВОРЕЧИЕ ПРИ ВЫВОДЕ"
+    lines = [f"{indent}{head} (шагов вывода: {result['steps']})"]
+    if result["derived_facts"]:
+        lines.append(f"{indent}  выведенные факты:")
+        for d in result["derived_facts"]:
+            lines.append(f"{indent}    +[шаг {d['step']}] {d['edge']}  ← «{d['rule']}»")
+    else:
+        lines.append(f"{indent}  новых фактов не выведено")
+    for v in result["violations"]:
+        tag = " (многошаговое)" if v.get("chained") else ""
+        lines.append(f"{indent}  ✗ НАРУШЕНО{tag}: «{v['rule']}»")
+        for d in v["conflicts"]:
             lines.append(f"{indent}      • [{d['class']}] {d['note']} — следствие опровергнуто фактами")
     for u in result["unparsed_facts"]:
         lines.append(f"{indent}  ❓ факт не разобран: «{u['text']}»")

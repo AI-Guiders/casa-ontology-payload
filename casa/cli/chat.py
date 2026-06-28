@@ -59,6 +59,7 @@ _HELP = "\n".join(
         "  /relate A | B     — рассуждение: логическая связь (≡ / следование / ✗ противоречие / ∥)",
         "  /consistent A;B;C — рассуждение: согласован ли набор утверждений (ловит противоречия)",
         "  /rules F;F | R;R  — рассуждение: проверка фактов против правил «если X, то Y» (нарушения)",
+        "  /chain F;F | R;R  — рассуждение: forward-chaining (вывод фактов, противоречия на N шагов)",
         "  /route [on|off]  — маршрутизация доменных клауз через понятийную сеть",
         "  /turns [N]       — последние N реплик",
         "  /passage         — многострочный ввод, конец — пустая строка",
@@ -307,6 +308,22 @@ def run_chat(
                     from casa.curriculum.reasoning import check_against_rules, format_rule_check
 
                     print(format_rule_check(check_against_rules(mst, mlat, facts, rules)))
+                    continue
+                elif cmd in ("chain", "вывод"):
+                    # reasoning: «/chain факт; факт | правило; правило» — forward-chaining inference
+                    if "|" not in arg:
+                        print("  · формат: /chain файл открыт; кнопка неактивна | если файл открыт, то окно видно; если окно видно, то кнопка активна")
+                        continue
+                    f_raw, _, r_raw = arg.partition("|")
+                    facts = [s.strip() for s in f_raw.split(";") if s.strip()]
+                    rules = [s.strip() for s in r_raw.split(";") if s.strip()]
+                    if not facts or not rules:
+                        print("  · нужны факты слева и правила справа от |")
+                        continue
+                    mst, mlat = _ensure_meaning()
+                    from casa.curriculum.reasoning import format_forward_chain, forward_chain
+
+                    print(format_forward_chain(forward_chain(mst, mlat, facts, rules)))
                     continue
                 elif cmd == "route":
                     a = arg.strip().lower()
