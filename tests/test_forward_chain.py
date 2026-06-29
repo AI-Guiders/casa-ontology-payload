@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import unittest
 
-from casa.curriculum.reasoning import check_against_rules, forward_chain
+from casa.curriculum.reasoning import check_against_rules, explain, forward_chain
 from casa.curriculum.world import build_meaning_state
 
 # A -> B -> C  («файл открыт» derives «окно видно» derives «кнопка активна»)
@@ -56,6 +56,30 @@ class ForwardChainTests(unittest.TestCase):
     def test_unparsed_fact_reported(self) -> None:
         res = forward_chain(self.state, self.lat, ["файл открыт", "qwzx бессмыслица"], CHAIN)
         self.assertEqual([u["text"] for u in res["unparsed_facts"]], ["qwzx бессмыслица"])
+
+    # --- chain explanation (provenance to root facts) ---------------------------------
+    def test_derived_fact_records_its_support(self) -> None:
+        res = forward_chain(self.state, self.lat, ["файл открыт"], CHAIN)
+        # «button active» was derived from «window visible», itself from «file open»
+        d = res["derivation"]["has_state(concept.button,concept.active)"]
+        self.assertEqual(d["support"], ["has_state(concept.window,concept.visible)"])
+
+    def test_explain_traces_to_the_root_given_fact(self) -> None:
+        res = forward_chain(self.state, self.lat, ["файл открыт"], CHAIN)
+        proof = "\n".join(explain(res, "has_state(concept.button,concept.active)"))
+        self.assertIn("если окно видно, то кнопка активна", proof)  # the deriving rule
+        self.assertIn("если файл открыт, то окно видно", proof)     # the prior link
+        self.assertIn("has_state(concept.file,concept.open)", proof)  # the root
+        self.assertIn("·дано", proof)                                # marked as a given root
+
+    def test_violation_carries_its_antecedent_support(self) -> None:
+        # 3-link chain: file open -> window visible -> button active; «панель скрыта» clashes
+        rules = CHAIN + ["если кнопка активна, то панель видна"]
+        res = forward_chain(self.state, self.lat, ["файл открыт", "панель скрыта"], rules)
+        self.assertFalse(res["consistent"])
+        v = res["violations"][0]
+        self.assertTrue(v["chained"])
+        self.assertEqual(v["support"], ["has_state(concept.button,concept.active)"])
 
 
 if __name__ == "__main__":

@@ -47,12 +47,13 @@ DEMO_RULES: list[str] = [
     "если окно скрыто, то кнопка активна",              # · inactive: window-hidden not in the facts
 ]
 
-# forward-chaining: a chain of rules whose violation only shows up after 2 derivations.
-# DIRECT check sees nothing here (окно видно / кнопка активна are never given facts).
-DEMO_CHAIN_FACTS: list[str] = ["файл открыт", "кнопка неактивна"]
+# forward-chaining: a 3-link chain whose violation only shows up after several derivations,
+# with the full proof tree back to the root fact. The DIRECT check sees nothing here.
+DEMO_CHAIN_FACTS: list[str] = ["файл открыт", "панель скрыта"]
 DEMO_CHAIN_RULES: list[str] = [
-    "если файл открыт, то окно видно",      # derive: окно видно
-    "если окно видно, то кнопка активна",   # derive button active -> clashes with «кнопка неактивна»
+    "если файл открыт, то окно видно",       # derive: окно видно
+    "если окно видно, то кнопка активна",    # derive: кнопка активна
+    "если кнопка активна, то панель видна",  # derive «панель видна» -> clashes with «панель скрыта»
 ]
 
 
@@ -84,8 +85,8 @@ def render_reason_demo(state: dict, lattice_id: str) -> str:
             "  факты: " + " · ".join(f"«{f}»" for f in DEMO_RULE_FACTS),
             format_rule_check(check_against_rules(state, lattice_id, DEMO_RULE_FACTS, DEMO_RULES))]
     out += ["", "─" * 64,
-            "  FORWARD-CHAINING — вывод новых фактов и противоречие на 2 шага вперёд:",
-            "  (прямая проверка тут НЕ находит ничего — «окно видно»/«кнопка активна» не даны)",
+            "  FORWARD-CHAINING — вывод фактов и противоречие на несколько шагов вперёд,",
+            "  с полной цепочкой вывода до корневого факта (прямая проверка тут НЕ находит ничего):",
             "─" * 64,
             "  факты: " + " · ".join(f"«{f}»" for f in DEMO_CHAIN_FACTS),
             "  правила: " + " · ".join(f"«{r}»" for r in DEMO_CHAIN_RULES),

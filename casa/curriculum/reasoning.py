@@ -298,6 +298,9 @@ def forward_chain(state: dict, lattice_id: str, facts: list[str], rules: list[st
             unparsed_rules.append({"index": j, "text": r})
 
     origin: dict[str, str] = {e: "given" for e in given_canon}  # edge -> 'given' | rule text
+    # derivation[edge] = how it was produced: which rule, at which step, from which support
+    # facts (the antecedent edges that fired the rule) — the provenance for the proof tree.
+    derivation: dict[str, dict[str, Any]] = {}
     derived: list[dict[str, Any]] = []
     violations: list[dict[str, Any]] = []
     violated: set[int] = set()
@@ -314,13 +317,15 @@ def forward_chain(state: dict, lattice_id: str, facts: list[str], rules: list[st
                 continue
             cons_struct = _structured_edges(rule["consequent"])
             cons_canon = set(canonical_edges(rule["consequent"]))
+            support = sorted(ante_canon)  # the facts that make this rule applicable
             if (conflicts := _contradictions(cons_struct, fact_struct)):
                 if j not in violated:
                     # direct iff the given facts alone establish the antecedent AND deny the consequent
                     direct = ante_canon <= given_canon and bool(_contradictions(cons_struct, given_struct))
                     violations.append({"rule_index": j, "rule": rtext, "conflicts": conflicts,
                                        "antecedent_text": rule["antecedent_text"],
-                                       "consequent_text": rule["consequent_text"], "chained": not direct})
+                                       "consequent_text": rule["consequent_text"],
+                                       "chained": not direct, "support": support})
                     violated.add(j)
                 continue
             if cons_canon - fact_canon:  # consistent new consequent -> derive it
@@ -330,18 +335,45 @@ def forward_chain(state: dict, lattice_id: str, facts: list[str], rules: list[st
                 for e in cons_canon:
                     if e not in origin:  # a genuinely new fact
                         origin[e] = rtext
-                        derived.append({"edge": e, "rule_index": j, "rule": rtext, "step": steps})
+                        derivation[e] = {"rule": rtext, "step": steps, "support": support}
+                        derived.append({"edge": e, "rule_index": j, "rule": rtext, "step": steps,
+                                        "support": support})
                 changed = True
 
     return {
         "given_facts": sorted(given_canon),
         "derived_facts": derived,
+        "derivation": derivation,
         "violations": violations,
         "consistent": not violations,
         "steps": steps,
         "unparsed_facts": unparsed_facts,
         "unparsed_rules": unparsed_rules,
     }
+
+
+def _proof_lines(edge: str, derivation: dict[str, dict], *, depth: int = 0,
+                 seen: set[str] | None = None) -> list[str]:
+    """Lines of a proof tree for ``edge`` back to the given (root) facts — each derived edge
+    shows the rule and step that produced it, then recurses into its support; a leaf not in
+    ``derivation`` is a given fact (a root). Cycles are guarded by ``seen``."""
+    seen = seen if seen is not None else set()
+    pad = "    " + "  " * depth
+    d = derivation.get(edge)
+    if d is None:
+        return [f"{pad}{edge}  ·дано"]
+    if edge in seen:
+        return [f"{pad}{edge}  ·(см. выше)"]
+    seen.add(edge)
+    lines = [f"{pad}{edge}  ⇐ [шаг {d['step']}] «{d['rule']}»"]
+    for s in d["support"]:
+        lines += _proof_lines(s, derivation, depth=depth + 1, seen=seen)
+    return lines
+
+
+def explain(result: dict[str, Any], edge: str) -> list[str]:
+    """Public: the proof tree for a (derived or given) edge in a forward_chain() result."""
+    return _proof_lines(edge, result.get("derivation", {}))
 
 
 _MARK = {
@@ -405,11 +437,16 @@ def format_forward_chain(result: dict[str, Any], *, indent: str = "  ") -> str:
             lines.append(f"{indent}    +[шаг {d['step']}] {d['edge']}  ← «{d['rule']}»")
     else:
         lines.append(f"{indent}  новых фактов не выведено")
+    derivation = result.get("derivation", {})
     for v in result["violations"]:
         tag = " (многошаговое)" if v.get("chained") else ""
         lines.append(f"{indent}  ✗ НАРУШЕНО{tag}: «{v['rule']}»")
         for d in v["conflicts"]:
             lines.append(f"{indent}      • [{d['class']}] {d['note']} — следствие опровергнуто фактами")
+        if v.get("chained") and v.get("support"):  # show WHY the rule fired, back to roots
+            lines.append(f"{indent}      цепочка вывода антецедента:")
+            for s in v["support"]:
+                lines += [f"  {ln}" for ln in _proof_lines(s, derivation)]
     for u in result["unparsed_facts"]:
         lines.append(f"{indent}  ❓ факт не разобран: «{u['text']}»")
     return "\n".join(lines)
