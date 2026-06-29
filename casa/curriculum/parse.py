@@ -33,6 +33,17 @@ _POSITIONAL = {"лежит", "стоит", "находится", "лежать",
                "than", "чем"}  # comparison connector («bigger than», «больше, чем»)
 _NEG = {"не", "нет", "ни", "not", "don't", "do not", "doesn't", "no", "never"}  # negation markers
 _AND = {"и", "and"}  # coordinator — distributes a role over conjuncts
+_COPULA = {"is", "are"}  # English predicative copula — marks the next word as a state predicate
+# numeric comparison operators (surface -> base op). «больше»+noun stays object-comparison
+# (bigger_than); «больше»+number becomes a numeric threshold (num_gt). «than»/«чем» are skipped
+# as positional connectors. Mapped to num_gt/num_lt/num_eq edges to a concept.amount node.
+_CMP = {
+    "больше": "gt", "более": "gt", "bigger": "gt", "greater": "gt", "more": "gt", "превышает": "gt", "exceeds": "gt",
+    "меньше": "lt", "менее": "lt", "less": "lt", "fewer": "lt", "smaller": "lt",
+    "равно": "eq", "равна": "eq", "равен": "eq", "равны": "eq", "equals": "eq", "equal": "eq",
+}
+_CMP_REL = {"gt": "num_gt", "lt": "num_lt", "eq": "num_eq"}
+AMOUNT = "concept.amount"  # synthetic node carrying the threshold's {value, unit} measure
 
 
 def _tokens(text: str) -> list[str]:
@@ -134,19 +145,27 @@ def parse_situation(
     ``polarity`` is ``"neg"`` for a negated clause, else ``"pos"``."""
     from casa.curriculum.attributes import COLOR_IDS, attr_of_token
     from casa.curriculum.quantity import number_of_token, unit_of_token
+    from casa.curriculum.states import state_of_token
 
     names = _name_index(state, lattice_id)
-    seq: list[tuple[str, Any]] = []  # ('prep'|'verb'|'noun'|'adj'|'num'|'unit', payload)
+    seq: list[tuple[str, Any]] = []  # ('prep'|'verb'|'noun'|'adj'|'num'|'unit'|'state', payload)
     polarity = "pos"
+    copula = False  # saw an English copula «is/are» — the next state word is predicative
     for tok in _tokens(text):
         if tok in _NEG:
             polarity = "neg"  # negation marker — scopes the clause's relation
         elif tok in _AND:
             seq.append(("and", None))  # coordinator
+        elif tok in _COPULA:
+            copula = True  # «the file is open» — marks the following state predicate
         elif tok in _PREPS:
             seq.append(("prep", normalize_relation(tok)))
         elif tok in _POSITIONAL:
             continue  # positional copula — the preposition carries the relation
+        elif (sid := state_of_token(tok)) is not None and (copula or tok not in PREDICATE_RELATION):
+            seq.append(("state", sid))  # predicative state; an EN verb/adj clash («open») needs the copula
+        elif tok in _CMP:
+            seq.append(("cmp", _CMP[tok]))  # numeric/object comparison operator
         elif tok in PREDICATE_RELATION and tok not in _PREPS:
             seq.append(("verb", normalize_relation(tok)))
         elif (num := number_of_token(tok)) is not None:
@@ -192,6 +211,23 @@ def parse_situation(
     # file), Russian genitive head-FIRST («файл пиктограммы» → файл).
     is_ru = bool(re.search(r"[Ѐ-ӿ]", text))
     head = lambda ns: ns[0][1] if is_ru else ns[-1][1]  # noqa: E731
+
+    # comparison: «доза больше 5 мл» (numeric threshold) or «слон больше мыши» (objects).
+    # A number after the operator → a num_gt/num_lt/num_eq edge to the AMOUNT node carrying
+    # the threshold's {value, unit}; a noun after «больше» → the object bigger_than relation.
+    cmps = [i for i, (k, _) in enumerate(seq) if k == "cmp"]
+    if cmps:
+        ci = cmps[0]
+        op = next(p for k, p in seq if k == "cmp")
+        before_n = [c for ni, c in nouns if ni < ci]
+        after_n = [c for ni, c in nouns if ni > ci]
+        nums = [p for k, p in seq[ci + 1:] if k == "num"]
+        units = [p for k, p in seq[ci + 1:] if k == "unit"]
+        if before_n and nums:  # numeric threshold
+            measures[AMOUNT] = {"value": nums[0], "unit": units[0] if units else ""}
+            return [(_CMP_REL[op], before_n[-1], AMOUNT)], attrs, polarity, counts, measures
+        if op == "gt" and before_n and after_n:  # object comparison «слон больше мыши»
+            return [("bigger_than", before_n[-1], after_n[0])], attrs, polarity, counts, measures
 
     # habitat: «кошка живёт в доме» — lives_in absorbs the following preposition (one edge,
     # not action+location), because a home is a habitat, not a container
@@ -257,6 +293,18 @@ def parse_situation(
             objs = [c for _, c in after] if (has_and and len(after) >= 2) else [head(after)]
             return [(verbs[0][1], subject, o) for o in objs], attrs, polarity, counts, measures
 
+    # predicative state: «файл открыт» / «the file is open» → has_state(file, concept.open) —
+    # a state predicate after a noun, no relation of its own (the building block of a rule)
+    if nouns and not preps and not verbs and any(k == "state" for k, _ in seq):
+        state_triples = []
+        for ci, (k, p) in enumerate(seq):
+            if k == "state":
+                figs = [c for ni, c in nouns if ni < ci]
+                if figs:
+                    state_triples.append(("has_state", figs[-1], f"concept.{p}"))
+        if state_triples:
+            return state_triples, attrs, polarity, counts, measures
+
     # predicative colour: «яблоко красное» → color_of(apple, concept.red) — a colour adjective
     # AFTER a noun, with no relation of its own
     if nouns and not preps and not verbs:
@@ -298,3 +346,73 @@ def parse_graph(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
 def parse_fingerprint(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
     """Parse text all the way to its situation fingerprint."""
     return fingerprint(parse_graph(state, lattice_id, text))
+
+
+def _clause_parses(state: dict, lattice_id: str, text: str) -> bool:
+    return any(e.get("satisfied") for e in parse_graph(state, lattice_id, text).get("edges", []))
+
+
+def split_conditions(state: dict, lattice_id: str, text: str) -> list[str]:
+    """Split one rule side into independently-parsing condition clauses. Splits on a
+    separator («,» «;» «и» «and») ONLY when every fragment parses on its own — so a
+    conjunction of clauses («файл открыт и яблоко на столе») becomes two conditions, while
+    intra-clause coordination («яблоко и книга на столе», where «яблоко» alone is no clause)
+    is left whole for the clause parser. This is what lets «если X и Y, то Z» mix forms
+    (a state AND a locative) that a single clause parse cannot express together."""
+    text = text.strip(" ,;\t")
+    for sep in (r"\s*[,;]\s*", r"\s+и\s+", r"\s+and\s+"):
+        parts = [p.strip() for p in re.split(sep, text, flags=re.IGNORECASE) if p.strip()]
+        if len(parts) > 1 and all(_clause_parses(state, lattice_id, p) for p in parts):
+            return [c for p in parts for c in split_conditions(state, lattice_id, p)]
+    return [text]
+
+
+def _merge_graphs(graphs: list[dict[str, Any]]) -> dict[str, Any]:
+    """Union several meaning graphs into one — the conjunction of conditions (nodes merged,
+    satisfied edges concatenated, deduplicated by (rel, src, dst, polarity))."""
+    nodes: dict[str, Any] = {}
+    edges: list[dict[str, Any]] = []
+    seen: set[tuple] = set()
+    for g in graphs:
+        nodes.update(g.get("nodes", {}))
+        for e in g.get("edges", []):
+            key = (e.get("rel"), e.get("src"), e.get("dst"), e.get("polarity", "pos"))
+            if key not in seen:
+                seen.add(key)
+                edges.append(e)
+    return {"nodes": nodes, "edges": edges, "valid": all(e.get("satisfied") for e in edges)}
+
+
+def _parse_conjunction(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
+    """Parse a rule side (possibly «X и Y и …») into one merged graph of all its conditions."""
+    return _merge_graphs([parse_graph(state, lattice_id, c) for c in split_conditions(state, lattice_id, text)])
+
+
+def parse_rule(state: dict, lattice_id: str, text: str) -> dict[str, Any] | None:
+    """Parse a conditional «если X, то Y» / «if X then Y» into a RULE — an antecedent graph
+    and a consequent graph. Each side may be a CONJUNCTION of conditions («если X и Y, то Z»):
+    it is split into independently-parsing clauses (so it can mix forms — a state AND a
+    locative) and unioned. Returns ``None`` if the text is not a conditional or a side does
+    not parse to any situation. The building block reasoning checks facts against."""
+    t = str(text or "").strip()
+    m = re.match(r"(?is)^\s*(?:если|if)\b\s*(.+)$", t)
+    if not m:
+        return None
+    rest = m.group(1)
+    parts = re.split(r"(?i)(?:,\s*)?\b(?:то|then)\b", rest, maxsplit=1)
+    if len(parts) == 2:
+        ante, cons = parts
+    elif "," in rest:  # «если X, Y» — comma separates when «то/then» is dropped
+        ante, cons = rest.split(",", 1)
+    else:
+        return None
+    ante, cons = ante.strip(" ,\t"), cons.strip(" ,\t")
+    if not ante or not cons:
+        return None
+    ga, gc = _parse_conjunction(state, lattice_id, ante), _parse_conjunction(state, lattice_id, cons)
+    if not any(e.get("satisfied") for e in ga["edges"]) or not any(e.get("satisfied") for e in gc["edges"]):
+        return None  # a side did not parse — honest, like the validator's «uncheckable»
+    return {"text": t, "antecedent_text": ante, "consequent_text": cons,
+            "antecedent": ga, "consequent": gc,
+            "antecedent_conditions": split_conditions(state, lattice_id, ante),
+            "consequent_conditions": split_conditions(state, lattice_id, cons)}

@@ -307,6 +307,36 @@ def realize_graph(state: dict, lattice_id: str, graph: dict[str, Any], *, lang: 
             body = f"the {noun} is {'not ' if neg else ''}{en_adjective(color)}"
         return body[:1].upper() + body[1:] + "."
 
+    # state predicate — «Файл открыт.» / «The file is open.»
+    if len(edges) == 1 and edges[0][0] == "has_state":
+        from casa.curriculum.states import en_state, ru_state
+
+        _, src, dst = edges[0]
+        sid = dst.split(".")[-1]  # concept.open -> open
+        noun = _word(state, lattice_id, src, lang)
+        if lang == "ru":
+            body = f"{noun} {'не ' if neg else ''}{ru_state(sid, noun)}"
+        else:
+            body = f"the {noun} is {'not ' if neg else ''}{en_state(sid)}"
+        return body[:1].upper() + body[1:] + "."
+
+    # numeric threshold — «Вода больше 5 мл.» / «The water is greater than 5 ml.»
+    if len(edges) == 1 and edges[0][0] in ("num_gt", "num_lt", "num_eq"):
+        from casa.curriculum.quantity import unit_surface
+
+        rel, src, dst = edges[0]
+        noun = _word(state, lattice_id, src, lang)
+        m = (graph.get("nodes", {}).get(dst) or {}).get("measure") or {}
+        unit = unit_surface(m["unit"], lang) if m.get("unit") else ""
+        amount = f"{m.get('value', '')} {unit}".strip()
+        op = {"num_gt": ("больше", "greater than"), "num_lt": ("меньше", "less than"),
+              "num_eq": ("равно", "equal to")}[rel]
+        if lang == "ru":
+            body = f"{noun} {'не ' if neg else ''}{op[0]} {amount}"
+        else:
+            body = f"the {noun} is {'not ' if neg else ''}{op[1]} {amount}"
+        return body[:1].upper() + body[1:] + "."
+
     # comparison — «Слон больше мыши.» / «The elephant is bigger than the mouse.»
     if len(edges) == 1 and edges[0][0] == "bigger_than":
         _, src, dst = edges[0]
