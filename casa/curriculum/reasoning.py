@@ -28,6 +28,7 @@ is independent here, because location is not modelled as one-valued.
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 # relations mapping a subject to exactly ONE value — a differing value is a contradiction.
@@ -37,6 +38,48 @@ _FUNCTIONAL = {"color_of"}
 # numeric threshold relations (parse.py): num_gt/num_lt/num_eq(subject, amount{value,unit})
 _NUM_OP = {"num_gt": "gt", "num_lt": "lt", "num_eq": "eq"}
 _OP_SYM = {"gt": ">", "lt": "<", "eq": "="}
+# parse a canonical numeric edge «num_gt(concept.dose,concept.amount{15ml})» -> op/value/unit
+_NUM_CANON = re.compile(r"^(num_gt|num_lt|num_eq)\((.+),concept\.amount\{(\d+(?:\.\d+)?)(\D*)\}\)$")
+
+
+def _constraint_entails(fo: str, fv: float, ao: str, av: float) -> bool:
+    """Does a FACT constraint (fo fv) entail an ANTECEDENT constraint (ao av) — i.e. does
+    every x satisfying the fact also satisfy the antecedent? «=15» entails «>10» (15>10);
+    «>12» entails «>10» (x>12 ⊆ x>10). This is how a value satisfies a threshold antecedent."""
+    if ao == "eq":
+        return fo == "eq" and fv == av
+    if ao == "gt":
+        return (fo == "eq" and fv > av) or (fo == "gt" and fv >= av)
+    if ao == "lt":
+        return (fo == "eq" and fv < av) or (fo == "lt" and fv <= av)
+    return False
+
+
+def _antecedent_support(ante_canon: set[str], fact_canon: set[str]) -> set[str] | None:
+    """Is the antecedent established by the facts? Returns the set of supporting FACT edges
+    (for provenance), or ``None`` if not established. Non-numeric edges need exact membership;
+    a numeric threshold edge is met by any fact constraint on the same subject that entails it
+    (so «доза равна 15 мл» satisfies the antecedent «доза больше 10 мл»)."""
+    fact_num: dict[str, list[tuple]] = {}
+    for c in fact_canon:
+        m = _NUM_CANON.match(c)
+        if m:
+            fact_num.setdefault(m.group(2), []).append((c, _NUM_OP[m.group(1)], float(m.group(3)), m.group(4)))
+    support: set[str] = set()
+    for a in ante_canon:
+        m = _NUM_CANON.match(a)
+        if m is None:  # ordinary edge — exact containment
+            if a not in fact_canon:
+                return None
+            support.add(a)
+            continue
+        src, ao, av, au = m.group(2), _NUM_OP[m.group(1)], float(m.group(3)), m.group(4)
+        hit = next((fc for fc, fo, fv, fu in fact_num.get(src, [])
+                    if (not (fu and au) or fu == au) and _constraint_entails(fo, fv, ao, av)), None)
+        if hit is None:
+            return None
+        support.add(hit)
+    return support
 
 
 def _ranges_conflict(o1: str, v1: float, o2: str, v2: float) -> bool:
@@ -239,7 +282,7 @@ def check_against_rules(state: dict, lattice_id: str, facts: list[str], rules: l
         cons_struct = _structured_edges(rule["consequent"])
         entry = {"index": j, "text": r, "antecedent_text": rule["antecedent_text"],
                  "consequent_text": rule["consequent_text"], "conflicts": []}
-        if not ante_canon <= fact_canon:
+        if _antecedent_support(ante_canon, fact_canon) is None:
             entry["status"] = "inactive"  # antecedent not established by the facts
         elif (conflicts := _contradictions(cons_struct, fact_edges)):
             entry["status"], entry["conflicts"] = "violated", conflicts
@@ -313,15 +356,17 @@ def forward_chain(state: dict, lattice_id: str, facts: list[str], rules: list[st
         fact_struct = _structured_edges(fact_graph)
         for j, rtext, rule in parsed_rules:
             ante_canon = set(canonical_edges(rule["antecedent"]))
-            if not ante_canon <= fact_canon:
+            support_set = _antecedent_support(ante_canon, fact_canon)
+            if support_set is None:
                 continue
             cons_struct = _structured_edges(rule["consequent"])
             cons_canon = set(canonical_edges(rule["consequent"]))
-            support = sorted(ante_canon)  # the facts that make this rule applicable
+            support = sorted(support_set)  # the actual facts that make this rule applicable
             if (conflicts := _contradictions(cons_struct, fact_struct)):
                 if j not in violated:
                     # direct iff the given facts alone establish the antecedent AND deny the consequent
-                    direct = ante_canon <= given_canon and bool(_contradictions(cons_struct, given_struct))
+                    direct = (_antecedent_support(ante_canon, given_canon) is not None
+                              and bool(_contradictions(cons_struct, given_struct)))
                     violations.append({"rule_index": j, "rule": rtext, "conflicts": conflicts,
                                        "antecedent_text": rule["antecedent_text"],
                                        "consequent_text": rule["consequent_text"],

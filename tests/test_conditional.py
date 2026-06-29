@@ -103,6 +103,23 @@ class ConditionalTests(unittest.TestCase):
     def test_multi_condition_satisfied(self) -> None:
         self.assertEqual(self.status(["файл открыт", "кнопка активна", "окно видно"], [self.MULTI]), "satisfied")
 
+    # --- threshold matching in a rule ANTECEDENT («=15» satisfies «больше 10») ---------
+    THRESH = "если воды больше 10 мл, то панель видна"
+
+    def test_threshold_antecedent_fires_when_value_crosses(self) -> None:
+        self.assertEqual(self.status(["воды равно 15 мл"], [self.THRESH]), "fired_unknown")
+        self.assertEqual(self.status(["воды равно 15 мл", "панель скрыта"], [self.THRESH]), "violated")
+        self.assertEqual(self.status(["воды равно 15 мл", "панель видна"], [self.THRESH]), "satisfied")
+
+    def test_threshold_antecedent_inactive_below(self) -> None:
+        self.assertEqual(self.status(["воды равно 5 мл"], [self.THRESH]), "inactive")  # 5 is not > 10
+
+    def test_threshold_antecedent_inequality_entails(self) -> None:
+        self.assertEqual(self.status(["воды больше 12 мл"], [self.THRESH]), "fired_unknown")  # >12 ⊆ >10
+
+    def test_threshold_antecedent_unit_mismatch_inactive(self) -> None:
+        self.assertEqual(self.status(["воды равно 15 мг"], [self.THRESH]), "inactive")  # mg vs ml
+
 
 if __name__ == "__main__":
     unittest.main()

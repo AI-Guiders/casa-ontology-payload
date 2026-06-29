@@ -40,10 +40,11 @@ DEMO_SET: list[str] = [
 
 # conditional RULES checked against a fact base («если X, то Y» + факты → нарушения).
 # Note: the fact base mixes EN and RU — the violation is found language-independently.
-DEMO_RULE_FACTS: list[str] = ["the file is open", "окно видно", "кнопка неактивна"]
+DEMO_RULE_FACTS: list[str] = ["the file is open", "окно видно", "кнопка неактивна", "воды равно 15 мл"]
 DEMO_RULES: list[str] = [
     "если файл открыт, то кнопка активна",              # ✗ violated: file open but button inactive
     "если файл открыт и окно видно, то кнопка активна",  # ✗ violated: BOTH conditions hold (multi-condition)
+    "если воды больше 10 мл, то кнопка активна",        # ✗ violated: THRESHOLD «=15» satisfies «>10»
     "если окно скрыто, то кнопка активна",              # · inactive: window-hidden not in the facts
 ]
 
