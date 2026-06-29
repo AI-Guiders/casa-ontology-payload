@@ -34,6 +34,27 @@ from typing import Any
 # Kept deliberately minimal: colour is genuinely one-per-thing; size/location are not.
 _FUNCTIONAL = {"color_of"}
 
+# numeric threshold relations (parse.py): num_gt/num_lt/num_eq(subject, amount{value,unit})
+_NUM_OP = {"num_gt": "gt", "num_lt": "lt", "num_eq": "eq"}
+_OP_SYM = {"gt": ">", "lt": "<", "eq": "="}
+
+
+def _ranges_conflict(o1: str, v1: float, o2: str, v2: float) -> bool:
+    """Do two numeric constraints on the same quantity have an empty intersection?
+    gt v ≡ x>v, lt v ≡ x<v, eq v ≡ x==v. e.g. «>10» ∧ «<5» is empty; «>5» ∧ «=3» is empty."""
+    ops = {o1, o2}
+    if o1 == "eq" and o2 == "eq":
+        return v1 != v2
+    if "eq" in ops:
+        ev = v1 if o1 == "eq" else v2
+        oo, ov = (o2, v2) if o1 == "eq" else (o1, v1)
+        return ev <= ov if oo == "gt" else ev >= ov  # the eq value must satisfy the inequality
+    if ops == {"gt", "lt"}:
+        gv = v1 if o1 == "gt" else v2
+        lv = v1 if o1 == "lt" else v2
+        return gv >= lv  # (gv, ∞) ∩ (−∞, lv) is empty iff gv ≥ lv
+    return False  # gt/gt or lt/lt are always jointly satisfiable
+
 
 def _contradictions(a_edges: list[dict], b_edges: list[dict]) -> list[dict[str, str]]:
     """Edge-level conflicts that stop A and B from holding together (the logic kernel).
@@ -51,6 +72,8 @@ def _contradictions(a_edges: list[dict], b_edges: list[dict]) -> list[dict[str, 
         s, t, rel = by_a[k], by_b[k], k[0]
         if s["polarity"] != t["polarity"]:
             out.append({"class": "polarity", "note": f"«{rel}»: одно утверждает, другое отрицает"})
+        if rel in _NUM_OP:
+            continue  # numeric thresholds: the interval logic below owns value/unit conflicts
         if s["src_count"] != t["src_count"] or s["d_count"] != t["d_count"]:
             sc = s["d_count"] if s["src_count"] == t["src_count"] else s["src_count"]
             tc = t["d_count"] if s["src_count"] == t["src_count"] else t["src_count"]
@@ -88,6 +111,25 @@ def _contradictions(a_edges: list[dict], b_edges: list[dict]) -> list[dict[str, 
                 if are_antonyms(sa, sb):
                     out.append({"class": "state",
                                 "note": f"«{e['src'].split('.')[-1]}»: {sa} vs {sb} — взаимоисключающие"})
+
+    # numeric value mutex: gt/lt/eq thresholds on the same quantity with a disjoint range
+    def _consts(edges: list[dict]) -> dict[str, list[tuple]]:
+        out_: dict[str, list[tuple]] = {}
+        for e in edges:
+            if e["rel"] in _NUM_OP and e["polarity"] == "pos" and e["d_meas"]:
+                out_.setdefault(e["src"], []).append((_NUM_OP[e["rel"]], e["d_meas"][0], e["d_meas"][1]))
+        return out_
+
+    ac, bc = _consts(a_edges), _consts(b_edges)
+    for subj in ac.keys() & bc.keys():
+        name = subj.split(".")[-1]
+        for o1, v1, u1 in ac[subj]:
+            for o2, v2, u2 in bc[subj]:
+                if u1 and u2 and u1 != u2:
+                    out.append({"class": "unit", "note": f"«{name}»: единица {u1} vs {u2}"})
+                elif _ranges_conflict(o1, v1, o2, v2):
+                    out.append({"class": "range",
+                                "note": f"«{name}»: {_OP_SYM[o1]}{v1}{u1} vs {_OP_SYM[o2]}{v2}{u2} — несовместимо"})
     return out
 
 

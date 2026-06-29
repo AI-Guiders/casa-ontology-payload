@@ -34,6 +34,16 @@ _POSITIONAL = {"лежит", "стоит", "находится", "лежать",
 _NEG = {"не", "нет", "ни", "not", "don't", "do not", "doesn't", "no", "never"}  # negation markers
 _AND = {"и", "and"}  # coordinator — distributes a role over conjuncts
 _COPULA = {"is", "are"}  # English predicative copula — marks the next word as a state predicate
+# numeric comparison operators (surface -> base op). «больше»+noun stays object-comparison
+# (bigger_than); «больше»+number becomes a numeric threshold (num_gt). «than»/«чем» are skipped
+# as positional connectors. Mapped to num_gt/num_lt/num_eq edges to a concept.amount node.
+_CMP = {
+    "больше": "gt", "более": "gt", "bigger": "gt", "greater": "gt", "more": "gt", "превышает": "gt", "exceeds": "gt",
+    "меньше": "lt", "менее": "lt", "less": "lt", "fewer": "lt", "smaller": "lt",
+    "равно": "eq", "равна": "eq", "равен": "eq", "равны": "eq", "equals": "eq", "equal": "eq",
+}
+_CMP_REL = {"gt": "num_gt", "lt": "num_lt", "eq": "num_eq"}
+AMOUNT = "concept.amount"  # synthetic node carrying the threshold's {value, unit} measure
 
 
 def _tokens(text: str) -> list[str]:
@@ -154,6 +164,8 @@ def parse_situation(
             continue  # positional copula — the preposition carries the relation
         elif (sid := state_of_token(tok)) is not None and (copula or tok not in PREDICATE_RELATION):
             seq.append(("state", sid))  # predicative state; an EN verb/adj clash («open») needs the copula
+        elif tok in _CMP:
+            seq.append(("cmp", _CMP[tok]))  # numeric/object comparison operator
         elif tok in PREDICATE_RELATION and tok not in _PREPS:
             seq.append(("verb", normalize_relation(tok)))
         elif (num := number_of_token(tok)) is not None:
@@ -199,6 +211,23 @@ def parse_situation(
     # file), Russian genitive head-FIRST («файл пиктограммы» → файл).
     is_ru = bool(re.search(r"[Ѐ-ӿ]", text))
     head = lambda ns: ns[0][1] if is_ru else ns[-1][1]  # noqa: E731
+
+    # comparison: «доза больше 5 мл» (numeric threshold) or «слон больше мыши» (objects).
+    # A number after the operator → a num_gt/num_lt/num_eq edge to the AMOUNT node carrying
+    # the threshold's {value, unit}; a noun after «больше» → the object bigger_than relation.
+    cmps = [i for i, (k, _) in enumerate(seq) if k == "cmp"]
+    if cmps:
+        ci = cmps[0]
+        op = next(p for k, p in seq if k == "cmp")
+        before_n = [c for ni, c in nouns if ni < ci]
+        after_n = [c for ni, c in nouns if ni > ci]
+        nums = [p for k, p in seq[ci + 1:] if k == "num"]
+        units = [p for k, p in seq[ci + 1:] if k == "unit"]
+        if before_n and nums:  # numeric threshold
+            measures[AMOUNT] = {"value": nums[0], "unit": units[0] if units else ""}
+            return [(_CMP_REL[op], before_n[-1], AMOUNT)], attrs, polarity, counts, measures
+        if op == "gt" and before_n and after_n:  # object comparison «слон больше мыши»
+            return [("bigger_than", before_n[-1], after_n[0])], attrs, polarity, counts, measures
 
     # habitat: «кошка живёт в доме» — lives_in absorbs the following preposition (one edge,
     # not action+location), because a home is a habitat, not a container
