@@ -81,6 +81,36 @@ _TEMPORAL_SKIP = {
 # glued number+unit («2ml», «10мг») — split into the pair the classifier expects
 _GLUED_MEASURE = re.compile(r"^(\d+(?:[.,]\d+)?)([a-zа-яµ]+)$")
 
+_CAPWORD = re.compile(r"[A-ZÁÉÍÓÚÑ][\wÁ-ÿ]*")
+
+
+def _named_candidates(text: str) -> set[str]:
+    """Lowercased surfaces that look like PROPER NAMES in the original casing: capitalized
+    mid-sentence, or ALL-CAPS anywhere (≥3 letters). Sentence-initial TitleCase alone does
+    not qualify — too ambiguous with ordinary sentence capitalization."""
+    out: set[str] = set()
+    for m in _CAPWORD.finditer(str(text or "")):
+        tok = m.group(0)
+        if len(tok) >= 3 and tok.isupper():
+            out.add(tok.lower())
+            continue
+        head = text[:m.start()].rstrip()
+        if head and head[-1] not in ".!?:;¡¿«\"'(":
+            out.add(tok.lower())
+    return out
+
+
+def _normalize_name(surface: str) -> str:
+    """Cross-lingual normalization of a proper name (INN drug names vary by a final vowel
+    and consonant doubling: aripiprazole/aripiprazol, amoxicillin/amoxicilina). Lowercase,
+    collapse doubled letters, strip ONE trailing a/e/o on long names. Heuristic — entity
+    verdicts compare NORMALIZED names, stated honestly in the validator's scope."""
+    s = surface.strip().lower()
+    s = re.sub(r"(.)\1", r"\1", s)  # collapse doubles (amoxicillin -> amoxicilin)
+    if len(s) > 4 and s[-1] in "aeo":
+        s = s[:-1]
+    return s
+
 
 def _typed_concepts(state: dict, lattice_id: str) -> set[str]:
     """Concepts that are IN the ontology (appear as the source of an isa edge)."""
@@ -209,6 +239,10 @@ def parse_situation(
         else (lambda t: t in PREDICATE_RELATION)
 
     names = _name_index(state, lattice_id)
+    # drug/proper names are an open class: on DECLARED-language sides (the benchmark knows
+    # each side's language) an unknown capitalized token becomes an opaque named node —
+    # so «no tome ABILIFY» parses AND a swapped drug is an entity-class divergence
+    named = _named_candidates(text) if lang in ("en", "es") else set()
     seq: list[tuple[str, Any]] = []  # ('prep'|'verb'|'noun'|'adj'|'num'|'unit'|'state', payload)
     polarity = "pos"
     copula = False  # saw a copula («is/are», «está/son») — the next state word is predicative
@@ -248,6 +282,16 @@ def parse_situation(
             cid = resolve_token(state, lattice_id, tok, names, lang=lang)
             if cid:
                 seq.append(("noun", cid))
+                continue
+            # unknown word: a proper name (capitalized/ALL-CAPS), or the substance right
+            # after «measure + of/de» («9,75 mg de aripiprazol» — INN generics are
+            # lowercase, the partitive position identifies them)
+            after_measure_of = (lang in ("en", "es") and len(seq) >= 2
+                                and seq[-1] == ("verb", "made_of") and seq[-2][0] == "unit")
+            if tok in named or after_measure_of:
+                from casa.curriculum.concept_net import NAMED_PREFIX
+
+                seq.append(("noun", f"{NAMED_PREFIX}{_normalize_name(tok)}"))
 
     if es:  # resolve the underspecified ES «en» per ground: a support surface hosts ON, else IN
         from casa.curriculum.concept_net import affordances_of
@@ -283,11 +327,15 @@ def parse_situation(
             pending, pending_count, pending_unit = [], None, None
 
     # partitive/dangling «of/de» is NOT a made_of claim: before a number ("a dose of
-    # 75 mg") or with no noun following it ("9,75 mg de aripiprazol" — unknown drug name) —
+    # 75 mg"), before a NAMED substance ("9,75 mg de aripiprazol" — the measure must bind
+    # to the substance, not spawn a made_of edge), or with no noun following it at all —
     # drop the spurious verb so the measure forms below see through
+    from casa.curriculum.concept_net import NAMED_PREFIX as _NP
+
     seq = [item for i, item in enumerate(seq)
            if not (item[0] == "verb" and item[1] == "made_of"
                    and (i + 1 >= len(seq) or seq[i + 1][0] == "num"
+                        or (seq[i + 1][0] == "noun" and str(seq[i + 1][1]).startswith(_NP))
                         or not any(k == "noun" for k, _ in seq[i + 1:])))]
 
     nouns = [(i, p) for i, (k, p) in enumerate(seq) if k == "noun"]

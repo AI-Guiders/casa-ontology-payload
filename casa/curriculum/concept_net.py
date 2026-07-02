@@ -116,6 +116,13 @@ def has_part(state: dict, lattice_id: str, whole: str, part: str) -> bool:
 # `concept.{slug}`; `lex.*` is no longer a hub identity (vocabulary units are `lemma.{ru,en}.*`).
 CONCEPT_PREFIX = "concept."
 
+# opaque named entities (drug names — an open class no ontology can enumerate): parse-time
+# nodes ``concept.named:{normalized}``. They are not taught; they carry a fixed implicit
+# type (a physical, takeable thing) so label clauses validate, and their IDENTITY is the
+# name itself — a swapped drug between translation sides is an entity-class divergence.
+NAMED_PREFIX = "concept.named:"
+_NAMED_AFFORDS = {"positionable", "ownable", "measurable", "usable"}
+
 
 def _concept_id(en: str) -> str:
     return f"{CONCEPT_PREFIX}{en.strip().lower().replace(' ', '_')}"
@@ -156,6 +163,8 @@ def teach_concept_net(state: dict, lattice_id: str, data: dict, *, bundle: dict 
 # --------------------------------------------------------------------------- #
 def isa_closure(state: dict, lattice_id: str, concept: str) -> set[str]:
     """All super-types of ``concept`` (transitive), including itself."""
+    if concept.startswith(NAMED_PREFIX):  # opaque named entity — fixed implicit type
+        return {concept, "named_entity", "physical_object"}
     prefix = lambda c: f"{c}|{_ISA}|"  # noqa: E731
     edges = _edges(state, lattice_id)
     seen = {concept}
@@ -174,6 +183,8 @@ def isa_closure(state: dict, lattice_id: str, concept: str) -> set[str]:
 
 def affordances_of(state: dict, lattice_id: str, concept: str) -> set[str]:
     """Roles afforded by any type in ``concept``'s isa-closure (inherited capabilities)."""
+    if concept.startswith(NAMED_PREFIX):  # opaque named entity — fixed implicit affordances
+        return set(_NAMED_AFFORDS)
     edges = _edges(state, lattice_id)
     roles: set[str] = set()
     for typ in isa_closure(state, lattice_id, concept):

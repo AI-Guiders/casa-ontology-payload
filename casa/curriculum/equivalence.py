@@ -79,9 +79,28 @@ def _classify(src_edges: list[dict], tgt_edges: list[dict]) -> list[dict[str, st
             divs.append({"class": "attribute",
                          "note": f"«{rel}»: признаки {s['src_attrs'] or s['d_attrs']} vs {t['src_attrs'] or t['d_attrs']}"})
 
-    for k in by_src.keys() - by_tgt.keys():
+    # entity class: skeletons that differ ONLY in a named-entity node are a SWAPPED NAME
+    # (Tamiflu ↔ Abilify) — the fourth dangerous class, not a structural mismatch
+    from casa.curriculum.concept_net import NAMED_PREFIX
+
+    def masked(k: tuple[str, str, str]) -> tuple:
+        return tuple("«named»" if str(x).startswith(NAMED_PREFIX) else x for x in k)
+
+    only_src = set(by_src.keys() - by_tgt.keys())
+    only_tgt = set(by_tgt.keys() - by_src.keys())
+    for ks in sorted(only_src):
+        mate = next((kt for kt in sorted(only_tgt) if masked(kt) == masked(ks)), None)
+        if mate is not None and any(str(x).startswith(NAMED_PREFIX) for x in ks):
+            named_s = [x[len(NAMED_PREFIX):] for x in ks if str(x).startswith(NAMED_PREFIX)]
+            named_t = [x[len(NAMED_PREFIX):] for x in mate if str(x).startswith(NAMED_PREFIX)]
+            divs.append({"class": "entity",
+                         "note": f"«{ks[0]}»: сущность {'/'.join(named_s)} vs {'/'.join(named_t)} — подменено имя"})
+            only_src.discard(ks)
+            only_tgt.discard(mate)
+
+    for k in only_src:
         divs.append({"class": "structure", "note": f"в переводе нет: {k[0]}({k[1].split('.')[-1]},{k[2].split('.')[-1]})"})
-    for k in by_tgt.keys() - by_src.keys():
+    for k in only_tgt:
         divs.append({"class": "structure", "note": f"в источнике нет: {k[0]}({k[1].split('.')[-1]},{k[2].split('.')[-1]})"})
     return divs
 
