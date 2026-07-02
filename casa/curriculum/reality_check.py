@@ -93,25 +93,47 @@ def recall_report(state: dict, lattice_id: str, cases: list[tuple[str, str, str]
             "per_class": {k: f"{a}/{b}" for k, (a, b) in per_class.items()}, "misses": misses}
 
 
-def _side_class(state: dict, lattice_id: str, text: str) -> str:
+# Spanish relation markers for the ceiling classifier only: a side can (in principle) carry
+# a relation if it has a preposition / negation / copula / instruction verb. Kept as a
+# separate lang-selected set — Spanish shares the Latin script with English, so mixing the
+# sets would misclassify (EN article «a» is an ES preposition, EN «no» is ES negation).
+_ES_RELATION_MARKERS = {
+    # prepositions
+    "en", "de", "con", "sin", "para", "sobre", "a", "por", "durante", "entre", "hasta",
+    # negation
+    "no", "nunca",
+    # copulas / modals
+    "es", "está", "están", "son", "debe", "deben", "puede", "pueden",
+    # instruction verbs (imperative/usted forms common on labels)
+    "use", "utilice", "tome", "tomar", "conserve", "mantenga", "agite", "abra", "cierre",
+    "inyecte", "aplique", "deseche", "guarde", "disuelva", "evite", "administre", "contiene",
+}
+
+
+def _side_class(state: dict, lattice_id: str, text: str, lang: str | None = None) -> str:
     """Classify ONE side of a pair for the ceiling. ``parses`` — a satisfied edge was built.
     ``ceiling`` — no word that could carry a relation (a bare label: «Configuration»,
     «Icon Size»); never a validator target, because there is nothing to compare. ``fixable``
     — a relation word IS present but no edge was built (unknown noun / unmodelled structure):
-    recoverable in principle by more parser/vocabulary work."""
+    recoverable in principle by more parser/vocabulary work. ``lang="es"`` selects the
+    Spanish marker set (the default RU/EN sets don't know Spanish function words)."""
     from casa.curriculum.parse import _POSITIONAL, _PREPS, _tokens, parse_graph
     from casa.curriculum.situation import PREDICATE_RELATION
 
     if any(e.get("satisfied") for e in parse_graph(state, lattice_id, text).get("edges", [])):
         return "parses"
-    has_relation_word = any(
-        t in _PREPS or t in _POSITIONAL or (t in PREDICATE_RELATION and t not in _PREPS)
-        for t in _tokens(text)
-    )
+    if lang == "es":
+        has_relation_word = any(t in _ES_RELATION_MARKERS for t in _tokens(text))
+    else:
+        has_relation_word = any(
+            t in _PREPS or t in _POSITIONAL or (t in PREDICATE_RELATION and t not in _PREPS)
+            for t in _tokens(text)
+        )
     return "fixable" if has_relation_word else "ceiling"
 
 
-def ceiling_report(state: dict, lattice_id: str, pairs: list[tuple[str, str]]) -> dict[str, Any]:
+def ceiling_report(state: dict, lattice_id: str, pairs: list[tuple[str, str]],
+                   langs: tuple[str, str] | None = None) -> dict[str, Any]:
     """Pair-level coverage CEILING — the maximum coverage any amount of parser/vocabulary
     work could reach on this corpus. A pair can only ever validate if BOTH sides carry a
     relation; a bare-label side has nothing to compare, so any pair with even one ceiling
@@ -123,7 +145,8 @@ def ceiling_report(state: dict, lattice_id: str, pairs: list[tuple[str, str]]) -
     combos: Counter = Counter()
     both = 0
     for s, t in pairs:
-        cs, ct = _side_class(state, lattice_id, s), _side_class(state, lattice_id, t)
+        cs = _side_class(state, lattice_id, s, lang=langs[0] if langs else None)
+        ct = _side_class(state, lattice_id, t, lang=langs[1] if langs else None)
         combos[tuple(sorted((cs, ct)))] += 1
         both += int(cs == "parses" and ct == "parses")
     total = len(pairs) or 1
@@ -139,13 +162,31 @@ def ceiling_report(state: dict, lattice_id: str, pairs: list[tuple[str, str]]) -
     }
 
 
-def _load_corpus(en_path: str, ru_path: str, limit: int) -> list[tuple[str, str]]:
+def _load_corpus(en_path: str, ru_path: str, limit: int, max_words: int = 8) -> list[tuple[str, str]]:
     with open(en_path, encoding="utf-8") as f:
         en = [ln.strip() for ln in f]
     with open(ru_path, encoding="utf-8") as f:
         ru = [ln.strip() for ln in f]
-    pairs = [(e, r) for e, r in zip(en, ru) if e and r and 2 <= len(e.split()) <= 8]
+    pairs = [(e, r) for e, r in zip(en, ru) if e and r and 2 <= len(e.split()) <= max_words]
     return pairs[:limit]
+
+
+def _load_jsonl(path: str, limit: int, src_key: str = "en", tgt_key: str = "es") -> list[tuple[str, str]]:
+    """Aligned pairs from a JSONL file (one object per line, e.g. the EMEA candidate pool)."""
+    import json
+
+    pairs: list[tuple[str, str]] = []
+    with open(path, encoding="utf-8") as f:
+        for ln in f:
+            if not ln.strip():
+                continue
+            row = json.loads(ln)
+            s, t = row.get(src_key, ""), row.get(tgt_key, "")
+            if s and t:
+                pairs.append((s, t))
+            if len(pairs) >= limit:
+                break
+    return pairs
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -157,16 +198,26 @@ def main(argv: list[str] | None = None) -> int:
     ensure_utf8_console()
     ap = argparse.ArgumentParser(description="Validator reality-check (coverage + recall).")
     ap.add_argument("--corpus", nargs=2, metavar=("EN", "RU"), help="aligned bitext (en file, ru file)")
+    ap.add_argument("--jsonl", metavar="PATH", help="aligned pairs as JSONL (keys per --langs, e.g. the EMEA pool)")
     ap.add_argument("--limit", type=int, default=2000)
+    ap.add_argument("--max-words", type=int, default=8, help="max source words per pair (bitext filter)")
+    ap.add_argument("--langs", nargs=2, metavar=("SRC", "TGT"), default=None,
+                    help="side languages for the ceiling classifier (e.g. en es)")
     ap.add_argument("--ceiling", action="store_true",
                     help="report the pair-level coverage ceiling (max reachable by any parser work)")
     args = ap.parse_args(argv)
 
     state, lat = build_meaning_state()
-    pairs = _load_corpus(args.corpus[0], args.corpus[1], args.limit) if args.corpus else CURATED_PAIRS
+    if args.jsonl:
+        keys = args.langs or ("en", "es")
+        pairs = _load_jsonl(args.jsonl, args.limit, src_key=keys[0], tgt_key=keys[1])
+    elif args.corpus:
+        pairs = _load_corpus(args.corpus[0], args.corpus[1], args.limit, max_words=args.max_words)
+    else:
+        pairs = CURATED_PAIRS
 
     if args.ceiling:
-        cei = ceiling_report(state, lat, pairs)
+        cei = ceiling_report(state, lat, pairs, langs=tuple(args.langs) if args.langs else None)
         print("═" * 60)
         print("  ВАЛИДАТОР — ПОТОЛОК ПОКРЫТИЯ (макс. достижимое любым парсером)")
         print("═" * 60)
