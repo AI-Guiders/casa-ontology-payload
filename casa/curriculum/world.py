@@ -70,6 +70,46 @@ def _teach_amounts(state: dict) -> None:
         teach_relation(state, LATTICE, rel, arg1="measurable", arg2="is_amount")
 
 
+# Spanish surfaces for concepts ALREADY in the ontology (general layer + software pack) —
+# the benchmark/demo scope, not a full lexicon. Concept id -> Spanish names (incl. gendered
+# noun variants where common). Plurals resolve via the -s/-es lemma strip in resolve_token.
+_ES_NAMES: dict[str, list[str]] = {
+    # everyday
+    "concept.water": ["agua"], "concept.table": ["mesa"], "concept.apple": ["manzana"],
+    "concept.book": ["libro"], "concept.milk": ["leche"], "concept.meat": ["carne"],
+    "concept.bread": ["pan"], "concept.house": ["casa"], "concept.dog": ["perro", "perra"],
+    "concept.cat": ["gato", "gata"], "concept.chair": ["silla"], "concept.wood": ["madera"],
+    "concept.glass": ["vidrio"], "concept.iron": ["hierro"], "concept.box": ["caja"],
+    "concept.cup": ["taza"], "concept.door": ["puerta"], "concept.window": ["ventana"],
+    "concept.person": ["persona"], "concept.man": ["hombre"], "concept.woman": ["mujer"],
+    "concept.child": ["niño", "niña"], "concept.elephant": ["elefante"],
+    "concept.mouse": ["ratón", "raton"], "concept.bird": ["pájaro", "pajaro"],
+    "concept.fish": ["pez"], "concept.horse": ["caballo"], "concept.cow": ["vaca"],
+    "concept.juice": ["jugo", "zumo"], "concept.tea": ["té"], "concept.coffee": ["café"],
+    # software/UI pack
+    "concept.file": ["archivo", "fichero"], "concept.document": ["documento"],
+    "concept.folder": ["carpeta"], "concept.directory": ["directorio"],
+    "concept.button": ["botón", "boton"], "concept.icon": ["icono"], "concept.menu": ["menú"],
+    "concept.tab": ["pestaña"], "concept.link": ["enlace"], "concept.checkbox": ["casilla"],
+    "concept.toolbar": ["panel"], "concept.list": ["lista"], "concept.item": ["elemento"],
+    "concept.editor": ["editor"],
+    "concept.application": ["aplicación", "aplicacion"], "concept.program": ["programa"],
+    "concept.clipboard": ["portapapeles"], "concept.disk": ["disco"],
+    "concept.trash": ["papelera"], "concept.setting": ["ajuste", "configuración"],
+    "concept.option": ["opción", "opcion"], "concept.parameter": ["parámetro", "parametro"],
+    "concept.user": ["usuario", "usuaria"], "concept.image": ["imagen"],
+}
+
+
+def _teach_es_names(state: dict) -> None:
+    """Spanish vocabulary layer: name edges for existing concepts (parse-side only — the
+    Spanish realizer is out of scope; the validator needs parsing, not generation)."""
+    from casa.curriculum.concept_net import teach_names
+
+    teach_names(state, LATTICE, [(cid, s) for cid, surfaces in _ES_NAMES.items() for s in surfaces],
+                lang="es")
+
+
 def _teach_verbs(state: dict) -> None:
     """Everyday transitive verbs whose constraints aren't in the base ontology yet
     (wear/use/read/eat/drink already are). Each: an arg2 affordance + the relation."""
@@ -111,6 +151,7 @@ def build_meaning_state() -> tuple[dict, str]:
     _teach_states(state)  # has_state relation + predicative state concepts (open/active/…)
     _teach_amounts(state)  # num_gt/num_lt/num_eq comparison relations + amount concept
     _teach_verbs(state)  # everyday transitive verbs (write/cook/wash/give/take)
+    _teach_es_names(state)  # Spanish vocabulary layer (parse-side, benchmark scope)
     ru = _load("lab/curriculum/ru-rules-v1.json")["rules"]
     en = _load("lab/curriculum/en-rules-v1.json")["rules"]
     for rid in _RU_RULES:

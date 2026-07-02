@@ -37,6 +37,11 @@ for _n, _w in _EN_CARDINAL.items():
     _SURFACE_TO_INT[_w] = _n
 # «одно» (neuter of 1) is a real surface too
 _SURFACE_TO_INT["одно"] = 1
+# Spanish cardinals 1-10 — no EN/RU surface collisions in this range («once» = 11 would
+# collide with the EN adverb and is deliberately NOT included)
+for _w, _n in [("uno", 1), ("una", 1), ("un", 1), ("dos", 2), ("tres", 3), ("cuatro", 4),
+               ("cinco", 5), ("seis", 6), ("siete", 7), ("ocho", 8), ("nueve", 9), ("diez", 10)]:
+    _SURFACE_TO_INT[_w] = _n
 
 
 def number_of_token(token: str) -> int | None:

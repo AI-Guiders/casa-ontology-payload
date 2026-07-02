@@ -23,7 +23,7 @@ import re
 from typing import Any
 
 from casa.curriculum.concept_net import concept_of, meaning_graph
-from casa.curriculum.situation import PREDICATE_RELATION, fingerprint, normalize_relation
+from casa.curriculum.situation import PREDICATE_RELATION, PREDICATE_RELATION_ES, fingerprint, normalize_relation
 
 _PREPS = {"на", "в", "у", "около", "рядом", "под", "над", "on", "in", "near", "by", "under", "inside", "beside",
           "to", "into"}  # «to/into» — action destination
@@ -32,8 +32,24 @@ _POSITIONAL = {"лежит", "стоит", "находится", "лежать",
                "сделан", "сделана", "сделано", "сделаны", "made",  # made_of copula
                "than", "чем"}  # comparison connector («bigger than», «больше, чем»)
 _NEG = {"не", "нет", "ни", "not", "don't", "do not", "doesn't", "no", "never"}  # negation markers
-_AND = {"и", "and"}  # coordinator — distributes a role over conjuncts
-_COPULA = {"is", "are"}  # English predicative copula — marks the next word as a state predicate
+_AND = {"и", "and", "y", "e"}  # coordinator — distributes a role over conjuncts («y/e» — Spanish, no collisions)
+_COPULA = {"is", "are", "está", "están", "son"}  # predicative copula (EN + safe ES forms) — marks the next word as a state predicate
+
+# --- Spanish layer (activated ONLY by lang="es"): Spanish shares the Latin script with
+# English, so these cannot be merged into the shared sets — ES preposition «a» is the EN
+# article, ES «sin» (without) is the EN «sin»; surfaces that DON'T collide (y/está/nunca)
+# are merged above. Verbs/prepositions map to relations via PREDICATE_RELATION_ES.
+# NB: «de» is NOT a preposition here — it mirrors EN «of» (a made_of VERB via the predicate
+# table), so «5 ml de agua en la mesa» keeps the locative as its only prepositional edge.
+_PREPS_ES = {"en", "sobre", "encima", "dentro", "cerca", "junto", "a"}
+_NEG_ES = {"nunca", "sin"}
+_POSITIONAL_ES = {"hecho", "hecha", "hechos", "hechas", "que"}  # made-of copula; «más grande que»
+_CMP_ES = {"más": "gt", "mayor": "gt", "supera": "gt", "excede": "gt",
+           "menos": "lt", "menor": "lt", "igual": "eq"}
+# ES homographs of EN surfaces — words a Spanish clause must NOT read the English way:
+# blocked from adjective/colour classification and from name resolution (ES «red» is a
+# network, not the colour). Value = the concept to resolve to, or None = honest refusal.
+_ES_HOMOGRAPHS: dict[str, str | None] = {"red": None}
 # numeric comparison operators (surface -> base op). «больше»+noun stays object-comparison
 # (bigger_than); «больше»+number becomes a numeric threshold (num_gt). «than»/«чем» are skipped
 # as positional connectors. Mapped to num_gt/num_lt/num_eq edges to a concept.amount node.
@@ -101,15 +117,32 @@ def _en_singulars(token: str) -> list[str]:
     return cands
 
 
-def resolve_token(state: dict, lattice_id: str, token: str, names: list[tuple[str, str]] | None = None) -> str | None:
-    """Resolve a (possibly inflected) word to a concept: exact name, English plural lemma,
-    then Russian stem match.
+def resolve_token(state: dict, lattice_id: str, token: str, names: list[tuple[str, str]] | None = None,
+                  lang: str | None = None) -> str | None:
+    """Resolve a (possibly inflected) word to a concept: exact name, English/Spanish plural
+    lemma, then Russian stem match.
+
+    ``lang="es"`` applies the homograph guard first — a shared Latin spelling must not
+    resolve to the ENGLISH concept (ES «red» is a network, not the colour).
 
     Russian lemma match picks the surface that is the token's base form: the longest common
     prefix wins, then the shortest surface — so «столе» resolves to «стол» (lemma,
     differs by an ending), not «столб» (a different, longer word)."""
     from casa.curriculum.translate import script_of
 
+    if lang == "es":
+        if token in _ES_HOMOGRAPHS:
+            return _ES_HOMOGRAPHS[token]  # mapped concept, or None = honest refusal
+        # Spanish resolves ONLY through its tagged names (lang.word.es.*) — untagged Latin
+        # names are English and must not leak into a declared-Spanish clause
+        c = concept_of(state, lattice_id, token, lang="es")
+        if c:
+            return c
+        for cand in _en_singulars(token):  # -s/-es plural strip works for Spanish too
+            c = concept_of(state, lattice_id, cand, lang="es")
+            if c:
+                return c
+        return None
     c = concept_of(state, lattice_id, token)
     if c:
         return c
@@ -135,49 +168,73 @@ def resolve_token(state: dict, lattice_id: str, token: str, names: list[tuple[st
 
 
 def parse_situation(
-    state: dict, lattice_id: str, text: str
+    state: dict, lattice_id: str, text: str, lang: str | None = None
 ) -> tuple[list[tuple[str, str, str]], dict[str, list[str]], str, dict[str, int], dict[str, dict]]:
     """Parse a controlled clause into triples, attributes, polarity, counts, and measures.
 
     Returns ``(triples, attrs, polarity, counts, measures)``: ``attrs[cid]`` are attribute
     ids («red»), ``counts[cid]`` a plain count («два файла» → 2), and ``measures[cid]`` a
     measure with a unit («5 мл воды» → {value:5, unit:'ml'}) — all bind to the next noun;
-    ``polarity`` is ``"neg"`` for a negated clause, else ``"pos"``."""
+    ``polarity`` is ``"neg"`` for a negated clause, else ``"pos"``.
+
+    ``lang`` declares the clause language when the script can't («es» — Spanish shares the
+    Latin script with English): it activates the Spanish function-word/predicate layer and
+    the homograph guard. ``None`` keeps the RU/EN behaviour exactly."""
     from casa.curriculum.attributes import COLOR_IDS, attr_of_token
     from casa.curriculum.quantity import number_of_token, unit_of_token
     from casa.curriculum.states import state_of_token
 
+    es = lang == "es"
+    preps = _PREPS | _PREPS_ES if es else _PREPS
+    neg = _NEG | _NEG_ES if es else _NEG
+    positional = _POSITIONAL | _POSITIONAL_ES if es else _POSITIONAL
+    cmp_ops = {**_CMP, **_CMP_ES} if es else _CMP
+    is_verb = (lambda t: t in PREDICATE_RELATION or t in PREDICATE_RELATION_ES) if es \
+        else (lambda t: t in PREDICATE_RELATION)
+
     names = _name_index(state, lattice_id)
     seq: list[tuple[str, Any]] = []  # ('prep'|'verb'|'noun'|'adj'|'num'|'unit'|'state', payload)
     polarity = "pos"
-    copula = False  # saw an English copula «is/are» — the next state word is predicative
+    copula = False  # saw a copula («is/are», «está/son») — the next state word is predicative
     for tok in _tokens(text):
-        if tok in _NEG:
+        if tok in neg:
             polarity = "neg"  # negation marker — scopes the clause's relation
         elif tok in _AND:
             seq.append(("and", None))  # coordinator
         elif tok in _COPULA:
             copula = True  # «the file is open» — marks the following state predicate
-        elif tok in _PREPS:
-            seq.append(("prep", normalize_relation(tok)))
-        elif tok in _POSITIONAL:
+        elif es and tok == "en":
+            seq.append(("prep", "__es_en__"))  # ES «en» covers BOTH on/in — resolved by the
+            # ground's affordances below (mesa → on, carpeta → in); the ontology disambiguates
+        elif tok in preps:
+            seq.append(("prep", normalize_relation(tok, lang)))
+        elif tok in positional:
             continue  # positional copula — the preposition carries the relation
-        elif (sid := state_of_token(tok)) is not None and (copula or tok not in PREDICATE_RELATION):
+        elif (sid := state_of_token(tok)) is not None and (copula or not is_verb(tok)):
             seq.append(("state", sid))  # predicative state; an EN verb/adj clash («open») needs the copula
-        elif tok in _CMP:
-            seq.append(("cmp", _CMP[tok]))  # numeric/object comparison operator
-        elif tok in PREDICATE_RELATION and tok not in _PREPS:
-            seq.append(("verb", normalize_relation(tok)))
+        elif tok in cmp_ops:
+            seq.append(("cmp", cmp_ops[tok]))  # numeric/object comparison operator
+        elif is_verb(tok) and tok not in preps:
+            seq.append(("verb", normalize_relation(tok, lang)))
         elif (num := number_of_token(tok)) is not None:
             seq.append(("num", num))
         elif (unit := unit_of_token(tok)) is not None:
             seq.append(("unit", unit))
-        elif (aid := attr_of_token(tok)) is not None:
-            seq.append(("adj", aid))
+        elif (aid := attr_of_token(tok)) is not None and not (es and tok in _ES_HOMOGRAPHS):
+            seq.append(("adj", aid))  # ES homographs of EN adjectives never classify as attrs
         else:
-            cid = resolve_token(state, lattice_id, tok, names)
+            cid = resolve_token(state, lattice_id, tok, names, lang=lang)
             if cid:
                 seq.append(("noun", cid))
+
+    if es:  # resolve the underspecified ES «en» per ground: a support surface hosts ON, else IN
+        from casa.curriculum.concept_net import affordances_of
+
+        for i, (k, p) in enumerate(seq):
+            if k == "prep" and p == "__es_en__":
+                ground = next((c for kk, c in seq[i + 1:] if kk == "noun"), None)
+                aff = affordances_of(state, lattice_id, ground) if ground else set()
+                seq[i] = ("prep", "on" if "support_surface" in aff else "in")
 
     # bind each adjective, number and measure to the next noun in sequence
     attrs: dict[str, list[str]] = {}
@@ -319,15 +376,15 @@ def parse_situation(
     return [], attrs, polarity, counts, measures
 
 
-def parse_triples(state: dict, lattice_id: str, text: str) -> list[tuple[str, str, str]]:
+def parse_triples(state: dict, lattice_id: str, text: str, lang: str | None = None) -> list[tuple[str, str, str]]:
     """Parse a controlled clause into (relation, concept, concept) triples (concept ids)."""
-    return parse_situation(state, lattice_id, text)[0]
+    return parse_situation(state, lattice_id, text, lang=lang)[0]
 
 
-def parse_graph(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
+def parse_graph(state: dict, lattice_id: str, text: str, lang: str | None = None) -> dict[str, Any]:
     """Parse text and build its meaning graph: adjective attributes, counts and measures on
     the nodes, clause polarity on the edges (a negated clause marks ``polarity='neg'``)."""
-    triples, attrs, polarity, counts, measures = parse_situation(state, lattice_id, text)
+    triples, attrs, polarity, counts, measures = parse_situation(state, lattice_id, text, lang=lang)
     graph = meaning_graph(state, lattice_id, triples)
     for cid, aids in attrs.items():
         if cid in graph["nodes"]:
@@ -343,16 +400,16 @@ def parse_graph(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
     return graph
 
 
-def parse_fingerprint(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
+def parse_fingerprint(state: dict, lattice_id: str, text: str, lang: str | None = None) -> dict[str, Any]:
     """Parse text all the way to its situation fingerprint."""
-    return fingerprint(parse_graph(state, lattice_id, text))
+    return fingerprint(parse_graph(state, lattice_id, text, lang=lang))
 
 
-def _clause_parses(state: dict, lattice_id: str, text: str) -> bool:
-    return any(e.get("satisfied") for e in parse_graph(state, lattice_id, text).get("edges", []))
+def _clause_parses(state: dict, lattice_id: str, text: str, lang: str | None = None) -> bool:
+    return any(e.get("satisfied") for e in parse_graph(state, lattice_id, text, lang=lang).get("edges", []))
 
 
-def split_conditions(state: dict, lattice_id: str, text: str) -> list[str]:
+def split_conditions(state: dict, lattice_id: str, text: str, lang: str | None = None) -> list[str]:
     """Split one rule side into independently-parsing condition clauses. Splits on a
     separator («,» «;» «и» «and») ONLY when every fragment parses on its own — so a
     conjunction of clauses («файл открыт и яблоко на столе») becomes two conditions, while
@@ -360,10 +417,10 @@ def split_conditions(state: dict, lattice_id: str, text: str) -> list[str]:
     is left whole for the clause parser. This is what lets «если X и Y, то Z» mix forms
     (a state AND a locative) that a single clause parse cannot express together."""
     text = text.strip(" ,;\t")
-    for sep in (r"\s*[,;]\s*", r"\s+и\s+", r"\s+and\s+"):
+    for sep in (r"\s*[,;]\s*", r"\s+и\s+", r"\s+and\s+", r"\s+y\s+"):
         parts = [p.strip() for p in re.split(sep, text, flags=re.IGNORECASE) if p.strip()]
-        if len(parts) > 1 and all(_clause_parses(state, lattice_id, p) for p in parts):
-            return [c for p in parts for c in split_conditions(state, lattice_id, p)]
+        if len(parts) > 1 and all(_clause_parses(state, lattice_id, p, lang=lang) for p in parts):
+            return [c for p in parts for c in split_conditions(state, lattice_id, p, lang=lang)]
     return [text]
 
 
@@ -383,23 +440,24 @@ def _merge_graphs(graphs: list[dict[str, Any]]) -> dict[str, Any]:
     return {"nodes": nodes, "edges": edges, "valid": all(e.get("satisfied") for e in edges)}
 
 
-def _parse_conjunction(state: dict, lattice_id: str, text: str) -> dict[str, Any]:
+def _parse_conjunction(state: dict, lattice_id: str, text: str, lang: str | None = None) -> dict[str, Any]:
     """Parse a rule side (possibly «X и Y и …») into one merged graph of all its conditions."""
-    return _merge_graphs([parse_graph(state, lattice_id, c) for c in split_conditions(state, lattice_id, text)])
+    return _merge_graphs([parse_graph(state, lattice_id, c, lang=lang)
+                          for c in split_conditions(state, lattice_id, text, lang=lang)])
 
 
-def parse_rule(state: dict, lattice_id: str, text: str) -> dict[str, Any] | None:
+def parse_rule(state: dict, lattice_id: str, text: str, lang: str | None = None) -> dict[str, Any] | None:
     """Parse a conditional «если X, то Y» / «if X then Y» into a RULE — an antecedent graph
     and a consequent graph. Each side may be a CONJUNCTION of conditions («если X и Y, то Z»):
     it is split into independently-parsing clauses (so it can mix forms — a state AND a
     locative) and unioned. Returns ``None`` if the text is not a conditional or a side does
     not parse to any situation. The building block reasoning checks facts against."""
     t = str(text or "").strip()
-    m = re.match(r"(?is)^\s*(?:если|if)\b\s*(.+)$", t)
+    m = re.match(r"(?is)^\s*(?:если|if|si)\b\s*(.+)$", t)
     if not m:
         return None
     rest = m.group(1)
-    parts = re.split(r"(?i)(?:,\s*)?\b(?:то|then)\b", rest, maxsplit=1)
+    parts = re.split(r"(?i)(?:,\s*)?\b(?:то|then|entonces)\b", rest, maxsplit=1)
     if len(parts) == 2:
         ante, cons = parts
     elif "," in rest:  # «если X, Y» — comma separates when «то/then» is dropped
@@ -409,10 +467,11 @@ def parse_rule(state: dict, lattice_id: str, text: str) -> dict[str, Any] | None
     ante, cons = ante.strip(" ,\t"), cons.strip(" ,\t")
     if not ante or not cons:
         return None
-    ga, gc = _parse_conjunction(state, lattice_id, ante), _parse_conjunction(state, lattice_id, cons)
+    ga = _parse_conjunction(state, lattice_id, ante, lang=lang)
+    gc = _parse_conjunction(state, lattice_id, cons, lang=lang)
     if not any(e.get("satisfied") for e in ga["edges"]) or not any(e.get("satisfied") for e in gc["edges"]):
         return None  # a side did not parse — honest, like the validator's «uncheckable»
     return {"text": t, "antecedent_text": ante, "consequent_text": cons,
             "antecedent": ga, "consequent": gc,
-            "antecedent_conditions": split_conditions(state, lattice_id, ante),
-            "consequent_conditions": split_conditions(state, lattice_id, cons)}
+            "antecedent_conditions": split_conditions(state, lattice_id, ante, lang=lang),
+            "consequent_conditions": split_conditions(state, lattice_id, cons, lang=lang)}

@@ -35,7 +35,24 @@ STATE_LEXICON: dict[str, dict[str, str]] = {
 
 STATE_IDS: set[str] = set(STATE_LEXICON)
 
-# every surface (English word + the Russian short forms + ё/е spelling) -> state id
+# Spanish predicative surfaces (participle by gender/number, label style) -> state id.
+# None of these collide with EN/RU surfaces, so they merge into the shared lookup;
+# «visible» is spelt the same in both languages and maps to the same id anyway.
+_ES_STATE_SURFACES: dict[str, str] = {
+    "abierto": "open", "abierta": "open", "abiertos": "open", "abiertas": "open",
+    "cerrado": "closed", "cerrada": "closed", "cerrados": "closed", "cerradas": "closed",
+    "activo": "active", "activa": "active", "activos": "active", "activas": "active",
+    "inactivo": "inactive", "inactiva": "inactive", "inactivos": "inactive", "inactivas": "inactive",
+    "oculto": "hidden", "oculta": "hidden", "ocultos": "hidden", "ocultas": "hidden",
+    "habilitado": "enabled", "habilitada": "enabled",
+    "deshabilitado": "disabled", "deshabilitada": "disabled",
+    "seleccionado": "selected", "seleccionada": "selected",
+    "guardado": "saved", "guardada": "saved",
+    "vacío": "empty", "vacía": "empty", "vacio": "empty", "vacia": "empty",
+    "listo": "ready", "lista": "ready",
+}
+
+# every surface (English word + the Russian short forms + ё/е spelling + Spanish) -> state id
 _SURFACE_TO_ID: dict[str, str] = {}
 for _sid, _forms in STATE_LEXICON.items():
     _SURFACE_TO_ID[_sid] = _sid
@@ -43,6 +60,7 @@ for _sid, _forms in STATE_LEXICON.items():
         _SURFACE_TO_ID[_form] = _sid
         if "ё" in _form:  # accept the е spelling too (включен / включён)
             _SURFACE_TO_ID[_form.replace("ё", "е")] = _sid
+_SURFACE_TO_ID.update(_ES_STATE_SURFACES)
 
 # EN state words that are ALSO action verbs (collide in PREDICATE_RELATION) — recognised as a
 # state only after a copula («the file is open»), never as the imperative «open the file».

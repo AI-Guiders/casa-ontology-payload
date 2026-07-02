@@ -82,6 +82,18 @@ def teach_parts(state: dict, lattice_id: str, pairs: list[tuple[str, str]]) -> N
         _mint(state, lattice_id, whole, _HAS_PART, part)
 
 
+def teach_names(state: dict, lattice_id: str, pairs: list[tuple[str, str]], lang: str | None = None) -> None:
+    """Mint name edges ``concept|names|lang.word.{surface}`` directly — a vocabulary layer
+    for an added language. A ``lang`` tag («es») is written INTO the surface
+    (``lang.word.es.archivo``): Spanish shares the Latin script with English, so script
+    detection can't separate them — tagged names stay invisible to script-routed paths
+    (the EN realizer, RU<->EN term translation) and are found only by lang-aware lookups."""
+    for concept, surface in pairs:
+        s = str(surface).strip().lower()
+        dst = f"lang.word.{lang}.{s}" if lang else f"lang.word.{s}"
+        _mint(state, lattice_id, concept, "names", dst)
+
+
 def parts_of(state: dict, lattice_id: str, whole: str) -> set[str]:
     """All parts of ``whole`` (asserted on it or on any of its super-types)."""
     edges = _edges(state, lattice_id)
@@ -179,16 +191,17 @@ def relation_roles(state: dict, lattice_id: str, rel: str) -> tuple[str | None, 
     return one("arg1"), one("arg2")
 
 
-def concept_of(state: dict, lattice_id: str, word: str) -> str | None:
+def concept_of(state: dict, lattice_id: str, word: str, lang: str | None = None) -> str | None:
     """Resolve a surface word (any language) to its concept via names edges; pass a
-    concept id (contains '.') through unchanged.
+    concept id (contains '.') through unchanged. A tagged ``lang`` («es») consults ONLY
+    that language's tagged names (see ``teach_names``).
 
     When a word names several concepts (synonyms from a large glossary), prefer the one
     we have a TYPED model of — a concept with an ``isa`` edge — so «мясо» resolves to
     the ontology's ``concept.meat`` rather than an untyped synonym."""
     if "." in word and " " not in word:
         return word
-    hits = concepts_for_term(state, lattice_id, word)
+    hits = concepts_for_term(state, lattice_id, word, lang=lang)
     if not hits:
         return None
     edges = _edges(state, lattice_id)
@@ -227,15 +240,20 @@ def validate(state: dict, lattice_id: str, rel: str, x: str, y: str) -> dict[str
 
 
 def names_of(state: dict, lattice_id: str, concept: str) -> dict[str, list[str]]:
-    """Surfaces that name ``concept``, split by script — {'ru': [...], 'en': [...]}."""
-    from casa.curriculum.translate import _name_edges, script_of
+    """Surfaces that name ``concept`` — {'ru': [...], 'en': [...]} split by script, plus a
+    bucket per tagged language ('es': [...]) so tagged names never pollute the EN list."""
+    from casa.curriculum.translate import _lang_tag_of, _name_edges, script_of
 
     prefix = f"{concept}|names|lang.word."
     out: dict[str, list[str]] = {"ru": [], "en": []}
     for e in _name_edges(state, lattice_id):
         if e.startswith(prefix):
             w = e[len(prefix):]
-            out["ru" if script_of(w) == "cyrl" else "en"].append(w)
+            tag = _lang_tag_of(w)
+            if tag:
+                out.setdefault(tag, []).append(w[len(tag) + 1:])
+            else:
+                out["ru" if script_of(w) == "cyrl" else "en"].append(w)
     return {k: sorted(set(v)) for k, v in out.items()}
 
 

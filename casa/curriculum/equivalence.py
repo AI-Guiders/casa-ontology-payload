@@ -86,12 +86,18 @@ def _classify(src_edges: list[dict], tgt_edges: list[dict]) -> list[dict[str, st
     return divs
 
 
-def check_equivalence(state: dict, lattice_id: str, source: str, target: str) -> dict[str, Any]:
-    """Triage whether ``target`` means the same as ``source``. See module docstring."""
+def check_equivalence(state: dict, lattice_id: str, source: str, target: str,
+                      langs: tuple[str | None, str | None] | None = None) -> dict[str, Any]:
+    """Triage whether ``target`` means the same as ``source``. See module docstring.
+
+    ``langs=(src_lang, tgt_lang)`` declares each side's language when the script cannot
+    (EN↔ES are both Latin) — e.g. ``langs=("en", "es")`` for an EMEA pair."""
     from casa.curriculum.parse import parse_graph
     from casa.curriculum.situation import canonical_edges
 
-    sg, tg = parse_graph(state, lattice_id, source), parse_graph(state, lattice_id, target)
+    ls, lt = langs or (None, None)
+    sg = parse_graph(state, lattice_id, source, lang=ls)
+    tg = parse_graph(state, lattice_id, target, lang=lt)
     s_edges, t_edges = _structured_edges(sg), _structured_edges(tg)
     result: dict[str, Any] = {
         "source": {"text": source, "parsed": bool(s_edges), "edges": canonical_edges(sg)},

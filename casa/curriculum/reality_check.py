@@ -43,17 +43,21 @@ RECALL_CASES: list[tuple[str, str, str]] = [
 ]
 
 
-def coverage_report(state: dict, lattice_id: str, pairs: list[tuple[str, str]]) -> dict[str, Any]:
-    """How many pairs parse on both sides / one side / neither."""
+def coverage_report(state: dict, lattice_id: str, pairs: list[tuple[str, str]],
+                    langs: tuple[str, str] | None = None) -> dict[str, Any]:
+    """How many pairs parse on both sides / one side / neither. ``langs=(src, tgt)``
+    declares each side's language when the script can't (en/es are both Latin)."""
     from casa.curriculum.parse import parse_graph
 
-    def parses(text: str) -> bool:
-        return any(e.get("satisfied") for e in parse_graph(state, lattice_id, text).get("edges", []))
+    ls, lt = langs or (None, None)
+
+    def parses(text: str, lang: str | None = None) -> bool:
+        return any(e.get("satisfied") for e in parse_graph(state, lattice_id, text, lang=lang).get("edges", []))
 
     both = src_only = tgt_only = neither = 0
     misses: list[str] = []
     for s, t in pairs:
-        ps, pt = parses(s), parses(t)
+        ps, pt = parses(s, ls), parses(t, lt)
         if ps and pt:
             both += 1
         elif ps:
@@ -229,12 +233,12 @@ def main(argv: list[str] | None = None) -> int:
             print(f"    {n:5d}  {combo}")
         return 0
 
-    cov = coverage_report(state, lat, pairs)
+    cov = coverage_report(state, lat, pairs, langs=tuple(args.langs) if args.langs else None)
     rec = recall_report(state, lat, RECALL_CASES)
     print("═" * 60)
     print("  ВАЛИДАТОР — ТЕСТ РЕАЛЬНОСТИ")
     print("═" * 60)
-    print(f"  ПОКРЫТИЕ ({'корпус' if args.corpus else 'курируемый набор'}): "
+    print(f"  ПОКРЫТИЕ ({'корпус' if (args.corpus or args.jsonl) else 'курируемый набор'}): "
           f"{cov['both']}/{cov['total']} пар разобраны с обеих сторон = {cov['coverage']:.1%}")
     print(f"    одна сторона: {cov['src_only'] + cov['tgt_only']} · ни одной: {cov['neither']}")
     if cov["miss_examples"]:

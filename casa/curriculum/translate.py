@@ -17,6 +17,19 @@ this covers words/terms, which is what the substrate supports today.
 from __future__ import annotations
 
 _NAMES = "|names|lang.word."
+# Languages that share the Latin script with English carry an explicit tag INSIDE the
+# name edge (``concept.file|names|lang.word.es.archivo``) — script detection cannot tell
+# them from English, so tagged surfaces are invisible to every script-routed path
+# (realization, RU<->EN term translation) and visible only to lang-aware lookups.
+_TAGGED_LANGS = ("es",)
+
+
+def _lang_tag_of(surface: str) -> str | None:
+    """The language tag of a tagged name surface ('es.archivo' → 'es'), else None."""
+    for tag in _TAGGED_LANGS:
+        if surface.startswith(tag + "."):
+            return tag
+    return None
 
 
 def script_of(surface: str) -> str:
@@ -34,9 +47,10 @@ def _name_edges(state: dict, lattice_id: str) -> set[str]:
     return {e for e in (decode_f0_lattice(lat).get("edges") or []) if _NAMES in e}
 
 
-def concepts_for_term(state: dict, lattice_id: str, word: str) -> list[str]:
-    """Concepts that name ``word`` (reverse names lookup)."""
-    suffix = f"{_NAMES}{word}"
+def concepts_for_term(state: dict, lattice_id: str, word: str, lang: str | None = None) -> list[str]:
+    """Concepts that name ``word`` (reverse names lookup). A tagged ``lang`` («es») looks up
+    ONLY that language's tagged names; the default sees only untagged (RU/EN) ones."""
+    suffix = f"{_NAMES}{lang}.{word}" if lang in _TAGGED_LANGS else f"{_NAMES}{word}"
     return sorted({e.split("|names|")[0] for e in _name_edges(state, lattice_id) if e.endswith(suffix)})
 
 
@@ -52,6 +66,8 @@ def translate_term(state: dict, lattice_id: str, word: str, *, to_script: str) -
     out: set[str] = set()
     for edge in _name_edges(state, lattice_id):
         concept, _, surface = edge.partition(_NAMES)
+        if _lang_tag_of(surface):  # tagged languages never surface in RU<->EN translation
+            continue
         if concept in concepts and surface != word and script_of(surface) == to_script:
             out.add(surface)
     return sorted(out)

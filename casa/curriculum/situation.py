@@ -74,9 +74,57 @@ PREDICATE_RELATION: dict[str, str] = {
 }
 
 
-def normalize_relation(predicate: str) -> str:
-    """Map a surface predicate to its canonical relation (synonyms collapse)."""
-    return PREDICATE_RELATION.get(predicate.strip().lower(), predicate.strip().lower())
+# Spanish surface predicates -> canonical relation. A SEPARATE table applied only when the
+# caller declares lang="es": Spanish shares the Latin script with English, so wholesale
+# merging would corrupt English parsing (ES «come» = eats vs the EN verb «come», ES «a» is
+# the EN article). Forms: usted-imperative + infinitive + present 3sg, as on labels/manuals.
+PREDICATE_RELATION_ES: dict[str, str] = {
+    # prepositions (NB: «en» covers both on/in — the parser resolves it by the ground's
+    # affordances; this default is only a fallback for non-parse callers)
+    "en": "in", "dentro": "in", "sobre": "on", "encima": "on",
+    "cerca": "near", "junto": "near", "a": "in",  # destination of an action («guarde … a/en la carpeta»)
+    "de": "made_of",  # like EN «of»; harmlessly skipped in locative clauses («5 ml de agua»)
+    # everyday verbs
+    "come": "eat", "coma": "eat", "comer": "eat",
+    "bebe": "drink", "beba": "drink", "beber": "drink",
+    "lee": "read", "lea": "read", "leer": "read",
+    "toma": "take", "tome": "take", "tomar": "take",
+    "da": "give", "dé": "give", "dar": "give",
+    "usa": "use", "usar": "use", "utilice": "use", "utiliza": "use", "utilizar": "use", "use": "use",
+    "escribe": "write", "escriba": "write", "escribir": "write",
+    "cocina": "cook", "cocine": "cook", "cocinar": "cook",
+    "lava": "wash", "lave": "wash", "lavar": "wash",
+    "lleva": "wear", "lleve": "wear", "llevar": "wear",
+    "vive": "lives_in", "viven": "lives_in", "vivir": "lives_in",
+    # software/UI actions (label style)
+    "abre": "open", "abra": "open", "abrir": "open",
+    "cierra": "close", "cierre": "close", "cerrar": "close",
+    "guarda": "save", "guarde": "save", "guardar": "save",
+    "elimina": "delete", "elimine": "delete", "eliminar": "delete", "borra": "delete", "borre": "delete", "borrar": "delete",
+    "pulsa": "click", "pulse": "click", "pulsar": "click", "haga": "click",  # «haga clic»
+    "selecciona": "select", "seleccione": "select", "seleccionar": "select",
+    "edita": "edit", "edite": "edit", "editar": "edit",
+    "muestra": "show", "muestre": "show", "mostrar": "show",
+    "oculta": "hide", "oculte": "hide", "ocultar": "hide",
+    "configura": "configure", "configure": "configure", "configurar": "configure",
+    "copia": "copy", "copie": "copy", "copiar": "copy",
+    "mueve": "move", "mueva": "move", "mover": "move",
+    "crea": "create", "cree": "create", "crear": "create",
+    "renombra": "rename", "renombre": "rename", "renombrar": "rename",
+    "imprime": "print", "imprima": "print", "imprimir": "print",
+    "habilita": "enable", "habilite": "enable", "habilitar": "enable", "activa": "enable", "active": "enable",
+    "instala": "install", "instale": "install", "instalar": "install",
+    "descarga": "download", "descargue": "download", "descargar": "download",
+}
+
+
+def normalize_relation(predicate: str, lang: str | None = None) -> str:
+    """Map a surface predicate to its canonical relation (synonyms collapse). ``lang="es"``
+    consults the Spanish table first (it is not merged into the default one — see above)."""
+    p = predicate.strip().lower()
+    if lang == "es" and p in PREDICATE_RELATION_ES:
+        return PREDICATE_RELATION_ES[p]
+    return PREDICATE_RELATION.get(p, p)
 
 
 def _node_token(cid: str, nodes: dict[str, Any]) -> str:
