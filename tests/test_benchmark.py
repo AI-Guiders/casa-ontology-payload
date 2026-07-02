@@ -55,6 +55,16 @@ def test_polarity_mid_sentence_drop_replays():
     assert _replay(text, meta) == out
 
 
+def test_polarity_skips_negative_concord():
+    # dropping «no» would leave «ningún» — not a clean flip, must be skipped
+    assert inject_polarity("No utilice ningún resto de la jeringa.", "es", "k") is None
+
+
+def test_polarity_skips_double_negation():
+    # two negations in two clauses — dropping one does not flip the sentence
+    assert inject_polarity("Los niños no deben tomar esto y no debe darse a adultos.", "es", "k") is None
+
+
 def test_quantity_changes_value():
     text = "La dosis es de 75 mg."
     out, meta = inject_quantity(text, "es", "k")

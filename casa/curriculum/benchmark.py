@@ -45,16 +45,31 @@ _NEG_PATTERNS = {
     "en": [r"\bdo not\s+", r"\bdoes not\s+", r"\bnot\s+", r"\bnever\s+"],
     "es": [r"\bno\s+", r"\bnunca\s+"],
 }
+# Spanish negative concord: dropping «no» while «ningún/nada/…» remains does NOT flip the
+# polarity (and reads broken) — such sentences are skipped, not half-corrupted.
+_NEG_CONCORD = {
+    "en": re.compile(r"\b(no|none|nothing|neither|nor)\b", re.IGNORECASE),
+    "es": re.compile(r"\b(ningún|ninguna|ningunos?|nada|nadie|tampoco|jamás|jamas|ni)\b", re.IGNORECASE),
+}
 
 
 def inject_polarity(text: str, lang: str, key: str) -> tuple[str, dict] | None:
-    """Drop the first negation token — the lost-«не» class. When the negation opens the
-    sentence («No tome…»), the restored capitalization is PART of the replacement (the
-    span swallows the next word's first letter), so the record replays exactly."""
+    """Drop the negation token — the lost-«не» class. Applies ONLY when the sentence has
+    exactly one negation and no negative-concord residue («no … ningún»), so the corruption
+    is a clean, unambiguous polarity flip. When the negation opens the sentence («No
+    tome…»), the restored capitalization is PART of the replacement (the span swallows the
+    next word's first letter), so the record replays exactly."""
+    all_hits = [m for pat in _NEG_PATTERNS.get(lang, [])
+                for m in re.finditer(pat, text, flags=re.IGNORECASE)]
+    if len(all_hits) != 1:
+        return None  # zero or multiple negations — not a clean flip
     for pat in _NEG_PATTERNS.get(lang, []):
         m = re.search(pat, text, flags=re.IGNORECASE)
         if not m:
             continue
+        residue = text[:m.start()] + text[m.end():]
+        if _NEG_CONCORD.get(lang) and _NEG_CONCORD[lang].search(residue):
+            return None  # negative concord would survive the drop
         start, end = m.start(), m.end()
         replacement = ""
         if start == 0 and end < len(text):  # «No tome…» → «Tome…»
