@@ -8,6 +8,11 @@
 
 Канон педагогики: [`design/CASA-learning-protocol-vis-math-v1.md`](../design/CASA-learning-protocol-vis-math-v1.md).
 
+## Research (статьи по понятийной сети / валидатору)
+
+Каркасы научных статей и план работ: [`research/PLAN-validator-papers.md`](research/PLAN-validator-papers.md)
+(бенчмарк опасных классов + reasoning-слой; цель — цитируемый артефакт: датасет, библиотека, arXiv/workshop).
+
 ## Серия: «Агент на поле: vis↔math без оракула»
 
 `series: casa-vis-math` в frontmatter. Читатель **не обязан** знать CASA: выпуск 1 сначала отсекает «очередная LLM», потом объясняет опыт на диске, куда «живёт» агент, и только потом — цифры из lab.
