@@ -63,7 +63,23 @@ AMOUNT = "concept.amount"  # synthetic node carrying the threshold's {value, uni
 
 
 def _tokens(text: str) -> list[str]:
-    return re.findall(r"[\wЀ-ӿ]+", str(text or "").lower(), flags=re.UNICODE)
+    # decimals stay ONE token («9,75 mg» must not become 9 and 75 — a dose-kernel hazard)
+    return re.findall(r"\d+[.,]\d+|[\wЀ-ӿ]+", str(text or "").lower(), flags=re.UNICODE)
+
+
+# temporal/frequency nouns are NOT modelled (no time in the graph) and must never capture a
+# measure: in «15 mg once a day» the amount belongs to the dose, not to the day. Skipped in
+# token classification like any unknown word — honest scope, not silent misbinding.
+_TEMPORAL_SKIP = {
+    "day", "days", "week", "weeks", "month", "months", "year", "years", "hour", "hours",
+    "día", "dia", "días", "dias", "semana", "semanas", "mes", "meses", "año", "años",
+    "hora", "horas", "vez", "veces",
+    "день", "дня", "дней", "неделя", "недели", "недель", "месяц", "месяца", "месяцев",
+    "год", "года", "лет", "час", "часа", "часов", "раз", "раза",
+}
+
+# glued number+unit («2ml», «10мг») — split into the pair the classifier expects
+_GLUED_MEASURE = re.compile(r"^(\d+(?:[.,]\d+)?)([a-zа-яµ]+)$")
 
 
 def _typed_concepts(state: dict, lattice_id: str) -> set[str]:
@@ -197,6 +213,12 @@ def parse_situation(
     polarity = "pos"
     copula = False  # saw a copula («is/are», «está/son») — the next state word is predicative
     for tok in _tokens(text):
+        if tok in _TEMPORAL_SKIP:
+            continue  # time/frequency is out of scope — must not capture measures
+        if (gm := _GLUED_MEASURE.match(tok)) and unit_of_token(gm.group(2)) is not None:
+            seq.append(("num", number_of_token(gm.group(1))))
+            seq.append(("unit", unit_of_token(gm.group(2))))
+            continue
         if tok in neg:
             polarity = "neg"  # negation marker — scopes the clause's relation
         elif tok in _AND:
@@ -259,6 +281,14 @@ def parse_situation(
             elif pending_count is not None:
                 counts[payload] = pending_count
             pending, pending_count, pending_unit = [], None, None
+
+    # partitive/dangling «of/de» is NOT a made_of claim: before a number ("a dose of
+    # 75 mg") or with no noun following it ("9,75 mg de aripiprazol" — unknown drug name) —
+    # drop the spurious verb so the measure forms below see through
+    seq = [item for i, item in enumerate(seq)
+           if not (item[0] == "verb" and item[1] == "made_of"
+                   and (i + 1 >= len(seq) or seq[i + 1][0] == "num"
+                        or not any(k == "noun" for k, _ in seq[i + 1:])))]
 
     nouns = [(i, p) for i, (k, p) in enumerate(seq) if k == "noun"]
     preps = [(i, p) for i, (k, p) in enumerate(seq) if k == "prep"]
@@ -338,7 +368,8 @@ def parse_situation(
             objs = [(ni, c) for ni, c in nouns if vp < ni < nxt]
             if objs:
                 triples.append((rel, subject, head(objs)))
-        return triples, attrs, polarity, counts, measures
+        if triples:  # no objects matched — not coordination; fall through (measure claims etc.)
+            return triples, attrs, polarity, counts, measures
 
     if verbs and nouns:  # single verb — imperative (no subject) or transitive S-V-O
         verb_pos = verbs[0][0]
@@ -373,6 +404,18 @@ def parse_situation(
                     color_triples.append(("color_of", figs[-1], f"concept.{p}"))
         if color_triples:
             return color_triples, attrs, polarity, counts, measures
+
+    # measure claim: «доза — 75 мг» / "the dose is 75 mg" / «el vial contiene 3 ml» — a
+    # trailing number+unit with no following noun to bind to IS the claim itself: the
+    # figure equals that amount (num_eq into the value-mutex/threshold machinery). The
+    # label corpus's most frequent checkable form.
+    if pending_unit is not None and nouns and not preps:
+        last_meas = max(i for i, (k, _p) in enumerate(seq) if k in ("num", "unit"))
+        figs = [c for ni, c in nouns if ni < last_meas]
+        if figs:
+            measures[AMOUNT] = {"value": pending_count or 1, "unit": pending_unit}
+            return [("num_eq", figs[-1], AMOUNT)], attrs, polarity, counts, measures
+
     return [], attrs, polarity, counts, measures
 
 

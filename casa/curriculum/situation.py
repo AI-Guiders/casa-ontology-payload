@@ -64,6 +64,10 @@ PREDICATE_RELATION: dict[str, str] = {
     "моет": "wash", "мыть": "wash", "помой": "wash", "мой": "wash", "помыть": "wash", "wash": "wash", "washes": "wash",
     "даёт": "give", "дает": "give", "давать": "give", "дай": "give", "давай": "give", "дать": "give", "give": "give", "gives": "give",
     "берёт": "take", "берет": "take", "брать": "take", "возьми": "take", "бери": "take", "взять": "take", "take": "take", "takes": "take",
+    # medical-label verbs (NB: bare EN «has/have» stay unmapped — they are auxiliaries)
+    "содержит": "contains", "содержат": "contains", "содержать": "contains", "contains": "contains", "contain": "contains", "containing": "contains",
+    "храни": "store", "храните": "store", "хранить": "store", "store": "store", "keep": "store",
+    "введи": "give", "введите": "give", "вводить": "give", "administer": "give", "administered": "give",
     "живёт": "lives_in", "живет": "lives_in", "живут": "lives_in", "жить": "lives_in", "lives": "lives_in", "live": "lives_in",
     # English gerund headings — «Opening a file», «Configuring the proxy»
     "opening": "open", "closing": "close", "saving": "save", "deleting": "delete",
@@ -115,6 +119,10 @@ PREDICATE_RELATION_ES: dict[str, str] = {
     "habilita": "enable", "habilite": "enable", "habilitar": "enable", "activa": "enable", "active": "enable",
     "instala": "install", "instale": "install", "instalar": "install",
     "descarga": "download", "descargue": "download", "descargar": "download",
+    # medical-label verbs
+    "contiene": "contains", "contienen": "contains", "contener": "contains",
+    "conserve": "store", "conservar": "store", "mantenga": "store", "mantener": "store",
+    "administre": "give", "administrar": "give", "administra": "give",
 }
 
 

@@ -44,11 +44,16 @@ for _w, _n in [("uno", 1), ("una", 1), ("un", 1), ("dos", 2), ("tres", 3), ("cua
     _SURFACE_TO_INT[_w] = _n
 
 
-def number_of_token(token: str) -> int | None:
-    """Return the integer for a number surface («два», «two», «3»), or None."""
+def number_of_token(token: str) -> int | float | None:
+    """Return the number for a number surface («два», «two», «3», «9,75»), or None.
+
+    Decimals (comma or dot separator) come back as float, plain digits as int — the types
+    must stay distinct so the fingerprint token «5mg» never becomes «5.0mg»."""
     t = token.strip().lower()
     if t.isdigit():
         return int(t)
+    if re.fullmatch(r"\d+[.,]\d+", t):
+        return float(t.replace(",", "."))
     return _SURFACE_TO_INT.get(t)
 
 
@@ -57,9 +62,13 @@ def number_of_token(token: str) -> int | None:
 _UNIT_OF: dict[str, str] = {
     "мг": "mg", "mg": "mg", "мл": "ml", "ml": "ml", "г": "g", "g": "g",
     "кг": "kg", "kg": "kg", "л": "l", "l": "l", "грамм": "g", "gram": "g", "grams": "g",
+    # label units: micrograms (the mg↔mcg swap is a classic dose error) + international units
+    "мкг": "mcg", "mcg": "mcg", "µg": "mcg", "microgram": "mcg", "micrograms": "mcg",
+    "ме": "iu", "iu": "iu", "ui": "iu",  # RU МЕ / EN IU / ES UI
 }
 _UNIT_SURFACE: dict[str, tuple[str, str]] = {  # canonical -> (ru, en)
     "mg": ("мг", "mg"), "ml": ("мл", "ml"), "g": ("г", "g"), "kg": ("кг", "kg"), "l": ("л", "l"),
+    "mcg": ("мкг", "mcg"), "iu": ("МЕ", "IU"),
 }
 
 

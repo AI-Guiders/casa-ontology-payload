@@ -144,9 +144,11 @@ def build_meaning_state() -> tuple[dict, str]:
     wide = REPO_ROOT / "lab/curriculum/concept-net-wide-v1.json"  # prefer the wide ontology
     net = "lab/curriculum/concept-net-wide-v1.json" if wide.exists() else "lab/curriculum/concept-net-base-v1.json"
     teach_concept_net(state, LATTICE, _load(net), bundle=bundle)
+    from casa.curriculum.medical_domain import teach_medical_domain
     from casa.curriculum.software_domain import teach_software_domain
 
     teach_software_domain(state, LATTICE, bundle=bundle)  # additive software/UI layer
+    teach_medical_domain(state, LATTICE, bundle=bundle)  # additive medical-label layer (EMEA scope)
     _teach_colors(state)  # color_of relation + colour concepts
     _teach_states(state)  # has_state relation + predicative state concepts (open/active/…)
     _teach_amounts(state)  # num_gt/num_lt/num_eq comparison relations + amount concept
