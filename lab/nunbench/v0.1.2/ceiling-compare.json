@@ -1,0 +1,33 @@
+{
+  "seed": 42,
+  "limit": 10000,
+  "language_pair": "en-es",
+  "emea_medical": {
+    "n": 10000,
+    "both_parse_now": 0.0177,
+    "ceiling": 0.7585,
+    "both_bare_label": 660,
+    "combos": {
+      "fixable+fixable": 6404,
+      "ceiling+fixable": 1678,
+      "fixable+parses": 1004,
+      "ceiling+ceiling": 660,
+      "parses+parses": 177,
+      "ceiling+parses": 77
+    }
+  },
+  "kde4_software": {
+    "n": 10000,
+    "both_parse_now": 0.0003,
+    "ceiling": 0.2858,
+    "both_bare_label": 4499,
+    "combos": {
+      "ceiling+ceiling": 4499,
+      "fixable+fixable": 2650,
+      "ceiling+fixable": 2586,
+      "fixable+parses": 205,
+      "ceiling+parses": 57,
+      "parses+parses": 3
+    }
+  }
+}
