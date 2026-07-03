@@ -33,7 +33,8 @@ def _sha256(path: Path) -> str:
 
 
 def freeze_benchmark(bench_path: str | Path, pool_path: str | Path, *, version: str,
-                     public_dir: str | Path, heldout_dir: str | Path) -> dict[str, Any]:
+                     public_dir: str | Path, heldout_dir: str | Path,
+                     source_corpus: str = "OPUS EMEA (en-es), quality-filtered pool") -> dict[str, Any]:
     """Verify the draft and write the frozen artifacts; refuses on verification failure."""
     report = verify_benchmark(bench_path, pool_path)
     if report["verdict"] != "PASS":
@@ -57,7 +58,7 @@ def freeze_benchmark(bench_path: str | Path, pool_path: str | Path, *, version: 
     manifest = {
         "name": "NUN-Bench", "version": version,
         "generator": rows[0]["generator"],
-        "language_pair": "en-es", "source_corpus": "OPUS EMEA (en-es), filtered pool v1",
+        "language_pair": "en-es", "source_corpus": source_corpus,
         "counts": {k: report[k] for k in ("total", "errors", "controls", "canaries", "heldout")},
         "per_class": report["per_class"],
         "parseable_errors": report["parseable_errors"],
@@ -87,10 +88,12 @@ def main(argv: list[str] | None = None) -> int:
                     help="committed to the repo (public split + manifest)")
     ap.add_argument("--heldout-dir", default=".scratch/opus",
                     help="NOT committed — the private split lives outside the repo tree")
+    ap.add_argument("--source-corpus", default="OPUS EMEA (en-es), quality-filtered pool")
     args = ap.parse_args(argv)
 
     manifest = freeze_benchmark(args.bench, args.pool, version=args.version,
-                                public_dir=args.public_dir, heldout_dir=args.heldout_dir)
+                                public_dir=args.public_dir, heldout_dir=args.heldout_dir,
+                                source_corpus=args.source_corpus)
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
     return 0
 
