@@ -122,7 +122,10 @@ _NO_SAMPLING_PREFIXES = ("claude-opus-4-7", "claude-opus-4-8", "claude-sonnet-5"
 
 def _anthropic_reply(row: dict, run: int, model: str, *, api_key: str,
                      temperature: float) -> tuple[str, dict]:
-    body: dict = {"model": model, "max_tokens": 200,
+    # 512, not 200: Sonnet 5 / Opus 4.8 with thinking disabled sometimes write reasoning
+    # into the visible answer, and a 200-cap truncated it BEFORE the JSON — an artifact of
+    # our cap, not the judge. With headroom, any remaining «invalid» is a true format miss.
+    body: dict = {"model": model, "max_tokens": 512,
                   "messages": [{"role": "user",
                                 "content": PROMPT_TEMPLATE.format(src=row["src"], tgt=row["tgt"])}]}
     if model.startswith(_NO_SAMPLING_PREFIXES):
