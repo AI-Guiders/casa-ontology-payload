@@ -79,6 +79,36 @@ def test_quantity_decimal_stays_decimalish():
     assert out != text and _replay(text, meta) == out
 
 
+def test_quantity_transposition_never_leads_with_zero():
+    # «250» → «052» reads as a typo, not a different dose — must fall back to digit replace
+    for key in ("k", "k1", "k2", "k3", "k4", "k5", "k6", "k7"):
+        res = inject_quantity("La dosis es de 250 mg.", "es", key)
+        assert res is not None
+        assert not res[1]["replacement"].startswith("0")
+
+
+def test_quantity_decimal_shift_strips_uncovered_zeros():
+    for key in ("k", "k1", "k2", "k3", "k4", "k5", "k6", "k7"):
+        res = inject_quantity("Jeringa precargada de 0,5 ml.", "es", key)
+        assert res is not None
+        rep = res[1]["replacement"]
+        assert not (len(rep) > 1 and rep[0] == "0" and rep[1] not in ",.")
+
+
+def test_quantity_skips_trailing_section_number():
+    # leaflet section header — the bare trailing number is a TOC index, not a dose
+    assert inject_quantity("Antes de tomar Dafiro 3.", "es", "k") is None
+    assert inject_quantity("Antes de usar Aldurazyme 30", "es", "k") is None
+
+
+def test_quantity_skips_leading_section_number():
+    assert inject_quantity("3. Cómo tomar Neupro", "es", "k") is None
+
+
+def test_quantity_still_injects_real_doses():
+    assert inject_quantity("La dosis es de 75 mg una vez al día.", "es", "k") is not None
+
+
 def test_unit_swap():
     text = "La dosis es de 75 mg."
     out, meta = inject_unit(text, "es", "k")

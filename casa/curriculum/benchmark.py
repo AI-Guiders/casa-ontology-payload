@@ -26,7 +26,7 @@ import re
 from pathlib import Path
 from typing import Any, Callable
 
-GENERATOR_VERSION = "nunbench-gen-0.1"
+GENERATOR_VERSION = "nunbench-gen-0.2"
 
 # --- deterministic choice ----------------------------------------------------------------
 
@@ -84,7 +84,24 @@ def inject_polarity(text: str, lang: str, key: str) -> tuple[str, dict] | None:
 _NUM = re.compile(r"\d+(?:[.,]\d+)?")
 
 
+def _strip_leading_zeros(surface: str) -> str:
+    """«03» → «3», «01,5» → «1,5»; a true zero integer part («0,5») is left alone."""
+    m = re.match(r"0+(?=\d)", surface)
+    return surface[m.end():] if m else surface
+
+
+def _replace_first_digit(surface: str) -> str:
+    d = surface[0]
+    nd = str((int(d) + 2) % 10) if d.isdigit() else d
+    if nd == "0":
+        nd = "3"
+    return nd + surface[1:]
+
+
 def _corrupt_number(surface: str, key: str) -> str | None:
+    """A corrupted number must read as a DIFFERENT dose, not as a typo — no variant may
+    produce a leading zero («250» → «052»): such a transposition falls back to the
+    digit-replacement variant, and the decimal shift strips the zeros it uncovers."""
     variant = _h(key, "qty") % 3
     sep = "," if "," in surface else "." if "." in surface else None
     digits = surface.replace(",", "").replace(".", "")
@@ -94,6 +111,7 @@ def _corrupt_number(surface: str, key: str) -> str | None:
             moved = surface.replace(sep, "")
             new_i = i + 1
             out = moved if new_i >= len(moved) else moved[:new_i] + sep + moved[new_i:]
+            out = _strip_leading_zeros(out)
         else:
             out = surface + "0"
     elif variant == 1 and len(set(digits)) > 1:  # transposition (75 → 57)
@@ -102,20 +120,28 @@ def _corrupt_number(surface: str, key: str) -> str | None:
         i, j = pos[0], pos[-1]
         chars[i], chars[j] = chars[j], chars[i]
         out = "".join(chars)
+        if re.match(r"0\d", out):  # «250» → «052» reads as a typo, not a dose
+            out = _replace_first_digit(surface)
     else:  # first digit replaced (5 → 7), avoiding a leading zero
-        d = surface[0]
-        nd = str((int(d) + 2) % 10) if d.isdigit() else d
-        if nd == "0":
-            nd = "3"
-        out = nd + surface[1:]
+        out = _replace_first_digit(surface)
     return out if out != surface else None
 
 
+# «Antes de tomar Dafiro 3.» — a leaflet section header whose trailing bare number is a
+# TOC index, not a dose; corrupting it is a discrepancy but not a dangerous error
+_SECTION_TAIL = re.compile(r"^\s*\.?\s*$")
+
+
 def inject_quantity(text: str, lang: str, key: str) -> tuple[str, dict] | None:
-    """Corrupt the first number — the 5↔50 class."""
+    """Corrupt the first number — the 5↔50 class. Sentence-final bare numbers with no unit
+    attached (leaflet section indices) are skipped: they are not doses."""
     m = _NUM.search(text)
     if not m:
         return None
+    if _SECTION_TAIL.match(text[m.end():]):
+        return None
+    if not text[:m.start()].strip() and re.match(r"\.\s", text[m.end():]):
+        return None  # «3. Cómo tomar…» — a leading section index, same non-dose case
     new = _corrupt_number(m.group(0), key)
     if new is None:
         return None
@@ -144,12 +170,26 @@ def inject_unit(text: str, lang: str, key: str) -> tuple[str, dict] | None:
 _DRUG_POOL = ["TAMIFLU", "ABILIFY", "PROZAC", "XELODA", "HUMIRA", "KEPPRA", "ZYPREXA", "ENBREL"]
 _CANARY_DRUGS = ["ZILVOTRAX", "MEBRUVANT", "QOLDERIN", "XAPRUVIO"]  # invented — contamination markers
 
+# capitalized COMMON label words are not drug names — without this list the injector once
+# produced «VIAL → ENBREL», a swap no human verifier would accept as a drug-name error
+_NOT_DRUG_CAPS = {
+    "vial", "solvent", "tablet", "tablets", "capsule", "capsules", "cream", "crema",
+    "solution", "solución", "solucion", "suspension", "suspensión", "syringe", "jeringa",
+    "injection", "inyección", "inyeccion", "powder", "polvo", "leaflet", "prospecto",
+    "annex", "anexo", "label", "etiqueta", "envase", "embalaje", "frasco", "comprimido",
+    "comprimidos", "cápsula", "capsula", "warning", "caution", "important", "storage",
+    "keep", "store", "read", "shake", "note", "package",
+}
+
 
 def _find_drug_name(text: str) -> re.Match | None:
     """A mid-sentence Capitalized or ALL-CAPS token ≥4 chars — the entity-swap target.
-    Mirrors the parser's named-entity signal (parse._named_candidates)."""
+    Mirrors the parser's named-entity signal (parse._named_candidates); capitalized
+    ordinary label vocabulary (_NOT_DRUG_CAPS) never qualifies."""
     for m in re.finditer(r"[A-ZÁÉÍÓÚÑ][\wÁ-ÿ]{3,}", text):
         tok = m.group(0)
+        if tok.lower() in _NOT_DRUG_CAPS:
+            continue
         head = text[:m.start()].rstrip()
         if tok.isupper() or (head and head[-1] not in ".!?:;¡¿«\"'("):
             return m
