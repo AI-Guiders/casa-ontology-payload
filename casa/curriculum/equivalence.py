@@ -155,14 +155,46 @@ def _classify(src_edges: list[dict], tgt_edges: list[dict]) -> list[dict[str, st
     return divs
 
 
+def _lexical_verdict(source: str, target: str) -> dict[str, Any]:
+    """ABLATION «lexical»: no graph — decide on raw digit / unit / name multisets alone.
+    Catches quantity/unit/entity by surface mismatch but is BLIND to polarity (a dropped
+    «no» changes no number/name) and to structure — the exact gap the graph closes."""
+    sv, su = _digit_mentions(source)
+    tv, tu = _digit_mentions(target)
+    sn, tn = _name_mentions(source), _name_mentions(target)
+    divs = []
+    if sv != tv:
+        divs.append({"class": "quantity", "note": "числа в тексте различаются"})
+    if su != tu:
+        divs.append({"class": "unit", "note": "единицы в тексте различаются"})
+    if sn != tn:
+        divs.append({"class": "entity", "note": "имена в тексте различаются"})
+    result = {"source": {"text": source}, "target": {"text": target}, "divergences": divs}
+    result["verdict"] = "divergent" if divs else "equivalent"
+    result["reason"] = "лексический след текста различается" if divs else "лексический след совпадает"
+    return result
+
+
 def check_equivalence(state: dict, lattice_id: str, source: str, target: str,
-                      langs: tuple[str | None, str | None] | None = None) -> dict[str, Any]:
+                      langs: tuple[str | None, str | None] | None = None,
+                      guards: str = "full") -> dict[str, Any]:
     """Triage whether ``target`` means the same as ``source``. See module docstring.
 
     ``langs=(src_lang, tgt_lang)`` declares each side's language when the script cannot
-    (EN↔ES are both Latin) — e.g. ``langs=("en", "es")`` for an EMEA pair."""
+    (EN↔ES are both Latin) — e.g. ``langs=("en", "es")`` for an EMEA pair.
+
+    ``guards`` selects the reasoning depth — the paper's ablation axis:
+      «full»    — shipped kernel: graph + numeric/name residue guards + structure abstention;
+      «none»    — graph-equivalence only, NO residual guards (matching graphs → equivalent
+                  even with unverified numbers/names outside the graph; structure counts as
+                  a divergence, no honest abstention) — shows the guards are necessary;
+      «lexical» — no graph at all, raw digit/unit/name multiset match — shows what the graph
+                  adds (it is blind to polarity and structure)."""
     from casa.curriculum.parse import parse_graph
     from casa.curriculum.situation import canonical_edges
+
+    if guards == "lexical":
+        return _lexical_verdict(source, target)
 
     ls, lt = langs or (None, None)
     sg = parse_graph(state, lattice_id, source, lang=ls)
@@ -194,7 +226,19 @@ def check_equivalence(state: dict, lattice_id: str, source: str, target: str,
                          "note": f"единицы в тексте: {', '.join(sorted(su.elements())) or '—'} "
                                  f"vs {', '.join(sorted(tu.elements())) or '—'}"})
 
-    if set(result["source"]["edges"]) == set(result["target"]["edges"]) and not lex_divs:
+    graphs_match = set(result["source"]["edges"]) == set(result["target"]["edges"])
+
+    if guards == "none":  # ABLATION: graph-equivalence only, no residual guards / abstention
+        if graphs_match:
+            result["verdict"] = "equivalent"
+            result["reason"] = "одинаковый граф смысла (без гардов)"
+            return result
+        result["verdict"] = "divergent"
+        result["divergences"] = _classify(s_edges, t_edges)  # structure counts, no abstention
+        result["reason"] = "графы смысла различаются"
+        return result
+
+    if graphs_match and not lex_divs:
         unbound_s, unbound_t = sv - _bound_values(sg), tv - _bound_values(tg)
         if unbound_s or unbound_t:  # numbers the graph never verified — no equivalence claim
             result["verdict"] = "uncheckable"

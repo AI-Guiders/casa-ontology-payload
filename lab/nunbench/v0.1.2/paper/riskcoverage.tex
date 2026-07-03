@@ -1,0 +1,12 @@
+\begin{tikzpicture}
+\begin{axis}[xlabel=coverage, ylabel=risk, legend pos=north west, width=.8\linewidth, height=.5\linewidth, grid=both]
+\addplot table[x=coverage, y=risk] {riskcoverage_0.dat};
+\addlegendentry{gpt-4.1}
+\addplot table[x=coverage, y=risk] {riskcoverage_1.dat};
+\addlegendentry{gpt-4o-mini}
+\addplot table[x=coverage, y=risk] {riskcoverage_2.dat};
+\addlegendentry{gpt-5.4-mini}
+\addplot table[x=coverage, y=risk] {riskcoverage_3.dat};
+\addlegendentry{kernel}
+\end{axis}
+\end{tikzpicture}

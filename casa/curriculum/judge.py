@@ -139,23 +139,39 @@ def _anthropic_reply(row: dict, run: int, model: str, *, api_key: str,
     return text, {"tokens_in": usage.get("input_tokens", 0), "tokens_out": usage.get("output_tokens", 0)}
 
 
+# OpenAI reasoning models (gpt-5*/o*) reject temperature and `max_tokens`; they take
+# `max_completion_tokens` (reasoning tokens INCLUDED — needs headroom) and accept a low
+# `reasoning_effort` so the judge answers instead of deliberating at our expense.
+_OPENAI_REASONING_PREFIXES = ("gpt-5", "o1", "o3", "o4")
+
+
 def _openai_reply(row: dict, run: int, model: str, *, api_key: str, base_url: str,
                   temperature: float) -> tuple[str, dict]:
+    body: dict = {"model": model,
+                  "messages": [{"role": "user",
+                                "content": PROMPT_TEMPLATE.format(src=row["src"], tgt=row["tgt"])}]}
+    if model.startswith(_OPENAI_REASONING_PREFIXES):
+        body["max_completion_tokens"] = 2000
+        body["reasoning_effort"] = "low"
+    else:
+        body["max_tokens"] = 200
+        body["temperature"] = temperature
     out = _http_json(
         base_url.rstrip("/") + "/chat/completions",
         {"authorization": f"Bearer {api_key}"},
-        {"model": model, "max_tokens": 200, "temperature": temperature,
-         "messages": [{"role": "user",
-                       "content": PROMPT_TEMPLATE.format(src=row["src"], tgt=row["tgt"])}]})
+        body)
     text = (out.get("choices") or [{}])[0].get("message", {}).get("content", "")
     usage = out.get("usage", {})
     return text, {"tokens_in": usage.get("prompt_tokens", 0), "tokens_out": usage.get("completion_tokens", 0)}
 
 
-def _kernel_judge(rows: list[dict], out_path: Path) -> None:
+def _kernel_judge(rows: list[dict], out_path: Path, guards: str = "full",
+                  model: str = "kernel") -> None:
     """The validator as a judge: deterministic, one run, native abstention. Its verdict
     map — equivalent→equivalent, divergent→error (first divergence names the class),
-    uncheckable→abstain — makes it a row in the same results table as the LLMs."""
+    uncheckable→abstain — makes it a row in the same results table as the LLMs. ``guards``
+    selects the ablation depth (full / none / lexical) — see check_equivalence. ``model``
+    labels the row (e.g. «kernel-none») so ablations land as distinct table rows."""
     from casa.curriculum.equivalence import check_equivalence
     from casa.curriculum.world import build_meaning_state
 
@@ -167,7 +183,7 @@ def _kernel_judge(rows: list[dict], out_path: Path) -> None:
                 continue
             t0 = time.perf_counter()
             res = check_equivalence(state, lat, row["src"], row["tgt"],
-                                    langs=(row["src_lang"], row["tgt_lang"]))
+                                    langs=(row["src_lang"], row["tgt_lang"]), guards=guards)
             ms = round((time.perf_counter() - t0) * 1000, 1)
             if res["verdict"] == "uncheckable":
                 ans = {"verdict": "abstain", "error_class": None, "confidence": 0.0}
@@ -177,7 +193,7 @@ def _kernel_judge(rows: list[dict], out_path: Path) -> None:
                 divs = res.get("divergences") or [{"class": "other"}]
                 ans = {"verdict": "error", "error_class": divs[0]["class"], "confidence": 1.0}
             f.write(json.dumps({
-                "id": row["id"], "run": 0, "model": "kernel", "prompt_version": "kernel",
+                "id": row["id"], "run": 0, "model": model, "prompt_version": "kernel",
                 **ans, "raw": json.dumps([d["class"] for d in res.get("divergences", [])]),
                 "latency_ms": ms, "tokens_in": 0, "tokens_out": 0,
             }, ensure_ascii=False) + "\n")
@@ -191,7 +207,7 @@ def _done_ids(path: Path) -> set[str]:
 
 def run_judge(rows: list[dict], *, provider: str, model: str, runs: int, out_dir: str | Path,
               temperature: float = 0.2, api_key: str | None = None,
-              base_url: str = "https://api.openai.com/v1") -> list[Path]:
+              base_url: str = "https://api.openai.com/v1", guards: str = "full") -> list[Path]:
     """Collect raw verdicts for every row × run; resumes from existing output files."""
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -199,7 +215,7 @@ def run_judge(rows: list[dict], *, provider: str, model: str, runs: int, out_dir
 
     if provider == "kernel":
         path = out_dir / f"kernel__{slug}__run0.jsonl"
-        _kernel_judge(rows, path)
+        _kernel_judge(rows, path, guards=guards, model=model)
         return [path]
 
     reply: Callable[[dict, int], tuple[str, dict]]
@@ -268,6 +284,8 @@ def main(argv: list[str] | None = None) -> int:
                     help="openai provider: any compatible endpoint (OpenRouter, gateways)")
     ap.add_argument("--api-key-env", default=None,
                     help="env var holding the key (default: provider's standard var)")
+    ap.add_argument("--guards", default="full", choices=["full", "none", "lexical"],
+                    help="kernel ablation depth (full=shipped, none=no residual guards, lexical=no graph)")
     args = ap.parse_args(argv)
 
     key_env = args.api_key_env or {"anthropic": "ANTHROPIC_API_KEY",
@@ -278,11 +296,15 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     rows = load_benchmark(args.bench, split=args.split, limit=args.limit)
-    print(f"{len(rows)} rows ({args.split}), provider={args.provider}, model={args.model}, "
+    # ablation runs get a distinct model label so they land as separate table rows
+    model = args.model
+    if args.provider == "kernel" and args.guards != "full" and model == "mock-1":
+        model = f"kernel-{args.guards}"
+    print(f"{len(rows)} rows ({args.split}), provider={args.provider}, model={model}, "
           f"runs={args.runs if args.provider != 'kernel' else 1}")
-    paths = run_judge(rows, provider=args.provider, model=args.model, runs=args.runs,
+    paths = run_judge(rows, provider=args.provider, model=model, runs=args.runs,
                       out_dir=args.out_dir, temperature=args.temperature,
-                      api_key=api_key, base_url=args.base_url)
+                      api_key=api_key, base_url=args.base_url, guards=args.guards)
     for p in paths:
         print(p)
     return 0
