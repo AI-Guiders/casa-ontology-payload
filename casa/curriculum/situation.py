@@ -67,6 +67,7 @@ PREDICATE_RELATION: dict[str, str] = {
     # medical-label verbs (NB: bare EN «has/have» stay unmapped — they are auxiliaries)
     "содержит": "contains", "содержат": "contains", "содержать": "contains", "contains": "contains", "contain": "contains", "containing": "contains",
     "храни": "store", "храните": "store", "хранить": "store", "store": "store", "keep": "store",
+    "требует": "require", "требуют": "require", "требовать": "require", "require": "require", "requires": "require",
     "введи": "give", "введите": "give", "вводить": "give", "administer": "give", "administered": "give",
     "живёт": "lives_in", "живет": "lives_in", "живут": "lives_in", "жить": "lives_in", "lives": "lives_in", "live": "lives_in",
     # English gerund headings — «Opening a file», «Configuring the proxy»
@@ -123,6 +124,7 @@ PREDICATE_RELATION_ES: dict[str, str] = {
     "contiene": "contains", "contienen": "contains", "contener": "contains",
     "conserve": "store", "conservar": "store", "mantenga": "store", "mantener": "store",
     "administre": "give", "administrar": "give", "administra": "give",
+    "requiere": "require", "requieren": "require", "requerir": "require",
 }
 
 

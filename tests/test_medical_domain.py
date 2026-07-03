@@ -94,6 +94,43 @@ def test_store_imperative(world):
         _key(state, lat, "store the tablets")
 
 
+def test_elliptic_store_imperative(world):
+    state, lat = world
+    # «Conservar en nevera» — no object: the labelled product itself is implied, and both
+    # sides of a pair get the same implicit node, so the forms stay comparable
+    assert _rels(state, lat, "conservar en nevera", lang="es") == {"store", "in"}
+    assert _key(state, lat, "conservar en nevera", lang="es") == \
+        _key(state, lat, "store in a refrigerator", lang="en")
+
+
+def test_elliptic_store_polarity_caught(world):
+    state, lat = world
+    r = check_equivalence(state, lat, "do not store in a refrigerator", "conservar en nevera",
+                          langs=("en", "es"))
+    assert r["verdict"] == "divergent"
+    assert any(d["class"] == "polarity" for d in r["divergences"])
+
+
+def test_medicinal_product_is_the_medicine(world):
+    state, lat = world
+    # EMA register: «(medicinal) product» aliases the medicine concept in both languages
+    assert _key(state, lat, "do not take this medicinal product", lang="en") == \
+        _key(state, lat, "no tome este medicamento", lang="es")
+
+
+def test_no_special_storage_conditions_boilerplate(world):
+    state, lat = world
+    en = "This medicinal product does not require any special storage conditions."
+    es = "Este medicamento no requiere condiciones especiales de conservación."
+    assert "require" in _rels(state, lat, en, lang="en")
+    r = check_equivalence(state, lat, en, es, langs=("en", "es"))
+    assert r["verdict"] == "equivalent"
+    r2 = check_equivalence(state, lat, en, "Este medicamento requiere condiciones especiales de conservación.",
+                           langs=("en", "es"))
+    assert r2["verdict"] == "divergent"
+    assert any(d["class"] == "polarity" for d in r2["divergences"])
+
+
 def test_ru_medical_names_resolve(world):
     state, lat = world  # trilingual: the RU side of the pack works too
     assert _key(state, lat, "храни таблетку в холодильнике") == \

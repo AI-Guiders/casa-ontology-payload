@@ -42,7 +42,9 @@ _COPULA = {"is", "are", "está", "están", "son"}  # predicative copula (EN + sa
 # NB: «de» is NOT a preposition here — it mirrors EN «of» (a made_of VERB via the predicate
 # table), so «5 ml de agua en la mesa» keeps the locative as its only prepositional edge.
 _PREPS_ES = {"en", "sobre", "encima", "dentro", "cerca", "junto", "a"}
-_NEG_ES = {"nunca", "sin"}
+# clause-level negation only: «sin» is NOT here — «sin abrir» (unopened) is a participle
+# modifier, and marking it negative once masked a dropped «no» (a false «equivalent»)
+_NEG_ES = {"nunca", "jamás", "jamas"}
 _POSITIONAL_ES = {"hecho", "hecha", "hechos", "hechas", "que"}  # made-of copula; «más grande que»
 _CMP_ES = {"más": "gt", "mayor": "gt", "supera": "gt", "excede": "gt",
            "menos": "lt", "menor": "lt", "igual": "eq"}
@@ -114,11 +116,11 @@ def _normalize_name(surface: str) -> str:
 
 def _typed_concepts(state: dict, lattice_id: str) -> set[str]:
     """Concepts that are IN the ontology (appear as the source of an isa edge)."""
-    from casa.prisms.memory.f0_stack import decode_f0_lattice
+    from casa.curriculum.concept_net import decoded_edges
     from casa.prisms.memory.memory_prisms import memory_lattices
 
     lat = memory_lattices(state).get(lattice_id)
-    edges = decode_f0_lattice(lat).get("edges") or [] if lat else []
+    edges = decoded_edges(lat) if lat else []
     return {e.split("|isa|")[0] for e in edges if "|isa|" in e}
 
 
@@ -248,7 +250,12 @@ def parse_situation(
     copula = False  # saw a copula («is/are», «está/son») — the next state word is predicative
     for tok in _tokens(text):
         if tok in _TEMPORAL_SKIP:
-            continue  # time/frequency is out of scope — must not capture measures
+            # time/frequency is out of scope — must not capture measures; a number that
+            # quantifies the temporal noun leaves with it («once a day», «una vez», «2 veces»
+            # — otherwise «150 mg una vez al día» would overwrite the dose with 1)
+            if seq and seq[-1][0] == "num":
+                seq.pop()
+            continue
         if (gm := _GLUED_MEASURE.match(tok)) and unit_of_token(gm.group(2)) is not None:
             seq.append(("num", number_of_token(gm.group(1))))
             seq.append(("unit", unit_of_token(gm.group(2))))
@@ -381,10 +388,20 @@ def parse_situation(
         subj_nouns = [(ni, c) for ni, c in nouns if ni < vp]
         subject = subj_nouns[-1][1] if subj_nouns else "concept.you"
         obj_nouns = [(ni, c) for ni, c in nouns if vp < ni < pp]
-        dest = [c for ni, c in nouns if ni > pp]
-        if obj_nouns and dest:
+        # the destination is the compound head of the noun run after the preposition
+        # («in the original package» → package, not the modifier that happens to resolve)
+        nxt_pp = next((qi for qi, _ in preps if qi > pp), len(seq))
+        dest_run = [(ni, c) for ni, c in nouns if pp < ni < nxt_pp]
+        # elliptic label imperative: «Conservar en nevera» / «Store in a refrigerator» —
+        # the storage verb with NO object names the labelled product itself; both sides
+        # of a pair get the SAME implicit node, so the forms stay comparable. Only the
+        # store verb: other verb+prep clauses («click on the button») keep their parse.
+        if not obj_nouns and not subj_nouns and dest_run and vrel == "store" and lang in ("en", "es"):
+            obj = "concept.medicine"
+            return [(vrel, subject, obj), (prel, obj, head(dest_run))], attrs, polarity, counts, measures
+        if obj_nouns and dest_run:
             obj = head(obj_nouns)
-            return [(vrel, subject, obj), (prel, obj, dest[0])], attrs, polarity, counts, measures
+            return [(vrel, subject, obj), (prel, obj, head(dest_run))], attrs, polarity, counts, measures
 
     if preps:  # locative: each preposition links the noun before it to the noun after it
         triples: list[tuple[str, str, str]] = []
@@ -397,7 +414,13 @@ def parse_situation(
             after = [c for ni, c in nouns if ni > pi]
             if not after:
                 continue
-            ground = after[0]
+            # the ground is the compound head of the noun run up to the next preposition
+            # («in the original package» → package). Only when the figure stands BEFORE
+            # the preposition: in the inverted form («на столе яблоко») the run after the
+            # preposition is ground THEN figure, not a compound.
+            nxt_pi = next((qi for qi, _ in preps if qi > pi), len(seq))
+            run = [(ni, c) for ni, c in nouns if pi < ni < nxt_pi]
+            ground = head(run) if run and before else after[0]
             if coord_figs is not None and pi == first_pi:
                 figures = coord_figs
             elif before:

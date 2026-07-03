@@ -24,20 +24,25 @@ MEDICAL_PACK: dict = {
         # a dose is measured («la dosis es de 75 mg») and taken («tome la dosis»)
         {"id": "dose_item", "isa": ["abstract"], "affords": ["measurable", "ownable"]},
         {"id": "med_event", "isa": ["abstract"], "affords": []},
+        # something a product may require («no special storage conditions» boilerplate)
+        {"id": "med_condition", "isa": ["abstract"], "affords": ["ownable"]},
     ],
     "concepts": {
         "medicine_item": [["лекарство", "medicine"], ["таблетка", "tablet"], ["капсула", "capsule"],
                           ["препарат", "drug"], ["инсулин", "insulin"], ["раствор", "solution"],
                           ["порошок", "powder"], ["суспензия", "suspension"], ["крем", "cream"],
                           ["мазь", "ointment"], ["капля", "drop"]],
+        # NB: «package» is NOT a separate concept — EMEA pairs use package/carton/envase/
+        # embalaje interchangeably for the same thing, so one packaging concept (extra
+        # names taught below) keeps equivalent pairs equivalent
         "med_container": [["флакон", "vial"], ["шприц", "syringe"], ["упаковка", "carton"],
-                          ["бутылка", "bottle"], ["блистер", "blister"], ["холодильник", "refrigerator"],
-                          ["пачка", "package"]],
+                          ["бутылка", "bottle"], ["блистер", "blister"], ["холодильник", "refrigerator"]],
         "med_tool": [["игла", "needle"]],
         "med_substance": [["лактоза", "lactose"], ["натрий", "sodium"], ["алкоголь", "alcohol"],
                           ["кальций", "calcium"], ["витамин", "vitamin"]],
         "body_part": [["кровь", "blood"], ["кожа", "skin"], ["рот", "mouth"], ["желудок", "stomach"]],
         "dose_item": [["доза", "dose"]],
+        "med_condition": [["условие", "condition"]],
         "med_event": [["лечение", "treatment"], ["беременность", "pregnancy"], ["лактация", "lactation"],
                       ["инъекция", "injection"], ["инфузия", "infusion"], ["введение", "administration"],
                       ["эффект", "effect"], ["реакция", "reaction"], ["симптом", "symptom"],
@@ -50,6 +55,8 @@ MEDICAL_PACK: dict = {
         {"rel": "contains", "arg1": "containment", "arg2": "positionable"},
         # «store the tablets …», «conserve los comprimidos …» — keeping, label-imperative
         {"rel": "store", "arg1": "agent", "arg2": "positionable"},
+        # «this product does not require special storage conditions» — label boilerplate
+        {"rel": "require", "arg1": "positionable", "arg2": "ownable"},
     ],
 }
 
@@ -57,20 +64,21 @@ MEDICAL_PACK: dict = {
 # of a few BASE concepts this domain constantly touches (doctor, child, food are in the
 # general layer; their ES surfaces belong to the domain vocabulary).
 ES_NAMES_MED: dict[str, list[str]] = {
-    "concept.medicine": ["medicamento", "medicina"], "concept.tablet": ["comprimido", "tableta"],
+    "concept.medicine": ["medicamento", "medicina", "producto"], "concept.tablet": ["comprimido", "tableta"],
     "concept.capsule": ["cápsula", "capsula"], "concept.drug": ["fármaco", "farmaco"],
     "concept.insulin": ["insulina"], "concept.solution": ["solución", "solucion"],
     "concept.powder": ["polvo"], "concept.suspension": ["suspensión", "suspension"],
     "concept.cream": ["crema"], "concept.ointment": ["pomada"], "concept.drop": ["gota"],
     "concept.vial": ["vial"], "concept.syringe": ["jeringa", "jeringuilla"],
-    "concept.carton": ["envase", "caja"], "concept.bottle": ["botella", "frasco"],
+    "concept.carton": ["envase", "caja", "embalaje", "paquete"], "concept.bottle": ["botella", "frasco"],
     "concept.blister": ["blíster", "blister"], "concept.refrigerator": ["nevera", "refrigerador"],
-    "concept.package": ["paquete"], "concept.needle": ["aguja"],
+    "concept.needle": ["aguja"],
     "concept.lactose": ["lactosa"], "concept.sodium": ["sodio"], "concept.alcohol": ["alcohol"],
     "concept.calcium": ["calcio"], "concept.vitamin": ["vitamina"],
     "concept.blood": ["sangre"], "concept.skin": ["piel"], "concept.mouth": ["boca"],
     "concept.stomach": ["estómago", "estomago"],
     "concept.dose": ["dosis"],
+    "concept.condition": ["condición", "condicion", "condiciones"],
     "concept.treatment": ["tratamiento"], "concept.pregnancy": ["embarazo"],
     "concept.lactation": ["lactancia"], "concept.injection": ["inyección", "inyeccion"],
     "concept.infusion": ["perfusión", "perfusion", "infusión", "infusion"],
@@ -92,4 +100,8 @@ def teach_medical_domain(state: dict, lattice_id: str, *, bundle: dict | None = 
     counts = teach_concept_net(state, lattice_id, MEDICAL_PACK, bundle=bundle)
     teach_names(state, lattice_id,
                 [(cid, s) for cid, surfaces in ES_NAMES_MED.items() for s in surfaces], lang="es")
+    # EMA register: «(medicinal) product» is the medicine itself — an alias, not a concept;
+    # «package/пачка» are extra names of the ONE packaging concept (see MEDICAL_PACK note)
+    teach_names(state, lattice_id, [("concept.medicine", "product"),
+                                    ("concept.carton", "package"), ("concept.carton", "пачка")])
     return counts
