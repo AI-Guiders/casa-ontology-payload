@@ -114,14 +114,26 @@ def _http_json(url: str, headers: dict[str, str], body: dict, retries: int = 3) 
     raise RuntimeError(f"gave up after {retries} attempts: {last}")
 
 
+# Claude 4.7+ / Sonnet 5 / Fable 5 reject sampling params (400); Sonnet 5 also runs
+# adaptive thinking unless disabled — for the judge protocol we want plain fast answers.
+# Run-to-run variance on these models comes from the API's own sampling, not a knob.
+_NO_SAMPLING_PREFIXES = ("claude-opus-4-7", "claude-opus-4-8", "claude-sonnet-5", "claude-fable")
+
+
 def _anthropic_reply(row: dict, run: int, model: str, *, api_key: str,
                      temperature: float) -> tuple[str, dict]:
+    body: dict = {"model": model, "max_tokens": 200,
+                  "messages": [{"role": "user",
+                                "content": PROMPT_TEMPLATE.format(src=row["src"], tgt=row["tgt"])}]}
+    if model.startswith(_NO_SAMPLING_PREFIXES):
+        if model.startswith("claude-sonnet-5"):
+            body["thinking"] = {"type": "disabled"}
+    else:
+        body["temperature"] = temperature
     out = _http_json(
         "https://api.anthropic.com/v1/messages",
         {"x-api-key": api_key, "anthropic-version": "2023-06-01"},
-        {"model": model, "max_tokens": 200, "temperature": temperature,
-         "messages": [{"role": "user",
-                       "content": PROMPT_TEMPLATE.format(src=row["src"], tgt=row["tgt"])}]})
+        body)
     text = "".join(b.get("text", "") for b in out.get("content", []))
     usage = out.get("usage", {})
     return text, {"tokens_in": usage.get("input_tokens", 0), "tokens_out": usage.get("output_tokens", 0)}
