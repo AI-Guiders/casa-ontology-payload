@@ -19,7 +19,57 @@ controlled-domain parser covers; everything else is «uncheckable», by design.
 
 from __future__ import annotations
 
+import re
+from collections import Counter
 from typing import Any
+
+# --- numeric residue guard -----------------------------------------------------------------
+# The graph only carries the numbers the parser BOUND (counts, measures, thresholds); a
+# digit the parser dropped (step index, temperature range, section number) would otherwise
+# vanish — and a corrupted pair could come back «equivalent». That is the one answer this
+# tool must never give. The guard compares the raw DIGIT mentions of both sides (digits
+# only: word-numerals like «una» double as articles and would false-alarm; the dangerous
+# corruptions are digit edits): differing multisets are a divergence in their own right,
+# and matching multisets with numbers left UNBOUND on either side downgrade «equivalent»
+# to «uncheckable» — the graph never verified those numbers' roles.
+
+_DIGITS = re.compile(r"\d+(?:[.,]\d+)?")
+_UNIT_AFTER = re.compile(r"^\s*([a-zа-яµ]+)")
+
+
+def _digit_mentions(text: str) -> tuple[Counter, Counter]:
+    """Multisets of (normalized digit values, canonical units) mentioned in the raw text."""
+    from casa.curriculum.quantity import unit_of_token
+
+    values: Counter = Counter()
+    units: Counter = Counter()
+    for m in _DIGITS.finditer(str(text or "")):
+        values[float(m.group(0).replace(",", "."))] += 1
+        after = _UNIT_AFTER.match(text[m.end():])
+        if after and (u := unit_of_token(after.group(1))):
+            units[u] += 1
+    return values, units
+
+
+def _bound_values(graph: dict[str, Any]) -> Counter:
+    """The numbers the parse actually incorporated: node counts and measure values."""
+    out: Counter = Counter()
+    for n in graph.get("nodes", {}).values():
+        if n.get("count") is not None:
+            out[float(n["count"])] += 1
+        if n.get("measure"):
+            out[float(n["measure"]["value"])] += 1
+    return out
+
+
+def _name_mentions(text: str) -> Counter:
+    """Normalized proper-name mentions in the raw text (the parser's own candidate rule).
+    A swapped drug name that hides in an unparsed modifier («Aldara cream» — the graph
+    keeps only the cream) must still block an «equivalent» verdict: differing name sets
+    downgrade it to «uncheckable» — never to a confirmation."""
+    from casa.curriculum.parse import _named_candidates, _normalize_name
+
+    return Counter(_normalize_name(s) for s in _named_candidates(text))
 
 
 def _structured_edges(graph: dict[str, Any]) -> list[dict[str, Any]]:
@@ -128,13 +178,49 @@ def check_equivalence(state: dict, lattice_id: str, source: str, target: str,
         result["verdict"] = "uncheckable"
         result["reason"] = f"не разобрана сторона: {side} — подтвердить эквивалентность нельзя"
         return result
-    if set(result["source"]["edges"]) == set(result["target"]["edges"]):
+
+    # numeric residue guard: raw digit mentions must agree BEFORE any equivalence claim
+    def _fmt_vals(c: "Counter") -> str:
+        return ", ".join(str(int(v) if v == int(v) else v) for v in sorted(c.elements())) or "—"
+
+    sv, su = _digit_mentions(source)
+    tv, tu = _digit_mentions(target)
+    lex_divs: list[dict[str, str]] = []
+    if sv != tv:
+        lex_divs.append({"class": "quantity",
+                         "note": f"числа в тексте: {_fmt_vals(sv)} vs {_fmt_vals(tv)}"})
+    if su != tu:
+        lex_divs.append({"class": "unit",
+                         "note": f"единицы в тексте: {', '.join(sorted(su.elements())) or '—'} "
+                                 f"vs {', '.join(sorted(tu.elements())) or '—'}"})
+
+    if set(result["source"]["edges"]) == set(result["target"]["edges"]) and not lex_divs:
+        unbound_s, unbound_t = sv - _bound_values(sg), tv - _bound_values(tg)
+        if unbound_s or unbound_t:  # numbers the graph never verified — no equivalence claim
+            result["verdict"] = "uncheckable"
+            result["reason"] = (f"графы совпадают, но числа вне графа не проверены: "
+                                f"{_fmt_vals(unbound_s or unbound_t)}")
+            return result
+        if _name_mentions(source) != _name_mentions(target):
+            result["verdict"] = "uncheckable"  # a name outside the graph is unverified
+            result["reason"] = "графы совпадают, но имена в тексте не выровнены — подмену имени не исключить"
+            return result
         result["verdict"] = "equivalent"
         result["reason"] = "одинаковый граф смысла"
         return result
+    graph_divs = _classify(s_edges, t_edges)
+    covered = {d["class"] for d in graph_divs}
+    divs = graph_divs + [d for d in lex_divs if d["class"] not in covered]
+    # bare structural mismatch of PARTIAL parses is a parse gap as often as a meaning gap —
+    # only the exactly-adjudicated classes (polarity/quantity/unit/entity/attribute) may
+    # claim a divergence; structure alone abstains, honestly
+    if divs and all(d["class"] == "structure" for d in divs):
+        result["verdict"] = "uncheckable"
+        result["reason"] = "частичные разборы сторон не выравниваются — расхождение не классифицировано"
+        return result
     result["verdict"] = "divergent"
-    result["divergences"] = _classify(s_edges, t_edges)
-    result["reason"] = "графы смысла различаются"
+    result["divergences"] = divs
+    result["reason"] = "графы смысла различаются" if graph_divs else "числовой след текста различается"
     return result
 
 
