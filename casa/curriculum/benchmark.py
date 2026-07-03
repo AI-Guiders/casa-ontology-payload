@@ -26,7 +26,7 @@ import re
 from pathlib import Path
 from typing import Any, Callable
 
-GENERATOR_VERSION = "nunbench-gen-0.2"
+GENERATOR_VERSION = "nunbench-gen-0.3"
 
 # --- deterministic choice ----------------------------------------------------------------
 
@@ -171,7 +171,8 @@ _DRUG_POOL = ["TAMIFLU", "ABILIFY", "PROZAC", "XELODA", "HUMIRA", "KEPPRA", "ZYP
 _CANARY_DRUGS = ["ZILVOTRAX", "MEBRUVANT", "QOLDERIN", "XAPRUVIO"]  # invented — contamination markers
 
 # capitalized COMMON label words are not drug names — without this list the injector once
-# produced «VIAL → ENBREL», a swap no human verifier would accept as a drug-name error
+# produced «VIAL → ENBELL»-style swaps no human verifier would accept as drug-name errors
+# (EN + Spanish label vocabulary, since the corrupted side is Spanish)
 _NOT_DRUG_CAPS = {
     "vial", "solvent", "tablet", "tablets", "capsule", "capsules", "cream", "crema",
     "solution", "solución", "solucion", "suspension", "suspensión", "syringe", "jeringa",
@@ -179,19 +180,25 @@ _NOT_DRUG_CAPS = {
     "annex", "anexo", "label", "etiqueta", "envase", "embalaje", "frasco", "comprimido",
     "comprimidos", "cápsula", "capsula", "warning", "caution", "important", "storage",
     "keep", "store", "read", "shake", "note", "package",
+    "disolvente", "ampolla", "vacuna", "vía", "via", "intramuscular", "subcutánea",
+    "subcutanea", "oral", "granulado", "inyectable", "perfusión", "perfusion",
+    "liofilizado", "agitar", "leer", "conservar", "mantener",
 }
 
 
 def _find_drug_name(text: str) -> re.Match | None:
     """A mid-sentence Capitalized or ALL-CAPS token ≥4 chars — the entity-swap target.
     Mirrors the parser's named-entity signal (parse._named_candidates); capitalized
-    ordinary label vocabulary (_NOT_DRUG_CAPS) never qualifies."""
+    ordinary label vocabulary (_NOT_DRUG_CAPS) never qualifies. «Mid-sentence» demands a
+    letter/digit right before the token: after a list bullet («- Tome…», «2 - Abra…») the
+    capitalized word is a sentence-initial VERB, and swapping it once produced
+    «- Abilify el comprimido…» — not a drug-name error at all."""
     for m in re.finditer(r"[A-ZÁÉÍÓÚÑ][\wÁ-ÿ]{3,}", text):
         tok = m.group(0)
         if tok.lower() in _NOT_DRUG_CAPS:
             continue
         head = text[:m.start()].rstrip()
-        if tok.isupper() or (head and head[-1] not in ".!?:;¡¿«\"'("):
+        if tok.isupper() or (head and head[-1].isalnum()):
             return m
     return None
 
@@ -215,6 +222,18 @@ INJECTORS: dict[str, Callable[[str, str, str], tuple[str, dict] | None]] = {
     "polarity": inject_polarity, "quantity": inject_quantity,
     "unit": inject_unit, "entity": inject_entity,
 }
+
+
+def _name_on_both_sides(name: str, other_side: str) -> bool:
+    """An entity swap is only a verifiable error when the swapped-out name also appears on
+    the OTHER side of the pair («Store in the original package.» carries no drug name — a
+    swap on the Spanish side cannot be checked against it). Names are compared through the
+    parser's cross-lingual normalization (aripiprazole/aripiprazol)."""
+    from casa.curriculum.parse import _normalize_name
+
+    target = _normalize_name(name)
+    return any(_normalize_name(tok) == target
+               for tok in re.findall(r"[A-Za-zÁ-ÿ]{3,}", other_side))
 
 
 # --- benchmark assembly -------------------------------------------------------------------
@@ -295,6 +314,8 @@ def build_benchmark(pool_path: str | Path, out_path: str | Path, *, per_class: i
             if res is None:
                 continue
             corrupted, meta = res
+            if klass == "entity" and not _name_on_both_sides(meta["original"], r["en"]):
+                continue  # the swapped name is unverifiable from the pair — skip
             used.add(r["id"])
             out.append(_row(f"{r['id']}#{klass}", r["en"], corrupted, label="error",
                             error_class=klass, injection=meta, source="emea",

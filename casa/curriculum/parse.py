@@ -88,8 +88,10 @@ _CAPWORD = re.compile(r"[A-ZÁÉÍÓÚÑ][\wÁ-ÿ]*")
 
 def _named_candidates(text: str) -> set[str]:
     """Lowercased surfaces that look like PROPER NAMES in the original casing: capitalized
-    mid-sentence, or ALL-CAPS anywhere (≥3 letters). Sentence-initial TitleCase alone does
-    not qualify — too ambiguous with ordinary sentence capitalization."""
+    mid-sentence, or ALL-CAPS anywhere (≥3 letters). «Mid-sentence» demands a letter/digit
+    right before the token: sentence-initial TitleCase — including after a list bullet
+    («- Tome…», «2 - Abra…») — does not qualify, it is ordinary sentence capitalization
+    (mirrored by the benchmark's entity injector, benchmark._find_drug_name)."""
     out: set[str] = set()
     for m in _CAPWORD.finditer(str(text or "")):
         tok = m.group(0)
@@ -97,7 +99,7 @@ def _named_candidates(text: str) -> set[str]:
             out.add(tok.lower())
             continue
         head = text[:m.start()].rstrip()
-        if head and head[-1] not in ".!?:;¡¿«\"'(":
+        if head and head[-1].isalnum():
             out.add(tok.lower())
     return out
 

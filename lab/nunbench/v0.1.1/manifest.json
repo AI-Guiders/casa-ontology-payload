@@ -1,0 +1,30 @@
+{
+  "name": "NUN-Bench",
+  "version": "v0.1.1",
+  "generator": "nunbench-gen-0.3",
+  "language_pair": "en-es",
+  "source_corpus": "OPUS EMEA (en-es), filtered pool v1",
+  "counts": {
+    "total": 804,
+    "errors": 402,
+    "controls": 402,
+    "canaries": 4,
+    "heldout": 166
+  },
+  "per_class": {
+    "polarity": 102,
+    "quantity": 100,
+    "unit": 100,
+    "entity": 100
+  },
+  "parseable_errors": 402,
+  "verification": {
+    "verdict": "PASS",
+    "remarks": 37
+  },
+  "sha256": {
+    "nunbench-v0.1.1-public.jsonl": "fa367fa7a66fad777d97f3814b5d99658f42e656a59df0ecb94191eaf97810a8",
+    "nunbench-v0.1.1-heldout.jsonl": "c5f5d5062b25ea727c5fe67bb5ec093a2c8375126a5ec958528ba5732dc089c7",
+    "pool": "8aa10f13359fab1cb006a2b8157ca41c322a8aa636e84ed6eedb7f9c1ddf7771"
+  }
+}

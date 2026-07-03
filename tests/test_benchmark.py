@@ -128,6 +128,38 @@ def test_entity_requires_a_name():
     assert inject_entity("la dosis es de 75 mg.", "es", "k") is None
 
 
+def test_entity_skips_bullet_initial_verb():
+    # «- Tome el comprimido de Bondenza» — the capitalized word after a list bullet is a
+    # sentence-initial VERB, not a drug name (once produced «- Abilify el comprimido…»)
+    for text in ("- Tome el comprimido de Bondenza",
+                 "2 - Abra el vial y póngalo en la mesa.",
+                 "Agitar antes de usar"):
+        res = inject_entity(text, "es", "k")
+        assert res is None or res[1]["original"] not in ("Tome", "Abra", "Agitar"), text
+
+
+def test_entity_skips_spanish_caps_vocabulary():
+    # «DISOLVENTE para…» is the word “solvent”, not a brand name
+    res = inject_entity("DISOLVENTE para Docetaxel Winthrop 80 mg", "es", "k")
+    assert res is None or res[1]["original"] != "DISOLVENTE"
+
+
+def test_entity_swap_requires_name_on_both_sides(pool_file, tmp_path):
+    # a pair whose EN side has no drug name must never yield an entity record
+    import json as _json
+    pool = tmp_path / "asym.jsonl"
+    rows = [{"id": "a1", "en": "Store in the original package.",
+             "es": "ABILIFY se debe conservar en su envase original.", "tags": []},
+            {"id": "a2", "en": "Do not take TAMIFLU today.",
+             "es": "No tome TAMIFLU hoy.", "tags": []}]
+    pool.write_text("\n".join(_json.dumps(r, ensure_ascii=False) for r in rows), encoding="utf-8")
+    out = tmp_path / "bench.jsonl"
+    build_benchmark(pool, out, per_class=2, controls=0)
+    recs = [_json.loads(ln) for ln in out.read_text(encoding="utf-8").splitlines()]
+    ent = [r for r in recs if r["error_class"] == "entity" and r["source"] == "emea"]
+    assert all(r["id"].startswith("a2") for r in ent)  # a1 is asymmetric — excluded
+
+
 # --- assembly ----------------------------------------------------------------------------
 @pytest.fixture()
 def pool_file(tmp_path):
