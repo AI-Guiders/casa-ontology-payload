@@ -1,0 +1,118 @@
+{
+  "gpt-4.1 [nunbench-judge-p1]": {
+    "answered": {
+      "point": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+    },
+    "recall": {
+      "point": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+    },
+    "fpr": {
+      "point": 0.0671,
+      "lo": 0.0401,
+      "hi": 0.0967
+    },
+    "precision": {
+      "point": 0.9388,
+      "lo": 0.9115,
+      "hi": 0.9635
+    },
+    "zero_risk_coverage": {
+      "point": 0.0142,
+      "lo": 0.0063,
+      "hi": 0.4536
+    },
+    "_n_items": 635,
+    "_n_boot": 2000
+  },
+  "gpt-4o-mini [nunbench-judge-p1]": {
+    "answered": {
+      "point": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+    },
+    "recall": {
+      "point": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+    },
+    "fpr": {
+      "point": 0.115,
+      "lo": 0.082,
+      "hi": 0.1502
+    },
+    "precision": {
+      "point": 0.8994,
+      "lo": 0.8663,
+      "hi": 0.9294
+    },
+    "zero_risk_coverage": {
+      "point": 0.4094,
+      "lo": 0.3764,
+      "hi": 0.7732
+    },
+    "_n_items": 635,
+    "_n_boot": 2000
+  },
+  "gpt-5.4-mini [nunbench-judge-p1]": {
+    "answered": {
+      "point": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+    },
+    "recall": {
+      "point": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+    },
+    "fpr": {
+      "point": 0.0607,
+      "lo": 0.0361,
+      "hi": 0.0874
+    },
+    "precision": {
+      "point": 0.9443,
+      "lo": 0.9193,
+      "hi": 0.9675
+    },
+    "zero_risk_coverage": {
+      "point": 0.4047,
+      "lo": 0.3717,
+      "hi": 0.8
+    },
+    "_n_items": 635,
+    "_n_boot": 2000
+  },
+  "kernel": {
+    "answered": {
+      "point": 0.452,
+      "lo": 0.4142,
+      "hi": 0.4929
+    },
+    "recall": {
+      "point": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+    },
+    "fpr": {
+      "point": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+    },
+    "precision": {
+      "point": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+    },
+    "zero_risk_coverage": {
+      "point": 0.452,
+      "lo": 0.4142,
+      "hi": 0.4929
+    },
+    "_n_items": 635,
+    "_n_boot": 2000
+  }
+}

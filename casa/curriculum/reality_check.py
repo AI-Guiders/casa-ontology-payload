@@ -175,11 +175,32 @@ def _load_corpus(en_path: str, ru_path: str, limit: int, max_words: int = 8) -> 
     return pairs[:limit]
 
 
-def _load_jsonl(path: str, limit: int, src_key: str = "en", tgt_key: str = "es") -> list[tuple[str, str]]:
-    """Aligned pairs from a JSONL file (one object per line, e.g. the EMEA candidate pool)."""
+def _load_jsonl(path: str, limit: int, src_key: str = "en", tgt_key: str = "es",
+                seed: int | None = None) -> list[tuple[str, str]]:
+    """Aligned pairs from a JSONL file (one object per line, e.g. the EMEA candidate pool).
+
+    ``seed=None`` takes the first ``limit`` pairs (fast, order-dependent). A ``seed`` loads
+    the WHOLE file and draws a deterministic random sample of ``limit`` — the honest ceiling
+    number for the paper is measured this way (order-independent, reproducible)."""
     import json
 
-    pairs: list[tuple[str, str]] = []
+    if seed is None:
+        pairs: list[tuple[str, str]] = []
+        with open(path, encoding="utf-8") as f:
+            for ln in f:
+                if not ln.strip():
+                    continue
+                row = json.loads(ln)
+                s, t = row.get(src_key, ""), row.get(tgt_key, "")
+                if s and t:
+                    pairs.append((s, t))
+                if len(pairs) >= limit:
+                    break
+        return pairs
+
+    import random
+
+    all_pairs = []
     with open(path, encoding="utf-8") as f:
         for ln in f:
             if not ln.strip():
@@ -187,10 +208,10 @@ def _load_jsonl(path: str, limit: int, src_key: str = "en", tgt_key: str = "es")
             row = json.loads(ln)
             s, t = row.get(src_key, ""), row.get(tgt_key, "")
             if s and t:
-                pairs.append((s, t))
-            if len(pairs) >= limit:
-                break
-    return pairs
+                all_pairs.append((s, t))
+    rng = random.Random(seed)
+    rng.shuffle(all_pairs)
+    return all_pairs[:limit]
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -204,6 +225,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--corpus", nargs=2, metavar=("EN", "RU"), help="aligned bitext (en file, ru file)")
     ap.add_argument("--jsonl", metavar="PATH", help="aligned pairs as JSONL (keys per --langs, e.g. the EMEA pool)")
     ap.add_argument("--limit", type=int, default=2000)
+    ap.add_argument("--seed", type=int, default=None,
+                    help="random-sample --limit pairs with this seed (default: first N, order-dependent)")
     ap.add_argument("--max-words", type=int, default=8, help="max source words per pair (bitext filter)")
     ap.add_argument("--langs", nargs=2, metavar=("SRC", "TGT"), default=None,
                     help="side languages for the ceiling classifier (e.g. en es)")
@@ -214,7 +237,7 @@ def main(argv: list[str] | None = None) -> int:
     state, lat = build_meaning_state()
     if args.jsonl:
         keys = args.langs or ("en", "es")
-        pairs = _load_jsonl(args.jsonl, args.limit, src_key=keys[0], tgt_key=keys[1])
+        pairs = _load_jsonl(args.jsonl, args.limit, src_key=keys[0], tgt_key=keys[1], seed=args.seed)
     elif args.corpus:
         pairs = _load_corpus(args.corpus[0], args.corpus[1], args.limit, max_words=args.max_words)
     else:
