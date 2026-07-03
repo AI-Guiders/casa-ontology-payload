@@ -37,21 +37,42 @@ def script_of(surface: str) -> str:
     return "cyrl" if any("Ѐ" <= ch <= "ӿ" for ch in str(surface)) else "latn"
 
 
-def _name_edges(state: dict, lattice_id: str) -> set[str]:
-    from casa.prisms.memory.f0_stack import decode_f0_lattice
+# name-edge set + reverse index (surface → concepts), memoised per lattice content — the
+# parser resolves EVERY token through concepts_for_term, which must be a dict hit, not a
+# scan of all name edges. Same invalidation signature as concept_net.decoded_edges.
+_NAME_CACHE: dict[int, tuple[tuple[int, int], set[str], dict[str, list[str]]]] = {}
+
+
+def _name_tables(state: dict, lattice_id: str) -> tuple[set[str], dict[str, list[str]]]:
+    from casa.curriculum.concept_net import decoded_edges
     from casa.prisms.memory.memory_prisms import memory_lattices
 
     lat = memory_lattices(state).get(lattice_id)
     if not lat:
-        return set()
-    return {e for e in (decode_f0_lattice(lat).get("edges") or []) if _NAMES in e}
+        return set(), {}
+    cells = lat.get("cells") or []
+    sig = (id(cells), sum(len(c) for c in cells))
+    hit = _NAME_CACHE.get(id(lat))
+    if hit is not None and hit[0] == sig:
+        return hit[1], hit[2]
+    edges = {e for e in decoded_edges(lat) if _NAMES in e}
+    index: dict[str, list[str]] = {}
+    for e in edges:
+        concept, _, surface = e.partition(_NAMES)
+        index.setdefault(surface, []).append(concept)
+    _NAME_CACHE[id(lat)] = (sig, edges, index)
+    return edges, index
+
+
+def _name_edges(state: dict, lattice_id: str) -> set[str]:
+    return _name_tables(state, lattice_id)[0]
 
 
 def concepts_for_term(state: dict, lattice_id: str, word: str, lang: str | None = None) -> list[str]:
     """Concepts that name ``word`` (reverse names lookup). A tagged ``lang`` («es») looks up
     ONLY that language's tagged names; the default sees only untagged (RU/EN) ones."""
-    suffix = f"{_NAMES}{lang}.{word}" if lang in _TAGGED_LANGS else f"{_NAMES}{word}"
-    return sorted({e.split("|names|")[0] for e in _name_edges(state, lattice_id) if e.endswith(suffix)})
+    key = f"{lang}.{word}" if lang in _TAGGED_LANGS else str(word)
+    return sorted(set(_name_tables(state, lattice_id)[1].get(key, [])))
 
 
 def translate_term(state: dict, lattice_id: str, word: str, *, to_script: str) -> list[str]:

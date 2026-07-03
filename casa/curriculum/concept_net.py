@@ -41,11 +41,29 @@ def _lattices(state: dict, lattice_id: str | None = None) -> dict:
     return memory_lattices(state)
 
 
-def _edges(state: dict, lattice_id: str) -> list[str]:
+# decode_f0_lattice walks EVERY token in the grid and the parser needs the edge list
+# dozens of times per clause — memoised per lattice content. The signature catches both
+# mutation paths: strengthen_graph_edge swaps the cells object (new id), weaken_graph_edge
+# removes tokens in place (new count). Callers must treat the returned list as read-only.
+_DECODE_CACHE: dict[int, tuple[tuple[int, int], list[str]]] = {}
+
+
+def decoded_edges(lat: dict) -> list[str]:
     from casa.prisms.memory.f0_stack import decode_f0_lattice
 
+    cells = lat.get("cells") or []
+    sig = (id(cells), sum(len(c) for c in cells))
+    hit = _DECODE_CACHE.get(id(lat))
+    if hit is not None and hit[0] == sig:
+        return hit[1]
+    edges = list(decode_f0_lattice(lat).get("edges") or [])
+    _DECODE_CACHE[id(lat)] = (sig, edges)
+    return edges
+
+
+def _edges(state: dict, lattice_id: str) -> list[str]:
     lat = _lattices(state, lattice_id).get(lattice_id)
-    return list(decode_f0_lattice(lat).get("edges") or []) if lat else []
+    return decoded_edges(lat) if lat else []
 
 
 def _mint(state: dict, lattice_id: str, src: str, rel: str, dst: str, *, copies: int = 4) -> None:
