@@ -18,20 +18,22 @@ Translation QA*
 > (mg↔ml), a swapped drug name. We present **NUN-Bench**, a benchmark of real EN↔ES medical-label
 > sentence pairs (OPUS EMEA / EMA product information) with deterministically injected errors
 > across four dangerous classes (polarity, quantity, unit, entity), plus untouched and
-> correctly-negating controls and held-out canaries. We evaluate LLM judges (3 models, 5 runs
-> each) and a fully deterministic baseline — a rule-based cross-lingual meaning kernel with
-> three-state triage (equivalent / divergent+class / cannot-verify) that never claims equivalence
-> on input it did not parse. **The finding is not that judges miss errors — every judge reaches
-> recall 1.0 on these mechanical injections and is highly self-consistent (unanimity ≈0.99 across
-> 5 runs). It is that they carry an irreducible false-positive rate (6–11%, bootstrap CI excludes
-> zero) and cannot certify a zero-risk operating point: their best zero-risk threshold is fitted
-> on the test labels and is unstable across dataset versions (one judge collapses from 0.19 to
-> 0.01). The kernel certifies FPR = 0 by construction and holds a stable ~45% zero-risk coverage
-> across three dataset versions.** An ablation shows both components are load-bearing (removing
-> the graph collapses polarity recall to 0.05; removing the residual guards raises FPR from 0 to
-> 0.18). We add a **coverage-ceiling analysis** separating parser gaps from structural corpus
-> limits (EMEA medical 75.8% vs KDE4 software \[X\]% on the same language pair). Benchmark, kernel,
-> and evaluation harness are released.
+> correctly-negating controls and held-out canaries. We evaluate LLM judges (5 models across
+> two families — OpenAI and Anthropic — 5 runs each) and a fully deterministic baseline — a
+> rule-based cross-lingual meaning kernel with three-state triage (equivalent / divergent+class /
+> cannot-verify) that never claims equivalence on input it did not parse. **The finding is not
+> that judges miss errors — every judge reaches recall 1.0 on these mechanical injections and is
+> highly self-consistent (5-run unanimity 0.98–1.00). It is that they carry an irreducible
+> false-positive rate — 6–14%, and the bootstrap CI excludes zero for every one of the five models
+> in both families (Anthropic judges are no better: FPR up to 0.14) — and cannot certify a
+> zero-risk operating point: their best zero-risk threshold is fitted on the test labels and is
+> unstable across dataset versions (one judge collapses from 0.19 to 0.01). The kernel certifies
+> FPR = 0 by construction and holds a stable ~45% zero-risk coverage across three dataset
+> versions.** An ablation shows both components are load-bearing (removing the graph collapses
+> polarity recall to 0.05; removing the residual guards raises FPR from 0 to 0.18). We add a
+> **coverage-ceiling analysis** separating parser gaps from structural corpus limits (EMEA medical
+> 75.8% vs KDE4 software 28.6% on the same language pair — domain is the only variable). Benchmark,
+> kernel, and evaluation harness are released.
 
 ## 1. Introduction
 
@@ -49,17 +51,18 @@ Translation QA*
 - Contributions (список, обновлён по W5):
   1. NUN-Bench: датасет + протокол (реальные медицинские пары, детерминированные инъекции
      4 классов, контроли + канарейки; всё воспроизводимо из метаданных).
-  2. Систематическая оценка LLM-судей с **bootstrap-CI**: чистый разрыв по FPR (кернел
-     0.000 [0,0] vs LLM 6–11%, CI исключает ноль), при этом судьи стабильны (consist@5 ≈ 0.99) —
-     мы ОПРОВЕРГАЕМ ходовое «LLM непоследовательны» на этой задаче и переносим аргумент на
-     сертифицируемость.
+  2. Систематическая оценка LLM-судей с **bootstrap-CI** на **5 моделях из 2 семейств** (OpenAI,
+     Anthropic): чистый МЕЖСЕМЕЙНЫЙ разрыв по FPR (кернел 0.000 [0,0] vs LLM 6–14%, CI каждой из
+     5 моделей исключает ноль; Anthropic не лучше — FPR до 0.14), при этом судьи стабильны
+     (consist@5 0.98–1.00) — мы ОПРОВЕРГАЕМ ходовое «LLM непоследовательны» на этой задаче и
+     переносим аргумент на сертифицируемость.
   3. Детерминированный базлайн с триажем и «никогда equivalent на неразобранном»; recall 1.0 на
      разбираемом подмножестве, FPR 0.000, **сертифицированная и устойчивая по 3 версиям датасета
      точка нулевого риска (0.448/0.455/0.452)** против подогнанных и неустойчивых точек LLM.
   4. **Абляция** (граф + остаточные гарды — оба несущие): без графа polarity-recall 1.0→0.048,
      без гардов FPR 0→0.18.
   5. Coverage-ceiling методология: потолок как свойство корпуса, измеренный на ОДНОЙ языковой
-     паре (домен — единственная переменная): EMEA-медицина 75.8% vs KDE4-софт \[X\]%.
+     паре (домен — единственная переменная): EMEA-медицина 75.8% vs KDE4-софт 28.6% (в 2.6× выше).
 
 ## 2. Related Work
 
