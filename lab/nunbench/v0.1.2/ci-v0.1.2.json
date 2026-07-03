@@ -1,4 +1,62 @@
 {
+  "claude-haiku-4-5 [nunbench-judge-p1]": {
+    "answered": {
+      "point": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+    },
+    "recall": {
+      "point": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+    },
+    "fpr": {
+      "point": 0.1406,
+      "lo": 0.1028,
+      "hi": 0.1776
+    },
+    "precision": {
+      "point": 0.8798,
+      "lo": 0.8466,
+      "hi": 0.9118
+    },
+    "zero_risk_coverage": {
+      "point": 0.3906,
+      "lo": 0.3575,
+      "hi": 0.6961
+    },
+    "_n_items": 635,
+    "_n_boot": 2000
+  },
+  "claude-sonnet-5 [nunbench-judge-p1]": {
+    "answered": {
+      "point": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+    },
+    "recall": {
+      "point": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+    },
+    "fpr": {
+      "point": 0.1214,
+      "lo": 0.085,
+      "hi": 0.1559
+    },
+    "precision": {
+      "point": 0.8944,
+      "lo": 0.8618,
+      "hi": 0.9261
+    },
+    "zero_risk_coverage": {
+      "point": 0.0252,
+      "lo": 0.0157,
+      "hi": 0.9339
+    },
+    "_n_items": 635,
+    "_n_boot": 2000
+  },
   "gpt-4.1 [nunbench-judge-p1]": {
     "answered": {
       "point": 1.0,
