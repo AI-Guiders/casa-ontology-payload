@@ -8,6 +8,19 @@
 **Детализация до задач:** [WORKPLAN-nunbench-detailed.md](WORKPLAN-nunbench-detailed.md)
 (потоки W1–W8, критерии приёмки, зависимости, Definition of Done).
 
+## CFP WMT26 — требования (сверено с сайтом 2026-07-03)
+
+- **Дедлайн:** 7 августа 2026 (совпадает с планом).
+- **Research-статьи: 6–10 страниц** (limitations/references/appendix НЕ считаются) — места хватает.
+- **Анонимизация ОБЯЗАТЕЛЬНА** для research-статей (double-blind) → анонимный снапшот кода
+  (anonymous.4open.science) + данные без авторства в манифесте. System-статьи не анонимны — не наш трек.
+- **Формат:** EMNLP guidelines через ACL style files.
+- **ARR опционален** (commitment-дедлайн 28 авг для ARR-отрецензированных — не наш путь).
+- Явной политики по анонимному релизу кода/данных нет → следуем стандартной практике (anon-репо).
+- **Чеклист к подаче:** [ ] ACL-шаблон; [ ] ≤10 стр; [ ] аноним. снапшот кода;
+  [ ] Limitations; [ ] Ethics/Data statement ([DATASHEET-nunbench.md](DATASHEET-nunbench.md));
+  [ ] held-out НЕ в публичном релизе до notification.
+
 ## Даты WMT26 (зафиксированы)
 
 | Событие | Дата |

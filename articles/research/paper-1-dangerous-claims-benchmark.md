@@ -11,21 +11,26 @@ Translation QA*
 
 ---
 
-## Abstract (черновик, ~150 слов — переписать числами после экспериментов)
+## Abstract (черновик v2 — числами W5; финально ужать до ~150 слов)
 
 > In high-stakes translation — medical labels, dosage instructions, regulatory text — the most
 > dangerous errors are structurally small: a dropped negation, a swapped digit, a confused unit
-> (mg↔ml). We present **NUN-Bench**, a benchmark of real EN↔ES medical-label sentence pairs
-> (EMEA/EMA product information) with systematically injected errors across three dangerous
-> classes (negation, quantity, unit), plus correct and correctly-negating control pairs; a
-> curated Russian section demonstrates that the underlying meaning representation is
-> language-independent across scripts. We evaluate LLM judges (N models, M runs each)
-> on error detection, false-positive rate, and **verdict stability across runs**, and compare
-> against a fully deterministic baseline: a rule-based cross-lingual meaning kernel with
+> (mg↔ml), a swapped drug name. We present **NUN-Bench**, a benchmark of real EN↔ES medical-label
+> sentence pairs (OPUS EMEA / EMA product information) with deterministically injected errors
+> across four dangerous classes (polarity, quantity, unit, entity), plus untouched and
+> correctly-negating controls and held-out canaries. We evaluate LLM judges (3 models, 5 runs
+> each) and a fully deterministic baseline — a rule-based cross-lingual meaning kernel with
 > three-state triage (equivalent / divergent+class / cannot-verify) that never claims equivalence
-> on unparsed input. \[РЕЗУЛЬТАТЫ: 1–2 предложения с главными числами.\] We also introduce a
-> **coverage-ceiling analysis** that measures the maximum coverage attainable by *any* rule-based
-> parser on a corpus, separating parser gaps from structural corpus limits. Benchmark, kernel,
+> on input it did not parse. **The finding is not that judges miss errors — every judge reaches
+> recall 1.0 on these mechanical injections and is highly self-consistent (unanimity ≈0.99 across
+> 5 runs). It is that they carry an irreducible false-positive rate (6–11%, bootstrap CI excludes
+> zero) and cannot certify a zero-risk operating point: their best zero-risk threshold is fitted
+> on the test labels and is unstable across dataset versions (one judge collapses from 0.19 to
+> 0.01). The kernel certifies FPR = 0 by construction and holds a stable ~45% zero-risk coverage
+> across three dataset versions.** An ablation shows both components are load-bearing (removing
+> the graph collapses polarity recall to 0.05; removing the residual guards raises FPR from 0 to
+> 0.18). We add a **coverage-ceiling analysis** separating parser gaps from structural corpus
+> limits (EMEA medical 75.8% vs KDE4 software \[X\]% on the same language pair). Benchmark, kernel,
 > and evaluation harness are released.
 
 ## 1. Introduction
@@ -37,14 +42,24 @@ Translation QA*
   на всём подряд).
 - Вопрос статьи (falsifiable): **насколько надёжны LLM-судьи именно на опасных классах, и что
   даёт/не даёт детерминированная альтернатива с семантикой воздержания?**
-- Contributions (список, 4 пункта):
-  1. NUN-Bench: датасет + протокол (реальные медицинские пары, инъекции 3 классов, контроли).
-  2. Систематическая оценка LLM-судей, включая **стабильность вердикта между прогонами** —
-     метрика, которую обычно не меряют.
-  3. Детерминированный базлайн с триажем и «никогда equivalent на неразобранном»; recall на
-     опасных классах на разбираемом подмножестве \[число\].
-  4. Coverage-ceiling методология: потолок покрытия как свойство корпуса
-     (KDE4: ~17–20%, медицинские этикетки: \[число — фаза 0\]).
+  ⚠️ ВАЖНО — сместить акцент по итогам W5: гипотеза «LLM непоследовательны» НЕ подтвердилась
+  (consist@5 ≈ 0.99). Реальный тезис: судьи стабильны и ловят все инъекции, но (а) несут
+  неустранимый FPR и (б) НЕ дают сертифицированной точки нулевого риска — их порог подогнан
+  на тесте и неустойчив. Кернел даёт FPR=0 по построению и устойчивую точку.
+- Contributions (список, обновлён по W5):
+  1. NUN-Bench: датасет + протокол (реальные медицинские пары, детерминированные инъекции
+     4 классов, контроли + канарейки; всё воспроизводимо из метаданных).
+  2. Систематическая оценка LLM-судей с **bootstrap-CI**: чистый разрыв по FPR (кернел
+     0.000 [0,0] vs LLM 6–11%, CI исключает ноль), при этом судьи стабильны (consist@5 ≈ 0.99) —
+     мы ОПРОВЕРГАЕМ ходовое «LLM непоследовательны» на этой задаче и переносим аргумент на
+     сертифицируемость.
+  3. Детерминированный базлайн с триажем и «никогда equivalent на неразобранном»; recall 1.0 на
+     разбираемом подмножестве, FPR 0.000, **сертифицированная и устойчивая по 3 версиям датасета
+     точка нулевого риска (0.448/0.455/0.452)** против подогнанных и неустойчивых точек LLM.
+  4. **Абляция** (граф + остаточные гарды — оба несущие): без графа polarity-recall 1.0→0.048,
+     без гардов FPR 0→0.18.
+  5. Coverage-ceiling методология: потолок как свойство корпуса, измеренный на ОДНОЙ языковой
+     паре (домен — единственная переменная): EMEA-медицина 75.8% vs KDE4-софт \[X\]%.
 
 ## 2. Related Work
 
