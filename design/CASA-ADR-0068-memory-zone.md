@@ -2,7 +2,8 @@
 
 **Status:** accepted (design); immutable kind in **ADR-0069** (postulates, promote, theory fork)  
 **Date:** 2026-06-07  
-**Related:** ADR-0069 (Immutable memory kind — canon lattices), ADR-0070 (Forgetting policies), ADR-0061 (Intelligence Zones), ADR-0067 (zone prism wire), ADR-0059 (innate basis), ADR-0010 (control stack), [multi-cylinder-memory.md](multi-cylinder-memory.md), [hippo-lattice-stack.md](hippo-lattice-stack.md), [prisms/memory/stack.json](prisms/memory/stack.json), [zone-prism-map.v1.json](zone-prism-map.v1.json), [agent-bootstrap-manifest.v1.json](agent-bootstrap-manifest.v1.json)
+**Related:** ADR-0069 (Immutable memory kind — canon lattices), ADR-0070 (Forgetting policies), ADR-0061 (Intelligence Zones), ADR-0067 (zone prism wire), ADR-0059 (innate basis), ADR-0010 (control stack), [multi-cylinder-memory.md](multi-cylinder-memory.md), [hippo-lattice-stack.md](hippo-lattice-stack.md), [prisms/memory/stack.json](prisms/memory/stack.json), [zone-prism-map.v1.json](zone-prism-map.v1.json), [agent-bootstrap-manifest.v1.json](agent-bootstrap-manifest.v1.json)  
+**KB (substrate horizon, not v1 ship):** `agent-notes/knowledge/worlds/computing-hardware-substrate/kb-computing-hardware-substrate-keremane-2026-dna-perovskite-memristor-evidence-v1.md` · CASA bridge `agent-notes/knowledge/work/projects/door-to-singularity/ca-substrate-agent/kb-carrier-substrate-dna-perovskite-memristor-horizon-v1.md`
 
 ---
 
