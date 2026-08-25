@@ -1,0 +1,201 @@
+{
+  "probe": "wake_b004",
+  "window": [
+    22.0,
+    28.0
+  ],
+  "persist": false,
+  "scene_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по",
+  "summary": {
+    "scene_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по",
+    "stream_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по",
+    "tick_count": 13,
+    "interval_sec": 0.5,
+    "mean_visual_delta": 0.1372,
+    "max_visual_delta": 1.0,
+    "motion_ticks_ge_0_08": 3,
+    "life_tick_count": 13,
+    "life_surprise_ticks": 13,
+    "field_version": 203051,
+    "sleep_ran": false,
+    "hippo_index": {
+      "active_episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "active_moment_id": null,
+      "active_beat_id": null,
+      "moment_buffer_count": 0,
+      "journal_len": 20,
+      "journal_events": {
+        "episode_opened": 1,
+        "moment_opened": 3,
+        "wake_tick": 13,
+        "moment_closed": 3
+      },
+      "moment_buffer_modalities": {}
+    }
+  },
+  "checks": {
+    "P1_one_episode_id": {
+      "pass": true,
+      "episode_ids": [
+        "epi-lalabook-emotions-ukt4kquicra-00-0001"
+      ],
+      "tick_count": 13
+    },
+    "P2_one_moment_id_on_b004": {
+      "pass": false,
+      "moment_ids": [
+        "mom-000001",
+        "mom-000002",
+        "mom-000003"
+      ],
+      "beat_ids_sample": [
+        "b003",
+        "b004",
+        "b004",
+        "b004",
+        "b004"
+      ],
+      "all_b004": false
+    },
+    "P3_av_coactive_in_buffer": {
+      "pass": false,
+      "coactive_tick_count": 3,
+      "av_coactive": false
+    },
+    "P4_journal_chain": {
+      "pass": true,
+      "journal_events": {
+        "episode_opened": 1,
+        "moment_opened": 3,
+        "wake_tick": 13,
+        "moment_closed": 3
+      }
+    },
+    "P5_no_oracle": {
+      "pass": true,
+      "note": "beat.note not read by ingest/replay path (bind profile, no words[])"
+    },
+    "all_pass": false
+  },
+  "hippo_index": {
+    "active_episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+    "active_moment_id": null,
+    "active_beat_id": null,
+    "moment_buffer_count": 0,
+    "journal_len": 20,
+    "journal_events": {
+      "episode_opened": 1,
+      "moment_opened": 3,
+      "wake_tick": 13,
+      "moment_closed": 3
+    },
+    "moment_buffer_modalities": {}
+  },
+  "ticks_brief": [
+    {
+      "seq": 0,
+      "t_rel": 22.0,
+      "beat_id": "b003",
+      "moment_id": "mom-000001",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": true
+    },
+    {
+      "seq": 1,
+      "t_rel": 22.5,
+      "beat_id": "b004",
+      "moment_id": "mom-000002",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": false
+    },
+    {
+      "seq": 2,
+      "t_rel": 23.0,
+      "beat_id": "b004",
+      "moment_id": "mom-000002",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": false
+    },
+    {
+      "seq": 3,
+      "t_rel": 23.5,
+      "beat_id": "b004",
+      "moment_id": "mom-000002",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": false
+    },
+    {
+      "seq": 4,
+      "t_rel": 24.0,
+      "beat_id": "b004",
+      "moment_id": "mom-000002",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": false
+    },
+    {
+      "seq": 5,
+      "t_rel": 24.5,
+      "beat_id": "b004",
+      "moment_id": "mom-000002",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": false
+    },
+    {
+      "seq": 6,
+      "t_rel": 25.0,
+      "beat_id": "b004",
+      "moment_id": "mom-000002",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": false
+    },
+    {
+      "seq": 7,
+      "t_rel": 25.5,
+      "beat_id": "b004",
+      "moment_id": "mom-000002",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": true
+    },
+    {
+      "seq": 8,
+      "t_rel": 26.0,
+      "beat_id": "b004",
+      "moment_id": "mom-000002",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": false
+    },
+    {
+      "seq": 9,
+      "t_rel": 26.5,
+      "beat_id": "b004",
+      "moment_id": "mom-000002",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": false
+    },
+    {
+      "seq": 10,
+      "t_rel": 27.0,
+      "beat_id": "b004",
+      "moment_id": "mom-000002",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": false
+    },
+    {
+      "seq": 11,
+      "t_rel": 27.5,
+      "beat_id": "b004",
+      "moment_id": "mom-000002",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": false
+    },
+    {
+      "seq": 12,
+      "t_rel": 28.0,
+      "beat_id": "b005",
+      "moment_id": "mom-000003",
+      "episode_id": "epi-lalabook-emotions-ukt4kquicra-00-0001",
+      "coactive": true
+    }
+  ],
+  "womb_report": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\tools\\_hippo_probe_b004_womb.json"
+}

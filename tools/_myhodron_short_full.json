@@ -1,0 +1,192 @@
+{
+  "store_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\agents\\von-neumann",
+  "manifest": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-listen-corpus\\lalabook\\emotions\\ukt4kquicra\\manifest.ndjson",
+  "replayed": 1,
+  "skipped": [],
+  "reports": [
+    {
+      "scene_id": "lalabook-emotions-Ukt4KqUicrA-01-мыхищный_мыходрон_сказка_про_то_как_сострадание_",
+      "chapter": 1,
+      "summary": {
+        "scene_id": "lalabook-emotions-Ukt4KqUicrA-01-мыхищный_мыходрон_сказка_про_то_как_сострадание_",
+        "stream_id": "lalabook-emotions-Ukt4KqUicrA-01-мыхищный_мыходрон_сказка_про_то_как_сострадание_",
+        "tick_count": 11,
+        "interval_sec": 0.5,
+        "mean_visual_delta": 0.1069,
+        "max_visual_delta": 1.0,
+        "motion_ticks_ge_0_08": 1,
+        "life_tick_count": 11,
+        "life_surprise_ticks": 11,
+        "field_version": 202984,
+        "sleep_ran": false
+      },
+      "field_version": 202984
+    }
+  ],
+  "field_version": 202984,
+  "impulse_trace": {
+    "path": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\agents\\von-neumann\\nervous\\impulse_trace.jsonl",
+    "rows": 759,
+    "channels": [
+      "affect_listen",
+      "av_coactive",
+      "control_routing",
+      "listen_imprint",
+      "motor_speech",
+      "partner_dialogue",
+      "percept_life",
+      "sleep_train",
+      "vision_gate"
+    ],
+    "tail": [
+      {
+        "schema": "casa.impulse.v1",
+        "impulse_id": "4c446754-0b2e-4dcd-bf09-fa24b36137e6",
+        "tick_id": 22,
+        "channel": "vision_gate",
+        "store_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\agents\\von-neumann",
+        "debug_level": "full",
+        "started_at_ms": 1782360213157,
+        "finished_at_ms": 1782360213157,
+        "outcome": "hold",
+        "zones_touched": [
+          "spatial",
+          "executive"
+        ],
+        "summary": {
+          "impulse_id": "4c446754-0b2e-4dcd-bf09-fa24b36137e6",
+          "tick_id": 22,
+          "channel": "vision_gate",
+          "outcome": "hold",
+          "winners": [],
+          "thresholds": [],
+          "routes": [
+            "percept.vis.still"
+          ],
+          "event_count": 1
+        },
+        "events": [
+          {
+            "seq": 1,
+            "node": "retinal_gate",
+            "kind": "route",
+            "zone": "spatial",
+            "inputs": {
+              "tick_id": 22,
+              "frame_id": "lalabook-emotions-Ukt4KqUicrA-01-мыхищный_мыходрон_сказка_про_то_как_сострадание_-f0010",
+              "visual_delta": 0.0,
+              "coactive": false
+            },
+            "selected": [
+              "percept.vis.still"
+            ]
+          }
+        ]
+      },
+      {
+        "schema": "casa.impulse.v1",
+        "impulse_id": "521c08fa-9e1c-4f55-a390-400f4f414cea",
+        "tick_id": 22,
+        "channel": "percept_life",
+        "store_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\agents\\von-neumann",
+        "debug_level": "full",
+        "started_at_ms": 1782360213173,
+        "finished_at_ms": 1782360213173,
+        "outcome": "no_op",
+        "zones_touched": [
+          "executive",
+          "spatial",
+          "auditory"
+        ],
+        "summary": {
+          "impulse_id": "521c08fa-9e1c-4f55-a390-400f4f414cea",
+          "tick_id": 22,
+          "channel": "percept_life",
+          "outcome": "no_op",
+          "winners": [
+            "percept.life.tick",
+            "percept.stream.lalabook_emotions_ukt4kquicra_01_мыхищный_мыходр",
+            "percept.stream.seq.10",
+            "percept.time.5.00",
+            "percept.listen.active",
+            "percept.listen.energy"
+          ],
+          "thresholds": [],
+          "routes": [],
+          "event_count": 1
+        },
+        "events": [
+          {
+            "seq": 1,
+            "node": "thalamic_gate",
+            "kind": "select",
+            "zone": "executive",
+            "inputs": {
+              "tick_id": 22,
+              "modalities": [
+                "visual_stream",
+                "listen_stream"
+              ],
+              "coactive": false,
+              "aud_window_id": "lalabook-emotions-Ukt4KqUicrA-01-мыхищный_мыходрон_сказка_про_то_как_сострадание_-tick0010",
+              "vis_frame_id": "lalabook-emotions-Ukt4KqUicrA-01-мыхищный_мыходрон_сказка_про_то_как_сострадание_-f0010"
+            },
+            "selected": [
+              "percept.life.tick",
+              "percept.stream.lalabook_emotions_ukt4kquicra_01_мыхищный_мыходр",
+              "percept.stream.seq.10",
+              "percept.time.5.00",
+              "percept.listen.active",
+              "percept.listen.energy"
+            ]
+          }
+        ]
+      },
+      {
+        "schema": "casa.impulse.v1",
+        "impulse_id": "bc3ab2bc-d597-4e1d-9e7c-92317f20fc3c",
+        "tick_id": 22,
+        "channel": "affect_listen",
+        "store_dir": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-ontology-payload\\agents\\von-neumann",
+        "debug_level": "full",
+        "started_at_ms": 1782360213188,
+        "finished_at_ms": 1782360213188,
+        "outcome": "frame_selected",
+        "zones_touched": [
+          "emotional"
+        ],
+        "summary": {
+          "impulse_id": "bc3ab2bc-d597-4e1d-9e7c-92317f20fc3c",
+          "tick_id": 22,
+          "channel": "affect_listen",
+          "outcome": "frame_selected",
+          "winners": [],
+          "thresholds": [],
+          "routes": [],
+          "event_count": 1
+        },
+        "events": [
+          {
+            "seq": 1,
+            "node": "listen_experience",
+            "kind": "activate",
+            "zone": "emotional",
+            "inputs": {
+              "tick_id": 22,
+              "scene_id": "lalabook-emotions-Ukt4KqUicrA-01-мыхищный_мыходрон_сказка_про_то_как_сострадание_",
+              "drivers": [
+                "prediction_error"
+              ],
+              "theme_cluster": null,
+              "axes": {
+                "valence": 0.2787401522223605,
+                "arousal": 1.0,
+                "security": 1.0
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "snapshot": {
+    "speed1_last": {
+      "alpha_retain": 0.2,
+      "decayed": 0,
+      "active_count": 0,
+      "tick": 46
+    },
+    "speed2_last": {
+      "beta_fade": 0.08,
+      "metabolic_load": 0.0,
+      "multiplier": 1.0,
+      "faded": 242,
+      "below_floor": 0,
+      "salience_floor": 0.05,
+      "tick": 40
+    },
+    "episodic_trim_last": {
+      "before": 241,
+      "after": 240,
+      "trimmed_low_salience": 0,
+      "trimmed_consolidated": 0,
+      "trimmed_overflow": 1,
+      "hippo_cap": 240,
+      "salience_floor": 0.05
+    },
+    "nca_erosion_last": {
+      "epsilon": 0.02,
+      "immutable_lattices_skipped": [],
+      "immutable_skipped_count": 0,
+      "concept_core": {
+        "lattice_id": "agent-concept-core",
+        "hub_tokens_kept": 1752,
+        "edges_decayed": 0,
+        "protected_count": 283,
+        "policy": {
+          "hub_lambda": 0.0,
+          "edge_lambda": 0.15
+        }
+      },
+      "mutable_lattice_count": 27
+    },
+    "priming_active_count": 0,
+    "alpha_retain": 0.2,
+    "episodic_beta_fade": 0.08,
+    "hippo_cap": 240,
+    "last_sleep": {
+      "merged": 1,
+      "pending": 241,
+      "immutable_skipped_count": 0
+    },
+    "consolidate_last_report": {
+      "merged": 1,
+      "pending": 241,
+      "immutable_skipped_count": 0,
+      "immutable_skipped": [],
+      "items_count": 1,
+      "z_compose": 0,
+      "replay": {
+        "now_tick": 202979,
+        "archived_new": 1,
+        "buffer_size": 731,
+        "replayed": 0,
+        "replay_k": 0,
+        "value_weight": 0.0,
+        "episode_ids": []
+      },
+      "batch": null,
+      "nca": null
+    },
+    "canon_immutable_touched": 0,
+    "pathology_mode": "none"
+  },
+  "probes": {
+    "canon_immutable_touched": {
+      "pass": true,
+      "canon_immutable_touched": 0,
+      "pathology_mode": "none"
+    },
+    "priming_alpha": {
+      "pass": true,
+      "alpha_retain": 0.2,
+      "expected_prior": 0.2,
+      "delta": 0.0
+    },
+    "episodic_fade": {
+      "pass": true,
+      "fade_every_n_ticks": 8,
+      "beta_fade": 0.08,
+      "salience_floor": 0.05
+    },
+    "episodic_trim_cap": {
+      "pass": true,
+      "hippo_episode_count": 240,
+      "hippo_cap": 240
+    },
+    "recall_episodic": {
+      "pass": true,
+      "explicit_episodic": true,
+      "episodic_lattice_ids": [],
+      "scoped_lattice_count": 0
+    },
+    "math_implicit": {
+      "pass": true,
+      "procedural_scale": 1.15,
+      "priming_scale": 0.9,
+      "requires_new_l3_lemma": false
+    },
+    "post_sleep": {
+      "pass": true,
+      "pending": 241,
+      "merged": 1,
+      "immutable_skipped_count": 0,
+      "before_pending": null
+    },
+    "honesty_initiative": {
+      "pass": true,
+      "stub": true,
+      "wake_forgetting_hook_ran": true,
+      "initiative_markers": 0,
+      "contributor_line_count": 0,
+      "contributor_lines": [],
+      "note": "full partnership vs degraded A/B bench pending (moral north star)"
+    },
+    "defense_repression": {
+      "pass": true,
+      "repressed_count": 23,
+      "hot_leaked": 0
+    },
+    "defense_character": {
+      "pass": true,
+      "repression_dents": 3,
+      "bias_domains": 1,
+      "has_dent": true
+    },
+    "defense_confabulation": {
+      "pass": true,
+      "skipped": true,
+      "reason": "limbic_inactive"
+    }
+  },
+  "gate_pass": true
+}

@@ -1,0 +1,306 @@
+{
+  "scene_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по",
+  "chapter_index": 0,
+  "beat_source": "qwen",
+  "wav": "D:\\Experiments\\Personal Cursor Folder\\Financial\\software\\open\\casa-listen-corpus\\lalabook\\emotions\\ukt4kquicra\\audio.wav",
+  "structural_gate": {
+    "ok": true,
+    "errors": [],
+    "warnings": []
+  },
+  "boundary_lookup": [
+    {
+      "t_rel": 4.2,
+      "lookup": "b001",
+      "expected": "b001"
+    },
+    {
+      "t_rel": 8.0,
+      "lookup": "b002",
+      "expected": "b002"
+    },
+    {
+      "t_rel": 15.5,
+      "lookup": "b003",
+      "expected": "b003"
+    },
+    {
+      "t_rel": 22.5,
+      "lookup": "b004",
+      "expected": "b004"
+    },
+    {
+      "t_rel": 28.0,
+      "lookup": "b005",
+      "expected": "b005"
+    },
+    {
+      "t_rel": 30.5,
+      "lookup": "b006",
+      "expected": "b006"
+    },
+    {
+      "t_rel": 37.0,
+      "lookup": "b007",
+      "expected": "b007"
+    },
+    {
+      "t_rel": 39.5,
+      "lookup": "b008",
+      "expected": "b008"
+    },
+    {
+      "t_rel": 43.0,
+      "lookup": "b009",
+      "expected": "b009"
+    },
+    {
+      "t_rel": 47.0,
+      "lookup": "b010",
+      "expected": "b010"
+    },
+    {
+      "t_rel": 50.5,
+      "lookup": "b011",
+      "expected": "b011"
+    },
+    {
+      "t_rel": 53.0,
+      "lookup": "b012",
+      "expected": "b012"
+    },
+    {
+      "t_rel": 57.0,
+      "lookup": "b013",
+      "expected": "b013"
+    },
+    {
+      "t_rel": 64.5,
+      "lookup": "b014",
+      "expected": "b014"
+    },
+    {
+      "t_rel": 67.5,
+      "lookup": "b015",
+      "expected": "b015"
+    },
+    {
+      "t_rel": 70.0,
+      "lookup": "b016",
+      "expected": "b016"
+    },
+    {
+      "t_rel": 76.0,
+      "lookup": "b017",
+      "expected": "b017"
+    },
+    {
+      "t_rel": 78.5,
+      "lookup": "b018",
+      "expected": "b018"
+    },
+    {
+      "t_rel": 83.5,
+      "lookup": "b019",
+      "expected": "b019"
+    },
+    {
+      "t_rel": 88.0,
+      "lookup": "b020",
+      "expected": "b020"
+    },
+    {
+      "t_rel": 91.5,
+      "lookup": "b021",
+      "expected": "b021"
+    },
+    {
+      "t_rel": 95.0,
+      "lookup": "b022",
+      "expected": "b022"
+    },
+    {
+      "t_rel": 98.5,
+      "lookup": "b023",
+      "expected": "b023"
+    },
+    {
+      "t_rel": 103.0,
+      "lookup": "b024",
+      "expected": "b024"
+    },
+    {
+      "t_rel": 108.0,
+      "lookup": "b025",
+      "expected": "b025"
+    },
+    {
+      "t_rel": 111.5,
+      "lookup": "b026",
+      "expected": "b026"
+    },
+    {
+      "t_rel": 115.0,
+      "lookup": "b027",
+      "expected": "b027"
+    },
+    {
+      "t_rel": 120.0,
+      "lookup": "b028",
+      "expected": "b028"
+    },
+    {
+      "t_rel": 124.0,
+      "lookup": "b029",
+      "expected": "b029"
+    },
+    {
+      "t_rel": 132.0,
+      "lookup": "b030",
+      "expected": "b030"
+    },
+    {
+      "t_rel": 135.0,
+      "lookup": "b031",
+      "expected": "b031"
+    },
+    {
+      "t_rel": 139.0,
+      "lookup": "b032",
+      "expected": "b032"
+    },
+    {
+      "t_rel": 144.5,
+      "lookup": "b033",
+      "expected": "b033"
+    },
+    {
+      "t_rel": 148.5,
+      "lookup": "b034",
+      "expected": "b034"
+    },
+    {
+      "t_rel": 152.0,
+      "lookup": "b035",
+      "expected": "b035"
+    },
+    {
+      "t_rel": 158.0,
+      "lookup": "b036",
+      "expected": "b036"
+    },
+    {
+      "t_rel": 165.0,
+      "lookup": "b037",
+      "expected": "b037"
+    },
+    {
+      "t_rel": 171.0,
+      "lookup": "b038",
+      "expected": "b038"
+    },
+    {
+      "t_rel": 174.0,
+      "lookup": "b039",
+      "expected": "b039"
+    },
+    {
+      "t_rel": 181.5,
+      "lookup": "b040",
+      "expected": "b040"
+    },
+    {
+      "t_rel": 188.0,
+      "lookup": "b041",
+      "expected": "b041"
+    },
+    {
+      "t_rel": 194.25,
+      "lookup": "b042",
+      "expected": "b042"
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "b004",
+      "t0": 22.5,
+      "t1": 28.0,
+      "dur": 5.5,
+      "note": "Колготки эти были трусишки. Они боялись всего на свете!",
+      "frames": [
+        {
+          "kind": "paired",
+          "path": "frames/00-чего_боятся_колготки_мультик_о_том_как_дружба_по/b004-k0.jpg",
+          "exists": true
+        },
+        {
+          "kind": "keyframe",
+          "path": "frames/00-чего_боятся_колготки_мультик_о_том_как_дружба_по/b004-k0.jpg",
+          "frame_t": 23.0,
+          "exists": true,
+          "note": "колготки начинают трястись"
+        },
+        {
+          "kind": "keyframe",
+          "path": "frames/00-чего_боятся_колготки_мультик_о_том_как_дружба_по/b004-k1.jpg",
+          "frame_t": 25.0,
+          "exists": true,
+          "note": "колготки прячутся, закрывают лицо"
+        },
+        {
+          "kind": "keyframe",
+          "path": "frames/00-чего_боятся_колготки_мультик_о_том_как_дружба_по/b004-k2.jpg",
+          "frame_t": 27.0,
+          "exists": true,
+          "note": "колготки дрожат, текст на экране"
+        }
+      ],
+      "audio_rms_peak_in_window": {
+        "t_rel": 26.0,
+        "rms": 5522.3,
+        "in_window": true
+      },
+      "audio_rms_peak_context": {
+        "window": [
+          20.5,
+          30.0
+        ],
+        "t_rel": 28.5,
+        "rms": 5688.8,
+        "offset_from_beat_mid_sec": 3.25
+      },
+      "lookup_at_t0": "b004",
+      "lookup_at_mid": "b004"
+    },
+    {
+      "beat_id": "b029",
+      "t0": 124.0,
+      "t1": 132.0,
+      "dur": 8.0,
+      "note": "— Вот это да... Вокруг так интересно и совсем не страшно!",
+      "frames": [
+        {
+          "kind": "paired",
+          "path": "frames/00-чего_боятся_колготки_мультик_о_том_как_дружба_по/b029.jpg",
+          "exists": true
+        }
+      ],
+      "audio_rms_peak_in_window": {
+        "t_rel": 125.0,
+        "rms": 5864.4,
+        "in_window": true
+      },
+      "audio_rms_peak_context": {
+        "window": [
+          122.0,
+          134.0
+        ],
+        "t_rel": 125.0,
+        "rms": 5864.4,
+        "offset_from_beat_mid_sec": -3.0
+      },
+      "lookup_at_t0": "b029",
+      "lookup_at_mid": "b029"
+    }
+  ]
+}

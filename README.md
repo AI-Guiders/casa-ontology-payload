@@ -68,5 +68,4 @@ python -m casa.cli run_t9_demo_cycle --train-nca --device cuda
 
 ## License
 
-- **Code:** [MIT](LICENSE) (Copyright AI-Guiders).
-- **Data:** not shipped in git. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) and run `python scripts/download_corpora.py` after clone.
+Software: [MIT](LICENSE) ([canonical text](https://github.com/AI-Guiders/licensing/blob/main/software/MIT.txt)) · Ethical use: [policy](https://github.com/AI-Guiders/licensing/blob/main/docs/ethical-use.md)

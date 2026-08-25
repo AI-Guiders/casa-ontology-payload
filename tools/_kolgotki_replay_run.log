@@ -1,0 +1,33 @@
+Traceback (most recent call last):
+  File "D:\Experiments\PersonalCursorFolder\Financial\software\open\casa-ontology-payload\tools\listen_replay_scenes.py", line 174, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "D:\Experiments\PersonalCursorFolder\Financial\software\open\casa-ontology-payload\tools\listen_replay_scenes.py", line 157, in main
+    out = replay_listen_manifest(
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Experiments\PersonalCursorFolder\Financial\software\open\casa-ontology-payload\tools\listen_replay_scenes.py", line 95, in replay_listen_manifest
+    state, report = run_listen_womb_stream(
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Experiments\Personal Cursor Folder\Financial\software\open\casa-ontology-payload\casa\domain\listen_womb_tick.py", line 308, in run_listen_womb_stream
+    tick_report = agent_run_life_tick(runtime, partner_turn=False, tick_log=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Experiments\Personal Cursor Folder\Financial\software\open\casa-ontology-payload\casa\prisms\memory\agent_life.py", line 213, in run_life_tick
+    return _run_unified_life_tick(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Experiments\Personal Cursor Folder\Financial\software\open\casa-ontology-payload\casa\prisms\memory\agent_life.py", line 188, in _run_unified_life_tick
+    report, wm_next, state_out = run_learning_tick(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "D:\Experiments\Personal Cursor Folder\Financial\software\open\casa-ontology-payload\casa\prisms\tick\orchestrator.py", line 174, in run_learning_tick
+    load_agent_prism(store_dir, state)
+  File "D:\Experiments\Personal Cursor Folder\Financial\software\open\casa-ontology-payload\casa\prisms\memory\agent_prism.py", line 285, in load_agent_prism
+    lats[lid] = json.loads(path.read_text(encoding="utf-8"))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)

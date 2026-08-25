@@ -1,0 +1,19 @@
+{
+  "id": "ae650372370d",
+  "text": "А теперь про это?",
+  "kind": "chat",
+  "wire": "agent",
+  "tract_id": "partner_text",
+  "tract_kind": "symbolic",
+  "direction": "efferent",
+  "function_id": "body.tract.partner_text.efferent",
+  "status": "done",
+  "enqueued_at": "2026-06-16T14:25:05Z",
+  "completed_at": "2026-06-16T14:25:12Z",
+  "reply_text": "Пожалуйста.",
+  "tick": 22,
+  "report_hint": {
+    "sn_mode": "execute",
+    "wall_ms": 2583.31
+  }
+}

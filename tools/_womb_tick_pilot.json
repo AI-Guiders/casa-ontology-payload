@@ -1,0 +1,376 @@
+{
+  "summary": {
+    "scene_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по",
+    "stream_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по",
+    "tick_count": 18,
+    "interval_sec": 1.0,
+    "mean_visual_delta": 0.1124,
+    "max_visual_delta": 1.0,
+    "motion_ticks_ge_0_08": 4,
+    "field_version": 174786,
+    "sleep_ran": false
+  },
+  "ticks": [
+    {
+      "seq": 0,
+      "t_rel": 8.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0000",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0000",
+      "visual_delta": 1.0,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 100,
+      "audio_placements": {
+        "A0_spectrum": 45,
+        "A0_binaural": 11
+      },
+      "field_version": 174599,
+      "episode_id": "ep-7627977"
+    },
+    {
+      "seq": 1,
+      "t_rel": 9.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0001",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0001",
+      "visual_delta": 0.0769,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 276,
+        "A0_binaural": 65
+      },
+      "field_version": 174610,
+      "episode_id": "ep-7630579"
+    },
+    {
+      "seq": 2,
+      "t_rel": 10.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0002",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0002",
+      "visual_delta": 0.0385,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 283,
+        "A0_binaural": 65
+      },
+      "field_version": 174621,
+      "episode_id": "ep-7633493"
+    },
+    {
+      "seq": 3,
+      "t_rel": 11.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0003",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0003",
+      "visual_delta": 0.0,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 275,
+        "A0_binaural": 65
+      },
+      "field_version": 174632,
+      "episode_id": "ep-7636386"
+    },
+    {
+      "seq": 4,
+      "t_rel": 12.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0004",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0004",
+      "visual_delta": 0.0385,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 274,
+        "A0_binaural": 65
+      },
+      "field_version": 174643,
+      "episode_id": "ep-7639309"
+    },
+    {
+      "seq": 5,
+      "t_rel": 13.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0005",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0005",
+      "visual_delta": 0.0196,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 274,
+        "A0_binaural": 65
+      },
+      "field_version": 174654,
+      "episode_id": "ep-7642129"
+    },
+    {
+      "seq": 6,
+      "t_rel": 14.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0006",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0006",
+      "visual_delta": 0.0196,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 274,
+        "A0_binaural": 65
+      },
+      "field_version": 174665,
+      "episode_id": "ep-7645094"
+    },
+    {
+      "seq": 7,
+      "t_rel": 15.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0007",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0007",
+      "visual_delta": 0.04,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 273,
+        "A0_binaural": 65
+      },
+      "field_version": 174676,
+      "episode_id": "ep-7647998"
+    },
+    {
+      "seq": 8,
+      "t_rel": 16.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0008",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0008",
+      "visual_delta": 0.2857,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 268,
+        "A0_binaural": 65
+      },
+      "field_version": 174687,
+      "episode_id": "ep-7650891"
+    },
+    {
+      "seq": 9,
+      "t_rel": 17.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0009",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0009",
+      "visual_delta": 0.0588,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 271,
+        "A0_binaural": 65
+      },
+      "field_version": 174698,
+      "episode_id": "ep-7653831"
+    },
+    {
+      "seq": 10,
+      "t_rel": 18.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0010",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0010",
+      "visual_delta": 0.0196,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 274,
+        "A0_binaural": 65
+      },
+      "field_version": 174709,
+      "episode_id": "ep-7656655"
+    },
+    {
+      "seq": 11,
+      "t_rel": 19.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0011",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0011",
+      "visual_delta": 0.0196,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 266,
+        "A0_binaural": 65
+      },
+      "field_version": 174720,
+      "episode_id": "ep-7659388"
+    },
+    {
+      "seq": 12,
+      "t_rel": 20.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0012",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0012",
+      "visual_delta": 0.0392,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 272,
+        "A0_binaural": 65
+      },
+      "field_version": 174731,
+      "episode_id": "ep-7662215"
+    },
+    {
+      "seq": 13,
+      "t_rel": 21.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0013",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0013",
+      "visual_delta": 0.1154,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 277,
+        "A0_binaural": 65
+      },
+      "field_version": 174742,
+      "episode_id": "ep-7665053"
+    },
+    {
+      "seq": 14,
+      "t_rel": 22.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0014",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0014",
+      "visual_delta": 0.0962,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 265,
+        "A0_binaural": 65
+      },
+      "field_version": 174753,
+      "episode_id": "ep-7667761"
+    },
+    {
+      "seq": 15,
+      "t_rel": 23.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0015",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0015",
+      "visual_delta": 0.0392,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 278,
+        "A0_binaural": 65
+      },
+      "field_version": 174764,
+      "episode_id": "ep-7670473"
+    },
+    {
+      "seq": 16,
+      "t_rel": 24.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0016",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0016",
+      "visual_delta": 0.0769,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 277,
+        "A0_binaural": 65
+      },
+      "field_version": 174775,
+      "episode_id": "ep-7673213"
+    },
+    {
+      "seq": 17,
+      "t_rel": 25.0,
+      "frame_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-f0017",
+      "window_id": "lalabook-emotions-Ukt4KqUicrA-00-чего_боятся_колготки_мультик_о_том_как_дружба_по-tick0017",
+      "visual_delta": 0.0392,
+      "visual_placements": {
+        "V1_lum": 1024,
+        "V1_chrom_r": 1024,
+        "V1_chrom_g": 1024,
+        "V1_chrom_b": 1024
+      },
+      "audio_duration_ms": 1000,
+      "audio_placements": {
+        "A0_spectrum": 265,
+        "A0_binaural": 65
+      },
+      "field_version": 174786,
+      "episode_id": "ep-7675918"
+    }
+  ],
+  "sleep": null
+}
