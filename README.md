@@ -68,4 +68,4 @@ python -m casa.cli run_t9_demo_cycle --train-nca --device cuda
 
 ## License
 
-Software: [MIT](LICENSE) ([canonical text](https://github.com/AI-Guiders/licensing/blob/main/software/MIT.txt)) · Ethical use: [policy](https://github.com/AI-Guiders/licensing/blob/main/docs/ethical-use.md)
+Software: [MIT](LICENSE) ([OSI text](https://opensource.org/license/MIT)) · Ethical use: [declaration](https://github.com/AI-Guiders/licensing/blob/main/docs/ethical-use.md)
