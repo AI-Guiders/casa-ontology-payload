@@ -4,24 +4,24 @@
     "speed1_last": {
       "alpha_retain": 0.2,
       "decayed": 0,
-      "active_count": 0,
-      "tick": 46
+      "active_count": 8,
+      "tick": 321
     },
     "speed2_last": {
       "beta_fade": 0.08,
       "metabolic_load": 0.0,
       "multiplier": 1.0,
-      "faded": 242,
-      "below_floor": 0,
+      "faded": 97,
+      "below_floor": 14,
       "salience_floor": 0.05,
-      "tick": 40
+      "tick": 320
     },
     "episodic_trim_last": {
-      "before": 241,
-      "after": 240,
+      "before": 85,
+      "after": 85,
       "trimmed_low_salience": 0,
       "trimmed_consolidated": 0,
-      "trimmed_overflow": 1,
+      "trimmed_overflow": 0,
       "hippo_cap": 240,
       "salience_floor": 0.05
     },
@@ -41,26 +41,33 @@
       },
       "mutable_lattice_count": 27
     },
-    "priming_active_count": 0,
+    "priming_active_count": 8,
     "alpha_retain": 0.2,
     "episodic_beta_fade": 0.08,
     "hippo_cap": 240,
     "last_sleep": {
-      "merged": 1,
-      "pending": 241,
-      "immutable_skipped_count": 0
+      "merged": 0,
+      "pending": 85,
+      "immutable_skipped_count": 1
     },
     "consolidate_last_report": {
-      "merged": 1,
-      "pending": 241,
-      "immutable_skipped_count": 0,
-      "immutable_skipped": [],
-      "items_count": 1,
+      "merged": 0,
+      "pending": 85,
+      "immutable_skipped_count": 1,
+      "immutable_skipped": [
+        {
+          "episode_id": "ep-8898553",
+          "lattice_id": "alphabet-ru",
+          "concept_id": "aud.event.cartoon",
+          "reason": "immutable_sleep_gate"
+        }
+      ],
+      "items_count": 0,
       "z_compose": 0,
       "replay": {
-        "now_tick": 202979,
-        "archived_new": 1,
-        "buffer_size": 731,
+        "now_tick": 205704,
+        "archived_new": 0,
+        "buffer_size": 724,
         "replayed": 0,
         "replay_k": 0,
         "value_weight": 0.0,
@@ -92,7 +99,7 @@
     },
     "episodic_trim_cap": {
       "pass": true,
-      "hippo_episode_count": 240,
+      "hippo_episode_count": 85,
       "hippo_cap": 240
     },
     "recall_episodic": {
@@ -109,9 +116,9 @@
     },
     "post_sleep": {
       "pass": true,
-      "pending": 241,
-      "merged": 1,
-      "immutable_skipped_count": 0,
+      "pending": 85,
+      "merged": 0,
+      "immutable_skipped_count": 1,
       "before_pending": null
     },
     "honesty_initiative": {

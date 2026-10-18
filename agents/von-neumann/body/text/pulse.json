@@ -1,10 +1,10 @@
 {
-  "pid": 77228,
+  "pid": 34648,
   "holder": "life_reactor",
   "tract_id": "partner_text",
   "tract_kind": "symbolic",
-  "macro_tick": 9366,
+  "macro_tick": 320,
   "sn_mode": "execute",
-  "updated_at": "2026-06-20T23:55:48Z",
-  "idle_quanta": 9356
+  "updated_at": "2026-09-20T04:44:55Z",
+  "idle_quanta": 266
 }

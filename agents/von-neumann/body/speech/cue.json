@@ -1,72 +1,20 @@
 {
-  "id": "c8b7b1ad84a1",
-  "plan_id": "c8b7b1ad84a1",
+  "id": "a49a1136d2af",
+  "plan_id": "a49a1136d2af",
   "units": [
     "lang.word.а",
     "lang.word.я",
-    "lang.word.хочу"
+    "lang.word.хочу",
+    "lang.word.привет"
   ],
   "intent": "parallel_compose",
-  "tick": 62,
+  "tick": 321,
   "scene_id": "self",
   "wire": "stub_vocoder",
   "tract_id": "motor_speech",
   "tract_kind": "motor",
   "direction": "efferent",
   "function_id": "body.tract.motor_speech.efferent",
-  "status": "done",
-  "enqueued_at": "2026-06-25T04:00:07Z",
-  "completed_at": "2026-06-25T04:00:08Z",
-  "heard_window_id": "self-c8b7b1ad84a1",
-  "report_hint": {
-    "self_listen": {
-      "plan": {
-        "plan_id": "c8b7b1ad84a1",
-        "units": [
-          "lang.word.а",
-          "lang.word.я",
-          "lang.word.хочу"
-        ],
-        "intent": "parallel_compose",
-        "tick": 62,
-        "scene_id": "self"
-      },
-      "synth": {
-        "codec": "stub_sine_v1",
-        "base_freq": 213.0,
-        "duration_sec": 0.42,
-        "duration_ms": 420
-      },
-      "self_listen": {
-        "window_id": "self-c8b7b1ad84a1",
-        "scene_id": "self",
-        "audio_hash": "76bfca66ffa5c179",
-        "codec_id": "cochlear_stub_v0",
-        "duration_ms": 420,
-        "placements": {
-          "A0_spectrum": 77
-        },
-        "episode_id": null,
-        "speaker": "self",
-        "speakers": null
-      },
-      "motor_episode_id": "ep-7249",
-      "aud_concept_id": "aud.window.self-c8b7b1ad84a1",
-      "motor_concept_id": "motor.plan.c8b7b1ad84a1"
-    },
-    "motor_bind": {
-      "bound": true,
-      "motor_concept_id": "motor.plan.c8b7b1ad84a1",
-      "aud_concept_id": "aud.window.self-c8b7b1ad84a1",
-      "extract": {
-        "src": "motor.plan.c8b7b1ad84a1",
-        "relation": "co_occurs",
-        "dst": "aud.window.self-c8b7b1ad84a1",
-        "edge": "E:motor.plan.c8b7b1ad84a1|co_occurs|aud.window.self-c8b7b1ad84a1",
-        "on_auditory": true,
-        "on_motor": true,
-        "provenance": "life_tick_motor_self"
-      }
-    }
-  }
+  "status": "pending",
+  "enqueued_at": "2026-09-20T04:45:00Z"
 }
